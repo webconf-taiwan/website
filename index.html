@@ -1,67 +1,139 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>WebConf.TW</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
-    <meta name="author" content="">
+<html lang="zh-Hant">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="webconf.tw">
+        <meta name="author" content="webconf">
+        <link rel="icon" type="image/png" href="favicon.png" />
+        <title>WebConf.TW</title>
 
-    <!-- Le styles -->
-    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-      body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
-      }
-    </style>
-    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
 
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+        <script src="js/css3-mediaqueries.js"></script>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <!--[if lt IE 7]>
+        <script src="js/DD_belatedPNG_0.0.8a-min.js"></script>
+        <script type="text/javascript">
+          DD_belatedPNG.fix('img, div.countdown, .separator');
+        </script>
+        <![endif]-->
 
-    <!-- Le fav and touch icons -->
-  </head>
+        <!-- Google WEB Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Maven+Pro:400,700|Abel' rel='stylesheet' type='text/css' />
 
-  <body>
+        <!-- WEB Font -->
+        <link href="css/fonts/bebas.css" media="screen" rel="stylesheet" type="text/css" />
 
-    <div class="navbar navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </a>
-          <a class="brand" href="#">WebConf.TW</a>
-          <div class="nav-collapse">
-          </div><!--/.nav-collapse -->
+        <!-- Facebox CSS Files -->
+        <link href="css/facebox.css" rel="stylesheet" type="text/css"/>
+
+        <!-- Site CSS Files -->
+        <link href="css/main.css" rel="stylesheet" type="text/css"/>
+        <link href="css/responsive.css" rel="stylesheet" type="text/css"/>
+
+    </head>
+    <body>
+        <table class="doc-loader">
+            <tr>
+                <td>
+                    <img src="images/ajax-document-loader.gif" alt="Loading..." />
+                </td>
+            </tr>
+        </table>
+        <div class="sub-wrapper center">
+            <div class="left logo-holder">
+                <img alt="Logo" src="images/logo.png" id="logo" />
+            </div>
+            <div class="clear"></div>
+            <div class="left"><img class="floating-rocket" src="images/rocket.png" alt="Launching" /></div>
+            <div class="left info">
+                WebConf 2013 <br />
+                中研院人社館 <br />
+                01/12 ~ 01/13 <br />
+                英雄集結！
+            </div>
+            <div class="clear"></div>
+            <div class="clear countdown center">
+                <div id="countdown">
+                    <div class="dathsh days_dash">
+                        <span class="dash_title">days</span>
+                        <div class="digit">0</div>
+                        <div class="digit">0</div>
+                        <div class="digit">0</div>
+                    </div>
+                    <div class="left separator"></div>
+                    <div class="dash hours_dash">
+                        <span class="dash_title">hours</span>
+                        <div class="digit">0</div>
+                        <div class="digit">0</div>
+                    </div>
+                    <div class="left separator"></div>
+                    <div class="dash minutes_dash">
+                        <span class="dash_title">minutes</span>
+                        <div class="digit">0</div>
+                        <div class="digit">0</div>
+                    </div>
+                    <div class="left separator"></div>
+                    <div class="dash seconds_dash">
+                        <span class="dash_title">seconds</span>
+                        <div class="digit">0</div>
+                        <div class="digit">0</div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-      </div>
-    </div>
+        <!-- Hint JavaScript script -->
+        <script type="text/javascript" src="js/jquery-latest.min.js"></script>
+        <script type="text/javascript" src="js/jquery.myHint.js"></script>
 
-    <div class="container">
-      <div class="hero-unit">
-        <h2>WebConf.TW will be here soon. &#9786;</h2>
-      </div>
+        <!-- Vertical Aligment JavaScript script -->
+        <script type="text/javascript" src="js/jquery.vAlign.js"></script>
 
-    </div> <!-- /container -->
+        <!-- CountDown JavaScript script -->
+        <script type="text/javascript" src="js/jquery.countdown-1.0.js"></script>
 
-    <!-- Le javascript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="bootstrap/js/bootstrap.min.js"></script>
-    <script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-34159361-1']);
-      _gaq.push(['_trackPageview']);
+        <!-- Date Format JavaScript script -->
+        <script type="text/javascript" src="js/jquery.dateFormat-1.0.js"></script>
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-    </script>
-  </body>
-</html>
+        <!-- Timer JavaScript script -->
+        <script type="text/javascript" src="js/jquery.timers.js"></script>
+
+        <!-- Vertical Ticker JavaScript script -->
+        <script type="text/javascript" src="js/jquery.vticker-min.js"></script>
+
+        <!-- Main JavaScript script -->
+        <script type="text/javascript" src="js/jquery.facebox.js"></script>
+
+        <!-- Custom JavaScript effects script -->
+        <script type="text/javascript" src="js/custom/customUI.js"></script>
+
+        <!-- Custom Counter JavaScript script -->
+        <script type="text/javascript" src="js/custom/counter.js"></script>
+
+        <!-- Custom Ajax JavaScript script -->
+        <script type="text/javascript" src="js/custom/ajax.js"></script>
+
+        <!-- Main JavaScript script -->
+        <script type="text/javascript" src="js/main.js"></script>
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-34159361-1']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+             var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+             })();
+</script>
+     </body>
+ </html>

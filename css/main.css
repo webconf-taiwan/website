@@ -1,0 +1,424 @@
+/*
+    Document   : main
+    Created on : 2011.12.07.
+    Author     : vladica savic
+    Description:
+        Main CSS file for "Big Bang" project.
+*/
+
+/*
+    Include clear.css to reset all browser defaults stylesheets, and include all
+    common frequently used CSS classes.
+*/
+@import url("clear.css");
+
+input, textarea
+{
+    border:none;
+}
+
+.block
+{
+    display: block;
+}
+.left
+{
+    float: left;
+}
+.right
+{
+    float: right;
+}
+.clear
+{
+    clear: both;
+}
+.center
+{
+    margin-left: auto;
+    margin-right: auto;
+}
+.hidden
+{
+    display: none;
+}
+body
+{
+    background-image: url(../images/bg.jpg);
+    background-repeat: repeat;
+    font-family: 'Abel';
+}
+div.top-wrapper
+{
+    display: block;
+    position: relative;
+}
+div.top-line
+{
+    background-image: url(../images/top_line.png);
+    background-repeat: repeat-x;
+    width: 100%;
+    height: 6px;
+    font-size: 6px;
+    line-height: 6px;
+}
+div.footer-content-holder
+{
+    margin-top: 10px;
+    background-image: url(../images/footer_bg.png);
+    background-repeat: repeat-x;
+    height: 150px;
+    text-align: center;
+    padding-top: 60px;
+    background-color: #DCEFFD;
+    color: #005889;
+	font-family: 'Maven Pro', arial;
+	font-size: 14px;
+}
+div.footer-content-holder a
+{
+    color:#606873;
+    text-decoration: none;
+}
+div.wrapper
+{
+    width: 980px;
+}
+div.sub-wrapper
+{
+    width: 980px;
+    height: 665px;
+    padding-top: 25px;
+    background-image: url(../images/top_bg_blank.jpg);
+    background-repeat: no-repeat;
+}
+div.info
+{
+    font-family: 'BebasNeueRegular';
+    font-size: 60px;
+    width: 530px;
+    line-height: 60px;
+    color: #FFFFFF;
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+div.info a
+{
+	text-decoration: none;
+}
+div.info a:hover
+{
+	text-decoration: underline;
+}
+.yellow
+{
+    color: #FFCC00;
+}
+img.floating-rocket
+{
+    position: absolute;
+    margin-left: 515px;
+    margin-top: -250px;
+}
+div.countdown
+{
+    background-image: url(../images/countdown_bg.png);
+    width: 545px;
+    height: 146px;
+    position: relative;
+
+}
+div.countdown img.hint
+{
+    position: absolute;
+    margin-left: 580px;
+    margin-top: 45px;
+}
+/*COUNT DOWN*/
+#countdown {
+    height: 110px;
+    margin-top:20px;
+    position: absolute;
+    margin-left: 55px;
+}
+.dash {
+    height: 114px;
+    float: left;
+    position: relative;
+}
+.separator
+{
+    height: 114px;
+    background-image: url('../images/countdown_bg_separator.png');
+    background-repeat: no-repeat;
+    width: 2px;
+    margin: 0 25px;
+}
+.dathsh {
+    height: 114px;
+    float: left;
+    position: relative;
+}
+.dash .digit {
+    font-size: 60px;
+    font-weight: normal;
+    float: left;
+    text-align: center;
+    width: 30px;
+    display: block;
+    font-family: 'BebasNeueRegular';
+    text-shadow: 0px 1px 0px #B8D2E4;
+    color: #FFFFFF;
+    position: relative;
+    padding:14px 0px 7px 0px;
+}
+.dathsh .digit {
+    font-size: 60px;
+    font-weight: normal;
+    float: left;
+    width: 30px;
+    text-align: center;
+    font-family: 'BebasNeueRegular';
+    text-shadow: 0px 1px 0px #B8D2E4;
+    color: #FFFFFF;
+    position: relative;
+    padding:14px 0px 7px 0px;
+}
+.dash_title {
+    position: absolute;
+    display: block;
+    margin-top: 80px;
+    font-size: 14px;
+    left: 0;
+    color: #73C5FF;
+    font-family: 'Abel';
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align:center;
+}
+.days_dash .dash_title
+{
+    width: 90px;
+}
+.hours_dash .dash_title
+{
+    width: 60px;
+}
+span.title-large
+{
+    font-family: 'Abel';
+    font-size: 48px;
+    color: #FFFFFF;
+    margin-bottom: 30px;
+}
+span.title-medium
+{
+    font-family: 'Abel';
+    font-size: 22px;
+    color: #FFCC00;
+    margin-bottom: 20px;
+}
+span.subtitle-medium
+{
+    font-family: 'Georgia';
+    font-size: 18px;
+    font-style: italic;
+    color: #FFCC00;
+    margin-bottom: 20px;
+}
+.about
+{
+    padding-top: 45px;
+    width: 435px;
+    padding-right: 55px;
+}
+p.regular
+{
+    font-family: 'Maven Pro', arial;
+    font-size: 14px;
+    color: #FFFFFF;
+    text-align: justify;
+    line-height: 24px;
+}
+.additional-info
+{
+    width: 471px;
+    padding-top: 50px;
+    padding-left: 15px;
+}
+.additional-info ul li
+{
+    padding-left: 40px;
+}
+.additional-info ul li.spacer
+{
+    background-image: url(../images/horisontal_separator.png);
+    background-repeat: no-repeat;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+div.tweets-holder
+{
+    height: 180px;
+    display: block;
+    background-image: url(../images/twitter_bg.png);
+    background-repeat: no-repeat;
+    width: 360px;
+    padding: 50px 60px 50px 20px;
+    margin-left: 40px;
+}
+
+div.tweets ul li
+{
+    color: #68BCF8;
+}
+div.tweets ul li p.content
+{
+    min-height: 45px;
+    max-height: 45px;
+    height: 45px;
+}
+div.tweets ul li p.content a
+{
+    color: #68BCF8;
+    text-decoration: none;
+	font-size: 13px;
+	font-family: 'Maven Pro', arial;
+}
+div.tweets ul li p.content a:hover
+{
+    text-decoration: underline;
+}
+div.tweets ul li span.date
+{
+    display: block;
+    text-align: right;
+    color: #FFFFFF;
+	font-size: 12px;
+	font-family: 'Maven Pro', arial;
+}
+ul.button-items
+{
+    margin-top: 40px;
+}
+ul.button-items li
+{
+    height: 129px;
+    overflow: hidden;
+    float: left;
+    margin-right: 20px;
+    cursor: pointer;
+}
+ul.button-items li.last
+{
+    margin-right: 0px;
+}
+div.tooltip
+{
+    background-image: url(../images/tooltip.png);
+    background-repeat: no-repeat;
+    width: 168;
+    height: 126px;
+    overflow: hidden;
+    display: block;
+    font-family: 'Maven Pro', arial;
+    font-size: 14px;
+    color: #FFFFFF;
+    position: absolute;
+    text-align: center;
+    display: none;
+	margin-top: 20px;
+}
+div.tooltip p
+{
+	width: 138px;
+	padding-left: 15px;
+	padding-right: 15px;
+}
+div.footer-separator
+{
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+ul.social
+{
+    width: 135px;
+}
+ul.social li
+{
+    overflow: hidden;
+    height: 23px;
+    margin-left: 10px;
+}
+ul.social li.first
+{
+    margin-left: 0px;
+}
+img.notification-hint
+{
+    left: 300px;
+    margin-top: -100px !important;
+    position: absolute;
+}
+a.closePopup img
+{
+    position: absolute;
+}
+a.closePopup img:hover
+{
+    top: -67px;
+}
+a.closePopup
+{
+    margin-top: -80px;
+    position: absolute;
+    width: 67px;
+    height: 67px;
+    overflow: hidden;
+    display: block;
+}
+
+ul.user-data
+{
+    margin-left:50px;
+}
+ul.user-data li
+{
+    margin-bottom: 36px;
+    margin-top: 21px;
+}
+ul.user-data li input
+{
+    height: 30px;
+    font-family: 'Abel';
+    font-size: 20px;
+    color:#9F9F9F;
+    width: 385px;
+}
+ul.user-data li textarea
+{
+    height: 160px;
+    min-height: 160px;
+    max-height:160px;
+    width: 380px;
+    max-width: 380px;
+    min-width: 380px;
+    font-family: 'Abel';
+    color:#9F9F9F;
+    overflow:auto;
+    font-size: 20px;
+}
+.doc-loader {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	z-index: 1000;	
+}
+.doc-loader td {   
+	background-color: #035EA4;
+	color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+}

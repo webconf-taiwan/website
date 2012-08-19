@@ -1,0 +1,199 @@
+@media screen and (max-width: 767px) {
+}
+@media screen and (min-width: 768px) and (max-width: 979px) {
+}
+@media screen and (max-width: 600px) {
+  body {
+    text-align: center;
+  }
+  #logo {
+    width: 200px;
+    margin-bottom: 20px;
+  }
+  div.sub-wrapper {
+    width: auto;
+  }
+  div.info {
+    margin-top: 0px;
+    width: auto;
+    font-size: 40px;
+  }
+  img.floating-rocket {
+    width: 200px;
+    margin-left: 0px;
+    margin-top: 0px;
+    position: relative;
+  }
+  .left {
+    float: none;
+  }
+  #countdown .left {
+    float: left;
+  }
+  #countdown {
+    margin-left: 27px;
+    margin-top: 17px;
+  }
+  div.countdown {
+    margin-top: -30px;
+    width: 300px;
+    height: 80px;
+    background-image: url("../images/countdown_bg@480.png");
+  }
+  .dash, .separator, .dathsh {
+    height: 30px;
+  }
+  .separator
+  {
+    background-image: url('../images/countdown_bg_separator.png');
+  }
+  .dash .digit, .dathsh .digit {
+    font-size: 20px;
+    width: 10px;
+  }
+  .days_dash .dash_title {
+    width: 50px;
+  }
+  .hours_dash .dash_title {
+    width: 40px;
+    margin-left: -10px;
+  }
+  .minutes_dash .dash_title {
+    width: 40px;
+    margin-left: -20px;
+  }
+  .seconds_dash .dash_title {
+    width: 40px;
+    margin-left: -20px;
+  }
+}
+@media screen and (min-width: 601px) and (max-width: 767px) {
+  body {
+    text-align: center;
+  }
+  #logo {
+    width: 200px;
+    margin-bottom: 20px;
+  }
+  div.info {
+    margin-top: 0px;
+    font-size: 40px;
+    text-align: left;
+  }
+  div.sub-wrapper {
+    margin: auto 20px;
+    width: auto;
+  }
+  img.floating-rocket {
+    width: 300px;
+    margin-left: 250px;
+    margin-top: -180px;
+    position: absolute;
+  }
+  #countdown .left {
+    float: left;
+  }
+  #countdown {
+    margin-left: 27px;
+    margin-top: 17px;
+  }
+  div.countdown {
+    margin: 0 auto;
+    width: 300px;
+    height: 80px;
+    background-image: url("../images/countdown_bg@480.png");
+  }
+  .dash, .separator, .dathsh {
+    height: 30px;
+  }
+  .separator
+  {
+    background-image: url('../images/countdown_bg_separator.png');
+  }
+  .dash .digit, .dathsh .digit {
+    font-size: 20px;
+    width: 10px;
+  }
+  .days_dash .dash_title {
+    width: 50px;
+  }
+  .hours_dash .dash_title {
+    width: 40px;
+    margin-left: -10px;
+  }
+  .minutes_dash .dash_title {
+    width: 40px;
+    margin-left: -20px;
+  }
+  .seconds_dash .dash_title {
+    width: 40px;
+    margin-left: -20px;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 979px) {
+  #logo {
+    width: 250px;
+    margin-bottom: 20px;
+  }
+  div.info {
+    margin-top: 0px;
+    font-size: 40px;
+  }
+  div.sub-wrapper {
+    margin-left: 20px;
+    width: auto;
+  }
+  img.floating-rocket {
+    width: 450px;
+    margin-left: 300px;
+    margin-top: -200px;
+    position: absolute;
+  }
+  .left {
+    float: none;
+  }
+  #countdown .left {
+    float: left;
+  }
+  div.countdown {
+    margin: 0 auto;
+  }
+}
+@media screen and (min-width: 1200px) {
+  div.info {
+    margin-top: 0px;
+    font-size: 75px;
+    line-height: 100px;
+  }
+}
+@media screen and (max-width: 979px) {
+}
+@media screen and (min-width: 980px) and (max-width: 1200px){
+  #logo {
+    width: 350px;
+    margin-bottom: 20px;
+  }
+  div.info {
+    margin-top: 0px;
+    font-size: 60px;
+  }
+  div.sub-wrapper {
+    margin-left: 20px;
+    width: auto;
+  }
+  img.floating-rocket {
+    width: 550px;
+    margin-left: 400px;
+    margin-top: -300px;
+    position: absolute;
+  }
+  .left {
+    float: none;
+  }
+  #countdown .left {
+    float: left;
+  }
+  div.countdown {
+    margin: 0 auto;
+  }
+}
