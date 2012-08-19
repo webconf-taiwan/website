@@ -422,3 +422,11 @@ ul.user-data li textarea
     text-align: center;
     vertical-align: middle;
 }
+#contact {
+    color: #fff;
+    font-size: 30px;
+    text-align: right;
+    width: 90%;
+    margin-top: -30px;
+    margin-bottom: 30px;
+}
