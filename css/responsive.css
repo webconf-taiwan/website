@@ -66,6 +66,11 @@
     width: 40px;
     margin-left: -20px;
   }
+  #contact {
+      text-align: center;
+      margin-left: 20px;
+      font-size: 20px;
+  }
 }
 @media screen and (min-width: 601px) and (max-width: 767px) {
   body {
