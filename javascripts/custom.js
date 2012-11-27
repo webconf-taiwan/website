@@ -4,7 +4,9 @@
 
   jQuery(document).ready(function($) {
     if ($.browser.msie && $.browser.version.substr(0, 1) < 7) {
-      alert('請用新版瀏覽器 :-)');
+      if ($.browser.version.substr(0, 1) !== 1) {
+        alert('請用新版瀏覽器 :-)');
+      }
     }
     $('#speaker-list').imagesLoaded(function() {
       $('#speaker-list').masonry({
