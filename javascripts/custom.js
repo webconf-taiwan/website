@@ -19,7 +19,7 @@
       });
     });
     if ($.browser.msie && $.browser.version.substr(0, 1) < 7) {
-      if ($.browser.version.substr(0, 1) !== 1) {
+      if ($.browser.version.substr(0, 1) !== '1') {
         alert('請用新版瀏覽器 :-)');
       }
     }
