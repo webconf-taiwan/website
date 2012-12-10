@@ -3,6 +3,21 @@
   jQuery("html").removeClass("no-js").addClass("js");
 
   jQuery(document).ready(function($) {
+    $('.popup').each(function() {
+      return $(this).qtip({
+        content: {
+          text: $(this).find('a')
+        },
+        position: {
+          my: 'bottom center',
+          at: 'top center',
+          target: $(this)
+        },
+        style: {
+          classes: 'ui-tooltip-light ui-tooltip-rounded'
+        }
+      });
+    });
     if ($.browser.msie && $.browser.version.substr(0, 1) < 7) {
       if ($.browser.version.substr(0, 1) !== 1) {
         alert('請用新版瀏覽器 :-)');
