@@ -6,7 +6,7 @@
     $('.popup').each(function() {
       return $(this).qtip({
         content: {
-          text: $(this).find('a')
+          text: $(this).find('a').not('a.youtube').not('a.docs')
         },
         position: {
           my: 'bottom center',
@@ -39,6 +39,13 @@
           columnWidth: $('#speaker-list').width() / 6
         });
       });
+    });
+    $('.fancybox-media').fancybox({
+      openEffect: 'none',
+      closeEffect: 'none',
+      helpers: {
+        media: {}
+      }
     });
     (function() {
       if (Modernizr.touch) {
