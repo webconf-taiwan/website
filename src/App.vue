@@ -1,5 +1,5 @@
 <template>
-  <Header @scrollIntoView="scrollIntoView"></Header>
+  <Header></Header>
   <router-view/>
 </template>
 
@@ -9,12 +9,12 @@
 <script setup>
 import Header from "@/components/HeaderComponent.vue"
 // import { RouterLink, RouterView } from 'vue-router';
-import { ref } from 'vue';
-const home = ref()
+// import { ref } from 'vue';
+// const home = ref()
 
-const scrollIntoView = (num) => {
-  home.value.scrollIntoView(num);
-}
+// const scrollIntoView = (num) => {
+//   home.value.scrollIntoView(num);
+// }
 
 
 </script>

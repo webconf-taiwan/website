@@ -4,7 +4,7 @@
     <a href="#" v-if="!isShowMenuList" class="menuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
     <a href="#" v-else class="closeMenuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
     <div v-if="!isScrolledToBottom" class="hidden md:block" :class="{'md:hidden': isShowMenuList}">
-      <p class="writing-vertical text-custom-teal-500 absolute z-30 bottom-16 right-4 text-lg">scroll</p>
+      <p class="writing-vertical text-custom-teal-500 absolute z-30 bottom-16 right-4 text-lg font-rajdhani">scroll</p>
       <div class="arrowDownIcon animate-arrowDown w-10 h-10 absolute z-30 bottom-3 right-2 text-lg"></div>
     </div>
 
@@ -41,7 +41,7 @@
       class="py-1">
         <router-link href="#" :to="{ name: `${item.home}` }">
           <p class="whitespace-nowrap text-xl leading-6 md:text-4xl">{{ item.ChtName }}</p>
-          <p class="whitespace-nowrap text-sm leading-6 md:text-base">{{ item.EngName }}</p>
+          <p class="whitespace-nowrap text-sm leading-6 md:text-base font-rajdhani">{{ item.EngName }}</p>
         </router-link>
         </li>
       </ul>
@@ -93,7 +93,13 @@
 </style>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue';
+import { ref, onMounted, inject, watch } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useScrollStore } from '@/stores/scroll';
+
+const scrollStore = useScrollStore();
+const { currentSpiderNum, isClicking } = storeToRefs(scrollStore);
+const { setSpiderLocation } = scrollStore
 
 const gsap = inject('gsap');
 const isShowMenuList = ref(false);
@@ -131,16 +137,20 @@ const menuList = ref([
   ]);
 const isScrolledToBottom = ref(false);
 const spiderLine = ref();
-const currentSpiderNum = ref();
-const emits = defineEmits(['scrollIntoView']);
+// const emits = defineEmits(['scrollIntoView']);
 
 const scrollIntoView = (num) => {
-  currentSpiderNum.value = num;
+  setSpiderLocation(num)
   toggerSpiderLineHeight(num);
-  emits('scrollIntoView', num);
+  // emits('scrollIntoView', num);
 }
 
+watch(currentSpiderNum, (newValue) => {
+  toggerSpiderLineHeight(newValue);
+});
+
 const toggerSpiderLineHeight = (num) => {
+  isClicking.value = true;
   const innerHeight = window.innerHeight - 130;
   let height = 0;
   switch (num) {
@@ -165,7 +175,11 @@ const toggerSpiderLineHeight = (num) => {
     default:
       break;
   }
-  gsap.to(spiderLine.value, { height , duration: 1 });
+  gsap.to(spiderLine.value, { height , duration: 0.5 });
+  setTimeout(() => {
+    isClicking.value = false;
+  },600)
+  
 }
 
 
@@ -191,7 +205,6 @@ onMounted(() => {
   setTimeout(() => {
     scrollIntoView(1);
   },1000)
-  
 });
 
 </script>

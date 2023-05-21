@@ -12,7 +12,7 @@
 <div v-if="showHome" class="mainWidth">
 <div class="bgImage bg-no-repeat bg-center bg-fixed bg-cover">
   
-    <div class="flex flex-col">
+    <div class="flex flex-col relative">
       <!-- 第一區塊開始 -->
       <div ref="section1">
         <div ref="banner" class="mainWidth h-screen flex flex-col justify-center items-center w-full">
@@ -34,7 +34,7 @@
           <div class="flex flex-col md:flex-row-reverse items-end md:items-center md:justify-end">
             <div class="titleDecoration w-20 h-6"></div>
             <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 w-full md:w-436 md:mr-2">
-              <h1 class="text-custom-teal-500 font-medium text-4xl whitespace-nowrap">WebConf Taiwan
+              <h1 class="text-custom-teal-500 font-medium text-4xl whitespace-nowrap font-rajdhani">WebConf Taiwan
               </h1>
             </div>
           </div>
@@ -43,7 +43,7 @@
             <div class="border-b border-t border-r border-custom-teal-700 w-8 mt-1 mb-1 mr-2">
               <div class="my-1 border-b border-t border-custom-teal-700 h-6px"></div>
             </div>
-            <p class="text-base font-bold text-custom-pink-700 whitespace-nowrap">BACK TO THE FUTURE OF WEBCONF.
+            <p class="text-base font-bold text-custom-pink-700 whitespace-nowrap font-rajdhani">BACK TO THE FUTURE OF WEBCONF.
             </p>
             <div class="border-b border-t border-l border-custom-teal-700 flex-grow mt-1 mb-1 ml-2">
               <div class="my-1 border-b border-t border-custom-teal-700 h-6px"></div>
@@ -67,12 +67,13 @@
           </div>
         </div>
 
-        <div class="logoTxt w-138 h-9 absolute md:top-1 md:left-[-92px] lg:left-[-115px]"></div>
+        <!-- <div class="logoTxt w-138 h-9 absolute md:top-1 md:left-[-92px] lg:left-[-115px]"></div>
         <div class="absolute bottom-6 md:left-[-80px] lg:left-[-110px] hidden md:block">
           <div class="fbIcon w-6 h-6 bg-cover"></div>
           <div class="my-2 mx-2 w-0.5 h-10 bg-custom-teal-500"></div>
           <p class="writing-vertical text-custom-teal-500 text-sm">Webconf 2023 All Rights Reserved.</p>
-        </div>
+        </div> -->
+
         <div class="logoMan hidden md:block md:w-300 md:h-370 md:bg-cover md:absolute md:top-0 md:right-[-15%] lg:right-[-18%] xl:right-[-14%]">
         </div>
       </div>
@@ -97,15 +98,16 @@
                 <div class="md:flex">
                   <div class="hidden md:block border-b border-l border-t border-custom-teal-500 bg-custom-gray-800 px-2">
                     <div class="h-5 border-r border-l border-b border-custom-teal-700 mx-1 mb-3">
-                      <div class="w-2 h-5 border-r border-l border-custom-teal-700 mx-1"></div>
+                      <div class="w-7px h-5 border-r border-l border-custom-teal-700 mx-1"></div>
                     </div>
-                    <p class="writing-vertical text-custom-pink-700 text-lg font-medium leading-tight mb-3">SPEAKER</p>
-                    <div class="h-24 border-r border-l border-t border-custom-teal-700 mx-1">
-                      <div class="w-2 h-24 border-r border-l border-custom-teal-700 mx-1"></div>
+                    <p class="writing-vertical text-custom-pink-700 text-lg font-medium leading-tight mb-3 font-rajdhani">SPEAKER</p>
+                    <div class="h-105 border-r border-l border-t border-custom-teal-700 mx-1">
+                      <div class="w-7px h-105 border-r border-l border-custom-teal-700 mx-1"></div>
                     </div>
                   </div>
                   <div class="border border-custom-teal-500 p-1 bg-custom-gray-800">
-                    <img class="w-145 h-148 sm:w-202 sm:h-206" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker1.length) }">
+                    <img class="w-145 h-148 sm:w-202 sm:h-206 md:hidden" :src="item.speaker" alt="speaker">
+                    <img class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker1.length) }">
                   </div>
                 </div>
                 
@@ -117,41 +119,181 @@
                 <div class="md:flex">
                   <div class="hidden md:block border-b border-l border-t border-custom-teal-500 bg-custom-gray-800 px-2">
                     <div class="h-5 border-r border-l border-b border-custom-teal-700 mx-1 mb-3">
-                      <div class="w-2 h-5 border-r border-l border-custom-teal-700 mx-1"></div>
+                      <div class="w-7px h-5 border-r border-l border-custom-teal-700 mx-1"></div>
                     </div>
-                    <p class="writing-vertical text-custom-pink-700 text-lg font-medium leading-tight mb-3">SPEAKER</p>
-                    <div class="h-24 border-r border-l border-t border-custom-teal-700 mx-1">
-                      <div class="w-2 h-24 border-r border-l border-custom-teal-700 mx-1"></div>
+                    <p class="writing-vertical text-custom-pink-700 text-lg font-medium leading-tight mb-3 font-rajdhani">SPEAKER</p>
+                    <div class="h-105 border-r border-l border-t border-custom-teal-700 mx-1">
+                      <div class="w-7px h-105 border-r border-l border-custom-teal-700 mx-1"></div>
                     </div>
                   </div>
                   <div class="border border-custom-teal-500 p-1 bg-custom-gray-800">
-                    <img class="w-145 h-148 sm:w-202 sm:h-206" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker2.length) }">
+                    <img class="w-145 h-148 sm:w-202 sm:h-206 md:hidden" :src="item.speaker" alt="speaker">
+                    <img class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker2.length) }">
                   </div>
                 </div>
-                
               </li>
             </ul>
           </div>
         </div>
 
-        <div class="logoTxt w-138 h-9 absolute md:top-5 md:left-3 lg:left-5"></div>
+        <!-- <div class="logoTxt w-138 h-9 absolute md:top-5 md:left-3 lg:left-5"></div>
         <div class="absolute bottom-6 md:left-3 lg:left-5 hidden md:block">
           <div class="fbIcon w-6 h-6 bg-cover"></div>
           <div class="my-2 mx-2 w-0.5 h-10 bg-custom-teal-500"></div>
           <p class="writing-vertical text-custom-teal-500 text-sm">Webconf 2023 All Rights Reserved.</p>
-        </div>
+        </div> -->
       </div>
       <!-- 第三區塊結束 -->
 
       <!-- 第四區塊開始 -->
-      <div ref="section4" class="h-screen">
-        <p class="text-white">section4</p>
+      <div ref="section4" class="md:h-screen relative py-6 px-5 overflow-hidden">
+        <div class="logoMan hidden md:block md:w-184 md:h-226 md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-52 md:right-0"></div>
+        
+        <div class="flex flex-col items-end mb-8">
+          <div class="titleDecoration w-20 h-6"></div>
+            <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
+              <h2 class="text-custom-teal-500 font-bold text-3xl whitespace-nowrap md:text-5xl">議程主軸
+              </h2>
+          </div>
+        </div>
+
+        <div class="md:absolute md:top-32  md:left-1 lg:left-[15%]">
+          <div class="relative w-335 md:w-374 h-64 mx-auto mb-14">
+          <div class="absolute z-10">
+            <h3 class="font-rajdhani font-medium text-2xl md:text-56 bg-custom-gray-800 text-custom-teal-500 border-t border-r border-l border-custom-teal-500 w-75 md:w-157 text-center py-3 md:py-4">Web</h3>
+
+            <div class="py-1 border border-custom-teal-500 bg-custom-gray-800 flex">
+              <div class="w-5 border-t border-b border-r border-custom-teal-700 my-1 py-1">
+                <div class="h-6px border-t border-b border-custom-teal-700"></div>
+              </div>
+              <p class="font-rajdhani text-custom-pink-700 font-semibold mx-3">WEB DEVELOPMENT</p>
+              <div class="border-t border-b border-l border-custom-teal-700 my-1 py-1 flex-grow">
+                <div class="h-6px border-t border-b border-custom-teal-700"></div>
+              </div>
+            </div>
+
+            <div class="py-4 px-3 md:p-8 bg-custom-gray-800 border-custom-teal-500 border-b border-r border-l">
+              <p class="font-medium text-white">
+              包含 Frontend、Backend、DevOps、技術管理等相關議題。將深入探討各種 Web 技術的最新趨勢、過往發展，以及如何透過這些技術來提升網站或應用程式的品質、效能與安全性。
+              </p>
+            </div>
+          </div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-80 absolute top-[61px] md:top-[101px] left-[-15px] md:left-[-32px] z-[9]"></div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-60 absolute top-[71px] md:top-[129px] left-[-30px] md:left-[-60px] z-[8]"></div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-40 absolute top-[81px] md:top-[153px] left-[-45px] md:left-[-84px] z-[7]"></div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-20 absolute top-[91px] md:top-[173px] left-[-60px] md:left-[-104px] z-[6]"></div>
+        </div>
+        </div>
+        
+
+        <div class="md:absolute md:bottom-10 lg:bottom-[10%] md:right-1 lg:right-[10%]">
+          <div class="relative w-335 md:w-374 h-64 mx-auto">
+          <div class="absolute z-10">
+            <h3 class="font-rajdhani font-medium text-2xl md:text-56 bg-custom-gray-800 text-custom-teal-500 border-t border-r border-l border-custom-teal-500 w-75 md:w-157 text-center py-3 md:py-4">UI/UX</h3>
+
+            <div class="py-1 border border-custom-teal-500 bg-custom-gray-800 flex">
+              <div class="w-5 border-t border-b border-r border-custom-teal-700 my-1 py-1">
+                <div class="h-6px border-t border-b border-custom-teal-700"></div>
+              </div>
+              <p class="font-rajdhani text-custom-pink-700 font-semibold mx-3">UI/UX DESIGN</p>
+              <div class="border-t border-b border-l border-custom-teal-700 my-1 py-1 flex-grow">
+                <div class="h-6px border-t border-b border-custom-teal-700"></div>
+              </div>
+            </div>
+
+            <div class="py-4 px-3 md:p-8 bg-custom-gray-800 border-custom-teal-500 border-b border-r border-l">
+              <p class=" font-medium text-white">
+              本屆科技年會將探討 UI/UX 設計的最新趨勢，包括使用者界面設計、使用者體驗優化、人機互動設計等議題，以深入探討如何打造出引人入勝的用戶體驗，提升產品的價值和競爭力。
+              </p>
+            </div>
+          </div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-80 absolute top-[25px] md:top-[35px] left-[-15px] md:left-[-32px] z-[9]"></div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-60 absolute top-[13px] md:top-[7px] left-[-30px] md:left-[-60px] z-[8]"></div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-40 absolute top-[6px] md:top-[-17px] left-[-45px] md:left-[-84px] z-[7]"></div>
+          <div class="w-335 md:w-374 h-180 md:h-212 border border-custom-teal-500 bg-custom-gray-800 opacity-20 absolute top-0 md:top-[-37px] left-[-60px] md:left-[-104px] z-[6]"></div>
+        </div>
+        </div>
+        
+
+        
       </div>
       <!-- 第四區塊結束 -->
 
       <!-- 第五區塊開始 -->
-      <div ref="section5" class="h-screen">
-        <p class="text-white">section5</p>
+      <div ref="section5" class="md:h-screen relative py-6 px-5 overflow-hidden">
+        <div class="flex flex-col items-end mb-8">
+          <div class="titleDecoration w-20 h-6"></div>
+            <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
+              <h2 class="text-custom-teal-500 font-bold text-3xl whitespace-nowrap md:text-5xl">交通資訊
+              </h2>
+          </div>
+        </div>
+
+        <div class="mb-5 md:mb-0">
+          <h4 class="text-32 leading-normal font-semibold text-custom-teal-500 py-2 bg-custom-gray-800 border border-custom-teal-500 text-center">張榮發國際會議中心</h4>
+          <div class="flex bg-custom-gray-800 justify-center items-center border-b border-r border-l border-custom-teal-500 py-2 w-253">
+            <div class="locationIcon w-5 h-5 mr-2"></div>
+            <p class="text-white text-sm leading-normal font-medium">100 台北市中正區中山南路 11 號</p>
+          </div>
+        </div>
+
+        <div>
+          <ul class="flex justify-between">
+            <li class="border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'car'}">
+              <a href="#" class="block font-rajdhani text-lg text-custom-pink-700" @click.prevent="toggleTrafficInfo('car', '開車')">
+                <div class="flex justify-between py-1">
+                  <div class="flex-1 my-1.5 py-1 border-t border-b border-r border-custom-teal-700">
+                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                  <p class="mx-2">BY CAR</p>
+                  <div class="flex-1 my-1.5 py-1 border-t border-b border-l border-custom-teal-700">
+                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                </div>
+                </a>
+            </li>
+            <li class="border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'MRT'}">
+              <a href="#" class="block font-rajdhani text-lg text-custom-pink-700" @click.prevent="toggleTrafficInfo('MRT', '搭捷運')">
+                <div class="flex justify-between py-1">
+                  <div class="flex-1 my-1.5 py-1 border-t border-b border-r border-custom-teal-700">
+                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                  <p class="mx-2">BY MRT</p>
+                  <div class="flex-1 my-1.5 py-1 border-t border-b border-l border-custom-teal-700">
+                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                </div>
+                </a>
+            </li>
+            <li class="border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'bus'}">
+              <a href="#" class="block font-rajdhani text-lg text-custom-pink-700"  @click.prevent="toggleTrafficInfo('bus', '搭公車')">
+                <div class="flex justify-between py-1">
+                  <div class="flex-1 my-1.5 py-1 border-t border-b border-r border-custom-teal-700">
+                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                  <p class="mx-2">BY BUS</p>
+                  <div class="flex-1 my-1.5 py-1 border-t border-b border-l border-custom-teal-700">
+                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                </div>
+                </a>
+            </li>
+          </ul>
+
+          <div class="bg-custom-gray-800 border border-custom-teal-500">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.8534088865276!2d121.51685122061681!3d25.039048402679413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a975c13ae63d%3A0x99f529730969be7f!2z6LKh5ZyY5rOV5Lq65by15qau55m85Z-66YeR5pyD!5e0!3m2!1szh-TW!2stw!4v1684658779278!5m2!1szh-TW!2stw" width="100%" height="100%" class="border-r border-l border-custom-teal-500 h-422 md:h-250 mb-5" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            <div class="flex items-center ml-4 mb-4">
+              <div class="w-10 h-10 mr-2" :class="{
+              'carIcon': currentTrafficInfo.transportation === 'car', 
+              'MRTIcon': currentTrafficInfo.transportation === 'MRT', 'busIcon': currentTrafficInfo.transportation === 'bus'}"></div>
+              <p class="text-custom-teal-500">{{ currentTrafficInfo.method }}</p>
+            </div>
+            <ul class="ml-11 mb-4">
+              <li v-for="item in  currentTrafficInfo.info" :key="item" class="text-white list-disc" >{{ item }}</li>
+            </ul>
+          </div>
+        </div>
+
       </div>
       <!-- 第五區塊結束 -->
 
@@ -162,6 +304,12 @@
       <!-- 第六區塊結束 -->
     </div>
       
+    <div class="hidden md:block logoTxt w-138 h-9 fixed top-6 left-6" v-if="currentSpiderNum !== 1"></div>
+    <div class="hidden md:block fixed bottom-6 left-6" v-if="currentSpiderNum !== 1">
+      <div class="fbIcon w-6 h-6 bg-cover"></div>
+      <div class="my-2 mx-2 w-0.5 h-10 bg-custom-teal-500"></div>
+      <p class="writing-vertical text-custom-teal-500 text-sm">Webconf 2023 All Rights Reserved.</p>
+    </div>
 
     <!-- 首頁尾巴 -->
   </div>
@@ -196,6 +344,19 @@
 .logoMan {
   background-image: url('src/assets/images/logo_man.png');
 }
+.locationIcon {
+  background-image: url('src/assets/images/icon/ic_location_s.svg');
+}
+.carIcon {
+  background-image: url('src/assets/images/icon/ic_byCar_l.svg');
+}
+.MRTIcon {
+  background-image: url('src/assets/images/icon/ic_byMRT_l.svg');
+}
+.busIcon {
+  background-image: url('src/assets/images/icon/ic_byBus_l.svg');
+}
+
 @media (min-width: 768px) {
   .bgImage {
   background-image: url('src/assets/images/bg.png');
@@ -232,9 +393,17 @@
 
 
 <script setup>
-import { ref, onMounted, inject } from 'vue';
+import { ref, onMounted, inject, watch } from 'vue';
+import { storeToRefs } from 'pinia';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { useScrollStore } from '@/stores/scroll';
+import { speakers } from '@/content/speakers';
+import { trafficInfo } from '@/content/trafficInfo';
+
+const scrollStore = useScrollStore();
+const { currentSpiderNum, isClicking } = storeToRefs(scrollStore);
+const { setSpiderLocation } = scrollStore
 const gsap = inject('gsap');
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -249,73 +418,25 @@ const section6 = ref();
 const sections = [section1, section2, section3, section4, section5, section6]
 
 const banner = ref(null);
-const bannerText = ref(null)
+const bannerText = ref(null);
 const sellBtn = ref(null);
 
-const speaker1 = ref([
-  {
-    mainName: "Ruddy Lee",
-    secondaryName: null,
-    speaker: "src/assets/images/speaker/speaker_1.png",
-  },
-  {
-    mainName: "曾義峰",
-    secondaryName: "Ant",
-    speaker: "src/assets/images/speaker/speaker_3.png",
-  },
-  {
-    mainName: "保哥",
-    secondaryName: "Will",
-    speaker: "src/assets/images/speaker/speaker_5.png",
-  },
-  {
-    mainName: "范聖佑",
-    secondaryName: null,
-    speaker: "src/assets/images/speaker/speaker_7.png",
-  },
-  {
-    mainName: "Kewang",
-    secondaryName: null,
-    speaker: "src/assets/images/speaker/speaker_9.png",
-  },
-  {
-    mainName: "Akane Lee",
-    secondaryName: null,
-    speaker: "src/assets/images/speaker/speaker_11.png",
-  },
-]);
-const speaker2 = ref([
-  {
-    mainName: "蔡明哲",
-    secondaryName: "Richard Tsai",
-    speaker: "src/assets/images/speaker/speaker_2.png",
-  },
-  {
-    mainName: "Paul Li",
-    secondaryName: null,
-    speaker: "src/assets/images/speaker/speaker_4.png",
-  },
-  {
-    mainName: "Kuro",
-    secondaryName: null,
-    speaker: "src/assets/images/speaker/speaker_6.png",
-  },
-  {
-    mainName: "黃升煌",
-    secondaryName: "Mike",
-    speaker: "src/assets/images/speaker/speaker_8.png",
-  },
-  {
-    mainName: "王彥博",
-    secondaryName: "Soking",
-    speaker: "src/assets/images/speaker/speaker_10.png",
-  },
-  {
-    mainName: "本丸",
-    secondaryName: "尹曦禾",
-    speaker: "src/assets/images/speaker/speaker_12.png",
-  },
-])
+const speaker1 = ref();
+const speaker2 = ref();
+const currentTrafficInfo = ref({
+  transportation: "car",
+  method: "開車",
+  info: trafficInfo.car,
+});
+
+const toggleTrafficInfo = (transportation, method) => {
+  currentTrafficInfo.value = {
+    transportation,
+    method,
+    info: trafficInfo[transportation],
+  }
+};
+
 
 function showHomePage () {
   gsap.to(loading.value, { autoAlpha: 0, duration: 0.5 });
@@ -356,6 +477,11 @@ section1LeaveAnimeTl.to(section1.value, { xPercent: 100, opacity: 0, duration: 1
 section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 0, duration: 0.2 })
 // section1LeaveAnimeTl.to(section1.value, { height: '10px', duration: 0.2 })
 }
+
+
+watch(currentSpiderNum, (newValue) => {
+  scrollIntoView(newValue);
+});
 
 const scrollIntoView = (num) => {
   switch (num) {
@@ -409,46 +535,59 @@ function calculateSpiderTop() {
 }
 
 // 更新 loading 畫面的百分比和線條高度
-function updateLoading(percent) {
-  // loadingPercent.value = percent;
-  // gsap.to(loadingLine.value, { height: spiderTop.value + 300, duration: 1 });
+function updateLoading() {
   gsap.to(loadingAnime.value, { y: -initHeight, duration: 1 });
   gsap.to(loadingLine.value, { height: 10, duration: 1 });
   setTimeout(() => {
     loadingPercent.value = 100;
   }, 800)
-  
-  
-  // gsap.to(loadingLine.value, { height: spiderTop.value - 50, duration: 0.1 });
-  // gsap.to(loadingAnime.value, { y: calculateY - stage, duration: 0.1 });
-  // calculateY = calculateY - stage;
-  // lineHeight = lineHeight - percent;
 }
 
-// function initHome() {
-//   sections.forEach((target, index) => {
-//     if (index !== 0) {
-//       gsap.set(target.value, { visibility: 'hidden' });
-//     }
-//   });
-// }
+const handleScroll = () => {
+  if (isClicking.value) {
+    // 若正在點擊操作中，則不處理滾輪事件
+    return;
+  }
+  // 根據滾輪位置偵測區塊
+  const sections = [
+    section1,
+    section2,
+    section3,
+    section4,
+    section5,
+    section6,
+  ];
+
+  let currentSectionIndex = -1;
+
+  for (let i = sections.length - 1; i >= 0; i--) {
+    if (sections[i].value.getBoundingClientRect().top <= window.innerHeight / 2) {
+      currentSectionIndex = i + 1;
+      break;
+    }
+  }
+
+  // 執行 setSpiderLocation()，傳遞當前區塊的索引
+  setSpiderLocation(currentSectionIndex);
+};
 
 onMounted(() => {
   // 計算蜘蛛圖片距離視窗最上方的距離
   calculateSpiderTop();
 
   // 模擬載入過程
-  // let progress = 0;
   showHome.value = true;
   setTimeout(() => {
     updateLoading()
+    setSpiderLocation(1);
     setTimeout(() => {
       showHomePage();
     }, 1000)
   }, 100)
 
-  // initHome();
-
+  window.addEventListener('scroll', handleScroll);
+  speaker1.value = speakers.speaker1;
+  speaker2.value = speakers.speaker2;
 
   // const trigger = ScrollTrigger.create({
   //       trigger: section1.value,
@@ -509,7 +648,7 @@ onMounted(() => {
 // });
 });
 
-defineExpose({
-  scrollIntoView,
-})
+// defineExpose({
+//   scrollIntoView,
+// })
 </script>
