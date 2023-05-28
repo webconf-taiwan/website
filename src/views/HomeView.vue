@@ -10,9 +10,9 @@
 <!-- 首頁 -->
 
 <div v-if="showHome" class="mainWidth">
-<div class="bgImage bg-no-repeat bg-center bg-fixed bg-cover">
+<!-- <div class="bgImage w-screen h-screen bg-no-repeat bg-center bg-fixed bg-cover"></div> -->
   
-    <div class="flex flex-col relative">
+    <div class="flex flex-col relative bg-transparent">
       <!-- 第一區塊開始 -->
       <div ref="section1">
         <div ref="banner" class="mainWidth h-screen flex flex-col justify-center items-center w-full">
@@ -22,6 +22,9 @@
               <div class="flex flex-col md:flex-row items-center justify-end md:mr-20 lg:mr-44">
                 <p ref="bannerText" class="whitespace-nowrap text-white text-center md:text-right font-rajdhani font-medium text-lg">In 2023, Webconf Is Happening<br/>Again After Ten Years. </p>
                 <button ref="sellBtn" class="whitespace-nowrap mt-6 md:mt-0 md:ml-4 border-2 border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 px-4 py-2 font-noto-sans font-semibold text-lg cursor-not-allowed">即將開賣</button>
+
+                <!-- 購票按鈕 -->
+                <!-- <a href="#" ref="sellBtn" class="whitespace-nowrap mt-6 md:mt-0 md:ml-4 border-2 border-custom-teal-500 text-custom-gray-800 bg-custom-teal-500 px-4 py-2 font-noto-sans font-semibold text-lg">即將開賣</a> -->
               </div>
             </div>
           </div>
@@ -30,7 +33,7 @@
       <!-- 第一區塊結束 -->
 
       <!-- 第二區塊開始 -->
-      <div ref="section2" class="md:h-screen relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:pt-12 lg:pt-16">
+      <div ref="section2" class="md:h-screen relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:pt-12 lg:pt-16 bg-transparent">
           <div class="flex flex-col md:flex-row-reverse items-end md:items-center md:justify-end">
             <div class="titleDecoration w-20 h-6"></div>
             <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 w-full md:w-436 md:mr-2">
@@ -67,20 +70,13 @@
           </div>
         </div>
 
-        <!-- <div class="logoTxt w-138 h-9 absolute md:top-1 md:left-[-92px] lg:left-[-115px]"></div>
-        <div class="absolute bottom-6 md:left-[-80px] lg:left-[-110px] hidden md:block">
-          <div class="fbIcon w-6 h-6 bg-cover"></div>
-          <div class="my-2 mx-2 w-0.5 h-10 bg-custom-teal-500"></div>
-          <p class="writing-vertical text-custom-teal-500 text-sm">Webconf 2023 All Rights Reserved.</p>
-        </div> -->
-
         <div class="logoMan hidden md:block md:w-300 md:h-370 md:bg-cover md:absolute md:top-0 md:right-[-15%] lg:right-[-18%] xl:right-[-14%]">
         </div>
       </div>
       <!-- 第二區塊結束 -->
 
       <!-- 第三區塊開始 -->
-      <div ref="section3" class="md:h-screen relative py-6 px-5">
+      <div ref="section3" class="section3 md:h-[200vh] relative py-6 px-5">
         <div class="flex flex-col items-end">
           <div class="titleDecoration w-20 h-6"></div>
             <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
@@ -89,9 +85,12 @@
           </div>
         </div>
         <div class="overflow-hidden">
-          <div class="logoMan hidden md:block md:w-213 md:h-263 md:bg-cover md:absolute md:transform md:-translate-x-1/2 md:top-36 md:right-0 lg:right-[-10px]">
-          </div>
-          <div class="flex justify-around md:flex-col mt-10 md:absolute md:transform md:-translate-x-1/2 md:right-[-450px] lg:right-[-500px]">
+
+          <div id="speaker" class="md:absolute md:transform md:-translate-x-1/2 md:top-24  md:right-0">
+            <div ref="logoMan3" class="logoMan hidden md:block md:w-213 md:h-263 md:bg-cover md:absolute md:transform md:-translate-x-1/2 md:top-6 md:right-0 lg:right-[-10px]">
+            </div>
+
+            <div class="flex justify-around md:flex-col mt-10 md:absolute md:transform md:-translate-x-1/2 md:right-[-450px] lg:right-[-500px]">
             <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20">
               <li class="flex-shrink-0 mb-4 md:mb-0 md:ml-10" v-for="(item, index) in speaker1" :key="item.mainName">
                 <p class="bg-custom-gray-800 text-custom-teal-500 p-1 border-t border-l border-r border-custom-teal-500 text-xl font-bold md:w-40 md:ml-43">{{ item.mainName }} <span class="text-xs font-bold" v-if="item.secondaryName">({{ item.secondaryName }})</span></p>
@@ -107,7 +106,7 @@
                   </div>
                   <div class="border border-custom-teal-500 p-1 bg-custom-gray-800">
                     <img class="w-145 h-148 sm:w-202 sm:h-206 md:hidden" :src="item.speaker" alt="speaker">
-                    <img class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker1.length) }">
+                    <img :id="item.id" class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker2.length) }">
                   </div>
                 </div>
                 
@@ -128,25 +127,19 @@
                   </div>
                   <div class="border border-custom-teal-500 p-1 bg-custom-gray-800">
                     <img class="w-145 h-148 sm:w-202 sm:h-206 md:hidden" :src="item.speaker" alt="speaker">
-                    <img class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker2.length) }">
+                    <img :id="item.id" class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block" :src="item.speaker" alt="speaker" :style="{ opacity: 1 - (index / speaker2.length) }">
                   </div>
                 </div>
               </li>
             </ul>
           </div>
+          </div>
         </div>
-
-        <!-- <div class="logoTxt w-138 h-9 absolute md:top-5 md:left-3 lg:left-5"></div>
-        <div class="absolute bottom-6 md:left-3 lg:left-5 hidden md:block">
-          <div class="fbIcon w-6 h-6 bg-cover"></div>
-          <div class="my-2 mx-2 w-0.5 h-10 bg-custom-teal-500"></div>
-          <p class="writing-vertical text-custom-teal-500 text-sm">Webconf 2023 All Rights Reserved.</p>
-        </div> -->
       </div>
       <!-- 第三區塊結束 -->
 
       <!-- 第四區塊開始 -->
-      <div ref="section4" class="md:h-screen relative py-6 px-5 overflow-hidden">
+      <div ref="section4" id="section4Trigger" class="md:h-screen relative py-6 px-5 overflow-hidden">
         <div class="logoMan hidden md:block md:w-184 md:h-226 md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-52 md:right-0"></div>
         
         <div class="flex flex-col items-end mb-8">
@@ -221,7 +214,7 @@
 
       <!-- 第五區塊開始 -->
       <div ref="section5" class="md:h-screen relative py-6 px-5 overflow-hidden">
-        <div class="flex flex-col items-end mb-8">
+        <div class="flex flex-col items-end mb-8 md:mb-0">
           <div class="titleDecoration w-20 h-6"></div>
             <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
               <h2 class="text-custom-teal-500 font-bold text-3xl whitespace-nowrap md:text-5xl">交通資訊
@@ -229,91 +222,106 @@
           </div>
         </div>
 
-        <div class="mb-5 md:mb-0">
-          <h4 class="text-32 leading-normal font-semibold text-custom-teal-500 py-2 bg-custom-gray-800 border border-custom-teal-500 text-center">張榮發國際會議中心</h4>
-          <div class="flex bg-custom-gray-800 justify-center items-center border-b border-r border-l border-custom-teal-500 py-2 w-253">
+        <div class="mb-5 md:mb-0 md:flex md:items-end md:ml-79 lg:ml-167 xl:ml-20">
+          <h4 class="text-32 leading-normal font-semibold text-custom-teal-500 py-2 md:py-1 bg-custom-gray-800 border md:border-b-0 border-custom-teal-500 text-center md:w-340">張榮發國際會議中心</h4>
+          <div class="flex bg-custom-gray-800 justify-center items-center border-b md:border-b-0 border-r border-l md:border-l-0 md:border-t border-custom-teal-500 py-2 w-253 md:w-267 md:h-10">
             <div class="locationIcon w-5 h-5 mr-2"></div>
             <p class="text-white text-sm leading-normal font-medium">100 台北市中正區中山南路 11 號</p>
           </div>
         </div>
 
-        <div>
-          <ul class="flex justify-between">
-            <li class="border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'car'}">
+        <div class="md:flex md:ml-10 lg:ml-32 xl:ml-20 relative z-20">
+          <ul class="flex justify-between md:flex-col">
+            <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'car'}">
               <a href="#" class="block font-rajdhani text-lg text-custom-pink-700" @click.prevent="toggleTrafficInfo('car', '開車')">
-                <div class="flex justify-between py-1">
-                  <div class="flex-1 my-1.5 py-1 border-t border-b border-r border-custom-teal-700">
-                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                <div class="flex justify-between py-1 md:py-0 md:px-1">
+                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-700">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2"></div>
                   </div>
-                  <p class="mx-2">BY CAR</p>
-                  <div class="flex-1 my-1.5 py-1 border-t border-b border-l border-custom-teal-700">
-                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  <p class="mx-2 md:mx-0 md:my-2">BY CAR</p>
+                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-700">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"></div>
                   </div>
                 </div>
                 </a>
             </li>
-            <li class="border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'MRT'}">
+            <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'MRT'}">
               <a href="#" class="block font-rajdhani text-lg text-custom-pink-700" @click.prevent="toggleTrafficInfo('MRT', '搭捷運')">
-                <div class="flex justify-between py-1">
-                  <div class="flex-1 my-1.5 py-1 border-t border-b border-r border-custom-teal-700">
-                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                <div class="flex justify-between py-1 md:py-0 md:px-1">
+                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-700">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2"></div>
                   </div>
-                  <p class="mx-2">BY MRT</p>
-                  <div class="flex-1 my-1.5 py-1 border-t border-b border-l border-custom-teal-700">
-                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  <p class="mx-2 md:mx-0 md:my-2">BY MRT</p>
+                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-700">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"></div>
                   </div>
                 </div>
                 </a>
             </li>
-            <li class="border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'bus'}">
-              <a href="#" class="block font-rajdhani text-lg text-custom-pink-700"  @click.prevent="toggleTrafficInfo('bus', '搭公車')">
-                <div class="flex justify-between py-1">
-                  <div class="flex-1 my-1.5 py-1 border-t border-b border-r border-custom-teal-700">
-                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+            <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'bus'}">
+              <a href="#" class="block font-rajdhani text-lg text-custom-pink-700" @click.prevent="toggleTrafficInfo('bus', '搭公車')">
+                <div class="flex justify-between py-1 md:py-0 md:px-1">
+                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-700">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2"></div>
                   </div>
-                  <p class="mx-2">BY BUS</p>
-                  <div class="flex-1 my-1.5 py-1 border-t border-b border-l border-custom-teal-700">
-                    <div class="border-t border-b border-custom-teal-700 h-6px"></div>
+                  <p class="mx-2 md:mx-0 md:my-2">BY BUS</p>
+                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-700">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"></div>
                   </div>
                 </div>
                 </a>
             </li>
           </ul>
 
-          <div class="bg-custom-gray-800 border border-custom-teal-500">
+          <div class="bg-custom-gray-800 border border-custom-teal-500 md:w-762 md:h-460 md:p-3">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.8534088865276!2d121.51685122061681!3d25.039048402679413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a975c13ae63d%3A0x99f529730969be7f!2z6LKh5ZyY5rOV5Lq65by15qau55m85Z-66YeR5pyD!5e0!3m2!1szh-TW!2stw!4v1684658779278!5m2!1szh-TW!2stw" width="100%" height="100%" class="border-r border-l border-custom-teal-500 h-422 md:h-250 mb-5" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
             <div class="flex items-center ml-4 mb-4">
               <div class="w-10 h-10 mr-2" :class="{
               'carIcon': currentTrafficInfo.transportation === 'car', 
               'MRTIcon': currentTrafficInfo.transportation === 'MRT', 'busIcon': currentTrafficInfo.transportation === 'bus'}"></div>
-              <p class="text-custom-teal-500">{{ currentTrafficInfo.method }}</p>
+              <p class="text-custom-teal-500 text-lg md:text-xl font-semibold">{{ currentTrafficInfo.method }}</p>
             </div>
-            <ul class="ml-11 mb-4">
+            <ul class="ml-11 mb-4 md:mb-0">
               <li v-for="item in  currentTrafficInfo.info" :key="item" class="text-white list-disc" >{{ item }}</li>
             </ul>
           </div>
         </div>
 
+        <div class="logoMan hidden xl:block w-370 h-456 bg-cover absolute top-36 right-0 z-0">
+          <div ref="car" class="carImage hidden xl:block w-272 h-157 bg-cover absolute top-72 right-[200%]  z-10"></div>
+          <div ref="MRT" class="MRTImage hidden xl:block w-272 h-157 bg-cover absolute top-72 right-[200%]  z-10"></div>
+          <div ref="bus" class="busImage hidden xl:block w-272 h-157 bg-cover absolute top-72 right-[200%] z-10"></div>
+        </div>
       </div>
       <!-- 第五區塊結束 -->
 
       <!-- 第六區塊開始 -->
-      <div ref="section6" class="h-screen">
-        <p class="text-white">section6</p>
+      <div ref="section6" class="md:h-screen relative my-20  md:my-20 overflow-hidden flex justify-center items-center">
+        <div class="flex flex-col items-center">
+          <div class="logoSpider bg-cover mb-4 md:relative w-335 h-180 sm:w-374 sm:h-52 md:w-660 md:h-350">
+            <div class="join bg-cover hidden md:block md:w-90 md:h-90 md:absolute md:left-16 md:top-20"></div>
+          </div>
+          <div class="timeAdd bg-cover w-300 h-14 md:w-588 md:h-8 mb-4"></div>
+          <button class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 px-10 py-2 font-noto-sans font-semibold text-lg cursor-not-allowed mb-3">即將開賣</button>
+
+          <!-- 購票按鈕 -->
+          <!-- <a href="#" class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 bg-custom-teal-500 px-10 py-2 font-noto-sans font-semibold text-lg mb-3">前往購票</a> -->
+
+          <a href="https://www.facebook.com/WebConfTaiwan" target="_blank" class="text-sm font-semibold text-white">敬請關注 Facebook 最新消息</a>
+        </div>
       </div>
       <!-- 第六區塊結束 -->
     </div>
       
-    <div class="hidden md:block logoTxt w-138 h-9 fixed top-6 left-6" v-if="currentSpiderNum !== 1"></div>
-    <div class="hidden md:block fixed bottom-6 left-6" v-if="currentSpiderNum !== 1">
+    <div class="hidden md:block logoTxt w-138 h-9 fixed top-6 left-6 z-30" v-if="currentSpiderNum !== 1"></div>
+    <div class="hidden md:block fixed bottom-6 left-6 z-30" v-if="currentSpiderNum !== 1 && currentSpiderNum !== 6">
       <div class="fbIcon w-6 h-6 bg-cover"></div>
-      <div class="my-2 mx-2 w-0.5 h-10 bg-custom-teal-500"></div>
+      <div class="m-2 w-0.5 h-10 bg-custom-teal-500"></div>
       <p class="writing-vertical text-custom-teal-500 text-sm">Webconf 2023 All Rights Reserved.</p>
     </div>
 
     <!-- 首頁尾巴 -->
   </div>
-</div>
   
 </template>
 
@@ -357,6 +365,32 @@
   background-image: url('src/assets/images/icon/ic_byBus_l.svg');
 }
 
+.carImage {
+  background-image: url('src/assets/images/traffic_car.png');
+}
+.MRTImage {
+  background-image: url('src/assets/images/traffic_mrt.png');
+}
+.busImage {
+  background-image: url('src/assets/images/traffic_bus.png');
+}
+
+.logoSpider {
+  background-image: url('src/assets/images/logo_spider.png');
+}
+
+.timeAdd {
+  background-image: url('src/assets/images/time_add_m.svg');
+}
+
+.join {
+  background-image: url('src/assets/images/join.svg');
+}
+
+.opacity-40.opacity-100 {
+  opacity: 1;
+}
+
 @media (min-width: 768px) {
   .bgImage {
   background-image: url('src/assets/images/bg.png');
@@ -386,6 +420,10 @@
   }
   .fbIcon {
     background-image: url('src/assets/images/icon/ic_fb_l.svg');
+  }
+
+  .timeAdd {
+    background-image: url('src/assets/images/time_add.svg');
   }
 }
 
@@ -421,26 +459,65 @@ const banner = ref(null);
 const bannerText = ref(null);
 const sellBtn = ref(null);
 
+const logoMan3 = ref();
 const speaker1 = ref();
 const speaker2 = ref();
+const car = ref();
+const MRT = ref();
+const bus = ref();
 const currentTrafficInfo = ref({
   transportation: "car",
   method: "開車",
   info: trafficInfo.car,
 });
+let currentTransportation = null;
+let previousTransportation = null;
 
-const toggleTrafficInfo = (transportation, method) => {
+const toggleTrafficInfo = (transportation, method, isFirst) => {
+  previousTransportation = currentTransportation;
+  currentTransportation = transportation;
+
+  if (previousTransportation === transportation) return;
+
   currentTrafficInfo.value = {
     transportation,
     method,
     info: trafficInfo[transportation],
+  };
+   
+  const refName = `${transportation}.value`;
+  const refValue = eval(refName);
+  gsap.to(refValue, {
+    top: '18rem',
+    right: '3rem',
+    duration: 0.5,
+    ease: 'power2.out',
+  });
+
+  if (!isFirst) {
+    const previousRefName = `${previousTransportation}.value`;
+    const previousRefValue = eval(previousRefName);
+    gsap.to(previousRefValue, {
+      right: '-30rem',
+      duration: 0.5,
+      ease: 'power2.out',
+      onComplete: () => {
+      moveBack(previousRefValue);
+      },
+    });
   }
+
+};
+
+const moveBack = (previousRefValue) => {
+  gsap.set(previousRefValue, { right: '200%' });
 };
 
 
-function showHomePage () {
+const showHomePage = () => {
   gsap.to(loading.value, { autoAlpha: 0, duration: 0.5 });
   section1Anime();
+  toggleTrafficInfo('car', '開車', true);
 }
 
 const section1AnimeTl = gsap.timeline();
@@ -453,7 +530,7 @@ const section1LeaveAnimeTl = gsap.timeline();
 //   console.log('onAAAComplete');
 // }
 
-function section1Anime () {
+const section1Anime = () => {
   
   section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: 'power4.out' });
   section1AnimeTl.from(sellBtn.value, { duration: 0.5, opacity: 0, ease: 'power4.out' })
@@ -472,10 +549,83 @@ function section1Anime () {
   )
 }
 
-function section1LeaveAnime() {
+const section1LeaveAnime = () => {
 section1LeaveAnimeTl.to(section1.value, { xPercent: 100, opacity: 0, duration: 1 })
 section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 0, duration: 0.2 })
 // section1LeaveAnimeTl.to(section1.value, { height: '10px', duration: 0.2 })
+}
+
+const section3Anime = () => {
+  const viewportWidth = window.innerWidth;
+
+  if (viewportWidth >= 768) {
+    setTimeout(() => {
+    const aa = gsap.timeline({
+    scrollTrigger: {
+      trigger: section3.value,
+      start: 'top',
+      endTrigger: section4.value,
+      end: 'top bottom',
+      pin: true,
+      // markers: true,
+      scrub: true,
+      onUpdate: () => {},
+      },
+    });
+
+    const speaker = document.getElementById('speaker');
+    const speaker1 = document.getElementById('speaker1-1');
+    const speaker2 = document.getElementById('speaker1-2');
+    const speaker3 = document.getElementById('speaker1-3');
+    const speaker4 = document.getElementById('speaker1-4');
+    const speaker5 = document.getElementById('speaker1-5');
+    const speaker6 = document.getElementById('speaker2-1');
+    const speaker7 = document.getElementById('speaker2-2');
+    const speaker8 = document.getElementById('speaker2-3');
+    const speaker9 = document.getElementById('speaker2-4');
+    const speaker10 = document.getElementById('speaker2-5');
+   
+    aa.to(speaker, {
+      x: 345,
+    });
+    aa.to([speaker1, speaker6], {
+      opacity: 1,
+    });
+
+    aa.to(speaker, {
+      x: 690,
+    });
+    aa.to([speaker2, speaker7], {
+      opacity: 1,
+    });
+
+    aa.to(speaker, {
+      x: 1035,
+    });
+    aa.to([speaker3, speaker8], {
+      opacity: 1,
+    });
+
+    aa.to(speaker, {
+      x: 1380,
+    });
+    aa.to([speaker4, speaker9], {
+      opacity: 1,
+    });
+
+    aa.to(speaker, {
+      x: 1725,
+    });
+    aa.to([speaker5, speaker10], {
+      opacity: 1,
+    });
+
+    aa.to(speaker, {
+      x: 2070,
+    });
+  });
+  }
+  
 }
 
 
@@ -588,6 +738,28 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll);
   speaker1.value = speakers.speaker1;
   speaker2.value = speakers.speaker2;
+
+  section3Anime();
+
+  // const a = ScrollTrigger.create({
+  //   trigger: section3.value,
+  //   start: 'top center',
+  //   end: 'bottom center',
+  //   scrub: true,
+  //   pin: ".pin",
+  //   // pin: true, // 新增 pin 屬性
+  //   anticipatePin: 1,
+  //   onUpdate: (self) => {
+  //     const progress = self.progress;
+  //     const distanceToMove = 100; // 要移動的距離
+
+  //     // 根據滾動進度計算移動距離
+  //     const moveDistance = distanceToMove * progress;
+
+  //     // 移動 div
+  //     gsap.set(section3.value, { x: moveDistance });
+  //   },
+  // });
 
   // const trigger = ScrollTrigger.create({
   //       trigger: section1.value,

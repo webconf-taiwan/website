@@ -1,5 +1,5 @@
 <template>
-  <header class="py-1 fixed top-0 md:right-0 w-screen md:w-60px h-12 md:h-screen bg-custom-gray-800 z-20 flex flex-col md:flex-row-reverse justify-between border-b md:border-l border-custom-teal-700 overflow-hidden transition-height duration-500" :class="{'h-96': isShowMenuList, 'md:w-64': isShowMenuList}">
+  <header class="py-1 fixed top-0 md:right-0 w-screen md:w-60px h-12 md:h-screen bg-custom-gray-800 z-30 flex flex-col md:flex-row-reverse justify-between border-b md:border-l border-custom-teal-700 overflow-hidden transition-height duration-500" :class="{'h-96': isShowMenuList, 'md:w-64': isShowMenuList}">
     <img src="../assets/images/logo_txt.png" alt="logo" class="w-152 h-40 mx-auto md:hidden">
     <a href="#" v-if="!isShowMenuList" class="menuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
     <a href="#" v-else class="closeMenuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
@@ -109,31 +109,31 @@ const menuList = ref([
   EngName: "Home",
   home: "home",
   },
-  {
-  ChtName: "議程資訊",
-  EngName: "Schedule",
-  home: "agenda",
-  },
-  {
-  ChtName: "講者陣容",
-  EngName: "Speaker",
-  home: "speaker",
-  },
-  {
-  ChtName: "贊助夥伴",
-  EngName: "Sponsor",
-  home: "",
-  },
-  {
-  ChtName: "主辦單位",
-  EngName: "Staff",
-  home: "",
-  },
-  {
-  ChtName: "時光機",
-  EngName: "Time machine",
-  home: "",
-  }
+  // {
+  // ChtName: "議程資訊",
+  // EngName: "Schedule",
+  // home: "agenda",
+  // },
+  // {
+  // ChtName: "講者陣容",
+  // EngName: "Speaker",
+  // home: "speaker",
+  // },
+  // {
+  // ChtName: "贊助夥伴",
+  // EngName: "Sponsor",
+  // home: "",
+  // },
+  // {
+  // ChtName: "主辦單位",
+  // EngName: "Staff",
+  // home: "",
+  // },
+  // {
+  // ChtName: "時光機",
+  // EngName: "Time machine",
+  // home: "",
+  // }
   ]);
 const isScrolledToBottom = ref(false);
 const spiderLine = ref();
