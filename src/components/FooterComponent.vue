@@ -22,10 +22,10 @@
 
 <style scoped>
   .fbIcon {
-    background-image: url('src/assets/images/icon/ic_fb_l.svg');
+    background-image: url('@/assets/images/icon/ic_fb_l.svg');
   }
   .mailIcon {
-    background-image: url('src/assets/images/icon/ic_mail_s.svg');
+    background-image: url('@/assets/images/icon/ic_mail_s.svg');
   }
 </style>
 
