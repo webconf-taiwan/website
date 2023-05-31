@@ -9,11 +9,11 @@
 
 <style scoped>
 .bgImage {
-  background-image: url('@/assets/images/bg_m.png');
+  background-image: url('src/assets/images/bg_m.png');
 }
 @media (min-width: 768px) {
   .bgImage {
-  background-image: url('@/assets/images/bg.png');
+  background-image: url('src/assets/images/bg.png');
   }
 }
 </style>

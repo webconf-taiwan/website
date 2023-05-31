@@ -17,7 +17,7 @@
       <div ref="section1">
         <div ref="banner" class="mainWidth h-screen flex flex-col justify-center items-center w-full">
           <div class="logo w-60 sm:w-1/2 h-3/4 md:w-full md:h-screen bg-contain bg-no-repeat bg-center flex flex-col justify-between items-center md:items-stretch relative">
-            <div class="w-340 h-80 md:w-480 md:h-110 bg-cover bg-no-repeat bg-center mt-4 md:mt-14 md:ml-28 absolute left-1/2 top-[-5%] transform -translate-x-1/2 md:left-60 md:top-6" style="background-image: url('@/assets/images/title_banner.svg')"></div>
+            <div class="w-340 h-80 md:w-480 md:h-110 bg-cover bg-no-repeat bg-center mt-4 md:mt-14 md:ml-28 absolute left-1/2 top-[-5%] transform -translate-x-1/2 md:left-60 md:top-6" style="background-image: url('src/assets/images/title_banner.svg')"></div>
             <div class="absolute left-1/2 bottom-[-10%] transform -translate-x-1/2 md:left-3/4 md:bottom-32 lg:bottom-16">
               <div class="flex flex-col md:flex-row items-center justify-end md:mr-20 lg:mr-44">
                 <p ref="bannerText" class="whitespace-nowrap text-white text-center md:text-right font-rajdhani font-medium text-lg">In 2023, Webconf Is Happening<br/>Again After Ten Years. </p>
@@ -328,63 +328,63 @@
 <style scoped>
 /* 手機版 */
 .bgImage {
-  background-image: url('@/assets/images/bg_m.png');
+  background-image: url('src/assets/images/bg_m.png');
 }
 .logo {
-  background-image: url('@/assets/images/logo_all_m.png');
+  background-image: url('src/assets/images/logo_all_m.png');
 }
 .mainWidth {
   width: 100vw;
 }
 .titleDecoration {
-  background: url('@/assets/images/title_display.svg') no-repeat;
+  background: url('src/assets/images/title_display.svg') no-repeat;
 }
 .photo1 {
-  background-image: url('@/assets/images/photo_1.png');
+  background-image: url('src/assets/images/photo_1.png');
 }
 .photo2 {
-  background-image: url('@/assets/images/photo_2.png');
+  background-image: url('src/assets/images/photo_2.png');
 }
 .fixed-width {
   flex-shrink: 0;
   flex-basis: 701px;
 }
 .logoMan {
-  background-image: url('@/assets/images/logo_man.png');
+  background-image: url('src/assets/images/logo_man.png');
 }
 .locationIcon {
-  background-image: url('@/assets/images/icon/ic_location_s.svg');
+  background-image: url('src/assets/images/icon/ic_location_s.svg');
 }
 .carIcon {
-  background-image: url('@/assets/images/icon/ic_byCar_l.svg');
+  background-image: url('src/assets/images/icon/ic_byCar_l.svg');
 }
 .MRTIcon {
-  background-image: url('@/assets/images/icon/ic_byMRT_l.svg');
+  background-image: url('src/assets/images/icon/ic_byMRT_l.svg');
 }
 .busIcon {
-  background-image: url('@/assets/images/icon/ic_byBus_l.svg');
+  background-image: url('src/assets/images/icon/ic_byBus_l.svg');
 }
 
 .carImage {
-  background-image: url('@/assets/images/traffic_car.png');
+  background-image: url('src/assets/images/traffic_car.png');
 }
 .MRTImage {
-  background-image: url('@/assets/images/traffic_mrt.png');
+  background-image: url('src/assets/images/traffic_mrt.png');
 }
 .busImage {
-  background-image: url('@/assets/images/traffic_bus.png');
+  background-image: url('src/assets/images/traffic_bus.png');
 }
 
 .logoSpider {
-  background-image: url('@/assets/images/logo_spider.png');
+  background-image: url('src/assets/images/logo_spider.png');
 }
 
 .timeAdd {
-  background-image: url('@/assets/images/time_add_m.svg');
+  background-image: url('src/assets/images/time_add_m.svg');
 }
 
 .join {
-  background-image: url('@/assets/images/join.svg');
+  background-image: url('src/assets/images/join.svg');
 }
 
 .opacity-40.opacity-100 {
@@ -393,10 +393,10 @@
 
 @media (min-width: 768px) {
   .bgImage {
-  background-image: url('@/assets/images/bg.png');
+  background-image: url('src/assets/images/bg.png');
   }
   .logo {
-    background-image: url('@/assets/images/logo_all.png');
+    background-image: url('src/assets/images/logo_all.png');
   }
   .mainWidth {
   width: calc(100vw - 60px);
@@ -413,17 +413,17 @@
     border-radius: 5px;
   }
   .logoTxt {
-    background-image: url('@/assets/images/logo_txt.svg');
+    background-image: url('src/assets/images/logo_txt.svg');
   }
   .writing-vertical {
     writing-mode: vertical-rl;
   }
   .fbIcon {
-    background-image: url('@/assets/images/icon/ic_fb_l.svg');
+    background-image: url('src/assets/images/icon/ic_fb_l.svg');
   }
 
   .timeAdd {
-    background-image: url('@/assets/images/time_add.svg');
+    background-image: url('src/assets/images/time_add.svg');
   }
 }
 
