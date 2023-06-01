@@ -35,7 +35,7 @@
       @click.prevent="scrollIntoView(6)"></a>
     </div>
     <div class="bg-custom-gray-800 text-custom-teal-500 flex justify-start">
-      <div class="w-10 h-10 bg-no-repeat bg-contain md:mt-10" style="background-image: url('src/assets/images/menu_active.svg')"></div>
+      <div class="w-10 h-10 bg-no-repeat bg-contain md:mt-10" style="background-image: url('@/assets/images/menu_active.svg')"></div>
       <ul class="md:mt-10">
         <li v-for="item in menuList" :key="item.ChtName"
       class="py-1">
@@ -51,27 +51,27 @@
 
 <style scoped>
 .menuIcon {
-  background-image: url('src/assets/images/icon/ic_menu_l.svg');
+  background-image: url('@/assets/images/icon/ic_menu_l.svg');
 }
 
 .closeMenuIcon {
-  background-image: url('src/assets/images/icon/ic_close_l.svg');
+  background-image: url('@/assets/images/icon/ic_close_l.svg');
 }
 
 .arrowDownIcon {
-  background-image: url('src/assets/images/icon/ic_scroll_l.svg');
+  background-image: url('@/assets/images/icon/ic_scroll_l.svg');
 }
 .writing-vertical {
   writing-mode: vertical-rl;
 }
 
 .spiderLine {
-  background: url('src/assets/images/loading_line.svg') no-repeat;
+  background: url('@/assets/images/loading_line.svg') no-repeat;
   background-position: center;
 }
 
 .spider {
-  background-image: url('src/assets/images/spider.svg');
+  background-image: url('@/assets/images/spider.svg');
   background-position: top;
 }
 
