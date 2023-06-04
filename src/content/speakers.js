@@ -17,37 +17,49 @@ const speakers = {
       id: 'speaker1-0',
       mainName: 'Ruddy Lee',
       secondaryName: null,
-      speaker: speaker1Avatar
+      speaker: speaker1Avatar,
+      mainIsEn: true,
+      secondaryIsEn: false,
     },
     {
       id: 'speaker1-1',
       mainName: '曾義峰',
       secondaryName: 'Ant',
-      speaker: speaker3Avatar
+      speaker: speaker3Avatar,
+      mainIsEn: false,
+      secondaryIsEn: true,
     },
     {
       id: 'speaker1-2',
       mainName: '保哥',
       secondaryName: 'Will',
-      speaker: speaker5Avatar
+      speaker: speaker5Avatar,
+      mainIsEn: false,
+      secondaryIsEn: true,
     },
     {
       id: 'speaker1-3',
       mainName: '范聖佑',
       secondaryName: null,
-      speaker: speaker7Avatar
+      speaker: speaker7Avatar,
+      mainIsEn: false,
+      secondaryIsEn: false,
     },
     {
       id: 'speaker1-4',
       mainName: 'Kewang',
       secondaryName: null,
-      speaker: speaker9Avatar
+      speaker: speaker9Avatar,
+      mainIsEn: true,
+      secondaryIsEn: false,
     },
     {
       id: 'speaker1-5',
       mainName: 'Akane Lee',
       secondaryName: null,
-      speaker: speaker11Avatar
+      speaker: speaker11Avatar,
+      mainIsEn: true,
+      secondaryIsEn: false,
     }
   ],
   speaker2: [
@@ -55,37 +67,49 @@ const speakers = {
       id: 'speaker2-0',
       mainName: '蔡明哲',
       secondaryName: 'Richard Tsai',
-      speaker: speaker2Avatar
+      speaker: speaker2Avatar,
+      mainIsEn: false,
+      secondaryIsEn: true,
     },
     {
       id: 'speaker2-1',
       mainName: 'Paul Li',
       secondaryName: null,
-      speaker: speaker4Avatar
+      speaker: speaker4Avatar,
+      mainIsEn: true,
+      secondaryIsEn: false,
     },
     {
       id: 'speaker2-2',
       mainName: 'Kuro',
       secondaryName: null,
-      speaker: speaker6Avatar
+      speaker: speaker6Avatar,
+      mainIsEn: true,
+      secondaryIsEn: false,
     },
     {
       id: 'speaker2-3',
       mainName: '黃升煌',
       secondaryName: 'Mike',
-      speaker: speaker8Avatar
+      speaker: speaker8Avatar,
+      mainIsEn: false,
+      secondaryIsEn: true,
     },
     {
       id: 'speaker2-4',
       mainName: '王彥博',
       secondaryName: 'Soking',
-      speaker: speaker10Avatar
+      speaker: speaker10Avatar,
+      mainIsEn: false,
+      secondaryIsEn: true,
     },
     {
       id: 'speaker2-5',
       mainName: '本丸',
       secondaryName: '尹曦禾',
-      speaker: speaker12Avatar
+      speaker: speaker12Avatar,
+      mainIsEn: false,
+      secondaryIsEn: false,
     }
   ]
 }
