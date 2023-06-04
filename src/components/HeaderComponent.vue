@@ -4,7 +4,7 @@
     <img src="../assets/images/logo_txt.png" alt="logo" class="w-152 h-40 mx-auto md:hidden">
     <a href="#" v-if="!isShowMenuList" class="menuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
     <a href="#" v-else class="closeMenuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
-    <div v-if="!isScrolledToBottom" class="hidden md:block" :class="{'md:hidden': isShowMenuList}">
+    <div v-if="!isScrolledToBottom && currentPageName === 'home'" class="hidden md:block" :class="{'md:hidden': isShowMenuList}">
       <p class="writing-vertical text-custom-teal-500 absolute z-30 bottom-16 right-4 text-lg font-rajdhani">scroll</p>
       <div class="arrowDownIcon animate-arrowDown w-10 h-10 absolute z-30 bottom-3 right-2 text-lg"></div>
     </div>
