@@ -7,6 +7,7 @@ export const usePageInfoStore = defineStore('pageInfo', {
   actions: {
     setCurrentPageName(name) {
       this.currentPageName = name;
+      console.log(this.currentPageName);
     }
   }
 });

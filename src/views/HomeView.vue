@@ -459,16 +459,24 @@
 
 <script setup>
 import { ref, onMounted, inject } from 'vue';
+import { useRoute } from 'vue-router';
 import { storeToRefs } from 'pinia';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { useScrollStore } from '@/stores/scroll';
+import { usePageInfoStore } from '@/stores/pageInfo';
 import { speakers } from '@/content/speakers';
 import { trafficInfo } from '@/content/trafficInfo';
+
+const route = useRoute(); // 取得路由資訊
 
 const scrollStore = useScrollStore();
 const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } = storeToRefs(scrollStore);
 const { setSpiderLocation } = scrollStore
+
+const pageInfoStore = usePageInfoStore();
+const { setCurrentPageName } = pageInfoStore;
+
 const gsap = inject('gsap');
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -753,6 +761,9 @@ onMounted(() => {
     }, 1000)
   }, 100)
 
+  // 設定當前路由名稱
+  setCurrentPageName(route.name);
+
   scrollIntoViewFn.value = scrollIntoView;
   
   speaker1.value = speakers.speaker1;
@@ -762,7 +773,6 @@ onMounted(() => {
     const viewportWidth = window.innerWidth;
     if (viewportWidth >= 768) {
       window.addEventListener('scroll', handleScroll);
-      // handleScroll();
       section3Anime();
     }
   })
