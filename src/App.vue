@@ -1,16 +1,32 @@
 <template>
-<div class="bgImage bg-no-repeat bg-center bg-fixed bg-cover overflow-hidden">
+
+<div class="bg-container">
+  <div :class="{'bgImage': currentPageName !== '2013WebConf'}"></div>
   <Header ref="header" v-if="header"></Header>
   <router-view/>
-  <Footer ref="footer" v-if="footer">></Footer>
+  <Footer ref="footer" v-if="footer"></Footer>
 </div>
 
 </template>
 
 <style scoped>
-.bgImage {
-  background-image: url('@/assets/images/bg_m.png');
+.bg-container {
+  position: relative;
+  overflow: hidden;
 }
+
+.bgImage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('@/assets/images/bg_m.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 @media (min-width: 768px) {
   .bgImage {
   background-image: url('@/assets/images/bg.png');
@@ -23,11 +39,16 @@ import Header from "@/components/HeaderComponent.vue";
 import Footer from "@/components/FooterComponent.vue";
 // import { RouterLink, RouterView } from 'vue-router';
 import { ref, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { usePageInfoStore } from '@/stores/pageInfo';
+const pageInfoStore = usePageInfoStore();
+const { currentPageName } = storeToRefs(pageInfoStore);
 
 const header = ref(false);
 const footer = ref(false);
 
 onMounted(() => {
+
   setTimeout(() => {
     header.value = true;
     footer.value = true;

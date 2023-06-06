@@ -764,6 +764,7 @@ onMounted(() => {
   setTimeout(() => {
     updateLoading()
     setSpiderLocation(1, true);
+    toggleSpiderLineHeightFn.value(1);
     setTimeout(() => {
       showHomePage();
     }, 1000)
