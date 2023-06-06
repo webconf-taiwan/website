@@ -1,6 +1,6 @@
 <template>
 <!-- loading 畫面 -->
-  <div ref="loading" class="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-custom-gray-900 z-50">
+  <div ref="loading" v-if="loading" class="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-custom-gray-900 z-50">
     <div ref="loadingLine" class="absolute top-0 left-1/2 transform -translate-x-1/2 w-0.5 bg-custom-teal-500" :style="{ height: `${spiderTop + 20}px` }"></div>
     <div ref="loadingAnime" class="flex flex-col items-center">
       <img src="@/assets/images/spider.svg" class="h-16 mb-2" alt="loading spider" style="transform: rotate(180deg)" ref="spider" />
@@ -34,7 +34,7 @@
       <!-- 第一區塊結束 -->
 
       <!-- 第二區塊開始 -->
-      <div ref="section2" class="relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:py-40  lg:pt-16 bg-transparent 2xl:w-[75vw] 2xl:m-auto 3xl:w-[55vw]">
+      <div ref="section2" class="relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:py-40  lg:pt-16 bg-transparent 2xl:m-auto 2xl:w-[45vw]">
           <div class="flex flex-col md:flex-row-reverse items-end md:items-center md:justify-end">
             <div class="titleDecoration w-20 h-6"></div>
             <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 w-full md:w-436 md:mr-2 mt-1 md:mt-0">
@@ -246,12 +246,12 @@
             <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1">
               <a href="#" class="block font-rajdhani text-lg text-custom-pink-700 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'car'}" @click.prevent="toggleTrafficInfo('car', '開車')">
                 <div class="flex justify-between py-1 md:py-0 md:px-1">
-                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-500">
-                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-500 h-6px md:h-full md:w-2"></div>
+                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-700" :class="{'border-color-teal': currentTrafficInfo.transportation === 'car'}">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2" :class="{'border-color-teal': currentTrafficInfo.transportation === 'car'}"></div>
                   </div>
                   <p class="mx-2 md:mx-0 md:my-2">BY CAR</p>
-                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-500">
-                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-500 h-6px md:h-full md:w-2"></div>
+                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-700" :class="{'border-color-teal': currentTrafficInfo.transportation === 'car'}">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2" :class="{'border-color-teal': currentTrafficInfo.transportation === 'car'}"></div>
                   </div>
                 </div>
                 </a>
@@ -259,12 +259,12 @@
             <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1">
               <a href="#" class="block font-rajdhani text-lg text-custom-pink-700 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'MRT'}" @click.prevent="toggleTrafficInfo('MRT', '搭捷運')">
                 <div class="flex justify-between py-1 md:py-0 md:px-1">
-                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-500">
-                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-500 h-6px md:h-full md:w-2"></div>
+                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-700" :class="{'border-color-teal': currentTrafficInfo.transportation === 'MRT'}">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2" :class="{'border-color-teal': currentTrafficInfo.transportation === 'MRT'}"></div>
                   </div>
                   <p class="mx-2 md:mx-0 md:my-2">BY MRT</p>
-                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-500">
-                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-500 h-6px md:h-full md:w-2"></div>
+                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-700" :class="{'border-color-teal': currentTrafficInfo.transportation === 'MRT'}">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2" :class="{'border-color-teal': currentTrafficInfo.transportation === 'MRT'}"></div>
                   </div>
                 </div>
                 </a>
@@ -272,12 +272,12 @@
             <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1">
               <a href="#" class="block font-rajdhani text-lg text-custom-pink-700 opacity-40" :class="{'opacity-100': currentTrafficInfo.transportation === 'bus'}" @click.prevent="toggleTrafficInfo('bus', '搭公車')">
                 <div class="flex justify-between py-1 md:py-0 md:px-1">
-                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-500">
-                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-500 h-6px md:h-full md:w-2"></div>
+                  <div class="flex-1 md:h-5 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t md:border-t-0  border-b border-r md:border-l border-custom-teal-700" :class="{'border-color-teal': currentTrafficInfo.transportation === 'bus'}">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2" :class="{'border-color-teal': currentTrafficInfo.transportation === 'bus'}"></div>
                   </div>
                   <p class="mx-2 md:mx-0 md:my-2">BY BUS</p>
-                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-500">
-                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-500 h-6px md:h-full md:w-2"></div>
+                  <div class="flex-1 my-1.5 md:my-0 md:mx-1.5 py-1 md:py-0 md:px-1 border-t border-b md:border-b-0 border-l md:border-r border-custom-teal-700" :class="{'border-color-teal': currentTrafficInfo.transportation === 'bus'}">
+                    <div class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2" :class="{'border-color-teal': currentTrafficInfo.transportation === 'bus'}"></div>
                   </div>
                 </div>
                 </a>
@@ -292,7 +292,7 @@
               'MRTIcon': currentTrafficInfo.transportation === 'MRT', 'busIcon': currentTrafficInfo.transportation === 'bus'}"></div>
               <p class="text-custom-teal-500 text-lg md:text-xl font-medium">{{ currentTrafficInfo.method }}</p>
             </div>
-            <ul class="ml-11 mb-4 md:mb-0">
+            <ul class="ml-11 mr-5 mb-4 md:mb-0">
               <li v-for="item in  currentTrafficInfo.info" :key="item" class="text-white list-disc" >{{ item }}</li>
             </ul>
           </div>
@@ -410,6 +410,10 @@
 
 .opacity-40.opacity-100 {
   opacity: 1;
+}
+
+.border-color-teal {
+  border-color: #3EF0FC;
 }
 
 @media (min-width: 768px) {
@@ -685,7 +689,7 @@ const scrollIntoView = (num) => {
 }
 
 // loading
-const loading =  ref();
+const loading =  ref(true);
 const loadingAnime = ref();
 const loadingLine = ref();
 const spider = ref();
@@ -709,6 +713,10 @@ function updateLoading() {
   setTimeout(() => {
     loadingPercent.value = 100;
   }, 800)
+
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000)
 }
 
 const handleScroll = async() => {

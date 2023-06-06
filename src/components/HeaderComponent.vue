@@ -1,6 +1,6 @@
 <template>
-<!-- 當增加 header menu 的列表時 高度要增加 h-[172px] 每新增一個列表 + 88px -->
-  <header class="py-1 fixed top-0 md:right-0 w-screen md:w-60px h-12 md:h-screen bg-custom-gray-800 z-30 flex flex-col md:flex-row-reverse justify-between border-b md:border-l md:border-b-0 border-custom-teal-700 overflow-hidden transition-height duration-500" :class="{'h-[172px]': isShowMenuList, 'md:w-64': isShowMenuList}">
+<!-- 當增加 header menu 的列表時 高度要增加 h-[260px] 每新增一個列表 + 88px -->
+  <header class="py-1 fixed top-0 md:right-0 w-screen md:w-60px h-12 md:h-screen bg-custom-gray-800 z-30 flex flex-col md:flex-row-reverse justify-between border-b md:border-l md:border-b-0 border-custom-teal-700 overflow-hidden transition-height duration-500" :class="{'h-[260px]': isShowMenuList, 'md:w-64': isShowMenuList}">
     <img src="../assets/images/logo_txt.png" alt="logo" class="w-152 h-40 mx-auto md:hidden">
     <a href="#" v-if="!isShowMenuList" class="menuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
     <a href="#" v-else class="closeMenuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg" @click.prevent="toggleMenuList"></a>
@@ -141,11 +141,11 @@ const menuList = ref([
   // EngName: "Staff",
   // home: "",
   // },
-  // {
-  //   ChtName: "時光機",
-  //   EngName: "Time machine",
-  //   home: "2013WebConf",
-  // }
+  {
+    ChtName: "時光機",
+    EngName: "Time machine",
+    home: "2013WebConf",
+  }
 ]);
 const isScrolledToBottom = ref(false);
 const spiderLine = ref();

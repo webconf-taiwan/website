@@ -1,5 +1,5 @@
 <template>
-<div class="bgImage bg-no-repeat bg-center bg-fixed bg-cover">
+<div class="bgImage bg-no-repeat bg-center bg-fixed bg-cover overflow-hidden">
   <Header ref="header" v-if="header"></Header>
   <router-view/>
   <Footer ref="footer" v-if="footer">></Footer>
