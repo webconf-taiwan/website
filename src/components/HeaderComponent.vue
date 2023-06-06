@@ -17,35 +17,45 @@
     
     <div class="hidden md:block w-60px flex-shrink-0 relative">
       <div v-if="currentPageName === 'home'">
-        <a href="#" class="w-2 h-2 rounded-full border border-custom-teal-500 absolute z-20 top-1/4 right-6 transition-opacity duration-1000"
-        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 1, 'bg-custom-teal-500': currentSpiderNum >= 1}"
-        @click.prevent="scrollIntoView(1, true)"></a>
-        <a href="#" class=" w-2 h-2 rounded-full border border-custom-teal-500 absolute z-20 top-[35%] right-6 transition-opacity duration-1000"
-        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 2, 'bg-custom-teal-500': currentSpiderNum >= 2}"
-        @click.prevent="scrollIntoView(2, true)"></a>
-        <a href="#" class=" w-2 h-2 rounded-full border border-custom-teal-500 absolute z-20 top-[45%] right-6 transition-opacity duration-1000"
-        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 3, 'bg-custom-teal-500': currentSpiderNum >= 3}"
-        @click.prevent="scrollIntoView(3, true)"></a>
-        <a href="#" class=" w-2 h-2 rounded-full border border-custom-teal-500 absolute z-20 top-[55%] right-6 transition-opacity duration-1000"
-        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 4, 'bg-custom-teal-500': currentSpiderNum >= 4}"
-        @click.prevent="scrollIntoView(4, true)"></a>
-        <a href="#" class=" w-2 h-2 rounded-full border border-custom-teal-500 absolute z-20 top-[65%]  right-6 transition-opacity duration-1000"
-        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 5, 'bg-custom-teal-500': currentSpiderNum >= 5}"
-        @click.prevent="scrollIntoView(5, true)"></a>
-        <a href="#" class=" w-2 h-2 rounded-full border border-custom-teal-500 absolute z-20 top-[75%] right-6 transition-opacity duration-1000"
-        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 6, 'bg-custom-teal-500': currentSpiderNum >= 6}"
-        @click.prevent="scrollIntoView(6, true)"></a>
+        <a href="#" class="p-3 absolute z-20 top-1/4 right-3" @click.prevent="scrollIntoView(1, true)">
+          <div class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+          :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 1, 'bg-custom-teal-500': currentSpiderNum >= 1}"></div>
+        </a>
+        <a href="#" class="p-3 absolute z-20 top-[35%] right-3" @click.prevent="scrollIntoView(2, true)">
+          <div class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 2, 'bg-custom-teal-500': currentSpiderNum >= 2}"></div>
+        </a>
+        <a href="#" class="p-3 absolute z-20 top-[45%] right-3"
+        @click.prevent="scrollIntoView(3, true)">
+          <div class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 3, 'bg-custom-teal-500': currentSpiderNum >= 3}"></div>
+        </a>
+        <a href="#" class="p-3 absolute z-20 top-[55%] right-3"
+        @click.prevent="scrollIntoView(4, true)">
+          <div class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 4, 'bg-custom-teal-500': currentSpiderNum >= 4}"></div>
+        </a>
+        <a href="#" class="p-3 absolute z-20 top-[65%] right-3"
+        @click.prevent="scrollIntoView(5, true)">
+          <div class=" w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 5, 'bg-custom-teal-500': currentSpiderNum >= 5}"></div>
+        </a>
+        <a href="#" class="p-3 absolute z-20 top-[75%] right-3"
+        @click.prevent="scrollIntoView(6, true)">
+          <div class=" w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+        :class="{'md:hidden': isShowMenuList,'opacity-0': currentSpiderNum === 6, 'bg-custom-teal-500': currentSpiderNum >= 6}"></div>
+        </a>
       </div>
       
     </div>
-    <div class="bg-custom-gray-800 text-custom-teal-500 flex justify-start">
+    <div class="bg-custom-gray-800 text-custom-teal-700 flex justify-start">
       <div class="menuActive w-10 h-10 bg-no-repeat bg-contain mt-6 md:mt-16"></div>
       <ul class="md:mt-10 pb-10">
         <li v-for="item in menuList" :key="item.ChtName"
       class="mt-6">
         <router-link href="#" :to="{ name: `${item.home}` }">
-          <p class="whitespace-nowrap text-xl leading-6 mb-4 md:text-4xl">{{ item.ChtName }}</p>
-          <p class="whitespace-nowrap text-sm leading-6 md:text-base font-rajdhani">{{ item.EngName }}</p>
+          <p class="whitespace-nowrap text-xl leading-6 mb-4 md:text-4xl" :class="{'text-custom-teal-500': currentPageName === item.home}">{{ item.ChtName }}</p>
+          <p class="whitespace-nowrap text-sm leading-6 md:text-base font-rajdhani" :class="{'text-custom-teal-500': currentPageName === item.home}">{{ item.EngName }}</p>
         </router-link>
         </li>
       </ul>
@@ -159,6 +169,7 @@ const scrollIntoView = (num) => {
 }
 
 const toggleSpiderLineHeight = (num) => {
+  console.log('toggleSpiderLineHeight', num);
   isClicking.value = true;
   const innerHeight = window.innerHeight - 130;
   let height = 0;
