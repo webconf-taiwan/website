@@ -1,5 +1,5 @@
 <template>
-  <footer v-if="currentPageName !== '2013WebConf'" class="bg-custom-gray-800 p-6 md:px-8 md:py-3 ">
+  <footer v-if="currentPageName !== '2013WebConf'" class="bg-custom-gray-800 p-6 md:px-8 md:py-3 relative z-10">
     <div class="flex flex-col items-center md:flex-row md:justify-between">
         <ul class="flex">
             <li><a href="mailto:hi@webconf.tw" class="text-custom-teal-500 text-sm font-normal font-rajdhani py-1 px-4 border-r border-custom-teal-700 md:border-r-0 whitespace-nowrap hover:text-custom-teal-700 flex items-center"><div class="mailIcon w-4 h-4 bg-cover mr-1"></div>
