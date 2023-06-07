@@ -49,13 +49,12 @@
       
     </div>
     <div class="bg-custom-gray-800 text-custom-teal-700 flex justify-start">
-      <div class="menuActive w-10 h-10 bg-no-repeat bg-contain mt-6 md:mt-16"></div>
-      <ul class="md:mt-10 pb-10">
+      <ul class="ml-16  md:mt-10 pb-10">
         <li v-for="item in menuList" :key="item.ChtName"
-      class="mt-6">
+      class="mt-6 hover:text-custom-teal-500" :class="{'menuActive': currentPageName === item.home, 'text-custom-teal-500': currentPageName === item.home}">
         <router-link href="#" :to="{ name: `${item.home}` }">
-          <p class="whitespace-nowrap text-xl leading-6 mb-4 md:text-4xl" :class="{'text-custom-teal-500': currentPageName === item.home}">{{ item.ChtName }}</p>
-          <p class="whitespace-nowrap text-sm leading-6 md:text-base font-rajdhani" :class="{'text-custom-teal-500': currentPageName === item.home}">{{ item.EngName }}</p>
+          <p class="whitespace-nowrap text-xl leading-6 mb-4 md:text-4xl">{{ item.ChtName }}</p>
+          <p class="whitespace-nowrap text-sm leading-6 md:text-base font-rajdhani">{{ item.EngName }}</p>
         </router-link>
         </li>
       </ul>
@@ -64,8 +63,38 @@
 </template>
 
 <style scoped>
-.menuActive {
+
+li {
+  display: flex;
+  position: relative;
+}
+
+li:hover::before {
+  content: "";
+  width: 40px;
+  height: 64px;
+  position: absolute;
+  left: -64px;
+  top: -5px;
   background-image: url('@/assets/images/menu_active.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.menuActive {
+  display: flex;
+  position: relative;
+}
+.menuActive::before{
+  content: "";
+  width: 40px;
+  height: 64px;
+  position: absolute;
+  left: -64px;
+  top: -5px;
+  background-image: url('@/assets/images/menu_active.svg');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .menuIcon {
   background-image: url('@/assets/images/icon/ic_menu_l.svg');
