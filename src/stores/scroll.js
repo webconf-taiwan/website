@@ -1,4 +1,4 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const useScrollStore = defineStore('scroll', {
   state: () => ({
@@ -10,6 +10,6 @@ export const useScrollStore = defineStore('scroll', {
   actions: {
     setSpiderLocation(num) {
       this.currentSpiderNum = num;
-    }
-  }
+    },
+  },
 });

@@ -1,15 +1,15 @@
-import speaker1Avatar from '@/assets/images/speaker/speaker_1.png'
-import speaker2Avatar from '@/assets/images/speaker/speaker_2.png'
-import speaker3Avatar from '@/assets/images/speaker/speaker_3.png'
-import speaker4Avatar from '@/assets/images/speaker/speaker_4.png'
-import speaker5Avatar from '@/assets/images/speaker/speaker_5.png'
-import speaker6Avatar from '@/assets/images/speaker/speaker_6.png'
-import speaker7Avatar from '@/assets/images/speaker/speaker_7.png'
-import speaker8Avatar from '@/assets/images/speaker/speaker_8.png'
-import speaker9Avatar from '@/assets/images/speaker/speaker_9.png'
-import speaker10Avatar from '@/assets/images/speaker/speaker_10.png'
-import speaker11Avatar from '@/assets/images/speaker/speaker_11.png'
-import speaker12Avatar from '@/assets/images/speaker/speaker_12.png'
+import speaker1Avatar from '@/assets/images/speaker/speaker_1.png';
+import speaker2Avatar from '@/assets/images/speaker/speaker_2.png';
+import speaker3Avatar from '@/assets/images/speaker/speaker_3.png';
+import speaker4Avatar from '@/assets/images/speaker/speaker_4.png';
+import speaker5Avatar from '@/assets/images/speaker/speaker_5.png';
+import speaker6Avatar from '@/assets/images/speaker/speaker_6.png';
+import speaker7Avatar from '@/assets/images/speaker/speaker_7.png';
+import speaker8Avatar from '@/assets/images/speaker/speaker_8.png';
+import speaker9Avatar from '@/assets/images/speaker/speaker_9.png';
+import speaker10Avatar from '@/assets/images/speaker/speaker_10.png';
+import speaker11Avatar from '@/assets/images/speaker/speaker_11.png';
+import speaker12Avatar from '@/assets/images/speaker/speaker_12.png';
 
 const speakers = {
   speaker1: [
@@ -60,7 +60,7 @@ const speakers = {
       speaker: speaker11Avatar,
       mainIsEn: true,
       secondaryIsEn: false,
-    }
+    },
   ],
   speaker2: [
     {
@@ -110,8 +110,8 @@ const speakers = {
       speaker: speaker12Avatar,
       mainIsEn: false,
       secondaryIsEn: false,
-    }
-  ]
-}
+    },
+  ],
+};
 
-export { speakers }
+export { speakers };
