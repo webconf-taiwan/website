@@ -10,22 +10,20 @@
 <!-- 首頁 -->
 
 <div v-if="showHome" class="mainWidth">
-<!-- <div class="bgImage w-screen h-screen bg-no-repeat bg-center bg-fixed bg-cover"></div> -->
-  
     <div class="flex flex-col relative bg-transparent">
       <!-- 第一區塊開始 -->
       <div ref="section1">
         <div ref="banner" class="mainWidth h-[85vh] md:h-screen flex flex-col justify-center items-center w-full">
           <div class=" logoM w-60 sm:w-1/2 h-3/4 md:w-full md:h-screen bg-contain bg-no-repeat bg-center flex flex-col justify-between items-center md:items-stretch relative">
             <div class="titleBanner w-340 h-80 md:w-480 md:h-110 bg-cover bg-no-repeat bg-center mt-4 md:mt-14 md:ml-28 absolute left-1/2 top-[-5%] transform -translate-x-1/2 md:left-60 md:top-6"></div>
-            <div class="logoS w-[350px] h-[380px]  bg-cover absolute top-14   "></div>
+            <div class="logoS w-[350px] h-[380px]  bg-cover absolute top-14"></div>
             <div class="absolute left-1/2 bottom-[-10%] transform -translate-x-1/2 md:left-3/4 md:bottom-32 lg:bottom-16">
               <div class="flex flex-col md:flex-row items-center justify-end md:mr-20 lg:mr-44">
                 <p ref="bannerText" class="whitespace-nowrap text-white text-center md:text-right font-rajdhani font-normal text-lg md:mr-3 mb-5 md:mb-0">In 2023, Webconf Is Happening<br/>Again After Ten Years. </p>
                 <button class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 px-10 py-2 font-noto-sans font-medium text-lg cursor-not-allowed">即將開賣</button>
 
                 <!-- 購票按鈕 -->
-                <!-- <a href="#" class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 bg-custom-teal-500 px-10 py-2 font-noto-sans font-medium text-lg">前往購票</a> -->
+                <!-- <a href="#" class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500  bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg">前往購票</a> -->
               </div>
             </div>
           </div>
@@ -81,13 +79,14 @@
 
       <!-- 第三區塊開始 -->
       <div ref="section3" class="section3 md:h-[200vh] relative py-6 px-5">
-        <div class="flex flex-col items-end mt-10">
-          <div class="titleDecoration w-20 h-6"></div>
-            <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
-              <h2 class="text-custom-teal-500 font-medium text-3xl whitespace-nowrap md:text-5xl">講者曝光
-              </h2>
-          </div>
+        <div class="mt-10">
+          <StylingTitle>
+            <template #default>
+              <span>講者曝光</span>
+            </template>
+          </StylingTitle>
         </div>
+        
         <div class="overflow-hidden">
 
           <div id="speaker" class="md:absolute md:transform md:-translate-x-1/2 md:top-60 md:right-0">
@@ -145,16 +144,14 @@
       <!-- 第四區塊開始 -->
       <div ref="section4" id="section4Trigger" class="md:h-[80vh] 3xl:h-[60vh] relative py-6 px-5 overflow-hidden 2xl:w-[75vw] 2xl:mx-auto">
         <div class="logoMan hidden md:block md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"></div>
-        
-        <div class="flex flex-col items-end mb-8">
-          <div class="titleDecoration w-20 h-6"></div>
-            <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
-              <h2 class="text-custom-teal-500 font-medium text-3xl whitespace-nowrap md:text-5xl">議程主軸
-              </h2>
-          </div>
-        </div>
 
-        <div class="md:absolute md:top-32  md:left-1 lg:left-[15%]">
+        <StylingTitle>
+          <template #default>
+            <span>議程主軸</span>
+          </template>
+        </StylingTitle>
+
+        <div class="md:absolute md:top-32  md:left-1 lg:left-[15%] mt-8">
           <div class="relative w-335 md:w-374 h-64 mx-auto mb-14">
           <div class="absolute z-10">
             <h3 class="font-rajdhani font-normal text-2xl md:text-56 bg-custom-gray-800 text-custom-teal-500 border-t border-r border-l border-custom-teal-500 w-75 md:w-157 text-center py-3 md:py-4">Web</h3>
@@ -223,14 +220,15 @@
 
       <!-- 第五區塊開始 -->
       <div ref="section5" class="relative py-6 px-5 overflow-hidden 2xl:w-[75vw] 2xl:mx-auto">
-        <div class="flex flex-col items-end mb-8 md:mb-0">
-          <div class="titleDecoration w-20 h-6"></div>
-            <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
-              <h2 class="text-custom-teal-500 font-medium text-3xl whitespace-nowrap md:text-5xl">交通資訊
-              </h2>
-          </div>
-        </div>
 
+        <div class="mb-8 md:mb-0">
+          <StylingTitle>
+            <template #default>
+              <span>交通資訊</span>
+            </template>
+          </StylingTitle>
+        </div>
+        
         <div class="mb-5 md:mb-0 md:flex md:items-end md:ml-79 lg:ml-167 xl:ml-20">
           <h4 class="text-32 leading-normal font-medium text-custom-teal-500 py-2 md:py-1 bg-custom-gray-800 border md:border-b-0 border-custom-teal-500 text-center md:w-340">張榮發國際會議中心</h4>
           <div class="flex bg-custom-gray-800 justify-center items-center border-b md:border-b-0 border-r border-l md:border-l-0 md:border-t border-custom-teal-500 py-2 w-253 md:w-267 md:h-10">
@@ -316,7 +314,7 @@
           <button class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 px-10 py-2 font-noto-sans font-medium text-lg cursor-not-allowed mb-4">即將開賣</button>
 
           <!-- 購票按鈕 -->
-          <!-- <a href="#" class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 bg-custom-teal-500 px-10 py-2 font-noto-sans font-medium text-lg mb-4">前往購票</a> -->
+          <!-- <a href="#" class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg mb-4">前往購票</a> -->
 
           <a href="https://www.facebook.com/WebConfTaiwan" target="_blank" class="text-sm font-normal text-white">敬請關注 Facebook 最新消息</a>
         </div>
@@ -325,15 +323,11 @@
     </div>
       
     <div class="hidden md:block logoTxt w-138 h-9 fixed top-6 left-6 z-30" v-if="currentSpiderNum !== 1"></div>
+
     <div class="hidden md:block fixed bottom-6 left-6 z-30" v-if="currentSpiderNum !== 1 && currentSpiderNum !== 6">
-      <div class="flex flex-col justify-center items-center">
-        <a href="https://www.facebook.com/WebConfTaiwan" target="_blank">
-          <div class="fbIcon w-6 h-6 bg-cover"></div>
-        </a>
-        <div class="m-2 w-0.5 h-10 bg-custom-teal-500"></div>
-        <p class="writing-vertical text-custom-teal-500 text-sm font-rajdhani">Webconf 2023 All Rights Reserved.</p>
-      </div>
+      <StylingFBLink></StylingFBLink>
     </div>
+
 
     <!-- 首頁尾巴 -->
   </div>
@@ -449,9 +443,6 @@
   .writing-vertical {
     writing-mode: vertical-rl;
   }
-  .fbIcon {
-    background-image: url('@/assets/images/icon/ic_fb_l.svg');
-  }
 
   .timeAdd {
     background-image: url('@/assets/images/time_add.svg');
@@ -471,6 +462,8 @@ import { useScrollStore } from '@/stores/scroll';
 import { usePageInfoStore } from '@/stores/pageInfo';
 import { speakers } from '@/content/speakers';
 import { trafficInfo } from '@/content/trafficInfo';
+import StylingTitle from "@/components/StylingTitle.vue";
+import StylingFBLink from "@/components/StylingFBLink.vue";
 
 const route = useRoute(); // 取得路由資訊
 
