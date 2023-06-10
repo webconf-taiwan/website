@@ -1,35 +1,65 @@
 <template>
-  <div class="py-16">
+  <div class="py-16 relative">
     <div
       class="hidden md:block fixed transform translate-y-1/2 bottom-1/2 left-6 z-30"
-      v-if="currentSpiderNum !== 1 && currentSpiderNum !== 6"
+      v-if="!fbDecorativeLink"
     >
-      <div class="flex flex-col justify-center items-center">
-        <a href="https://www.facebook.com/WebConfTaiwan" target="_blank">
-          <div class="fbIcon w-6 h-6 bg-cover"></div>
-        </a>
-        <div class="m-2 w-0.5 h-10 bg-custom-teal-500"></div>
-        <p class="writing-vertical text-custom-teal-500 text-sm font-rajdhani">
-          Webconf 2023 All Rights Reserved.
-        </p>
-      </div>
+      <StylingFBLink></StylingFBLink>
+    </div>
+
+    <div
+      class="fixed transform translate-y-1/2 bottom-32 right-2 sm:right-1 md:right-[65px] lg:right-[60px] 2xl:right-32 z-10"
+    >
+      <MoveToTop></MoveToTop>
     </div>
 
     <div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div>
-    <div class="flex flex-col items-center">
-      <div>
-        <div class="titleDecoration w-20 h-6 ml-auto"></div>
-        <div class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 mt-1">
-          <h2 class="text-custom-teal-500 font-medium text-3xl whitespace-nowrap md:text-5xl">
-            講者陣容
-          </h2>
-        </div>
-      </div>
+    <div class="flex flex-col items-center mb-20">
+      <StylingTitle>
+        <template #default>
+          <span>講者陣容</span>
+        </template>
+      </StylingTitle>
     </div>
 
-    <div class="grid grid-cols-2 gap-10 mx-10">
-      <div>元素 1</div>
-      <div>元素 2</div>
+    <div class="flex flex-col items-center">
+      <ul
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10"
+      >
+        <li
+          v-for="item in speakers.speakerPage"
+          :key="item.id"
+          class="w-[245px] xs:w-[300px] sm:w-[245px]"
+        >
+          <a href="#" @click.prevent="">
+            <div>
+              <div class="py-2 border border-custom-teal-500 bg-custom-gray-800 flex">
+                <div class="w-5 border-t border-b border-r border-custom-teal-700 my-2 py-1">
+                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+                </div>
+                <p
+                  class="font-rajdhani text-custom-pink-700 font-medium mx-3 text-2xl"
+                  :class="{ 'font-rajdhani': item.mainIsEn }"
+                >
+                  {{ item.mainName }}
+                  <span
+                    class="text-lg font-medium"
+                    :class="{ 'font-rajdhani': item.secondaryIsEn }"
+                    v-if="item.secondaryName"
+                    >({{ item.secondaryName }})</span
+                  >
+                </p>
+                <div class="border-t border-b border-l border-custom-teal-700 my-2 py-1 flex-grow">
+                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+                </div>
+              </div>
+              <div class="p-3 bg-custom-gray-800 border-l border-r border-b border-custom-teal-500">
+                <img :src="item.speaker" alt="speaker" />
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -53,17 +83,36 @@
 </style>
 
 <script setup>
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { usePageInfoStore } from '@/stores/pageInfo';
+import StylingTitle from '@/components/StylingTitle.vue';
+import StylingFBLink from '@/components/StylingFBLink.vue';
+import MoveToTop from '@/components/moveToTop.vue';
+import { speakers } from '@/content/speakers';
 
 const route = useRoute(); // 取得路由資訊
 
 const pageInfoStore = usePageInfoStore();
 const { setCurrentPageName } = pageInfoStore;
 
+const fbDecorativeLink = ref(false);
+
+const isScrollAtBottom = () => {
+  const { scrollTop } = document.documentElement;
+  const clientHeight = document.documentElement.clientHeight - 446;
+  const isBottom = scrollTop > clientHeight;
+
+  if (isBottom) {
+    fbDecorativeLink.value = true;
+    return;
+  }
+  fbDecorativeLink.value = false;
+};
+
 onMounted(() => {
   // 設定當前路由名稱
   setCurrentPageName(route.name);
+  window.addEventListener('scroll', isScrollAtBottom);
 });
 </script>

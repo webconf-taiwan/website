@@ -1,8 +1,8 @@
 <template>
-  <!-- 當增加 header menu 的列表時 高度要增加 h-[260px] 每新增一個列表 + 88px -->
+  <!-- 當增加 header menu 的列表時 高度要增加 h-[348px] 每新增一個列表 + 88px -->
   <header
     class="py-1 fixed top-0 md:right-0 w-screen md:w-60px h-12 md:h-screen bg-custom-gray-800 z-30 flex flex-col md:flex-row-reverse justify-between border-b md:border-l md:border-b-0 border-custom-teal-700 overflow-hidden transition-height duration-500"
-    :class="{ 'h-[260px]': isShowMenuList, 'md:w-64': isShowMenuList }"
+    :class="{ 'h-[348px]': isShowMenuList, 'md:w-[270px]': isShowMenuList }"
   >
     <img src="../assets/images/logo_txt.png" alt="logo" class="w-152 h-40 mx-auto md:hidden" />
     <a
@@ -39,6 +39,15 @@
       style="right: 2.5px"
     >
       <div ref="spiderLine" class="spiderLine"></div>
+      <div class="spider w-14 h-14 bg-cover relative z-40" style="margin-top: -10px"></div>
+    </div>
+    <div
+      v-else
+      class="hidden md:block absolute z-20 top-8"
+      :class="{ 'md:hidden': isShowMenuList }"
+      style="right: 2.5px"
+    >
+      <div class="spiderLine" style="height: 200px"></div>
       <div class="spider w-14 h-14 bg-cover relative z-40" style="margin-top: -10px"></div>
     </div>
 
@@ -256,11 +265,11 @@ const menuList = ref([
   // EngName: "Schedule",
   // home: "agenda",
   // },
-  // {
-  // ChtName: "講者陣容",
-  // EngName: "Speaker",
-  // home: "speaker",
-  // },
+  {
+    ChtName: '講者陣容',
+    EngName: 'Speaker',
+    home: 'speaker',
+  },
   // {
   // ChtName: "贊助夥伴",
   // EngName: "Sponsor",
@@ -279,10 +288,8 @@ const menuList = ref([
 ]);
 const isScrolledToBottom = ref(false);
 const spiderLine = ref();
-// const emits = defineEmits(['scrollIntoView']);
 
 const toggleSpiderLineHeight = (num) => {
-  console.log('toggleSpiderLineHeight', num);
   isClicking.value = true;
   const innerHeight = window.innerHeight - 130;
   let height = 0;

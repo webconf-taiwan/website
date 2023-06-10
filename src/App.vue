@@ -1,6 +1,11 @@
 <template>
   <div class="bg-container">
-    <div :class="{ bgImage: currentPageName !== '2013WebConf' }"></div>
+    <div :class="{ bgImage: currentPageName !== '2013WebConf' }">
+      <div
+        v-if="currentPageName !== 'home' && currentPageName !== '2013WebConf'"
+        class="bg-gradient"
+      ></div>
+    </div>
     <Header ref="header" v-if="header"></Header>
     <router-view />
     <Footer ref="footer" v-if="footer"></Footer>
@@ -23,6 +28,15 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+.bg-gradient {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(360deg, rgba(11, 20, 32, 0.6) 0%, rgba(11, 20, 32, 0) 100%);
 }
 
 @media (min-width: 768px) {
