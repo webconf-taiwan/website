@@ -1,12 +1,12 @@
-import { defineStore } from 'pinia'
+import { defineStore } from 'pinia';
 
 export const usePageInfoStore = defineStore('pageInfo', {
   state: () => ({
-    currentPageName: "home",
+    currentPageName: 'home',
   }),
   actions: {
     setCurrentPageName(name) {
       this.currentPageName = name;
-    }
-  }
+    },
+  },
 });

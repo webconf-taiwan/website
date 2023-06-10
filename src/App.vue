@@ -1,12 +1,10 @@
 <template>
-
-<div class="bg-container">
-  <div :class="{'bgImage': currentPageName !== '2013WebConf'}"></div>
-  <Header ref="header" v-if="header"></Header>
-  <router-view/>
-  <Footer ref="footer" v-if="footer"></Footer>
-</div>
-
+  <div class="bg-container">
+    <div :class="{ bgImage: currentPageName !== '2013WebConf' }"></div>
+    <Header ref="header" v-if="header"></Header>
+    <router-view />
+    <Footer ref="footer" v-if="footer"></Footer>
+  </div>
 </template>
 
 <style scoped>
@@ -29,18 +27,19 @@
 
 @media (min-width: 768px) {
   .bgImage {
-  background-image: url('@/assets/images/bg.png');
+    background-image: url('@/assets/images/bg.png');
   }
 }
 </style>
 
 <script setup>
-import Header from "@/components/HeaderComponent.vue";
-import Footer from "@/components/FooterComponent.vue";
+import Header from '@/components/HeaderComponent.vue';
+import Footer from '@/components/FooterComponent.vue';
 // import { RouterLink, RouterView } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import { storeToRefs } from 'pinia';
 import { usePageInfoStore } from '@/stores/pageInfo';
+
 const pageInfoStore = usePageInfoStore();
 const { currentPageName } = storeToRefs(pageInfoStore);
 
@@ -48,11 +47,9 @@ const header = ref(false);
 const footer = ref(false);
 
 onMounted(() => {
-
   setTimeout(() => {
     header.value = true;
     footer.value = true;
   }, 100);
-})
-
+});
 </script>
