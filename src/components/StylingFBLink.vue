@@ -1,4 +1,3 @@
-<!-- SharedStyle.vue -->
 <template>
   <div class="flex flex-col justify-center items-center">
     <a href="https://www.facebook.com/WebConfTaiwan" target="_blank">

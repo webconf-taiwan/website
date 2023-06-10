@@ -1,4 +1,3 @@
-<!-- SharedStyle.vue -->
 <template>
   <div class="py-1 border border-custom-teal-500 bg-custom-gray-800 flex">
     <div class="w-5 border-t border-b border-r border-custom-teal-700 my-1 py-1">

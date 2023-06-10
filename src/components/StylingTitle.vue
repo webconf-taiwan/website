@@ -1,4 +1,3 @@
-<!-- SharedStyle.vue -->
 <template>
   <div class="flex flex-col items-end">
     <div class="titleDecoration w-20 h-6"></div>
