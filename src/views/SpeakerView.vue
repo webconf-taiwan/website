@@ -1,19 +1,19 @@
 <template>
   <div class="py-16 relative">
     <div
-      class="hidden md:block fixed transform translate-y-1/2 bottom-1/2 left-6 z-30"
-      v-if="!fbDecorativeLink"
+      ref="fbDecorativeLink"
+      class="hidden md:block fixed bottom-6 left-6 z-30 transition-opacity duration-300"
     >
       <StylingFBLink></StylingFBLink>
     </div>
 
-    <div
-      class="fixed transform translate-y-1/2 bottom-32 right-2 sm:right-1 md:right-[65px] lg:right-[60px] 2xl:right-32 z-10"
-    >
+    <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-10">
       <MoveToTop></MoveToTop>
     </div>
+    <a href="#"
+      ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
+    ></a>
 
-    <div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div>
     <div class="flex flex-col items-center mb-20">
       <StylingTitle>
         <template #default>
@@ -96,7 +96,7 @@ const route = useRoute(); // 取得路由資訊
 const pageInfoStore = usePageInfoStore();
 const { setCurrentPageName } = pageInfoStore;
 
-const fbDecorativeLink = ref(false);
+const fbDecorativeLink = ref();
 
 const isScrollAtBottom = () => {
   const { scrollTop } = document.documentElement;
@@ -104,10 +104,10 @@ const isScrollAtBottom = () => {
   const isBottom = scrollTop > clientHeight;
 
   if (isBottom) {
-    fbDecorativeLink.value = true;
+    fbDecorativeLink.value.style.opacity = 1;
     return;
   }
-  fbDecorativeLink.value = false;
+  fbDecorativeLink.value.style.opacity = 0;
 };
 
 onMounted(() => {
