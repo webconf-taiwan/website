@@ -25,9 +25,7 @@
       class="hidden md:block"
       :class="{ 'md:hidden': isShowMenuList }"
     >
-      <p
-        class="absolute z-30 text-lg writing-vertical text-custom-teal-500 bottom-16 right-4 font-rajdhani"
-      >
+      <p class="absolute z-30 text-lg writing-vertical text-custom-teal-500 bottom-16 right-4">
         scroll
       </p>
       <div
@@ -155,7 +153,7 @@
         >
           <router-link href="#" :to="{ name: `${item.home}` }" @click="toggleMenuList">
             <p class="mb-4 text-xl leading-6 whitespace-nowrap md:text-4xl">{{ item.ChtName }}</p>
-            <p class="text-sm leading-6 whitespace-nowrap md:text-base font-rajdhani">
+            <p class="text-sm leading-6 whitespace-nowrap md:text-base">
               {{ item.EngName }}
             </p>
           </router-link>

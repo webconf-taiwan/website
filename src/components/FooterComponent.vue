@@ -8,7 +8,7 @@
         <li>
           <a
             href="mailto:hi@webconf.tw"
-            class="flex items-center px-4 py-1 text-sm font-normal border-r text-custom-teal-500 font-rajdhani border-custom-teal-700 md:border-r-0 whitespace-nowrap hover:text-custom-teal-700"
+            class="flex items-center px-4 py-1 text-sm font-normal border-r text-custom-teal-500 border-custom-teal-700 md:border-r-0 whitespace-nowrap hover:text-custom-teal-700"
             ><div class="w-4 h-4 mr-1 bg-cover mailIcon"></div>
             <p>hi@webconf.tw</p></a
           >
@@ -24,7 +24,7 @@
         <li class="md:hidden">
           <a
             href="#"
-            class="px-4 py-1 text-sm font-normal text-custom-teal-500 font-rajdhani whitespace-nowrap hover:text-custom-teal-700"
+            class="px-4 py-1 text-sm font-normal text-custom-teal-500 whitespace-nowrap hover:text-custom-teal-700"
             onclick="event.preventDefault();"
             >COVID19 Policy</a
           >
@@ -35,7 +35,7 @@
           <div class="w-6 h-6 bg-cover fbIcon"></div>
         </a>
         <div class="m-2 w-10 h-0.5 bg-custom-teal-500"></div>
-        <p class="text-sm font-normal text-custom-teal-500 font-rajdhani">
+        <p class="text-sm font-normal text-custom-teal-500">
           WebConf Taiwan 2023 All Rights Reserved.
         </p>
       </div>
@@ -52,7 +52,7 @@
           <a
             href="#"
             onclick="event.preventDefault();"
-            class="px-4 py-1 text-sm font-normal text-custom-teal-500 font-rajdhani hover:text-custom-teal-700 whitespace-nowrap"
+            class="px-4 py-1 text-sm font-normal text-custom-teal-500 hover:text-custom-teal-700 whitespace-nowrap"
             >COVID19 Policy</a
           >
         </li>

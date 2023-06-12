@@ -44,7 +44,7 @@
               <div class="flex flex-col items-center justify-end md:flex-row md:mr-20 lg:mr-44">
                 <p
                   ref="bannerText"
-                  class="mb-5 text-lg font-normal text-center text-white whitespace-nowrap md:text-right font-rajdhani md:mr-3 md:mb-0"
+                  class="mb-5 text-lg font-normal text-center text-white whitespace-nowrap md:text-right md:mr-3 md:mb-0"
                 >
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
@@ -77,7 +77,7 @@
           <div
             class="w-full px-5 py-2 mt-1 text-center border bg-custom-gray-800 border-custom-teal-500 md:w-436 md:mr-2 md:mt-0"
           >
-            <h1 class="text-4xl font-normal text-custom-teal-500 whitespace-nowrap font-rajdhani">
+            <h1 class="text-4xl font-normal text-custom-teal-500 whitespace-nowrap">
               WebConf Taiwan
             </h1>
           </div>
@@ -87,7 +87,7 @@
           <div class="w-8 mt-1 mb-1 mr-2 border-t border-b border-r border-custom-teal-700">
             <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
           </div>
-          <p class="text-base font-medium text-custom-pink-700 whitespace-nowrap font-rajdhani">
+          <p class="text-base font-medium text-custom-pink-700 whitespace-nowrap">
             BACK TO THE FUTURE OF WEBCONF.
           </p>
           <div class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700">
@@ -111,12 +111,11 @@
             class="scrollbar bg-black border-b border-r border-l border-custom-teal-500 py-5 px-3 md:border-t md:absolute md:right-[-10%] lg:right-[-13%] xl:right-[-10%] md:bottom-[-30%] lg:bottom-[-40%] md:h-200 md:w-300 lg:w-480 xl:w-588 3xl:w-[660px] md:overflow-y-auto md:transform md:-translate-y-1/2"
           >
             <p class="mb-6 text-base font-normal text-white">
-              在 <span class="font-rajdhani"> 2023 </span> 年重啟十年前的
-              <span class="font-rajdhani"> WebConf </span>
+              在2023年重啟十年前的WebConf
               研討會中，帶領與會者穿越時間，探索網路的過去、現在和未來。過去十年間，網路發生了巨大的變化，我們將重新審視網路的起源以及它在這些年裡的演進。
             </p>
             <p class="mb-6 text-base font-normal text-white">
-              <span class="font-rajdhani"> WebConf </span>
+              WebConf
               不僅僅關注過去，還關注網頁的未來趨勢和新興技術，並提供業界趨勢及發展方向，以協助企業更好地了解未來網頁發展的方向。從人工智慧和機器學習的興起，到行動優化和響應式設計的重要性不斷提高，這個研討會將深入探討網頁開發的未來和企業如何在網頁技術的快速變化中保持競爭優勢。
             </p>
             <p class="text-base font-normal text-white">
@@ -162,13 +161,9 @@
                 >
                   <p
                     class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 md:w-40 md:ml-43"
-                    :class="{ 'font-rajdhani': speaker.mainIsEn }"
                   >
                     {{ speaker.displayName }}
-                    <span
-                      class="text-sm font-medium"
-                      :class="{ 'font-rajdhani': speaker.secondaryIsEn }"
-                      v-if="speaker.altName"
+                    <span class="text-sm font-medium" v-if="speaker.altName"
                       >({{ speaker.altName }})</span
                     >
                   </p>
@@ -180,7 +175,7 @@
                         <div class="h-5 mx-1 border-l border-r w-7px border-custom-teal-700"></div>
                       </div>
                       <p
-                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700 font-rajdhani"
+                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700"
                       >
                         SPEAKER
                       </p>
@@ -215,13 +210,9 @@
                 >
                   <p
                     class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 md:border-b md:border-t-0 border-custom-teal-500 md:w-40 md:ml-43"
-                    :class="{ 'font-rajdhani': speaker.mainIsEn }"
                   >
                     {{ speaker.displayName }}
-                    <span
-                      class="text-sm font-medium"
-                      :class="{ 'font-rajdhani': speaker.secondaryIsEn }"
-                      v-if="speaker.altName"
+                    <span class="text-sm font-medium" v-if="speaker.altName"
                       >({{ speaker.altName }})</span
                     >
                   </p>
@@ -233,7 +224,7 @@
                         <div class="h-5 mx-1 border-l border-r w-7px border-custom-teal-700"></div>
                       </div>
                       <p
-                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700 font-rajdhani"
+                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700"
                       >
                         SPEAKER
                       </p>
@@ -286,7 +277,7 @@
           <div class="relative h-64 mx-auto w-335 md:w-374 mb-14">
             <div class="absolute z-10">
               <h3
-                class="py-3 text-2xl font-normal text-center border-t border-l border-r font-rajdhani md:text-56 bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 w-75 md:w-157 md:py-4"
+                class="py-3 text-2xl font-normal text-center border-t border-l border-r md:text-56 bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 w-75 md:w-157 md:py-4"
               >
                 Web
               </h3>
@@ -295,7 +286,7 @@
                 <div class="w-5 py-1 my-1 border-t border-b border-r border-custom-teal-700">
                   <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
-                <p class="mx-3 font-medium font-rajdhani text-custom-pink-700">WEB DEVELOPMENT</p>
+                <p class="mx-3 font-medium text-custom-pink-700">WEB DEVELOPMENT</p>
                 <div class="flex-grow py-1 my-1 border-t border-b border-l border-custom-teal-700">
                   <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
@@ -305,11 +296,8 @@
                 class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500"
               >
                 <p class="font-normal text-white">
-                  包含 <span class="font-rajdhani"> Frontend </span> 、<span class="font-rajdhani">
-                    Backend </span
-                  >、<span class="font-rajdhani"> DevOps </span>、技術管理等相關議題。將深入探討各種
-                  <span class="font-rajdhani"> Web </span>
-                  技術的最新趨勢、過往發展，以及如何透過這些技術來提升網站或應用程式的品質、效能與安全性。
+                  包含Frontend、 Backend、 DevOps、技術管理等相關議題。將深入探討各種
+                  Web技術的最新趨勢、過往發展，以及如何透過這些技術來提升網站或應用程式的品質、效能與安全性。
                 </p>
               </div>
             </div>
@@ -332,7 +320,7 @@
           <div class="relative h-64 mx-auto w-335 md:w-374">
             <div class="absolute z-10">
               <h3
-                class="py-3 text-2xl font-normal text-center border-t border-l border-r font-rajdhani md:text-56 bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 w-75 md:w-157 md:py-4"
+                class="py-3 text-2xl font-normal text-center border-t border-l border-r md:text-56 bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 w-75 md:w-157 md:py-4"
               >
                 UI/UX
               </h3>
@@ -341,7 +329,7 @@
                 <div class="w-5 py-1 my-1 border-t border-b border-r border-custom-teal-700">
                   <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
-                <p class="mx-3 font-medium font-rajdhani text-custom-pink-700">UI/UX DESIGN</p>
+                <p class="mx-3 font-medium text-custom-pink-700">UI/UX DESIGN</p>
                 <div class="flex-grow py-1 my-1 border-t border-b border-l border-custom-teal-700">
                   <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
@@ -351,8 +339,7 @@
                 class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500"
               >
                 <p class="font-normal text-white">
-                  本屆科技年會將探討
-                  <span class="font-rajdhani"> UI/UX </span>
+                  本屆科技年會將探討 UI/UX
                   設計的最新趨勢，包括使用者界面設計、使用者體驗優化、人機互動設計等議題，以深入探討如何打造出引人入勝的用戶體驗，提升產品的價值和競爭力。
                 </p>
               </div>
@@ -394,10 +381,7 @@
             class="flex items-center justify-center py-2 border-b border-l border-r bg-custom-gray-800 md:border-b-0 md:border-l-0 md:border-t border-custom-teal-500 w-253 md:w-267 md:h-10"
           >
             <div class="w-5 h-5 mr-2 locationIcon"></div>
-            <p class="text-sm font-normal leading-normal text-white">
-              <span class="font-rajdhani"> 100 </span> 台北市中正區中山南路
-              <span class="font-rajdhani"> 11 </span> 號
-            </p>
+            <p class="text-sm font-normal leading-normal text-white">100台北市中正區中山南路11號</p>
           </div>
         </div>
 
@@ -406,7 +390,7 @@
             <li class="flex-1 border writing-vertical border-custom-teal-500 bg-custom-gray-800">
               <a
                 href="#"
-                class="block text-lg font-rajdhani text-custom-pink-700 opacity-40"
+                class="block text-lg text-custom-pink-700 opacity-40"
                 :class="{ 'opacity-100': currentTrafficInfo.transportation === 'car' }"
                 @click.prevent="toggleTrafficInfo('car', '開車')"
               >
@@ -436,7 +420,7 @@
             <li class="flex-1 border writing-vertical border-custom-teal-500 bg-custom-gray-800">
               <a
                 href="#"
-                class="block text-lg font-rajdhani text-custom-pink-700 opacity-40"
+                class="block text-lg text-custom-pink-700 opacity-40"
                 :class="{ 'opacity-100': currentTrafficInfo.transportation === 'MRT' }"
                 @click.prevent="toggleTrafficInfo('MRT', '搭捷運')"
               >
@@ -466,7 +450,7 @@
             <li class="flex-1 border writing-vertical border-custom-teal-500 bg-custom-gray-800">
               <a
                 href="#"
-                class="block text-lg font-rajdhani text-custom-pink-700 opacity-40"
+                class="block text-lg text-custom-pink-700 opacity-40"
                 :class="{ 'opacity-100': currentTrafficInfo.transportation === 'bus' }"
                 @click.prevent="toggleTrafficInfo('bus', '搭公車')"
               >

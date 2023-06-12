@@ -37,15 +37,9 @@
                 <div class="w-5 py-1 my-2 border-t border-b border-r border-custom-teal-700">
                   <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
-                <p
-                  class="mx-3 text-2xl font-medium font-rajdhani text-custom-pink-700"
-                  :class="{ 'font-rajdhani': speaker.mainIsEn }"
-                >
+                <p class="mx-3 text-2xl font-medium text-custom-pink-700">
                   {{ speaker.displayName }}
-                  <span
-                    class="text-lg font-medium"
-                    :class="{ 'font-rajdhani': speaker.secondaryIsEn }"
-                    v-if="speaker.altName"
+                  <span class="text-lg font-medium" v-if="speaker.altName"
                     >({{ speaker.altName }})</span
                   >
                 </p>
