@@ -41,12 +41,12 @@
                   class="mx-3 text-2xl font-medium font-rajdhani text-custom-pink-700"
                   :class="{ 'font-rajdhani': speaker.mainIsEn }"
                 >
-                  {{ speaker.mainName }}
+                  {{ speaker.displayName }}
                   <span
                     class="text-lg font-medium"
                     :class="{ 'font-rajdhani': speaker.secondaryIsEn }"
-                    v-if="speaker.secondaryName"
-                    >({{ speaker.secondaryName }})</span
+                    v-if="speaker.altName"
+                    >({{ speaker.altName }})</span
                   >
                 </p>
                 <div class="flex-grow py-1 my-2 border-t border-b border-l border-custom-teal-700">
@@ -98,20 +98,16 @@ const { setCurrentPageName } = pageInfoStore;
 
 const fbDecorativeLink = ref();
 
-const isScrollAtBottom = () => {
+const scrollHandler = () => {
   const { scrollTop } = document.documentElement;
   const clientHeight = document.documentElement.clientHeight - 446;
   const isBottom = scrollTop > clientHeight;
 
-  if (isBottom) {
-    fbDecorativeLink.value.style.opacity = 1;
-    return;
-  }
-  fbDecorativeLink.value.style.opacity = 0;
+  fbDecorativeLink.value.style.opacity = isBottom ? 1 : 0;
 };
 
 onMounted(() => {
   setCurrentPageName(route.name);
-  window.addEventListener("scroll", isScrollAtBottom);
+  window.addEventListener("scroll", scrollHandler);
 });
 </script>

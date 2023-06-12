@@ -157,19 +157,19 @@
               <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10"
-                  v-for="(item, index) in speaker1"
-                  :key="item.mainName"
+                  v-for="(speaker, index) in speaker1"
+                  :key="speaker.displayName"
                 >
                   <p
                     class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 md:w-40 md:ml-43"
-                    :class="{ 'font-rajdhani': item.mainIsEn }"
+                    :class="{ 'font-rajdhani': speaker.mainIsEn }"
                   >
-                    {{ item.mainName }}
+                    {{ speaker.displayName }}
                     <span
                       class="text-sm font-medium"
-                      :class="{ 'font-rajdhani': item.secondaryIsEn }"
-                      v-if="item.secondaryName"
-                      >({{ item.secondaryName }})</span
+                      :class="{ 'font-rajdhani': speaker.secondaryIsEn }"
+                      v-if="speaker.altName"
+                      >({{ speaker.altName }})</span
                     >
                   </p>
                   <div class="md:flex">
@@ -193,13 +193,13 @@
                     <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
                       <img
                         class="w-145 h-148 sm:w-202 sm:h-206 md:hidden"
-                        :src="item.avatar"
+                        :src="speaker.avatar"
                         alt="speaker"
                       />
                       <img
-                        :id="item.id"
+                        :id="speaker.id"
                         class="hidden w-145 h-148 sm:w-202 sm:h-206 md:block"
-                        :src="item.avatar"
+                        :src="speaker.avatar"
                         alt="speaker"
                         :style="{ opacity: 1 - index / speaker2.length }"
                       />
@@ -210,19 +210,19 @@
               <ul class="flex flex-col mt-10 md:flex-row-reverse md:mt-0">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10 md:flex md:flex-col-reverse"
-                  v-for="(item, index) in speaker2"
-                  :key="item.mainName"
+                  v-for="(speaker, index) in speaker2"
+                  :key="speaker.displayName"
                 >
                   <p
                     class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 md:border-b md:border-t-0 border-custom-teal-500 md:w-40 md:ml-43"
-                    :class="{ 'font-rajdhani': item.mainIsEn }"
+                    :class="{ 'font-rajdhani': speaker.mainIsEn }"
                   >
-                    {{ item.mainName }}
+                    {{ speaker.displayName }}
                     <span
                       class="text-sm font-medium"
-                      :class="{ 'font-rajdhani': item.secondaryIsEn }"
-                      v-if="item.secondaryName"
-                      >({{ item.secondaryName }})</span
+                      :class="{ 'font-rajdhani': speaker.secondaryIsEn }"
+                      v-if="speaker.altName"
+                      >({{ speaker.altName }})</span
                     >
                   </p>
                   <div class="md:flex">
@@ -246,13 +246,13 @@
                     <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
                       <img
                         class="w-145 h-148 sm:w-202 sm:h-206 md:hidden"
-                        :src="item.avatar"
+                        :src="speaker.avatar"
                         alt="speaker"
                       />
                       <img
-                        :id="item.id"
+                        :id="speaker.id"
                         class="hidden w-145 h-148 sm:w-202 sm:h-206 md:block"
-                        :src="item.avatar"
+                        :src="speaker.avatar"
                         alt="speaker"
                         :style="{ opacity: 1 - index / speaker2.length }"
                       />
