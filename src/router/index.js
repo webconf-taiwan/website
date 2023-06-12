@@ -24,9 +24,9 @@ const router = createRouter({
       component: () => import("@/views/WebConf2013.vue"),
     },
     {
-      path: "/speaker",
-      name: "speaker-modal",
-      component: () => import("@/components/speaker/Modal.vue"),
+      path: "/speaker-modal-demo",
+      name: "speaker-modal-demo",
+      component: () => import("@/views/SpeakerModalDemoView.vue"),
     },
   ],
 });
