@@ -1,15 +1,15 @@
-import speaker1Avatar from '@/assets/images/speaker/speaker_1.png';
-import speaker2Avatar from '@/assets/images/speaker/speaker_2.png';
-import speaker3Avatar from '@/assets/images/speaker/speaker_3.png';
-import speaker4Avatar from '@/assets/images/speaker/speaker_4.png';
-import speaker5Avatar from '@/assets/images/speaker/speaker_5.png';
-import speaker6Avatar from '@/assets/images/speaker/speaker_6.png';
-import speaker7Avatar from '@/assets/images/speaker/speaker_7.png';
-import speaker8Avatar from '@/assets/images/speaker/speaker_8.png';
-import speaker9Avatar from '@/assets/images/speaker/speaker_9.png';
-import speaker10Avatar from '@/assets/images/speaker/speaker_10.png';
-import speaker11Avatar from '@/assets/images/speaker/speaker_11.png';
-import speaker12Avatar from '@/assets/images/speaker/speaker_12.png';
+import speakerRuddyLee from '@/assets/images/speaker/ruddy-lee.jpg';
+import speakerRichardTsai from '@/assets/images/speaker/richard-tsai.jpg';
+import speakerAnt from '@/assets/images/speaker/ant.jpg';
+import speakerPaulLi from '@/assets/images/speaker/paul-li.jpg';
+import speakerWill from '@/assets/images/speaker/will.jpg';
+import speakerKuro from '@/assets/images/speaker/kuro.jpg';
+import speakerShengYou from '@/assets/images/speaker/shengyou.jpg';
+import speakerMike from '@/assets/images/speaker/mike.jpg';
+import speakerKeWang from '@/assets/images/speaker/kewang.jpg';
+import speakerSoking from '@/assets/images/speaker/soking.jpg';
+import speakerAkaneLee from '@/assets/images/speaker/akane-lee.jpg';
+import speakerBenWan from '@/assets/images/speaker/benwan.jpg';
 
 const speakers = {
   speaker1: [
@@ -17,7 +17,7 @@ const speakers = {
       id: 'speaker1-0',
       mainName: 'Ruddy Lee',
       secondaryName: null,
-      speaker: speaker1Avatar,
+      speaker: speakerRuddyLee,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -25,7 +25,7 @@ const speakers = {
       id: 'speaker1-1',
       mainName: '曾義峰',
       secondaryName: 'Ant',
-      speaker: speaker3Avatar,
+      speaker: speakerAnt,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -33,7 +33,7 @@ const speakers = {
       id: 'speaker1-2',
       mainName: '保哥',
       secondaryName: 'Will',
-      speaker: speaker5Avatar,
+      speaker: speakerWill,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -41,7 +41,7 @@ const speakers = {
       id: 'speaker1-3',
       mainName: '范聖佑',
       secondaryName: null,
-      speaker: speaker7Avatar,
+      speaker: speakerShengYou,
       mainIsEn: false,
       secondaryIsEn: false,
     },
@@ -49,7 +49,7 @@ const speakers = {
       id: 'speaker1-4',
       mainName: 'Kewang',
       secondaryName: null,
-      speaker: speaker9Avatar,
+      speaker: speakerKeWang,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -57,7 +57,7 @@ const speakers = {
       id: 'speaker1-5',
       mainName: 'Akane Lee',
       secondaryName: null,
-      speaker: speaker11Avatar,
+      speaker: speakerAkaneLee,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -67,7 +67,7 @@ const speakers = {
       id: 'speaker2-0',
       mainName: '蔡明哲',
       secondaryName: 'Richard Tsai',
-      speaker: speaker2Avatar,
+      speaker: speakerRichardTsai,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -75,7 +75,7 @@ const speakers = {
       id: 'speaker2-1',
       mainName: 'Paul Li',
       secondaryName: null,
-      speaker: speaker4Avatar,
+      speaker: speakerPaulLi,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -83,7 +83,7 @@ const speakers = {
       id: 'speaker2-2',
       mainName: 'Kuro',
       secondaryName: null,
-      speaker: speaker6Avatar,
+      speaker: speakerKuro,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -91,7 +91,7 @@ const speakers = {
       id: 'speaker2-3',
       mainName: '黃升煌',
       secondaryName: 'Mike',
-      speaker: speaker8Avatar,
+      speaker: speakerMike,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -99,7 +99,7 @@ const speakers = {
       id: 'speaker2-4',
       mainName: '王彥博',
       secondaryName: 'Soking',
-      speaker: speaker10Avatar,
+      speaker: speakerSoking,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -107,7 +107,7 @@ const speakers = {
       id: 'speaker2-5',
       mainName: '本丸',
       secondaryName: '尹曦禾',
-      speaker: speaker12Avatar,
+      speaker: speakerBenWan,
       mainIsEn: false,
       secondaryIsEn: false,
     },
@@ -117,7 +117,7 @@ const speakers = {
       id: 'speaker1-0',
       mainName: 'Ruddy Lee',
       secondaryName: null,
-      speaker: speaker1Avatar,
+      speaker: speakerRuddyLee,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -125,7 +125,7 @@ const speakers = {
       id: 'speaker2-0',
       mainName: '蔡明哲',
       secondaryName: 'Richard Tsai',
-      speaker: speaker2Avatar,
+      speaker: speakerRichardTsai,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -133,7 +133,7 @@ const speakers = {
       id: 'speaker1-1',
       mainName: '曾義峰',
       secondaryName: 'Ant',
-      speaker: speaker3Avatar,
+      speaker: speakerAnt,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -141,7 +141,7 @@ const speakers = {
       id: 'speaker2-1',
       mainName: 'Paul Li',
       secondaryName: null,
-      speaker: speaker4Avatar,
+      speaker: speakerPaulLi,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -149,7 +149,7 @@ const speakers = {
       id: 'speaker1-2',
       mainName: '保哥',
       secondaryName: 'Will',
-      speaker: speaker5Avatar,
+      speaker: speakerWill,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -157,7 +157,7 @@ const speakers = {
       id: 'speaker2-2',
       mainName: 'Kuro',
       secondaryName: null,
-      speaker: speaker6Avatar,
+      speaker: speakerKuro,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -165,7 +165,7 @@ const speakers = {
       id: 'speaker1-3',
       mainName: '范聖佑',
       secondaryName: null,
-      speaker: speaker7Avatar,
+      speaker: speakerShengYou,
       mainIsEn: false,
       secondaryIsEn: false,
     },
@@ -173,7 +173,7 @@ const speakers = {
       id: 'speaker2-3',
       mainName: '黃升煌',
       secondaryName: 'Mike',
-      speaker: speaker8Avatar,
+      speaker: speakerMike,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -181,7 +181,7 @@ const speakers = {
       id: 'speaker1-4',
       mainName: 'Kewang',
       secondaryName: null,
-      speaker: speaker9Avatar,
+      speaker: speakerKeWang,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -189,7 +189,7 @@ const speakers = {
       id: 'speaker2-4',
       mainName: '王彥博',
       secondaryName: 'Soking',
-      speaker: speaker10Avatar,
+      speaker: speakerSoking,
       mainIsEn: false,
       secondaryIsEn: true,
     },
@@ -197,7 +197,7 @@ const speakers = {
       id: 'speaker1-5',
       mainName: 'Akane Lee',
       secondaryName: null,
-      speaker: speaker11Avatar,
+      speaker: speakerAkaneLee,
       mainIsEn: true,
       secondaryIsEn: false,
     },
@@ -205,7 +205,7 @@ const speakers = {
       id: 'speaker2-5',
       mainName: '本丸',
       secondaryName: '尹曦禾',
-      speaker: speaker12Avatar,
+      speaker: speakerBenWan,
       mainIsEn: false,
       secondaryIsEn: false,
     },
