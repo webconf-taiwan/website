@@ -55,7 +55,11 @@
                 </button>
 
                 <!-- 購票按鈕 -->
-                <!-- <a href="#" class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500  bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg">前往購票</a> -->
+                <!-- <a
+                  href="#"
+                  class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg transition-all duration-300"
+                  >前往購票</a
+                > -->
               </div>
             </div>
           </div>
@@ -557,7 +561,11 @@
           </button>
 
           <!-- 購票按鈕 -->
-          <!-- <a href="#" class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg mb-4">前往購票</a> -->
+          <!-- <a
+            href="#"
+            class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg mb-4 transition-all duration-300"
+            >前往購票</a
+          > -->
 
           <a
             href="https://www.facebook.com/WebConfTaiwan"
@@ -576,8 +584,11 @@
     ></div>
 
     <div
-      class="hidden md:block fixed bottom-6 left-6 z-30"
-      v-if="currentSpiderNum !== 1 && currentSpiderNum !== 6"
+      class="hidden md:block fixed bottom-6 left-6 z-30 transition-opacity duration-300"
+      :class="{
+        'opacity-0': currentSpiderNum === 1 || currentSpiderNum === 6,
+        'opacity-100': currentSpiderNum !== 1 && currentSpiderNum !== 6,
+      }"
     >
       <StylingFBLink></StylingFBLink>
     </div>

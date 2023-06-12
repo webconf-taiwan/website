@@ -4,7 +4,10 @@
     class="py-1 fixed top-0 md:right-0 w-screen md:w-60px h-12 md:h-screen bg-custom-gray-800 z-30 flex flex-col md:flex-row-reverse justify-between border-b md:border-l md:border-b-0 border-custom-teal-700 overflow-hidden transition-height duration-500"
     :class="{ 'h-[348px]': isShowMenuList, 'md:w-[270px]': isShowMenuList }"
   >
-    <img src="../assets/images/logo_txt.png" alt="logo" class="w-152 h-40 mx-auto md:hidden" />
+    <a href="#" class="w-152 h-40 mx-auto"
+      ><img src="../assets/images/logo_txt.png" alt="logo" class="w-152 h-40 mx-auto md:hidden"
+    /></a>
+
     <a
       href="#"
       v-if="!isShowMenuList"
@@ -47,7 +50,7 @@
       :class="{ 'md:hidden': isShowMenuList }"
       style="right: 2.5px"
     >
-      <div class="spiderLine" style="height: 200px"></div>
+      <div class="spiderLine animate-spiderLine"></div>
       <div class="spider w-14 h-14 bg-cover relative z-40" style="margin-top: -10px"></div>
     </div>
 
@@ -144,13 +147,13 @@
         <li
           v-for="item in menuList"
           :key="item.ChtName"
-          class="mt-6 hover:text-custom-teal-500"
+          class="mt-6 transition-all duration-300 hover:text-custom-teal-500"
           :class="{
             menuActive: currentPageName === item.home,
             'text-custom-teal-500': currentPageName === item.home,
           }"
         >
-          <router-link href="#" :to="{ name: `${item.home}` }">
+          <router-link href="#" :to="{ name: `${item.home}` }" @click="toggleMenuList">
             <p class="whitespace-nowrap text-xl leading-6 mb-4 md:text-4xl">{{ item.ChtName }}</p>
             <p class="whitespace-nowrap text-sm leading-6 md:text-base font-rajdhani">
               {{ item.EngName }}
@@ -168,7 +171,7 @@ li {
   position: relative;
 }
 
-li:hover::before {
+li::before {
   content: '';
   width: 40px;
   height: 64px;
@@ -178,23 +181,19 @@ li:hover::before {
   background-image: url('@/assets/images/menu_active.svg');
   background-repeat: no-repeat;
   background-size: cover;
+  opacity: 0;
+  transition-property: opacity;
+  transition-duration: 1s;
 }
 
-.menuActive {
-  display: flex;
-  position: relative;
+li:hover::before {
+  opacity: 1;
 }
+
 .menuActive::before {
-  content: '';
-  width: 40px;
-  height: 64px;
-  position: absolute;
-  left: -64px;
-  top: -5px;
-  background-image: url('@/assets/images/menu_active.svg');
-  background-repeat: no-repeat;
-  background-size: cover;
+  opacity: 1;
 }
+
 .menuIcon {
   background-image: url('@/assets/images/icon/ic_menu_l.svg');
 }
@@ -235,6 +234,23 @@ li:hover::before {
 .animate-arrowDown {
   /* 動畫名稱、持續時間和無限重複 */
   animation: arrowDownAnimation 1s infinite;
+}
+
+@keyframes spiderLineAnimation {
+  0% {
+    height: 150px;
+  }
+  50% {
+    height: 250px;
+  }
+  100% {
+    height: 150px;
+  }
+}
+
+.animate-spiderLine {
+  /* 動畫名稱、持續時間和無限重複 */
+  animation: spiderLineAnimation 3s infinite;
 }
 </style>
 

@@ -1,5 +1,5 @@
 <template>
-  <a href="#" @click.prevent="scrollToTop">
+  <a href="#" ref="moveToTop" class="transition-opacity duration-300" @click.prevent="scrollToTop">
     <div
       class="flex flex-col items-center justify-end border border-custom-teal-500 bg-custom-gray-800 relative w-10 h-10"
     >
@@ -16,10 +16,26 @@
 </style>
 
 <script setup>
+import { ref, onMounted } from 'vue';
+
+const moveToTop = ref();
+
 const scrollToTop = () => {
   if (window.scrollY > 0) {
     window.requestAnimationFrame(scrollToTop);
     window.scrollTo(0, window.scrollY - 50);
   }
 };
+
+const isScrollAtTop800 = () => {
+  if (window.scrollY > 800) {
+    moveToTop.value.style.opacity = 1;
+  } else {
+    moveToTop.value.style.opacity = 0;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', isScrollAtTop800);
+});
 </script>
