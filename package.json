@@ -1,6 +1,6 @@
 {
   "name": "webconf",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -18,9 +18,9 @@
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.3.0",
+    "vite-plugin-eslint": "^1.8.1",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/eslint-config-prettier": "^7.1.0",
-    "vite-plugin-eslint": "^1.8.1",
     "@vue/test-utils": "^2.3.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.34.0",

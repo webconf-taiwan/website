@@ -1,6 +1,6 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
-export const useScrollStore = defineStore('scroll', {
+export const useScrollStore = defineStore("scroll", {
   state: () => ({
     currentSpiderNum: 0,
     isClicking: false,

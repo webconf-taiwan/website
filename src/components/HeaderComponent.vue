@@ -1,23 +1,23 @@
 <template>
   <!-- 當增加 header menu 的列表時 高度要增加 h-[348px] 每新增一個列表 + 88px -->
   <header
-    class="py-1 fixed top-0 md:right-0 w-screen md:w-60px h-12 md:h-screen bg-custom-gray-800 z-30 flex flex-col md:flex-row-reverse justify-between border-b md:border-l md:border-b-0 border-custom-teal-700 overflow-hidden transition-height duration-500"
+    class="fixed top-0 z-30 flex flex-col justify-between w-screen h-12 py-1 overflow-hidden duration-500 border-b md:right-0 md:w-60px md:h-screen bg-custom-gray-800 md:flex-row-reverse md:border-l md:border-b-0 border-custom-teal-700 transition-height"
     :class="{ 'h-[348px]': isShowMenuList, 'md:w-[270px]': isShowMenuList }"
   >
-    <a href="#" class="w-152 h-40 mx-auto"
-      ><img src="../assets/images/logo_txt.png" alt="logo" class="w-152 h-40 mx-auto md:hidden"
+    <a href="#" class="h-40 mx-auto w-152"
+      ><img src="../assets/images/logo_txt.png" alt="logo" class="h-40 mx-auto w-152 md:hidden"
     /></a>
 
     <a
       href="#"
       v-if="!isShowMenuList"
-      class="menuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg"
+      class="absolute z-30 block w-10 h-10 text-lg text-white menuIcon top-1 right-2"
       @click.prevent="toggleMenuList"
     ></a>
     <a
       href="#"
       v-else
-      class="closeMenuIcon block w-10 h-10 text-white absolute z-30 top-1 right-2 text-lg"
+      class="absolute z-30 block w-10 h-10 text-lg text-white closeMenuIcon top-1 right-2"
       @click.prevent="toggleMenuList"
     ></a>
     <div
@@ -26,43 +26,43 @@
       :class="{ 'md:hidden': isShowMenuList }"
     >
       <p
-        class="writing-vertical text-custom-teal-500 absolute z-30 bottom-16 right-4 text-lg font-rajdhani"
+        class="absolute z-30 text-lg writing-vertical text-custom-teal-500 bottom-16 right-4 font-rajdhani"
       >
         scroll
       </p>
       <div
-        class="arrowDownIcon animate-arrowDown w-10 h-10 absolute z-30 bottom-3 right-2 text-lg"
+        class="absolute z-30 w-10 h-10 text-lg arrowDownIcon animate-arrowDown bottom-3 right-2"
       ></div>
     </div>
 
     <div
       v-if="currentPageName === 'home'"
-      class="hidden md:block absolute z-20 top-8"
+      class="absolute z-20 hidden md:block top-8"
       :class="{ 'md:hidden': isShowMenuList }"
       style="right: 2.5px"
     >
       <div ref="spiderLine" class="spiderLine"></div>
-      <div class="spider w-14 h-14 bg-cover relative z-40" style="margin-top: -10px"></div>
+      <div class="relative z-40 bg-cover spider w-14 h-14" style="margin-top: -10px"></div>
     </div>
     <div
       v-else
-      class="hidden md:block absolute z-20 top-8"
+      class="absolute z-20 hidden md:block top-8"
       :class="{ 'md:hidden': isShowMenuList }"
       style="right: 2.5px"
     >
       <div class="spiderLine animate-spiderLine"></div>
-      <div class="spider w-14 h-14 bg-cover relative z-40" style="margin-top: -10px"></div>
+      <div class="relative z-40 bg-cover spider w-14 h-14" style="margin-top: -10px"></div>
     </div>
 
-    <div class="hidden md:block w-60px flex-shrink-0 relative">
+    <div class="relative flex-shrink-0 hidden md:block w-60px">
       <div v-if="currentPageName === 'home'">
         <a
           href="#"
-          class="p-3 absolute z-20 top-1/4 right-3"
+          class="absolute z-20 p-3 top-1/4 right-3"
           @click.prevent="scrollIntoView(1, true)"
         >
           <div
-            class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+            class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
               'md:hidden': isShowMenuList,
               'opacity-0': currentSpiderNum === 1,
@@ -76,7 +76,7 @@
           @click.prevent="scrollIntoView(2, true)"
         >
           <div
-            class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+            class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
               'md:hidden': isShowMenuList,
               'opacity-0': currentSpiderNum === 2,
@@ -90,7 +90,7 @@
           @click.prevent="scrollIntoView(3, true)"
         >
           <div
-            class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+            class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
               'md:hidden': isShowMenuList,
               'opacity-0': currentSpiderNum === 3,
@@ -104,7 +104,7 @@
           @click.prevent="scrollIntoView(4, true)"
         >
           <div
-            class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+            class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
               'md:hidden': isShowMenuList,
               'opacity-0': currentSpiderNum === 4,
@@ -118,7 +118,7 @@
           @click.prevent="scrollIntoView(5, true)"
         >
           <div
-            class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+            class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
               'md:hidden': isShowMenuList,
               'opacity-0': currentSpiderNum === 5,
@@ -132,7 +132,7 @@
           @click.prevent="scrollIntoView(6, true)"
         >
           <div
-            class="w-2 h-2 rounded-full border border-custom-teal-500 transition-opacity duration-1000"
+            class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
               'md:hidden': isShowMenuList,
               'opacity-0': currentSpiderNum === 6,
@@ -142,8 +142,8 @@
         </a>
       </div>
     </div>
-    <div class="bg-custom-gray-800 text-custom-teal-700 flex justify-start">
-      <ul class="ml-16 md:mt-10 pb-10">
+    <div class="flex justify-start bg-custom-gray-800 text-custom-teal-700">
+      <ul class="pb-10 ml-16 md:mt-10">
         <li
           v-for="item in menuList"
           :key="item.ChtName"
@@ -154,8 +154,8 @@
           }"
         >
           <router-link href="#" :to="{ name: `${item.home}` }" @click="toggleMenuList">
-            <p class="whitespace-nowrap text-xl leading-6 mb-4 md:text-4xl">{{ item.ChtName }}</p>
-            <p class="whitespace-nowrap text-sm leading-6 md:text-base font-rajdhani">
+            <p class="mb-4 text-xl leading-6 whitespace-nowrap md:text-4xl">{{ item.ChtName }}</p>
+            <p class="text-sm leading-6 whitespace-nowrap md:text-base font-rajdhani">
               {{ item.EngName }}
             </p>
           </router-link>
@@ -172,13 +172,13 @@ li {
 }
 
 li::before {
-  content: '';
+  content: "";
   width: 40px;
   height: 64px;
   position: absolute;
   left: -64px;
   top: -5px;
-  background-image: url('@/assets/images/menu_active.svg');
+  background-image: url("@/assets/images/menu_active.svg");
   background-repeat: no-repeat;
   background-size: cover;
   opacity: 0;
@@ -195,27 +195,27 @@ li:hover::before {
 }
 
 .menuIcon {
-  background-image: url('@/assets/images/icon/ic_menu_l.svg');
+  background-image: url("@/assets/images/icon/ic_menu_l.svg");
 }
 
 .closeMenuIcon {
-  background-image: url('@/assets/images/icon/ic_close_l.svg');
+  background-image: url("@/assets/images/icon/ic_close_l.svg");
 }
 
 .arrowDownIcon {
-  background-image: url('@/assets/images/icon/ic_scroll_l.svg');
+  background-image: url("@/assets/images/icon/ic_scroll_l.svg");
 }
 .writing-vertical {
   writing-mode: vertical-rl;
 }
 
 .spiderLine {
-  background: url('@/assets/images/loading_line.svg') no-repeat;
+  background: url("@/assets/images/loading_line.svg") no-repeat;
   background-position: center;
 }
 
 .spider {
-  background-image: url('@/assets/images/spider.svg');
+  background-image: url("@/assets/images/spider.svg");
   background-position: top;
 }
 
@@ -255,10 +255,10 @@ li:hover::before {
 </style>
 
 <script setup>
-import { ref, onMounted, inject } from 'vue';
-import { storeToRefs } from 'pinia';
-import { useScrollStore } from '@/stores/scroll';
-import { usePageInfoStore } from '@/stores/pageInfo';
+import { ref, onMounted, inject } from "vue";
+import { storeToRefs } from "pinia";
+import { useScrollStore } from "@/stores/scroll";
+import { usePageInfoStore } from "@/stores/pageInfo";
 
 const scrollStore = useScrollStore();
 const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } =
@@ -268,13 +268,13 @@ const { setSpiderLocation } = scrollStore;
 const pageInfoStore = usePageInfoStore();
 const { currentPageName } = storeToRefs(pageInfoStore);
 
-const gsap = inject('gsap');
+const gsap = inject("gsap");
 const isShowMenuList = ref(false);
 const menuList = ref([
   {
-    ChtName: '首頁',
-    EngName: 'Home',
-    home: 'home',
+    ChtName: "首頁",
+    EngName: "Home",
+    home: "home",
   },
   // {
   // ChtName: "議程資訊",
@@ -282,9 +282,9 @@ const menuList = ref([
   // home: "agenda",
   // },
   {
-    ChtName: '講者陣容',
-    EngName: 'Speaker',
-    home: 'speaker',
+    ChtName: "講者陣容",
+    EngName: "Speaker",
+    home: "speaker",
   },
   // {
   // ChtName: "贊助夥伴",
@@ -297,9 +297,9 @@ const menuList = ref([
   // home: "",
   // },
   {
-    ChtName: '時光機',
-    EngName: 'Time machine',
-    home: '2013WebConf',
+    ChtName: "時光機",
+    EngName: "Time machine",
+    home: "2013WebConf",
   },
 ]);
 const isScrolledToBottom = ref(false);
@@ -361,7 +361,7 @@ const checkScrollPosition = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('scroll', checkScrollPosition);
+  window.addEventListener("scroll", checkScrollPosition);
   toggleSpiderLineHeightFn.value = toggleSpiderLineHeight;
   setTimeout(() => {
     scrollIntoView(1, true);

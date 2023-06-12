@@ -1,8 +1,8 @@
 <template>
-  <div class="py-16 relative">
+  <div class="relative py-16">
     <div
       ref="fbDecorativeLink"
-      class="hidden md:block fixed bottom-6 left-6 z-30 transition-opacity duration-300"
+      class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6"
     >
       <StylingFBLink></StylingFBLink>
     </div>
@@ -27,34 +27,34 @@
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10"
       >
         <li
-          v-for="item in speakers.speakerPage"
-          :key="item.id"
+          v-for="speaker in speakers.speakerPage"
+          :key="speaker.id"
           class="w-[245px] xs:w-[300px] sm:w-[245px]"
         >
           <a href="#" @click.prevent="">
             <div>
-              <div class="py-2 border border-custom-teal-500 bg-custom-gray-800 flex">
-                <div class="w-5 border-t border-b border-r border-custom-teal-700 my-2 py-1">
-                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+              <div class="flex py-2 border border-custom-teal-500 bg-custom-gray-800">
+                <div class="w-5 py-1 my-2 border-t border-b border-r border-custom-teal-700">
+                  <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
                 <p
-                  class="font-rajdhani text-custom-pink-700 font-medium mx-3 text-2xl"
-                  :class="{ 'font-rajdhani': item.mainIsEn }"
+                  class="mx-3 text-2xl font-medium font-rajdhani text-custom-pink-700"
+                  :class="{ 'font-rajdhani': speaker.mainIsEn }"
                 >
-                  {{ item.mainName }}
+                  {{ speaker.mainName }}
                   <span
                     class="text-lg font-medium"
-                    :class="{ 'font-rajdhani': item.secondaryIsEn }"
-                    v-if="item.secondaryName"
-                    >({{ item.secondaryName }})</span
+                    :class="{ 'font-rajdhani': speaker.secondaryIsEn }"
+                    v-if="speaker.secondaryName"
+                    >({{ speaker.secondaryName }})</span
                   >
                 </p>
-                <div class="border-t border-b border-l border-custom-teal-700 my-2 py-1 flex-grow">
-                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+                <div class="flex-grow py-1 my-2 border-t border-b border-l border-custom-teal-700">
+                  <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
               </div>
-              <div class="p-3 bg-custom-gray-800 border-l border-r border-b border-custom-teal-500">
-                <img :src="item.speaker" alt="speaker" />
+              <div class="p-3 border-b border-l border-r bg-custom-gray-800 border-custom-teal-500">
+                <img :src="speaker.avatar" alt="speaker avatar" />
               </div>
             </div>
           </a>
@@ -66,15 +66,15 @@
 
 <style scoped>
 .titleDecoration {
-  background: url('@/assets/images/title_display.svg') no-repeat;
+  background: url("@/assets/images/title_display.svg") no-repeat;
 }
 
 .fbIcon {
-  background-image: url('@/assets/images/icon/ic_fb_l.svg');
+  background-image: url("@/assets/images/icon/ic_fb_l.svg");
 }
 
 .logoTxt {
-  background-image: url('@/assets/images/logo_windows_txt.png');
+  background-image: url("@/assets/images/logo_windows_txt.png");
 }
 
 .writing-vertical {
@@ -83,15 +83,15 @@
 </style>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
-import { usePageInfoStore } from '@/stores/pageInfo';
-import StylingTitle from '@/components/StylingTitle.vue';
-import StylingFBLink from '@/components/StylingFBLink.vue';
-import MoveToTop from '@/components/moveToTop.vue';
-import { speakers } from '@/content/speakers';
+import { onMounted, ref } from "vue";
+import { useRoute } from "vue-router";
+import { usePageInfoStore } from "@/stores/pageInfo";
+import StylingTitle from "@/components/StylingTitle.vue";
+import StylingFBLink from "@/components/StylingFBLink.vue";
+import MoveToTop from "@/components/moveToTop.vue";
+import { speakers } from "@/content/speakers";
 
-const route = useRoute(); // 取得路由資訊
+const route = useRoute();
 
 const pageInfoStore = usePageInfoStore();
 const { setCurrentPageName } = pageInfoStore;
@@ -111,8 +111,7 @@ const isScrollAtBottom = () => {
 };
 
 onMounted(() => {
-  // 設定當前路由名稱
   setCurrentPageName(route.name);
-  window.addEventListener('scroll', isScrollAtBottom);
+  window.addEventListener("scroll", isScrollAtBottom);
 });
 </script>

@@ -3,7 +3,7 @@
   <div
     ref="loading"
     v-if="loading"
-    class="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-custom-gray-900 z-50"
+    class="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen bg-custom-gray-900"
   >
     <div
       ref="loadingLine"
@@ -18,13 +18,13 @@
         style="transform: rotate(180deg)"
         ref="spider"
       />
-      <div class="font-medium text-sm text-custom-teal-500">{{ loadingPercent }}%</div>
+      <div class="text-sm font-medium text-custom-teal-500">{{ loadingPercent }}%</div>
     </div>
   </div>
   <!-- 首頁 -->
 
   <div v-if="showHome" class="mainWidth">
-    <div class="flex flex-col relative bg-transparent">
+    <div class="relative flex flex-col bg-transparent">
       <!-- 第一區塊開始 -->
       <div ref="section1">
         <div
@@ -32,7 +32,7 @@
           class="mainWidth h-[85vh] md:h-screen flex flex-col justify-center items-center w-full"
         >
           <div
-            class="logoM w-60 sm:w-1/2 h-3/4 md:w-full md:h-screen bg-contain bg-no-repeat bg-center flex flex-col justify-between items-center md:items-stretch relative"
+            class="relative flex flex-col items-center justify-between bg-center bg-no-repeat bg-contain logoM w-60 sm:w-1/2 h-3/4 md:w-full md:h-screen md:items-stretch"
           >
             <div
               class="titleBanner w-340 h-80 md:w-480 md:h-110 bg-cover bg-no-repeat bg-center mt-4 md:mt-14 md:ml-28 absolute left-1/2 top-[-5%] transform -translate-x-1/2 md:left-60 md:top-6"
@@ -41,15 +41,15 @@
             <div
               class="absolute left-1/2 bottom-[-10%] transform -translate-x-1/2 md:left-3/4 md:bottom-32 lg:bottom-16"
             >
-              <div class="flex flex-col md:flex-row items-center justify-end md:mr-20 lg:mr-44">
+              <div class="flex flex-col items-center justify-end md:flex-row md:mr-20 lg:mr-44">
                 <p
                   ref="bannerText"
-                  class="whitespace-nowrap text-white text-center md:text-right font-rajdhani font-normal text-lg md:mr-3 mb-5 md:mb-0"
+                  class="mb-5 text-lg font-normal text-center text-white whitespace-nowrap md:text-right font-rajdhani md:mr-3 md:mb-0"
                 >
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
                 <button
-                  class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 px-10 py-2 font-noto-sans font-medium text-lg cursor-not-allowed"
+                  class="px-10 py-2 text-lg font-medium border-2 cursor-not-allowed whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 font-noto-sans"
                 >
                   即將開賣
                 </button>
@@ -57,7 +57,7 @@
                 <!-- 購票按鈕 -->
                 <!-- <a
                   href="#"
-                  class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg transition-all duration-300"
+                  class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 font-noto-sans"
                   >前往購票</a
                 > -->
               </div>
@@ -72,54 +72,54 @@
         ref="section2"
         class="relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:py-40 lg:pt-16 bg-transparent 2xl:m-auto 2xl:w-[45vw]"
       >
-        <div class="flex flex-col md:flex-row-reverse items-end md:items-center md:justify-end">
-          <div class="titleDecoration w-20 h-6"></div>
+        <div class="flex flex-col items-end md:flex-row-reverse md:items-center md:justify-end">
+          <div class="w-20 h-6 titleDecoration"></div>
           <div
-            class="text-center bg-custom-gray-800 border border-custom-teal-500 py-2 px-5 w-full md:w-436 md:mr-2 mt-1 md:mt-0"
+            class="w-full px-5 py-2 mt-1 text-center border bg-custom-gray-800 border-custom-teal-500 md:w-436 md:mr-2 md:mt-0"
           >
-            <h1 class="text-custom-teal-500 font-normal text-4xl whitespace-nowrap font-rajdhani">
+            <h1 class="text-4xl font-normal text-custom-teal-500 whitespace-nowrap font-rajdhani">
               WebConf Taiwan
             </h1>
           </div>
         </div>
 
-        <div class="py-1 flex items-center border border-custom-teal-500 bg-custom-gray-800">
-          <div class="border-b border-t border-r border-custom-teal-700 w-8 mt-1 mb-1 mr-2">
-            <div class="my-1 border-b border-t border-custom-teal-700 h-6px"></div>
+        <div class="flex items-center py-1 border border-custom-teal-500 bg-custom-gray-800">
+          <div class="w-8 mt-1 mb-1 mr-2 border-t border-b border-r border-custom-teal-700">
+            <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
           </div>
           <p class="text-base font-medium text-custom-pink-700 whitespace-nowrap font-rajdhani">
             BACK TO THE FUTURE OF WEBCONF.
           </p>
-          <div class="border-b border-t border-l border-custom-teal-700 flex-grow mt-1 mb-1 ml-2">
-            <div class="my-1 border-b border-t border-custom-teal-700 h-6px"></div>
+          <div class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700">
+            <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
           </div>
         </div>
         <div class="relative">
           <div
-            class="overflow-hidden bg-custom-gray-800 border-b border-r border-custom-teal-500 md:border-l md:py-8"
+            class="overflow-hidden border-b border-r bg-custom-gray-800 border-custom-teal-500 md:border-l md:py-8"
           >
             <div class="w-full flex md:relative md:left-[-680px]">
-              <div class="photo2 fixed-width h-350 bg-cover mr-2 hidden md:block opacity-30"></div>
-              <div class="photo1 fixed-width h-350 bg-cover mr-2"></div>
-              <div class="photo2 fixed-width h-350 bg-cover hidden md:block opacity-30"></div>
+              <div class="hidden mr-2 bg-cover photo2 fixed-width h-350 md:block opacity-30"></div>
+              <div class="mr-2 bg-cover photo1 fixed-width h-350"></div>
+              <div class="hidden bg-cover photo2 fixed-width h-350 md:block opacity-30"></div>
             </div>
           </div>
-          <div class="bg-custom-gray-800 border-b border-r border-l border-custom-teal-500 py-1">
-            <div class="h-6px border-b border-t border-custom-teal-700"></div>
+          <div class="py-1 border-b border-l border-r bg-custom-gray-800 border-custom-teal-500">
+            <div class="border-t border-b h-6px border-custom-teal-700"></div>
           </div>
           <div
             class="scrollbar bg-black border-b border-r border-l border-custom-teal-500 py-5 px-3 md:border-t md:absolute md:right-[-10%] lg:right-[-13%] xl:right-[-10%] md:bottom-[-30%] lg:bottom-[-40%] md:h-200 md:w-300 lg:w-480 xl:w-588 3xl:w-[660px] md:overflow-y-auto md:transform md:-translate-y-1/2"
           >
-            <p class="mb-6 text-white text-base font-normal">
+            <p class="mb-6 text-base font-normal text-white">
               在 <span class="font-rajdhani"> 2023 </span> 年重啟十年前的
               <span class="font-rajdhani"> WebConf </span>
               研討會中，帶領與會者穿越時間，探索網路的過去、現在和未來。過去十年間，網路發生了巨大的變化，我們將重新審視網路的起源以及它在這些年裡的演進。
             </p>
-            <p class="mb-6 text-white text-base font-normal">
+            <p class="mb-6 text-base font-normal text-white">
               <span class="font-rajdhani"> WebConf </span>
               不僅僅關注過去，還關注網頁的未來趨勢和新興技術，並提供業界趨勢及發展方向，以協助企業更好地了解未來網頁發展的方向。從人工智慧和機器學習的興起，到行動優化和響應式設計的重要性不斷提高，這個研討會將深入探討網頁開發的未來和企業如何在網頁技術的快速變化中保持競爭優勢。
             </p>
-            <p class="text-white text-base font-normal">
+            <p class="text-base font-normal text-white">
               我們誠摯地邀請您加入我們，一起穿越時空，探索網頁技術的進，並了解未來十年網頁發展的趨勢。
             </p>
           </div>
@@ -161,7 +161,7 @@
                   :key="item.mainName"
                 >
                   <p
-                    class="bg-custom-gray-800 text-custom-teal-500 p-1 border-t border-l border-r border-custom-teal-500 text-xl font-medium md:w-40 md:ml-43"
+                    class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 md:w-40 md:ml-43"
                     :class="{ 'font-rajdhani': item.mainIsEn }"
                   >
                     {{ item.mainName }}
@@ -174,32 +174,32 @@
                   </p>
                   <div class="md:flex">
                     <div
-                      class="hidden md:block border-b border-l border-t border-custom-teal-500 bg-custom-gray-800 px-2"
+                      class="hidden px-2 border-t border-b border-l md:block border-custom-teal-500 bg-custom-gray-800"
                     >
-                      <div class="h-5 border-r border-l border-b border-custom-teal-700 mx-1 mb-3">
-                        <div class="w-7px h-5 border-r border-l border-custom-teal-700 mx-1"></div>
+                      <div class="h-5 mx-1 mb-3 border-b border-l border-r border-custom-teal-700">
+                        <div class="h-5 mx-1 border-l border-r w-7px border-custom-teal-700"></div>
                       </div>
                       <p
-                        class="writing-vertical text-custom-pink-700 text-lg font-normal leading-tight mb-3 font-rajdhani"
+                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700 font-rajdhani"
                       >
                         SPEAKER
                       </p>
-                      <div class="h-105 border-r border-l border-t border-custom-teal-700 mx-1">
+                      <div class="mx-1 border-t border-l border-r h-105 border-custom-teal-700">
                         <div
-                          class="w-7px h-105 border-r border-l border-custom-teal-700 mx-1"
+                          class="mx-1 border-l border-r w-7px h-105 border-custom-teal-700"
                         ></div>
                       </div>
                     </div>
-                    <div class="border border-custom-teal-500 p-1 bg-custom-gray-800">
+                    <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
                       <img
                         class="w-145 h-148 sm:w-202 sm:h-206 md:hidden"
-                        :src="item.speaker"
+                        :src="item.avatar"
                         alt="speaker"
                       />
                       <img
                         :id="item.id"
-                        class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block"
-                        :src="item.speaker"
+                        class="hidden w-145 h-148 sm:w-202 sm:h-206 md:block"
+                        :src="item.avatar"
                         alt="speaker"
                         :style="{ opacity: 1 - index / speaker2.length }"
                       />
@@ -207,14 +207,14 @@
                   </div>
                 </li>
               </ul>
-              <ul class="flex flex-col md:flex-row-reverse mt-10 md:mt-0">
+              <ul class="flex flex-col mt-10 md:flex-row-reverse md:mt-0">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10 md:flex md:flex-col-reverse"
                   v-for="(item, index) in speaker2"
                   :key="item.mainName"
                 >
                   <p
-                    class="bg-custom-gray-800 text-custom-teal-500 p-1 border-t border-l border-r md:border-b md:border-t-0 border-custom-teal-500 text-xl font-medium md:w-40 md:ml-43"
+                    class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 md:border-b md:border-t-0 border-custom-teal-500 md:w-40 md:ml-43"
                     :class="{ 'font-rajdhani': item.mainIsEn }"
                   >
                     {{ item.mainName }}
@@ -227,32 +227,32 @@
                   </p>
                   <div class="md:flex">
                     <div
-                      class="hidden md:block border-b border-l border-t border-custom-teal-500 bg-custom-gray-800 px-2"
+                      class="hidden px-2 border-t border-b border-l md:block border-custom-teal-500 bg-custom-gray-800"
                     >
-                      <div class="h-5 border-r border-l border-b border-custom-teal-700 mx-1 mb-3">
-                        <div class="w-7px h-5 border-r border-l border-custom-teal-700 mx-1"></div>
+                      <div class="h-5 mx-1 mb-3 border-b border-l border-r border-custom-teal-700">
+                        <div class="h-5 mx-1 border-l border-r w-7px border-custom-teal-700"></div>
                       </div>
                       <p
-                        class="writing-vertical text-custom-pink-700 text-lg font-normal leading-tight mb-3 font-rajdhani"
+                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700 font-rajdhani"
                       >
                         SPEAKER
                       </p>
-                      <div class="h-105 border-r border-l border-t border-custom-teal-700 mx-1">
+                      <div class="mx-1 border-t border-l border-r h-105 border-custom-teal-700">
                         <div
-                          class="w-7px h-105 border-r border-l border-custom-teal-700 mx-1"
+                          class="mx-1 border-l border-r w-7px h-105 border-custom-teal-700"
                         ></div>
                       </div>
                     </div>
-                    <div class="border border-custom-teal-500 p-1 bg-custom-gray-800">
+                    <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
                       <img
                         class="w-145 h-148 sm:w-202 sm:h-206 md:hidden"
-                        :src="item.speaker"
+                        :src="item.avatar"
                         alt="speaker"
                       />
                       <img
                         :id="item.id"
-                        class="w-145 h-148 sm:w-202 sm:h-206 hidden md:block"
-                        :src="item.speaker"
+                        class="hidden w-145 h-148 sm:w-202 sm:h-206 md:block"
+                        :src="item.avatar"
                         alt="speaker"
                         :style="{ opacity: 1 - index / speaker2.length }"
                       />
@@ -283,26 +283,26 @@
         </StylingTitle>
 
         <div class="md:absolute md:top-32 md:left-1 lg:left-[15%] mt-8">
-          <div class="relative w-335 md:w-374 h-64 mx-auto mb-14">
+          <div class="relative h-64 mx-auto w-335 md:w-374 mb-14">
             <div class="absolute z-10">
               <h3
-                class="font-rajdhani font-normal text-2xl md:text-56 bg-custom-gray-800 text-custom-teal-500 border-t border-r border-l border-custom-teal-500 w-75 md:w-157 text-center py-3 md:py-4"
+                class="py-3 text-2xl font-normal text-center border-t border-l border-r font-rajdhani md:text-56 bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 w-75 md:w-157 md:py-4"
               >
                 Web
               </h3>
 
-              <div class="py-1 border border-custom-teal-500 bg-custom-gray-800 flex">
-                <div class="w-5 border-t border-b border-r border-custom-teal-700 my-1 py-1">
-                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+              <div class="flex py-1 border border-custom-teal-500 bg-custom-gray-800">
+                <div class="w-5 py-1 my-1 border-t border-b border-r border-custom-teal-700">
+                  <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
-                <p class="font-rajdhani text-custom-pink-700 font-medium mx-3">WEB DEVELOPMENT</p>
-                <div class="border-t border-b border-l border-custom-teal-700 my-1 py-1 flex-grow">
-                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+                <p class="mx-3 font-medium font-rajdhani text-custom-pink-700">WEB DEVELOPMENT</p>
+                <div class="flex-grow py-1 my-1 border-t border-b border-l border-custom-teal-700">
+                  <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
               </div>
 
               <div
-                class="py-4 px-3 md:p-8 bg-custom-gray-800 border-custom-teal-500 border-b border-r border-l"
+                class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500"
               >
                 <p class="font-normal text-white">
                   包含 <span class="font-rajdhani"> Frontend </span> 、<span class="font-rajdhani">
@@ -329,26 +329,26 @@
         </div>
 
         <div class="md:absolute md:bottom-10 lg:bottom-[10%] md:right-1 lg:right-[10%]">
-          <div class="relative w-335 md:w-374 h-64 mx-auto">
+          <div class="relative h-64 mx-auto w-335 md:w-374">
             <div class="absolute z-10">
               <h3
-                class="font-rajdhani font-normal text-2xl md:text-56 bg-custom-gray-800 text-custom-teal-500 border-t border-r border-l border-custom-teal-500 w-75 md:w-157 text-center py-3 md:py-4"
+                class="py-3 text-2xl font-normal text-center border-t border-l border-r font-rajdhani md:text-56 bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 w-75 md:w-157 md:py-4"
               >
                 UI/UX
               </h3>
 
-              <div class="py-1 border border-custom-teal-500 bg-custom-gray-800 flex">
-                <div class="w-5 border-t border-b border-r border-custom-teal-700 my-1 py-1">
-                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+              <div class="flex py-1 border border-custom-teal-500 bg-custom-gray-800">
+                <div class="w-5 py-1 my-1 border-t border-b border-r border-custom-teal-700">
+                  <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
-                <p class="font-rajdhani text-custom-pink-700 font-medium mx-3">UI/UX DESIGN</p>
-                <div class="border-t border-b border-l border-custom-teal-700 my-1 py-1 flex-grow">
-                  <div class="h-6px border-t border-b border-custom-teal-700"></div>
+                <p class="mx-3 font-medium font-rajdhani text-custom-pink-700">UI/UX DESIGN</p>
+                <div class="flex-grow py-1 my-1 border-t border-b border-l border-custom-teal-700">
+                  <div class="border-t border-b h-6px border-custom-teal-700"></div>
                 </div>
               </div>
 
               <div
-                class="py-4 px-3 md:p-8 bg-custom-gray-800 border-custom-teal-500 border-b border-r border-l"
+                class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500"
               >
                 <p class="font-normal text-white">
                   本屆科技年會將探討
@@ -386,27 +386,27 @@
 
         <div class="mb-5 md:mb-0 md:flex md:items-end md:ml-79 lg:ml-167 xl:ml-20">
           <h4
-            class="text-32 leading-normal font-medium text-custom-teal-500 py-2 md:py-1 bg-custom-gray-800 border md:border-b-0 border-custom-teal-500 text-center md:w-340"
+            class="py-2 font-medium leading-normal text-center border text-32 text-custom-teal-500 md:py-1 bg-custom-gray-800 md:border-b-0 border-custom-teal-500 md:w-340"
           >
             張榮發國際會議中心
           </h4>
           <div
-            class="flex bg-custom-gray-800 justify-center items-center border-b md:border-b-0 border-r border-l md:border-l-0 md:border-t border-custom-teal-500 py-2 w-253 md:w-267 md:h-10"
+            class="flex items-center justify-center py-2 border-b border-l border-r bg-custom-gray-800 md:border-b-0 md:border-l-0 md:border-t border-custom-teal-500 w-253 md:w-267 md:h-10"
           >
-            <div class="locationIcon w-5 h-5 mr-2"></div>
-            <p class="text-white text-sm leading-normal font-normal">
+            <div class="w-5 h-5 mr-2 locationIcon"></div>
+            <p class="text-sm font-normal leading-normal text-white">
               <span class="font-rajdhani"> 100 </span> 台北市中正區中山南路
               <span class="font-rajdhani"> 11 </span> 號
             </p>
           </div>
         </div>
 
-        <div class="md:flex md:ml-10 lg:ml-32 xl:ml-20 relative z-20">
+        <div class="relative z-20 md:flex md:ml-10 lg:ml-32 xl:ml-20">
           <ul class="flex justify-between md:flex-col">
-            <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1">
+            <li class="flex-1 border writing-vertical border-custom-teal-500 bg-custom-gray-800">
               <a
                 href="#"
-                class="block font-rajdhani text-lg text-custom-pink-700 opacity-40"
+                class="block text-lg font-rajdhani text-custom-pink-700 opacity-40"
                 :class="{ 'opacity-100': currentTrafficInfo.transportation === 'car' }"
                 @click.prevent="toggleTrafficInfo('car', '開車')"
               >
@@ -416,7 +416,7 @@
                     :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'car' }"
                   >
                     <div
-                      class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2"
+                      class="border-t border-b border-l border-r md:border-t-0 md:border-b-0 border-custom-teal-700 h-6px md:h-full md:w-2"
                       :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'car' }"
                     ></div>
                   </div>
@@ -426,17 +426,17 @@
                     :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'car' }"
                   >
                     <div
-                      class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"
+                      class="border-t border-b md:border-t-0 md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"
                       :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'car' }"
                     ></div>
                   </div>
                 </div>
               </a>
             </li>
-            <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1">
+            <li class="flex-1 border writing-vertical border-custom-teal-500 bg-custom-gray-800">
               <a
                 href="#"
-                class="block font-rajdhani text-lg text-custom-pink-700 opacity-40"
+                class="block text-lg font-rajdhani text-custom-pink-700 opacity-40"
                 :class="{ 'opacity-100': currentTrafficInfo.transportation === 'MRT' }"
                 @click.prevent="toggleTrafficInfo('MRT', '搭捷運')"
               >
@@ -446,7 +446,7 @@
                     :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'MRT' }"
                   >
                     <div
-                      class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2"
+                      class="border-t border-b border-l border-r md:border-t-0 md:border-b-0 border-custom-teal-700 h-6px md:h-full md:w-2"
                       :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'MRT' }"
                     ></div>
                   </div>
@@ -456,17 +456,17 @@
                     :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'MRT' }"
                   >
                     <div
-                      class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"
+                      class="border-t border-b md:border-t-0 md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"
                       :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'MRT' }"
                     ></div>
                   </div>
                 </div>
               </a>
             </li>
-            <li class="writing-vertical border border-custom-teal-500 bg-custom-gray-800 flex-1">
+            <li class="flex-1 border writing-vertical border-custom-teal-500 bg-custom-gray-800">
               <a
                 href="#"
-                class="block font-rajdhani text-lg text-custom-pink-700 opacity-40"
+                class="block text-lg font-rajdhani text-custom-pink-700 opacity-40"
                 :class="{ 'opacity-100': currentTrafficInfo.transportation === 'bus' }"
                 @click.prevent="toggleTrafficInfo('bus', '搭公車')"
               >
@@ -476,7 +476,7 @@
                     :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'bus' }"
                   >
                     <div
-                      class="border-t md:border-t-0 border-b md:border-b-0 border-l border-r border-custom-teal-700 h-6px md:h-full md:w-2"
+                      class="border-t border-b border-l border-r md:border-t-0 md:border-b-0 border-custom-teal-700 h-6px md:h-full md:w-2"
                       :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'bus' }"
                     ></div>
                   </div>
@@ -486,7 +486,7 @@
                     :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'bus' }"
                   >
                     <div
-                      class="border-t md:border-t-0 border-b md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"
+                      class="border-t border-b md:border-t-0 md:border-b-0 md:border-l md:border-r border-custom-teal-700 h-6px md:h-full md:w-2"
                       :class="{ 'border-color-teal': currentTrafficInfo.transportation === 'bus' }"
                     ></div>
                   </div>
@@ -495,7 +495,7 @@
             </li>
           </ul>
 
-          <div class="bg-custom-gray-800 border border-custom-teal-500 md:w-762 md:h-460 md:p-3">
+          <div class="border bg-custom-gray-800 border-custom-teal-500 md:w-762 md:h-460 md:p-3">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.8534088865276!2d121.51685122061681!3d25.039048402679413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a975c13ae63d%3A0x99f529730969be7f!2z6LKh5ZyY5rOV5Lq65by15qau55m85Z-66YeR5pyD!5e0!3m2!1szh-TW!2stw!4v1684658779278!5m2!1szh-TW!2stw"
               width="100%"
@@ -505,7 +505,7 @@
               loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
-            <div class="flex items-center ml-4 mb-4">
+            <div class="flex items-center mb-4 ml-4">
               <div
                 class="w-10 h-10 mr-2"
                 :class="{
@@ -514,11 +514,11 @@
                   busIcon: currentTrafficInfo.transportation === 'bus',
                 }"
               ></div>
-              <p class="text-custom-teal-500 text-lg md:text-xl font-medium">
+              <p class="text-lg font-medium text-custom-teal-500 md:text-xl">
                 {{ currentTrafficInfo.method }}
               </p>
             </div>
-            <ul class="ml-11 mr-5 mb-4 md:mb-0">
+            <ul class="mb-4 mr-5 ml-11 md:mb-0">
               <li v-for="item in currentTrafficInfo.info" :key="item" class="text-white list-disc">
                 {{ item }}
               </li>
@@ -526,7 +526,7 @@
           </div>
         </div>
 
-        <div class="logoMan hidden xl:block w-370 h-456 bg-cover absolute top-36 right-0 z-0">
+        <div class="absolute right-0 z-0 hidden bg-cover logoMan xl:block w-370 h-456 top-36">
           <div
             ref="car"
             class="carImage hidden xl:block w-[330px] h-[175px] bg-cover absolute top-72 right-[200%] 3xl:right-[300%] z-10"
@@ -544,18 +544,18 @@
       <!-- 第五區塊結束 -->
 
       <!-- 第六區塊開始 -->
-      <div ref="section6" class="relative py-20 overflow-hidden flex justify-center items-center">
+      <div ref="section6" class="relative flex items-center justify-center py-20 overflow-hidden">
         <div class="flex flex-col items-center">
           <div
-            class="logoSpider bg-cover mb-4 md:relative w-335 h-180 sm:w-374 sm:h-52 md:w-660 md:h-350"
+            class="mb-4 bg-cover logoSpider md:relative w-335 h-180 sm:w-374 sm:h-52 md:w-660 md:h-350"
           >
             <div
-              class="join bg-cover hidden md:block md:w-90 md:h-90 md:absolute md:left-16 md:top-20"
+              class="hidden bg-cover join md:block md:w-90 md:h-90 md:absolute md:left-16 md:top-20"
             ></div>
           </div>
-          <div class="timeAdd bg-cover w-300 h-14 md:w-588 md:h-8 mb-7"></div>
+          <div class="bg-cover timeAdd w-300 h-14 md:w-588 md:h-8 mb-7"></div>
           <button
-            class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 px-10 py-2 font-noto-sans font-medium text-lg cursor-not-allowed mb-4"
+            class="px-10 py-2 mb-4 text-lg font-medium border-2 cursor-not-allowed whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 font-noto-sans"
           >
             即將開賣
           </button>
@@ -563,7 +563,7 @@
           <!-- 購票按鈕 -->
           <!-- <a
             href="#"
-            class="whitespace-nowrap border-2 border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 px-10 py-2 font-noto-sans font-medium text-lg mb-4 transition-all duration-300"
+            class="px-10 py-2 mb-4 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 font-noto-sans"
             >前往購票</a
           > -->
 
@@ -579,12 +579,12 @@
     </div>
 
     <div
-      class="hidden md:block logoTxt w-138 h-9 fixed top-6 left-6 z-30"
+      class="fixed z-30 hidden md:block logoTxt w-138 h-9 top-6 left-6"
       v-if="currentSpiderNum !== 1"
     ></div>
 
     <div
-      class="hidden md:block fixed bottom-6 left-6 z-30 transition-opacity duration-300"
+      class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6"
       :class="{
         'opacity-0': currentSpiderNum === 1 || currentSpiderNum === 6,
         'opacity-100': currentSpiderNum !== 1 && currentSpiderNum !== 6,
@@ -600,69 +600,69 @@
 <style scoped>
 /* 手機版 */
 .bgImage {
-  background-image: url('@/assets/images/bg_m.png');
+  background-image: url("@/assets/images/bg_m.png");
 }
 .logo {
-  background-image: url('@/assets/images/logo_all_m.png');
+  background-image: url("@/assets/images/logo_all_m.png");
 }
 .logoS {
-  background-image: url('@/assets/images/logo_all_m.png');
+  background-image: url("@/assets/images/logo_all_m.png");
 }
 .titleBanner {
-  background-image: url('@/assets/images/title_banner.svg');
+  background-image: url("@/assets/images/title_banner.svg");
 }
 .mainWidth {
   width: 100vw;
 }
 .titleDecoration {
-  background: url('@/assets/images/title_display.svg') no-repeat;
+  background: url("@/assets/images/title_display.svg") no-repeat;
 }
 .photo1 {
-  background-image: url('@/assets/images/photo_1.png');
+  background-image: url("@/assets/images/photo_1.png");
 }
 .photo2 {
-  background-image: url('@/assets/images/photo_2.png');
+  background-image: url("@/assets/images/photo_2.png");
 }
 .fixed-width {
   flex-shrink: 0;
   flex-basis: 701px;
 }
 .logoMan {
-  background-image: url('@/assets/images/logo_man.png');
+  background-image: url("@/assets/images/logo_man.png");
 }
 .locationIcon {
-  background-image: url('@/assets/images/icon/ic_location_s.svg');
+  background-image: url("@/assets/images/icon/ic_location_s.svg");
 }
 .carIcon {
-  background-image: url('@/assets/images/icon/ic_byCar_l.svg');
+  background-image: url("@/assets/images/icon/ic_byCar_l.svg");
 }
 .MRTIcon {
-  background-image: url('@/assets/images/icon/ic_byMRT_l.svg');
+  background-image: url("@/assets/images/icon/ic_byMRT_l.svg");
 }
 .busIcon {
-  background-image: url('@/assets/images/icon/ic_byBus_l.svg');
+  background-image: url("@/assets/images/icon/ic_byBus_l.svg");
 }
 
 .carImage {
-  background-image: url('@/assets/images/traffic_car.png');
+  background-image: url("@/assets/images/traffic_car.png");
 }
 .MRTImage {
-  background-image: url('@/assets/images/traffic_mrt.png');
+  background-image: url("@/assets/images/traffic_mrt.png");
 }
 .busImage {
-  background-image: url('@/assets/images/traffic_bus.png');
+  background-image: url("@/assets/images/traffic_bus.png");
 }
 
 .logoSpider {
-  background-image: url('@/assets/images/logo_spider.png');
+  background-image: url("@/assets/images/logo_spider.png");
 }
 
 .timeAdd {
-  background-image: url('@/assets/images/time_add_m.svg');
+  background-image: url("@/assets/images/time_add_m.svg");
 }
 
 .join {
-  background-image: url('@/assets/images/join.svg');
+  background-image: url("@/assets/images/join.svg");
 }
 
 .opacity-40.opacity-100 {
@@ -675,16 +675,16 @@
 
 @media (min-width: 768px) {
   .bgImage {
-    background-image: url('@/assets/images/bg.png');
+    background-image: url("@/assets/images/bg.png");
   }
   .logo {
-    background-image: url('@/assets/images/logo_all.png');
+    background-image: url("@/assets/images/logo_all.png");
   }
   .logoS {
     background-image: none;
   }
   .logoM {
-    background-image: url('@/assets/images/logo_all.png');
+    background-image: url("@/assets/images/logo_all.png");
   }
   .mainWidth {
     width: calc(100vw - 60px);
@@ -701,33 +701,33 @@
     border-radius: 5px;
   }
   .logoTxt {
-    background-image: url('@/assets/images/logo_txt.svg');
+    background-image: url("@/assets/images/logo_txt.svg");
   }
   .writing-vertical {
     writing-mode: vertical-rl;
   }
 
   .timeAdd {
-    background-image: url('@/assets/images/time_add.svg');
+    background-image: url("@/assets/images/time_add.svg");
   }
 }
 </style>
 
 <script setup>
 /* eslint-disable */
-import { ref, onMounted, inject } from 'vue';
-import { useRoute } from 'vue-router';
-import { storeToRefs } from 'pinia';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
-import { useScrollStore } from '@/stores/scroll';
-import { usePageInfoStore } from '@/stores/pageInfo';
-import { speakers } from '@/content/speakers';
-import { trafficInfo } from '@/content/trafficInfo';
-import StylingTitle from '@/components/StylingTitle.vue';
-import StylingFBLink from '@/components/StylingFBLink.vue';
+import { ref, onMounted, inject } from "vue";
+import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useScrollStore } from "@/stores/scroll";
+import { usePageInfoStore } from "@/stores/pageInfo";
+import { speakers } from "@/content/speakers";
+import { trafficInfo } from "@/content/trafficInfo";
+import StylingTitle from "@/components/StylingTitle.vue";
+import StylingFBLink from "@/components/StylingFBLink.vue";
 
-const route = useRoute(); // 取得路由資訊
+const route = useRoute();
 
 const scrollStore = useScrollStore();
 const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } =
@@ -737,7 +737,7 @@ const { setSpiderLocation } = scrollStore;
 const pageInfoStore = usePageInfoStore();
 const { setCurrentPageName } = pageInfoStore;
 
-const gsap = inject('gsap');
+const gsap = inject("gsap");
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const showHome = ref(false);
@@ -759,8 +759,8 @@ const car = ref();
 const MRT = ref();
 const bus = ref();
 const currentTrafficInfo = ref({
-  transportation: 'car',
-  method: '開車',
+  transportation: "car",
+  method: "開車",
   info: trafficInfo.car,
 });
 let currentTransportation = null;
@@ -782,19 +782,19 @@ const toggleTrafficInfo = (transportation, method, isFirst) => {
   const refName = `${transportation}.value`;
   const refValue = eval(refName);
   gsap.to(refValue, {
-    top: '19rem',
-    right: '1rem',
+    top: "19rem",
+    right: "1rem",
     duration: 0.5,
-    ease: 'power2.out',
+    ease: "power2.out",
   });
 
   if (!isFirst) {
     const previousRefName = `${previousTransportation}.value`;
     const previousRefValue = eval(previousRefName);
     gsap.to(previousRefValue, {
-      right: '-30rem',
+      right: "-30rem",
       duration: 0.5,
-      ease: 'power2.out',
+      ease: "power2.out",
       onComplete: () => {
         moveBack(previousRefValue);
       },
@@ -805,35 +805,35 @@ const toggleTrafficInfo = (transportation, method, isFirst) => {
 const moveBack = (previousRefValue) => {
   const viewportWidth = window.innerWidth;
   if (viewportWidth >= 2000) {
-    gsap.set(previousRefValue, { right: '300%' });
+    gsap.set(previousRefValue, { right: "300%" });
   } else {
-    gsap.set(previousRefValue, { right: '200%' });
+    gsap.set(previousRefValue, { right: "200%" });
   }
 };
 
 const showHomePage = () => {
   gsap.to(loading.value, { autoAlpha: 0, duration: 0.5 });
   section1Anime();
-  toggleTrafficInfo('car', '開車', true);
+  toggleTrafficInfo("car", "開車", true);
 };
 
 const section1AnimeTl = gsap.timeline();
 const section1LeaveAnimeTl = gsap.timeline();
 
 const section1Anime = () => {
-  section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: 'power4.out' });
-  section1AnimeTl.from(sellBtn.value, { duration: 0.5, opacity: 0, ease: 'power4.out' });
+  section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
+  section1AnimeTl.from(sellBtn.value, { duration: 0.5, opacity: 0, ease: "power4.out" });
   section1AnimeTl.fromTo(
     bannerText.value,
     {
-      x: '-30%',
+      x: "-30%",
       opacity: 0,
     },
     {
       x: 0,
       opacity: 1,
       duration: 0.5,
-      ease: 'power4.out',
+      ease: "power4.out",
     }
   );
 };
@@ -849,9 +849,9 @@ const section3Anime = () => {
     speakerMoveRightTl = gsap.timeline({
       scrollTrigger: {
         trigger: section3.value,
-        start: 'top+=60',
+        start: "top+=60",
         endTrigger: section4.value,
-        end: 'top bottom',
+        end: "top bottom",
         pin: true,
         // markers: true,
         scrub: true,
@@ -859,17 +859,17 @@ const section3Anime = () => {
       },
     });
 
-    const speaker = document.getElementById('speaker');
-    const speaker1 = document.getElementById('speaker1-1');
-    const speaker2 = document.getElementById('speaker1-2');
-    const speaker3 = document.getElementById('speaker1-3');
-    const speaker4 = document.getElementById('speaker1-4');
-    const speaker5 = document.getElementById('speaker1-5');
-    const speaker6 = document.getElementById('speaker2-1');
-    const speaker7 = document.getElementById('speaker2-2');
-    const speaker8 = document.getElementById('speaker2-3');
-    const speaker9 = document.getElementById('speaker2-4');
-    const speaker10 = document.getElementById('speaker2-5');
+    const speaker = document.querySelector("#speaker");
+    const speaker1 = document.querySelector("#speaker1-1");
+    const speaker2 = document.querySelector("#speaker1-2");
+    const speaker3 = document.querySelector("#speaker1-3");
+    const speaker4 = document.querySelector("#speaker1-4");
+    const speaker5 = document.querySelector("#speaker1-5");
+    const speaker6 = document.querySelector("#speaker2-1");
+    const speaker7 = document.querySelector("#speaker2-2");
+    const speaker8 = document.querySelector("#speaker2-3");
+    const speaker9 = document.querySelector("#speaker2-4");
+    const speaker10 = document.querySelector("#speaker2-5");
 
     speakerMoveRightTl.to(speaker, {
       x: 345,
@@ -918,22 +918,22 @@ const scrollIntoView = (num) => {
   const scrollPosition = section1Height + section2Height - 50;
   switch (num) {
     case 1:
-      section1.value.scrollIntoView({ behavior: 'smooth' });
+      section1.value.scrollIntoView({ behavior: "smooth" });
       break;
     case 2:
-      section2.value.scrollIntoView({ behavior: 'smooth' });
+      section2.value.scrollIntoView({ behavior: "smooth" });
       break;
     case 3:
-      window.scrollTo({ top: scrollPosition, behavior: 'smooth' });
+      window.scrollTo({ top: scrollPosition, behavior: "smooth" });
       break;
     case 4:
-      section4.value.scrollIntoView({ behavior: 'smooth' });
+      section4.value.scrollIntoView({ behavior: "smooth" });
       break;
     case 5:
-      section5.value.scrollIntoView({ behavior: 'smooth' });
+      section5.value.scrollIntoView({ behavior: "smooth" });
       break;
     case 6:
-      section6.value.scrollIntoView({ behavior: 'smooth' });
+      section6.value.scrollIntoView({ behavior: "smooth" });
       break;
 
     default:
@@ -1016,7 +1016,6 @@ onMounted(() => {
     }, 1000);
   }, 100);
 
-  // 設定當前路由名稱
   setCurrentPageName(route.name);
 
   scrollIntoViewFn.value = scrollIntoView;
@@ -1027,91 +1026,10 @@ onMounted(() => {
   setTimeout(() => {
     const viewportWidth = window.innerWidth;
     if (viewportWidth >= 768) {
-      window.addEventListener('scroll', handleScroll);
+      window.addEventListener("scroll", handleScroll);
       section3Anime();
     }
   });
-
-  // const a = ScrollTrigger.create({
-  //   trigger: section3.value,
-  //   start: 'top center',
-  //   end: 'bottom center',
-  //   scrub: true,
-  //   pin: ".pin",
-  //   // pin: true, // 新增 pin 屬性
-  //   anticipatePin: 1,
-  //   onUpdate: (self) => {
-  //     const progress = self.progress;
-  //     const distanceToMove = 100; // 要移動的距離
-
-  //     // 根據滾動進度計算移動距離
-  //     const moveDistance = distanceToMove * progress;
-
-  //     // 移動 div
-  //     gsap.set(section3.value, { x: moveDistance });
-  //   },
-  // });
-
-  // const trigger = ScrollTrigger.create({
-  //       trigger: section1.value,
-  //       start: 'top top',
-  //       // endTrigger: section2.value,
-  //       end: 'bottom top',
-  //       // markers: true,
-  //       onToggle: (self) => {
-  //         if (self.isActive) {
-  //           section1LeaveAnime();
-  //         } else {
-  //           // section1LeaveAnimeTl.to(section1.value, { height: '100vh', duration: 0 })
-  //           section1LeaveAnimeTl.to(section1.value, { opacity: 1, duration: 0 })
-  //           section1AnimeTl.seek(0);
-  //         }
-  //       },
-  //       onEnter: () => {
-  //         gsap.to(window ,{ duration: 1, scrollTo: { y: section2.value.offsetTop, autoKill: false } });
-  //       },
-  // });
-
-  //   const trigger1 = ScrollTrigger.create({
-  //   trigger: section2.value,
-  //   start: 'top+=50 bottom',
-  //   endTrigger: section1.value,
-  //   end: 'top top',
-  //   markers: true,
-  //   onToggle: (self) => {
-  //     console.log(123456);
-  //     if (self.isActive) {
-  //       console.log(123);
-  //       gsap.to(window ,{ duration: 1, scrollTo: { y: section1.value.offsetTop, autoKill: false } });
-  //     } else {
-  //       console.log(456);
-  //     }
-  //   },
-  // });
-
-  // const trigger1 = ScrollTrigger.create({
-  //   trigger: section1.value,
-  //   start: 'top top',
-  //   endTrigger: section2.value,
-  //   end: 'bottom top',
-  //   onToggle: (self) => {
-  //     if (self.isActive) {
-  //       section1LeaveAnime();
-  //     } else {
-  //       section1LeaveAnimeTl.to(section1.value, { opacity: 1, duration: 0 })
-  //       section1AnimeTl.seek(0);
-  //     }
-  //   },
-  //   onEnterBack: () => {
-  //     gsap.to(window ,{ duration: 1, scrollTo: { y: section1.value.offsetTop, autoKill: false } });
-  //   },
-  //   onLeave: () => {
-  //     gsap.to(window ,{ duration: 1, scrollTo: { y: section2.value.offsetTop - 100, autoKill: false } });
-  //   }
-  // });
 });
 
-defineExpose({
-  // scrollIntoView,
-});
 </script>

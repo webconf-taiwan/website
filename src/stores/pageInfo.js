@@ -1,8 +1,8 @@
-import { defineStore } from 'pinia';
+import { defineStore } from "pinia";
 
-export const usePageInfoStore = defineStore('pageInfo', {
+export const usePageInfoStore = defineStore("pageInfo", {
   state: () => ({
-    currentPageName: 'home',
+    currentPageName: "home",
   }),
   actions: {
     setCurrentPageName(name) {
