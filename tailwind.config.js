@@ -89,9 +89,6 @@ export default {
         119: "119px",
         167: "167px",
       },
-      fontFamily: {
-        rajdhani: ["Rajdhani", "sans-serif"],
-      },
       fontSize: {
         32: "32px",
         56: "56px",

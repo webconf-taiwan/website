@@ -4,9 +4,7 @@
       <div class="w-6 h-6 bg-cover fbIcon"></div>
     </a>
     <div class="m-2 w-0.5 h-10 bg-custom-teal-500"></div>
-    <p class="text-sm writing-vertical text-custom-teal-500 font-rajdhani">
-      Webconf 2023 All Rights Reserved.
-    </p>
+    <p class="text-sm writing-vertical text-custom-teal-500">Webconf 2023 All Rights Reserved.</p>
   </div>
 </template>
 
