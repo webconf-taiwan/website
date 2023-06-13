@@ -12,7 +12,7 @@
     ></div>
     <div ref="loadingAnime" class="flex flex-col items-center">
       <img
-        src="@/assets/images/spider.svg"
+        src="@/assets/images/spider.svg?url"
         class="h-16 mb-2"
         alt="loading spider"
         style="transform: rotate(180deg)"
