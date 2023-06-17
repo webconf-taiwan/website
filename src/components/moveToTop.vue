@@ -37,5 +37,6 @@ const isScrollAtTop800 = () => {
 
 onMounted(() => {
   window.addEventListener("scroll", isScrollAtTop800);
+  moveToTop.value.style.opacity = 0;
 });
 </script>

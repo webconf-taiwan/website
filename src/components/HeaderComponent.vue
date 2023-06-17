@@ -1,5 +1,5 @@
 <template>
-  <!-- 當增加 header menu 的列表時 高度要增加 h-[348px] 每新增一個列表 + 88px -->
+  <!-- 當增加 header menu 的列表時 高度要增加 h-[436px] 每新增一個列表 + 88px -->
   <header
     class="fixed top-0 z-30 flex flex-col justify-between w-screen h-12 py-1 overflow-hidden duration-500 border-b md:right-0 md:w-60px md:h-screen bg-custom-gray-800 md:flex-row-reverse md:border-l md:border-b-0 border-custom-teal-700 transition-height"
     :class="{ 'h-[436px]': isShowMenuList, 'md:w-[270px]': isShowMenuList }"

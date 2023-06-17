@@ -97,7 +97,7 @@ const scrollHandler = () => {
   const clientHeight = document.documentElement.clientHeight - 446;
   const isBottom = scrollTop > clientHeight;
 
-  fbDecorativeLink.value.style.opacity = isBottom ? 1 : 0;
+  fbDecorativeLink.value.style.opacity = isBottom ? 0 : 1;
 };
 
 onMounted(() => {
