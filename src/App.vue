@@ -24,6 +24,7 @@
   left: 0;
   width: 100vw;
   height: 100vh;
+  background-image: url("@/assets/images/bg_m.png");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

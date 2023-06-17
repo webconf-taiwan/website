@@ -48,16 +48,19 @@
                 >
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
-                <button
-                  class="px-10 py-2 text-lg font-medium border-2 cursor-not-allowed whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 font-noto-sans"
+                <a
+                  href="https://www.accupass.com/event/2306070448221749426689"
+                  target="_blank"
+                  class="px-10 py-2 text-lg font-medium border-2 whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 duration-300 hover:text-custom-teal-500 hover:bg-custom-teal-700"
                 >
                   即將開賣
-                </button>
+                </a>
 
                 <!-- 購票按鈕 -->
                 <!-- <a
-                  href="#"
-                  class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 font-noto-sans"
+                  href="https://www.accupass.com/event/2306070448221749426689"
+                  target="_blank"
+                  class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
                   >前往購票</a
                 > -->
               </div>
@@ -538,16 +541,19 @@
             ></div>
           </div>
           <div class="bg-cover timeAdd w-300 h-14 md:w-588 md:h-8 mb-7"></div>
-          <button
-            class="px-10 py-2 mb-4 text-lg font-medium border-2 cursor-not-allowed whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 font-noto-sans"
+          <a
+            href="https://www.accupass.com/event/2306070448221749426689"
+            target="_blank"
+            class="px-10 py-2 mb-4 text-lg font-medium border-2 whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 duration-300 hover:text-custom-teal-500 hover:bg-custom-teal-700"
           >
             即將開賣
-          </button>
+          </a>
 
           <!-- 購票按鈕 -->
           <!-- <a
-            href="#"
-            class="px-10 py-2 mb-4 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 font-noto-sans"
+            href="https://www.accupass.com/event/2306070448221749426689"
+            target="_blank"
+            class="px-10 py-2 mb-4 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
             >前往購票</a
           > -->
 
