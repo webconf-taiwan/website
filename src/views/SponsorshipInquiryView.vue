@@ -35,7 +35,19 @@
 </template>
 
 <script setup>
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { usePageInfoStore } from "@/stores/pageInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
+
+const route = useRoute();
+
+const pageInfoStore = usePageInfoStore();
+const { setCurrentPageName } = pageInfoStore;
+
+onMounted(() => {
+  setCurrentPageName(route.name);
+});
 </script>
 
 <style lang="scss" scoped></style>
