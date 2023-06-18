@@ -34,6 +34,9 @@ const router = createRouter({
       component: () => import("@/views/SpeakerModalDemoView.vue"),
     },
   ],
+  scrollBehavior() {
+    return { top: 0 };
+  },
 });
 
 export default router;

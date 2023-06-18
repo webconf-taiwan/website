@@ -14,7 +14,7 @@
       ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
     ></a>
 
-    <div class="flex flex-col items-center mb-20">
+    <div class="flex flex-col items-center mt-12 mb-16 md:mt-0">
       <StylingTitle>
         <template #default>
           <span>講者陣容</span>
@@ -94,10 +94,14 @@ const fbDecorativeLink = ref();
 
 const scrollHandler = () => {
   const { scrollTop } = document.documentElement;
-  const clientHeight = document.documentElement.clientHeight - 446;
+  const clientHeight = document.documentElement.clientHeight - 470;
   const isBottom = scrollTop > clientHeight;
 
   fbDecorativeLink.value.style.opacity = isBottom ? 0 : 1;
+
+  console.log("scrollTop", scrollTop);
+  console.log("clientHeight", clientHeight);
+  console.log("isBottom", isBottom);
 };
 
 onMounted(() => {
