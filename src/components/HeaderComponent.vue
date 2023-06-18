@@ -152,7 +152,7 @@
           }"
         >
           <router-link href="#" :to="{ name: `${item.home}` }" @click="toggleMenuList">
-            <p class="mb-4 text-xl leading-6 whitespace-nowrap md:text-4xl">{{ item.ChtName }}</p>
+            <p class="text-xl leading-6 whitespace-nowrap md:text-4xl">{{ item.ChtName }}</p>
             <p class="text-sm leading-6 whitespace-nowrap md:text-base">
               {{ item.EngName }}
             </p>
