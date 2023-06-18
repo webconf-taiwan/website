@@ -2,7 +2,6 @@
   <!-- loading 畫面 -->
   <div
     ref="loading"
-    v-if="loading"
     class="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen bg-custom-gray-900"
   >
     <div
@@ -49,18 +48,20 @@
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
                 <a
+                  ref="sellBtn"
                   href="https://www.accupass.com/event/2306070448221749426689"
                   target="_blank"
-                  class="px-10 py-2 text-lg font-medium border-2 whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 duration-300 hover:text-custom-teal-500 hover:bg-custom-teal-700"
+                  class="px-10 py-2 text-lg font-medium border-2 whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 duration-300 hover:text-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
                 >
                   即將開賣
                 </a>
 
                 <!-- 購票按鈕 -->
                 <!-- <a
+                  ref="sellBtn"
                   href="https://www.accupass.com/event/2306070448221749426689"
                   target="_blank"
-                  class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
+                  class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
                   >前往購票</a
                 > -->
               </div>
@@ -802,7 +803,7 @@ const moveBack = (previousRefValue) => {
 };
 
 const showHomePage = () => {
-  gsap.to(loading.value, { autoAlpha: 0, duration: 0.5 });
+  gsap.to(loading.value, { autoAlpha: 0, duration: 0 });
   section1Anime();
   toggleTrafficInfo("car", "開車", true);
 };
@@ -812,7 +813,15 @@ const section1LeaveAnimeTl = gsap.timeline();
 
 const section1Anime = () => {
   section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
-  section1AnimeTl.from(sellBtn.value, { duration: 0.5, opacity: 0, ease: "power4.out" });
+  section1AnimeTl.fromTo(sellBtn.value, 
+  {
+    opacity: 0,
+  },
+  {
+    opacity: 1,
+    duration: 0.5,
+    ease: "power4.out",
+  },)
   section1AnimeTl.fromTo(
     bannerText.value,
     {
@@ -932,7 +941,7 @@ const scrollIntoView = (num) => {
 };
 
 // loading
-const loading = ref(true);
+const loading = ref(null);
 const loadingAnime = ref();
 const loadingLine = ref();
 const spider = ref();
@@ -957,9 +966,10 @@ function updateLoading() {
     loadingPercent.value = 100;
   }, 800);
 
-  setTimeout(() => {
-    loading.value = false;
-  }, 1000);
+  // setTimeout(() => {
+  //   // loading.value = false;
+  //   // loading.value.style.opacity = 0
+  // }, 1000);
 }
 
 const handleScroll = async () => {
