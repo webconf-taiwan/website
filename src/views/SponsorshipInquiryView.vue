@@ -1,9 +1,9 @@
 <template>
-  <div class="relative py-16 px-5 md:px-5 md:h-[calc(100vh-56px)] overflow-y-auto">
+  <div class="relative py-20 md:py-16 px-5 md:h-[calc(100vh-56px)] overflow-y-auto">
     <a href="#"
       ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
     ></a>
-    <div class="flex flex-col items-center mb-8 mt-12 mb-16 md:mt-0">
+    <div class="flex flex-col items-center mb-8">
       <StylingTitle>
         <template #default>
           <span>贊助夥伴</span>

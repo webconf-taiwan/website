@@ -1,5 +1,5 @@
 <template>
-  <div class="relative py-16">
+  <div class="relative py-20 md:py-16">
     <div
       ref="fbDecorativeLink"
       class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6"
@@ -14,7 +14,7 @@
       ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
     ></a>
 
-    <div class="flex flex-col items-center mt-12 mb-16 md:mt-0">
+    <div class="flex flex-col items-center mb-16">
       <StylingTitle>
         <template #default>
           <span>講者陣容</span>
