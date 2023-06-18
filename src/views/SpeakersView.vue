@@ -98,10 +98,6 @@ const scrollHandler = () => {
   const isBottom = scrollTop > clientHeight;
 
   fbDecorativeLink.value.style.opacity = isBottom ? 0 : 1;
-
-  console.log("scrollTop", scrollTop);
-  console.log("clientHeight", clientHeight);
-  console.log("isBottom", isBottom);
 };
 
 onMounted(() => {
