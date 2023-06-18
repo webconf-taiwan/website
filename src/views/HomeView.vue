@@ -47,23 +47,15 @@
                 >
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
+
+                <!-- 購票按鈕 -->
                 <a
                   ref="sellBtn"
                   href="https://www.accupass.com/event/2306070448221749426689"
                   target="_blank"
-                  class="px-10 py-2 text-lg font-medium border-2 whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 duration-300 hover:text-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
-                >
-                  即將開賣
-                </a>
-
-                <!-- 購票按鈕 -->
-                <!-- <a
-                  ref="sellBtn"
-                  href="https://www.accupass.com/event/2306070448221749426689"
-                  target="_blank"
                   class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
-                  >前往購票</a
-                > -->
+                  >即將開賣</a
+                >
               </div>
             </div>
           </div>
@@ -148,6 +140,7 @@
           <div
             id="speaker"
             class="md:absolute md:transform md:-translate-x-1/2 md:top-60 md:right-0"
+            :class="{ topHight: isWindowHeight }"
           >
             <div
               ref="logoMan3"
@@ -542,21 +535,14 @@
             ></div>
           </div>
           <div class="bg-cover timeAdd w-300 h-14 md:w-588 md:h-8 mb-7"></div>
+
+          <!-- 購票按鈕 -->
           <a
             href="https://www.accupass.com/event/2306070448221749426689"
             target="_blank"
-            class="px-10 py-2 mb-4 text-lg font-medium border-2 whitespace-nowrap border-custom-teal-500 text-custom-teal-700 bg-custom-gray-900 duration-300 hover:text-custom-teal-500 hover:bg-custom-teal-700"
-          >
-            即將開賣
-          </a>
-
-          <!-- 購票按鈕 -->
-          <!-- <a
-            href="https://www.accupass.com/event/2306070448221749426689"
-            target="_blank"
             class="px-10 py-2 mb-4 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
-            >前往購票</a
-          > -->
+            >即將開賣</a
+          >
 
           <a
             href="https://www.facebook.com/WebConfTaiwan"
@@ -701,6 +687,10 @@
   .timeAdd {
     background-image: url("@/assets/images/time_add.svg");
   }
+
+  .topHight {
+    top: 9rem;
+  }
 }
 </style>
 
@@ -742,6 +732,7 @@ const section6 = ref();
 const banner = ref(null);
 const bannerText = ref(null);
 const sellBtn = ref(null);
+const isWindowHeight = ref(false);
 
 const logoMan3 = ref();
 const speaker1 = ref();
@@ -965,11 +956,6 @@ function updateLoading() {
   setTimeout(() => {
     loadingPercent.value = 100;
   }, 800);
-
-  // setTimeout(() => {
-  //   // loading.value = false;
-  //   // loading.value.style.opacity = 0
-  // }, 1000);
 }
 
 const handleScroll = async () => {
@@ -1001,10 +987,18 @@ const handleScroll = async () => {
   }, 500);
 };
 
+
+const detectWindowHeight = () => {
+  const windowHeight = window.innerHeight;
+
+  isWindowHeight.value = windowHeight < 746? true : false;
+}
+
 onMounted(() => {
   // 計算蜘蛛圖片距離視窗最上方的距離
   calculateSpiderTop();
-
+  detectWindowHeight();
+  
   // 模擬載入過程
   showHome.value = true;
   setTimeout(() => {
