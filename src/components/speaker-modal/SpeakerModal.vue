@@ -211,12 +211,13 @@ onBeforeUnmount(() => {
 });
 </script>
 
-<style>
+<!-- scope 會使svg失效 -->
+<style scoped>
 .bg-drop-blur {
   backdrop-filter: blur(8px);
 }
 
-.svg-fill-current path {
+.svg-fill-current :deep(path) {
   fill: currentColor;
 }
 
@@ -226,7 +227,7 @@ onBeforeUnmount(() => {
   height: 20px;
 }
 
-.stroke-current path {
+.stroke-current :deep(path) {
   stroke: currentColor;
 }
 
