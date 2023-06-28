@@ -7,6 +7,10 @@
       <StylingFBLink></StylingFBLink>
     </div>
 
+    <div class="fixed bottom-[180px] md:hidden right-2 sm:right-1 z-10">
+      <OpenFilter></OpenFilter>
+    </div>
+
     <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-10">
       <MoveToTop></MoveToTop>
     </div>
@@ -56,6 +60,8 @@
       </ul>
     </div>
   </div>
+
+  <FilterTool></FilterTool>
 </template>
 
 <style scoped>
@@ -82,7 +88,9 @@ import { useRoute } from "vue-router";
 import { usePageInfoStore } from "@/stores/pageInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
-import MoveToTop from "@/components/moveToTop.vue";
+import MoveToTop from "@/components/MoveToTopp.vue";
+// import OpenFilter from "@/components/OpenFilter.vue";
+// import FilterTool from "@/components/FilterComponent.vue";
 import { speakers } from "@/content/speakers";
 
 const route = useRoute();
