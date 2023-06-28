@@ -28,13 +28,10 @@ const scrollToTop = () => {
 };
 
 const isScrollAtTop800 = () => {
-  console.log(1);
   if (window.scrollY > 800) {
     moveToTop.value.style.opacity = 1;
-    console.log(2);
   } else {
     moveToTop.value.style.opacity = 0;
-    console.log(3);
   }
 };
 
