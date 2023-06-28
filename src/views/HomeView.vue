@@ -906,10 +906,7 @@ const scrollIntoView = (num) => {
   const section1Height = section1.value.offsetHeight;
   const section2Height = section2.value.offsetHeight;
   const scrollPosition = section1Height + section2Height - 50;
-
-  console.log("section1Height", section1Height);
-  console.log("section2Height", section2Height);
-  console.log("scrollPosition", scrollPosition);
+  
   switch (num) {
     case 1:
       section1.value.scrollIntoView({ behavior: "smooth" });
