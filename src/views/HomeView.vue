@@ -54,7 +54,7 @@
                   href="https://www.accupass.com/event/2306070448221749426689"
                   target="_blank"
                   class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
-                  >即將開賣</a
+                  >前往購票</a
                 >
               </div>
             </div>
@@ -541,7 +541,7 @@
             href="https://www.accupass.com/event/2306070448221749426689"
             target="_blank"
             class="px-10 py-2 mb-4 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
-            >即將開賣</a
+            >前往購票</a
           >
 
           <a
@@ -906,6 +906,7 @@ const scrollIntoView = (num) => {
   const section1Height = section1.value.offsetHeight;
   const section2Height = section2.value.offsetHeight;
   const scrollPosition = section1Height + section2Height - 50;
+  
   switch (num) {
     case 1:
       section1.value.scrollIntoView({ behavior: "smooth" });
@@ -958,7 +959,7 @@ function updateLoading() {
   }, 800);
 }
 
-const handleScroll = async () => {
+const handleScroll = () => {
   if (isClicking.value) {
     // 若正在點擊操作中，則不處理滾輪事件
     return;
@@ -1020,7 +1021,7 @@ onMounted(() => {
   setTimeout(() => {
     const viewportWidth = window.innerWidth;
     if (viewportWidth >= 768) {
-      window.addEventListener("scroll", handleScroll);
+      window.addEventListener("wheel", handleScroll);
       section3Anime();
     }
   });
