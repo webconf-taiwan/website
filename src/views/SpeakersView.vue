@@ -88,7 +88,7 @@ import { useRoute } from "vue-router";
 import { usePageInfoStore } from "@/stores/pageInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
-import MoveToTop from "@/components/MoveToTopp.vue";
+import MoveToTop from "@/components/MoveToTop.vue";
 // import OpenFilter from "@/components/OpenFilter.vue";
 // import FilterTool from "@/components/FilterComponent.vue";
 import { speakers } from "@/content/speakers";
