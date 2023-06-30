@@ -8,7 +8,7 @@ import { fileURLToPath, URL } from "node:url";
 export default defineConfig({
   plugins: [
     vue(),
-    svgLoader(),
+    svgLoader({ svgo: false }),
     eslintPlugin({
       include: ["src/**/*.js", "src/**/*.vue", "src/*.js", "src/*.vue"],
     }),

@@ -22,10 +22,7 @@
           即刻加入 <br />
           成為<span class="text-custom-pink-700">贊助夥伴</span>
         </p>
-        <a
-          href="mailto:hi@webconf.tw?subject=WebConf 贊助廠商諮詢"
-          class="inline-block font-semibold leading-none bg-custom-teal-500 py-4 px-9 text-lg"
-        >
+        <a href="mailto:hi@webconf.tw?subject=WebConf 贊助廠商諮詢" class="mailto-button">
           前往諮詢
         </a>
       </div>
@@ -52,5 +49,19 @@ onMounted(() => {
 <style scoped>
 .logoTxt {
   background-image: url("@/assets/images/logo_windows_txt.png");
+}
+
+.mailto-button {
+  @apply inline-block font-semibold leading-none py-4 px-9 text-lg;
+  @apply bg-custom-teal-500 text-black;
+  @apply border-transparent border;
+}
+
+.mailto-button:hover {
+  @apply bg-custom-teal-700 text-custom-teal-500 border-custom-teal-500 border;
+}
+
+.mailto-button:active {
+  @apply bg-custom-teal-500  text-black;
 }
 </style>

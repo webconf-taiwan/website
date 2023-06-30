@@ -1,0 +1,584 @@
+{
+  "timestamp": "20230629013348",
+  "data": [
+    {
+      "timestamp": "2023/5/26 下午 10:02:33",
+      "speakerName": "Kat",
+      "organization": "iCHEF",
+      "jobTitle": "Product Designer",
+      "personalIntroduction": "擁有 5 年的產品設計經驗，不只把設計視為一份職業，更是一種生活方式。\n\n目前在 iCHEF 擔任產品設計師，專注於提升餐飲業營運品質和效率，讓設計成為協助店家成長的力量。過去曾在顧問公司果思設計和「國泰金控、悠遊卡、震旦」等品牌合作執行過 Web/App 專案。\n\n除了在畫布上揮灑想法，也會將想法轉化為文字，透過寫作傳遞學習經驗和閱讀體悟。現已在 Medium 平台累積 3K 名追蹤者，同時也是「重構閱讀」創辦人，在 Instagram 擁有超過 3K 名追蹤者。近日更提供職涯健檢服務，和設計師一起探索職涯下一步。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1LMj_LdEfD5jERrt_yRH9tlEF60zuwp5G",
+      "facebookProfileLink": "https://www.facebook.com/kat.wang.1996/",
+      "twitterProfileLink": "",
+      "otherLinks": "https://www.instagram.com/",
+      "speechTopic": "從共憤走向共創：如何拉齊工程師與設計師心中的「品質標準」",
+      "speechSummary": "不論是在甲方或乙方、在大公司或新創、在各種類型的產業，「工程師與設計師的協作」一直是經常被討論的重要議題。表層上看似是溝通問題，然而把鏡頭拉遠以後，會發覺其實從產品策略到設計文件交付，都會影響溝通有效性。\n\n這場講座不會只談及「溝通方法」（你我都知道能好好執行的人並不多 😅），而是著重於實際可執行的「工作流程」改善計畫，讓設計師和工程師之間的拉鋸，能轉向共同努力的目標。",
+      "categoryTags": [
+        "UI / UX",
+        "團隊管理"
+      ],
+      "targetAudience": "・工作中，需要與工程師密集溝通的「設計師」\n・工作中，需要與設計師密集溝通的「工程師」",
+      "expectedBenefits": "針對以下痛點進行討論與分析：\n\n・如何訂定一致的產品目標，讓設計師與工程師有共同努力的方向？\n・如何讓工程師了解設計的價值與決策原因，一起提升使用體驗品質？\n・面臨主情境以外的 Edge Case，如何和工程師合作規劃符合成本的設計方案？\n\n（實際內容可能會再進行微調）",
+      "contactEmail": "kat.wang@ichef.com.tw"
+    },
+    {
+      "timestamp": "2023/5/27 上午 3:27:52",
+      "speakerName": "范聖佑",
+      "organization": "JetBrains",
+      "jobTitle": "技術傳教士",
+      "personalIntroduction": "JetBrains 技術傳教士，負責推廣 IDE 工具及開放原始碼技術。平時醉心於技術研究，期待能將複雜的技術詞彙以通俗易懂的方式讓人人都能吸收。工作之餘積極參與 PHP 及 Kotlin 社群運作，曾創辦 Laravel 道場、LaravelConf Taiwan、Kotlin 讀書會/練功場及 Kotlin 中文開發者大會，錄了 Kotlin 爐邊漫談 Podcast，還意外出了一本《Kotlin Collection 全方位解析攻略》。技術之外是位甜點吃貨。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1_RWONcrIKve_93kXVYvASlwl1d88wQvw",
+      "facebookProfileLink": "https://fb.me/shengyoufan",
+      "twitterProfileLink": "https://twitter.com/shengyou",
+      "otherLinks": "",
+      "speechTopic": "一份 Zend Engine 外帶！透過 Micro 讓一次打包、多處運行變得可能",
+      "speechSummary": "經過 27 年的發展，PHP 的許多部份已脫離了當初設計的使用方式，拿來寫 CLI 工具就是一個經典的例子。不過要執行 PHP 指令仍得依賴 Zend Engine，怎樣才能做到類似 Rust 或 Go 那種一次打包、多處執行的效果呢？Micro 專案給出了一個極具創意的答案：透過將 PHP 程式與輕量的 Zend Engine 打包，就能做出多個平台的 Binary 執行檔。在這場分享裡，將介紹 Micro 專案發起的緣由、底層的運作機制及可以應用的情境，並實際示範幾個應用程式打包的情境，打開大家對 PHP Runtime、應用程式打包及發佈的想像。",
+      "categoryTags": [
+        "Backend"
+      ],
+      "targetAudience": "具 PHP 開發背景，想要了解 PHP 在不同面向應用可能性的開發者",
+      "expectedBenefits": "聽完這場分享，將會對如何將 PHP 程式打包成多平台 Binary 執行檔的流程有更進一步的認識",
+      "contactEmail": "shengyou.fan@jetbrains.com"
+    },
+    {
+      "timestamp": "2023/5/29 下午 1:23:22",
+      "speakerName": "游舒帆",
+      "organization": "商業思維學院",
+      "jobTitle": "院長",
+      "personalIntroduction": "商業思維學院院長，致力於提升所有人的商業思維。技術背景，具有 15 年以上的技術管理經驗，始終認為科技與商業是改變世界的兩股重要力量，長期關注技術管理與科技管理相關議題。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1jlQLsE9lQlXNrqnRfkn8Gy9n91veaOQb",
+      "facebookProfileLink": "https://www.facebook.com/gipi.net/",
+      "twitterProfileLink": "https://twitter.com/gipiyu",
+      "otherLinks": "https://bizthinking.com.tw/",
+      "speechTopic": "跳脫技術職與管理職的二分選擇，技術管理職讓職涯無限寬廣",
+      "speechSummary": "技術擔任技術職，或者走向管理職？這是多數技術工作者在職涯發展過程中會遭遇到的問題。而我卻認為這種二分選擇經常會讓我們職涯變得狹隘且不快樂，有些人為了更好的薪水或發展性選擇了管理職，但卻放下了最喜歡的技術工作，另一些人則為了避免面對人與承擔責任，選擇了技術從事技術工作，但卻也失去了成長與提升收入的機會。\n\n我認為所有的資深技術人員，在專業能力之外，也都需要具備「管理能力」，包含帶人、帶專案、建立流程與領導團隊。\n\n你該思考的不是技術或管理二選一，而是如何將技術與管理進行整合思考，讓自己的職涯擁有更多且更好的選擇。",
+      "categoryTags": [
+        "團隊管理"
+      ],
+      "targetAudience": "1.在技術職與管理職中間糾結的人\n2.擔任管理職務，但覺得自己專業停滯的人\n3.所有的技術工作者",
+      "expectedBenefits": "在做出職涯選擇時能跳脫技術或管理的二分法。",
+      "contactEmail": "james00668@gmail.com"
+    },
+    {
+      "timestamp": "2023/5/30 上午 10:09:47",
+      "speakerName": "Ruddy 老師",
+      "organization": "集英信誠公司 敏捷顧問",
+      "jobTitle": "敏捷顧問",
+      "personalIntroduction": "《精實開發與看板方法》、《Windows Azure雲端開發》、《WF工作流程引擎程序設計》等書的作者。為專業的軟體工程顧問、Scrum及看板課程教學的講師。擔任過四家資訊公司的研發部經理。擅長帶領專案開發工作，擁有超過40年以上的程序撰寫經驗，為二岸敏捷開發的專業講師。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1uQIOyfpTeI2G-YkBBmEg02-YRblNvVOy",
+      "facebookProfileLink": "",
+      "twitterProfileLink": "",
+      "otherLinks": "https:///ruddyblog.wordpress.com",
+      "speechTopic": "AI 驅動下的開發者體驗",
+      "speechSummary": "在AI驅動變革的時代下； 生成式AI代表著整個軟件開發自動化的未來已經不再是夢想，在微軟為Azure、Office、Visual Studio一系列產品推出Copilot之後，如何運用AI進行開發作業已經變成了工程師的一種必備技能，在這種情境下工程師應該要如何調適、如何成長呢? 作為資深工程師或IT主管的人又應該如何帶領團隊、如何給予協助呢? 在這個AI驅動變革的時代下要怎麼做才能讓團隊既能完成任務又能順利的成長呢? 本session正是要針對這些問題提出解決之道。",
+      "categoryTags": [
+        "Agile",
+        "DevOps",
+        "團隊管理"
+      ],
+      "targetAudience": "開發人員及團隊主管",
+      "expectedBenefits": "1. 認識 AI 驅動變革的核心要素\n2. 了解 AI 時代的開發者體驗\n3. 認知 IT 部門應對新開發者體驗的解決方案",
+      "contactEmail": "ruddyl.lee@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/3 上午 10:40:17",
+      "speakerName": "劉艾霖 (AILIN LIOU)",
+      "organization": "遠距工作者在台灣",
+      "jobTitle": "社群創辦人",
+      "personalIntroduction": "「遠距工作者在台灣」社群創辦人，致力於推廣遠距工作型態，並積極參與各類社群活動。 曾任 MOPCON 年會講者、JSDC 年會講者、ModernWeb 年會講者。 關注焦點於軟體開發、領導遠距開發團隊、區塊鏈、Web 以及 DevOps 領域。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1bXDvJS3Dx9V1vowFcV6Z4zisFMKva8xa",
+      "facebookProfileLink": "https://www.facebook.com/profile.php?id=100011110445729",
+      "twitterProfileLink": "",
+      "otherLinks": "",
+      "speechTopic": "建立高效的遠端協作團隊：策略和實踐",
+      "speechSummary": "分享建立高效遠端協作團隊的策略和最佳實踐，包括溝通方法、協作方法和團隊文化等方面的建議。",
+      "categoryTags": [
+        "團隊管理"
+      ],
+      "targetAudience": "1. 企業主管和管理層：這些人可能負責決策和實施遠端協作策略\n2. 團隊領導者：包括專案經理、團隊主管或團隊負責人，他們負責組織和管理遠端協作團隊\n3. 遠端協作團隊成員",
+      "expectedBenefits": "- 了解建立高效遠端協作團隊的重要性和益處，並能夠更好地評估和支持遠端協作策略。\n- 學習如何建立和管理高效的遠端協作團隊\n- 瞭解如何在遠端環境中更有效地協作和溝通，以提高工作效率和團隊合作。",
+      "contactEmail": "alin.code@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/5 下午 3:24:43",
+      "speakerName": "周詳",
+      "organization": "數位發展部",
+      "jobTitle": "解決方案架構師",
+      "personalIntroduction": "曾任職於行政院，畢業於交大資工所，專注於網頁前後端開發、系統維運、Kubernetes、DevOps、Zero Trust，致力於將新技術導入政府機關。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1ft57xv1U3bFNmh2Qr-d9mzk_CijI7rBC",
+      "facebookProfileLink": "https://www.facebook.com/zhouxiang.net/",
+      "twitterProfileLink": "無",
+      "otherLinks": "https://medium.com/chouhsiang",
+      "speechTopic": "數位發展部官網如何做到網站韌性與零信任",
+      "speechSummary": "透過數位發展部官網為例，講解網站結合了包含網站韌性、SSG、IPFS、Cloud Native、Kubernetes、DevOps、Zero Trust等概念。",
+      "categoryTags": [
+        "Frontend",
+        "Backend",
+        "DevOps",
+        "Security"
+      ],
+      "targetAudience": "開發者、政府人員",
+      "expectedBenefits": "開發者、政府人員",
+      "contactEmail": "hchou@moda.gov.tw"
+    },
+    {
+      "timestamp": "2023/6/7 下午 1:02:02",
+      "speakerName": "Summer Tang",
+      "organization": "趨勢科技",
+      "jobTitle": "資深前端工程師",
+      "personalIntroduction": "我是 Summer，熱愛前端技術的前端工程師，是《打造高速網站，從網站指標開始！全方位提升使用者體驗與流量的關鍵》與技術部落格「Summer。桑莫。夏天」的作者。相信知識的分享能打破隔閡、讓世界更加美好。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1Fq4ltrviRMv9IP2zuhkpVEpWNh2hiXkp",
+      "facebookProfileLink": "https://www.facebook.com/cythilya",
+      "twitterProfileLink": "https://twitter.com/cythilya",
+      "otherLinks": "https://www.cythilya.tw/",
+      "speechTopic": "從零打造前端效能監測系統",
+      "speechSummary": "如何評估前端效能、用什麼工具打造監測系統",
+      "categoryTags": [
+        "Frontend",
+        "UI / UX"
+      ],
+      "targetAudience": "無限制",
+      "expectedBenefits": "如何評估前端效能、怎麼打造適合自己的監測系統",
+      "contactEmail": "cythilya@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/7 下午 11:40:14",
+      "speakerName": "蔡明哲",
+      "organization": "悠識數位顧問股份有限公司",
+      "jobTitle": "UX Coach 暨創辦人",
+      "personalIntroduction": "- 經歷過技術人、行銷人，最後成為 UX 人及創業人 (生意人）\n- 職涯路徑曲折難以規劃，老天巧思安排塑造獨特連結，第二人生階段以助人成長為樂趣，\n- 負責悠識學院營運，使命是培養跟產業需求對接的 UX 人才",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1C6OtQreKSdRiMB50Svv2ZyDw9s7KPRN3",
+      "facebookProfileLink": "https://fb.me/uxrichard",
+      "twitterProfileLink": "",
+      "otherLinks": "",
+      "speechTopic": "主題待定 (草案 - 溝通 - 透過用戶研究來搞定需求的眉眉角角)",
+      "speechSummary": "草稿: 產品設計需要跨多種專業, 及各方溝通, 收斂共識, 找出正確需求, 洞察用戶痛點, 一直都是數位產品與服務設計的難題, 關於團隊組織的設計開發溝通, 我們曾經遇到哪些挑戰? 以及如何找到解方?",
+      "categoryTags": [
+        "Frontend",
+        "UI / UX",
+        "Agile",
+        "DevOps",
+        "團隊管理"
+      ],
+      "targetAudience": "遭遇設計開發溝通難題的朋友",
+      "expectedBenefits": "分享一些設計開發溝通的技巧與方法, 尤其是用戶研究",
+      "contactEmail": "richard@userxper.com"
+    },
+    {
+      "timestamp": "2023/6/8 上午 12:29:23",
+      "speakerName": "吳哲宇",
+      "organization": "墨雨互動設計有限公司",
+      "jobTitle": "CEO / 藝術家",
+      "personalIntroduction": "墨雨互動設計創辦人、生成式藝術家，畢業於交大電機系、紐約大學整合數位媒體碩士。\n專精於探索藝術與工程的疆界、創造極致的互動式藝術體驗，透過結合電機工程背景的理性與音樂、藝術的感性，從自然、物理、現代藝術、數學韻律、現代音樂中取材，創造多元豐富的生成式演算作品；近年致力於持續推廣程式藝術，線上課程已引領超過萬名同學進入互動設計的世界。\n",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1dNIg4xaAsrf1TofYxYoG8AjN-_5yiaFU",
+      "facebookProfileLink": "https://www.facebook.com/cheyuwu345",
+      "twitterProfileLink": "https://twitter.com/cheyuwu345",
+      "otherLinks": "https://portaly.cc/cheyuwu",
+      "speechTopic": "藝術界線超進化-從創作到實踐，探索生成式藝術與前端互動技術的共舞",
+      "speechSummary": "* 演算法與資料：創造數位的物件與生命\n* 如何踏入生成式藝術、前端與互動設計的世界\n* 破除媒介框架：多元感官藝術 - 互動機制與體驗多元性\n* 生成式數位藝術對於品牌、商業、藝術未來影響力實踐\n* 前端與藝術的整合: 數位藝術殿堂 Art Blocks與詩意的數位作品案例講解 \n",
+      "categoryTags": [
+        "Frontend",
+        "UI / UX"
+      ],
+      "targetAudience": "對如何將前端應用到藝術與互動設計領域有興趣的工程師、設計師與團隊",
+      "expectedBenefits": "對於工程師較不熟悉的互動設計與藝術領域，可以有更完整了瞭解與視野",
+      "contactEmail": "cheyu.wu@monoame.com"
+    },
+    {
+      "timestamp": "2023/6/11 下午 10:28:50",
+      "speakerName": "奶綠茶",
+      "organization": "PositiveGrid",
+      "jobTitle": "Frontend staff engineer",
+      "personalIntroduction": "喜歡前端，喜歡程式，喜歡吉他，喜愛小酌。\n資深前端開發者與程式開發講師，授課資歷十年以上，\n遊走前端 20 年，帶領團隊一起打群架，一起修理各種前端的疑難雜症。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=19dqQKnfi7VuXLghWl26c79xXYFC4FVlN",
+      "facebookProfileLink": "https://www.facebook.com/milkmidifans",
+      "twitterProfileLink": "",
+      "otherLinks": "https://milkmidi.medium.com/",
+      "speechTopic": "WebComponent 的好，用過的都知道",
+      "speechSummary": "jQuery 的好，15 年前大家都知道，React/Vue 的好，現在大家都知道，但想想你真的需要用到這些 Framework 嗎？原生的 WebComponent 或許是一種不同的開發思維，很適合應用在微前端，或是跨專案要共享元件的情境。\n\n透過奶綠實際在電商平台導入 WebComponent 的經驗，來和大家分享 WebComponent 的優與缺。",
+      "categoryTags": [
+        "Frontend"
+      ],
+      "targetAudience": "前端工程師",
+      "expectedBenefits": "1 什麼是 WebComponent。\n2 WebComponent 適合的專案情境。\n3 WebComponent 與 React/Vue 的整合。",
+      "contactEmail": "milkmidi@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/15 上午 8:41:09",
+      "speakerName": "黃升煌",
+      "organization": "多奇數位創意有限公司",
+      "jobTitle": "網站程式設計師",
+      "personalIntroduction": "目前任職於多奇數位創意有限公司，擔任全端工程師、企業顧問以及教育訓練講師； 曾在 Angular Taiwan、Modern Web 以及 .NET Conference 等技術論壇擔任講者；熱衷於分享所學的各種開發知識與經驗， 熟悉 Angular 及 .NET 相關技術。於 2020 年獲選為 Angular GDE 以及 Microsoft MVP。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1qqV1sKSDQN3lmqs55ZKbNw9n6e2ZnfKR",
+      "facebookProfileLink": "https://www.facebook.com/fullstackledder",
+      "twitterProfileLink": "https://twitter.com/wellwind",
+      "otherLinks": "https://fullstackladder.dev/",
+      "speechTopic": "無密碼時代降臨！使用 Passkeys 打造無密碼驗證服務",
+      "speechSummary": "在這個數位時代，資安事件層出不窮，密碼外流事件頻傳，傳統的密碼登入方式已經變得平凡到令人感到無聊。然而，這種登入方式也帶來了不少資安隱憂，因此我們迫切需要一種更安全的解決方案。\n\n幸運的是，現在我們有了一個令人振奮的解決方案 - Passkeys！FIDO 聯盟推出的 Passkeys 規格，將完全改變我們登入的方式。現在，使用者不再需要記住繁瑣的密碼，只需擁有自己的 Passkey，就能輕鬆完成驗證。同時，這也意味著網站管理者不再需要儲存使用者的密碼，消除了密碼外洩以及釣魚網站帶來的風險。\n\n本次分享將帶您深入探索 Passkeys 的原理，並透過實際的程式碼示範，展示如何實現 Passkeys 驗證服務。讓我們一同踏入安全的無密碼時代，探索未來資安的新里程碑！",
+      "categoryTags": [
+        "Frontend",
+        "Backend",
+        "Security"
+      ],
+      "targetAudience": "對於資案議題有興趣的前後端開發人員",
+      "expectedBenefits": "學會一種新型態的驗證模式",
+      "contactEmail": "wellwind@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/16 下午 11:54:20",
+      "speakerName": "莫力全 Kyle Mo",
+      "organization": "(近期應該會轉換工作，先不顯示)",
+      "jobTitle": "Software Engineer",
+      "personalIntroduction": "雜食性軟體工程師，有興趣的技術都想自己學一遍，尤其對於 Web 技術與社群有著極大的熱情。\n\n《今晚來點 Web 前端效能優化大補帖》作者，喜歡分享，相信人與人之間互相交流是進步最快的方式。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1b5WFAonXgKJe5nLcAabE6oO7gb0W6_pU",
+      "facebookProfileLink": "https://www.facebook.com/profile.php?id=100006903696165",
+      "twitterProfileLink": "no",
+      "otherLinks": "https://medium.com/@oldmo860617",
+      "speechTopic": "成為前端建築師吧！透過 Frontend Infra 為前端應用打造穩健且高效率的開發體驗",
+      "speechSummary": "每當提到前端開發，大多數人的腦海中浮現的往往是打造吸引人的 UI 畫面。然而，前端開發這個領域絕對不侷限於介面的開發。在眾多看不見的幕後，數不盡的細節正在默默地優化我們的開發效率和提高應用品質，例如效能監控與程式碼品質分析，這就是Frontend Infra 的魔法。在此次議程中，我將整理個人過去在企業中 Frontend Infra 團隊與 在 Side Projects 中協助打造前端基礎建設的經驗與心得，介紹前端基礎建設的重要性與組成元素，以及探討 Frontend Infra 與 DevOps 精神的重疊，並分享如何透過相關工具的協助，成功優化開發流程並提升應用品質。",
+      "categoryTags": [
+        "Frontend"
+      ],
+      "targetAudience": "對前端開發有興趣的朋友",
+      "expectedBenefits": "了解如何利用前端基礎設施的各種工具和元素，幫助團隊優化開發流程、解放生產力，並打造更穩固的前端應用",
+      "contactEmail": "oldmo860617@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/17 下午 5:50:37",
+      "speakerName": "Orange Tsai",
+      "organization": "DEVCORE",
+      "jobTitle": "首席資安研究員",
+      "personalIntroduction": "Cheng-Da Tsai, aka Orange Tsai, is the principal security researcher of DEVCORE and the core member of CHROOT security group in Taiwan. He is also the champion and got the \"Master of Pwn\" title in Pwn2Own 2021/2022. In addition, Orange has spoken at several top conferences such as Black Hat USA/ASIA, DEF CON, HITCON, HITB GSEC/AMS, CODE BLUE, POC, Hack.lu and WooYun!\n\nCurrently, Orange is a 0day researcher focusing on web/application security. His research got not only the Pwnie Awards winner for \"Best Server-Side Bug\" of 2019/2021 but also 1st place in \"Top 10 Web Hacking Techniques\" of 2017/2018. Orange also enjoys bug bounties in his free time. He is enthusiastic about the RCE bugs and uncovered RCEs in numerous vendors such as Microsoft, Apple, Facebook, Twitter, Uber, GitHub, Amazon, etc.\n\nTwitter: @orange_8361\nBlog: http://blog.orange.tw/",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1kFro7eS1K2RiiQYh_uXM5ZhUi82fF8jd",
+      "facebookProfileLink": "https://fb.com/Orange.8361",
+      "twitterProfileLink": "https://twitter.com/orange_8361",
+      "otherLinks": "https://blog.orange.tw/",
+      "speechTopic": "從 2013 到 2023: Web Security 十年之進化及趨勢!",
+      "speechSummary": "「都 2023 了網站不可能再出現資安漏洞吧？」 \n\n確實，隨著資安意識的抬頭，常見的資安問題基本都有防禦上的最佳實踐，開發者照著成熟的框架寫真的很難寫出漏洞，這些年要攻擊一個網站也確實感受到越來越困難 😩\n\n不過不只有開發者在進步，攻擊者也跟著時代與時俱進！隨著更底層的問題被挖掘、更複雜的攻擊手法被發明，網頁安全已不僅僅只是寫出安全的程式碼即可，這場議程會展示 Web Security 這十年來的演化、發展趨勢以及新興的攻擊手法，一起來看看一行程式碼都沒寫錯的網站還可以怎樣被攻擊吧！",
+      "categoryTags": [
+        "Frontend",
+        "Backend",
+        "Security"
+      ],
+      "targetAudience": "有實際開發經驗之網站開發者",
+      "expectedBenefits": "這場議程會展示 Web Security 這十年來的演化、發展趨勢以及新興的攻擊手法，一起來看看一行程式碼都沒寫錯的網站還可以怎樣被攻擊吧！",
+      "contactEmail": "orange@chroot.org"
+    },
+    {
+      "timestamp": "2023/6/18 下午 12:12:42",
+      "speakerName": "蒼時弦也",
+      "organization": "Gogolook",
+      "jobTitle": "Sr. Backend Engineer",
+      "personalIntroduction": "程式語言愛好者，主要使用 Ruby 語言，認為軟體開發也能具備美感，正在尋找滿足敏捷、架構與享受開發過程之間的平衡點。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=14m0ijP65P4y1AjDD4BdnDy0ymtnSURCR",
+      "facebookProfileLink": "https://www.facebook.com/aotoki.me",
+      "twitterProfileLink": "https://twitter.com/elct9620",
+      "otherLinks": "https://blog.aotoki.me",
+      "speechTopic": "選擇適合你的技能組合",
+      "speechSummary": "近十年來軟體產業蓬勃發展，許多新語言、框架跟工具都不斷被推出，我們應該如何選擇？我以一名 Ruby 愛好者的角度來說明持續選用 Ruby 的理由，來解釋問題沒有想像中困難，也不那麼單純。更多是我們自身的個性、環境影響，當我們了解一個語言跟框架的特性，就很好找到適合自己的工具和技能。",
+      "categoryTags": [
+        "Frontend",
+        "Backend"
+      ],
+      "targetAudience": "正在思考該學什麼的人們",
+      "expectedBenefits": "也許會對 Ruby 有一些興趣，開始保持對不常使用的工具、語言有興趣，能用開放的心態做新的嘗試，從用工具解決問題轉換到解決問題能用什麼工具。",
+      "contactEmail": "contact+webconf@aotoki.me"
+    },
+    {
+      "timestamp": "2023/6/18 下午 11:35:20",
+      "speakerName": "余虹儀",
+      "organization": "通用設計工作室",
+      "jobTitle": "創辦人",
+      "personalIntroduction": "從2005年接觸通用設計觀念後，即深受吸引，希望更多人可以認識這個充滿愛與關懷的設計觀念，進而落實於生活或工作之中，自助也助人，讓社會環境更友善，世界更美好。透過撰寫部落格、寫稿、演講、授課、帶領工作坊、策劃展覽及研究計畫等多種形式在台灣推動通用設計至今。碩士研究為通用設計（Universal design），博士研究為通用使用性（Universal usability）。著有《愛．通用設計》、《善用UX來提升UU》及「愛．通用設計的小魚」粉絲專頁。擅長以系統化與遊戲化的方式，讓學員用容易操作的方式學會通用設計、提升洞察力，快速且有效地進行產品或服務創新。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=16_mPDUA0Paj9Pb7f_LHEyIvmKnoKoFXY",
+      "facebookProfileLink": "https://www.facebook.com/fishloveud",
+      "twitterProfileLink": "https://twitter.com/horng_yi",
+      "otherLinks": "https://udfish.tw/",
+      "speechTopic": "迎向未來的介面設計：創造通用使用性介面以應對不同使用族群與環境",
+      "speechSummary": "在現今充滿數位科技的世界，介面無處不在。從手中的智慧型手機，到生活中的家電和軟體，介面設計影響著我們每個人的生活。加上先前新型冠狀病毒疫情爆發的期間，許多產業和商家因應大眾消費模式，盡量以減少人與人接觸的方式進行產品販售或服務，讓現代人使用介面的機會越來越多。另外，中高齡人口比例快速增加，更多使用者將面臨到因身體能力退化而產生的操作限制。因此考量到不同年齡、行動與感官能力、知識與經驗的使用者，希望滿足所有使用者需求的通用使用性（universal usability）將是現在及未來介面設計從業人員不得不面對的重要課題。",
+      "categoryTags": [
+        "UI / UX"
+      ],
+      "targetAudience": "介面設計、使用者經驗相關從業人員",
+      "expectedBenefits": "認識通用使用性理論與三大設計重點，了解其對於現代社會與未來介面設計領域的重要性。",
+      "contactEmail": "yu@udfish.tw"
+    },
+    {
+      "timestamp": "2023/6/20 上午 1:40:12",
+      "speakerName": "Caesar Chi",
+      "organization": "JSDC",
+      "jobTitle": "RD",
+      "personalIntroduction": "Caesar Chi \nNode.js 核心成員，JSDC 核心運營成員，LINE API Expert ，創星物聯 技術長",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1Mx7VDO1YyeiDWwhwnZbKPSptrFXQaEZt",
+      "facebookProfileLink": "https://www.facebook.com/clonncd/",
+      "twitterProfileLink": "https://twitter.com/clonncd",
+      "otherLinks": "https://blog.caesar-chi.com/",
+      "speechTopic": "為何技術老人這樣想那樣做？從技術前輩的視角理解技術決策",
+      "speechSummary": "我們將揭示那些資深工程師如何在不斷變化的技術世界中做出明智決策。這不僅是一場探索技術架構與選題的旅程，更是一個理解技術進步和領導決策的機會。\n\n作為初入職場或有志於走向資深之路的工程師，將從中學習如何以更高、更全面的視角看待科技發展與職場挑戰。這次的分享將為你開闢一條深入理解工程師心路歷程的通道，並且引領你在技術職業路上不斷進步，最終成為真正的資深工程師。\n\n從技術架構到技術選題到底如何考量，技術框架五花八門，十年河東十年河西，此場議題給予在這個環境中初入職或有志於資深之路發展的工程師們。\n",
+      "categoryTags": [
+        "Frontend",
+        "Agile",
+        "團隊管理"
+      ],
+      "targetAudience": "Senior Ready RD",
+      "expectedBenefits": "將從中學習如何以更高、更全面的視角看待科技發展與職場挑戰。這次的分享將為你開闢一條深入理解工程師心路歷程的通道，並且引領你在技術職業路上不斷進步，最終成為真正的資深工程師。",
+      "contactEmail": "clonncd@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/21 上午 2:39:37",
+      "speakerName": "李明",
+      "organization": "版塊 Block Studio",
+      "jobTitle": "版塊 Block Studio",
+      "personalIntroduction": "李明，現為 Block Studio 的創辦人暨設計總監、流石選物共同創辦人。\n\n於設計領域年資已超過10年，對於網站特效擁有深厚的知識與經驗於作品中展露無遺，擅於以品牌核心價值出發，輔佐「動態特效」為加成，以網站為主要媒介，不斷產出顛覆想像的作品。2015 年創立版塊設計，短短幾年榮獲多項國內外大獎肯定，包括 iF 設計獎、德國設計獎、金點設計獎、CSSDA、Awwwards 等，作品有 高雄流行音樂中心、台北流行音樂中心、TDRI數位簡介、可不可熟成紅茶網站、金曲獎GMA29活動網站...等，領域涵括藝文音樂、公共議題、金融和資訊科技等多元品牌、企業、活動等形象網站規劃。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1y6rZgB3Dy0sYzIoQXERJVJ32C9E_I0xo",
+      "facebookProfileLink": "https://www.facebook.com/lee.ming.144/",
+      "twitterProfileLink": "",
+      "otherLinks": "https://blockstudio.tw/blog/",
+      "speechTopic": "穿越互動特效網站演化的軌跡",
+      "speechSummary": "透過案例分析和趨勢探討了解網站動態特效的發展和變遷。掌握到動態特效如何影響網站設計和品牌態度傳達，並著重介紹現代網站設計中受歡迎的特效趨勢，讓您在設計中思考互動特效來創造令人難忘的網站體驗。無論設計師、開發人員還是對網頁設計感興趣的人，都可以讓本主題為您帶來洞見和啟發。",
+      "categoryTags": [
+        "Frontend",
+        "UI / UX"
+      ],
+      "targetAudience": "設計師、前端工程師、行銷人員",
+      "expectedBenefits": "擴展網頁設計領域的知識，了解互動特效網站的歷史演化，提升自身在該領域的專業知識和能力。",
+      "contactEmail": "info@blockstudio.tw / yako@blockstudio.tw"
+    },
+    {
+      "timestamp": "2023/6/21 下午 6:18:23",
+      "speakerName": "Eva Lin",
+      "organization": "新加坡商鈦坦科技",
+      "jobTitle": "Senior Product Designer",
+      "personalIntroduction": "任職於\"新加坡商坦科技\" ，一位兼具理性（Front-end）和感性（Design）的資深產品設計師。擅長於不同領域的團隊合作，運用設計思維和創意，尋找設計、技術和商業之間的平衡點，實現共同目標。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1V6RTxeckuIrMaLGooUomHG7tIgP0kBpF",
+      "facebookProfileLink": "",
+      "twitterProfileLink": "",
+      "otherLinks": "",
+      "speechTopic": "堆砌你獨一無二的專業價值 - 鈦坦設計師的開放式技能地圖分享",
+      "speechSummary": "在這個資訊爆炸且多元化的時代，設計師面臨著前所未有的挑戰和機遇。在職業發展中，如何建立起獨一無二的專業價值成為關鍵。\n\n這場演講將以設計師和公司設計主管的不同觀點，探討鈦坦設計師的職涯技能地圖。我們將分享如何根據不同的業務需求和個人興趣，制定明確的職涯計劃。\n\n這次分享的目的是為大家提供設計職涯規劃的方向，讓我們共同打造獨一無二的專業價值，迎接未來的設計挑戰！",
+      "categoryTags": [
+        "UI / UX",
+        "團隊管理"
+      ],
+      "targetAudience": "設計主管, 設計師, 其他想了解如何與設計師合作發揮最大價值的人類們",
+      "expectedBenefits": "-初心者設計師 : 職涯技能規劃方向 ;\n-設計主管 : 如何讓設計career path能彈性發展,因應快速且多元的需求",
+      "contactEmail": "eva.lin@titansoft.com.sg"
+    },
+    {
+      "timestamp": "2023/6/23 下午 1:54:58",
+      "speakerName": "Kuma Syu",
+      "organization": "緯雲股份有限公司",
+      "jobTitle": "Technical Lead",
+      "personalIntroduction": "Kuma 最討厭的就是 coding 了。\n\n你沒聽錯，身為 RD，只要能滿足品質與時程，他堅持能夠少寫 code 就少寫 code。\n\n他也很懶，能夠讓機器做的事就不自己做。\n\n他討厭浪費，也懶得算計，就傻傻地在組織內努力推動各種流程改善、人員教育，與軟體工程實踐。\n\n「崇尚敏捷精神，熱愛軟體工程，討厭浪費時間」— 你可以這麼形容他。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1pDq-1icRIYEkZ68i9aw-G5W_fyqtIuxF",
+      "facebookProfileLink": "https://www.facebook.com/kukumamaya",
+      "twitterProfileLink": "",
+      "otherLinks": "https://medium.com/@bearhsu2",
+      "speechTopic": "單元測試不是有寫就好",
+      "speechSummary": "近年來「單元測試」在台灣軟體界已不再是稀有品項。就算工作上沒有常態使用，也已經越來越多加入「有嘗試過」的行列了。這當然是好事，有試總比沒試好，對吧？\n\n大家都知道，除了讀書，寫出好設計也要靠重構，而重構必須在測試保護下進行才會安全，可以說，沒有測試，很難將其他軟體工程的實踐做到一定程度以上。\n\n問題來了，我書也買了，演講也聽了，單元測試也都乖乖寫了，但為什麼我程式還是一樣亂、重構還是一樣難、重點是，時程還是一樣趕不上？班還是一樣得加？究竟我的單元測試出了什麼事？問題到底出在哪裡？\n\n其實，測試也是一種程式，也是人寫出來的，跟 Production Code 一樣，也都活在你的 Code Base 中。因此，測試本身的品質、寫法，以及其與 Production Code 的互動方式，都會影響你的工作型態。\n\n測試，絕對不是有寫就好。\n\n透過一些常見的 Production Code 與 Unit Test 的壞範例，我們一起來看看這麼做會有什麼問題，並看看可以怎麼解決吧！",
+      "categoryTags": [
+        "Agile"
+      ],
+      "targetAudience": "不分前端後端，對單元測試有興趣的 RD",
+      "expectedBenefits": "- 更好的測試設計思路\n- 更能互相支持的程式與測試",
+      "contactEmail": "bearhsu2@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/23 下午 6:03:50",
+      "speakerName": "小賴",
+      "organization": "AppWorks School",
+      "jobTitle": "後端技術導師",
+      "personalIntroduction": "熱愛網站開發的一條龍工程師，擅長從兵荒馬亂、資源有限的團隊中做出些什麼來，特別喜歡容器技術、喜歡 AWS，有幸在 2022 iThome 鐵人賽 DevOps 組獲得冠軍，目前是在 AppWorks School 擔任後端技術導師，推坑更多人加入 Web 開發這個領域～",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1r9HOeH77dkM2609HDWmW9TvibfSV527N",
+      "facebookProfileLink": "",
+      "twitterProfileLink": "",
+      "otherLinks": "https://azole.medium.com/",
+      "speechTopic": "Docker Container 是什麼？可以吃嗎？",
+      "speechSummary": "- Web 工程師需要會 Docker 嗎？\n- 後、端工程師可以透過容器技術做更好的合作嗎？\n- 前端工程師也可以用 Docker image 發布自己的專案嗎？\n- 使用容器技術要注意些什麼？",
+      "categoryTags": [
+        "DevOps"
+      ],
+      "targetAudience": "很入門的等級，適合完全沒有使用過 Docker 或其他容器技術的聽眾。",
+      "expectedBenefits": "-  前端工程師可以學會怎麼使用後端工程師提供的 Docker image 來啟動後端環境，這樣前端工程師在串接後端時，就透過 Docker container 進行更有效率的管理。\n- 前端也可以試著把自己的前端 build 成 docker image。",
+      "contactEmail": "ashleylai58@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/24 下午 2:44:18",
+      "speakerName": "陳正瑋（艦長）",
+      "organization": "炬識科技 Athemaster",
+      "jobTitle": "Technology Consultant",
+      "personalIntroduction": "表面上是只會在臉書釋放夫妻閃光文的愛妻家，私底下其實是默默關注新知的技術愛好者。平時熱衷關注 DevOps 相關新知與技術，期盼未來人人都可以像畢凱艦長一樣用嘴巴叫所有主機做事！工作之餘參與技術社群，目前擔任 GitLab Hero、DevOps Taiwan Community 志工；曾擔任《Effective DevOps》繁體中文版譯者，在第11屆iT邦幫忙鐵人賽中以《和艦長一起 30 天玩轉 GitLab》系列文獲得 DevOps 組冠軍，並出版同名書籍。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1-kvqzwocpzo1khto5Gd0GP4ichuN3vu3",
+      "facebookProfileLink": "https://www.facebook.com/chengfan.chen",
+      "twitterProfileLink": "https://twitter.com/Cheng_Wei_Chen",
+      "otherLinks": "https://chengweichen.com/",
+      "speechTopic": "回顧與展望，從 DevOps 鑑古觀今知未來",
+      "speechSummary": "2009 年 devops 一詞橫空出世，經過多年的演化，被涵括在 DevOps 內的議題不只是技術及工具，亦包含了各種思維、方法論，這使得 DevOps 成為軟體開發和維運領域中，被人們廣泛討論的重要觀念。\n\n我們該如何面對 DevOps 領域不斷推陳出新的各種 Keyword、Buzzword、tools，又該如何看待一年又一年不斷被宣判「is dead」的 DevOps 呢？\n\nWebConf 十年磨一劍，而 DevOps 議題浮現於台灣技術圈中也即將邁向 10 年，在這場演講中，就讓我們一起透過歷史鑑古觀今知未來吧！",
+      "categoryTags": [
+        "DevOps"
+      ],
+      "targetAudience": "對 DevOps 有興趣的 IT 及軟體開發相關從業者。",
+      "expectedBenefits": "幫助聽眾認識 DevOps 的發展歷程、核心概念、關鍵技術，並且從過往歷史中，發現歷史總是不斷重演又持續的推陳出新，從而對這一領域的技術變革和趨勢有更清晰的認識。",
+      "contactEmail": "cheng.fan.chen@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/28 下午 12:44:01",
+      "speakerName": "Kuro Hsu",
+      "organization": "Housefun",
+      "jobTitle": "Frontend Developer",
+      "personalIntroduction": "前端開發者，Vue.js Taiwan 社群主辦人。\n長期專注網頁前端標準技術，也多次參與前端技術社群分享心得。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=134nub7g0VoE2m_dur4xqrByq_T8Hp2BO",
+      "facebookProfileLink": "https://www.facebook.com/kurotanshi",
+      "twitterProfileLink": "https://twitter.com/kurotanshi",
+      "otherLinks": "https://kuro.tw",
+      "speechTopic": "淺談 Vue.js 的狀態管理模式",
+      "speechSummary": "Vue.js 的發展雖然不到十年，但自 2014 所推出的首個版本開始，Vue.js 的狀態管理由最基本的 data 屬性開始，經過不斷的演進，到現在發展出 Vuex、Provide-Inject 、Componsition API、Pinia 等狀態管理模式，這些模式都有各自的特色與適用場景。\n\n我想藉由這個議程，來簡單跟大家聊聊 Vue.js 多年來所提供的狀態管理模式是如何演進的，並且透過幾個範例來實際說明它們各自解決什麼痛點，以及分析它們在什麼情況下適合使用。",
+      "categoryTags": [
+        "Frontend"
+      ],
+      "targetAudience": "曾經使用過 Vue.js 的開發者",
+      "expectedBenefits": "1. 回顧並理解 Vue.js 有哪些狀態管理模式\n2. 如何透過上述模式，解決特定的開發痛點\n3. 在不同的開發場景中，如何根據其特性和優缺點選擇最適合的狀態管理模式\n\n透過這場議程，聽眾將對 Vue.js 的狀態管理模式有更全面的理解，並能夠更有信心地在自己的項目中應用這些知識。",
+      "contactEmail": "kurotanshi@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/24 下午 11:25:59",
+      "speakerName": "Akane Lee",
+      "organization": "染絳設計有限公司",
+      "jobTitle": "嫁給 RD 的 UI Designer",
+      "personalIntroduction": "HI！我是 Akane Lee，「嫁給 RD 的 UI Designer」 Blog 作者。\n如果設計師能和工程師順利合作，那麼老公也就能準時下班了吧。因此努力推廣 UI/UX 設計方面的知識、技術，並分享自己在專案開發上踩過的各種坑與心得。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1uu9wvIJaTKu91FbM11w6abYX973YA9AP",
+      "facebookProfileLink": "https://www.facebook.com/uiux.akane",
+      "twitterProfileLink": "https://twitter.com/akane_lee",
+      "otherLinks": "https://blog.akanelee.me",
+      "speechTopic": "講事實沒用，顧客才不聽這個！",
+      "speechSummary": "開公司賣產品就是要賺錢，要怎麼說服顧客「你沒有坑他」呢？\n給他更多數據資料？給他更多折扣？給他更多使用者見證？\n如何讓顧客即使知道你在坑他，卻還是心甘情願掏錢買單？",
+      "categoryTags": [
+        "UI / UX"
+      ],
+      "targetAudience": "無限制，面向一般大眾",
+      "expectedBenefits": "從另一個角度思考產品開發、溝通技巧，增加說服他人的成功率。",
+      "contactEmail": "iam.akane.lee@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/26 上午 11:13:46",
+      "speakerName": "Norman",
+      "organization": "新加坡商鈦坦科技股份有限公司",
+      "jobTitle": "Technical Manager",
+      "personalIntroduction": "擅長後端開發及系統維運，現在追求用技術能力創造更多商業價值。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1_KVI1QDdrCcR3t0ViVh9OQAtIEm74pfK",
+      "facebookProfileLink": "",
+      "twitterProfileLink": "",
+      "otherLinks": "",
+      "speechTopic": "APM 的守破離",
+      "speechSummary": "APM 在宏觀上讓我們更理解系統間是如何運作及與其他系統關聯，監控及分析這些資料可以讓我們了解系統真正的瓶頸在哪；「守」將會分享的一些實際案例，「破」會提及一些特殊作法，「離」會分享 APM 及其他協助監控維運的手段。",
+      "categoryTags": [
+        "Backend",
+        "DevOps"
+      ],
+      "targetAudience": "後端工程師、維運工程師",
+      "expectedBenefits": "理解 APM 收集的資料及其如何幫助找到瓶頸，甚至 APM 之外我們還能做些什麼。",
+      "contactEmail": "norman.hsu@titansoft.com.sg"
+    },
+    {
+      "timestamp": "2023/6/26 下午 3:20:52",
+      "speakerName": "Max Wu",
+      "organization": "HackMD, Inc.",
+      "jobTitle": "Co-founder of HackMD",
+      "personalIntroduction": "是個喜歡技術的人，也喜歡玩遊戲！",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1pur4gn4BihZzgsEJXm5_tw33QGS0oQgR",
+      "facebookProfileLink": "https://www.facebook.com/jackymaxj",
+      "twitterProfileLink": "https://twitter.com/jackymaxj",
+      "otherLinks": "https://hackmd.io/@MaxWu",
+      "speechTopic": "HackMD 的前世與今生，以及**未來**",
+      "speechSummary": "HackMD 作為大家寫筆記與分享的好夥伴已經踏入 7 年了！\n這次有機會與各位分享 HackMD 曾經踩過的坑、用到的技術細節。\n主題包含：網頁上的即時通訊、Imgur 大搬家、比較字串中遇到的 Emoji 問題、Imgur 圖片大搬家、這些年來遇到的 XSS、以及 HackMD 2.0 的展望！",
+      "categoryTags": [
+        "Frontend",
+        "Backend",
+        "Security"
+      ],
+      "targetAudience": "喜歡 web 產品的、協作平台、生產力工具",
+      "expectedBenefits": "可以對網頁前後端跟資安都更了解，還有未來 HackMD 會如何發展",
+      "contactEmail": "max@hackmd.io"
+    },
+    {
+      "timestamp": "2023/6/26 下午 6:41:11",
+      "speakerName": "Rice Tseng 曾韻如",
+      "organization": "Grab",
+      "jobTitle": "Principal product designer 首席產品設計師",
+      "personalIntroduction": "Rice 目前任職 Grab 擔任首席產品設計師，擁有超過十年的產品設計與多年設計領導經驗，目前帶領整個 Grab Fintech 的體驗設計，並專注產品策略與願景、設計賦能與影響力三大面向。曾在多個跨國公司擔任產品設計師，像是 Indeed 、Yahoo! 、Grab。在 Grab 就職期間先後負責 Fintch 未來體驗、Grab 乘客端體驗再設計、Grab Super App 首頁設計、交通運輸服務體驗並管理 GrabHealth 設計團隊設計東南亞的 O2O 醫療照護解決方案。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1xiu1_BEhs5KR1urvm6BucMf6VpOJSpH3",
+      "facebookProfileLink": "https://www.facebook.com/ricewendy/",
+      "twitterProfileLink": "https://twitter.com/RiceTseng",
+      "otherLinks": "https://www.ricetseng.com/",
+      "speechTopic": "From 0 to 1: Navigating the Product Innovation Process  從 0 到 1：產品創新之路",
+      "speechSummary": "講述在大組織如何做產品設計創新、面臨的問題與挑戰以及如何推動與實踐。",
+      "categoryTags": [
+        "UI / UX"
+      ],
+      "targetAudience": "UX/UI 設計師, product design 產品設計師, design leaders 設計領導, PM 產品經理, dev 工程師",
+      "expectedBenefits": "希望會眾可以藉由此次分享理解產品創新並非由一人推動，也並非一個線性流程。它包含了不同層面的思考，像是組織、產品開發流程、產品願景、產品團隊、個人心態、產品成熟度等等不同面相的思維。",
+      "contactEmail": "ricetsengtw@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/27 上午 10:29:18",
+      "speakerName": "William",
+      "organization": "Kdan Mobile",
+      "jobTitle": "Assistant Technical Manager / SaaS Team Leader",
+      "personalIntroduction": "南漂回鄉的後端工程師，擅長 Ruby on Rails。\n現在是 SaaS 團隊的 team leader，引領開發團隊透過 「產品思維」去思考需求和設計開發，並著重在基礎建設的效能和可用性提升。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1a2N6fJqGUQ7rM46BIheuHXfbgiVtZuq7",
+      "facebookProfileLink": "https://www.facebook.com/profile.php?id=100001675184982",
+      "twitterProfileLink": "",
+      "otherLinks": "",
+      "speechTopic": "改進容器化部署：成功導入 K8S 的經驗與挑戰",
+      "speechSummary": "* 如果想導入 K8S，第一步該怎麼走。\n* 成功導入 K8S 背後的踩雷經驗談。\n* 如何透過良好的基礎建設，獲得 AWS Well-Architected 認證。",
+      "categoryTags": [
+        "DevOps",
+        "團隊管理",
+        "Security"
+      ],
+      "targetAudience": "1. 尚未使用 K8S，但想導入 K8S 的開發團隊。\n2. 對於 DevOps 或 基礎建設有興趣的任何技術人。",
+      "expectedBenefits": "對於近幾年有意導入 K8S 作為目標的企業，對導入 K8S 有更多的認識以及想法能夠實踐。",
+      "contactEmail": "william.tsai@kdanmobile.com"
+    },
+    {
+      "timestamp": "2023/6/27 下午 4:56:47",
+      "speakerName": "Kewang",
+      "organization": "Funliday",
+      "jobTitle": "技術長",
+      "personalIntroduction": "擅長 JavaScript (Node.js, Express.js)、Java、PostgreSQL (PostGIS)、Elasticsearch、MongoDB、Hadoop 生態系 (HBase)，也喜歡研究各種先進的前後端技術。已連續九年在大型技術研討會分享各種前後端實戰經驗。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1wyTVjXwT-_xznkMIbQhEJDEaK8jM4QuQ",
+      "facebookProfileLink": "https://www.facebook.com/kewang.information",
+      "twitterProfileLink": "https://twitter.com/kewang",
+      "otherLinks": "https://www.facebook.com/kewangtw\nhttps://techblog.funliday.com",
+      "speechTopic": "如何在有限資源下實現十年的後端服務演進",
+      "speechSummary": "我目前在一間經歷無數次後端演進的旅遊新創公司，在過去的幾年裡，我們陸續面對著各種挑戰，包括 Parse.com 的服務停止、為應對 Google maps 的收費政策而自建景點資料庫、漸進式導入 REST、使用 prerender 提升 SEO、使用 async 服務提升可用性、運用 CDN 快速讀取圖片、從 CSR 轉型到 SSR、導入電商服務，以及開始支援導購商品...等不計其數的功能。\n\n每一項功能的實現不僅需要後端的協助，還要確保前端的相容性，以免讓使用者陷入無法使用服務的狀態。\n\n而我在這次的分享中，將聊聊在只有一個專職後端的情況下，讓大家了解如何進行後端服務演進的挑戰和策略。",
+      "categoryTags": [
+        "Frontend",
+        "Backend"
+      ],
+      "targetAudience": "前後端初階以上工程師，中階以上工程師更好",
+      "expectedBenefits": "* 實際案例學習：了解後端系統長期演進的實際案例。\n* 變遷策略：學習如何靈活應對第三方服務變動。\n* 技術演進：理解多種後端技術的選擇與演進。\n* 資源管理：了解如何在有限的資源下分配工作和設定優先順序。\n* 前後端協同：學會在後端演進時確保前端相容性。",
+      "contactEmail": "cpckewang@gmail.com"
+    },
+    {
+      "timestamp": "2023/6/28 上午 1:59:19",
+      "speakerName": "Will 保哥",
+      "organization": "多奇數位創意有限公司",
+      "jobTitle": "技術總監",
+      "personalIntroduction": "現任「多奇數位創意有限公司」技術總監。2018 年榮獲 Angular 方向的 Google Developer Expert (GDE) 開發專家。連續 15 度當選微軟最有價值專家(MVP)。2019 獲選微軟技術社群區域總監 (Microsoft Regional Director)。熟悉 Angular、JavaScript、.NET、C#、Java、Go、Docker、Kubernetes 相關技術。擅長 DevOps 與組織文化建立、軟體團隊建構與管理。熱愛分享知識。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1VlbYM0sLkI9ua_sZkGp51eavOKwjAxBl",
+      "facebookProfileLink": "https://www.facebook.com/will.fans/",
+      "twitterProfileLink": "https://twitter.com/Will_Huang",
+      "otherLinks": "https://blog.miniasp.com/",
+      "speechTopic": "活用 GitHub Copilot 開發 Web 應用程式",
+      "speechSummary": "運用 AI 技術輔助開發已經成為日常，許多人寫 Code 的時候，永遠都有一顆螢幕停在 ChatGPT 的畫面，但其實你可以透過 GitHub Copilot 享受到更完美的開發者體驗，本次講座我將會深入解析 GitHub Copilot 與 GitHub Copilot Chat 的各種應用技巧，幫助你快速上手這套強大的 AI 工具！",
+      "categoryTags": [
+        "Frontend",
+        "Backend"
+      ],
+      "targetAudience": "Web Developers",
+      "expectedBenefits": "學習到 GitHub Copilot 的各式應用技巧",
+      "contactEmail": "will.huang@miniasp.com"
+    }
+  ]
+}
