@@ -51,7 +51,7 @@
               v-show="speakerInfo.otherLinks && speakerInfo.otherLinks !== ''"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
-              <iconLink class="svg-fill-current md:w-5 md:h-5" />
+              <iconLink class="svg-fill-current md:w-6 md:h-6" />
             </a>
           </div>
         </div>
