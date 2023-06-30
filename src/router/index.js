@@ -24,8 +24,8 @@ const router = createRouter({
       component: () => import("@/views/WebConf2013.vue"),
     },
     {
-      path: "/sponsorship",
-      name: "sponsorship",
+      path: "/sponsors",
+      name: "sponsors",
       component: () => import("@/views/SponsorshipInquiryView.vue"),
     },
     {
