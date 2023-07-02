@@ -1,5 +1,6 @@
+<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
-  <div class="relative py-20 md:py-16">
+  <div class="relative py-20 md:py-16 min-h-screen">
     <div
       ref="fbDecorativeLink"
       class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6"
@@ -26,6 +27,8 @@
       </StylingTitle>
     </div>
 
+    <SpecialFilter class="mb-8"></SpecialFilter>
+
     <div class="flex flex-col items-center">
       <ul
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10"
@@ -34,6 +37,7 @@
           v-for="speaker in speakerInfo"
           :key="speaker.speakerName"
           class="w-[245px] xs:w-[300px] sm:w-[245px]"
+          :class="{ hidden: !isShowSpeaker(speaker.categoryTags) }"
         >
           <a
             href="#"
@@ -62,12 +66,21 @@
               />
             </div>
           </a>
+          <ul class="flex flex-wrap mt-5">
+            <li
+              v-for="item in speaker.categoryTags"
+              :key="item"
+              class="border border-custom-teal-700 rounded-md bg-custom-gray-800 text-custom-teal-500 py-1 px-2 mr-[10px] mb-[10px]"
+            >
+              #{{ item }}
+            </li>
+          </ul>
         </li>
       </ul>
     </div>
   </div>
 
-  <!-- <FilterTool></FilterTool> -->
+  <FilterTool></FilterTool>
   <div>
     <SpeakerModal
       :speakerInfo="modalSpeakerData"
@@ -99,13 +112,15 @@
 <script setup>
 import { onMounted, ref, reactive } from "vue";
 import { useRoute } from "vue-router";
-import SpeakerModal from "@/components/speaker-modal/SpeakerModal.vue";
 import { usePageInfoStore } from "@/stores/pageInfo";
+import { useFilterStore } from "@/stores/filter";
+import SpeakerModal from "@/components/speaker-modal/SpeakerModal.vue";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
 import MoveToTop from "@/components/MoveToTop.vue";
-// import OpenFilter from "@/components/OpenFilter.vue";
-// import FilterTool from "@/components/FilterComponent.vue";
+import OpenFilter from "@/components/OpenFilter.vue";
+import FilterTool from "@/components/FilterComponent.vue";
+import SpecialFilter from "@/components/SpecialFilter.vue";
 import speakerInfoJSON from "@/content/speakerInfoData.json";
 
 const speakerInfo = speakerInfoJSON.data;
@@ -113,6 +128,9 @@ const route = useRoute();
 
 const pageInfoStore = usePageInfoStore();
 const { setCurrentPageName } = pageInfoStore;
+
+const filterStore = useFilterStore();
+const { isShowSpeaker } = filterStore;
 
 const fbDecorativeLink = ref();
 
