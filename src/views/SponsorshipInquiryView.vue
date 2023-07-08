@@ -27,6 +27,40 @@
         </a>
       </div>
     </div>
+
+    <div class="flex justify-center mt-8">
+      <ul>
+        <li class="text-white w-[332px]">
+          <h2
+            class="border-t border-l border-r border-custom-teal-500 bg-custom-gray-800 text-custom-teal-500 text-[28px] md:text-32 leading-normal font-medium py-4 px-7 inline-block"
+          >
+            鑽石級贊助商
+          </h2>
+          <div class="border border-custom-teal-500 bg-custom-gray-800 p-2">
+            <div class="flex items-center py-1 border border-custom-teal-500 bg-custom-gray-800">
+              <div class="w-8 mt-1 mb-1 mr-2 border-t border-b border-r border-custom-teal-700">
+                <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
+              </div>
+              <h3 class="text-2xl leading-normal text-custom-pink-700 whitespace-nowrap">
+                新加坡商鈦坦科技
+              </h3>
+              <div
+                class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700"
+              >
+                <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
+              </div>
+            </div>
+            <div class="border-r border-l border-b border-custom-teal-500 p-3">
+              <img src="" alt="" />
+              <div class="flex items-center">
+                <p class="text-custom-teal-500 text-xl leading-6 font-medium">贊助商簡介</p>
+                <div class="iconArrowUp w-5 h-5 ml-2"></div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
@@ -63,5 +97,13 @@ onMounted(() => {
 
 .mailto-button:active {
   @apply bg-custom-teal-500  text-black;
+}
+
+.iconArrowUp {
+  background-image: url("@/assets/images/icon/ic_arrow_up_s.svg");
+}
+
+.iconArrowDown {
+  background-image: url("@/assets/images/icon/ic_arrow_down_s.svg");
 }
 </style>
