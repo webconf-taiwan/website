@@ -15,11 +15,7 @@
             class="flex justify-between items-center"
             @click.prevent="toggleTag(currentPageName, tag)"
             >{{ tag }}
-            <div
-              class="closeMenuIcon w-5 h-5 bg-cover"
-              v-if="filterPage[currentPageName][tag]"
-            ></div
-          ></a>
+          </a>
         </li>
       </ul>
     </div>

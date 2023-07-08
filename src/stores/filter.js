@@ -8,8 +8,8 @@ export const useFilterStore = defineStore("filter", {
       agenda: {},
     },
     filterOptions: {
-      speaker: ["Frontend", "Backend", "UI / UX", "Agile", "DevOps", "Security", "團隊管理"],
-      agenda: ["Frontend", "Backend", "UI / UX", "Agile", "DevOps", "Security", "團隊管理"],
+      speaker: [],
+      agenda: [],
     },
     options: ["Frontend", "Backend", "UI / UX", "Agile", "DevOps", "Security", "團隊管理"],
   }),
@@ -37,14 +37,14 @@ export const useFilterStore = defineStore("filter", {
 
     isShowSpeaker(categoryTags) {
       if (!this.filterOptions.speaker.length) {
-        return false;
+        return true;
       }
       return categoryTags.some((tag) => this.filterOptions.speaker.includes(tag));
     },
 
     isShowAgenda(categoryTags) {
       if (!this.filterOptions.agenda.length) {
-        return false;
+        return true;
       }
       return categoryTags.some((tag) => this.filterOptions.agenda.includes(tag));
     },
@@ -52,8 +52,8 @@ export const useFilterStore = defineStore("filter", {
     initializeObj() {
       for (let i = 0; i < this.options.length; i += 1) {
         const item = this.options[i];
-        this.filterPage.speaker[item] = true;
-        this.filterPage.agenda[item] = true;
+        this.filterPage.speaker[item] = false;
+        this.filterPage.agenda[item] = false;
       }
     },
   },
