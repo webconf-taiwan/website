@@ -11,12 +11,12 @@
         <li
           v-for="tag in options"
           :key="tag"
-          class="border border-custom-teal-500 rounded-md bg-custom-gray-800 text-custom-teal-500 py-1 px-2 mr-[10px] mb-[10px]"
+          class="border border-custom-teal-500 rounded-md bg-custom-gray-800 text-custom-teal-500 mr-[10px] mb-[10px]"
           :class="{ optionActive: filterPage[currentPageName][tag] }"
         >
           <a
             href="#"
-            class="flex justify-between items-center"
+            class="flex justify-between items-center py-1 px-2"
             @click.prevent="toggleTag(currentPageName, tag)"
             >{{ tag }}
           </a>
