@@ -28,36 +28,74 @@
       </div>
     </div>
 
-    <div class="flex justify-center mt-8">
+    <div class="flex justify-center mt-12">
       <ul>
-        <li class="text-white w-[332px]">
+        <li
+          v-for="level in sponsors"
+          :key="level.En_name"
+          class="text-white w-[332px] md:w-[600px] lg:w-[900px] xl:w-[1150px] 2xl:w-[1200px] mb-12"
+        >
           <h2
             class="border-t border-l border-r border-custom-teal-500 bg-custom-gray-800 text-custom-teal-500 text-[28px] md:text-32 leading-normal font-medium py-4 px-7 inline-block"
           >
-            鑽石級贊助商
+            {{ level.Zh_name }}
           </h2>
-          <div class="border border-custom-teal-500 bg-custom-gray-800 p-2">
-            <div class="flex items-center py-1 border border-custom-teal-500 bg-custom-gray-800">
-              <div class="w-8 mt-1 mb-1 mr-2 border-t border-b border-r border-custom-teal-700">
-                <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
+          <ul>
+            <li class="border border-custom-teal-500 bg-custom-gray-800 pt-2 pl-2 pr-2">
+              <div v-for="sponsors in level.sponsors" :key="sponsors.id" class="mb-2">
+                <div
+                  class="flex items-center py-1 border border-custom-teal-500 bg-custom-gray-800"
+                >
+                  <div class="w-8 mt-1 mb-1 mr-2 border-t border-b border-r border-custom-teal-700">
+                    <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                  <h3 class="text-2xl leading-normal text-custom-pink-700 whitespace-nowrap">
+                    {{ sponsors.sponsor_name }}
+                  </h3>
+                  <div
+                    class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700"
+                  >
+                    <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
+                  </div>
+                </div>
+                <div class="border-r border-l border-b border-custom-teal-500 p-3 md:flex">
+                  <img
+                    :src="sponsors.image"
+                    alt="sponsors.id"
+                    class="border border-custom-teal-500 mb-2 w-[291px] h-[261px] md:w-[247px] md:h-[221px]"
+                  />
+                  <div class="flex-grow md:ml-2">
+                    <a
+                      href="#"
+                      @click.prevent="showSponsorIntroduction(sponsors.id)"
+                      class="flex items-center p-3 border-b-2 border-custom-teal-700 md:cursor-auto"
+                    >
+                      <p class="text-custom-teal-500 text-xl leading-6 font-medium">贊助商簡介</p>
+                      <div :data-arrow="sponsors.id" class="iconArrowDown w-5 h-5 ml-2"></div>
+                    </a>
+                    <div :data-introduction="sponsors.id" class="overflow-hidden h-[0px] md:h-auto">
+                      <div class="pt-5 pr-3 pl-3">
+                        <p
+                          v-for="(Introduction, index) in sponsors.Introduction"
+                          :key="index"
+                          class="text-white text-base leading-6 mb-3"
+                        >
+                          {{ Introduction }}
+                        </p>
+                      </div>
+                      <ul class="flex mb-4">
+                        <li v-for="link in sponsors.link" :key="link.icon" class="ml-2">
+                          <a :href="link.url" target="_blank">
+                            <img :src="link.icon" :alt="link.url" class="w-10 h-10" />
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <h3 class="text-2xl leading-normal text-custom-pink-700 whitespace-nowrap">
-                新加坡商鈦坦科技
-              </h3>
-              <div
-                class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700"
-              >
-                <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
-              </div>
-            </div>
-            <div class="border-r border-l border-b border-custom-teal-500 p-3">
-              <img src="" alt="" />
-              <div class="flex items-center">
-                <p class="text-custom-teal-500 text-xl leading-6 font-medium">贊助商簡介</p>
-                <div class="iconArrowUp w-5 h-5 ml-2"></div>
-              </div>
-            </div>
-          </div>
+            </li>
+          </ul>
         </li>
       </ul>
     </div>
@@ -69,11 +107,28 @@ import { onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { usePageInfoStore } from "@/stores/pageInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
+import { sponsors } from "@/content/sponsors";
 
 const route = useRoute();
 
 const pageInfoStore = usePageInfoStore();
 const { setCurrentPageName } = pageInfoStore;
+
+const showSponsorIntroduction = (id) => {
+  const viewportWidth = window.innerWidth;
+  if (viewportWidth >= 768) return;
+  const introductionDom = document.querySelector(`[data-introduction="${id}"]`);
+  const arrowDom = document.querySelector(`[data-arrow="${id}"]`);
+  if (arrowDom.classList.contains("iconArrowUp")) {
+    arrowDom.classList.remove("iconArrowUp");
+    introductionDom.classList.remove("h-auto");
+    arrowDom.classList.add("iconArrowDown");
+  } else {
+    arrowDom.classList.add("iconArrowUp");
+    introductionDom.classList.add("h-auto");
+    arrowDom.classList.remove("iconArrowDown");
+  }
+};
 
 onMounted(() => {
   setCurrentPageName(route.name);
