@@ -15,7 +15,7 @@
 <style scoped>
 .bg-container {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 .bgImage {
