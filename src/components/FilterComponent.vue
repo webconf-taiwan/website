@@ -1,17 +1,17 @@
 <template>
   <div
     v-if="isOpen"
-    class="bg-drop-blur fixed inset-0 flex items-end justify-center z-50 bg-custom-teal-700 bg-opacity-20 max-h-screen"
+    class="bg-drop-blur fixed inset-0 flex items-end i-center z-50 backdrop-blur-sm bg-custom-teal-700 bg-opacity-50 max-h-screen"
     @wheel="preventScroll"
   >
     <div
       class="border-t-2 border-custom-teal-700 bg-custom-gray-800 w-full flex justify-between p-3"
     >
-      <ul class="flex flex-wrap mr-8">
+      <ul class="flex flex-wrap gap-2">
         <li
           v-for="tag in options"
           :key="tag"
-          class="border border-custom-teal-500 rounded-md bg-custom-gray-800 text-custom-teal-500 mr-[10px] mb-[10px]"
+          class="border border-custom-teal-500 rounded-md bg-custom-gray-800 text-custom-teal-500"
           :class="{ optionActive: filterPage[currentPageName][tag] }"
         >
           <a
