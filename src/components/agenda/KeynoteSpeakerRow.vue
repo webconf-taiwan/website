@@ -3,7 +3,9 @@
     <TimelineCell :startTime="startTime" :endTime="endTime" />
 
     <div
-      class="p-3 md:p-0 basis-full md:basis-[90%] flex flex-col md:flex-row border border-custom-teal-500 items-center"
+      class="cursor-pointer p-3 md:p-0 basis-full md:basis-[90%] flex flex-col md:flex-row border border-custom-teal-500 items-center"
+      :data-speakerId="speakerInfo.id"
+      @click="() => handleOpenSpeakerModal(speakerInfo.id)"
     >
       <div class="mb-3 md:mb-0 w-full h-full md:basis-1/3 md:px-5 md:py-4">
         <SpeakerCell
@@ -18,13 +20,13 @@
         class="fh-[33.33%] md:h-[90%] py-5 text-lg w-full md:basis-1/3 border-t md:border-l md:border-t-0 border-custom-teal-700 flex items-center justify-between md:justify-center"
       >
         <p class="font-semibold text-custom-teal-500">同步投影</p>
-        <LocationBar :room="room" />
+        <LocationBar :room="speakerInfo.room" />
       </div>
       <div
         class="fh-[33.33%] md:h-[90%] py-5 text-lg w-full md:basis-1/3 border-t md:border-l md:border-t-0 border-custom-teal-700 flex items-center justify-between md:justify-center"
       >
         <p class="font-semibold text-custom-teal-500">同步投影</p>
-        <LocationBar :room="room" />
+        <LocationBar :room="speakerInfo.room" />
       </div>
     </div>
   </div>
@@ -35,7 +37,7 @@ import TimelineCell from "@/components/agenda/TimelineCell.vue";
 import SpeakerCell from "@/components/agenda/SpeakerCell.vue";
 import LocationBar from "@/components/agenda/LocationBar.vue";
 
-defineProps({
+const props = defineProps({
   speakerInfo: {
     type: Object,
   },
@@ -45,7 +47,16 @@ defineProps({
   endTime: {
     type: String,
   },
+  onOpenSpeakerModal: {
+    type: Function,
+  },
 });
+
+const handleOpenSpeakerModal = (speakerId) => {
+  if (speakerId) {
+    props.onOpenSpeakerModal(speakerId);
+  }
+};
 </script>
 
 <style lang="scss" scoped></style>

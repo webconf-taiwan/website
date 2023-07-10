@@ -7,7 +7,8 @@
       <StylingFBLink></StylingFBLink>
     </div>
 
-    <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-10">
+    <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-30">
+      <OpenFilter class="mb-2"></OpenFilter>
       <MoveToTop></MoveToTop>
     </div>
     <a href="#"
@@ -21,6 +22,8 @@
         </template>
       </StylingTitle>
     </div>
+
+    <SpecialFilter class="mb-8"></SpecialFilter>
 
     <div class="w-full mx-auto px-5 md:px-[140px]">
       <div class="bg-black relative">
@@ -53,23 +56,26 @@
             </div>
           </div>
 
-          <template v-for="session in activeAgenda" :key="session.id">
+          <template v-for="session in filteredAgenda" :key="`${activeDate} ${session.id}`">
             <GeneralRow
               v-if="!session.isKeynote && !session.isBreakTime"
-              :speakerInfoArr="session.data.map((id) => (speakerInfo = speakerInfoMap[id]))"
+              :speakerInfoArr="session.data"
               :startTime="session.headerText[0]"
               :endTime="session.headerText[1]"
+              :onOpenSpeakerModal="handleOpenSpeakerModal"
             />
 
             <KeynoteSpeakerRow
               v-if="session.isKeynote"
-              :speakerInfo="speakerInfoMap[session.data[0]]"
+              :speakerInfo="session.data[0]"
               :startTime="session.headerText[0]"
               :endTime="session.headerText[1]"
+              :onOpenSpeakerModal="handleOpenSpeakerModal"
             />
 
             <BreakTimeRow v-if="session.isBreakTime" :text="session.data[0]" />
           </template>
+          <BreakTimeRow :text="activeDate === '08-11' ? '明天見' : '下次見'" />
         </div>
 
         <!-- 靜態 Footer -->
@@ -129,6 +135,18 @@
         </div>
       </div>
     </div>
+
+    <FilterComponent />
+
+    <div>
+      <SpeakerModal
+        v-if="!!modalSpeakerData"
+        :speakerInfo="modalSpeakerData"
+        :isMoreInfoOpen="true"
+        :onModalClose="() => handleModalClose()"
+        :isModalOpen="isModalOpen"
+      />
+    </div>
   </div>
 </template>
 
@@ -167,8 +185,10 @@
 
 <script setup>
 import { onMounted, onBeforeUnmount, ref, computed } from "vue";
+import { storeToRefs } from "pinia";
 import { useRoute } from "vue-router";
 import { usePageInfoStore } from "@/stores/pageInfo";
+import { useFilterStore } from "@/stores/filter";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
 import MoveToTop from "@/components/MoveToTop.vue";
@@ -176,10 +196,19 @@ import AgendaDateHeading from "@/components/agenda/AgendaDateHeading.vue";
 import KeynoteSpeakerRow from "@/components/agenda/KeynoteSpeakerRow.vue";
 import BreakTimeRow from "@/components/agenda/BreakTimeRow.vue";
 import GeneralRow from "@/components/agenda/GeneralRow.vue";
+
+import OpenFilter from "@/components/OpenFilter.vue";
+import SpecialFilter from "@/components/SpecialFilter.vue";
+import FilterComponent from "@/components/FilterComponent.vue";
+
 import speakerAgenda from "@/content/speakerAgenda.json";
 import speakerInfoJson from "@/content/speakerInfoData.json";
+import SpeakerModal from "@/components/speaker-modal/SpeakerModal.vue";
 
 const speakerInfoArr = speakerInfoJson.data;
+
+const filterStore = useFilterStore();
+const { filterOptions } = storeToRefs(filterStore);
 
 const route = useRoute();
 
@@ -204,12 +233,56 @@ const activeDate = ref("08-11");
 
 const activeAgenda = computed(() => speakerAgenda[activeDate.value]);
 
-const speakerInfoMap = computed(() =>
-  speakerInfoArr.reduce((acc, speaker) => {
-    acc[speaker.id] = speaker;
-    return acc;
-  }, {})
-);
+const speakerInfoMap = speakerInfoArr.reduce((acc, speaker) => {
+  acc[speaker.id] = speaker;
+  return acc;
+}, {});
+
+const activeSpeakerId = ref(null);
+const isModalOpen = ref(true);
+const modalSpeakerData = computed(() => {
+  if (activeSpeakerId.value === null) return null;
+  return speakerInfoMap[activeSpeakerId.value];
+});
+
+const genSpeakerInfoArr = (sessionData) => {
+  const filteredArr = sessionData.map((id) => {
+    const speakerData = speakerInfoMap[id];
+    if (filterOptions.value.agenda.length === 0) return speakerData;
+
+    return filterOptions.value.agenda.some((option) => speakerData.categoryTags.includes(option))
+      ? speakerData
+      : null;
+  });
+
+  return filteredArr;
+};
+
+const filteredAgenda = computed(() => {
+  const filterAgendaRaw = activeAgenda.value.filter((session) => {
+    if (filterOptions.value.agenda.length === 0) return true;
+    if (session.isBreakTime) return false;
+    const sessionSpeakerInfo = genSpeakerInfoArr(session.data);
+    return sessionSpeakerInfo.some((speaker) => speaker !== null);
+  });
+
+  return filterAgendaRaw.map((session) => {
+    const sessionData = session.isBreakTime ? session.data : genSpeakerInfoArr(session.data);
+    return {
+      ...session,
+      data: sessionData,
+    };
+  });
+});
+
+const handleOpenSpeakerModal = (id) => {
+  activeSpeakerId.value = id;
+  isModalOpen.value = true;
+};
+
+const handleModalClose = () => {
+  isModalOpen.value = false;
+};
 
 const handleActiveDateClick = (dateStr) => () => {
   activeDate.value = dateStr;

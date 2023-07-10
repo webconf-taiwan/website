@@ -4,6 +4,7 @@
     class="bg-drop-blur fixed inset-0 flex items-center justify-center z-50 bg-custom-teal-700 bg-opacity-20 max-h-screen px-5 py-5 md:py-10"
   >
     <section
+      ref="modalElement"
       class="relative border-custom-teal-700 border-2 rounded-sm bg-black pb-8 pt-12 px-4 md:px-5 text-white w-[792px] scroll overflow-y-auto max-h-full"
     >
       <button
@@ -23,6 +24,7 @@
             class="text-custom-teal-500 font-semibold text-2xl md:text-3xl mb-3 text-center md:text-left"
           >
             {{ speakerInfo.speakerName }}
+            <span v-if="speakerInfo.altName">{{ `(${speakerInfo.altName})` }}</span>
           </h2>
           <p class="mb-5 md:mb-auto">
             {{ `${speakerInfo.organization} ${speakerInfo.jobTitle}` }}
@@ -84,9 +86,9 @@
             v-show="speakerInfo.date"
           >
             <iconTime class="svg-fill-current stroke-0 mr-1" />
-            <p class="mr-5 pt-[1px]">{{ speakerInfo.date }} {{ speakerInfo.time }}</p>
+            <p class="mr-5 pt-[1px]">{{ speakerInfo.formattedSession }}</p>
             <iconLocation class="stroke-current mr-1" />
-            <p class="align-middle pt-[3px]">講廳 {{ speakerInfo.location }}</p>
+            <p class="align-middle pt-[3px]">講廳 {{ speakerInfo.room }}</p>
           </div>
           <div class="mb-5">
             <p class="mb-3 whitespace-pre-line">{{ speakerInfo.speechSummary }}</p>
@@ -133,7 +135,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, toRefs, watch, onBeforeUnmount, onMounted } from "vue";
+import { ref, defineProps, toRefs, watch, onBeforeUnmount, onMounted, watchEffect } from "vue";
 
 import CategoryTag from "@/components/CategoryTag.vue";
 
@@ -163,6 +165,7 @@ const props = defineProps({
   },
   speakerInfo: {
     speakerName: String,
+    altName: String,
     organization: String,
     jobTitle: String,
     personalIntroduction: String,
@@ -175,9 +178,8 @@ const props = defineProps({
     categoryTags: [String],
     targetAudience: String,
     expectedBenefits: String,
-    date: String,
-    time: String,
-    location: String,
+    formattedSession: String,
+    room: String,
   },
 });
 
@@ -202,12 +204,37 @@ const onKeydown = (e) => {
     onModalClose.value();
   }
 };
+
+const modalElement = ref(null);
+
+const onClickOutside = (e) => {
+  if (isModalOpen.value && modalElement.value && !modalElement.value.contains(e.target)) {
+    onModalClose.value();
+  }
+};
+
+let timeoutId; // 新增此行宣告 timeoutId
+
+watchEffect(() => {
+  if (isModalOpen.value) {
+    timeoutId = setTimeout(() => {
+      window.addEventListener("click", onClickOutside);
+    }, 100);
+  } else {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    window.removeEventListener("click", onClickOutside);
+  }
+});
+
 onMounted(() => {
   window.addEventListener("keydown", onKeydown);
 });
 
 onBeforeUnmount(() => {
   window.removeEventListener("keydown", onKeydown);
+  window.removeEventListener("click", onClickOutside);
 });
 </script>
 
