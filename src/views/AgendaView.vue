@@ -321,16 +321,6 @@ const filteredAgenda = computed(() => {
     return sessionSpeakerInfo.some((speaker) => speaker !== null);
   });
 
-  console.log(
-    filterAgendaRaw.map((session) => {
-      const sessionData = session.isBreakTime ? session.data : genSpeakerInfoArr(session.data);
-      return {
-        ...session,
-        data: sessionData,
-      };
-    })
-  );
-
   return filterAgendaRaw.map((session) => {
     const sessionData = session.isBreakTime ? session.data : genSpeakerInfoArr(session.data);
     return {
