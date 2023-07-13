@@ -171,16 +171,14 @@
 
     <div>
       <SpeakerModal
-        v-if="!!modalSpeakerData && !Array.isArray(modalSpeakerData)"
+        v-if="!!modalSpeakerData && modalSpeakerData.id !== 'dual'"
         :speakerInfo="modalSpeakerData"
-        :isMoreInfoOpen="true"
         :onModalClose="() => handleModalClose()"
         :isModalOpen="isModalOpen"
       />
       <DualSpeakerModal
-        v-if="!!modalSpeakerData && Array.isArray(modalSpeakerData)"
-        :speakerInfoArr="modalSpeakerData"
-        :isMoreInfoOpen="true"
+        v-if="!!modalSpeakerData && modalSpeakerData.id === 'dual'"
+        :dualSpeakerInfo="modalSpeakerData"
         :onModalClose="() => handleModalClose()"
         :isModalOpen="isModalOpen"
       />
@@ -299,9 +297,6 @@ const speakerInfoMap = speakerInfoArr.reduce((acc, speaker) => {
 const activeSpeakerId = ref(null);
 const isModalOpen = ref(true);
 const modalSpeakerData = computed(() => {
-  if (activeSpeakerId.value === null) return null;
-  if (Array.isArray(activeSpeakerId.value))
-    return activeSpeakerId.value.map((id) => speakerInfoMap[id]);
   return speakerInfoMap[activeSpeakerId.value];
 });
 
@@ -325,6 +320,16 @@ const filteredAgenda = computed(() => {
     const sessionSpeakerInfo = genSpeakerInfoArr(session.data);
     return sessionSpeakerInfo.some((speaker) => speaker !== null);
   });
+
+  console.log(
+    filterAgendaRaw.map((session) => {
+      const sessionData = session.isBreakTime ? session.data : genSpeakerInfoArr(session.data);
+      return {
+        ...session,
+        data: sessionData,
+      };
+    })
+  );
 
   return filterAgendaRaw.map((session) => {
     const sessionData = session.isBreakTime ? session.data : genSpeakerInfoArr(session.data);

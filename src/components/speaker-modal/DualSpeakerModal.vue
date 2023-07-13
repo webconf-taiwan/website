@@ -20,38 +20,38 @@
       <div class="flex md:px-3 mb-9 md:mb-5 flex-col md:flex-row items-center md:items-stretch">
         <img
           class="mb-5 md:mb-0 mx-auto w-full max-w-[360px] max-h-[360px] md:w-[150px] md:h-[150px] border-2 border-custom-teal-500 md:mr-5 md:ml-0 object-cover"
-          :src="`/speaker-img/${speakerInfoArr[0].id}.jpg`"
+          :src="`/speaker-img/${dualSpeakerArr[0].id}.jpg`"
         />
         <div class="flex flex-col">
           <h2
             class="text-custom-teal-500 font-semibold text-2xl md:text-3xl mb-3 text-center md:text-left"
           >
-            {{ speakerInfoArr[0].speakerName }}
-            <span v-if="speakerInfoArr[0].altName">{{ `(${speakerInfoArr[0].altName})` }}</span>
+            {{ dualSpeakerArr[0].speakerName }}
+            <span v-if="dualSpeakerArr[0].altName">{{ `(${dualSpeakerArr[0].altName})` }}</span>
           </h2>
           <p class="mb-5 md:mb-auto">
-            {{ `${speakerInfoArr[0].organization} ${speakerInfoArr[0].jobTitle}` }}
+            {{ `${dualSpeakerArr[0].organization} ${dualSpeakerArr[0].jobTitle}` }}
           </p>
 
           <div
             class="flex text-custom-teal-500 justify-center md:justify-start gap-3 md:gap-2 -ml-1"
           >
             <a
-              :href="speakerInfoArr[0].facebookProfileLink"
-              v-show="speakerInfoArr[0].facebookProfileLink"
+              :href="dualSpeakerArr[0].facebookProfileLink"
+              v-show="dualSpeakerArr[0].facebookProfileLink"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
             </a>
 
             <a
-              :href="speakerInfoArr[0].twitterProfileLink"
-              v-show="speakerInfoArr[0].twitterProfileLink"
+              :href="dualSpeakerArr[0].twitterProfileLink"
+              v-show="dualSpeakerArr[0].twitterProfileLink"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
             </a>
-            <template v-for="link in speakerInfoArr[0].otherLinks" :key="link">
+            <template v-for="link in dualSpeakerArr[0].otherLinks" :key="link">
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
@@ -86,7 +86,7 @@
           講者介紹
         </h3>
         <p class="leading-normal whitespace-pre-line">
-          {{ speakerInfoArr[0].personalIntroduction }}
+          {{ dualSpeakerArr[0].personalIntroduction }}
         </p>
       </div>
 
@@ -94,38 +94,38 @@
       <div class="flex md:px-3 mb-9 md:mb-5 flex-col md:flex-row items-center md:items-stretch">
         <img
           class="mb-5 md:mb-0 mx-auto w-full max-w-[360px] max-h-[360px] md:w-[150px] md:h-[150px] border-2 border-custom-teal-500 md:mr-5 md:ml-0 object-cover"
-          :src="`/speaker-img/${speakerInfoArr[1].id}.jpg`"
+          :src="`/speaker-img/${dualSpeakerArr[1].id}.jpg`"
         />
         <div class="flex flex-col">
           <h2
             class="text-custom-teal-500 font-semibold text-2xl md:text-3xl mb-3 text-center md:text-left"
           >
-            {{ speakerInfoArr[1].speakerName }}
-            <span v-if="speakerInfoArr[1].altName">{{ `(${speakerInfoArr[1].altName})` }}</span>
+            {{ dualSpeakerArr[1].speakerName }}
+            <span v-if="dualSpeakerArr[1].altName">{{ `(${dualSpeakerArr[1].altName})` }}</span>
           </h2>
           <p class="mb-5 md:mb-auto">
-            {{ `${speakerInfoArr[1].organization} ${speakerInfoArr[1].jobTitle}` }}
+            {{ `${dualSpeakerArr[1].organization} ${dualSpeakerArr[1].jobTitle}` }}
           </p>
 
           <div
             class="flex text-custom-teal-500 justify-center md:justify-start gap-3 md:gap-2 -ml-1"
           >
             <a
-              :href="speakerInfoArr[1].facebookProfileLink"
-              v-show="speakerInfoArr[1].facebookProfileLink"
+              :href="dualSpeakerArr[1].facebookProfileLink"
+              v-show="dualSpeakerArr[1].facebookProfileLink"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
             </a>
 
             <a
-              :href="speakerInfoArr[1].twitterProfileLink"
-              v-show="speakerInfoArr[1].twitterProfileLink"
+              :href="dualSpeakerArr[1].twitterProfileLink"
+              v-show="dualSpeakerArr[1].twitterProfileLink"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
             </a>
-            <template v-for="link in speakerInfoArr[1].otherLinks" :key="link">
+            <template v-for="link in dualSpeakerArr[1].otherLinks" :key="link">
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
@@ -160,7 +160,7 @@
           講者介紹
         </h3>
         <p class="leading-normal whitespace-pre-line">
-          {{ speakerInfoArr[1].personalIntroduction }}
+          {{ dualSpeakerArr[1].personalIntroduction }}
         </p>
       </div>
 
@@ -172,21 +172,21 @@
       </div>
       <section class="md:px-3 pt-6">
         <h1 class="text-custom-teal-500 text-xl md:text-3xl font-semibold mb-2">
-          {{ speakerInfoArr[1].speechTopic }}
+          {{ dualSpeakerInfo.speechTopic }}
         </h1>
         <div
           class="flex text-custom-pink-700 items-center justify-start leading-none mb-7"
-          v-show="speakerInfoArr[1].date"
+          v-show="dualSpeakerInfo.date"
         >
           <iconTime class="svg-fill-current stroke-0 mr-1" />
-          <p class="mr-5 pt-[1px]">{{ speakerInfoArr[1].formattedSession }}</p>
+          <p class="mr-5 pt-[1px]">{{ dualSpeakerInfo.formattedSession }}</p>
           <iconLocation class="stroke-current mr-1" />
-          <p class="align-middle pt-[3px]">講廳 {{ speakerInfoArr[1].room }}</p>
+          <p class="align-middle pt-[3px]">講廳 {{ dualSpeakerInfo.room }}</p>
         </div>
         <div class="mb-5">
-          <p class="mb-3 whitespace-pre-line">{{ speakerInfoArr[1].speechSummary }}</p>
+          <p class="mb-3 whitespace-pre-line">{{ dualSpeakerInfo.speechSummary }}</p>
           <div class="flex gap-3">
-            <CategoryTag :tag="tag" v-for="tag in speakerInfoArr[1].categoryTags" :key="tag" />
+            <CategoryTag :tag="tag" v-for="tag in dualSpeakerInfo.categoryTags" :key="tag" />
           </div>
         </div>
         <div class="mb-5">
@@ -194,7 +194,7 @@
             目標會眾
           </h3>
           <p class="whitespace-pre-line">
-            {{ speakerInfoArr[1].targetAudience }}
+            {{ dualSpeakerInfo.targetAudience }}
           </p>
         </div>
 
@@ -203,7 +203,7 @@
             預期收穫
           </h3>
           <p class="whitespace-pre-line">
-            {{ speakerInfoArr[1].expectedBenefits }}
+            {{ dualSpeakerInfo.expectedBenefits }}
           </p>
         </div>
 
@@ -227,7 +227,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, toRefs, onBeforeUnmount, onMounted, watchEffect } from "vue";
+import { ref, defineProps, toRefs, onBeforeUnmount, onMounted, watchEffect, reactive } from "vue";
 
 import CategoryTag from "@/components/CategoryTag.vue";
 
@@ -258,12 +258,16 @@ const props = defineProps({
   onModalClose: {
     type: Function,
   },
-  speakerInfoArr: {
-    type: Array,
+  dualSpeakerInfo: {
+    type: Object,
   },
 });
+const { onModalClose, isModalOpen } = toRefs(props);
+const dualSpeakerInfo = reactive(props.dualSpeakerInfo);
 
-const { onModalClose, speakerInfoArr, isModalOpen } = toRefs(props);
+const { data: dualSpeakerArr } = toRefs(dualSpeakerInfo);
+
+console.log(dualSpeakerArr.value[0]);
 
 watchEffect(() => {
   if (typeof window !== "undefined" && window.document) {
