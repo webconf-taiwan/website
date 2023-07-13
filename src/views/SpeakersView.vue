@@ -1,10 +1,7 @@
 <!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
   <div class="relative py-20 md:py-16 min-h-screen">
-    <div
-      ref="fbDecorativeLink"
-      class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6"
-    >
+    <div class="fixed z-30 hidden md:block bottom-6 left-6">
       <StylingFBLink></StylingFBLink>
     </div>
 
@@ -67,7 +64,7 @@
               </div>
             </div>
           </a>
-          <ul class="flex flex-wrap mt-5">
+          <ul class="flex flex-wrap mt-3">
             <li
               v-for="item in speaker.categoryTags"
               :key="item"
@@ -126,7 +123,7 @@
 
 .hover-parent:hover img {
   transition: transform 0.3s ease; /* 添加圖片放大和移動的漸變效果 */
-  transform: scale(1.2); /* 滑鼠指向時圖片放大的倍率 */
+  transform: scale(1.1); /* 滑鼠指向時圖片放大的倍率 */
 }
 </style>
 
@@ -153,16 +150,6 @@ const { setCurrentPageName } = pageInfoStore;
 
 const filterStore = useFilterStore();
 const { isShowSpeaker } = filterStore;
-
-const fbDecorativeLink = ref();
-
-const scrollHandler = () => {
-  const { scrollTop } = document.documentElement;
-  const clientHeight = document.documentElement.clientHeight - 470;
-  const isBottom = scrollTop > clientHeight;
-
-  fbDecorativeLink.value.style.opacity = isBottom ? 0 : 1;
-};
 
 const isModalOpen = ref(false);
 
@@ -201,6 +188,5 @@ const handleOpenSpeakerModal = (event) => {
 
 onMounted(() => {
   setCurrentPageName(route.name);
-  window.addEventListener("scroll", scrollHandler);
 });
 </script>

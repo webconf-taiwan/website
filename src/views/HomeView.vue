@@ -66,7 +66,7 @@
       <!-- 第二區塊開始 -->
       <div
         ref="section2"
-        class="relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:py-40 lg:pt-16 bg-transparent 2xl:m-auto 2xl:w-[45vw]"
+        class="relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:py-40 lg:pt-16 bg-transparent 2xl:m-auto 2xl:w-[60vw]"
       >
         <div class="flex flex-col items-end md:flex-row-reverse md:items-center md:justify-end">
           <div class="w-20 h-6 titleDecoration"></div>
@@ -748,6 +748,8 @@ const currentTrafficInfo = ref({
 let currentTransportation = null;
 let previousTransportation = null;
 let speakerMoveRightTl = null;
+let section1AnimeScrollTl = null;
+let section2AnimeScrollTl = null;
 
 const toggleTrafficInfo = (transportation, method, isFirst) => {
   previousTransportation = currentTransportation;
@@ -803,6 +805,28 @@ const section1AnimeTl = gsap.timeline();
 const section1LeaveAnimeTl = gsap.timeline();
 
 const section1Anime = () => {
+  section1EnterAnime();
+
+  setTimeout(() => {
+    section1AnimeScrollTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section1.value,
+        start: "center-=100",
+        end: "center+=100",
+        // markers: true,
+        scrub: true,
+        // onLeaveBack: () => {
+        //   section1ReturnAnime();
+        // },
+        // onEnter: () => {
+        // section1LeaveAnime();
+        // },
+      },
+    });
+  });
+};
+
+const section1EnterAnime = () => {
   section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
   section1AnimeTl.fromTo(sellBtn.value, 
   {
@@ -831,8 +855,80 @@ const section1Anime = () => {
 const section1LeaveAnime = () => {
   section1LeaveAnimeTl.to(section1.value, { xPercent: 100, opacity: 0, duration: 1 });
   section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 0, duration: 0.2 });
-  // section1LeaveAnimeTl.to(section1.value, { height: '10px', duration: 0.2 })
 };
+
+const section1ReturnAnime = () => {
+  section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 1, duration: 0.2 });
+  section1EnterAnime();
+};
+
+const section2Anime = () => {
+  setTimeout(() => {
+    section2AnimeScrollTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section2.value,
+        start: "top-=50",
+        // endTrigger: section3.value,
+        // end: "top bottom",
+        pin: true,
+        markers: true,
+        scrub: true,
+        onUpdate: () => {},
+      },
+    });
+
+    // const speaker = document.querySelector("#speaker");
+    // const speaker1 = document.querySelector("#speaker1-1");
+    // const speaker2 = document.querySelector("#speaker1-2");
+    // const speaker3 = document.querySelector("#speaker1-3");
+    // const speaker4 = document.querySelector("#speaker1-4");
+    // const speaker5 = document.querySelector("#speaker1-5");
+    // const speaker6 = document.querySelector("#speaker2-1");
+    // const speaker7 = document.querySelector("#speaker2-2");
+    // const speaker8 = document.querySelector("#speaker2-3");
+    // const speaker9 = document.querySelector("#speaker2-4");
+    // const speaker10 = document.querySelector("#speaker2-5");
+
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 345,
+    // });
+    // speakerMoveRightTl.to([speaker1, speaker6], {
+    //   opacity: 1,
+    // });
+    // speakerMoveRightTl.to([speaker2, speaker7], {
+    //   opacity: 1,
+    // });
+    // speakerMoveRightTl.to([speaker3, speaker8], {
+    //   opacity: 1,
+    // });
+
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 690,
+    // });
+    // speakerMoveRightTl.to([speaker4, speaker9], {
+    //   opacity: 1,
+    // });
+    // speakerMoveRightTl.to([speaker5, speaker10], {
+    //   opacity: 1,
+    // });
+
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 1035,
+    // });
+
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 1380,
+    // });
+
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 1725,
+    // });
+
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 2070,
+    // });
+  });
+}
 
 const section3Anime = () => {
   setTimeout(() => {
@@ -1023,6 +1119,7 @@ onMounted(() => {
     if (viewportWidth >= 768) {
       window.addEventListener("wheel", handleScroll);
       section3Anime();
+      // section2Anime();
     }
   });
 });

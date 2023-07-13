@@ -1,8 +1,8 @@
 <template>
-  <!-- 當增加 header menu 的列表時 高度要增加 h-[436px] 每新增一個列表 + 88px -->
+  <!-- 當增加 header menu 的列表時 高度要增加 h-[524px] 每新增一個列表 + 88px -->
   <header
     class="fixed top-0 z-30 flex flex-col justify-between w-screen h-12 py-1 overflow-hidden duration-500 border-b md:right-0 md:w-60px md:h-screen bg-custom-gray-800 md:flex-row-reverse md:border-l md:border-b-0 border-custom-teal-700 transition-height"
-    :class="{ 'h-[436px]': isShowMenuList, 'md:w-[270px]': isShowMenuList }"
+    :class="{ 'h-[524px]': isShowMenuList, 'md:w-[270px]': isShowMenuList }"
   >
     <a href="#" class="h-40 mx-auto w-152"
       ><img src="../assets/images/logo_txt.png" alt="logo" class="h-40 mx-auto w-152 md:hidden"
@@ -274,11 +274,11 @@ const menuList = ref([
     EngName: "Home",
     home: "home",
   },
-  // {
-  // ChtName: "議程資訊",
-  // EngName: "Schedule",
-  // home: "agenda",
-  // },
+  {
+    ChtName: "議程資訊",
+    EngName: "Schedule",
+    home: "agenda",
+  },
   {
     ChtName: "講者陣容",
     EngName: "Speaker",
