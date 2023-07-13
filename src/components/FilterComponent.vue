@@ -16,7 +16,7 @@
         >
           <a
             href="#"
-            class="flex justify-between items-center py-1 px-2"
+            class="flex justify-between items-center py-1 px-2 rounded-md transition-all duration-300 hover:bg-custom-teal-700"
             @click.prevent="toggleTag(currentPageName, tag)"
             >{{ tag }}
           </a>

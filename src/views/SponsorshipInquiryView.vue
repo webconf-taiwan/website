@@ -1,34 +1,35 @@
 <template>
-  <div class="relative py-20 md:py-16 px-5 md:h-[calc(100vh-56px)] overflow-y-auto">
-    <a href="#"
-      ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
-    ></a>
-    <div class="flex flex-col items-center mb-8">
-      <StylingTitle>
-        <template #default>
-          <span>贊助夥伴</span>
-        </template>
-      </StylingTitle>
-    </div>
-    <p class="text-white text-center max-w-[380px] mx-auto mb-12 md:mb-16">
-      我們非常感謝以下的企業或個人贊助，讓 WebConf Taiwan 2023 可以有更多的資源來籌劃整個活動！
-    </p>
-    <div class="flex justify-center items-center first-letter flex-col md:flex-row">
-      <img src="@/assets/images/logo_all_m.png" alt="" class="w-[250px] md:w-[350px] md:mr-3" />
-      <div>
-        <p
-          class="text-center md:text-left font-semibold text-white text-2xl md:text-5xl md:leading-normal mb-6 md:mb-12"
-        >
-          即刻加入 <br />
-          成為<span class="text-custom-pink-700">贊助夥伴</span>
-        </p>
-        <a href="mailto:hi@webconf.tw?subject=WebConf 贊助廠商諮詢" class="mailto-button">
-          前往諮詢
-        </a>
+  <div>
+    <div class="relative py-20 md:py-16 px-5 md:h-[calc(100vh-56px)]">
+      <a href="#"
+        ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
+      ></a>
+      <div class="flex flex-col items-center mb-8">
+        <StylingTitle>
+          <template #default>
+            <span>贊助夥伴</span>
+          </template>
+        </StylingTitle>
+      </div>
+      <p class="text-white text-center max-w-[380px] mx-auto mb-12 md:mb-16">
+        我們非常感謝以下的企業或個人贊助，讓 WebConf Taiwan 2023 可以有更多的資源來籌劃整個活動！
+      </p>
+      <div class="flex justify-center items-center first-letter flex-col md:flex-row">
+        <img src="@/assets/images/logo_all_m.png" alt="" class="w-[250px] md:w-[350px] md:mr-3" />
+        <div>
+          <p
+            class="text-center md:text-left font-semibold text-white text-2xl md:text-5xl md:leading-normal mb-6 md:mb-12"
+          >
+            即刻加入 <br />
+            成為<span class="text-custom-pink-700">贊助夥伴</span>
+          </p>
+          <a href="mailto:hi@webconf.tw?subject=WebConf 贊助廠商諮詢" class="mailto-button">
+            前往諮詢
+          </a>
+        </div>
       </div>
     </div>
-
-    <div class="flex justify-center mt-12">
+    <div class="flex justify-center relative">
       <ul>
         <li
           v-for="level in sponsors"
@@ -59,11 +60,10 @@
                   </div>
                 </div>
                 <div class="border-r border-l border-b border-custom-teal-500 p-3 md:flex">
-                  <img
-                    :src="sponsors.image"
-                    alt="sponsors.id"
-                    class="border border-custom-teal-500 mb-2 w-[291px] h-[261px] md:w-[247px] md:h-[221px]"
-                  />
+                  <div
+                    class="border border-custom-teal-500 mb-2 w-[291px] h-[233px] md:w-[247px] md:h-[198px] md:flex-shrink-0"
+                    :class="sponsors.image"
+                  ></div>
                   <div class="flex-grow md:ml-2">
                     <a
                       href="#"
@@ -71,7 +71,10 @@
                       class="flex items-center p-3 border-b-2 border-custom-teal-700 md:cursor-auto"
                     >
                       <p class="text-custom-teal-500 text-xl leading-6 font-medium">贊助商簡介</p>
-                      <div :data-arrow="sponsors.id" class="iconArrowDown w-5 h-5 ml-2"></div>
+                      <div
+                        :data-arrow="sponsors.id"
+                        class="iconArrowDown w-5 h-5 ml-2 md:hidden"
+                      ></div>
                     </a>
                     <div :data-introduction="sponsors.id" class="overflow-hidden h-[0px] md:h-auto">
                       <div class="pt-5 pr-3 pl-3">
@@ -84,9 +87,13 @@
                         </p>
                       </div>
                       <ul class="flex mb-4">
-                        <li v-for="link in sponsors.link" :key="link.icon" class="ml-2">
-                          <a :href="link.url" target="_blank">
-                            <img :src="link.icon" :alt="link.url" class="w-10 h-10" />
+                        <li v-for="link in sponsors.link" :key="link.url" class="ml-2">
+                          <a
+                            :href="link.url"
+                            target="_blank"
+                            class="w-10 h-10 block"
+                            :class="link.icon"
+                          >
                           </a>
                         </li>
                       </ul>
@@ -99,6 +106,9 @@
         </li>
       </ul>
     </div>
+    <div class="fixed z-30 hidden md:block bottom-6 left-6">
+      <StylingFBLink></StylingFBLink>
+    </div>
   </div>
 </template>
 
@@ -108,6 +118,7 @@ import { useRoute } from "vue-router";
 import { usePageInfoStore } from "@/stores/pageInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
 import { sponsors } from "@/content/sponsors";
+import StylingFBLink from "@/components/StylingFBLink.vue";
 
 const route = useRoute();
 
@@ -160,5 +171,60 @@ onMounted(() => {
 
 .iconArrowDown {
   background-image: url("@/assets/images/icon/ic_arrow_down_s.svg");
+}
+
+.sponsorsPicCollage {
+  background: url("@/assets/images/sponsors/picCollage.svg");
+  background-size: cover;
+}
+
+.sponsorsKdanmobile {
+  background: url("@/assets/images/sponsors/kdanmobile.svg");
+  background-size: cover;
+}
+
+.sponsorsTrafficInfo {
+  background: url("@/assets/images/sponsors/titansoft.svg");
+  background-size: cover;
+}
+
+.sponsorsHexschool {
+  background: url("@/assets/images/sponsors/hexschool.svg");
+  background-size: cover;
+}
+
+.facebook {
+  background: url("@/assets/images/linkIcon/facebook.svg");
+  background-size: cover;
+}
+
+.instagram {
+  background: url("@/assets/images/linkIcon/instagram.svg");
+  background-size: cover;
+}
+
+.linkedin {
+  background: url("@/assets/images/linkIcon/linkedin.svg");
+  background-size: cover;
+}
+
+.medium {
+  background: url("@/assets/images/linkIcon/medium.svg");
+  background-size: cover;
+}
+
+.twitter {
+  background: url("@/assets/images/linkIcon/twitter.svg");
+  background-size: cover;
+}
+
+.web {
+  background: url("@/assets/images/linkIcon/web.svg");
+  background-size: cover;
+}
+
+.youtube {
+  background: url("@/assets/images/linkIcon/youtube.svg");
+  background-size: cover;
 }
 </style>
