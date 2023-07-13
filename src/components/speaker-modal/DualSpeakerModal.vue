@@ -16,42 +16,42 @@
       >
         <iconClose class="hover:text-custom-teal-700 active:text-custom-teal-500 w-6 h-6" />
       </button>
-      <!-- 講者頭貼 -->
+      <!-- 講者1頭貼 -->
       <div class="flex md:px-3 mb-9 md:mb-5 flex-col md:flex-row items-center md:items-stretch">
         <img
           class="mb-5 md:mb-0 mx-auto w-full max-w-[360px] max-h-[360px] md:w-[150px] md:h-[150px] border-2 border-custom-teal-500 md:mr-5 md:ml-0 object-cover"
-          :src="`/speaker-img/${speakerInfo.id}.jpg`"
+          :src="`/speaker-img/${speakerInfoArr[0].id}.jpg`"
         />
         <div class="flex flex-col">
           <h2
             class="text-custom-teal-500 font-semibold text-2xl md:text-3xl mb-3 text-center md:text-left"
           >
-            {{ speakerInfo.speakerName }}
-            <span v-if="speakerInfo.altName">{{ `(${speakerInfo.altName})` }}</span>
+            {{ speakerInfoArr[0].speakerName }}
+            <span v-if="speakerInfoArr[0].altName">{{ `(${speakerInfoArr[0].altName})` }}</span>
           </h2>
           <p class="mb-5 md:mb-auto">
-            {{ `${speakerInfo.organization} ${speakerInfo.jobTitle}` }}
+            {{ `${speakerInfoArr[0].organization} ${speakerInfoArr[0].jobTitle}` }}
           </p>
 
           <div
             class="flex text-custom-teal-500 justify-center md:justify-start gap-3 md:gap-2 -ml-1"
           >
             <a
-              :href="speakerInfo.facebookProfileLink"
-              v-show="speakerInfo.facebookProfileLink"
+              :href="speakerInfoArr[0].facebookProfileLink"
+              v-show="speakerInfoArr[0].facebookProfileLink"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
             </a>
 
             <a
-              :href="speakerInfo.twitterProfileLink"
-              v-show="speakerInfo.twitterProfileLink"
+              :href="speakerInfoArr[0].twitterProfileLink"
+              v-show="speakerInfoArr[0].twitterProfileLink"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
             </a>
-            <template v-for="link in speakerInfo.otherLinks" :key="link">
+            <template v-for="link in speakerInfoArr[0].otherLinks" :key="link">
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
@@ -80,12 +80,88 @@
         </div>
       </div>
 
-      <!-- 講者介紹 -->
+      <!-- 講者1介紹 -->
+      <div class="md:px-3 mb-4">
+        <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
+          講者介紹
+        </h3>
+        <p class="leading-normal whitespace-pre-line">
+          {{ speakerInfoArr[0].personalIntroduction }}
+        </p>
+      </div>
+
+      <!-- 講者2頭貼 -->
+      <div class="flex md:px-3 mb-9 md:mb-5 flex-col md:flex-row items-center md:items-stretch">
+        <img
+          class="mb-5 md:mb-0 mx-auto w-full max-w-[360px] max-h-[360px] md:w-[150px] md:h-[150px] border-2 border-custom-teal-500 md:mr-5 md:ml-0 object-cover"
+          :src="`/speaker-img/${speakerInfoArr[1].id}.jpg`"
+        />
+        <div class="flex flex-col">
+          <h2
+            class="text-custom-teal-500 font-semibold text-2xl md:text-3xl mb-3 text-center md:text-left"
+          >
+            {{ speakerInfoArr[1].speakerName }}
+            <span v-if="speakerInfoArr[1].altName">{{ `(${speakerInfoArr[1].altName})` }}</span>
+          </h2>
+          <p class="mb-5 md:mb-auto">
+            {{ `${speakerInfoArr[1].organization} ${speakerInfoArr[1].jobTitle}` }}
+          </p>
+
+          <div
+            class="flex text-custom-teal-500 justify-center md:justify-start gap-3 md:gap-2 -ml-1"
+          >
+            <a
+              :href="speakerInfoArr[1].facebookProfileLink"
+              v-show="speakerInfoArr[1].facebookProfileLink"
+              class="hover:text-custom-teal-700 active:text-custom-teal-500"
+            >
+              <iconFacebook class="stroke-current md:w-6 md:h-6" />
+            </a>
+
+            <a
+              :href="speakerInfoArr[1].twitterProfileLink"
+              v-show="speakerInfoArr[1].twitterProfileLink"
+              class="hover:text-custom-teal-700 active:text-custom-teal-500"
+            >
+              <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
+            </a>
+            <template v-for="link in speakerInfoArr[1].otherLinks" :key="link">
+              <a
+                :href="link"
+                v-if="link !== '' && link.includes('medium')"
+                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+              >
+                <iconMedium class="svg-fill-current md:w-6 md:h-6" />
+              </a>
+
+              <a
+                :href="link"
+                v-else-if="link !== '' && link.includes('instagram')"
+                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+              >
+                <iconIg class="stroke-current md:w-6 md:h-6" />
+              </a>
+
+              <a
+                :href="link"
+                v-else-if="link !== ''"
+                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+              >
+                <iconLink class="svg-fill-current md:w-6 md:h-6" />
+              </a>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- 講者2介紹 -->
       <div class="md:px-3 mb-3">
         <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
           講者介紹
         </h3>
-        <p class="leading-normal whitespace-pre-line">{{ speakerInfo.personalIntroduction }}</p>
+        <p class="leading-normal whitespace-pre-line">
+          {{ speakerInfoArr[1].personalIntroduction }}
+        </p>
       </div>
 
       <!-- 議程資訊 -->
@@ -94,45 +170,44 @@
       >
         <h3 class="text-lg md:text-xl font-semibold leading-tight mr-2">議程資訊</h3>
       </div>
-      <Transition>
-        <section class="md:px-3 pt-6">
-          <h1 class="text-custom-teal-500 text-xl md:text-3xl font-semibold mb-2">
-            {{ speakerInfo.speechTopic }}
-          </h1>
-          <div
-            class="flex text-custom-pink-700 items-center justify-start leading-none mb-7"
-            v-show="speakerInfo.date"
-          >
-            <iconTime class="svg-fill-current stroke-0 mr-1" />
-            <p class="mr-5 pt-[1px]">{{ speakerInfo.formattedSession }}</p>
-            <iconLocation class="stroke-current mr-1" />
-            <p class="align-middle pt-[3px]">講廳 {{ speakerInfo.room }}</p>
+      <section class="md:px-3 pt-6">
+        <h1 class="text-custom-teal-500 text-xl md:text-3xl font-semibold mb-2">
+          {{ speakerInfoArr[1].speechTopic }}
+        </h1>
+        <div
+          class="flex text-custom-pink-700 items-center justify-start leading-none mb-7"
+          v-show="speakerInfoArr[1].date"
+        >
+          <iconTime class="svg-fill-current stroke-0 mr-1" />
+          <p class="mr-5 pt-[1px]">{{ speakerInfoArr[1].formattedSession }}</p>
+          <iconLocation class="stroke-current mr-1" />
+          <p class="align-middle pt-[3px]">講廳 {{ speakerInfoArr[1].room }}</p>
+        </div>
+        <div class="mb-5">
+          <p class="mb-3 whitespace-pre-line">{{ speakerInfoArr[1].speechSummary }}</p>
+          <div class="flex gap-3">
+            <CategoryTag :tag="tag" v-for="tag in speakerInfoArr[1].categoryTags" :key="tag" />
           </div>
-          <div class="mb-5">
-            <p class="mb-3 whitespace-pre-line">{{ speakerInfo.speechSummary }}</p>
-            <div class="flex gap-3">
-              <CategoryTag :tag="tag" v-for="tag in speakerInfo.categoryTags" :key="tag" />
-            </div>
-          </div>
-          <div class="mb-5">
-            <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
-              目標會眾
-            </h3>
-            <p class="whitespace-pre-line">
-              {{ speakerInfo.targetAudience }}
-            </p>
-          </div>
+        </div>
+        <div class="mb-5">
+          <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
+            目標會眾
+          </h3>
+          <p class="whitespace-pre-line">
+            {{ speakerInfoArr[1].targetAudience }}
+          </p>
+        </div>
 
-          <div class="mb-5">
-            <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
-              預期收穫
-            </h3>
-            <p class="whitespace-pre-line">
-              {{ speakerInfo.expectedBenefits }}
-            </p>
-          </div>
+        <div class="mb-5">
+          <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
+            預期收穫
+          </h3>
+          <p class="whitespace-pre-line">
+            {{ speakerInfoArr[1].expectedBenefits }}
+          </p>
+        </div>
 
-          <!-- <div class="flex flex-col-reverse md:flex-row gap-3">
+        <!-- <div class="flex flex-col-reverse md:flex-row gap-3">
             <button class="primary-button">
               <iconShare />
               <p>分享議程</p>
@@ -146,8 +221,7 @@
               <p>加入行事曆</p>
             </button>
           </div> -->
-        </section>
-      </Transition>
+      </section>
     </section>
   </div>
 </template>
@@ -184,33 +258,12 @@ const props = defineProps({
   onModalClose: {
     type: Function,
   },
-  speakerInfo: {
-    speakerName: String,
-    altName: String,
-    organization: String,
-    jobTitle: String,
-    personalIntroduction: String,
-    photoURL: String,
-    facebookProfileLink: String,
-    twitterProfileLink: String,
-    otherLinks: String,
-    speechTopic: String,
-    speechSummary: String,
-    categoryTags: [String],
-    targetAudience: String,
-    expectedBenefits: String,
-    formattedSession: String,
-    room: String,
+  speakerInfoArr: {
+    type: Array,
   },
 });
 
-// const isMoreInfoOpen = ref(props.isMoreInfoOpen);
-
-const { onModalClose, speakerInfo, isModalOpen } = toRefs(props);
-
-// const toggleMoreInfo = () => {
-//   isMoreInfoOpen.value = !isMoreInfoOpen.value;
-// };
+const { onModalClose, speakerInfoArr, isModalOpen } = toRefs(props);
 
 watchEffect(() => {
   if (typeof window !== "undefined" && window.document) {

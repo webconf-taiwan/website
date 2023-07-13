@@ -1,6 +1,15 @@
 <template>
-  <div class="bg-container">
-    <div :class="{ bgImage: currentPageName !== '2013WebConf' }">
+  <div
+    class="bg-container"
+    :class="{
+      'overflow-hidden': currentPageName == 'home',
+    }"
+  >
+    <div
+      :class="{
+        bgImage: currentPageName !== '2013WebConf',
+      }"
+    >
       <div
         v-if="currentPageName !== 'home' && currentPageName !== '2013WebConf'"
         class="bg-gradient"

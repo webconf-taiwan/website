@@ -30,7 +30,7 @@
         <div class="flex sticky top-12 md:static z-10">
           <AgendaDateHeading
             :isActive="activeDate === '08-11'"
-            :onActiveDateClick="handleActiveDateClick('08-11')"
+            :onActiveDateClick="() => handleActiveDateClick('08-11')"
           >
             <p class="text-center text-3xl md:text-4xl leading-none font-bold">
               8/11 <span class="text-base md:text-2xl font-semibold">(FRI.)</span>
@@ -39,7 +39,7 @@
           <AgendaDateHeading
             isRight
             :isActive="activeDate === '08-12'"
-            :onActiveDateClick="handleActiveDateClick('08-12')"
+            :onActiveDateClick="() => handleActiveDateClick('08-12')"
           >
             <p class="text-center text-3xl md:text-4xl leading-none font-bold">
               8/12 <span class="text-base md:text-2xl font-semibold">(SAT.)</span>
@@ -47,7 +47,7 @@
           </AgendaDateHeading>
         </div>
         <div class="p-2 flex flex-col border border-t-0 border-custom-teal-500 gap-2">
-          <div class="hidden md:flex gap-2">
+          <div class="hidden md:flex gap-2" ref="topHeaderRef">
             <div class="basis-[10%]"></div>
             <div class="basis-[90%] flex gap-2 text-lg">
               <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1001</div>
@@ -75,7 +75,6 @@
 
             <BreakTimeRow v-if="session.isBreakTime" :text="session.data[0]" />
           </template>
-          <BreakTimeRow :text="activeDate === '08-11' ? '明天見' : '下次見'" />
         </div>
 
         <!-- 靜態 Footer -->
@@ -85,12 +84,28 @@
         >
           <div class="basis-[10%] flex">
             <div
-              class="text-lg grow bg-custom-teal-500 text-black flex items-center justify-center"
+              @click="() => handleActiveDateClick('08-11')"
+              class="cursor-pointer text-lg grow flex items-center justify-center"
+              :class="{
+                'border border-custom-teal-700': activeDate !== '08-11',
+                'bg-black': activeDate !== '08-11',
+                'text-custom-teal-700': activeDate !== '08-11',
+                'bg-custom-teal-500': activeDate === '08-11',
+                'text-black': activeDate === '08-11',
+              }"
             >
               8/11
             </div>
             <div
-              class="text-lg grow border border-custom-teal-700 text-custom-teal-700 flex justify-center items-center"
+              @click="() => handleActiveDateClick('08-12')"
+              class="cursor-pointer text-lg grow flex justify-center items-center"
+              :class="{
+                'border border-custom-teal-700': activeDate !== '08-12',
+                'bg-black': activeDate !== '08-12',
+                'text-custom-teal-700': activeDate !== '08-12',
+                'bg-custom-teal-500': activeDate === '08-12',
+                'text-black': activeDate === '08-12',
+              }"
             >
               8/12
             </div>
@@ -107,20 +122,36 @@
           <div
             class="footer right-0 left-0 px-[140px]"
             :class="{
-              'footer-visible': isVisible,
-              'footer-animated-hidden': !isVisible,
-              hidden: isHideDynamicFooter,
+              'footer-visible': isTurnOnDynamicFooter,
+              'footer-animated-hidden': !isTurnOnDynamicFooter,
+              hidden: isDisableDynamicFooter,
             }"
           >
             <div class="p-2 flex gap-2 border border-custom-teal-500 bg-black">
               <div class="basis-[10%] flex">
                 <div
-                  class="text-lg grow bg-custom-teal-500 text-black flex items-center justify-center"
+                  @click="() => handleActiveDateClick('08-11')"
+                  class="cursor-pointer text-lg grow flex items-center justify-center"
+                  :class="{
+                    'border border-custom-teal-700': activeDate !== '08-11',
+                    'bg-black': activeDate !== '08-11',
+                    'text-custom-teal-700': activeDate !== '08-11',
+                    'bg-custom-teal-500': activeDate === '08-11',
+                    'text-black': activeDate === '08-11',
+                  }"
                 >
                   8/11
                 </div>
                 <div
-                  class="text-lg grow border border-custom-teal-700 text-custom-teal-700 flex justify-center items-center"
+                  @click="() => handleActiveDateClick('08-12')"
+                  class="cursor-pointer text-lg grow flex justify-center items-center"
+                  :class="{
+                    'border border-custom-teal-700': activeDate !== '08-12',
+                    'bg-black': activeDate !== '08-12',
+                    'text-custom-teal-700': activeDate !== '08-12',
+                    'bg-custom-teal-500': activeDate === '08-12',
+                    'text-black': activeDate === '08-12',
+                  }"
                 >
                   8/12
                 </div>
@@ -140,8 +171,15 @@
 
     <div>
       <SpeakerModal
-        v-if="!!modalSpeakerData"
+        v-if="!!modalSpeakerData && !Array.isArray(modalSpeakerData)"
         :speakerInfo="modalSpeakerData"
+        :isMoreInfoOpen="true"
+        :onModalClose="() => handleModalClose()"
+        :isModalOpen="isModalOpen"
+      />
+      <DualSpeakerModal
+        v-if="!!modalSpeakerData && Array.isArray(modalSpeakerData)"
+        :speakerInfoArr="modalSpeakerData"
         :isMoreInfoOpen="true"
         :onModalClose="() => handleModalClose()"
         :isModalOpen="isModalOpen"
@@ -204,6 +242,7 @@ import FilterComponent from "@/components/FilterComponent.vue";
 import speakerAgenda from "@/content/speakerAgenda.json";
 import speakerInfoJson from "@/content/speakerInfoData.json";
 import SpeakerModal from "@/components/speaker-modal/SpeakerModal.vue";
+import DualSpeakerModal from "@/components/speaker-modal/DualSpeakerModal.vue";
 
 const speakerInfoArr = speakerInfoJson.data;
 
@@ -219,17 +258,36 @@ const fbDecorativeLink = ref();
 
 const handleFBScroll = () => {
   const { scrollTop } = document.documentElement;
-  const clientHeight = document.documentElement.clientHeight - 470;
-  const isBottom = scrollTop > clientHeight;
+  const { clientHeight } = document.documentElement;
+  const isBottom = scrollTop > clientHeight + 300;
 
   fbDecorativeLink.value.style.opacity = isBottom ? 0 : 1;
 };
 
-const isVisible = ref(false);
-const isHideDynamicFooter = ref(false);
+const isTurnOnDynamicFooter = ref(false);
+const isDisableDynamicFooter = ref(false);
 const isStaticFooterVisible = ref(false);
 
-const activeDate = ref("08-11");
+const genDefaultActiveDate = () => {
+  const today = new Date();
+  let month = today.getMonth() + 1;
+  let day = today.getDate();
+
+  if (month < 10) {
+    month = `0${month}`;
+  }
+  if (day < 10) {
+    day = `0${day}`;
+  }
+  const currentDate = `${month}-${day}`;
+
+  if (currentDate === "08-11" || currentDate === "08-12") {
+    return currentDate;
+  }
+  return "08-11";
+};
+
+const activeDate = ref(genDefaultActiveDate());
 
 const activeAgenda = computed(() => speakerAgenda[activeDate.value]);
 
@@ -242,6 +300,8 @@ const activeSpeakerId = ref(null);
 const isModalOpen = ref(true);
 const modalSpeakerData = computed(() => {
   if (activeSpeakerId.value === null) return null;
+  if (Array.isArray(activeSpeakerId.value))
+    return activeSpeakerId.value.map((id) => speakerInfoMap[id]);
   return speakerInfoMap[activeSpeakerId.value];
 });
 
@@ -284,28 +344,27 @@ const handleModalClose = () => {
   isModalOpen.value = false;
 };
 
-const handleActiveDateClick = (dateStr) => () => {
+const handleActiveDateClick = (dateStr) => {
   activeDate.value = dateStr;
 };
-
 const lastScrollTop = ref(0);
 
 const handleFooterScroll = () => {
-  if (isHideDynamicFooter.value) {
+  if (isDisableDynamicFooter.value) {
     return;
   }
 
   const st = window.pageYOffset || document.documentElement.scrollTop;
   if (st > lastScrollTop.value) {
-    isVisible.value = true;
+    isTurnOnDynamicFooter.value = true;
   }
 
   if (!isStaticFooterVisible.value && st < lastScrollTop.value) {
-    isVisible.value = false;
+    isTurnOnDynamicFooter.value = false;
   }
 
   if (isStaticFooterVisible.value && st < lastScrollTop.value) {
-    isVisible.value = true;
+    isTurnOnDynamicFooter.value = true;
   }
 
   lastScrollTop.value = st;
@@ -315,9 +374,18 @@ let scrollDownObserver = null;
 let isStaticFooterObserver = null;
 
 const staticFooterRef = ref(null);
+const topHeaderRef = ref(null);
+
+const checkTopHeaderRefVisibility = () => {
+  const rect = topHeaderRef.value.getBoundingClientRect();
+  if (rect.bottom < 50) {
+    // header 在上面
+    handleFooterScroll();
+  }
+};
 
 onBeforeUnmount(() => {
-  window.removeEventListener("scroll", handleFooterScroll, false);
+  window.removeEventListener("scroll", checkTopHeaderRefVisibility);
 
   if (scrollDownObserver) {
     scrollDownObserver.disconnect();
@@ -325,14 +393,14 @@ onBeforeUnmount(() => {
 });
 
 onMounted(() => {
-  window.addEventListener("scroll", handleFooterScroll, false);
+  window.addEventListener("scroll", checkTopHeaderRefVisibility);
 
   setCurrentPageName(route.name);
   window.addEventListener("scroll", handleFBScroll);
 
   scrollDownObserver = new IntersectionObserver(
     ([entry]) => {
-      isHideDynamicFooter.value = entry.isIntersecting;
+      isDisableDynamicFooter.value = entry.isIntersecting;
     },
     {
       threshold: 1,

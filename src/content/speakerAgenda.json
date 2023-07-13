@@ -45,8 +45,8 @@
       "data": [
         "fan-sheng-you",
         "mo-li-quan",
-        "lin-yu-cheng-yves-hei-shou-a-yi",
-        "ke-ren-jie-david-min-jie-san-shu-gong"
+        "lin-yu-cheng",
+        "ke-ren-jie"
       ],
       "headerText": [
         "11:55",
@@ -93,7 +93,7 @@
     {
       "id": "15:20",
       "data": [
-        "chen-bai-rong",
+        "pj",
         "max-wu",
         "yu-hong-yi"
       ],
@@ -115,6 +115,13 @@
       ],
       "isKeynote": true,
       "isBreakTime": false
+    },
+    {
+      "id": "17:00",
+      "data": [
+        "明天見"
+      ],
+      "isBreakTime": true
     }
   ],
   "08-12": [
@@ -196,7 +203,7 @@
     {
       "id": "14:25",
       "data": [
-        "ben-wan-yin-xi-he",
+        "ben-wan",
         "orange-tsai",
         "huang-sheng-huang"
       ],
@@ -232,6 +239,13 @@
       ],
       "isKeynote": true,
       "isBreakTime": false
+    },
+    {
+      "id": "17:00",
+      "data": [
+        "下次見"
+      ],
+      "isBreakTime": true
     }
   ]
 }
