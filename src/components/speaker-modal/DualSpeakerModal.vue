@@ -267,8 +267,6 @@ const dualSpeakerInfo = reactive(props.dualSpeakerInfo);
 
 const { data: dualSpeakerArr } = toRefs(dualSpeakerInfo);
 
-console.log(dualSpeakerArr.value[0]);
-
 watchEffect(() => {
   if (typeof window !== "undefined" && window.document) {
     if (isModalOpen.value) {
