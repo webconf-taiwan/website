@@ -34,36 +34,37 @@
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10"
       >
         <li
-          v-for="speaker in speakerInfo"
-          :key="speaker.speakerName"
-          class="w-[245px] xs:w-[300px] sm:w-[245px]"
+          v-for="speaker in speakerInfo.filter((item) => item.id !== 'dual')"
+          :key="speaker.id"
+          class="w-[245px] xs:w-[300px] sm:w-[245px] hover-parent"
           :class="{ hidden: !isShowSpeaker(speaker.categoryTags) }"
         >
-          <a
-            href="#"
-            @click.prevent="handleOpenSpeakerModal"
-            :data-speakerName="speaker.speakerName"
-          >
+          <a href="#" @click.prevent="handleOpenSpeakerModal" :data-speakerId="speaker.id">
             <div class="flex py-2 border border-custom-teal-500 bg-custom-gray-800">
               <div class="w-5 py-1 my-2 border-t border-b border-r border-custom-teal-700">
                 <div class="border-t border-b h-6px border-custom-teal-700"></div>
               </div>
               <p class="mx-3 text-2xl font-medium text-custom-pink-700">
                 {{ speaker.speakerName }}
-                <!-- <span class="text-lg font-medium" v-if="speaker.altName"
-                    >({{ speaker.altName }})</span
-                  > -->
+                <span class="text-lg font-medium" v-if="speaker.altName"
+                  >({{ speaker.altName }})</span
+                >
               </p>
               <div class="flex-grow py-1 my-2 border-t border-b border-l border-custom-teal-700">
                 <div class="border-t border-b h-6px border-custom-teal-700"></div>
               </div>
             </div>
             <div class="p-3 border-b border-l border-r bg-custom-gray-800 border-custom-teal-500">
-              <img
-                :src="speaker.photoURL"
-                alt="speaker avatar"
-                class="w-[245px] xs:w-[300px] sm:w-[245px] h-[245px] xs:h-[300px] sm:h-[245px] object-cover"
-              />
+              <div class="overflow-hidden relative">
+                <img
+                  :src="`speaker-img/${speaker.id}.jpg`"
+                  alt="speaker avatar"
+                  class="w-[245px] xs:w-[300px] sm:w-[245px] h-[245px] xs:h-[300px] sm:h-[245px] object-cover"
+                />
+                <div
+                  class="hover-mask absolute top-0 inset-x-0 w-full h-full bg-custom-teal-700 opacity-60"
+                ></div>
+              </div>
             </div>
           </a>
           <ul class="flex flex-wrap mt-5">
@@ -83,9 +84,15 @@
   <FilterTool></FilterTool>
   <div>
     <SpeakerModal
+      v-if="!!modalSpeakerData && modalSpeakerData.id !== 'dual'"
       :speakerInfo="modalSpeakerData"
-      :isMoreInfoOpen="false"
-      :onModalClose="handleModalClose"
+      :onModalClose="() => handleModalClose()"
+      :isModalOpen="isModalOpen"
+    />
+    <DualSpeakerModal
+      v-if="!!modalSpeakerData && modalSpeakerData.id === 'dual'"
+      :dualSpeakerInfo="modalSpeakerData"
+      :onModalClose="() => handleModalClose()"
       :isModalOpen="isModalOpen"
     />
   </div>
@@ -107,6 +114,20 @@
 .writing-vertical {
   writing-mode: vertical-rl;
 }
+
+.hover-mask {
+  background-color: transparent;
+  transition: background-color 0.3s ease; /* 添加圖片放大和移動的漸變效果 */
+}
+
+.hover-parent:hover .hover-mask {
+  background-color: #006a97;
+}
+
+.hover-parent:hover img {
+  transition: transform 0.3s ease; /* 添加圖片放大和移動的漸變效果 */
+  transform: scale(1.2); /* 滑鼠指向時圖片放大的倍率 */
+}
 </style>
 
 <script setup>
@@ -115,6 +136,7 @@ import { useRoute } from "vue-router";
 import { usePageInfoStore } from "@/stores/pageInfo";
 import { useFilterStore } from "@/stores/filter";
 import SpeakerModal from "@/components/speaker-modal/SpeakerModal.vue";
+import DualSpeakerModal from "@/components/speaker-modal/DualSpeakerModal.vue";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
 import MoveToTop from "@/components/MoveToTop.vue";
@@ -166,10 +188,10 @@ const modalSpeakerData = reactive({
 
 const handleOpenSpeakerModal = (event) => {
   const { currentTarget } = event;
-  if (currentTarget.tagName === "A" && currentTarget.getAttribute("data-speakerName")) {
-    const speaker = speakerInfo.find(
-      (element) => element.speakerName === currentTarget.getAttribute("data-speakerName")
-    );
+  if (currentTarget.tagName === "A" && currentTarget.getAttribute("data-speakerId")) {
+    let speakerId = currentTarget.getAttribute("data-speakerId");
+    speakerId = speakerId === "lin-yu-cheng" || speakerId === "ke-ren-jie" ? "dual" : speakerId;
+    const speaker = speakerInfo.find((element) => element.id === speakerId);
     if (speaker) {
       Object.assign(modalSpeakerData, speaker);
       isModalOpen.value = true;
