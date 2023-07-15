@@ -193,6 +193,11 @@ onMounted(() => {
   background-size: cover;
 }
 
+.sponsors5xruby {
+  background: url("@/assets/images/sponsors/5xruby.svg");
+  background-size: cover;
+}
+
 .facebook {
   background: url("@/assets/images/linkIcon/facebook.svg");
   background-size: cover;
