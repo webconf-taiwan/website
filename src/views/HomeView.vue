@@ -957,6 +957,8 @@ const section3Anime = () => {
     const speaker9 = document.querySelector("#speaker2-4");
     const speaker10 = document.querySelector("#speaker2-5");
 
+    const screenWidth = window.innerWidth;
+
     speakerMoveRightTl.to([speaker1, speaker6], {
       opacity: 1,
     });
@@ -973,16 +975,47 @@ const section3Anime = () => {
     speakerMoveRightTl.to([speaker4, speaker9], {
       opacity: 1,
     });
-
-    speakerMoveRightTl.to(speaker, {
-      x: 370,
-    });
-
     speakerMoveRightTl.to([speaker5, speaker10], {
       opacity: 1,
     });
-    
 
+    if (screenWidth >= 768 && screenWidth < 900) {
+      speakerMoveRightTl.to(speaker, {
+        x: 1500,
+      });
+    } else if (screenWidth >= 900 && screenWidth < 1024) {
+      speakerMoveRightTl.to(speaker, {
+        x: 1350,
+      });
+    } else if (screenWidth >= 1024 && screenWidth < 1280) {
+      speakerMoveRightTl.to(speaker, {
+        x: 1200,
+      });
+    } else if (screenWidth >= 1280 && screenWidth < 1400) {
+      speakerMoveRightTl.to(speaker, {
+        x: 900,
+      });
+    } else if (screenWidth >= 1400 && screenWidth < 1536) {
+      speakerMoveRightTl.to(speaker, {
+        x: 800,
+      });
+    } else if (screenWidth >= 1536 && screenWidth < 1670) {
+      console.log(6,screenWidth);
+      speakerMoveRightTl.to(speaker, {
+        x: 650,
+      });
+    } else if (screenWidth >= 1670 && screenWidth < 1920) {
+      console.log(7,screenWidth);
+      speakerMoveRightTl.to(speaker, {
+        x: 470,
+      });
+    } else if (screenWidth >= 1920) {
+      console.log(8,screenWidth);
+      speakerMoveRightTl.to(speaker, {
+        x: 370,
+      });
+    }
+    
     // speakerMoveRightTl.to(speaker, {
     //   x: 1035,
     // });
