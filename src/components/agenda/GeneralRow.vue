@@ -74,11 +74,13 @@ const handleOpenSpeakerModal = (speakerId) => {
 </script>
 
 <style scoped>
-.speaker-cell {
-  transition: background-color 0.3s;
-}
+@media (min-width: 769px) {
+  .speaker-cell {
+    transition: background-color 0.3s;
+  }
 
-.speaker-cell:hover {
-  background-color: #006a97;
+  .speaker-cell:hover {
+    background-color: #006a97;
+  }
 }
 </style>
