@@ -5,9 +5,9 @@
     @wheel="preventScroll"
   >
     <div
-      class="border-t-2 border-custom-teal-700 bg-custom-gray-800 w-full flex justify-between p-3"
+      class="border-t-2 border-custom-teal-700 bg-custom-gray-800 w-full flex justify-between items-center p-3"
     >
-      <ul class="flex flex-wrap gap-2">
+      <ul class="flex flex-wrap gap-2 mr-3">
         <li
           v-for="tag in options"
           :key="tag"
@@ -22,7 +22,11 @@
           </a>
         </li>
       </ul>
-      <a href="#" class="closeMenuIcon w-10 h-10 flex-shrink-0" @click.prevent="closeFilter"></a>
+      <a
+        href="#"
+        class="closeMenuIcon w-10 h-10 flex-shrink-0 self-start"
+        @click.prevent="closeFilter"
+      ></a>
     </div>
   </div>
 </template>

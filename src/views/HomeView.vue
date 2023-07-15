@@ -957,44 +957,47 @@ const section3Anime = () => {
     const speaker9 = document.querySelector("#speaker2-4");
     const speaker10 = document.querySelector("#speaker2-5");
 
-    speakerMoveRightTl.to(speaker, {
-      x: 345,
-    });
     speakerMoveRightTl.to([speaker1, speaker6], {
       opacity: 1,
     });
     speakerMoveRightTl.to([speaker2, speaker7], {
       opacity: 1,
     });
+    speakerMoveRightTl.to(speaker, {
+      x: 150,
+    });
+    
     speakerMoveRightTl.to([speaker3, speaker8], {
       opacity: 1,
-    });
-
-    speakerMoveRightTl.to(speaker, {
-      x: 690,
     });
     speakerMoveRightTl.to([speaker4, speaker9], {
       opacity: 1,
     });
+
+    speakerMoveRightTl.to(speaker, {
+      x: 370,
+    });
+
     speakerMoveRightTl.to([speaker5, speaker10], {
       opacity: 1,
     });
+    
 
-    speakerMoveRightTl.to(speaker, {
-      x: 1035,
-    });
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 1035,
+    // });
 
-    speakerMoveRightTl.to(speaker, {
-      x: 1380,
-    });
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 1380,
+    // });
 
-    speakerMoveRightTl.to(speaker, {
-      x: 1725,
-    });
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 1725,
+    // });
 
-    speakerMoveRightTl.to(speaker, {
-      x: 2070,
-    });
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 2070,
+    // });
   });
 };
 
