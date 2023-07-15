@@ -3,17 +3,17 @@
     <TimelineCell :startTime="startTime" :endTime="endTime" />
 
     <div
-      class="speaker-cell cursor-pointer p-3 md:p-0 basis-full md:basis-[90%] flex flex-col md:flex-row border border-custom-teal-500 items-center"
+      class="speaker-cell p-3 md:p-0 basis-full md:basis-[90%] flex flex-col md:flex-row border border-custom-teal-500 items-center"
       :data-speakerId="speakerInfo.id"
       @click="() => handleOpenSpeakerModal(speakerInfo.id)"
     >
       <div
-        class="hover-no-border fh-[33.33%] md:h-[90%] py-5 text-lg w-full md:basis-1/3 border-t md:border-r md:border-t-0 border-custom-teal-700 flex items-center justify-between md:justify-center"
+        class="hover-no-border fh-[33.33%] md:h-[90%] py-5 text-lg w-full md:basis-1/3 border-b md:border-r md:border-b-0 border-custom-teal-700 flex items-center justify-between md:justify-center"
       >
         <p class="font-semibold text-custom-teal-500">同步聯播</p>
-        <LocationBar :room="speakerInfo.room" />
+        <LocationBar room="1001" />
       </div>
-      <div class="mb-3 md:mb-0 w-full h-full md:basis-1/3 md:px-5 md:py-4">
+      <div class="py-4 w-full h-full md:basis-1/3 md:px-5 md:py-4">
         <SpeakerCell
           :id="speakerInfo.id"
           :speechTopic="speakerInfo.speechTopic"
@@ -27,7 +27,7 @@
         class="fh-[33.33%] md:h-[90%] py-5 text-lg w-full md:basis-1/3 border-t md:border-l md:border-t-0 border-custom-teal-700 flex items-center justify-between md:justify-center"
       >
         <p class="font-semibold text-custom-teal-500">同步聯播</p>
-        <LocationBar :room="speakerInfo.room" />
+        <LocationBar room="1002" />
       </div>
     </div>
   </div>
@@ -61,15 +61,17 @@ const handleOpenSpeakerModal = (speakerId) => {
 </script>
 
 <style scoped>
-.speaker-cell {
-  transition: background-color 0.3s;
-}
+@media (min-width: 769px) {
+  .speaker-cell {
+    transition: background-color 0.3s, border-color 0.3s;
+  }
 
-.cursor-pointer:hover {
-  background-color: #006a97;
-}
+  .speaker-cell:hover {
+    background-color: #006a97;
+  }
 
-.cursor-pointer:hover .border-custom-teal-700 {
-  border-color: #3ef0fc;
+  .speaker-cell:hover .border-custom-teal-700 {
+    border-color: #3ef0fc;
+  }
 }
 </style>
