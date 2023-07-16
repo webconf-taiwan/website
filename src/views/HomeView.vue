@@ -1000,17 +1000,14 @@ const section3Anime = () => {
         x: 800,
       });
     } else if (screenWidth >= 1536 && screenWidth < 1670) {
-      console.log(6,screenWidth);
       speakerMoveRightTl.to(speaker, {
         x: 650,
       });
     } else if (screenWidth >= 1670 && screenWidth < 1920) {
-      console.log(7,screenWidth);
       speakerMoveRightTl.to(speaker, {
         x: 470,
       });
     } else if (screenWidth >= 1920) {
-      console.log(8,screenWidth);
       speakerMoveRightTl.to(speaker, {
         x: 370,
       });
