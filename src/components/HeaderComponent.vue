@@ -276,18 +276,18 @@ const menuList = ref([
   },
   {
     ChtName: "議程資訊",
-    EngName: "Schedule",
+    EngName: "Agenda",
     home: "agenda",
   },
   {
     ChtName: "講者陣容",
-    EngName: "Speaker",
+    EngName: "Speakers",
     home: "speaker",
   },
   {
     ChtName: "贊助夥伴",
-    EngName: "Sponsorship",
-    home: "sponsorship",
+    EngName: "Sponsors",
+    home: "sponsors",
   },
   // {
   // ChtName: "主辦單位",
