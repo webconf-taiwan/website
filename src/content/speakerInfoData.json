@@ -1,6 +1,138 @@
 {
-  "timestamp": "20230713035041",
+  "timestamp": "20230716231209",
   "data": [
+    {
+      "timestamp": "2023-06-30T19:17:34.000Z",
+      "speakerName": "Ant",
+      "altName": "",
+      "organization": "<403 Forbidden>",
+      "jobTitle": "<404 Not Found>",
+      "personalIntroduction": "致力於「創造能與商業對話的技術架構」、「交付合於精實敏捷的可用方案」的實踐者",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1CyGmhybPEFcdRbDcCUfRas4GqgxUdRGe",
+      "facebookProfileLink": "https://www.facebook.com/yftzeng.tw",
+      "twitterProfileLink": "https://twitter.com/yftzeng",
+      "otherLinks": [
+        "https://blog.gcos.me/"
+      ],
+      "speechTopic": "從專業到商業：十年軟體架構變遷",
+      "speechSummary": "10 年來，台灣軟體開發的架構本身和營運型態都有很明顯的變遷，歷經了 Cloud 普及、Agile / DevOps 盛行、Blockchain 興起、Microservices 熱議、AI 再起。這些方方面面對「軟體架構」造成了什麼影響，從中可以學習什麼。",
+      "categoryTags": [
+        "Backend",
+        "團隊管理"
+      ],
+      "targetAudience": "軟體工程師、軟體架構師、技術主管，或對於軟體技術變遷如何影響架構乃至商業的人。",
+      "expectedBenefits": "提供對於 Cloud、Agile / DevOps、Blockchain、Microservices、AI 等的「架構」觀點，從不同視角切入瞭解技術變遷的濃縮史，以期帶來不一樣認知與收獲。",
+      "contactEmail": "yftzeng@gmail.com",
+      "session": "2023-08-11T16:15:00+08:00",
+      "room": "1101",
+      "isKeynoteSpeaker": true,
+      "formattedSession": "8/11 (FRI.) 16:15 ~ 17:00",
+      "date": "08-11",
+      "startTime": "16:15",
+      "endTime": "17:00",
+      "id": "ant",
+      "index": 0
+    },
+    {
+      "timestamp": "2023-06-29T00:59:35.000Z",
+      "speakerName": "Paul Li",
+      "altName": "",
+      "organization": "Yahoo",
+      "jobTitle": "",
+      "personalIntroduction": "whatever",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1SYVsHNIlSqln17tIk7iAmQstEawESLaC",
+      "facebookProfileLink": "https://www.facebook.com/mei.studio.li/",
+      "twitterProfileLink": "",
+      "otherLinks": [
+        ""
+      ],
+      "speechTopic": "鳳‧極意？！",
+      "speechSummary": "與使用者互動藉此激盪出力與美的集合一直都是每位 front-end 的終極標的。\nform element 打從 HTML 問世以來，一直都扮演著非常重要的角色。\n他們本身具備了獨立的 UI/UX 更是最初也是最基本的互動元件，\n然～早期的不友善，使得 front-end 對於這些元件總是又愛又恨～\n貧瘠的支援度使得客製化變得極為困難～\n也因此衍伸出很多奇技淫巧甚至屏棄不去使用它們。\n\n經過這些年來的淬鍊與進化，\nform element 不僅支援度大增～\n給了 front-end 極大的發揮空間外，\n更棒的是相互競爭的 browser vendor 也取得了共識，\n讓 WEB API 以及 CSS 都可以在不同瀏覽器暢行無礙～\n\n打造人人都喜歡的 form 已經不再是遙不可及的夢想了，\n今天我將分享個人開發經驗，讓大夥們都可以輕鬆愜意的開發專屬的 form interaction。\n\n讓人人都可以經過這最後的試煉成為 front-end master。",
+      "categoryTags": [
+        "Frontend",
+        "UI / UX"
+      ],
+      "targetAudience": "略",
+      "expectedBenefits": "略",
+      "contactEmail": "meistudioli@gmail.com",
+      "session": "2023-08-12T09:55:00+08:00",
+      "room": "1101",
+      "isKeynoteSpeaker": true,
+      "formattedSession": "8/12 (SAT.) 09:55 ~ 10:40",
+      "date": "08-12",
+      "startTime": "09:55",
+      "endTime": "10:40",
+      "id": "paul-li",
+      "index": 1
+    },
+    {
+      "timestamp": "2023-05-30T02:09:47.000Z",
+      "speakerName": "Ruddy 老師",
+      "altName": "",
+      "organization": "集英信誠公司 敏捷顧問",
+      "jobTitle": "敏捷顧問",
+      "personalIntroduction": "《精實開發與看板方法》、《Windows Azure雲端開發》、《WF工作流程引擎程序設計》等書的作者。為專業的軟體工程顧問、Scrum及看板課程教學的講師。擔任過四家資訊公司的研發部經理。擅長帶領專案開發工作，擁有超過40年以上的程序撰寫經驗，為二岸敏捷開發的專業講師。",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1uQIOyfpTeI2G-YkBBmEg02-YRblNvVOy",
+      "facebookProfileLink": "",
+      "twitterProfileLink": "",
+      "otherLinks": [
+        "https:///ruddyblog.wordpress.com"
+      ],
+      "speechTopic": "AI 驅動下的開發者體驗",
+      "speechSummary": "在AI驅動變革的時代下； 生成式AI代表著整個軟件開發自動化的未來已經不再是夢想，在微軟為Azure、Office、Visual Studio一系列產品推出Copilot之後，如何運用AI進行開發作業已經變成了工程師的一種必備技能，在這種情境下工程師應該要如何調適、如何成長呢? 作為資深工程師或IT主管的人又應該如何帶領團隊、如何給予協助呢? 在這個AI驅動變革的時代下要怎麼做才能讓團隊既能完成任務又能順利的成長呢? 本session正是要針對這些問題提出解決之道。",
+      "categoryTags": [
+        "Agile",
+        "DevOps",
+        "團隊管理"
+      ],
+      "targetAudience": "開發人員及團隊主管",
+      "expectedBenefits": "1. 認識 AI 驅動變革的核心要素\n2. 了解 AI 時代的開發者體驗\n3. 認知 IT 部門應對新開發者體驗的解決方案",
+      "contactEmail": "ruddyl.lee@gmail.com",
+      "session": "2023-08-11T10:05:00+08:00",
+      "room": "1101",
+      "isKeynoteSpeaker": true,
+      "formattedSession": "8/11 (FRI.) 10:05 ~ 10:50",
+      "date": "08-11",
+      "startTime": "10:05",
+      "endTime": "10:50",
+      "id": "ruddy-lao-shi",
+      "index": 2
+    },
+    {
+      "timestamp": "2023-06-07T15:40:14.000Z",
+      "speakerName": "蔡明哲",
+      "altName": "",
+      "organization": "悠識數位顧問股份有限公司",
+      "jobTitle": "UX Coach 暨創辦人",
+      "personalIntroduction": "- 經歷過技術人、行銷人，最後成為 UX 人及創業人 (生意人）\n- 職涯路徑曲折難以規劃，老天巧思安排塑造獨特連結，第二人生階段以助人成長為樂趣，\n- 負責悠識學院營運，使命是培養跟產業需求對接的 UX 人才",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1C6OtQreKSdRiMB50Svv2ZyDw9s7KPRN3",
+      "facebookProfileLink": "https://fb.me/uxrichard",
+      "twitterProfileLink": "",
+      "otherLinks": [
+        ""
+      ],
+      "speechTopic": "TBD (有關溝通、透過用戶研究來搞定需求的眉眉角角)",
+      "speechSummary": "TBD (有關產品設計需要跨多種專業, 及各方溝通, 收斂共識, 找出正確需求, 洞察用戶痛點, 一直都是數位產品與服務設計的難題, 關於團隊組織的設計開發溝通, 我們曾經遇到哪些挑戰? 以及如何找到解方?)",
+      "categoryTags": [
+        "Frontend",
+        "UI / UX",
+        "Agile",
+        "DevOps",
+        "團隊管理"
+      ],
+      "targetAudience": "遭遇設計開發溝通難題的朋友",
+      "expectedBenefits": "分享一些設計開發溝通的技巧與方法, 尤其是用戶研究",
+      "contactEmail": "richard@userxper.com",
+      "session": "2023-08-12T16:15:00+08:00",
+      "room": "1101",
+      "isKeynoteSpeaker": true,
+      "formattedSession": "8/12 (SAT.) 16:15 ~ 17:00",
+      "date": "08-12",
+      "startTime": "16:15",
+      "endTime": "17:00",
+      "id": "cai-ming-zhe",
+      "index": 3
+    },
     {
       "timestamp": "2023-05-26T14:02:33.000Z",
       "speakerName": "Kat",
@@ -29,8 +161,9 @@
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
+      "isKeynoteSpeaker": false,
       "id": "kat",
-      "index": 0
+      "index": 4
     },
     {
       "timestamp": "2023-05-26T19:27:52.000Z",
@@ -59,8 +192,9 @@
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
+      "isKeynoteSpeaker": false,
       "id": "fan-sheng-you",
-      "index": 1
+      "index": 5
     },
     {
       "timestamp": "2023-05-29T05:23:22.000Z",
@@ -89,40 +223,9 @@
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
+      "isKeynoteSpeaker": false,
       "id": "you-shu-fan",
-      "index": 2
-    },
-    {
-      "timestamp": "2023-05-30T02:09:47.000Z",
-      "speakerName": "Ruddy 老師",
-      "altName": "",
-      "organization": "集英信誠公司 敏捷顧問",
-      "jobTitle": "敏捷顧問",
-      "personalIntroduction": "《精實開發與看板方法》、《Windows Azure雲端開發》、《WF工作流程引擎程序設計》等書的作者。為專業的軟體工程顧問、Scrum及看板課程教學的講師。擔任過四家資訊公司的研發部經理。擅長帶領專案開發工作，擁有超過40年以上的程序撰寫經驗，為二岸敏捷開發的專業講師。",
-      "photoURL": "https://drive.google.com/uc?export=download&id=1uQIOyfpTeI2G-YkBBmEg02-YRblNvVOy",
-      "facebookProfileLink": "",
-      "twitterProfileLink": "",
-      "otherLinks": [
-        "https:///ruddyblog.wordpress.com"
-      ],
-      "speechTopic": "AI 驅動下的開發者體驗",
-      "speechSummary": "在AI驅動變革的時代下； 生成式AI代表著整個軟件開發自動化的未來已經不再是夢想，在微軟為Azure、Office、Visual Studio一系列產品推出Copilot之後，如何運用AI進行開發作業已經變成了工程師的一種必備技能，在這種情境下工程師應該要如何調適、如何成長呢? 作為資深工程師或IT主管的人又應該如何帶領團隊、如何給予協助呢? 在這個AI驅動變革的時代下要怎麼做才能讓團隊既能完成任務又能順利的成長呢? 本session正是要針對這些問題提出解決之道。",
-      "categoryTags": [
-        "Agile",
-        "DevOps",
-        "團隊管理"
-      ],
-      "targetAudience": "開發人員及團隊主管",
-      "expectedBenefits": "1. 認識 AI 驅動變革的核心要素\n2. 了解 AI 時代的開發者體驗\n3. 認知 IT 部門應對新開發者體驗的解決方案",
-      "contactEmail": "ruddyl.lee@gmail.com",
-      "session": "2023-08-11T10:05:00+08:00",
-      "room": "1101",
-      "formattedSession": "8/11 (FRI.) 10:05 ~ 10:50",
-      "date": "08-11",
-      "startTime": "10:05",
-      "endTime": "10:50",
-      "id": "ruddy-lao-shi",
-      "index": 3
+      "index": 6
     },
     {
       "timestamp": "2023-06-03T02:40:17.000Z",
@@ -151,8 +254,9 @@
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
+      "isKeynoteSpeaker": false,
       "id": "liu-ai-lin",
-      "index": 4
+      "index": 7
     },
     {
       "timestamp": "2023-06-05T07:24:43.000Z",
@@ -184,8 +288,9 @@
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
+      "isKeynoteSpeaker": false,
       "id": "zhou-xiang",
-      "index": 5
+      "index": 8
     },
     {
       "timestamp": "2023-06-07T05:02:02.000Z",
@@ -215,42 +320,9 @@
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
+      "isKeynoteSpeaker": false,
       "id": "summer-tang",
-      "index": 6
-    },
-    {
-      "timestamp": "2023-06-07T15:40:14.000Z",
-      "speakerName": "蔡明哲",
-      "altName": "",
-      "organization": "悠識數位顧問股份有限公司",
-      "jobTitle": "UX Coach 暨創辦人",
-      "personalIntroduction": "- 經歷過技術人、行銷人，最後成為 UX 人及創業人 (生意人）\n- 職涯路徑曲折難以規劃，老天巧思安排塑造獨特連結，第二人生階段以助人成長為樂趣，\n- 負責悠識學院營運，使命是培養跟產業需求對接的 UX 人才",
-      "photoURL": "https://drive.google.com/uc?export=download&id=1C6OtQreKSdRiMB50Svv2ZyDw9s7KPRN3",
-      "facebookProfileLink": "https://fb.me/uxrichard",
-      "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
-      "speechTopic": "TBD (有關溝通、透過用戶研究來搞定需求的眉眉角角)",
-      "speechSummary": "TBD (有關產品設計需要跨多種專業, 及各方溝通, 收斂共識, 找出正確需求, 洞察用戶痛點, 一直都是數位產品與服務設計的難題, 關於團隊組織的設計開發溝通, 我們曾經遇到哪些挑戰? 以及如何找到解方?)",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX",
-        "Agile",
-        "DevOps",
-        "團隊管理"
-      ],
-      "targetAudience": "遭遇設計開發溝通難題的朋友",
-      "expectedBenefits": "分享一些設計開發溝通的技巧與方法, 尤其是用戶研究",
-      "contactEmail": "richard@userxper.com",
-      "session": "2023-08-12T16:15:00+08:00",
-      "room": "1101",
-      "formattedSession": "8/12 (SAT.) 16:15 ~ 17:00",
-      "date": "08-12",
-      "startTime": "16:15",
-      "endTime": "17:00",
-      "id": "cai-ming-zhe",
-      "index": 7
+      "index": 9
     },
     {
       "timestamp": "2023-06-07T16:29:23.000Z",
@@ -280,8 +352,9 @@
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
+      "isKeynoteSpeaker": false,
       "id": "wu-zhe-yu",
-      "index": 8
+      "index": 10
     },
     {
       "timestamp": "2023-06-11T14:28:50.000Z",
@@ -310,8 +383,9 @@
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
+      "isKeynoteSpeaker": false,
       "id": "nai-lv-cha",
-      "index": 9
+      "index": 11
     },
     {
       "timestamp": "2023-06-15T00:41:09.000Z",
@@ -342,8 +416,9 @@
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
+      "isKeynoteSpeaker": false,
       "id": "huang-sheng-huang",
-      "index": 10
+      "index": 12
     },
     {
       "timestamp": "2023-06-16T15:54:20.000Z",
@@ -372,8 +447,9 @@
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
+      "isKeynoteSpeaker": false,
       "id": "mo-li-quan",
-      "index": 11
+      "index": 13
     },
     {
       "timestamp": "2023-06-17T09:50:37.000Z",
@@ -404,8 +480,9 @@
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
+      "isKeynoteSpeaker": false,
       "id": "orange-tsai",
-      "index": 12
+      "index": 14
     },
     {
       "timestamp": "2023-06-18T04:12:42.000Z",
@@ -435,8 +512,9 @@
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
+      "isKeynoteSpeaker": false,
       "id": "cang-shi-xian-ye",
-      "index": 13
+      "index": 15
     },
     {
       "timestamp": "2023-06-18T15:35:20.000Z",
@@ -465,8 +543,9 @@
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
+      "isKeynoteSpeaker": false,
       "id": "yu-hong-yi",
-      "index": 14
+      "index": 16
     },
     {
       "timestamp": "2023-06-19T17:40:12.000Z",
@@ -497,8 +576,9 @@
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
+      "isKeynoteSpeaker": false,
       "id": "caesar-chi",
-      "index": 15
+      "index": 17
     },
     {
       "timestamp": "2023-06-20T18:39:37.000Z",
@@ -528,8 +608,9 @@
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
+      "isKeynoteSpeaker": false,
       "id": "li-ming",
-      "index": 16
+      "index": 18
     },
     {
       "timestamp": "2023-06-21T10:18:23.000Z",
@@ -559,8 +640,9 @@
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
+      "isKeynoteSpeaker": false,
       "id": "eva-lin",
-      "index": 17
+      "index": 19
     },
     {
       "timestamp": "2023-06-22T11:38:26.000Z",
@@ -590,7 +672,7 @@
       "startTime": "11:55",
       "endTime": "12:40",
       "id": "lin-yu-cheng",
-      "index": 18
+      "index": 20
     },
     {
       "timestamp": "2023-06-22T11:38:26.000Z",
@@ -620,7 +702,7 @@
       "startTime": "11:55",
       "endTime": "12:40",
       "id": "ke-ren-jie",
-      "index": 19
+      "index": 21
     },
     {
       "id": "dual",
@@ -670,7 +752,7 @@
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
-      "index": 20
+      "index": 22
     },
     {
       "timestamp": "2023-06-23T05:54:58.000Z",
@@ -699,8 +781,9 @@
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
+      "isKeynoteSpeaker": false,
       "id": "kuma-syu",
-      "index": 21
+      "index": 23
     },
     {
       "timestamp": "2023-06-23T10:03:50.000Z",
@@ -729,8 +812,9 @@
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
+      "isKeynoteSpeaker": false,
       "id": "xiao-lai",
-      "index": 22
+      "index": 24
     },
     {
       "timestamp": "2023-06-24T06:44:18.000Z",
@@ -759,8 +843,9 @@
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
+      "isKeynoteSpeaker": false,
       "id": "chen-zheng-wei",
-      "index": 23
+      "index": 25
     },
     {
       "timestamp": "2023-06-24T15:25:59.000Z",
@@ -789,8 +874,9 @@
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
+      "isKeynoteSpeaker": false,
       "id": "akane-lee",
-      "index": 24
+      "index": 26
     },
     {
       "timestamp": "2023-06-26T03:13:46.000Z",
@@ -820,8 +906,9 @@
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
+      "isKeynoteSpeaker": false,
       "id": "norman",
-      "index": 25
+      "index": 27
     },
     {
       "timestamp": "2023-06-26T07:20:52.000Z",
@@ -852,8 +939,9 @@
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
+      "isKeynoteSpeaker": false,
       "id": "max-wu",
-      "index": 26
+      "index": 28
     },
     {
       "timestamp": "2023-06-26T10:41:11.000Z",
@@ -882,8 +970,9 @@
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
+      "isKeynoteSpeaker": false,
       "id": "rice-tseng",
-      "index": 27
+      "index": 29
     },
     {
       "timestamp": "2023-06-27T02:29:18.000Z",
@@ -914,8 +1003,9 @@
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
+      "isKeynoteSpeaker": false,
       "id": "william",
-      "index": 28
+      "index": 30
     },
     {
       "timestamp": "2023-06-27T08:56:47.000Z",
@@ -945,8 +1035,9 @@
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
+      "isKeynoteSpeaker": false,
       "id": "kewang",
-      "index": 29
+      "index": 31
     },
     {
       "timestamp": "2023-06-27T17:59:19.000Z",
@@ -976,8 +1067,9 @@
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
+      "isKeynoteSpeaker": false,
       "id": "will-bao-ge",
-      "index": 30
+      "index": 32
     },
     {
       "timestamp": "2023-06-28T04:44:01.000Z",
@@ -1006,8 +1098,9 @@
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
+      "isKeynoteSpeaker": false,
       "id": "kuro-hsu",
-      "index": 31
+      "index": 33
     },
     {
       "timestamp": "2023-06-28T18:13:05.000Z",
@@ -1038,39 +1131,9 @@
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
+      "isKeynoteSpeaker": false,
       "id": "richard-lee",
-      "index": 32
-    },
-    {
-      "timestamp": "2023-06-29T00:59:35.000Z",
-      "speakerName": "Paul Li",
-      "altName": "",
-      "organization": "Yahoo",
-      "jobTitle": "",
-      "personalIntroduction": "whatever",
-      "photoURL": "https://drive.google.com/uc?export=download&id=1SYVsHNIlSqln17tIk7iAmQstEawESLaC",
-      "facebookProfileLink": "https://www.facebook.com/mei.studio.li/",
-      "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
-      "speechTopic": "鳳‧極意？！",
-      "speechSummary": "與使用者互動藉此激盪出力與美的集合一直都是每位 front-end 的終極標的。\nform element 打從 HTML 問世以來，一直都扮演著非常重要的角色。\n他們本身具備了獨立的 UI/UX 更是最初也是最基本的互動元件，\n然～早期的不友善，使得 front-end 對於這些元件總是又愛又恨～\n貧瘠的支援度使得客製化變得極為困難～\n也因此衍伸出很多奇技淫巧甚至屏棄不去使用它們。\n\n經過這些年來的淬鍊與進化，\nform element 不僅支援度大增～\n給了 front-end 極大的發揮空間外，\n更棒的是相互競爭的 browser vendor 也取得了共識，\n讓 WEB API 以及 CSS 都可以在不同瀏覽器暢行無礙～\n\n打造人人都喜歡的 form 已經不再是遙不可及的夢想了，\n今天我將分享個人開發經驗，讓大夥們都可以輕鬆愜意的開發專屬的 form interaction。\n\n讓人人都可以經過這最後的試煉成為 front-end master。",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
-      "targetAudience": "略",
-      "expectedBenefits": "略",
-      "contactEmail": "meistudioli@gmail.com",
-      "session": "2023-08-12T09:55:00+08:00",
-      "room": "1101",
-      "formattedSession": "8/12 (SAT.) 09:55 ~ 10:40",
-      "date": "08-12",
-      "startTime": "09:55",
-      "endTime": "10:40",
-      "id": "paul-li",
-      "index": 33
+      "index": 34
     },
     {
       "timestamp": "2023-06-29T15:43:29.000Z",
@@ -1100,38 +1163,8 @@
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
+      "isKeynoteSpeaker": false,
       "id": "su-tai-an",
-      "index": 34
-    },
-    {
-      "timestamp": "2023-06-30T19:17:34.000Z",
-      "speakerName": "Ant",
-      "altName": "",
-      "organization": "<403 Forbidden>",
-      "jobTitle": "<404 Not Found>",
-      "personalIntroduction": "致力於「創造能與商業對話的技術架構」、「交付合於精實敏捷的可用方案」的實踐者",
-      "photoURL": "https://drive.google.com/uc?export=download&id=1CyGmhybPEFcdRbDcCUfRas4GqgxUdRGe",
-      "facebookProfileLink": "https://www.facebook.com/yftzeng.tw",
-      "twitterProfileLink": "https://twitter.com/yftzeng",
-      "otherLinks": [
-        "https://blog.gcos.me/"
-      ],
-      "speechTopic": "從專業到商業：十年軟體架構變遷",
-      "speechSummary": "10 年來，台灣軟體開發的架構本身和營運型態都有很明顯的變遷，歷經了 Cloud 普及、Agile / DevOps 盛行、Blockchain 興起、Microservices 熱議、AI 再起。這些方方面面對「軟體架構」造成了什麼影響，從中可以學習什麼。",
-      "categoryTags": [
-        "Backend",
-        "團隊管理"
-      ],
-      "targetAudience": "軟體工程師、軟體架構師、技術主管，或對於軟體技術變遷如何影響架構乃至商業的人。",
-      "expectedBenefits": "提供對於 Cloud、Agile / DevOps、Blockchain、Microservices、AI 等的「架構」觀點，從不同視角切入瞭解技術變遷的濃縮史，以期帶來不一樣認知與收獲。",
-      "contactEmail": "yftzeng@gmail.com",
-      "session": "2023-08-11T16:15:00+08:00",
-      "room": "1101",
-      "formattedSession": "8/11 (FRI.) 16:15 ~ 17:00",
-      "date": "08-11",
-      "startTime": "16:15",
-      "endTime": "17:00",
-      "id": "ant",
       "index": 35
     },
     {
@@ -1162,6 +1195,7 @@
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
+      "isKeynoteSpeaker": false,
       "id": "amos",
       "index": 36
     },
@@ -1192,6 +1226,7 @@
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
+      "isKeynoteSpeaker": false,
       "id": "zhuo-zhi-yuan",
       "index": 37
     },
@@ -1223,6 +1258,7 @@
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
+      "isKeynoteSpeaker": false,
       "id": "soking",
       "index": 38
     },
@@ -1254,6 +1290,7 @@
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
+      "isKeynoteSpeaker": false,
       "id": "pj",
       "index": 39
     },
@@ -1285,6 +1322,7 @@
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
+      "isKeynoteSpeaker": false,
       "id": "ben-wan",
       "index": 40
     },
@@ -1316,6 +1354,7 @@
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
+      "isKeynoteSpeaker": false,
       "id": "chingru",
       "index": 41
     }
