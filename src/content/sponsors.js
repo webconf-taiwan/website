@@ -37,18 +37,35 @@ const sponsors = [
       },
     ],
   },
-  // {
-  //   En_name: "platinum",
-  //   Zh_name: "白金級贊助商",
-  //   sponsors: [
-  //     {
-  //       id: "sponsor_picCollage",
-  //       sponsor_name: "PicCollage 拼貼趣",
-  //       image: { sponsorsPicCollage: true },
-  //       Introduction: [],
-  //     },
-  //   ],
-  // },
+  {
+    En_name: "platinum",
+    Zh_name: "白金級贊助商",
+    sponsors: [
+      {
+        id: "sponsor_picCollage",
+        sponsor_name: "PicCollage 拼貼趣",
+        image: { sponsorsPicCollage: true },
+        Introduction: [
+          "PicCollage Company是來自矽谷的新創團隊，主產品『PicCollage』為一個追求自由創造及分享的照片拼貼app，主要使用者來自美國、英國及日本等國家。目前全球下載量已突破 3 億，每個月 1500 萬穩定用戶量，並持續增長中！",
+          "在PicCollage我們鼓勵創新創造，擁抱差異與多元文化；團隊近期以『AI影音編輯』為開發重點，運用 Generative AI、Machine Learning、Data Analytics等技術，致力打造使用者友善及延續使用者創意的 國際性產品！",
+        ],
+        link: [
+          {
+            icon: { web: true },
+            url: "https://awesom.ee/piccollage.hiring",
+          },
+          {
+            icon: { youtube: true },
+            url: "https://youtu.be/6N6L7KbajII",
+          },
+          {
+            icon: { youtube: true },
+            url: "https://youtu.be/kbMPoQ6ifmc",
+          },
+        ],
+      },
+    ],
+  },
   // {
   //   En_name: "special",
   //   Zh_name: "特別贊助",
@@ -95,12 +112,20 @@ const sponsors = [
     En_name: "organizer",
     Zh_name: "主辦廠商",
     sponsors: [
-      // {
-      //   id: "sponsor_hexschool",
-      //   sponsor_name: "六角學院",
-      //   image: { sponsorsHexschool: true },
-      //   Introduction: [],
-      // },
+      {
+        id: "sponsor_hexschool",
+        sponsor_name: "六角學院",
+        image: { sponsorsHexschool: true },
+        Introduction: [
+          "六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。",
+        ],
+        link: [
+          {
+            icon: { web: true },
+            url: "https://www.hexschool.com/",
+          },
+        ],
+      },
       {
         id: "sponsor_5xruby",
         sponsor_name: "五倍紅寶石",
