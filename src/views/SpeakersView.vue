@@ -51,12 +51,14 @@
                 <div class="border-t border-b h-6px border-custom-teal-700"></div>
               </div>
             </div>
-            <div class="p-3 border-b border-l border-r bg-custom-gray-800 border-custom-teal-500">
+            <div
+              class="w-[245px] xs:w-[300px] sm:w-[245px] h-[245px] xs:h-[300px] sm:h-[245px] p-3 border-b border-l border-r bg-custom-gray-800 border-custom-teal-500"
+            >
               <div class="overflow-hidden relative">
                 <img
                   :src="`speaker-img/${speaker.id}.jpg`"
                   alt="speaker avatar"
-                  class="w-[245px] xs:w-[300px] sm:w-[245px] h-[245px] xs:h-[300px] sm:h-[245px] object-cover"
+                  class="object-cover"
                 />
                 <div
                   class="hover-mask absolute top-0 inset-x-0 w-full h-full bg-custom-teal-700 opacity-60"

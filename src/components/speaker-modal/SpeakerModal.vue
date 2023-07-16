@@ -57,7 +57,7 @@
                 v-if="link !== '' && link.includes('medium')"
                 class="hover:text-custom-teal-700 active:text-custom-teal-500"
               >
-                <iconMedium class="svg-fill-current md:w-6 md:h-6" />
+                <iconMedium class="stroke-current md:w-6 md:h-6" />
               </a>
 
               <a
