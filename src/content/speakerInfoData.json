@@ -1,70 +1,6 @@
 {
-  "timestamp": "20230716231209",
+  "timestamp": "20230717000048",
   "data": [
-    {
-      "timestamp": "2023-06-30T19:17:34.000Z",
-      "speakerName": "Ant",
-      "altName": "",
-      "organization": "<403 Forbidden>",
-      "jobTitle": "<404 Not Found>",
-      "personalIntroduction": "致力於「創造能與商業對話的技術架構」、「交付合於精實敏捷的可用方案」的實踐者",
-      "photoURL": "https://drive.google.com/uc?export=download&id=1CyGmhybPEFcdRbDcCUfRas4GqgxUdRGe",
-      "facebookProfileLink": "https://www.facebook.com/yftzeng.tw",
-      "twitterProfileLink": "https://twitter.com/yftzeng",
-      "otherLinks": [
-        "https://blog.gcos.me/"
-      ],
-      "speechTopic": "從專業到商業：十年軟體架構變遷",
-      "speechSummary": "10 年來，台灣軟體開發的架構本身和營運型態都有很明顯的變遷，歷經了 Cloud 普及、Agile / DevOps 盛行、Blockchain 興起、Microservices 熱議、AI 再起。這些方方面面對「軟體架構」造成了什麼影響，從中可以學習什麼。",
-      "categoryTags": [
-        "Backend",
-        "團隊管理"
-      ],
-      "targetAudience": "軟體工程師、軟體架構師、技術主管，或對於軟體技術變遷如何影響架構乃至商業的人。",
-      "expectedBenefits": "提供對於 Cloud、Agile / DevOps、Blockchain、Microservices、AI 等的「架構」觀點，從不同視角切入瞭解技術變遷的濃縮史，以期帶來不一樣認知與收獲。",
-      "contactEmail": "yftzeng@gmail.com",
-      "session": "2023-08-11T16:15:00+08:00",
-      "room": "1101",
-      "isKeynoteSpeaker": true,
-      "formattedSession": "8/11 (FRI.) 16:15 ~ 17:00",
-      "date": "08-11",
-      "startTime": "16:15",
-      "endTime": "17:00",
-      "id": "ant",
-      "index": 0
-    },
-    {
-      "timestamp": "2023-06-29T00:59:35.000Z",
-      "speakerName": "Paul Li",
-      "altName": "",
-      "organization": "Yahoo",
-      "jobTitle": "",
-      "personalIntroduction": "whatever",
-      "photoURL": "https://drive.google.com/uc?export=download&id=1SYVsHNIlSqln17tIk7iAmQstEawESLaC",
-      "facebookProfileLink": "https://www.facebook.com/mei.studio.li/",
-      "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
-      "speechTopic": "鳳‧極意？！",
-      "speechSummary": "與使用者互動藉此激盪出力與美的集合一直都是每位 front-end 的終極標的。\nform element 打從 HTML 問世以來，一直都扮演著非常重要的角色。\n他們本身具備了獨立的 UI/UX 更是最初也是最基本的互動元件，\n然～早期的不友善，使得 front-end 對於這些元件總是又愛又恨～\n貧瘠的支援度使得客製化變得極為困難～\n也因此衍伸出很多奇技淫巧甚至屏棄不去使用它們。\n\n經過這些年來的淬鍊與進化，\nform element 不僅支援度大增～\n給了 front-end 極大的發揮空間外，\n更棒的是相互競爭的 browser vendor 也取得了共識，\n讓 WEB API 以及 CSS 都可以在不同瀏覽器暢行無礙～\n\n打造人人都喜歡的 form 已經不再是遙不可及的夢想了，\n今天我將分享個人開發經驗，讓大夥們都可以輕鬆愜意的開發專屬的 form interaction。\n\n讓人人都可以經過這最後的試煉成為 front-end master。",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
-      "targetAudience": "略",
-      "expectedBenefits": "略",
-      "contactEmail": "meistudioli@gmail.com",
-      "session": "2023-08-12T09:55:00+08:00",
-      "room": "1101",
-      "isKeynoteSpeaker": true,
-      "formattedSession": "8/12 (SAT.) 09:55 ~ 10:40",
-      "date": "08-12",
-      "startTime": "09:55",
-      "endTime": "10:40",
-      "id": "paul-li",
-      "index": 1
-    },
     {
       "timestamp": "2023-05-30T02:09:47.000Z",
       "speakerName": "Ruddy 老師",
@@ -90,13 +26,13 @@
       "contactEmail": "ruddyl.lee@gmail.com",
       "session": "2023-08-11T10:05:00+08:00",
       "room": "1101",
-      "isKeynoteSpeaker": true,
+      "keynoteOrder": 1,
       "formattedSession": "8/11 (FRI.) 10:05 ~ 10:50",
       "date": "08-11",
       "startTime": "10:05",
       "endTime": "10:50",
       "id": "ruddy-lao-shi",
-      "index": 2
+      "index": 0
     },
     {
       "timestamp": "2023-06-07T15:40:14.000Z",
@@ -125,12 +61,76 @@
       "contactEmail": "richard@userxper.com",
       "session": "2023-08-12T16:15:00+08:00",
       "room": "1101",
-      "isKeynoteSpeaker": true,
+      "keynoteOrder": 2,
       "formattedSession": "8/12 (SAT.) 16:15 ~ 17:00",
       "date": "08-12",
       "startTime": "16:15",
       "endTime": "17:00",
       "id": "cai-ming-zhe",
+      "index": 1
+    },
+    {
+      "timestamp": "2023-06-30T19:17:34.000Z",
+      "speakerName": "Ant",
+      "altName": "",
+      "organization": "<403 Forbidden>",
+      "jobTitle": "<404 Not Found>",
+      "personalIntroduction": "致力於「創造能與商業對話的技術架構」、「交付合於精實敏捷的可用方案」的實踐者",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1CyGmhybPEFcdRbDcCUfRas4GqgxUdRGe",
+      "facebookProfileLink": "https://www.facebook.com/yftzeng.tw",
+      "twitterProfileLink": "https://twitter.com/yftzeng",
+      "otherLinks": [
+        "https://blog.gcos.me/"
+      ],
+      "speechTopic": "從專業到商業：十年軟體架構變遷",
+      "speechSummary": "10 年來，台灣軟體開發的架構本身和營運型態都有很明顯的變遷，歷經了 Cloud 普及、Agile / DevOps 盛行、Blockchain 興起、Microservices 熱議、AI 再起。這些方方面面對「軟體架構」造成了什麼影響，從中可以學習什麼。",
+      "categoryTags": [
+        "Backend",
+        "團隊管理"
+      ],
+      "targetAudience": "軟體工程師、軟體架構師、技術主管，或對於軟體技術變遷如何影響架構乃至商業的人。",
+      "expectedBenefits": "提供對於 Cloud、Agile / DevOps、Blockchain、Microservices、AI 等的「架構」觀點，從不同視角切入瞭解技術變遷的濃縮史，以期帶來不一樣認知與收獲。",
+      "contactEmail": "yftzeng@gmail.com",
+      "session": "2023-08-11T16:15:00+08:00",
+      "room": "1101",
+      "keynoteOrder": 3,
+      "formattedSession": "8/11 (FRI.) 16:15 ~ 17:00",
+      "date": "08-11",
+      "startTime": "16:15",
+      "endTime": "17:00",
+      "id": "ant",
+      "index": 2
+    },
+    {
+      "timestamp": "2023-06-29T00:59:35.000Z",
+      "speakerName": "Paul Li",
+      "altName": "",
+      "organization": "Yahoo",
+      "jobTitle": "",
+      "personalIntroduction": "whatever",
+      "photoURL": "https://drive.google.com/uc?export=download&id=1SYVsHNIlSqln17tIk7iAmQstEawESLaC",
+      "facebookProfileLink": "https://www.facebook.com/mei.studio.li/",
+      "twitterProfileLink": "",
+      "otherLinks": [
+        ""
+      ],
+      "speechTopic": "鳳‧極意？！",
+      "speechSummary": "與使用者互動藉此激盪出力與美的集合一直都是每位 front-end 的終極標的。\nform element 打從 HTML 問世以來，一直都扮演著非常重要的角色。\n他們本身具備了獨立的 UI/UX 更是最初也是最基本的互動元件，\n然～早期的不友善，使得 front-end 對於這些元件總是又愛又恨～\n貧瘠的支援度使得客製化變得極為困難～\n也因此衍伸出很多奇技淫巧甚至屏棄不去使用它們。\n\n經過這些年來的淬鍊與進化，\nform element 不僅支援度大增～\n給了 front-end 極大的發揮空間外，\n更棒的是相互競爭的 browser vendor 也取得了共識，\n讓 WEB API 以及 CSS 都可以在不同瀏覽器暢行無礙～\n\n打造人人都喜歡的 form 已經不再是遙不可及的夢想了，\n今天我將分享個人開發經驗，讓大夥們都可以輕鬆愜意的開發專屬的 form interaction。\n\n讓人人都可以經過這最後的試煉成為 front-end master。",
+      "categoryTags": [
+        "Frontend",
+        "UI / UX"
+      ],
+      "targetAudience": "略",
+      "expectedBenefits": "略",
+      "contactEmail": "meistudioli@gmail.com",
+      "session": "2023-08-12T09:55:00+08:00",
+      "room": "1101",
+      "keynoteOrder": 4,
+      "formattedSession": "8/12 (SAT.) 09:55 ~ 10:40",
+      "date": "08-12",
+      "startTime": "09:55",
+      "endTime": "10:40",
+      "id": "paul-li",
       "index": 3
     },
     {
@@ -161,7 +161,7 @@
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "kat",
       "index": 4
     },
@@ -192,7 +192,7 @@
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "fan-sheng-you",
       "index": 5
     },
@@ -223,7 +223,7 @@
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "you-shu-fan",
       "index": 6
     },
@@ -254,7 +254,7 @@
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "liu-ai-lin",
       "index": 7
     },
@@ -288,7 +288,7 @@
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "zhou-xiang",
       "index": 8
     },
@@ -320,7 +320,7 @@
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "summer-tang",
       "index": 9
     },
@@ -352,7 +352,7 @@
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "wu-zhe-yu",
       "index": 10
     },
@@ -383,7 +383,7 @@
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "nai-lv-cha",
       "index": 11
     },
@@ -416,7 +416,7 @@
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "huang-sheng-huang",
       "index": 12
     },
@@ -447,7 +447,7 @@
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "mo-li-quan",
       "index": 13
     },
@@ -480,7 +480,7 @@
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "orange-tsai",
       "index": 14
     },
@@ -512,7 +512,7 @@
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "cang-shi-xian-ye",
       "index": 15
     },
@@ -543,7 +543,7 @@
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "yu-hong-yi",
       "index": 16
     },
@@ -576,7 +576,7 @@
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "caesar-chi",
       "index": 17
     },
@@ -608,7 +608,7 @@
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "li-ming",
       "index": 18
     },
@@ -640,7 +640,7 @@
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "eva-lin",
       "index": 19
     },
@@ -781,7 +781,7 @@
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "kuma-syu",
       "index": 23
     },
@@ -812,7 +812,7 @@
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "xiao-lai",
       "index": 24
     },
@@ -843,7 +843,7 @@
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "chen-zheng-wei",
       "index": 25
     },
@@ -874,7 +874,7 @@
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "akane-lee",
       "index": 26
     },
@@ -906,7 +906,7 @@
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "norman",
       "index": 27
     },
@@ -939,7 +939,7 @@
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "max-wu",
       "index": 28
     },
@@ -970,7 +970,7 @@
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "rice-tseng",
       "index": 29
     },
@@ -1003,7 +1003,7 @@
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "william",
       "index": 30
     },
@@ -1035,7 +1035,7 @@
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "kewang",
       "index": 31
     },
@@ -1067,7 +1067,7 @@
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "will-bao-ge",
       "index": 32
     },
@@ -1098,7 +1098,7 @@
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "kuro-hsu",
       "index": 33
     },
@@ -1131,7 +1131,7 @@
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "richard-lee",
       "index": 34
     },
@@ -1163,7 +1163,7 @@
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "su-tai-an",
       "index": 35
     },
@@ -1195,7 +1195,7 @@
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "amos",
       "index": 36
     },
@@ -1226,7 +1226,7 @@
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "zhuo-zhi-yuan",
       "index": 37
     },
@@ -1258,7 +1258,7 @@
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "soking",
       "index": 38
     },
@@ -1290,7 +1290,7 @@
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "pj",
       "index": 39
     },
@@ -1322,7 +1322,7 @@
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "ben-wan",
       "index": 40
     },
@@ -1354,7 +1354,7 @@
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
-      "isKeynoteSpeaker": false,
+      "keynoteOrder": null,
       "id": "chingru",
       "index": 41
     }
