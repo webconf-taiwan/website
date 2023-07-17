@@ -26,7 +26,7 @@
 
     <SpecialFilter class="mb-8"></SpecialFilter>
 
-    <div class="flex flex-col items-center">
+    <div class="flex flex-col items-center relative">
       <ul
         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10"
       >
