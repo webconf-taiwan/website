@@ -110,22 +110,8 @@ const sponsors = [
   },
   {
     En_name: "organizer",
-    Zh_name: "主辦廠商",
+    Zh_name: "主辦單位",
     sponsors: [
-      {
-        id: "sponsor_hexschool",
-        sponsor_name: "六角學院",
-        image: { sponsorsHexschool: true },
-        Introduction: [
-          "六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。",
-        ],
-        link: [
-          {
-            icon: { web: true },
-            url: "https://www.hexschool.com/",
-          },
-        ],
-      },
       {
         id: "sponsor_5xruby",
         sponsor_name: "五倍學院",
@@ -160,6 +146,20 @@ const sponsors = [
           {
             icon: { medium: true },
             url: "https://5xruby-astrocamp.medium.com/",
+          },
+        ],
+      },
+      {
+        id: "sponsor_hexschool",
+        sponsor_name: "六角學院",
+        image: { sponsorsHexschool: true },
+        Introduction: [
+          "六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。",
+        ],
+        link: [
+          {
+            icon: { web: true },
+            url: "https://www.hexschool.com/",
           },
         ],
       },
