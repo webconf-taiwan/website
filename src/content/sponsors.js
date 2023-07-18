@@ -46,7 +46,7 @@ const sponsors = [
         sponsor_name: "PicCollage 拼貼趣",
         image: { sponsorsPicCollage: true },
         Introduction: [
-          "PicCollage Company是來自矽谷的新創團隊，主產品『PicCollage』為一個追求自由創造及分享的照片拼貼app，主要使用者來自美國、英國及日本等國家。目前全球下載量已突破 3 億，每個月 1500 萬穩定用戶量，並持續增長中！",
+          "PicCollage Company是來自矽谷的新創團隊，主產品『PicCollage』為一個追求自由創造及分享的照片拼貼app，主要使用者來自美國、英國及日本等國家。目前全球下載量已突破 2.6 億，每個月 1500 萬穩定用戶量，並持續增長中！",
           "在PicCollage我們鼓勵創新創造，擁抱差異與多元文化；團隊近期以『AI影音編輯』為開發重點，運用 Generative AI、Machine Learning、Data Analytics等技術，致力打造使用者友善及延續使用者創意的 國際性產品！",
         ],
         link: [
