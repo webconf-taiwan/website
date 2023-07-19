@@ -57,8 +57,13 @@
           </div>
 
           <template v-for="session in filteredAgenda" :key="`${activeDate} ${session.id}`">
+            <IntroRow
+              v-if="session.isIntro"
+              :startTime="session.headerText[0]"
+              :endTime="session.headerText[1]"
+            />
             <GeneralRow
-              v-if="!session.isKeynote && !session.isBreakTime"
+              v-if="!session.isKeynote && !session.isBreakTime && !session.isIntro"
               :speakerInfoArr="session.data"
               :startTime="session.headerText[0]"
               :endTime="session.headerText[1]"
@@ -232,7 +237,7 @@ import AgendaDateHeading from "@/components/agenda/AgendaDateHeading.vue";
 import KeynoteSpeakerRow from "@/components/agenda/KeynoteSpeakerRow.vue";
 import BreakTimeRow from "@/components/agenda/BreakTimeRow.vue";
 import GeneralRow from "@/components/agenda/GeneralRow.vue";
-
+import IntroRow from "@/components/agenda/IntroRow.vue";
 import OpenFilter from "@/components/OpenFilter.vue";
 import SpecialFilter from "@/components/SpecialFilter.vue";
 import FilterComponent from "@/components/FilterComponent.vue";
@@ -316,7 +321,7 @@ const genSpeakerInfoArr = (sessionData) => {
 const filteredAgenda = computed(() => {
   const filterAgendaRaw = activeAgenda.value.filter((session) => {
     if (filterOptions.value.agenda.length === 0) return true;
-    if (session.isBreakTime) return false;
+    if (session.isBreakTime || session.isIntro) return false;
     const sessionSpeakerInfo = genSpeakerInfoArr(session.data);
     return sessionSpeakerInfo.some((speaker) => speaker !== null);
   });

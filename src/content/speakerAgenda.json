@@ -15,6 +15,17 @@
       "isBreakTime": false
     },
     {
+      "id": "09:55",
+      "isIntro": true,
+      "data": [
+        "引言"
+      ],
+      "headerText": [
+        "09:55",
+        "10:05"
+      ]
+    },
+    {
       "id": "10:05",
       "data": [
         "ruddy-lao-shi"
