@@ -290,9 +290,9 @@ const menuList = ref([
     home: "sponsors",
   },
   // {
-  // ChtName: "主辦單位",
+  // ChtName: "主辦團隊",
   // EngName: "Staff",
-  // home: "",
+  // home: "staff",
   // },
   {
     ChtName: "時光機",
