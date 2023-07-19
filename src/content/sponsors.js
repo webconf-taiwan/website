@@ -14,6 +14,10 @@ const sponsors = [
 
         link: [
           {
+            icon: { web: true },
+            url: "https://titansoft.com/tw",
+          },
+          {
             icon: { facebook: true },
             url: "https://gotica.io/FBWebConf",
           },
@@ -50,6 +54,10 @@ const sponsors = [
           "在PicCollage我們鼓勵創新創造，擁抱差異與多元文化；團隊近期以『AI影音編輯』為開發重點，運用 Generative AI、Machine Learning、Data Analytics等技術，致力打造使用者友善及延續使用者創意的 國際性產品！",
         ],
         link: [
+          {
+            icon: { web: true },
+            url: "https://piccollage.com/",
+          },
           {
             icon: { web: true },
             url: "https://awesom.ee/piccollage.hiring",
@@ -93,6 +101,10 @@ const sponsors = [
 
         link: [
           {
+            icon: { web: true },
+            url: "https://www.kdanmobile.com/zh-tw",
+          },
+          {
             icon: { facebook: true },
             url: "https://www.facebook.com/KdanMobileTW",
           },
@@ -123,6 +135,10 @@ const sponsors = [
         ],
 
         link: [
+          {
+            icon: { web: true },
+            url: "https://5xruby.tw/",
+          },
           {
             icon: { facebook: true },
             url: "https://www.facebook.com/5xruby",
