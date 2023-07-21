@@ -21,7 +21,7 @@
         class="fh-[33.33%] md:h-[90%] py-5 text-lg w-full md:basis-1/3 border-t md:border-l md:border-t-0 border-custom-teal-700 flex items-center justify-between md:justify-center"
       >
         <p class="font-semibold text-custom-teal-500">同步聯播</p>
-        <LocationBar room="1002" />
+        <LocationBar room="1003" />
       </div>
     </div>
   </div>
