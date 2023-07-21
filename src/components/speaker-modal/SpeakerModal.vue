@@ -29,7 +29,7 @@
             {{ speakerInfo.speakerName }}
             <span v-if="speakerInfo.altName">{{ `(${speakerInfo.altName})` }}</span>
           </h2>
-          <p class="mb-5 md:mb-auto">
+          <p class="text-center md:text-left mb-5 md:mb-auto">
             {{ `${speakerInfo.organization} ${speakerInfo.jobTitle}` }}
           </p>
 
