@@ -52,7 +52,7 @@
             <div class="basis-[90%] flex gap-2 text-lg">
               <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1001</div>
               <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1101</div>
-              <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1002</div>
+              <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1003</div>
             </div>
           </div>
 
@@ -118,7 +118,7 @@
           <div class="basis-[90%] flex gap-2 text-lg">
             <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1001</div>
             <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1101</div>
-            <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1002</div>
+            <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1003</div>
           </div>
         </div>
 
@@ -164,7 +164,7 @@
               <div class="basis-[90%] flex gap-2 text-lg">
                 <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1001</div>
                 <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1101</div>
-                <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1002</div>
+                <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1003</div>
               </div>
             </div>
           </div>
