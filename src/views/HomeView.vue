@@ -525,7 +525,10 @@
       <!-- 第五區塊結束 -->
 
       <!-- 第六區塊開始 -->
-      <div ref="section6" class="relative flex items-center justify-center py-20 overflow-hidden">
+      <div
+        ref="section6"
+        class="relative flex flex-col items-center justify-center py-20 overflow-hidden"
+      >
         <div class="flex flex-col items-center">
           <div
             class="mb-4 bg-cover logoSpider md:relative w-335 h-180 sm:w-374 sm:h-52 md:w-660 md:h-350"
@@ -551,6 +554,30 @@
             >敬請關注 Facebook 最新消息</a
           >
         </div>
+
+        <!-- <div class="mt-3">
+          <div class="swiper md:w-[544px]">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide sponsorsTrafficInfo"></div>
+              <div class="swiper-slide sponsorsPicCollage"></div>
+              <div class="swiper-slide sponsorsKdanmobile"></div>
+              <div class="swiper-slide sponsorsHexschool"></div>
+              <div class="swiper-slide sponsors5xruby"></div>
+              <div class="swiper-slide sponsorsTrafficInfo"></div>
+              <div class="swiper-slide sponsorsPicCollage"></div>
+              <div class="swiper-slide sponsorsKdanmobile"></div>
+              <div class="swiper-slide sponsorsHexschool"></div>
+              <div class="swiper-slide sponsors5xruby"></div>
+            </div>
+
+            <div class="swiper-pagination transparent"></div>
+
+            <div class="swiper-button-prev transparent"></div>
+            <div class="swiper-button-next transparent"></div>
+
+            <div class="swiper-scrollbar transparent"></div>
+          </div>
+        </div> -->
       </div>
       <!-- 第六區塊結束 -->
     </div>
@@ -691,6 +718,63 @@
   .topHight {
     top: 9rem;
   }
+
+  .swiper {
+    /* width: 600px; */
+    height: 120px;
+    /* font-size: 36px; */
+  }
+
+  .transparent {
+    color: transparent;
+    background: transparent;
+    cursor: default;
+  }
+
+  .sponsorsPicCollage {
+    background: url("@/assets/images/sponsors/picCollage.svg");
+    background-size: cover;
+    background-position: center center;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+  }
+
+  .sponsorsKdanmobile {
+    background: url("@/assets/images/sponsors/kdanmobile.svg");
+    background-size: cover;
+    background-position: center center;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+  }
+
+  .sponsorsTrafficInfo {
+    background: url("@/assets/images/sponsors/titansoft.svg");
+    background-size: cover;
+    background-position: center center;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+  }
+
+  .sponsorsHexschool {
+    background: url("@/assets/images/sponsors/hexschool.svg");
+    background-size: cover;
+    background-position: center center;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+  }
+
+  .sponsors5xruby {
+    background: url("@/assets/images/sponsors/5xruby.svg");
+    background-size: cover;
+    background-position: center center;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+  }
 }
 </style>
 
@@ -699,6 +783,8 @@
 import { ref, onMounted, inject } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
+import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useScrollStore } from "@/stores/scroll";
@@ -707,6 +793,34 @@ import { speakers } from "@/content/speakers";
 import { trafficInfo } from "@/content/trafficInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
+
+const swiperInit = () => {
+  const swiper = new Swiper('.swiper', {
+  loop: true,
+  slidesPerView: 5,
+  spaceBetween: 16,
+  autoplay: {
+    delay: 1000,
+    reverseDirection: true,
+  },
+  on: {
+    slideChange: function () {
+      const slides = this.slides;
+      const activeIndex = this.activeIndex;
+      console.log("slides", slides);
+      console.log("activeIndex", activeIndex);
+
+      // 遍历所有 Slide
+      slides.forEach((slide, index) => {
+        // 中间的 Slide 不透明，其他 Slide 半透明
+        const opacity = index === activeIndex + 2 ? 1 : 0.5;
+        slide.style.opacity = opacity;
+      });
+    },
+  },
+});
+}
+
 
 const route = useRoute();
 
@@ -1154,6 +1268,7 @@ onMounted(() => {
       section3Anime();
       // section2Anime();
     }
+    swiperInit();
   });
 });
 

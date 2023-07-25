@@ -52,6 +52,21 @@ const staffs = [
     ],
   },
   {
+    name: "Sabrina",
+    img: Sabrina,
+    tags: ["小小工頭"],
+    links: [
+      {
+        icon: { facebook: true },
+        url: "https://www.facebook.com/5xruby/",
+      },
+      {
+        icon: { web: true },
+        url: "https://5xruby.tw/",
+      },
+    ],
+  },
+  {
     name: "Rae",
     img: Rae,
     tags: ["場務"],
@@ -147,21 +162,6 @@ const staffs = [
       {
         icon: { facebook: true },
         url: "https://www.facebook.com/garden.code.tien",
-      },
-    ],
-  },
-  {
-    name: "Sabrina",
-    img: Sabrina,
-    tags: ["小小工頭"],
-    links: [
-      {
-        icon: { facebook: true },
-        url: "https://www.facebook.com/5xruby/",
-      },
-      {
-        icon: { web: true },
-        url: "https://5xruby.tw/",
       },
     ],
   },
