@@ -52,10 +52,10 @@
             </div>
             <ul
               v-if="staff.links.length"
-              class="absolute right-[-17px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800 p-1 space-y-1"
+              class="absolute right-[-8px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800 p-1 space-y-1"
             >
               <li v-for="link in staff.links" :key="link.url">
-                <a :href="link.url" target="_blank" class="w-10 h-10 block" :class="link.icon"></a>
+                <a :href="link.url" target="_blank" class="w-6 h-6 block" :class="link.icon"></a>
               </li>
             </ul>
           </div>
