@@ -105,6 +105,17 @@ const staffs = [
     ],
   },
   {
+    name: "田佩穎",
+    img: Peiying,
+    tags: ["設計組 - 廠商聯繫"],
+    links: [
+      {
+        icon: { facebook: true },
+        url: "https://www.facebook.com/garden.code.tien",
+      },
+    ],
+  },
+  {
     name: "EG",
     img: EG,
     tags: ["設計組打雜工"],
@@ -151,17 +162,6 @@ const staffs = [
       {
         icon: { instagram: true },
         url: "https://www.instagram.com/your_sadness_uncle/",
-      },
-    ],
-  },
-  {
-    name: "田佩穎",
-    img: Peiying,
-    tags: ["設計組 - 廠商聯繫"],
-    links: [
-      {
-        icon: { facebook: true },
-        url: "https://www.facebook.com/garden.code.tien",
       },
     ],
   },

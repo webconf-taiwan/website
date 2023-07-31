@@ -807,7 +807,7 @@ const swiperInit = () => {
   // slidesPerView: 5,
   // spaceBetween: 8,
   autoplay: {
-    delay: 1000,
+    delay: 3000,
     reverseDirection: true,
   },
   breakpoints: {

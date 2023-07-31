@@ -52,9 +52,13 @@
             </div>
             <ul
               v-if="staff.links.length"
-              class="absolute right-[-8px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800 p-1 space-y-1"
+              class="absolute right-[-8px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800"
             >
-              <li v-for="link in staff.links" :key="link.url">
+              <li
+                v-for="link in staff.links"
+                :key="link.url"
+                class="p-1 transition-all duration-300 hover:bg-custom-teal-700"
+              >
                 <a :href="link.url" target="_blank" class="w-6 h-6 block" :class="link.icon"></a>
               </li>
             </ul>
