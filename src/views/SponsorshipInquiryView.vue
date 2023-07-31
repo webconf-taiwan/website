@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="relative py-20 md:py-16 px-5 md:h-[calc(100vh-56px)]">
+    <div class="relative py-20 md:py-16 px-5">
       <a href="#"
         ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
       ></a>
