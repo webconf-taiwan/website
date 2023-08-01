@@ -48,13 +48,12 @@
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
 
-                <!-- 購票按鈕 -->
-                <a
-                  ref="sellBtn"
-                  href="https://www.accupass.com/event/2306070448221749426689"
-                  target="_blank"
+                <router-link
+                  id="sellBtn"
+                  href="#"
+                  :to="{ name: 'agenda' }"
                   class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
-                  >前往購票</a
+                  >查看議程資訊</router-link
                 >
               </div>
             </div>
@@ -921,7 +920,6 @@ const section6 = ref();
 
 const banner = ref(null);
 const bannerText = ref(null);
-const sellBtn = ref(null);
 const isWindowHeight = ref(false);
 
 const logoMan3 = ref();
@@ -1017,8 +1015,9 @@ const section1Anime = () => {
 };
 
 const section1EnterAnime = () => {
+  const sellBtn = document.querySelector("#sellBtn");
   section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
-  section1AnimeTl.fromTo(sellBtn.value, 
+  section1AnimeTl.fromTo(sellBtn, 
   {
     opacity: 0,
   },
