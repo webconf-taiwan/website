@@ -160,8 +160,7 @@
               <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20 mdl:mr-43 xl:mr-52">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10"
-                  :class="{ 'md:hidden': index > 1 }"
-                  v-for="(speaker, index) in speaker1"
+                  v-for="speaker in speaker1"
                   :key="speaker.displayName"
                 >
                   <p
@@ -203,8 +202,7 @@
               <ul class="flex flex-col mt-10 md:flex-row-reverse md:mt-0">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10 md:flex md:flex-col-reverse"
-                  :class="{ 'md:hidden': index > 1 }"
-                  v-for="(speaker, index) in speaker2"
+                  v-for="speaker in speaker2"
                   :key="speaker.displayName"
                 >
                   <p
@@ -243,6 +241,14 @@
                   </div>
                 </li>
               </ul>
+            </div>
+            <div class="md:hidden flex justify-center">
+              <router-link
+                href="#"
+                :to="{ name: 'agenda' }"
+                class="inline-block w-[180px] h-[45px] mt-9 px-8 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
+                >查看議程資訊</router-link
+              >
             </div>
           </div>
         </div>
