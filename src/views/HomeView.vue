@@ -126,7 +126,7 @@
       <!-- 第二區塊結束 -->
 
       <!-- 第三區塊開始 -->
-      <div ref="section3" class="section3 relative py-6 px-5">
+      <div ref="section3" class="section3 relative py-6 px-5 2xl:w-[75vw] 2xl:mx-auto">
         <div>
           <StylingTitle>
             <template #default>
@@ -141,7 +141,7 @@
             class="md:flex md:flex-row-reverse"
             :class="{ topHight: isWindowHeight }"
           >
-            <div class="md:flex md:flex-col md:items-center md:mt-8 md:mr-8">
+            <div class="md:flex md:flex-col md:items-center md:mt-8 md:mr-8 2xl:mr-0">
               <div
                 ref="logoMan3"
                 class="logoMan hidden mdl:block md:w-213 md:h-263 xl:w-[317px] xl:h-[392px] md:bg-cover"
@@ -262,7 +262,7 @@
         class="md:h-[80vh] 3xl:h-[60vh] relative py-6 px-5 overflow-hidden 2xl:w-[75vw] 2xl:mx-auto"
       >
         <div
-          class="logoMan hidden md:block md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"
+          class="logoMan hidden md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"
         ></div>
 
         <StylingTitle>
