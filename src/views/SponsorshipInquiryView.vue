@@ -91,9 +91,15 @@
                           <a
                             :href="link.url"
                             target="_blank"
-                            class="w-10 h-10 block"
-                            :class="link.icon"
+                            class="w-10 h-10 block text-custom-teal-500 hover:text-custom-teal-700 transition-all duration-300"
                           >
+                            <component
+                              :class="{
+                                'stroke-current': link.icon !== 'web',
+                                'svg-fill-current': link.icon === 'web',
+                              }"
+                              :is="getIconComponent(link.icon)"
+                            />
                           </a>
                         </li>
                       </ul>
@@ -123,6 +129,13 @@ import StylingTitle from "@/components/StylingTitle.vue";
 import { sponsors } from "@/content/sponsors";
 import StylingFBLink from "@/components/StylingFBLink.vue";
 import MoveToTop from "@/components/MoveToTop.vue";
+import facebook from "@/assets/images/linkIcon/facebook.svg";
+import instagram from "@/assets/images/linkIcon/instagram.svg";
+import linkedin from "@/assets/images/linkIcon/linkedin.svg";
+import medium from "@/assets/images/linkIcon/medium.svg";
+import twitter from "@/assets/images/linkIcon/twitter.svg";
+import web from "@/assets/images/linkIcon/web.svg";
+import youtube from "@/assets/images/linkIcon/youtube.svg";
 
 const route = useRoute();
 
@@ -142,6 +155,27 @@ const showSponsorIntroduction = (id) => {
     arrowDom.classList.add("iconArrowUp");
     introductionDom.classList.add("h-auto");
     arrowDom.classList.remove("iconArrowDown");
+  }
+};
+
+const getIconComponent = (icon) => {
+  switch (icon) {
+    case "facebook":
+      return facebook;
+    case "instagram":
+      return instagram;
+    case "linkedin":
+      return linkedin;
+    case "medium":
+      return medium;
+    case "twitter":
+      return twitter;
+    case "web":
+      return web;
+    case "youtube":
+      return youtube;
+    default:
+      return null;
   }
 };
 
@@ -202,80 +236,11 @@ onMounted(() => {
   background-size: cover;
 }
 
-.facebook {
-  background: url("@/assets/images/linkIcon/facebook.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
+.stroke-current :deep(path) {
+  stroke: currentColor;
 }
 
-.facebook:hover {
-  background: url("@/assets/images/linkIcon/facebook_darkBlue.svg");
-  background-size: cover;
-}
-
-.instagram {
-  background: url("@/assets/images/linkIcon/instagram.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.instagram:hover {
-  background: url("@/assets/images/linkIcon/instagram_darkBlue.svg");
-  background-size: cover;
-}
-
-.linkedin {
-  background: url("@/assets/images/linkIcon/linkedin.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.linkedin:hover {
-  background: url("@/assets/images/linkIcon/linkedin_darkBlue.svg");
-  background-size: cover;
-}
-
-.medium {
-  background: url("@/assets/images/linkIcon/medium.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.medium:hover {
-  background: url("@/assets/images/linkIcon/medium_darkBlue.svg");
-  background-size: cover;
-}
-
-.twitter {
-  background: url("@/assets/images/linkIcon/twitter.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.twitter:hover {
-  background: url("@/assets/images/linkIcon/twitter_darkBlue.svg");
-  background-size: cover;
-}
-
-.web {
-  background: url("@/assets/images/linkIcon/web.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.web:hover {
-  background: url("@/assets/images/linkIcon/web_darkBlue.svg");
-  background-size: cover;
-}
-
-.youtube {
-  background: url("@/assets/images/linkIcon/youtube.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.youtube:hover {
-  background: url("@/assets/images/linkIcon/youtube_darkBlue.svg");
-  background-size: cover;
+.svg-fill-current :deep(path) {
+  fill: currentColor;
 }
 </style>
