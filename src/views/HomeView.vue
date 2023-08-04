@@ -126,7 +126,7 @@
       <!-- 第二區塊結束 -->
 
       <!-- 第三區塊開始 -->
-      <div ref="section3" class="section3 relative py-6 px-5">
+      <div ref="section3" class="section3 relative py-6 px-5 2xl:w-[75vw] 2xl:mx-auto">
         <div>
           <StylingTitle>
             <template #default>
@@ -141,7 +141,7 @@
             class="md:flex md:flex-row-reverse"
             :class="{ topHight: isWindowHeight }"
           >
-            <div class="md:flex md:flex-col md:items-center md:mt-8 md:mr-8">
+            <div class="md:flex md:flex-col md:items-center md:mt-8 md:mr-8 2xl:mr-0">
               <div
                 ref="logoMan3"
                 class="logoMan hidden mdl:block md:w-213 md:h-263 xl:w-[317px] xl:h-[392px] md:bg-cover"
@@ -160,8 +160,7 @@
               <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20 mdl:mr-43 xl:mr-52">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10"
-                  :class="{ 'md:hidden': index > 1 }"
-                  v-for="(speaker, index) in speaker1"
+                  v-for="speaker in speaker1"
                   :key="speaker.displayName"
                 >
                   <p
@@ -203,8 +202,7 @@
               <ul class="flex flex-col mt-10 md:flex-row-reverse md:mt-0">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10 md:flex md:flex-col-reverse"
-                  :class="{ 'md:hidden': index > 1 }"
-                  v-for="(speaker, index) in speaker2"
+                  v-for="speaker in speaker2"
                   :key="speaker.displayName"
                 >
                   <p
@@ -244,6 +242,14 @@
                 </li>
               </ul>
             </div>
+            <div class="md:hidden flex justify-center">
+              <router-link
+                href="#"
+                :to="{ name: 'agenda' }"
+                class="inline-block w-[180px] h-[45px] mt-9 px-8 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
+                >查看議程資訊</router-link
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -256,7 +262,7 @@
         class="md:h-[80vh] 3xl:h-[60vh] relative py-6 px-5 overflow-hidden 2xl:w-[75vw] 2xl:mx-auto"
       >
         <div
-          class="logoMan hidden md:block md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"
+          class="logoMan hidden md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"
         ></div>
 
         <StylingTitle>

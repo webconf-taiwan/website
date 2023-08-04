@@ -109,6 +109,9 @@
     <div class="fixed z-30 hidden md:block bottom-6 left-6">
       <StylingFBLink></StylingFBLink>
     </div>
+    <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-10">
+      <MoveToTop></MoveToTop>
+    </div>
   </div>
 </template>
 
@@ -119,6 +122,7 @@ import { usePageInfoStore } from "@/stores/pageInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
 import { sponsors } from "@/content/sponsors";
 import StylingFBLink from "@/components/StylingFBLink.vue";
+import MoveToTop from "@/components/MoveToTop.vue";
 
 const route = useRoute();
 
@@ -201,35 +205,77 @@ onMounted(() => {
 .facebook {
   background: url("@/assets/images/linkIcon/facebook.svg");
   background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.facebook:hover {
+  background: url("@/assets/images/linkIcon/facebook_darkBlue.svg");
+  background-size: cover;
 }
 
 .instagram {
   background: url("@/assets/images/linkIcon/instagram.svg");
+  background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.instagram:hover {
+  background: url("@/assets/images/linkIcon/instagram_darkBlue.svg");
   background-size: cover;
 }
 
 .linkedin {
   background: url("@/assets/images/linkIcon/linkedin.svg");
   background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.linkedin:hover {
+  background: url("@/assets/images/linkIcon/linkedin_darkBlue.svg");
+  background-size: cover;
 }
 
 .medium {
   background: url("@/assets/images/linkIcon/medium.svg");
+  background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.medium:hover {
+  background: url("@/assets/images/linkIcon/medium_darkBlue.svg");
   background-size: cover;
 }
 
 .twitter {
   background: url("@/assets/images/linkIcon/twitter.svg");
   background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.twitter:hover {
+  background: url("@/assets/images/linkIcon/twitter_darkBlue.svg");
+  background-size: cover;
 }
 
 .web {
   background: url("@/assets/images/linkIcon/web.svg");
   background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.web:hover {
+  background: url("@/assets/images/linkIcon/web_darkBlue.svg");
+  background-size: cover;
 }
 
 .youtube {
   background: url("@/assets/images/linkIcon/youtube.svg");
+  background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.youtube:hover {
+  background: url("@/assets/images/linkIcon/youtube_darkBlue.svg");
   background-size: cover;
 }
 </style>

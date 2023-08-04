@@ -52,13 +52,9 @@
             </div>
             <ul
               v-if="staff.links.length"
-              class="absolute right-[-8px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800"
+              class="absolute right-[-8px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800 p-1 flex flex-col gap-1"
             >
-              <li
-                v-for="link in staff.links"
-                :key="link.url"
-                class="p-1 transition-all duration-300 hover:bg-custom-teal-700"
-              >
+              <li v-for="link in staff.links" :key="link.url">
                 <a :href="link.url" target="_blank" class="w-6 h-6 block" :class="link.icon"></a>
               </li>
             </ul>
@@ -100,15 +96,33 @@
 .facebook {
   background: url("@/assets/images/linkIcon/facebook.svg");
   background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.facebook:hover {
+  background: url("@/assets/images/linkIcon/facebook_darkBlue.svg");
+  background-size: cover;
 }
 
 .instagram {
   background: url("@/assets/images/linkIcon/instagram.svg");
   background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.instagram:hover {
+  background: url("@/assets/images/linkIcon/instagram_darkBlue.svg");
+  background-size: cover;
 }
 
 .twitter {
   background: url("@/assets/images/linkIcon/twitter.svg");
+  background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.twitter:hover {
+  background: url("@/assets/images/linkIcon/twitter_darkBlue.svg");
   background-size: cover;
 }
 
@@ -119,6 +133,12 @@
 
 .web {
   background: url("@/assets/images/linkIcon/web.svg");
+  background-size: cover;
+  transition: background-image 0.3s;
+}
+
+.web:hover {
+  background: url("@/assets/images/linkIcon/web_darkBlue.svg");
   background-size: cover;
 }
 </style>
