@@ -48,13 +48,12 @@
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
 
-                <!-- 購票按鈕 -->
-                <a
-                  ref="sellBtn"
-                  href="https://www.accupass.com/event/2306070448221749426689"
-                  target="_blank"
+                <router-link
+                  id="sellBtn"
+                  href="#"
+                  :to="{ name: 'agenda' }"
                   class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
-                  >前往購票</a
+                  >查看議程資訊</router-link
                 >
               </div>
             </div>
@@ -127,8 +126,8 @@
       <!-- 第二區塊結束 -->
 
       <!-- 第三區塊開始 -->
-      <div ref="section3" class="section3 md:h-[200vh] relative py-6 px-5">
-        <div class="mt-10">
+      <div ref="section3" class="section3 relative py-6 px-5 2xl:w-[75vw] 2xl:mx-auto">
+        <div>
           <StylingTitle>
             <template #default>
               <span>講者曝光</span>
@@ -136,24 +135,32 @@
           </StylingTitle>
         </div>
 
-        <div class="overflow-hidden">
+        <div>
           <div
             id="speaker"
-            class="md:absolute md:transform md:-translate-x-1/2 md:top-60 md:right-0"
+            class="md:flex md:flex-row-reverse"
             :class="{ topHight: isWindowHeight }"
           >
-            <div
-              ref="logoMan3"
-              class="logoMan hidden md:block md:w-213 md:h-263 md:bg-cover md:absolute md:transform md:-translate-x-1/2 md:top-6 md:right-0 lg:right-[-10px]"
-            ></div>
+            <div class="md:flex md:flex-col md:items-center md:mt-8 md:mr-8 2xl:mr-0">
+              <div
+                ref="logoMan3"
+                class="logoMan hidden mdl:block md:w-213 md:h-263 xl:w-[317px] xl:h-[392px] md:bg-cover"
+              ></div>
+              <router-link
+                href="#"
+                :to="{ name: 'agenda' }"
+                class="hidden mdl:inline-block w-[180px] h-[45px] mt-[72px] px-8 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
+                >查看議程資訊</router-link
+              >
+            </div>
 
             <div
-              class="flex justify-around md:flex-col mt-10 md:absolute md:transform md:-translate-x-1/2 md:right-[-450px] lg:right-[-500px]"
+              class="mt-10 flex justify-around md:justify-center md:items-center md:flex-col md:flex-1"
             >
-              <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20">
+              <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20 mdl:mr-43 xl:mr-52">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10"
-                  v-for="(speaker, index) in speaker1"
+                  v-for="speaker in speaker1"
                   :key="speaker.displayName"
                 >
                   <p
@@ -184,16 +191,9 @@
                     </div>
                     <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
                       <img
-                        class="w-145 h-148 sm:w-202 sm:h-206 md:hidden"
+                        class="w-145 h-148 sm:w-202 sm:h-206"
                         :src="speaker.avatar"
                         alt="speaker"
-                      />
-                      <img
-                        :id="speaker.id"
-                        class="hidden w-145 h-148 sm:w-202 sm:h-206 md:block"
-                        :src="speaker.avatar"
-                        alt="speaker"
-                        :style="{ opacity: 1 - index / speaker2.length }"
                       />
                     </div>
                   </div>
@@ -202,7 +202,7 @@
               <ul class="flex flex-col mt-10 md:flex-row-reverse md:mt-0">
                 <li
                   class="flex-shrink-0 mb-4 md:mb-0 md:ml-10 md:flex md:flex-col-reverse"
-                  v-for="(speaker, index) in speaker2"
+                  v-for="speaker in speaker2"
                   :key="speaker.displayName"
                 >
                   <p
@@ -233,21 +233,22 @@
                     </div>
                     <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
                       <img
-                        class="w-145 h-148 sm:w-202 sm:h-206 md:hidden"
+                        class="w-145 h-148 sm:w-202 sm:h-206"
                         :src="speaker.avatar"
                         alt="speaker"
-                      />
-                      <img
-                        :id="speaker.id"
-                        class="hidden w-145 h-148 sm:w-202 sm:h-206 md:block"
-                        :src="speaker.avatar"
-                        alt="speaker"
-                        :style="{ opacity: 1 - index / speaker2.length }"
                       />
                     </div>
                   </div>
                 </li>
               </ul>
+            </div>
+            <div class="md:hidden flex justify-center">
+              <router-link
+                href="#"
+                :to="{ name: 'agenda' }"
+                class="inline-block w-[180px] h-[45px] mt-9 px-8 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
+                >查看議程資訊</router-link
+              >
             </div>
           </div>
         </div>
@@ -261,7 +262,7 @@
         class="md:h-[80vh] 3xl:h-[60vh] relative py-6 px-5 overflow-hidden 2xl:w-[75vw] 2xl:mx-auto"
       >
         <div
-          class="logoMan hidden md:block md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"
+          class="logoMan hidden md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"
         ></div>
 
         <StylingTitle>
@@ -525,7 +526,10 @@
       <!-- 第五區塊結束 -->
 
       <!-- 第六區塊開始 -->
-      <div ref="section6" class="relative flex items-center justify-center py-20 overflow-hidden">
+      <div
+        ref="section6"
+        class="relative flex flex-col items-center justify-center py-20 overflow-hidden"
+      >
         <div class="flex flex-col items-center">
           <div
             class="mb-4 bg-cover logoSpider md:relative w-335 h-180 sm:w-374 sm:h-52 md:w-660 md:h-350"
@@ -550,6 +554,52 @@
             class="text-sm font-normal text-white"
             >敬請關注 Facebook 最新消息</a
           >
+        </div>
+
+        <div class="mt-3 md:pr-[34px]">
+          <div
+            class="swiper w-[560px] h-[240px] xsm:w-[500px] xsm:h-[120px] md:w-[870px] md:h-[136px]"
+          >
+            <div class="swiper-wrapper">
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsTrafficInfo"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsPicCollage"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsKdanmobile"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsHexschool"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsors5xruby"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsTrafficInfo"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsPicCollage"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsKdanmobile"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsorsHexschool"></div>
+              </div>
+              <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
+                <div class="sponsors5xruby"></div>
+              </div>
+            </div>
+
+            <div class="swiper-pagination transparent"></div>
+
+            <div class="swiper-button-prev transparent"></div>
+            <div class="swiper-button-next transparent"></div>
+
+            <div class="swiper-scrollbar transparent"></div>
+          </div>
         </div>
       </div>
       <!-- 第六區塊結束 -->
@@ -650,6 +700,52 @@
   border-color: #3ef0fc;
 }
 
+.sponsorsPicCollage {
+  background: url("@/assets/images/sponsors/picCollage.svg");
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: 100%;
+}
+
+.sponsorsKdanmobile {
+  background: url("@/assets/images/sponsors/kdanmobile.svg");
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: 100%;
+}
+
+.sponsorsTrafficInfo {
+  background: url("@/assets/images/sponsors/titansoft.svg");
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: 100%;
+}
+
+.sponsorsHexschool {
+  background: url("@/assets/images/sponsors/hexschool.svg");
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: 100%;
+}
+
+.sponsors5xruby {
+  background: url("@/assets/images/sponsors/5xruby.svg");
+  background-size: cover;
+  background-position: center center;
+  width: 100%;
+  height: 100%;
+}
+
+.transparent {
+  color: transparent;
+  background: transparent;
+  cursor: default;
+}
+
 @media (min-width: 768px) {
   .bgImage {
     background-image: url("@/assets/images/bg.png");
@@ -699,6 +795,8 @@
 import { ref, onMounted, inject } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
+import Swiper from 'swiper/bundle';
+import 'swiper/css/bundle';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useScrollStore } from "@/stores/scroll";
@@ -707,6 +805,103 @@ import { speakers } from "@/content/speakers";
 import { trafficInfo } from "@/content/trafficInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
+
+const swiperInit = () => {
+  const swiper = new Swiper('.swiper', {
+  loop: true,
+  // slidesPerView: 5,
+  // spaceBetween: 8,
+  autoplay: {
+    delay: 3000,
+    reverseDirection: true,
+  },
+  breakpoints: {
+    250: {
+      slidesPerView: 2,
+      centeredSlides: true,
+    },
+    560: {
+      slidesPerView: 3,
+      centeredSlides: false,
+    },
+    768: {
+      slidesPerView: 5,
+      centeredSlides: false,
+    },
+  },
+  on: {
+    slideChange: function () {
+      const windowWidth = window.innerWidth;
+      const slides = this.slides;
+      const activeIndex = this.activeIndex;
+
+      if (windowWidth >= 768) {
+        slides.forEach((slide, index) => {
+          let opacity = 0.2;
+          let scale = 0.5;
+          let transformOrigin = 'center';
+          if (index === activeIndex) {
+            opacity = 0.6
+            scale = 0.8
+            transformOrigin = 'right';
+          } else if (index === activeIndex + 1) {
+            opacity = 0.8
+            scale = 0.9
+            transformOrigin = 'right';
+            slide.style.marginRight = '17px';
+          } else if (index === activeIndex + 3) {
+            opacity = 0.8
+            scale = 0.9
+            transformOrigin = 'left';
+            slide.style.marginLeft = '17px';
+          } else if (index === activeIndex + 4) {
+            opacity = 0.6
+            scale = 0.8
+            transformOrigin = 'left';
+            slide.style.marginLeft = '0px';
+          } else if (index === activeIndex + 2) {
+            opacity = 1
+            scale = 1
+            slide.style.marginRight = '0px';
+          }
+          slide.style.opacity = opacity;
+          slide.style.transform = `scale(${scale})`;
+          slide.style.transformOrigin = transformOrigin;
+        });
+      } else if (windowWidth <= 767 && windowWidth >= 560) {
+        slides.forEach((slide, index) => {
+          let opacity = 0.2;
+          let scale = 0.5;
+          if (index === activeIndex) {
+            opacity = 0.8
+            scale = 0.9
+          } else if (index === activeIndex + 2) {
+            opacity = 0.8
+            scale = 0.9
+          } else if (index === activeIndex + 1) {
+            opacity = 1
+            scale = 1
+          }
+          slide.style.opacity = opacity;
+          slide.style.transform = `scale(${scale})`;
+        });
+      } else if (windowWidth < 560) {
+        slides.forEach((slide, index) => {
+          let opacity = 0.8;
+          let scale = 0.9;
+          if (index === activeIndex) {
+            opacity = 1
+            scale = 1
+          }
+          slide.style.opacity = opacity;
+          slide.style.transform = `scale(${scale})`;
+        });
+      }
+    },
+  },
+});
+}
+
 
 const route = useRoute();
 
@@ -731,7 +926,6 @@ const section6 = ref();
 
 const banner = ref(null);
 const bannerText = ref(null);
-const sellBtn = ref(null);
 const isWindowHeight = ref(false);
 
 const logoMan3 = ref();
@@ -827,8 +1021,9 @@ const section1Anime = () => {
 };
 
 const section1EnterAnime = () => {
+  const sellBtn = document.querySelector("#sellBtn");
   section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
-  section1AnimeTl.fromTo(sellBtn.value, 
+  section1AnimeTl.fromTo(sellBtn, 
   {
     opacity: 0,
   },
@@ -1044,7 +1239,8 @@ const scrollIntoView = (num) => {
       section2.value.scrollIntoView({ behavior: "smooth" });
       break;
     case 3:
-      window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+      // window.scrollTo({ top: scrollPosition, behavior: "smooth" });
+      section3.value.scrollIntoView({ behavior: "smooth" });
       break;
     case 4:
       section4.value.scrollIntoView({ behavior: "smooth" });
@@ -1151,9 +1347,10 @@ onMounted(() => {
     const viewportWidth = window.innerWidth;
     if (viewportWidth >= 768) {
       window.addEventListener("wheel", handleScroll);
-      section3Anime();
+      // section3Anime();
       // section2Anime();
     }
+    swiperInit();
   });
 });
 

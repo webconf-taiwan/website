@@ -25,30 +25,30 @@ const speakers = {
       altName: "Ant",
       avatar: speakerAnt,
     },
-    {
-      id: "speaker1-2",
-      displayName: "保哥",
-      altName: "Will",
-      avatar: speakerWill,
-    },
-    {
-      id: "speaker1-3",
-      displayName: "范聖佑",
-      altName: null,
-      avatar: speakerShengYou,
-    },
-    {
-      id: "speaker1-4",
-      displayName: "Kewang",
-      altName: null,
-      avatar: speakerKeWang,
-    },
-    {
-      id: "speaker1-5",
-      displayName: "Akane Lee",
-      altName: null,
-      avatar: speakerAkaneLee,
-    },
+    // {
+    //   id: "speaker1-2",
+    //   displayName: "保哥",
+    //   altName: "Will",
+    //   avatar: speakerWill,
+    // },
+    // {
+    //   id: "speaker1-3",
+    //   displayName: "范聖佑",
+    //   altName: null,
+    //   avatar: speakerShengYou,
+    // },
+    // {
+    //   id: "speaker1-4",
+    //   displayName: "Kewang",
+    //   altName: null,
+    //   avatar: speakerKeWang,
+    // },
+    // {
+    //   id: "speaker1-5",
+    //   displayName: "Akane Lee",
+    //   altName: null,
+    //   avatar: speakerAkaneLee,
+    // },
   ],
   speaker2: [
     {
@@ -63,30 +63,30 @@ const speakers = {
       altName: null,
       avatar: speakerPaulLi,
     },
-    {
-      id: "speaker2-2",
-      displayName: "Kuro",
-      altName: null,
-      avatar: speakerKuro,
-    },
-    {
-      id: "speaker2-3",
-      displayName: "黃升煌",
-      altName: "Mike",
-      avatar: speakerMike,
-    },
-    {
-      id: "speaker2-4",
-      displayName: "王彥博",
-      altName: "Soking",
-      avatar: speakerSoking,
-    },
-    {
-      id: "speaker2-5",
-      displayName: "本丸",
-      altName: "尹曦禾",
-      avatar: speakerBenWan,
-    },
+    // {
+    //   id: "speaker2-2",
+    //   displayName: "Kuro",
+    //   altName: null,
+    //   avatar: speakerKuro,
+    // },
+    // {
+    //   id: "speaker2-3",
+    //   displayName: "黃升煌",
+    //   altName: "Mike",
+    //   avatar: speakerMike,
+    // },
+    // {
+    //   id: "speaker2-4",
+    //   displayName: "王彥博",
+    //   altName: "Soking",
+    //   avatar: speakerSoking,
+    // },
+    // {
+    //   id: "speaker2-5",
+    //   displayName: "本丸",
+    //   altName: "尹曦禾",
+    //   avatar: speakerBenWan,
+    // },
   ],
   speakerPage: [
     {

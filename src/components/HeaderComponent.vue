@@ -289,11 +289,11 @@ const menuList = ref([
     EngName: "Sponsors",
     home: "sponsors",
   },
-  // {
-  // ChtName: "主辦團隊",
-  // EngName: "Staff",
-  // home: "staff",
-  // },
+  {
+    ChtName: "主辦團隊",
+    EngName: "Staff",
+    home: "staff",
+  },
   {
     ChtName: "時光機",
     EngName: "Time machine",
