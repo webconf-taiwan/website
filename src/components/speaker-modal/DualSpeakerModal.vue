@@ -39,7 +39,7 @@
             <a
               :href="dualSpeakerArr[0].facebookProfileLink"
               v-show="dualSpeakerArr[0].facebookProfileLink"
-              class="hover:text-custom-teal-700 active:text-custom-teal-500"
+              class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
             </a>
@@ -47,7 +47,7 @@
             <a
               :href="dualSpeakerArr[0].twitterProfileLink"
               v-show="dualSpeakerArr[0].twitterProfileLink"
-              class="hover:text-custom-teal-700 active:text-custom-teal-500"
+              class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
             </a>
@@ -55,7 +55,7 @@
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
-                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+                class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconMedium class="stroke-current md:w-6 md:h-6" />
               </a>
@@ -63,7 +63,7 @@
               <a
                 :href="link"
                 v-else-if="link !== '' && link.includes('instagram')"
-                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+                class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconIg class="stroke-current md:w-6 md:h-6" />
               </a>
@@ -71,7 +71,7 @@
               <a
                 :href="link"
                 v-else-if="link !== ''"
-                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+                class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconLink class="svg-fill-current md:w-6 md:h-6" />
               </a>
@@ -113,7 +113,7 @@
             <a
               :href="dualSpeakerArr[1].facebookProfileLink"
               v-show="dualSpeakerArr[1].facebookProfileLink"
-              class="hover:text-custom-teal-700 active:text-custom-teal-500"
+              class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
             </a>
@@ -129,7 +129,7 @@
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
-                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+                class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconMedium class="stroke-current md:w-6 md:h-6" />
               </a>
@@ -137,7 +137,7 @@
               <a
                 :href="link"
                 v-else-if="link !== '' && link.includes('instagram')"
-                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+                class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconIg class="stroke-current md:w-6 md:h-6" />
               </a>
@@ -145,7 +145,7 @@
               <a
                 :href="link"
                 v-else-if="link !== ''"
-                class="hover:text-custom-teal-700 active:text-custom-teal-500"
+                class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconLink class="svg-fill-current md:w-6 md:h-6" />
               </a>
@@ -207,20 +207,24 @@
           </p>
         </div>
 
-        <!-- <div class="flex flex-col-reverse md:flex-row gap-3">
-            <button class="primary-button">
-              <iconShare />
-              <p>分享議程</p>
-            </button>
-            <button class="secondary-button">
-              <iconNote class="stroke-current" />
-              <p>共筆文件</p>
-            </button>
-            <button class="secondary-button">
-              <iconDate class="stroke-current" />
-              <p>加入行事曆</p>
-            </button>
-          </div> -->
+        <div class="flex flex-col-reverse md:flex-row gap-3">
+          <a
+            class="secondary-button transition-colors duration-300"
+            :href="dualSpeakerInfo.noteLink"
+            target="_blank"
+          >
+            <iconNote class="stroke-current" />
+            <p>共筆文件</p>
+          </a>
+          <a
+            class="secondary-button transition-colors duration-300"
+            :href="dualSpeakerInfo.googleCalendarLink"
+            target="_blank"
+          >
+            <iconDate class="stroke-current" />
+            <p>加入行事曆</p>
+          </a>
+        </div>
       </section>
     </section>
   </div>
@@ -242,9 +246,8 @@ import iconLink from "@/assets/images/icon/ic_web_l.svg";
 import iconIg from "@/assets/images/icon/ic_ig_l.svg";
 import iconMedium from "@/assets/images/icon/ic_medium_l.svg";
 
-// import iconShare from "@/assets/images/icon/ic_share_s.svg";
-// import iconDate from "@/assets/images/icon/ic_date_s.svg";
-// import iconNote from "@/assets/images/icon/ic_note_s.svg";
+import iconDate from "@/assets/images/icon/ic_date_s.svg";
+import iconNote from "@/assets/images/icon/ic_note_s.svg";
 
 const props = defineProps({
   isMoreInfoOpen: {
