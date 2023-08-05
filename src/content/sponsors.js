@@ -14,27 +14,27 @@ const sponsors = [
 
         link: [
           {
-            icon: { web: true },
+            icon: "web",
             url: "https://titansoft.com/tw",
           },
           {
-            icon: { facebook: true },
+            icon: "facebook",
             url: "https://gotica.io/FBWebConf",
           },
           {
-            icon: { instagram: true },
+            icon: "instagram",
             url: "https://gotica.io/IGWebConf",
           },
           {
-            icon: { youtube: true },
+            icon: "youtube",
             url: "https://gotica.io/YTWebConf",
           },
           {
-            icon: { linkedin: true },
+            icon: "linkedin",
             url: "https://gotica.io/LinkedInWebConf",
           },
           {
-            icon: { medium: true },
+            icon: "medium",
             url: "https://gotica.io/MediumWebConf",
           },
         ],
@@ -55,19 +55,19 @@ const sponsors = [
         ],
         link: [
           {
-            icon: { web: true },
+            icon: "web",
             url: "https://piccollage.com/",
           },
           {
-            icon: { web: true },
+            icon: "web",
             url: "https://awesom.ee/piccollage.hiring",
           },
           {
-            icon: { youtube: true },
+            icon: "youtube",
             url: "https://youtu.be/6N6L7KbajII",
           },
           {
-            icon: { youtube: true },
+            icon: "youtube",
             url: "https://youtu.be/kbMPoQ6ifmc",
           },
         ],
@@ -101,19 +101,19 @@ const sponsors = [
 
         link: [
           {
-            icon: { web: true },
+            icon: "web",
             url: "https://www.kdanmobile.com/zh-tw",
           },
           {
-            icon: { facebook: true },
+            icon: "facebook",
             url: "https://www.facebook.com/KdanMobileTW",
           },
           {
-            icon: { instagram: true },
+            icon: "instagram",
             url: "https://www.instagram.com/kdan_mobile/",
           },
           {
-            icon: { linkedin: true },
+            icon: "linkedin",
             url: "https://www.linkedin.com/company/kdan-mobile-software-ltd-/",
           },
         ],
@@ -136,31 +136,31 @@ const sponsors = [
 
         link: [
           {
-            icon: { web: true },
+            icon: "web",
             url: "https://5xruby.tw/",
           },
           {
-            icon: { facebook: true },
+            icon: "facebook",
             url: "https://www.facebook.com/5xruby",
           },
           {
-            icon: { facebook: true },
+            icon: "facebook",
             url: "https://www.facebook.com/5xrubyAstro",
           },
           {
-            icon: { instagram: true },
+            icon: "instagram",
             url: "https://www.instagram.com/5xcampus/",
           },
           {
-            icon: { youtube: true },
+            icon: "youtube",
             url: "https://www.youtube.com/@5xcampus",
           },
           {
-            icon: { linkedin: true },
+            icon: "linkedin",
             url: "https://www.linkedin.com/company/5xruby?originalSubdomain=tw",
           },
           {
-            icon: { medium: true },
+            icon: "medium",
             url: "https://5xruby-astrocamp.medium.com/",
           },
         ],
@@ -174,7 +174,7 @@ const sponsors = [
         ],
         link: [
           {
-            icon: { web: true },
+            icon: "web",
             url: "https://www.hexschool.com/",
           },
         ],

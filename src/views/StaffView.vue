@@ -55,7 +55,21 @@
               class="absolute right-[-8px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800 p-1 flex flex-col gap-1"
             >
               <li v-for="link in staff.links" :key="link.url">
-                <a :href="link.url" target="_blank" class="w-6 h-6 block" :class="link.icon"></a>
+                <a
+                  :href="link.url"
+                  target="_blank"
+                  class="w-6 h-6 block text-custom-teal-500 hover:text-custom-teal-700 transition-all duration-300"
+                >
+                  <component
+                    class="w-full h-full"
+                    :class="{
+                      'stroke-current': link.icon !== 'web' && link.icon !== 'twitter',
+                      'svg-fill-current':
+                        link.icon === 'web' || link.icon === 'twitter' || link.icon === 'twitter',
+                    }"
+                    :is="getIconComponent(link.icon)"
+                  />
+                </a>
               </li>
             </ul>
           </div>
@@ -93,53 +107,12 @@
   transform: scale(1.1);
 } */
 
-.facebook {
-  background: url("@/assets/images/linkIcon/facebook.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
+.stroke-current :deep(path) {
+  stroke: currentColor;
 }
 
-.facebook:hover {
-  background: url("@/assets/images/linkIcon/facebook_darkBlue.svg");
-  background-size: cover;
-}
-
-.instagram {
-  background: url("@/assets/images/linkIcon/instagram.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.instagram:hover {
-  background: url("@/assets/images/linkIcon/instagram_darkBlue.svg");
-  background-size: cover;
-}
-
-.twitter {
-  background: url("@/assets/images/linkIcon/twitter.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.twitter:hover {
-  background: url("@/assets/images/linkIcon/twitter_darkBlue.svg");
-  background-size: cover;
-}
-
-/* .medium {
-  background: url("@/assets/images/linkIcon/medium.svg");
-  background-size: cover;
-} */
-
-.web {
-  background: url("@/assets/images/linkIcon/web.svg");
-  background-size: cover;
-  transition: background-image 0.3s;
-}
-
-.web:hover {
-  background: url("@/assets/images/linkIcon/web_darkBlue.svg");
-  background-size: cover;
+.svg-fill-current :deep(path) {
+  fill: currentColor;
 }
 </style>
 
@@ -150,6 +123,13 @@ import { usePageInfoStore } from "@/stores/pageInfo";
 import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
 import MoveToTop from "@/components/MoveToTop.vue";
+import facebook from "@/assets/images/linkIcon/facebook.svg";
+import instagram from "@/assets/images/linkIcon/instagram.svg";
+import linkedin from "@/assets/images/linkIcon/linkedin.svg";
+import medium from "@/assets/images/linkIcon/medium.svg";
+import twitter from "@/assets/images/linkIcon/twitter.svg";
+import web from "@/assets/images/linkIcon/web.svg";
+import youtube from "@/assets/images/linkIcon/youtube.svg";
 
 import { staffs } from "@/content/staff";
 
@@ -157,6 +137,27 @@ const route = useRoute();
 
 const pageInfoStore = usePageInfoStore();
 const { setCurrentPageName } = pageInfoStore;
+
+const getIconComponent = (icon) => {
+  switch (icon) {
+    case "facebook":
+      return facebook;
+    case "instagram":
+      return instagram;
+    case "linkedin":
+      return linkedin;
+    case "medium":
+      return medium;
+    case "twitter":
+      return twitter;
+    case "web":
+      return web;
+    case "youtube":
+      return youtube;
+    default:
+      return null;
+  }
+};
 
 onMounted(() => {
   setCurrentPageName(route.name);

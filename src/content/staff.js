@@ -19,19 +19,19 @@ const staffs = [
     tags: ["掃地兼敲鐘 "],
     links: [
       {
-        icon: { facebook: true },
+        icon: "facebook",
         url: "https://www.facebook.com/eddiekao",
       },
       {
-        icon: { instagram: true },
+        icon: "instagram",
         url: "https://www.instagram.com/kaochenlong/",
       },
       {
-        icon: { twitter: true },
+        icon: "twitter",
         url: "https://twitter.com/eddiekao",
       },
       {
-        icon: { web: true },
+        icon: "web",
         url: "https://kaochenlong.com/",
       },
     ],
@@ -42,11 +42,11 @@ const staffs = [
     tags: ["專業推坑王"],
     links: [
       {
-        icon: { facebook: true },
+        icon: "facebook",
         url: "https://www.facebook.com/sfismy/",
       },
       {
-        icon: { web: true },
+        icon: "web",
         url: "https://medium.com/@gonsakon",
       },
     ],
@@ -57,11 +57,11 @@ const staffs = [
     tags: ["小小工頭"],
     links: [
       {
-        icon: { facebook: true },
+        icon: "facebook",
         url: "https://www.facebook.com/5xruby/",
       },
       {
-        icon: { web: true },
+        icon: "web",
         url: "https://5xruby.tw/",
       },
     ],
@@ -72,11 +72,11 @@ const staffs = [
     tags: ["場務"],
     links: [
       {
-        icon: { instagram: true },
+        icon: "instagram",
         url: "https://www.instagram.com/chouwaiting/",
       },
       {
-        icon: { twitter: true },
+        icon: "twitter",
         url: "https://twitter.com/chouwaiting",
       },
     ],
@@ -99,7 +99,7 @@ const staffs = [
     tags: ["開發組 "],
     links: [
       {
-        icon: { web: true },
+        icon: "web",
         url: "https://publish.obsidian.md/hello-world-lkt/",
       },
     ],
@@ -110,7 +110,7 @@ const staffs = [
     tags: ["設計組 - 廠商聯繫"],
     links: [
       {
-        icon: { facebook: true },
+        icon: "facebook",
         url: "https://www.facebook.com/garden.code.tien",
       },
     ],
@@ -121,7 +121,7 @@ const staffs = [
     tags: ["設計組打雜工"],
     links: [
       {
-        icon: { facebook: true },
+        icon: "facebook",
         url: "https://www.facebook.com/eg.pan/",
       },
     ],
@@ -132,7 +132,7 @@ const staffs = [
     tags: ["設計組"],
     links: [
       {
-        icon: { instagram: true },
+        icon: "instagram",
         url: "https://www.instagram.com/morgengruen_tw/",
       },
     ],
@@ -143,7 +143,7 @@ const staffs = [
     tags: ["設計組"],
     links: [
       {
-        icon: { instagram: true },
+        icon: "instagram",
         url: "https://www.instagram.com/paige.lin/",
       },
     ],
@@ -160,7 +160,7 @@ const staffs = [
     tags: ["衣服圖像設計"],
     links: [
       {
-        icon: { instagram: true },
+        icon: "instagram",
         url: "https://www.instagram.com/your_sadness_uncle/",
       },
     ],
