@@ -1064,7 +1064,7 @@ const section2Anime = () => {
     section2AnimeTl = gsap.timeline({
       scrollTrigger: {
         trigger: section2.value,
-        start: "top-=200",
+        start: "top center",
         // endTrigger: section3.value,
         // end: "center+=50 bottom",
         // markers: true,
@@ -1121,10 +1121,10 @@ const section3Anime = () => {
     section3AnimeTl = gsap.timeline({
       scrollTrigger: {
         trigger: section3.value,
-        start: "top-=50",
+        start: "top+=100 center",
         // endTrigger: section3.value,
         // end: "center+=50 bottom",
-        // markers: true,
+        markers: true,
         scrub: true,
         once: true,
         onEnter: () => {
