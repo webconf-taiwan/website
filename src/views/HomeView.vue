@@ -1124,7 +1124,7 @@ const section3Anime = () => {
         start: "top+=100 center",
         // endTrigger: section3.value,
         // end: "center+=50 bottom",
-        markers: true,
+        // markers: true,
         scrub: true,
         once: true,
         onEnter: () => {
