@@ -110,7 +110,7 @@
           </div>
           <div class="mb-5">
             <p class="mb-3 whitespace-pre-line">{{ speakerInfo.speechSummary }}</p>
-            <div class="flex gap-3">
+            <div class="flex gap-3 flex-wrap">
               <CategoryTag :tag="tag" v-for="tag in speakerInfo.categoryTags" :key="tag" />
             </div>
           </div>

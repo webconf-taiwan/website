@@ -29,7 +29,7 @@
             {{ dualSpeakerArr[0].speakerName }}
             <span v-if="dualSpeakerArr[0].altName">{{ `(${dualSpeakerArr[0].altName})` }}</span>
           </h2>
-          <p class="mb-5 md:mb-auto">
+          <p class="text-center md:text-left mb-5 md:mb-auto">
             {{ `${dualSpeakerArr[0].organization} ${dualSpeakerArr[0].jobTitle}` }}
           </p>
 
@@ -103,7 +103,7 @@
             {{ dualSpeakerArr[1].speakerName }}
             <span v-if="dualSpeakerArr[1].altName">{{ `(${dualSpeakerArr[1].altName})` }}</span>
           </h2>
-          <p class="mb-5 md:mb-auto">
+          <p class="text-center md:text-left mb-5 md:mb-auto">
             {{ `${dualSpeakerArr[1].organization} ${dualSpeakerArr[1].jobTitle}` }}
           </p>
 
@@ -185,7 +185,7 @@
         </div>
         <div class="mb-5">
           <p class="mb-3 whitespace-pre-line">{{ dualSpeakerInfo.speechSummary }}</p>
-          <div class="flex gap-3">
+          <div class="flex gap-3 flex-wrap">
             <CategoryTag :tag="tag" v-for="tag in dualSpeakerInfo.categoryTags" :key="tag" />
           </div>
         </div>

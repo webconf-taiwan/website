@@ -1,5 +1,5 @@
 {
-  "timestamp": "20230805162152",
+  "timestamp": "20230807210826",
   "data": [
     {
       "timestamp": "2023-05-30T02:09:47.000Z",
@@ -11,22 +11,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1uQIOyfpTeI2G-YkBBmEg02-YRblNvVOy",
       "facebookProfileLink": "",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https:///ruddyblog.wordpress.com"
-      ],
+      "otherLinks": ["https:///ruddyblog.wordpress.com"],
       "speechTopic": "AI 驅動下的開發者體驗",
       "speechSummary": "在AI驅動變革的時代下； 生成式AI代表著整個軟件開發自動化的未來已經不再是夢想，在微軟為Azure、Office、Visual Studio一系列產品推出Copilot之後，如何運用AI進行開發作業已經變成了工程師的一種必備技能，在這種情境下工程師應該要如何調適、如何成長呢? 作為資深工程師或IT主管的人又應該如何帶領團隊、如何給予協助呢? 在這個AI驅動變革的時代下要怎麼做才能讓團隊既能完成任務又能順利的成長呢? 本session正是要針對這些問題提出解決之道。",
-      "categoryTags": [
-        "Agile",
-        "DevOps",
-        "團隊管理"
-      ],
+      "categoryTags": ["Agile", "DevOps", "團隊管理"],
       "targetAudience": "開發人員及團隊主管",
       "expectedBenefits": "1. 認識 AI 驅動變革的核心要素\n2. 了解 AI 時代的開發者體驗\n3. 認知 IT 部門應對新開發者體驗的解決方案",
       "session": "2023-08-11T10:05:00+08:00",
       "room": "1101",
       "keynoteOrder": 1,
-      "noteLink": "https://hackmd.io/Tz4XDh74SqGDDZiGcWBaKg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FTz4XDh74SqGDDZiGcWBaKg",
       "formattedSession": "8/11 (FRI.) 10:05 ~ 10:50",
       "date": "08-11",
       "startTime": "10:05",
@@ -45,24 +39,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1C6OtQreKSdRiMB50Svv2ZyDw9s7KPRN3",
       "facebookProfileLink": "https://fb.me/uxrichard",
       "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "Beyond Technology 技術之外 - 從個人身心安頓到人類福祉追求",
       "speechSummary": "講者自我介紹: 從技術轉移到設計的歷程，對科技與設計的熱情所在\n技術工作意義: 技術工作價值，角色與影響力\n思考人生幸福: 安頓身心處理焦慮及人生價值\n追求福祉科技: 以人為本的科技發展",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX",
-        "Agile",
-        "DevOps",
-        "團隊管理"
-      ],
+      "categoryTags": ["Frontend", "UI / UX", "Agile", "DevOps", "團隊管理"],
       "targetAudience": "對追新技術感到焦慮的人",
       "expectedBenefits": "在高壓競爭與快速步調的時刻，透過這次分享來談談技術工作者安頓自己身心的方法，以及對於未來的展望。",
       "session": "2023-08-12T16:15:00+08:00",
       "room": "1101",
       "keynoteOrder": 2,
-      "noteLink": "https://hackmd.io/pk7crlHPTQumx2NzjWTdBQ",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2Fpk7crlHPTQumx2NzjWTdBQ",
       "formattedSession": "8/12 (SAT.) 16:15 ~ 17:00",
       "date": "08-12",
       "startTime": "16:15",
@@ -81,21 +67,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1CyGmhybPEFcdRbDcCUfRas4GqgxUdRGe",
       "facebookProfileLink": "https://www.facebook.com/yftzeng.tw",
       "twitterProfileLink": "https://twitter.com/yftzeng",
-      "otherLinks": [
-        "https://blog.gcos.me/"
-      ],
+      "otherLinks": ["https://blog.gcos.me/"],
       "speechTopic": "從專業到商業：十年軟體架構變遷",
       "speechSummary": "10 年來，台灣軟體開發的架構本身和營運型態都有很明顯的變遷，歷經了 Cloud 普及、Agile / DevOps 盛行、Blockchain 興起、Microservices 熱議、AI 再起。這些方方面面對「軟體架構」造成了什麼影響，從中可以學習什麼。",
-      "categoryTags": [
-        "Backend",
-        "團隊管理"
-      ],
+      "categoryTags": ["Backend", "團隊管理"],
       "targetAudience": "軟體工程師、軟體架構師、技術主管，或對於軟體技術變遷如何影響架構乃至商業的人。",
       "expectedBenefits": "提供對於 Cloud、Agile / DevOps、Blockchain、Microservices、AI 等的「架構」觀點，從不同視角切入瞭解技術變遷的濃縮史，以期帶來不一樣認知與收獲。",
       "session": "2023-08-11T16:15:00+08:00",
       "room": "1101",
       "keynoteOrder": 3,
-      "noteLink": "https://hackmd.io/rIoKZVv4SWq8VypkWUk0Kg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F00roPb7NQKOEHNoFGT6hig",
       "formattedSession": "8/11 (FRI.) 16:15 ~ 17:00",
       "date": "08-11",
       "startTime": "16:15",
@@ -114,21 +95,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1SYVsHNIlSqln17tIk7iAmQstEawESLaC",
       "facebookProfileLink": "https://www.facebook.com/mei.studio.li/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "鳳‧極意？！",
       "speechSummary": "與使用者互動藉此激盪出力與美的集合一直都是每位 front-end 的終極標的。\nform element 打從 HTML 問世以來，一直都扮演著非常重要的角色。\n他們本身具備了獨立的 UI/UX 更是最初也是最基本的互動元件，\n然～早期的不友善，使得 front-end 對於這些元件總是又愛又恨～\n貧瘠的支援度使得客製化變得極為困難～\n也因此衍伸出很多奇技淫巧甚至屏棄不去使用它們。\n\n經過這些年來的淬鍊與進化，\nform element 不僅支援度大增～\n給了 front-end 極大的發揮空間外，\n更棒的是相互競爭的 browser vendor 也取得了共識，\n讓 WEB API 以及 CSS 都可以在不同瀏覽器暢行無礙～\n\n打造人人都喜歡的 form 已經不再是遙不可及的夢想了，\n今天我將分享個人開發經驗，讓大夥們都可以輕鬆愜意的開發專屬的 form interaction。\n\n讓人人都可以經過這最後的試煉成為 front-end master。",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
+      "categoryTags": ["Frontend", "UI / UX"],
       "targetAudience": "略",
       "expectedBenefits": "略",
       "session": "2023-08-12T09:55:00+08:00",
       "room": "1101",
       "keynoteOrder": 4,
-      "noteLink": "https://hackmd.io/SVsZ1haXR-2bUhfcf_OYnA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FSVsZ1haXR-2bUhfcf_OYnA",
       "formattedSession": "8/12 (SAT.) 09:55 ~ 10:40",
       "date": "08-12",
       "startTime": "09:55",
@@ -147,21 +123,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1LMj_LdEfD5jERrt_yRH9tlEF60zuwp5G",
       "facebookProfileLink": "https://www.facebook.com/kat.wang.1996/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://www.instagram.com/read_and_reframe"
-      ],
+      "otherLinks": ["https://www.instagram.com/read_and_reframe"],
       "speechTopic": "從共憤走向共創：如何拉齊工程師與設計師心中的「品質標準」",
       "speechSummary": "不論是在甲方或乙方、在大公司或新創、在各種類型的產業，「工程師與設計師的協作」一直是經常被討論的重要議題。表層上看似是溝通問題，然而把鏡頭拉遠以後，會發覺其實從產品策略到設計文件交付，都會影響溝通有效性。\n\n這場講座不會只談及「溝通方法」（你我都知道能好好執行的人並不多 😅），而是著重於實際可執行的「工作流程」改善計畫，讓設計師和工程師之間的拉鋸，能轉向共同努力的目標。",
-      "categoryTags": [
-        "UI / UX",
-        "團隊管理"
-      ],
+      "categoryTags": ["UI / UX", "團隊管理"],
       "targetAudience": "・工作中，需要與工程師密集溝通的「設計師」\n・工作中，需要與設計師密集溝通的「工程師」",
       "expectedBenefits": "針對以下痛點進行討論與分析：\n\n・如何訂定一致的產品目標，讓設計師與工程師有共同努力的方向？\n・如何讓工程師了解設計的價值與決策原因，一起提升使用體驗品質？\n・面臨主情境以外的 Edge Case，如何和工程師合作規劃符合成本的設計方案？\n\n（實際內容可能會再進行微調）",
       "session": "2023-08-12T09:00:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/diYoNrNbQQW0BLLQOm6DeA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FdiYoNrNbQQW0BLLQOm6DeA",
       "formattedSession": "8/12 (SAT.) 09:00 ~ 09:45",
       "date": "08-12",
       "startTime": "09:00",
@@ -180,20 +151,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1_RWONcrIKve_93kXVYvASlwl1d88wQvw",
       "facebookProfileLink": "https://fb.me/shengyoufan",
       "twitterProfileLink": "https://twitter.com/shengyou",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "一份 Zend Engine 外帶！透過 Micro 讓一次打包、多處運行變得可能",
       "speechSummary": "經過 27 年的發展，PHP 的許多部份已脫離了當初設計的使用方式，拿來寫 CLI 工具就是一個經典的例子。不過要執行 PHP 指令仍得依賴 Zend Engine，怎樣才能做到類似 Rust 或 Go 那種一次打包、多處執行的效果呢？Micro 專案給出了一個極具創意的答案：透過將 PHP 程式與輕量的 Zend Engine 打包，就能做出多個平台的 Binary 執行檔。在這場分享裡，將介紹 Micro 專案發起的緣由、底層的運作機制及可以應用的情境，並實際示範幾個應用程式打包的情境，打開大家對 PHP Runtime、應用程式打包及發佈的想像。",
-      "categoryTags": [
-        "Backend"
-      ],
+      "categoryTags": ["Backend"],
       "targetAudience": "具 PHP 開發背景，想要了解 PHP 在不同面向應用可能性的開發者",
       "expectedBenefits": "聽完這場分享，將會對如何將 PHP 程式打包成多平台 Binary 執行檔的流程有更進一步的認識",
       "session": "2023-08-11T11:55:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/VT_gC5UwTlGaFR8KMv8Alg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FVT_gC5UwTlGaFR8KMv8Alg",
       "formattedSession": "8/11 (FRI.) 11:55 ~ 12:40",
       "date": "08-11",
       "startTime": "11:55",
@@ -212,20 +179,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1jlQLsE9lQlXNrqnRfkn8Gy9n91veaOQb",
       "facebookProfileLink": "https://www.facebook.com/gipi.net/",
       "twitterProfileLink": "https://twitter.com/gipiyu",
-      "otherLinks": [
-        "https://bizthinking.com.tw/"
-      ],
+      "otherLinks": ["https://bizthinking.com.tw/"],
       "speechTopic": "跳脫技術職與管理職的二分選擇，技術管理職讓職涯無限寬廣",
       "speechSummary": "技術擔任技術職，或者走向管理職？這是多數技術工作者在職涯發展過程中會遭遇到的問題。而我卻認為這種二分選擇經常會讓我們職涯變得狹隘且不快樂，有些人為了更好的薪水或發展性選擇了管理職，但卻放下了最喜歡的技術工作，另一些人則為了避免面對人與承擔責任，選擇了技術從事技術工作，但卻也失去了成長與提升收入的機會。\n\n我認為所有的資深技術人員，在專業能力之外，也都需要具備「管理能力」，包含帶人、帶專案、建立流程與領導團隊。\n\n你該思考的不是技術或管理二選一，而是如何將技術與管理進行整合思考，讓自己的職涯擁有更多且更好的選擇。",
-      "categoryTags": [
-        "團隊管理"
-      ],
+      "categoryTags": ["團隊管理"],
       "targetAudience": "1.在技術職與管理職中間糾結的人\n2.擔任管理職務，但覺得自己專業停滯的人\n3.所有的技術工作者",
       "expectedBenefits": "在做出職涯選擇時能跳脫技術或管理的二分法。",
       "session": "2023-08-11T14:25:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/mRsVX_zeSia-A19Zda2C3w",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FmRsVX_zeSia-A19Zda2C3w",
       "formattedSession": "8/11 (FRI.) 14:25 ~ 15:10",
       "date": "08-11",
       "startTime": "14:25",
@@ -244,20 +207,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1bXDvJS3Dx9V1vowFcV6Z4zisFMKva8xa",
       "facebookProfileLink": "https://www.facebook.com/profile.php?id=100011110445729",
       "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "建立高效的遠端協作團隊：策略和實踐",
       "speechSummary": "分享建立高效遠端協作團隊的策略和最佳實踐，包括溝通方法、協作方法和團隊文化等方面的建議。",
-      "categoryTags": [
-        "團隊管理"
-      ],
+      "categoryTags": ["團隊管理"],
       "targetAudience": "1. 企業主管和管理層：這些人可能負責決策和實施遠端協作策略\n2. 團隊領導者：包括專案經理、團隊主管或團隊負責人，他們負責組織和管理遠端協作團隊\n3. 遠端協作團隊成員",
       "expectedBenefits": "- 了解建立高效遠端協作團隊的重要性和益處，並能夠更好地評估和支持遠端協作策略。\n- 學習如何建立和管理高效的遠端協作團隊\n- 瞭解如何在遠端環境中更有效地協作和溝通，以提高工作效率和團隊合作。",
       "session": "2023-08-11T13:30:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/0ay5VmSyQf25vtI8rvRfLA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F0ay5VmSyQf25vtI8rvRfLA",
       "formattedSession": "8/11 (FRI.) 13:30 ~ 14:15",
       "date": "08-11",
       "startTime": "13:30",
@@ -276,23 +235,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1ft57xv1U3bFNmh2Qr-d9mzk_CijI7rBC",
       "facebookProfileLink": "https://www.facebook.com/zhouxiang.net/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://medium.com/chouhsiang"
-      ],
+      "otherLinks": ["https://medium.com/chouhsiang"],
       "speechTopic": "數位發展部官網如何做到網站韌性與零信任",
       "speechSummary": "透過數位發展部官網為例，講解網站結合了包含網站韌性、SSG、IPFS、Cloud Native、Kubernetes、DevOps、Zero Trust等概念。",
-      "categoryTags": [
-        "Frontend",
-        "Backend",
-        "DevOps",
-        "Security"
-      ],
+      "categoryTags": ["Frontend", "Backend", "DevOps", "Security"],
       "targetAudience": "開發者、政府人員",
       "expectedBenefits": "開發者、政府人員",
       "session": "2023-08-12T13:30:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/zUIY9dKyR7iQSYXmcJ8NGg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FzUIY9dKyR7iQSYXmcJ8NGg",
       "formattedSession": "8/12 (SAT.) 13:30 ~ 14:15",
       "date": "08-12",
       "startTime": "13:30",
@@ -311,21 +263,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1Fq4ltrviRMv9IP2zuhkpVEpWNh2hiXkp",
       "facebookProfileLink": "https://www.facebook.com/cythilya",
       "twitterProfileLink": "https://twitter.com/cythilya",
-      "otherLinks": [
-        "https://www.cythilya.tw/"
-      ],
+      "otherLinks": ["https://www.cythilya.tw/"],
       "speechTopic": "從零打造前端效能監測系統",
       "speechSummary": "如何評估前端效能、用什麼工具打造監測系統",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
+      "categoryTags": ["Frontend", "UI / UX"],
       "targetAudience": "無限制",
       "expectedBenefits": "如何評估前端效能、怎麼打造適合自己的監測系統",
       "session": "2023-08-12T10:50:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/CZTO4WGbRcuCcQfWgGkuig",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FCZTO4WGbRcuCcQfWgGkuig",
       "formattedSession": "8/12 (SAT.) 10:50 ~ 11:35",
       "date": "08-12",
       "startTime": "10:50",
@@ -344,21 +291,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1dNIg4xaAsrf1TofYxYoG8AjN-_5yiaFU",
       "facebookProfileLink": "https://www.facebook.com/cheyuwu345",
       "twitterProfileLink": "https://twitter.com/cheyuwu345",
-      "otherLinks": [
-        "https://portaly.cc/cheyuwu"
-      ],
+      "otherLinks": ["https://portaly.cc/cheyuwu"],
       "speechTopic": "藝術界線超進化-從創作到實踐，探索生成式藝術與前端互動技術的共舞",
       "speechSummary": "* 演算法與資料：創造數位的物件與生命\n* 如何踏入生成式藝術、前端與互動設計的世界\n* 破除媒介框架：多元感官藝術 - 互動機制與體驗多元性\n* 生成式數位藝術對於品牌、商業、藝術未來影響力實踐\n* 前端與藝術的整合: 數位藝術殿堂 Art Blocks與詩意的數位作品案例講解 \n",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
+      "categoryTags": ["Frontend", "UI / UX"],
       "targetAudience": "對如何將前端應用到藝術與互動設計領域有興趣的工程師、設計師與團隊",
       "expectedBenefits": "對於工程師較不熟悉的互動設計與藝術領域，可以有更完整了瞭解與視野",
       "session": "2023-08-12T11:45:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/B9EywGzUTzicd9WTaFvyNg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FB9EywGzUTzicd9WTaFvyNg",
       "formattedSession": "8/12 (SAT.) 11:45 ~ 12:30",
       "date": "08-12",
       "startTime": "11:45",
@@ -377,20 +319,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=19dqQKnfi7VuXLghWl26c79xXYFC4FVlN",
       "facebookProfileLink": "https://www.facebook.com/milkmidifans",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://milkmidi.medium.com/"
-      ],
+      "otherLinks": ["https://milkmidi.medium.com/"],
       "speechTopic": "WebComponent 的好，用過的都知道",
       "speechSummary": "jQuery 的好，15 年前大家都知道，React/Vue 的好，現在大家都知道，但想想你真的需要用到這些 Framework 嗎？原生的 WebComponent 或許是一種不同的開發思維，很適合應用在微前端，或是跨專案要共享元件的情境。\n\n透過奶綠實際在電商平台導入 WebComponent 的經驗，來和大家分享 WebComponent 的優與缺。",
-      "categoryTags": [
-        "Frontend"
-      ],
+      "categoryTags": ["Frontend"],
       "targetAudience": "前端工程師",
       "expectedBenefits": "1 什麼是 WebComponent。\n2 WebComponent 適合的專案情境。\n3 WebComponent 與 React/Vue 的整合。",
       "session": "2023-08-11T11:00:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/qY9O-dlVTgWWUbrgsYdf4w",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FqY9O-dlVTgWWUbrgsYdf4w",
       "formattedSession": "8/11 (FRI.) 11:00 ~ 11:45",
       "date": "08-11",
       "startTime": "11:00",
@@ -409,22 +347,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1qqV1sKSDQN3lmqs55ZKbNw9n6e2ZnfKR",
       "facebookProfileLink": "https://www.facebook.com/fullstackledder",
       "twitterProfileLink": "https://twitter.com/wellwind",
-      "otherLinks": [
-        "https://fullstackladder.dev/"
-      ],
+      "otherLinks": ["https://fullstackladder.dev/"],
       "speechTopic": "無密碼時代降臨！使用 Passkeys 打造無密碼驗證服務",
       "speechSummary": "在這個數位時代，資安事件層出不窮，密碼外流事件頻傳，傳統的密碼登入方式已經變得平凡到令人感到無聊。然而，這種登入方式也帶來了不少資安隱憂，因此我們迫切需要一種更安全的解決方案。\n\n幸運的是，現在我們有了一個令人振奮的解決方案 - Passkeys！FIDO 聯盟推出的 Passkeys 規格，將完全改變我們登入的方式。現在，使用者不再需要記住繁瑣的密碼，只需擁有自己的 Passkey，就能輕鬆完成驗證。同時，這也意味著網站管理者不再需要儲存使用者的密碼，消除了密碼外洩以及釣魚網站帶來的風險。\n\n本次分享將帶您深入探索 Passkeys 的原理，並透過實際的程式碼示範，展示如何實現 Passkeys 驗證服務。讓我們一同踏入安全的無密碼時代，探索未來資安的新里程碑！",
-      "categoryTags": [
-        "Frontend",
-        "Backend",
-        "Security"
-      ],
+      "categoryTags": ["Frontend", "Backend", "Security"],
       "targetAudience": "對於資安議題有興趣的前後端開發人員",
       "expectedBenefits": "學會一種新型態的驗證模式",
       "session": "2023-08-12T14:25:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/dHqj5RnATgOFO_0F8JWq8g",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FdHqj5RnATgOFO_0F8JWq8g",
       "formattedSession": "8/12 (SAT.) 14:25 ~ 15:10",
       "date": "08-12",
       "startTime": "14:25",
@@ -443,20 +375,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1b5WFAonXgKJe5nLcAabE6oO7gb0W6_pU",
       "facebookProfileLink": "https://www.facebook.com/profile.php?id=100006903696165",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://medium.com/@oldmo860617"
-      ],
+      "otherLinks": ["https://medium.com/@oldmo860617"],
       "speechTopic": "成為前端建築師吧！透過 Frontend Infra 為前端應用打造穩健且高效率的開發體驗",
       "speechSummary": "每當提到前端開發，大多數人的腦海中浮現的往往是打造吸引人的 UI 畫面。然而，前端開發這個領域絕對不侷限於介面的開發。在眾多看不見的幕後，數不盡的細節正在默默地優化我們的開發效率和提高應用品質，例如效能監控與程式碼品質分析，這就是Frontend Infra 的魔法。在此次議程中，我將整理個人過去在企業中 Frontend Infra 團隊與 在 Side Projects 中協助打造前端基礎建設的經驗與心得，介紹前端基礎建設的重要性與組成元素，以及探討 Frontend Infra 與 DevOps 精神的重疊，並分享如何透過相關工具的協助，成功優化開發流程並提升應用品質。",
-      "categoryTags": [
-        "Frontend"
-      ],
+      "categoryTags": ["Frontend"],
       "targetAudience": "對前端開發有興趣的朋友",
       "expectedBenefits": "了解如何利用前端基礎設施的各種工具和元素，幫助團隊優化開發流程、解放生產力，並打造更穩固的前端應用",
       "session": "2023-08-11T11:55:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/cPQikssETpSBS33EgKkQKw",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FcPQikssETpSBS33EgKkQKw",
       "formattedSession": "8/11 (FRI.) 11:55 ~ 12:40",
       "date": "08-11",
       "startTime": "11:55",
@@ -475,22 +403,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1kFro7eS1K2RiiQYh_uXM5ZhUi82fF8jd",
       "facebookProfileLink": "https://fb.com/Orange.8361",
       "twitterProfileLink": "https://twitter.com/orange_8361",
-      "otherLinks": [
-        "https://blog.orange.tw/"
-      ],
+      "otherLinks": ["https://blog.orange.tw/"],
       "speechTopic": "從 2013 到 2023: Web Security 十年之進化及趨勢!",
       "speechSummary": "「都 2023 了網站不可能再出現資安漏洞吧？」 \n\n確實，隨著資安意識的抬頭，常見的資安問題基本都有防禦上的最佳實踐，開發者照著成熟的框架寫真的很難寫出漏洞，這些年要攻擊一個網站也確實感受到越來越困難 😩\n\n不過不只有開發者在進步，攻擊者也跟著時代與時俱進！隨著更底層的問題被挖掘、更複雜的攻擊手法被發明，網頁安全已不僅僅只是寫出安全的程式碼即可，這場議程會展示 Web Security 這十年來的演化、發展趨勢以及新興的攻擊手法，一起來看看一行程式碼都沒寫錯的網站還可以怎樣被攻擊吧！",
-      "categoryTags": [
-        "Frontend",
-        "Backend",
-        "Security"
-      ],
+      "categoryTags": ["Frontend", "Backend", "Security"],
       "targetAudience": "有實際開發經驗之網站開發者",
       "expectedBenefits": "這場議程會展示 Web Security 這十年來的演化、發展趨勢以及新興的攻擊手法，一起來看看一行程式碼都沒寫錯的網站還可以怎樣被攻擊吧！",
       "session": "2023-08-12T14:25:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/Cyz5StjtTyibrKIf9b7RCA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FCyz5StjtTyibrKIf9b7RCA",
       "formattedSession": "8/12 (SAT.) 14:25 ~ 15:10",
       "date": "08-12",
       "startTime": "14:25",
@@ -509,21 +431,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=14m0ijP65P4y1AjDD4BdnDy0ymtnSURCR",
       "facebookProfileLink": "https://www.facebook.com/aotoki.me",
       "twitterProfileLink": "https://twitter.com/elct9620",
-      "otherLinks": [
-        "https://blog.aotoki.me"
-      ],
+      "otherLinks": ["https://blog.aotoki.me"],
       "speechTopic": "選擇適合你的技能組合",
       "speechSummary": "近十年來軟體產業蓬勃發展，許多新語言、框架跟工具都不斷被推出，我們應該如何選擇？我以一名 Ruby 愛好者的角度來說明持續選用 Ruby 的理由，來解釋問題沒有想像中困難，也不那麼單純。更多是我們自身的個性、環境影響，當我們了解一個語言跟框架的特性，就很好找到適合自己的工具和技能。",
-      "categoryTags": [
-        "Frontend",
-        "Backend"
-      ],
+      "categoryTags": ["Frontend", "Backend"],
       "targetAudience": "正在思考該學什麼的人們",
       "expectedBenefits": "也許會對 Ruby 有一些興趣，開始保持對不常使用的工具、語言有興趣，能用開放的心態做新的嘗試，從用工具解決問題轉換到解決問題能用什麼工具。",
       "session": "2023-08-12T15:20:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/TNzR66T8QX6WxEdWuXQb4w",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FTNzR66T8QX6WxEdWuXQb4w",
       "formattedSession": "8/12 (SAT.) 15:20 ~ 16:05",
       "date": "08-12",
       "startTime": "15:20",
@@ -542,20 +459,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=16_mPDUA0Paj9Pb7f_LHEyIvmKnoKoFXY",
       "facebookProfileLink": "https://www.facebook.com/fishloveud",
       "twitterProfileLink": "https://twitter.com/horng_yi",
-      "otherLinks": [
-        "https://udfish.tw/"
-      ],
+      "otherLinks": ["https://udfish.tw/"],
       "speechTopic": "迎向未來的介面設計：創造通用使用性介面以應對不同使用族群與環境",
       "speechSummary": "在現今充滿數位科技的世界，介面無處不在。從手中的智慧型手機，到生活中的家電和軟體，介面設計影響著我們每個人的生活。加上先前新型冠狀病毒疫情爆發的期間，許多產業和商家因應大眾消費模式，盡量以減少人與人接觸的方式進行產品販售或服務，讓現代人使用介面的機會越來越多。另外，中高齡人口比例快速增加，更多使用者將面臨到因身體能力退化而產生的操作限制。因此考量到不同年齡、行動與感官能力、知識與經驗的使用者，希望滿足所有使用者需求的通用使用性（universal usability）將是現在及未來介面設計從業人員不得不面對的重要課題。",
-      "categoryTags": [
-        "UI / UX"
-      ],
+      "categoryTags": ["UI / UX"],
       "targetAudience": "介面設計、使用者經驗相關從業人員",
       "expectedBenefits": "認識通用使用性理論與三大設計重點，了解其對於現代社會與未來介面設計領域的重要性。",
       "session": "2023-08-11T15:20:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/vIeq2TvHQ5ODEccm6Gjcmw",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FvIeq2TvHQ5ODEccm6Gjcmw",
       "formattedSession": "8/11 (FRI.) 15:20 ~ 16:05",
       "date": "08-11",
       "startTime": "15:20",
@@ -574,22 +487,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1Mx7VDO1YyeiDWwhwnZbKPSptrFXQaEZt",
       "facebookProfileLink": "https://www.facebook.com/clonncd/",
       "twitterProfileLink": "https://twitter.com/clonncd",
-      "otherLinks": [
-        "https://blog.caesar-chi.com/"
-      ],
+      "otherLinks": ["https://blog.caesar-chi.com/"],
       "speechTopic": "為何技術老人這樣想那樣做？從技術前輩的視角理解技術決策",
       "speechSummary": "我們將揭示那些資深工程師如何在不斷變化的技術世界中做出明智決策。這不僅是一場探索技術架構與選題的旅程，更是一個理解技術進步和領導決策的機會。\n\n作為初入職場或有志於走向資深之路的工程師，將從中學習如何以更高、更全面的視角看待科技發展與職場挑戰。這次的分享將為你開闢一條深入理解工程師心路歷程的通道，並且引領你在技術職業路上不斷進步，最終成為真正的資深工程師。\n\n從技術架構到技術選題到底如何考量，技術框架五花八門，十年河東十年河西，此場議題給予在這個環境中初入職或有志於資深之路發展的工程師們。\n",
-      "categoryTags": [
-        "Frontend",
-        "Agile",
-        "團隊管理"
-      ],
+      "categoryTags": ["Frontend", "Agile", "團隊管理"],
       "targetAudience": "Senior Ready RD",
       "expectedBenefits": "將從中學習如何以更高、更全面的視角看待科技發展與職場挑戰。這次的分享將為你開闢一條深入理解工程師心路歷程的通道，並且引領你在技術職業路上不斷進步，最終成為真正的資深工程師。",
       "session": "2023-08-12T10:50:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/dTk44rdmRaGJOFVN5oB4pg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FdTk44rdmRaGJOFVN5oB4pg",
       "formattedSession": "8/12 (SAT.) 10:50 ~ 11:35",
       "date": "08-12",
       "startTime": "10:50",
@@ -608,21 +515,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1y6rZgB3Dy0sYzIoQXERJVJ32C9E_I0xo",
       "facebookProfileLink": "https://www.facebook.com/lee.ming.144/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://blockstudio.tw/blog/"
-      ],
+      "otherLinks": ["https://blockstudio.tw/blog/"],
       "speechTopic": "穿越互動特效網站演化的軌跡",
       "speechSummary": "透過案例分析和趨勢探討了解網站動態特效的發展和變遷。掌握到動態特效如何影響網站設計和品牌態度傳達，並著重介紹現代網站設計中受歡迎的特效趨勢，讓您在設計中思考互動特效來創造令人難忘的網站體驗。無論設計師、開發人員還是對網頁設計感興趣的人，都可以讓本主題為您帶來洞見和啟發。",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
+      "categoryTags": ["Frontend", "UI / UX"],
       "targetAudience": "設計師、前端工程師、行銷人員",
       "expectedBenefits": "擴展網頁設計領域的知識，了解互動特效網站的歷史演化，提升自身在該領域的專業知識和能力。",
       "session": "2023-08-11T14:25:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/8tR5dD-ZQSeILy_-65tHJA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F8tR5dD-ZQSeILy_-65tHJA",
       "formattedSession": "8/11 (FRI.) 14:25 ~ 15:10",
       "date": "08-11",
       "startTime": "14:25",
@@ -641,21 +543,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1V6RTxeckuIrMaLGooUomHG7tIgP0kBpF",
       "facebookProfileLink": "",
       "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "堆砌你獨一無二的專業價值 - 鈦坦設計師的開放式技能地圖分享",
       "speechSummary": "在這個資訊爆炸且多元化的時代，設計師面臨著前所未有的挑戰和機遇。在職業發展中，如何建立起獨一無二的專業價值成為關鍵。\n\n這場演講將以設計師和公司設計主管的不同觀點，探討鈦坦設計師的職涯技能地圖。我們將分享如何根據不同的業務需求和個人興趣，制定明確的職涯計劃。\n\n這次分享的目的是為大家提供設計職涯規劃的方向，讓我們共同打造獨一無二的專業價值，迎接未來的設計挑戰！",
-      "categoryTags": [
-        "UI / UX",
-        "團隊管理"
-      ],
+      "categoryTags": ["UI / UX", "團隊管理"],
       "targetAudience": "設計主管, 設計師, 其他想了解如何與設計師合作發揮最大價值的人類們",
       "expectedBenefits": "-初心者設計師 : 職涯技能規劃方向 ;\n-設計主管 : 如何讓設計career path能彈性發展,因應快速且多元的需求",
       "session": "2023-08-11T13:30:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/vE_e1uiJTZyNVTjeKPmlJg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FvE_e1uiJTZyNVTjeKPmlJg",
       "formattedSession": "8/11 (FRI.) 13:30 ~ 14:15",
       "date": "08-11",
       "startTime": "13:30",
@@ -674,14 +571,10 @@
       "photoURL": "",
       "facebookProfileLink": "https://www.facebook.com/yves.lin888",
       "twitterProfileLink": "https://twitter.com/yveslin888",
-      "otherLinks": [
-        "https://www.yveslin.com"
-      ],
+      "otherLinks": ["https://www.yveslin.com"],
       "speechTopic": "敏捷不只是敏捷：從台灣看敏捷實踐的十年變遷以及必備微技能【工作坊】",
       "speechSummary": "敏捷在台灣近年來大受矚目，然而，你是否知道早在2009年就已經有敏捷社群的存在呢？在這次分享中，我們將探討敏捷社群先驅們如何努力推廣敏捷方法，以及他們是如何與其他軟技能社群有著意外的交集。現在，就讓我們一一揭開這些有趣的小故事。\n\n此外, 目前敏捷在各個產業中的應用狀況如何呢？除了IT產業以外，是否還有其他領域也導入了敏捷方法呢？這是一個引人關注的問題。\n\n然而，隨著COVID-19的出現，世界發生了翻天覆地的變化，敏捷也不例外。如何使繁忙的我們更容易學習敏捷？如何關注不同世代和不同角度的意見？以及如何真正實踐以人為本的思維？這些都是我們需要思考和探索的議題。敏捷的未來可能會在這些方面有所轉變，以更好地適應變化的環境和需求。",
-      "categoryTags": [
-        "Agile"
-      ],
+      "categoryTags": ["Agile"],
       "targetAudience": "對敏捷和軟技能有興趣的朋友",
       "expectedBenefits": "台灣敏捷社群發展史\n敏捷和其他技能的關聯\n敏捷在各產業的落地狀況\n微技能實際演練",
       "contactEmail": "Yveslin@gmail.com",
@@ -692,8 +585,6 @@
       "startTime": "11:55",
       "endTime": "12:40",
       "id": "lin-yu-cheng",
-      "noteLink": "W8od3KH2QLWJeSWmT_kuwg",
-      "googleCalendarLink": "https://calendar.google.com/calendar/u/0/r/eventedit?trp=true&sf=true&output=xml&dates=20230811T115500/20230811T124000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AYves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B:+https://webconf.tw/%23/agenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF+2023%5D+Yves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC+-+%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91+@1003%E2%80%88",
       "index": 20
     },
     {
@@ -706,14 +597,10 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1Em2TKYkAE8jVdNwjg89MyRpea8xhwN68",
       "facebookProfileLink": "https://www.facebook.com/kojenchieh",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://www.facebook.com/DavidLearningJourney/"
-      ],
+      "otherLinks": ["https://www.facebook.com/DavidLearningJourney/"],
       "speechTopic": "敏捷不只是敏捷：從台灣看敏捷實踐的十年變遷以及必備微技能【工作坊】",
       "speechSummary": "敏捷在台灣近年來大受矚目，然而，你是否知道早在2009年就已經有敏捷社群的存在呢？在這次分享中，我們將探討敏捷社群先驅們如何努力推廣敏捷方法，以及他們是如何與其他軟技能社群有著意外的交集。現在，就讓我們一一揭開這些有趣的小故事。\n\n此外, 目前敏捷在各個產業中的應用狀況如何呢？除了IT產業以外，是否還有其他領域也導入了敏捷方法呢？這是一個引人關注的問題。\n\n然而，隨著COVID-19的出現，世界發生了翻天覆地的變化，敏捷也不例外。如何使繁忙的我們更容易學習敏捷？如何關注不同世代和不同角度的意見？以及如何真正實踐以人為本的思維？這些都是我們需要思考和探索的議題。敏捷的未來可能會在這些方面有所轉變，以更好地適應變化的環境和需求。",
-      "categoryTags": [
-        "Agile"
-      ],
+      "categoryTags": ["Agile"],
       "targetAudience": "對敏捷和軟技能有興趣的朋友",
       "expectedBenefits": "台灣敏捷社群發展史\n敏捷和其他技能的關聯\n敏捷在各產業的落地狀況\n微技能實際演練",
       "session": "2023-08-11T11:55:00+08:00",
@@ -723,8 +610,6 @@
       "startTime": "11:55",
       "endTime": "12:40",
       "id": "ke-ren-jie",
-      "noteLink": "W8od3KH2QLWJeSWmT_kuwg",
-      "googleCalendarLink": "https://calendar.google.com/calendar/u/0/r/eventedit?trp=true&sf=true&output=xml&dates=20230811T115500/20230811T124000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AYves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B:+https://webconf.tw/%23/agenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF+2023%5D+Yves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC+-+%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91+@1003%E2%80%88",
       "index": 21
     },
     {
@@ -740,9 +625,7 @@
           "photoURL": "",
           "facebookProfileLink": "https://www.facebook.com/yves.lin888",
           "twitterProfileLink": "https://twitter.com/yveslin888",
-          "otherLinks": [
-            "https://www.yveslin.com"
-          ],
+          "otherLinks": ["https://www.yveslin.com"],
           "contactEmail": "Yveslin@gmail.com",
           "id": "lin-yu-cheng"
         },
@@ -755,17 +638,13 @@
           "photoURL": "https://drive.google.com/uc?export=download&id=1Em2TKYkAE8jVdNwjg89MyRpea8xhwN68",
           "facebookProfileLink": "https://www.facebook.com/kojenchieh",
           "twitterProfileLink": "",
-          "otherLinks": [
-            "https://www.facebook.com/DavidLearningJourney/"
-          ],
+          "otherLinks": ["https://www.facebook.com/DavidLearningJourney/"],
           "id": "ke-ren-jie"
         }
       ],
       "speechTopic": "敏捷不只是敏捷：從台灣看敏捷實踐的十年變遷以及必備微技能【工作坊】",
       "speechSummary": "敏捷在台灣近年來大受矚目，然而，你是否知道早在2009年就已經有敏捷社群的存在呢？在這次分享中，我們將探討敏捷社群先驅們如何努力推廣敏捷方法，以及他們是如何與其他軟技能社群有著意外的交集。現在，就讓我們一一揭開這些有趣的小故事。\n\n此外, 目前敏捷在各個產業中的應用狀況如何呢？除了IT產業以外，是否還有其他領域也導入了敏捷方法呢？這是一個引人關注的問題。\n\n然而，隨著COVID-19的出現，世界發生了翻天覆地的變化，敏捷也不例外。如何使繁忙的我們更容易學習敏捷？如何關注不同世代和不同角度的意見？以及如何真正實踐以人為本的思維？這些都是我們需要思考和探索的議題。敏捷的未來可能會在這些方面有所轉變，以更好地適應變化的環境和需求。",
-      "categoryTags": [
-        "Agile"
-      ],
+      "categoryTags": ["Agile"],
       "targetAudience": "對敏捷和軟技能有興趣的朋友",
       "expectedBenefits": "台灣敏捷社群發展史\n敏捷和其他技能的關聯\n敏捷在各產業的落地狀況\n微技能實際演練",
       "session": "2023-08-11T11:55:00+08:00",
@@ -774,7 +653,7 @@
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
-      "noteLink": "W8od3KH2QLWJeSWmT_kuwg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FW8od3KH2QLWJeSWmT_kuwg",
       "googleCalendarLink": "https://calendar.google.com/calendar/u/0/r/eventedit?trp=true&sf=true&output=xml&dates=20230811T115500/20230811T124000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AYves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B:+https://webconf.tw/%23/agenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF+2023%5D+Yves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC+-+%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91+@1003%E2%80%88",
       "index": 22
     },
@@ -788,20 +667,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1pDq-1icRIYEkZ68i9aw-G5W_fyqtIuxF",
       "facebookProfileLink": "https://www.facebook.com/kukumamaya",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://medium.com/@bearhsu2"
-      ],
+      "otherLinks": ["https://medium.com/@bearhsu2"],
       "speechTopic": "單元測試不是有寫就好",
       "speechSummary": "近年來「單元測試」在台灣軟體界已不再是稀有品項。就算工作上沒有常態使用，也已經越來越多加入「有嘗試過」的行列了。這當然是好事，有試總比沒試好，對吧？\n\n大家都知道，除了讀書，寫出好設計也要靠重構，而重構必須在測試保護下進行才會安全，可以說，沒有測試，很難將其他軟體工程的實踐做到一定程度以上。\n\n問題來了，我書也買了，演講也聽了，單元測試也都乖乖寫了，但為什麼我程式還是一樣亂、重構還是一樣難、重點是，時程還是一樣趕不上？班還是一樣得加？究竟我的單元測試出了什麼事？問題到底出在哪裡？\n\n其實，測試也是一種程式，也是人寫出來的，跟 Production Code 一樣，也都活在你的 Code Base 中。因此，測試本身的品質、寫法，以及其與 Production Code 的互動方式，都會影響你的工作型態。\n\n測試，絕對不是有寫就好。\n\n透過一些常見的 Production Code 與 Unit Test 的壞範例，我們一起來看看這麼做會有什麼問題，並看看可以怎麼解決吧！",
-      "categoryTags": [
-        "Agile"
-      ],
+      "categoryTags": ["Agile"],
       "targetAudience": "不分前端後端，對單元測試有興趣的 RD",
       "expectedBenefits": "- 更好的測試設計思路\n- 更能互相支持的程式與測試",
       "session": "2023-08-11T11:00:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/X9AzRGrYRFuEbTROxkT-jw",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FX9AzRGrYRFuEbTROxkT-jw",
       "formattedSession": "8/11 (FRI.) 11:00 ~ 11:45",
       "date": "08-11",
       "startTime": "11:00",
@@ -820,20 +695,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1r9HOeH77dkM2609HDWmW9TvibfSV527N",
       "facebookProfileLink": "",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://azole.medium.com/"
-      ],
+      "otherLinks": ["https://azole.medium.com/"],
       "speechTopic": "Docker Container 是什麼？可以吃嗎？【工作坊】",
       "speechSummary": "- Web 工程師需要會 Docker 嗎？\n- 後、端工程師可以透過容器技術做更好的合作嗎？\n- 前端工程師也可以用 Docker image 發布自己的專案嗎？\n- 使用容器技術要注意些什麼？",
-      "categoryTags": [
-        "DevOps"
-      ],
+      "categoryTags": ["DevOps"],
       "targetAudience": "很入門的等級，適合完全沒有使用過 Docker 或其他容器技術的聽眾。",
       "expectedBenefits": "-  前端工程師可以學會怎麼使用後端工程師提供的 Docker image 來啟動後端環境，這樣前端工程師在串接後端時，就透過 Docker container 進行更有效率的管理。\n- 前端也可以試著把自己的前端 build 成 docker image。",
       "session": "2023-08-12T11:45:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/hOq4Qte_TnSy0z8-dcCuig",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FhOq4Qte_TnSy0z8-dcCuig",
       "formattedSession": "8/12 (SAT.) 11:45 ~ 12:30",
       "date": "08-12",
       "startTime": "11:45",
@@ -852,20 +723,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1-kvqzwocpzo1khto5Gd0GP4ichuN3vu3",
       "facebookProfileLink": "https://www.facebook.com/chengfan.chen",
       "twitterProfileLink": "https://twitter.com/Cheng_Wei_Chen",
-      "otherLinks": [
-        "https://chengweichen.com/"
-      ],
+      "otherLinks": ["https://chengweichen.com/"],
       "speechTopic": "回顧與展望，從 DevOps 鑑古觀今知未來",
       "speechSummary": "2009 年 devops 一詞橫空出世，經過多年的演化，被涵括在 DevOps 內的議題不只是技術及工具，亦包含了各種思維、方法論，這使得 DevOps 成為軟體開發和維運領域中，被人們廣泛討論的重要觀念。\n\n我們該如何面對 DevOps 領域不斷推陳出新的各種 Keyword、Buzzword、tools，又該如何看待一年又一年不斷被宣判「is dead」的 DevOps 呢？\n\nWebConf 十年磨一劍，而 DevOps 議題浮現於台灣技術圈中也即將邁向 10 年，在這場演講中，就讓我們一起透過歷史鑑古觀今知未來吧！",
-      "categoryTags": [
-        "DevOps"
-      ],
+      "categoryTags": ["DevOps"],
       "targetAudience": "對 DevOps 有興趣的 IT 及軟體開發相關從業者。",
       "expectedBenefits": "幫助聽眾認識 DevOps 的發展歷程、核心概念、關鍵技術，並且從過往歷史中，發現歷史總是不斷重演又持續的推陳出新，從而對這一領域的技術變革和趨勢有更清晰的認識。",
       "session": "2023-08-11T14:25:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/xTBo_rxFR-CZqicxoRzmdw",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FxTBo_rxFR-CZqicxoRzmdw",
       "formattedSession": "8/11 (FRI.) 14:25 ~ 15:10",
       "date": "08-11",
       "startTime": "14:25",
@@ -884,20 +751,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1uu9wvIJaTKu91FbM11w6abYX973YA9AP",
       "facebookProfileLink": "https://www.facebook.com/uiux.akane",
       "twitterProfileLink": "https://twitter.com/akane_lee",
-      "otherLinks": [
-        "https://blog.akanelee.me"
-      ],
+      "otherLinks": ["https://blog.akanelee.me"],
       "speechTopic": "講事實沒用，顧客才不聽這個！",
       "speechSummary": "開公司賣產品就是要賺錢，要怎麼說服顧客「你沒有坑他」呢？\n給他更多數據資料？給他更多折扣？給他更多使用者見證？\n如何讓顧客即使知道你在坑他，卻還是心甘情願掏錢買單？",
-      "categoryTags": [
-        "UI / UX"
-      ],
+      "categoryTags": ["UI / UX"],
       "targetAudience": "無限制，面向一般大眾",
       "expectedBenefits": "從另一個角度思考產品開發、溝通技巧，增加說服他人的成功率。",
       "session": "2023-08-12T11:45:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/o2qdy0YySReFsx6Uf5pdDQ",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2Fo2qdy0YySReFsx6Uf5pdDQ",
       "formattedSession": "8/12 (SAT.) 11:45 ~ 12:30",
       "date": "08-12",
       "startTime": "11:45",
@@ -916,21 +779,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1_KVI1QDdrCcR3t0ViVh9OQAtIEm74pfK",
       "facebookProfileLink": "",
       "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "APM 的守破離",
       "speechSummary": "APM 在宏觀上讓我們更理解系統間是如何運作及與其他系統關聯，監控及分析這些資料可以讓我們了解系統真正的瓶頸在哪；「守」將會分享的一些實際案例，「破」會提及一些特殊作法，「離」會分享 APM 及其他協助監控維運的手段。",
-      "categoryTags": [
-        "Backend",
-        "DevOps"
-      ],
+      "categoryTags": ["Backend", "DevOps"],
       "targetAudience": "後端工程師、維運工程師",
       "expectedBenefits": "理解 APM 收集的資料及其如何幫助找到瓶頸，甚至 APM 之外我們還能做些什麼。",
       "session": "2023-08-12T09:00:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/QoWpXB7yRc-ImH1yX_2C7Q",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FQoWpXB7yRc-ImH1yX_2C7Q",
       "formattedSession": "8/12 (SAT.) 09:00 ~ 09:45",
       "date": "08-12",
       "startTime": "09:00",
@@ -949,22 +807,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1pur4gn4BihZzgsEJXm5_tw33QGS0oQgR",
       "facebookProfileLink": "https://www.facebook.com/jackymaxj",
       "twitterProfileLink": "https://twitter.com/jackymaxj",
-      "otherLinks": [
-        "https://hackmd.io/@MaxWu"
-      ],
+      "otherLinks": ["https://hackmd.io/@MaxWu"],
       "speechTopic": "HackMD 的前世與今生，以及未來",
       "speechSummary": "HackMD 作為大家寫筆記與分享的好夥伴已經踏入 7 年了！\n這次有機會與各位分享 HackMD 曾經踩過的坑、用到的技術細節。\n主題包含：網頁上的即時通訊、Imgur 大搬家、比較字串中遇到的 Emoji 問題、Imgur 圖片大搬家、這些年來遇到的 XSS、以及 HackMD 2.0 的展望！",
-      "categoryTags": [
-        "Frontend",
-        "Backend",
-        "Security"
-      ],
+      "categoryTags": ["Frontend", "Backend", "Security"],
       "targetAudience": "喜歡 web 產品的、協作平台、生產力工具",
       "expectedBenefits": "可以對網頁前後端跟資安都更了解，還有未來 HackMD 會如何發展",
       "session": "2023-08-11T15:20:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/W5l9SjAVSsSy1Z7zHxPlWA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FW5l9SjAVSsSy1Z7zHxPlWA",
       "formattedSession": "8/11 (FRI.) 15:20 ~ 16:05",
       "date": "08-11",
       "startTime": "15:20",
@@ -983,20 +835,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1xiu1_BEhs5KR1urvm6BucMf6VpOJSpH3",
       "facebookProfileLink": "https://www.facebook.com/ricewendy/",
       "twitterProfileLink": "https://twitter.com/RiceTseng",
-      "otherLinks": [
-        "https://www.ricetseng.com/"
-      ],
+      "otherLinks": ["https://www.ricetseng.com/"],
       "speechTopic": "From 0 to 1: Navigating the Product Innovation Process  從 0 到 1：產品創新之路",
       "speechSummary": "講述在大組織如何做產品設計創新、面臨的問題與挑戰以及如何推動與實踐。",
-      "categoryTags": [
-        "UI / UX"
-      ],
+      "categoryTags": ["UI / UX"],
       "targetAudience": "UX/UI 設計師, product design 產品設計師, design leaders 設計領導, PM 產品經理, dev 工程師",
       "expectedBenefits": "希望會眾可以藉由此次分享理解產品創新並非由一人推動，也並非一個線性流程。它包含了不同層面的思考，像是組織、產品開發流程、產品願景、產品團隊、個人心態、產品成熟度等等不同面相的思維。",
       "session": "2023-08-12T15:20:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/Omd5TqvoR_21Q3JARsjcew",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FOmd5TqvoR_21Q3JARsjcew",
       "formattedSession": "8/12 (SAT.) 15:20 ~ 16:05",
       "date": "08-12",
       "startTime": "15:20",
@@ -1015,22 +863,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1a2N6fJqGUQ7rM46BIheuHXfbgiVtZuq7",
       "facebookProfileLink": "https://www.facebook.com/profile.php?id=100001675184982",
       "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "改進容器化部署：成功導入 K8S 的經驗與挑戰",
       "speechSummary": "* 如果想導入 K8S，第一步該怎麼走。\n* 成功導入 K8S 背後的踩雷經驗談。\n* 如何透過良好的基礎建設，獲得 AWS Well-Architected 認證。",
-      "categoryTags": [
-        "DevOps",
-        "團隊管理",
-        "Security"
-      ],
+      "categoryTags": ["DevOps", "團隊管理", "Security"],
       "targetAudience": "1. 尚未使用 K8S，但想導入 K8S 的開發團隊。\n2. 對於 DevOps 或 基礎建設有興趣的任何技術人。",
       "expectedBenefits": "對於近幾年有意導入 K8S 作為目標的企業，對導入 K8S 有更多的認識以及想法能夠實踐。",
       "session": "2023-08-11T09:00:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/7QQ9xke6RpipDG2QOYb14A",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F7QQ9xke6RpipDG2QOYb14A",
       "formattedSession": "8/11 (FRI.) 09:00 ~ 09:45",
       "date": "08-11",
       "startTime": "09:00",
@@ -1049,21 +891,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1wyTVjXwT-_xznkMIbQhEJDEaK8jM4QuQ",
       "facebookProfileLink": "https://www.facebook.com/kewang.information",
       "twitterProfileLink": "https://twitter.com/kewang",
-      "otherLinks": [
-        "https://techblog.funliday.com"
-      ],
+      "otherLinks": ["https://techblog.funliday.com"],
       "speechTopic": "如何在有限資源下實現十年的後端服務演進",
       "speechSummary": "我目前在一間經歷無數次後端演進的旅遊新創公司，在過去的幾年裡，我們陸續面對著各種挑戰，包括 Parse.com 的服務停止、為應對 Google maps 的收費政策而自建景點資料庫、漸進式導入 REST、使用 prerender 提升 SEO、使用 async 服務提升可用性、運用 CDN 快速讀取圖片、從 CSR 轉型到 SSR、導入電商服務，以及開始支援導購商品...等不計其數的功能。\n\n每一項功能的實現不僅需要後端的協助，還要確保前端的相容性，以免讓使用者陷入無法使用服務的狀態。\n\n而我在這次的分享中，將聊聊在只有一個專職後端的情況下，讓大家了解如何進行後端服務演進的挑戰和策略。",
-      "categoryTags": [
-        "Frontend",
-        "Backend"
-      ],
+      "categoryTags": ["Frontend", "Backend"],
       "targetAudience": "前後端初階以上工程師，中階以上工程師更好",
       "expectedBenefits": "* 實際案例學習：了解後端系統長期演進的實際案例。\n* 變遷策略：學習如何靈活應對第三方服務變動。\n* 技術演進：理解多種後端技術的選擇與演進。\n* 資源管理：了解如何在有限的資源下分配工作和設定優先順序。\n* 前後端協同：學會在後端演進時確保前端相容性。",
       "session": "2023-08-11T13:30:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/AB33rrJHSDWkRWGNkyF82Q",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FAB33rrJHSDWkRWGNkyF82Q",
       "formattedSession": "8/11 (FRI.) 13:30 ~ 14:15",
       "date": "08-11",
       "startTime": "13:30",
@@ -1082,21 +919,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1VlbYM0sLkI9ua_sZkGp51eavOKwjAxBl",
       "facebookProfileLink": "https://www.facebook.com/will.fans/",
       "twitterProfileLink": "https://twitter.com/Will_Huang",
-      "otherLinks": [
-        "https://blog.miniasp.com/"
-      ],
+      "otherLinks": ["https://blog.miniasp.com/"],
       "speechTopic": "活用 GitHub Copilot 開發 Web 應用程式",
       "speechSummary": "運用 AI 技術輔助開發已經成為日常，許多人寫 Code 的時候，永遠都有一顆螢幕停在 ChatGPT 的畫面，但其實你可以透過 GitHub Copilot 享受到更完美的開發者體驗，本次講座我將會深入解析 GitHub Copilot 與 GitHub Copilot Chat 的各種應用技巧，幫助你快速上手這套強大的 AI 工具！",
-      "categoryTags": [
-        "Frontend",
-        "Backend"
-      ],
+      "categoryTags": ["Frontend", "Backend"],
       "targetAudience": "Web Developers",
       "expectedBenefits": "學習到 GitHub Copilot 的各式應用技巧",
       "session": "2023-08-11T09:00:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/T5tQ48y8S5GQkAUx9qlgng",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FT5tQ48y8S5GQkAUx9qlgng",
       "formattedSession": "8/11 (FRI.) 09:00 ~ 09:45",
       "date": "08-11",
       "startTime": "09:00",
@@ -1115,20 +947,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=134nub7g0VoE2m_dur4xqrByq_T8Hp2BO",
       "facebookProfileLink": "https://www.facebook.com/kurotanshi",
       "twitterProfileLink": "https://twitter.com/kurotanshi",
-      "otherLinks": [
-        "https://kuro.tw"
-      ],
+      "otherLinks": ["https://kuro.tw"],
       "speechTopic": "淺談 Vue.js 的狀態管理模式",
       "speechSummary": "Vue.js 的發展雖然不到十年，但自 2014 所推出的首個版本開始，Vue.js 的狀態管理由最基本的 data 屬性開始，經過不斷的演進，到現在發展出 Vuex、Provide-Inject 、Componsition API、Pinia 等狀態管理模式，這些模式都有各自的特色與適用場景。\n\n我想藉由這個議程，來簡單跟大家聊聊 Vue.js 多年來所提供的狀態管理模式是如何演進的，並且透過幾個範例來實際說明它們各自解決什麼痛點，以及分析它們在什麼情況下適合使用。",
-      "categoryTags": [
-        "Frontend"
-      ],
+      "categoryTags": ["Frontend"],
       "targetAudience": "曾經使用過 Vue.js 的開發者",
       "expectedBenefits": "1. 回顧並理解 Vue.js 有哪些狀態管理模式\n2. 如何透過上述模式，解決特定的開發痛點\n3. 在不同的開發場景中，如何根據其特性和優缺點選擇最適合的狀態管理模式\n\n透過這場議程，聽眾將對 Vue.js 的狀態管理模式有更全面的理解，並能夠更有信心地在自己的項目中應用這些知識。",
       "session": "2023-08-12T09:00:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/L5K9cqp6S0-7549MXXSb_g",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FL5K9cqp6S0-7549MXXSb_g",
       "formattedSession": "8/12 (SAT.) 09:00 ~ 09:45",
       "date": "08-12",
       "startTime": "09:00",
@@ -1147,22 +975,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1-PJtxf81i0bqMaMgatyhzP7lQ6nAvNT1",
       "facebookProfileLink": "https://www.facebook.com/dlackty",
       "twitterProfileLink": "https://twitter.com/dlackty",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "10 年回顧：打造愛料理開發及營運團隊",
       "speechSummary": "10 年前在 WebConf 的講台上，我與大家分享了關於打造愛料理產品開發和營運團隊的思路和心得。當時，我介紹了我們使用的開發流程、工具和工程文化。\n\n如今回顧，我發現當時的某些想法在實踐中被證明是錯誤的決定，但也有一些想法變成了最佳實踐，深植於我們的產品團隊中。\n\n在這次的分享中，我將與大家分享我們曾經犯過的錯誤，以及如果有機會重新開始，我將如何做出更好的決策。",
-      "categoryTags": [
-        "Agile",
-        "DevOps",
-        "團隊管理"
-      ],
+      "categoryTags": ["Agile", "DevOps", "團隊管理"],
       "targetAudience": "軟體服務團隊的工程師以及 PM",
       "expectedBenefits": "中小型軟體服務開發團隊適合的開發流程與文化",
       "session": "2023-08-12T13:30:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/VqSM6iJiRh6KqyIDTIeBiA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FVqSM6iJiRh6KqyIDTIeBiA",
       "formattedSession": "8/12 (SAT.) 13:30 ~ 14:15",
       "date": "08-12",
       "startTime": "13:30",
@@ -1181,21 +1003,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1yTh5V1empD7dEOIWa2HsQecn28KOUO8g",
       "facebookProfileLink": "https://www.facebook.com/sutaian",
       "twitterProfileLink": "https://twitter.com/taiansu",
-      "otherLinks": [
-        "https://taian.su"
-      ],
+      "otherLinks": ["https://taian.su"],
       "speechTopic": "Live, Unified language, and (almost) everything important",
       "speechSummary": "Phoenix 已連續兩年在 Stackoverflow 的調查中被評最受用戶喜愛的網頁框架。究其原因，是自 2018 釋出的 LiveView 展示出除了 MVC 及 SPA 之外，看待網頁應用程式的新視角。本講題將導覽這個新視角是什麼，以及在其它框架上的影響 (Rails 的 Hotwire / Lavaral 的 LiveWire) 。聊聊這個視角為我們帶來什麼、如何做到的。以及許多的深度哏。",
-      "categoryTags": [
-        "Frontend",
-        "Backend"
-      ],
+      "categoryTags": ["Frontend", "Backend"],
       "targetAudience": "對 Elixir/Phoenix/LiveView 相關技術有興趣、任何程度的聽眾",
       "expectedBenefits": "對於 LiveView / HotWire / LiveWire 如何運作有基本的概念，好處及缺點是什麼 。Elixir / Phoenix 寫起來是什麼樣子，以及這個語言帶來什麼不同的觀點。",
       "session": "2023-08-11T11:00:00+08:00",
       "room": "1003",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/k7hRoTQOSE2npLcZauRW2g",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2Fk7hRoTQOSE2npLcZauRW2g",
       "formattedSession": "8/11 (FRI.) 11:00 ~ 11:45",
       "date": "08-11",
       "startTime": "11:00",
@@ -1214,21 +1031,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1ospjzCYQhOwBGoBdpcrVnwISj_uKo4WD",
       "facebookProfileLink": "https://www.facebook.com/banPrint/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://www.csscoke.com"
-      ],
+      "otherLinks": ["https://www.csscoke.com"],
       "speechTopic": "酷！玩！啥鬼CSS！",
       "speechSummary": "CSS從1996年發展至今，27年的歲月中，CSS已從單純的靜態樣式，變的既有函式又能運算還能做點判斷式、三角函數、色彩模型、邏輯規則、條件判斷、媒體查詢、動畫、內容查詢...各種酷炫功能與特性不斷推陳出新，媽呀！我都快學不完啦！\n\n相比剛接觸CSS時，現在的CSS有太多特性可以讓我們輕鬆發揮出各式各樣絢麗的效果與版面編排，在RWD盛行且瀏覽器越發強大的這個時代，我們擁有更多的CSS發揮空間、更多的酷炫玩法、更多撰寫上的享受，就讓我們一起來玩酷炫的CSS吧！",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
+      "categoryTags": ["Frontend", "UI / UX"],
       "targetAudience": "前端工程師、視覺設計",
       "expectedBenefits": "瞭解更多新的CSS應用與絢麗功能，讓你腦洞大開！",
       "session": "2023-08-12T15:20:00+08:00",
       "room": "1101",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/-mWY8npJSIaaxLrYaQ0Nvg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F-mWY8npJSIaaxLrYaQ0Nvg",
       "formattedSession": "8/12 (SAT.) 15:20 ~ 16:05",
       "date": "08-12",
       "startTime": "15:20",
@@ -1247,20 +1059,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1dJ4E4OUWdC0cuidr1CxzaBXilY3kVVok",
       "facebookProfileLink": "https://www.facebook.com/woodesign/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        ""
-      ],
+      "otherLinks": [""],
       "speechTopic": "建立你的UXUI知識地圖",
       "speechSummary": "重點不是吸收到知識，重點在把知識整理的與自己的生活與工作相關。\n",
-      "categoryTags": [
-        "UI / UX"
-      ],
+      "categoryTags": ["UI / UX"],
       "targetAudience": "UX研究員、服務設計師、常吸收新的知識而努力運用的人",
       "expectedBenefits": "帶走一張UXUI的知識定位地圖在腦中，新學到的知識都可以歸納到當中",
       "session": "2023-08-12T10:50:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/6qqw3WSaTtKORwlD3rzlmw",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F6qqw3WSaTtKORwlD3rzlmw",
       "formattedSession": "8/12 (SAT.) 10:50 ~ 11:35",
       "date": "08-12",
       "startTime": "10:50",
@@ -1279,21 +1087,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=13Yau5GSMePCP4dJtsuOlwdyaXnzmtgoM",
       "facebookProfileLink": "https://www.facebook.com/sokingwang/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://soking.medium.com/"
-      ],
+      "otherLinks": ["https://soking.medium.com/"],
       "speechTopic": "資訊架構設計新體驗：在需求情境中運用領域事件分析描述結構化內容",
       "speechSummary": "資訊架構這個技能，是許多設計師既熟係又陌生的一門領域，其實只要參與產品開發，資訊架構的問題幾乎如影隨形出現在產品的方方面面上，但真的要定義這是一份什麼工作，卻又難以回答。\n\n就好像搬家，你有對於生活情境的想像，也有一些自己的家具，然後你要觀察即將搬進去的房間格局，思考你的生活動線，這個居住空間會有哪些使用情境，然後把家具試著擺放進去，再測試看看是否如你預期，然後還要決定這麼多衣服、書本、雜物要如何收納進這整個空間。\n\n換到軟體開發的資訊架構設計工作也是一樣的，當你接手軟體的需求之後，首先要確認的是什麼角色？因為什麼原因？要做哪些事情？會使用到什麼機制功能？需要哪些資訊？\n\n在打開設計軟體畫圖之前，你還要整理資訊的來源、結構與格局這塊工作要處理，就像炒菜之前你得要備料一樣。\n\n負責「設計」流程的人，如果沒有整理以上資訊的能力，就像廚師沒有能力對食材調味，也辨識不出什麼樣的食材搭配在一起是能夠吃的。\n\n我將在本次講座中介紹視覺化的討論方式，讓資訊架構這個抽象的主題，可以很容易被利害關係人理解以及運用在需求討論之中。",
-      "categoryTags": [
-        "Backend",
-        "UI / UX"
-      ],
+      "categoryTags": ["Backend", "UI / UX"],
       "targetAudience": "設計師、工程師",
       "expectedBenefits": "了解如何提供「結構化的內容」，讓資訊產品在運作的過程可以有效的重複使用、組合、分拆利用。\n\n幫助設計師在介面設計之前，可以使用視覺化討論法，引導利害關係人與技術夥伴一起討論抽象的資訊架構議題，減少觀落陰。",
       "session": "2023-08-12T13:30:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/hUfiJkrySvqn9ptbjSOSgA",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FhUfiJkrySvqn9ptbjSOSgA",
       "formattedSession": "8/12 (SAT.) 13:30 ~ 14:15",
       "date": "08-12",
       "startTime": "13:30",
@@ -1312,21 +1115,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=17gZlqzTM8WJlCqcpd8WRy47mm9KCfOiD",
       "facebookProfileLink": "https://www.facebook.com/pjchender/",
       "twitterProfileLink": "https://twitter.com/pjchender",
-      "otherLinks": [
-        "https://pjchender.dev/"
-      ],
+      "otherLinks": ["https://pjchender.dev/"],
       "speechTopic": "那些理所當然，卻像空氣般重要的小事：談開發流程、程式架構與職涯發展",
       "speechSummary": "想像一下，在你每天工作自然而然做的事情中，有沒有哪些是一旦沒了它，整個軟體開發可能會綁手綁腳、窒礙難行、甚至是陷入混亂的呢？你是否曾經想過、留意過這些「理所當然的小事」？\n\n在這場演講中，我將從自身的工作經驗出發，一起聊聊那些我們每日視為理所當然，但卻對整個軟體開發有著巨大影響的「小事」，其中包含開發流程、程式架構、與職涯規劃。\n\n同時，我們將看到前端開發在這過去 10 年中，淬鍊出了那些重要且值得我們借鏡的概念。這些概念不僅是歷史的痕跡，更是我們未來行動的指引，幫助我們了解如何能夠在自己的開發工作中實際應用這些發現。",
-      "categoryTags": [
-        "Frontend",
-        "團隊管理"
-      ],
+      "categoryTags": ["Frontend", "團隊管理"],
       "targetAudience": "軟體工程師",
       "expectedBenefits": "這些東西你可能本來就都知道，但透過這次的演講，點出這些事情的重要性，讓未來在做決策時，能夠有更明確的依循和指引。",
       "session": "2023-08-11T15:20:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/Gmg_L6YOT-yMko_qZ_pEeg",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FGmg_L6YOT-yMko_qZ_pEeg",
       "formattedSession": "8/11 (FRI.) 15:20 ~ 16:05",
       "date": "08-11",
       "startTime": "15:20",
@@ -1345,21 +1143,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=1sPwgnAEUBW-Fy9cWagvfbZ9UxchrnEKs",
       "facebookProfileLink": "https://www.facebook.com/ben.wan.productdesigner/",
       "twitterProfileLink": "https://twitter.com/BWinProductUX",
-      "otherLinks": [
-        "https://www.instagram.com/benwan_pd_ux",
-        "https://medium.com/@benwanmurmur"
-      ],
+      "otherLinks": ["https://www.instagram.com/benwan_pd_ux", "https://medium.com/@benwanmurmur"],
       "speechTopic": "UX 才不只是好不好用，而是產品開發科學化的工具、從此不再通靈的關鍵",
       "speechSummary": "在產品開發的過程當中，相信不管是工程師、PM、或設計師，應該都有遇到過：不知道誰的意見比較對、不知道要如何評估這樣做好不好、 不知道市場想像中的東西是什麼、 不知道這個版本上線之後會發生什麼事。\n然後就需要自己通靈，或是找大家一起來通靈、會議弄得好像某種降靈大會，再拿靈示的內容去跟主管老闆或客戶的靈看看能不能接通好像已成常態？\n但其實產品開發早有一套相當科學化的方法，並且 UX 就是其中一項測量尺度。\n讓策略、規劃、執行等等高空落地的每個階段都有邏輯可循、都有假設與事實驗證並不是夢！",
-      "categoryTags": [
-        "UI / UX"
-      ],
+      "categoryTags": ["UI / UX"],
       "targetAudience": "數位產業中常常需要通靈的職位、對產品開發背後的商業目標規劃有興趣的人、新創團隊。",
       "expectedBenefits": "- 了解產品開發過程中常見的決策相關疑問，應該要怎麼樣利用科學化的判定跟測量方法，去解決跟評估。\n- 了解 UX 在其中扮演什麼樣的角色。\n- 了解各個職位的工作內容在商業藍圖中會是什麼樣的定位。",
       "session": "2023-08-12T14:25:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/DynzDLkMS_yp7eeg1G0svw",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FDynzDLkMS_yp7eeg1G0svw",
       "formattedSession": "8/12 (SAT.) 14:25 ~ 15:10",
       "date": "08-12",
       "startTime": "14:25",
@@ -1378,21 +1171,16 @@
       "photoURL": "https://drive.google.com/uc?export=download&id=18OesROBytAjjX1pieH2SO2tw2qXuanED",
       "facebookProfileLink": "https://www.facebook.com/TshingJu/",
       "twitterProfileLink": "",
-      "otherLinks": [
-        "https://hoching.ru/"
-      ],
+      "otherLinks": ["https://hoching.ru/"],
       "speechTopic": "畫龍點睛的微小細節：圖標字型還能怎麼玩？",
       "speechSummary": "隨著我們在網頁讀取速度上的分秒必爭、對跨平台兼容性的需求日益增長，將 svg 格式的向量圖標打包，封裝成可供網頁讀取的字型檔（webfont），並以文字的概念來顯示圖案的「圖標字型（icon font）」成為了主流的網頁技術之一。\n\n除了能方便加載、快速引入、任意縮放等優點之外，圖標字型還有什麼有趣的地方呢？當 icon font 揉合 variable font 和 color font 技術，又會產生什麼火花呢？風格能不能百花齊放？顏色能不能五彩繽紛？就讓我們一起探索圖標字型的無限潛力吧！",
-      "categoryTags": [
-        "Frontend",
-        "UI / UX"
-      ],
+      "categoryTags": ["Frontend", "UI / UX"],
       "targetAudience": "對網路字型（webfont）、圖標字型（icon font）、可變字型（variable font）、彩色字型（color font）等技術有興趣的 UI/UX Designer 與 Front-End Engineer。",
       "expectedBenefits": "發現圖標字型的百變魅力與無窮的可塑性。",
       "session": "2023-08-11T09:00:00+08:00",
       "room": "1001",
       "keynoteOrder": null,
-      "noteLink": "https://hackmd.io/Ss2xq6dBR2C7L_AiCJSUEQ",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FSs2xq6dBR2C7L_AiCJSUEQ",
       "formattedSession": "8/11 (FRI.) 09:00 ~ 09:45",
       "date": "08-11",
       "startTime": "09:00",
