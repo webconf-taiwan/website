@@ -1,5 +1,5 @@
 {
-  "timestamp": "20230717000048",
+  "timestamp": "20230807210826",
   "data": [
     {
       "timestamp": "2023-05-30T02:09:47.000Z",
@@ -20,11 +20,13 @@
       "session": "2023-08-11T10:05:00+08:00",
       "room": "1101",
       "keynoteOrder": 1,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FTz4XDh74SqGDDZiGcWBaKg",
       "formattedSession": "8/11 (FRI.) 10:05 ~ 10:50",
       "date": "08-11",
       "startTime": "10:05",
       "endTime": "10:50",
       "id": "ruddy-lao-shi",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T100500/20230811T105000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9AAI%20%E9%A9%85%E5%8B%95%E4%B8%8B%E7%9A%84%E9%96%8B%E7%99%BC%E8%80%85%E9%AB%94%E9%A9%97%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9ARuddy%20%E8%80%81%E5%B8%AB%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Ruddy%20%E8%80%81%E5%B8%AB%20-%20AI%20%E9%A9%85%E5%8B%95%E4%B8%8B%E7%9A%84%E9%96%8B%E7%99%BC%E8%80%85%E9%AB%94%E9%A9%97%20%401101",
       "index": 0
     },
     {
@@ -46,11 +48,13 @@
       "session": "2023-08-12T16:15:00+08:00",
       "room": "1101",
       "keynoteOrder": 2,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2Fpk7crlHPTQumx2NzjWTdBQ",
       "formattedSession": "8/12 (SAT.) 16:15 ~ 17:00",
       "date": "08-12",
       "startTime": "16:15",
       "endTime": "17:00",
       "id": "cai-ming-zhe",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T161500/20230812T170000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9ABeyond%20Technology%20%E6%8A%80%E8%A1%93%E4%B9%8B%E5%A4%96%20-%20%E5%BE%9E%E5%80%8B%E4%BA%BA%E8%BA%AB%E5%BF%83%E5%AE%89%E9%A0%93%E5%88%B0%E4%BA%BA%E9%A1%9E%E7%A6%8F%E7%A5%89%E8%BF%BD%E6%B1%82%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E8%94%A1%E6%98%8E%E5%93%B2%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E8%94%A1%E6%98%8E%E5%93%B2%20-%20Beyond%20Technology%20%E6%8A%80%E8%A1%93%E4%B9%8B%E5%A4%96%20-%20%E5%BE%9E%E5%80%8B%E4%BA%BA%E8%BA%AB%E5%BF%83%E5%AE%89%E9%A0%93%E5%88%B0%E4%BA%BA%E9%A1%9E%E7%A6%8F%E7%A5%89%E8%BF%BD%E6%B1%82%20%401101",
       "index": 1
     },
     {
@@ -72,11 +76,13 @@
       "session": "2023-08-11T16:15:00+08:00",
       "room": "1101",
       "keynoteOrder": 3,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F00roPb7NQKOEHNoFGT6hig",
       "formattedSession": "8/11 (FRI.) 16:15 ~ 17:00",
       "date": "08-11",
       "startTime": "16:15",
       "endTime": "17:00",
       "id": "ant",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T161500/20230811T170000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%BE%9E%E5%B0%88%E6%A5%AD%E5%88%B0%E5%95%86%E6%A5%AD%EF%BC%9A%E5%8D%81%E5%B9%B4%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B%E8%AE%8A%E9%81%B7%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AAnt%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Ant%20-%20%E5%BE%9E%E5%B0%88%E6%A5%AD%E5%88%B0%E5%95%86%E6%A5%AD%EF%BC%9A%E5%8D%81%E5%B9%B4%E8%BB%9F%E9%AB%94%E6%9E%B6%E6%A7%8B%E8%AE%8A%E9%81%B7%20%401101",
       "index": 2
     },
     {
@@ -98,11 +104,13 @@
       "session": "2023-08-12T09:55:00+08:00",
       "room": "1101",
       "keynoteOrder": 4,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FSVsZ1haXR-2bUhfcf_OYnA",
       "formattedSession": "8/12 (SAT.) 09:55 ~ 10:40",
       "date": "08-12",
       "startTime": "09:55",
       "endTime": "10:40",
       "id": "paul-li",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T095500/20230812T104000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E9%B3%B3%E2%80%A7%E6%A5%B5%E6%84%8F%EF%BC%9F%EF%BC%81%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9APaul%20Li%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Paul%20Li%20-%20%E9%B3%B3%E2%80%A7%E6%A5%B5%E6%84%8F%EF%BC%9F%EF%BC%81%20%401101",
       "index": 3
     },
     {
@@ -123,12 +131,14 @@
       "expectedBenefits": "針對以下痛點進行討論與分析：\n\n・如何訂定一致的產品目標，讓設計師與工程師有共同努力的方向？\n・如何讓工程師了解設計的價值與決策原因，一起提升使用體驗品質？\n・面臨主情境以外的 Edge Case，如何和工程師合作規劃符合成本的設計方案？\n\n（實際內容可能會再進行微調）",
       "session": "2023-08-12T09:00:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FdiYoNrNbQQW0BLLQOm6DeA",
       "formattedSession": "8/12 (SAT.) 09:00 ~ 09:45",
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
-      "keynoteOrder": null,
       "id": "kat",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T090000/20230812T094500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%BE%9E%E5%85%B1%E6%86%A4%E8%B5%B0%E5%90%91%E5%85%B1%E5%89%B5%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8B%89%E9%BD%8A%E5%B7%A5%E7%A8%8B%E5%B8%AB%E8%88%87%E8%A8%AD%E8%A8%88%E5%B8%AB%E5%BF%83%E4%B8%AD%E7%9A%84%E3%80%8C%E5%93%81%E8%B3%AA%E6%A8%99%E6%BA%96%E3%80%8D%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AKat%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Kat%20-%20%E5%BE%9E%E5%85%B1%E6%86%A4%E8%B5%B0%E5%90%91%E5%85%B1%E5%89%B5%EF%BC%9A%E5%A6%82%E4%BD%95%E6%8B%89%E9%BD%8A%E5%B7%A5%E7%A8%8B%E5%B8%AB%E8%88%87%E8%A8%AD%E8%A8%88%E5%B8%AB%E5%BF%83%E4%B8%AD%E7%9A%84%E3%80%8C%E5%93%81%E8%B3%AA%E6%A8%99%E6%BA%96%E3%80%8D%20%401001",
       "index": 4
     },
     {
@@ -149,12 +159,14 @@
       "expectedBenefits": "聽完這場分享，將會對如何將 PHP 程式打包成多平台 Binary 執行檔的流程有更進一步的認識",
       "session": "2023-08-11T11:55:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FVT_gC5UwTlGaFR8KMv8Alg",
       "formattedSession": "8/11 (FRI.) 11:55 ~ 12:40",
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
-      "keynoteOrder": null,
       "id": "fan-sheng-you",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T115500/20230811T124000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E4%B8%80%E4%BB%BD%20Zend%20Engine%20%E5%A4%96%E5%B8%B6%EF%BC%81%E9%80%8F%E9%81%8E%20Micro%20%E8%AE%93%E4%B8%80%E6%AC%A1%E6%89%93%E5%8C%85%E3%80%81%E5%A4%9A%E8%99%95%E9%81%8B%E8%A1%8C%E8%AE%8A%E5%BE%97%E5%8F%AF%E8%83%BD%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E8%8C%83%E8%81%96%E4%BD%91%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E8%8C%83%E8%81%96%E4%BD%91%20-%20%E4%B8%80%E4%BB%BD%20Zend%20Engine%20%E5%A4%96%E5%B8%B6%EF%BC%81%E9%80%8F%E9%81%8E%20Micro%20%E8%AE%93%E4%B8%80%E6%AC%A1%E6%89%93%E5%8C%85%E3%80%81%E5%A4%9A%E8%99%95%E9%81%8B%E8%A1%8C%E8%AE%8A%E5%BE%97%E5%8F%AF%E8%83%BD%20%401001",
       "index": 5
     },
     {
@@ -175,12 +187,14 @@
       "expectedBenefits": "在做出職涯選擇時能跳脫技術或管理的二分法。",
       "session": "2023-08-11T14:25:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FmRsVX_zeSia-A19Zda2C3w",
       "formattedSession": "8/11 (FRI.) 14:25 ~ 15:10",
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
-      "keynoteOrder": null,
       "id": "you-shu-fan",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T142500/20230811T151000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E8%B7%B3%E8%84%AB%E6%8A%80%E8%A1%93%E8%81%B7%E8%88%87%E7%AE%A1%E7%90%86%E8%81%B7%E7%9A%84%E4%BA%8C%E5%88%86%E9%81%B8%E6%93%87%EF%BC%8C%E6%8A%80%E8%A1%93%E7%AE%A1%E7%90%86%E8%81%B7%E8%AE%93%E8%81%B7%E6%B6%AF%E7%84%A1%E9%99%90%E5%AF%AC%E5%BB%A3%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E6%B8%B8%E8%88%92%E5%B8%86%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E6%B8%B8%E8%88%92%E5%B8%86%20-%20%E8%B7%B3%E8%84%AB%E6%8A%80%E8%A1%93%E8%81%B7%E8%88%87%E7%AE%A1%E7%90%86%E8%81%B7%E7%9A%84%E4%BA%8C%E5%88%86%E9%81%B8%E6%93%87%EF%BC%8C%E6%8A%80%E8%A1%93%E7%AE%A1%E7%90%86%E8%81%B7%E8%AE%93%E8%81%B7%E6%B6%AF%E7%84%A1%E9%99%90%E5%AF%AC%E5%BB%A3%20%401101",
       "index": 6
     },
     {
@@ -201,12 +215,14 @@
       "expectedBenefits": "- 了解建立高效遠端協作團隊的重要性和益處，並能夠更好地評估和支持遠端協作策略。\n- 學習如何建立和管理高效的遠端協作團隊\n- 瞭解如何在遠端環境中更有效地協作和溝通，以提高工作效率和團隊合作。",
       "session": "2023-08-11T13:30:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F0ay5VmSyQf25vtI8rvRfLA",
       "formattedSession": "8/11 (FRI.) 13:30 ~ 14:15",
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
-      "keynoteOrder": null,
       "id": "liu-ai-lin",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T133000/20230811T141500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%BB%BA%E7%AB%8B%E9%AB%98%E6%95%88%E7%9A%84%E9%81%A0%E7%AB%AF%E5%8D%94%E4%BD%9C%E5%9C%98%E9%9A%8A%EF%BC%9A%E7%AD%96%E7%95%A5%E5%92%8C%E5%AF%A6%E8%B8%90%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E5%8A%89%E8%89%BE%E9%9C%96%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E5%8A%89%E8%89%BE%E9%9C%96%20-%20%E5%BB%BA%E7%AB%8B%E9%AB%98%E6%95%88%E7%9A%84%E9%81%A0%E7%AB%AF%E5%8D%94%E4%BD%9C%E5%9C%98%E9%9A%8A%EF%BC%9A%E7%AD%96%E7%95%A5%E5%92%8C%E5%AF%A6%E8%B8%90%20%401001",
       "index": 7
     },
     {
@@ -227,12 +243,14 @@
       "expectedBenefits": "開發者、政府人員",
       "session": "2023-08-12T13:30:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FzUIY9dKyR7iQSYXmcJ8NGg",
       "formattedSession": "8/12 (SAT.) 13:30 ~ 14:15",
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
-      "keynoteOrder": null,
       "id": "zhou-xiang",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T133000/20230812T141500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%95%B8%E4%BD%8D%E7%99%BC%E5%B1%95%E9%83%A8%E5%AE%98%E7%B6%B2%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E7%B6%B2%E7%AB%99%E9%9F%8C%E6%80%A7%E8%88%87%E9%9B%B6%E4%BF%A1%E4%BB%BB%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E5%91%A8%E8%A9%B3%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E5%91%A8%E8%A9%B3%20-%20%E6%95%B8%E4%BD%8D%E7%99%BC%E5%B1%95%E9%83%A8%E5%AE%98%E7%B6%B2%E5%A6%82%E4%BD%95%E5%81%9A%E5%88%B0%E7%B6%B2%E7%AB%99%E9%9F%8C%E6%80%A7%E8%88%87%E9%9B%B6%E4%BF%A1%E4%BB%BB%20%401003",
       "index": 8
     },
     {
@@ -253,12 +271,14 @@
       "expectedBenefits": "如何評估前端效能、怎麼打造適合自己的監測系統",
       "session": "2023-08-12T10:50:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FCZTO4WGbRcuCcQfWgGkuig",
       "formattedSession": "8/12 (SAT.) 10:50 ~ 11:35",
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
-      "keynoteOrder": null,
       "id": "summer-tang",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T105000/20230812T113500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%BE%9E%E9%9B%B6%E6%89%93%E9%80%A0%E5%89%8D%E7%AB%AF%E6%95%88%E8%83%BD%E7%9B%A3%E6%B8%AC%E7%B3%BB%E7%B5%B1%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9ASummer%20Tang%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Summer%20Tang%20-%20%E5%BE%9E%E9%9B%B6%E6%89%93%E9%80%A0%E5%89%8D%E7%AB%AF%E6%95%88%E8%83%BD%E7%9B%A3%E6%B8%AC%E7%B3%BB%E7%B5%B1%20%401003",
       "index": 9
     },
     {
@@ -279,12 +299,14 @@
       "expectedBenefits": "對於工程師較不熟悉的互動設計與藝術領域，可以有更完整了瞭解與視野",
       "session": "2023-08-12T11:45:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FB9EywGzUTzicd9WTaFvyNg",
       "formattedSession": "8/12 (SAT.) 11:45 ~ 12:30",
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
-      "keynoteOrder": null,
       "id": "wu-zhe-yu",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T114500/20230812T123000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E8%97%9D%E8%A1%93%E7%95%8C%E7%B7%9A%E8%B6%85%E9%80%B2%E5%8C%96-%E5%BE%9E%E5%89%B5%E4%BD%9C%E5%88%B0%E5%AF%A6%E8%B8%90%EF%BC%8C%E6%8E%A2%E7%B4%A2%E7%94%9F%E6%88%90%E5%BC%8F%E8%97%9D%E8%A1%93%E8%88%87%E5%89%8D%E7%AB%AF%E4%BA%92%E5%8B%95%E6%8A%80%E8%A1%93%E7%9A%84%E5%85%B1%E8%88%9E%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E5%90%B3%E5%93%B2%E5%AE%87%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E5%90%B3%E5%93%B2%E5%AE%87%20-%20%E8%97%9D%E8%A1%93%E7%95%8C%E7%B7%9A%E8%B6%85%E9%80%B2%E5%8C%96-%E5%BE%9E%E5%89%B5%E4%BD%9C%E5%88%B0%E5%AF%A6%E8%B8%90%EF%BC%8C%E6%8E%A2%E7%B4%A2%E7%94%9F%E6%88%90%E5%BC%8F%E8%97%9D%E8%A1%93%E8%88%87%E5%89%8D%E7%AB%AF%E4%BA%92%E5%8B%95%E6%8A%80%E8%A1%93%E7%9A%84%E5%85%B1%E8%88%9E%20%401101",
       "index": 10
     },
     {
@@ -305,12 +327,14 @@
       "expectedBenefits": "1 什麼是 WebComponent。\n2 WebComponent 適合的專案情境。\n3 WebComponent 與 React/Vue 的整合。",
       "session": "2023-08-11T11:00:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FqY9O-dlVTgWWUbrgsYdf4w",
       "formattedSession": "8/11 (FRI.) 11:00 ~ 11:45",
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
-      "keynoteOrder": null,
       "id": "nai-lv-cha",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T110000/20230811T114500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9AWebComponent%20%E7%9A%84%E5%A5%BD%EF%BC%8C%E7%94%A8%E9%81%8E%E7%9A%84%E9%83%BD%E7%9F%A5%E9%81%93%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E5%A5%B6%E7%B6%A0%E8%8C%B6%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E5%A5%B6%E7%B6%A0%E8%8C%B6%20-%20WebComponent%20%E7%9A%84%E5%A5%BD%EF%BC%8C%E7%94%A8%E9%81%8E%E7%9A%84%E9%83%BD%E7%9F%A5%E9%81%93%20%401101",
       "index": 11
     },
     {
@@ -331,12 +355,14 @@
       "expectedBenefits": "學會一種新型態的驗證模式",
       "session": "2023-08-12T14:25:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FdHqj5RnATgOFO_0F8JWq8g",
       "formattedSession": "8/12 (SAT.) 14:25 ~ 15:10",
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
-      "keynoteOrder": null,
       "id": "huang-sheng-huang",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T142500/20230812T151000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E7%84%A1%E5%AF%86%E7%A2%BC%E6%99%82%E4%BB%A3%E9%99%8D%E8%87%A8%EF%BC%81%E4%BD%BF%E7%94%A8%20Passkeys%20%E6%89%93%E9%80%A0%E7%84%A1%E5%AF%86%E7%A2%BC%E9%A9%97%E8%AD%89%E6%9C%8D%E5%8B%99%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E9%BB%83%E5%8D%87%E7%85%8C%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E9%BB%83%E5%8D%87%E7%85%8C%20-%20%E7%84%A1%E5%AF%86%E7%A2%BC%E6%99%82%E4%BB%A3%E9%99%8D%E8%87%A8%EF%BC%81%E4%BD%BF%E7%94%A8%20Passkeys%20%E6%89%93%E9%80%A0%E7%84%A1%E5%AF%86%E7%A2%BC%E9%A9%97%E8%AD%89%E6%9C%8D%E5%8B%99%20%401003",
       "index": 12
     },
     {
@@ -357,12 +383,14 @@
       "expectedBenefits": "了解如何利用前端基礎設施的各種工具和元素，幫助團隊優化開發流程、解放生產力，並打造更穩固的前端應用",
       "session": "2023-08-11T11:55:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FcPQikssETpSBS33EgKkQKw",
       "formattedSession": "8/11 (FRI.) 11:55 ~ 12:40",
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
-      "keynoteOrder": null,
       "id": "mo-li-quan",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T115500/20230811T124000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%88%90%E7%82%BA%E5%89%8D%E7%AB%AF%E5%BB%BA%E7%AF%89%E5%B8%AB%E5%90%A7%EF%BC%81%E9%80%8F%E9%81%8E%20Frontend%20Infra%20%E7%82%BA%E5%89%8D%E7%AB%AF%E6%87%89%E7%94%A8%E6%89%93%E9%80%A0%E7%A9%A9%E5%81%A5%E4%B8%94%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84%E9%96%8B%E7%99%BC%E9%AB%94%E9%A9%97%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E8%8E%AB%E5%8A%9B%E5%85%A8%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E8%8E%AB%E5%8A%9B%E5%85%A8%20-%20%E6%88%90%E7%82%BA%E5%89%8D%E7%AB%AF%E5%BB%BA%E7%AF%89%E5%B8%AB%E5%90%A7%EF%BC%81%E9%80%8F%E9%81%8E%20Frontend%20Infra%20%E7%82%BA%E5%89%8D%E7%AB%AF%E6%87%89%E7%94%A8%E6%89%93%E9%80%A0%E7%A9%A9%E5%81%A5%E4%B8%94%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84%E9%96%8B%E7%99%BC%E9%AB%94%E9%A9%97%20%401101",
       "index": 13
     },
     {
@@ -383,12 +411,14 @@
       "expectedBenefits": "這場議程會展示 Web Security 這十年來的演化、發展趨勢以及新興的攻擊手法，一起來看看一行程式碼都沒寫錯的網站還可以怎樣被攻擊吧！",
       "session": "2023-08-12T14:25:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FCyz5StjtTyibrKIf9b7RCA",
       "formattedSession": "8/12 (SAT.) 14:25 ~ 15:10",
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
-      "keynoteOrder": null,
       "id": "orange-tsai",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T142500/20230812T151000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%BE%9E%202013%20%E5%88%B0%202023%3A%20Web%20Security%20%E5%8D%81%E5%B9%B4%E4%B9%8B%E9%80%B2%E5%8C%96%E5%8F%8A%E8%B6%A8%E5%8B%A2!%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AOrange%20Tsai%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Orange%20Tsai%20-%20%E5%BE%9E%202013%20%E5%88%B0%202023%3A%20Web%20Security%20%E5%8D%81%E5%B9%B4%E4%B9%8B%E9%80%B2%E5%8C%96%E5%8F%8A%E8%B6%A8%E5%8B%A2!%20%401101",
       "index": 14
     },
     {
@@ -409,12 +439,14 @@
       "expectedBenefits": "也許會對 Ruby 有一些興趣，開始保持對不常使用的工具、語言有興趣，能用開放的心態做新的嘗試，從用工具解決問題轉換到解決問題能用什麼工具。",
       "session": "2023-08-12T15:20:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FTNzR66T8QX6WxEdWuXQb4w",
       "formattedSession": "8/12 (SAT.) 15:20 ~ 16:05",
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
-      "keynoteOrder": null,
       "id": "cang-shi-xian-ye",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T152000/20230812T160500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E9%81%B8%E6%93%87%E9%81%A9%E5%90%88%E4%BD%A0%E7%9A%84%E6%8A%80%E8%83%BD%E7%B5%84%E5%90%88%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E8%92%BC%E6%99%82%E5%BC%A6%E4%B9%9F%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E8%92%BC%E6%99%82%E5%BC%A6%E4%B9%9F%20-%20%E9%81%B8%E6%93%87%E9%81%A9%E5%90%88%E4%BD%A0%E7%9A%84%E6%8A%80%E8%83%BD%E7%B5%84%E5%90%88%20%401003",
       "index": 15
     },
     {
@@ -435,12 +467,14 @@
       "expectedBenefits": "認識通用使用性理論與三大設計重點，了解其對於現代社會與未來介面設計領域的重要性。",
       "session": "2023-08-11T15:20:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FvIeq2TvHQ5ODEccm6Gjcmw",
       "formattedSession": "8/11 (FRI.) 15:20 ~ 16:05",
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
-      "keynoteOrder": null,
       "id": "yu-hong-yi",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T152000/20230811T160500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E8%BF%8E%E5%90%91%E6%9C%AA%E4%BE%86%E7%9A%84%E4%BB%8B%E9%9D%A2%E8%A8%AD%E8%A8%88%EF%BC%9A%E5%89%B5%E9%80%A0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8%E6%80%A7%E4%BB%8B%E9%9D%A2%E4%BB%A5%E6%87%89%E5%B0%8D%E4%B8%8D%E5%90%8C%E4%BD%BF%E7%94%A8%E6%97%8F%E7%BE%A4%E8%88%87%E7%92%B0%E5%A2%83%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E4%BD%99%E8%99%B9%E5%84%80%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E4%BD%99%E8%99%B9%E5%84%80%20-%20%E8%BF%8E%E5%90%91%E6%9C%AA%E4%BE%86%E7%9A%84%E4%BB%8B%E9%9D%A2%E8%A8%AD%E8%A8%88%EF%BC%9A%E5%89%B5%E9%80%A0%E9%80%9A%E7%94%A8%E4%BD%BF%E7%94%A8%E6%80%A7%E4%BB%8B%E9%9D%A2%E4%BB%A5%E6%87%89%E5%B0%8D%E4%B8%8D%E5%90%8C%E4%BD%BF%E7%94%A8%E6%97%8F%E7%BE%A4%E8%88%87%E7%92%B0%E5%A2%83%20%401003",
       "index": 16
     },
     {
@@ -461,12 +495,14 @@
       "expectedBenefits": "將從中學習如何以更高、更全面的視角看待科技發展與職場挑戰。這次的分享將為你開闢一條深入理解工程師心路歷程的通道，並且引領你在技術職業路上不斷進步，最終成為真正的資深工程師。",
       "session": "2023-08-12T10:50:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FdTk44rdmRaGJOFVN5oB4pg",
       "formattedSession": "8/12 (SAT.) 10:50 ~ 11:35",
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
-      "keynoteOrder": null,
       "id": "caesar-chi",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T105000/20230812T113500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E7%82%BA%E4%BD%95%E6%8A%80%E8%A1%93%E8%80%81%E4%BA%BA%E9%80%99%E6%A8%A3%E6%83%B3%E9%82%A3%E6%A8%A3%E5%81%9A%EF%BC%9F%E5%BE%9E%E6%8A%80%E8%A1%93%E5%89%8D%E8%BC%A9%E7%9A%84%E8%A6%96%E8%A7%92%E7%90%86%E8%A7%A3%E6%8A%80%E8%A1%93%E6%B1%BA%E7%AD%96%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9ACaesar%20Chi%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Caesar%20Chi%20-%20%E7%82%BA%E4%BD%95%E6%8A%80%E8%A1%93%E8%80%81%E4%BA%BA%E9%80%99%E6%A8%A3%E6%83%B3%E9%82%A3%E6%A8%A3%E5%81%9A%EF%BC%9F%E5%BE%9E%E6%8A%80%E8%A1%93%E5%89%8D%E8%BC%A9%E7%9A%84%E8%A6%96%E8%A7%92%E7%90%86%E8%A7%A3%E6%8A%80%E8%A1%93%E6%B1%BA%E7%AD%96%20%401101",
       "index": 17
     },
     {
@@ -487,12 +523,14 @@
       "expectedBenefits": "擴展網頁設計領域的知識，了解互動特效網站的歷史演化，提升自身在該領域的專業知識和能力。",
       "session": "2023-08-11T14:25:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F8tR5dD-ZQSeILy_-65tHJA",
       "formattedSession": "8/11 (FRI.) 14:25 ~ 15:10",
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
-      "keynoteOrder": null,
       "id": "li-ming",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T142500/20230811T151000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E7%A9%BF%E8%B6%8A%E4%BA%92%E5%8B%95%E7%89%B9%E6%95%88%E7%B6%B2%E7%AB%99%E6%BC%94%E5%8C%96%E7%9A%84%E8%BB%8C%E8%B7%A1%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E6%9D%8E%E6%98%8E%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E6%9D%8E%E6%98%8E%20-%20%E7%A9%BF%E8%B6%8A%E4%BA%92%E5%8B%95%E7%89%B9%E6%95%88%E7%B6%B2%E7%AB%99%E6%BC%94%E5%8C%96%E7%9A%84%E8%BB%8C%E8%B7%A1%20%401001",
       "index": 18
     },
     {
@@ -513,12 +551,14 @@
       "expectedBenefits": "-初心者設計師 : 職涯技能規劃方向 ;\n-設計主管 : 如何讓設計career path能彈性發展,因應快速且多元的需求",
       "session": "2023-08-11T13:30:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FvE_e1uiJTZyNVTjeKPmlJg",
       "formattedSession": "8/11 (FRI.) 13:30 ~ 14:15",
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
-      "keynoteOrder": null,
       "id": "eva-lin",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T133000/20230811T141500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%A0%86%E7%A0%8C%E4%BD%A0%E7%8D%A8%E4%B8%80%E7%84%A1%E4%BA%8C%E7%9A%84%E5%B0%88%E6%A5%AD%E5%83%B9%E5%80%BC%20-%20%E9%88%A6%E5%9D%A6%E8%A8%AD%E8%A8%88%E5%B8%AB%E7%9A%84%E9%96%8B%E6%94%BE%E5%BC%8F%E6%8A%80%E8%83%BD%E5%9C%B0%E5%9C%96%E5%88%86%E4%BA%AB%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AEva%20Lin%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Eva%20Lin%20-%20%E5%A0%86%E7%A0%8C%E4%BD%A0%E7%8D%A8%E4%B8%80%E7%84%A1%E4%BA%8C%E7%9A%84%E5%B0%88%E6%A5%AD%E5%83%B9%E5%80%BC%20-%20%E9%88%A6%E5%9D%A6%E8%A8%AD%E8%A8%88%E5%B8%AB%E7%9A%84%E9%96%8B%E6%94%BE%E5%BC%8F%E6%8A%80%E8%83%BD%E5%9C%B0%E5%9C%96%E5%88%86%E4%BA%AB%20%401003",
       "index": 19
     },
     {
@@ -537,6 +577,7 @@
       "categoryTags": ["Agile"],
       "targetAudience": "對敏捷和軟技能有興趣的朋友",
       "expectedBenefits": "台灣敏捷社群發展史\n敏捷和其他技能的關聯\n敏捷在各產業的落地狀況\n微技能實際演練",
+      "contactEmail": "Yveslin@gmail.com",
       "session": "2023-08-11T11:55:00+08:00",
       "room": "1003",
       "formattedSession": "8/11 (FRI.) 11:55 ~ 12:40",
@@ -585,6 +626,7 @@
           "facebookProfileLink": "https://www.facebook.com/yves.lin888",
           "twitterProfileLink": "https://twitter.com/yveslin888",
           "otherLinks": ["https://www.yveslin.com"],
+          "contactEmail": "Yveslin@gmail.com",
           "id": "lin-yu-cheng"
         },
         {
@@ -611,6 +653,8 @@
       "date": "08-11",
       "startTime": "11:55",
       "endTime": "12:40",
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FW8od3KH2QLWJeSWmT_kuwg",
+      "googleCalendarLink": "https://calendar.google.com/calendar/u/0/r/eventedit?trp=true&sf=true&output=xml&dates=20230811T115500/20230811T124000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AYves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B:+https://webconf.tw/%23/agenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF+2023%5D+Yves+%E9%BB%91%E6%89%8B%E9%98%BF%E4%B8%80+%26+%E6%95%8F%E6%8D%B7%E4%B8%89%E5%8F%94%E5%85%AC+-+%E6%95%8F%E6%8D%B7%E4%B8%8D%E5%8F%AA%E6%98%AF%E6%95%8F%E6%8D%B7%EF%BC%9A%E5%BE%9E%E5%8F%B0%E7%81%A3%E7%9C%8B%E6%95%8F%E6%8D%B7%E5%AF%A6%E8%B8%90%E7%9A%84%E5%8D%81%E5%B9%B4%E8%AE%8A%E9%81%B7%E4%BB%A5%E5%8F%8A%E5%BF%85%E5%82%99%E5%BE%AE%E6%8A%80%E8%83%BD%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91+@1003%E2%80%88",
       "index": 22
     },
     {
@@ -631,12 +675,14 @@
       "expectedBenefits": "- 更好的測試設計思路\n- 更能互相支持的程式與測試",
       "session": "2023-08-11T11:00:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FX9AzRGrYRFuEbTROxkT-jw",
       "formattedSession": "8/11 (FRI.) 11:00 ~ 11:45",
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
-      "keynoteOrder": null,
       "id": "kuma-syu",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T110000/20230811T114500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E4%B8%8D%E6%98%AF%E6%9C%89%E5%AF%AB%E5%B0%B1%E5%A5%BD%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AKuma%20Syu%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Kuma%20Syu%20-%20%E5%96%AE%E5%85%83%E6%B8%AC%E8%A9%A6%E4%B8%8D%E6%98%AF%E6%9C%89%E5%AF%AB%E5%B0%B1%E5%A5%BD%20%401001",
       "index": 23
     },
     {
@@ -657,12 +703,14 @@
       "expectedBenefits": "-  前端工程師可以學會怎麼使用後端工程師提供的 Docker image 來啟動後端環境，這樣前端工程師在串接後端時，就透過 Docker container 進行更有效率的管理。\n- 前端也可以試著把自己的前端 build 成 docker image。",
       "session": "2023-08-12T11:45:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FhOq4Qte_TnSy0z8-dcCuig",
       "formattedSession": "8/12 (SAT.) 11:45 ~ 12:30",
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
-      "keynoteOrder": null,
       "id": "xiao-lai",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T114500/20230812T123000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9ADocker%20Container%20%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F%E5%8F%AF%E4%BB%A5%E5%90%83%E5%97%8E%EF%BC%9F%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E5%B0%8F%E8%B3%B4%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E5%B0%8F%E8%B3%B4%20-%20Docker%20Container%20%E6%98%AF%E4%BB%80%E9%BA%BC%EF%BC%9F%E5%8F%AF%E4%BB%A5%E5%90%83%E5%97%8E%EF%BC%9F%E3%80%90%E5%B7%A5%E4%BD%9C%E5%9D%8A%E3%80%91%20%401003",
       "index": 24
     },
     {
@@ -683,12 +731,14 @@
       "expectedBenefits": "幫助聽眾認識 DevOps 的發展歷程、核心概念、關鍵技術，並且從過往歷史中，發現歷史總是不斷重演又持續的推陳出新，從而對這一領域的技術變革和趨勢有更清晰的認識。",
       "session": "2023-08-11T14:25:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FxTBo_rxFR-CZqicxoRzmdw",
       "formattedSession": "8/11 (FRI.) 14:25 ~ 15:10",
       "date": "08-11",
       "startTime": "14:25",
       "endTime": "15:10",
-      "keynoteOrder": null,
       "id": "chen-zheng-wei",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T142500/20230811T151000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%9B%9E%E9%A1%A7%E8%88%87%E5%B1%95%E6%9C%9B%EF%BC%8C%E5%BE%9E%20DevOps%20%E9%91%91%E5%8F%A4%E8%A7%80%E4%BB%8A%E7%9F%A5%E6%9C%AA%E4%BE%86%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E9%99%B3%E6%AD%A3%E7%91%8B%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E9%99%B3%E6%AD%A3%E7%91%8B%20-%20%E5%9B%9E%E9%A1%A7%E8%88%87%E5%B1%95%E6%9C%9B%EF%BC%8C%E5%BE%9E%20DevOps%20%E9%91%91%E5%8F%A4%E8%A7%80%E4%BB%8A%E7%9F%A5%E6%9C%AA%E4%BE%86%20%401003",
       "index": 25
     },
     {
@@ -709,12 +759,14 @@
       "expectedBenefits": "從另一個角度思考產品開發、溝通技巧，增加說服他人的成功率。",
       "session": "2023-08-12T11:45:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2Fo2qdy0YySReFsx6Uf5pdDQ",
       "formattedSession": "8/12 (SAT.) 11:45 ~ 12:30",
       "date": "08-12",
       "startTime": "11:45",
       "endTime": "12:30",
-      "keynoteOrder": null,
       "id": "akane-lee",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T114500/20230812T123000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E8%AC%9B%E4%BA%8B%E5%AF%A6%E6%B2%92%E7%94%A8%EF%BC%8C%E9%A1%A7%E5%AE%A2%E6%89%8D%E4%B8%8D%E8%81%BD%E9%80%99%E5%80%8B%EF%BC%81%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AAkane%20Lee%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Akane%20Lee%20-%20%E8%AC%9B%E4%BA%8B%E5%AF%A6%E6%B2%92%E7%94%A8%EF%BC%8C%E9%A1%A7%E5%AE%A2%E6%89%8D%E4%B8%8D%E8%81%BD%E9%80%99%E5%80%8B%EF%BC%81%20%401001",
       "index": 26
     },
     {
@@ -735,12 +787,14 @@
       "expectedBenefits": "理解 APM 收集的資料及其如何幫助找到瓶頸，甚至 APM 之外我們還能做些什麼。",
       "session": "2023-08-12T09:00:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FQoWpXB7yRc-ImH1yX_2C7Q",
       "formattedSession": "8/12 (SAT.) 09:00 ~ 09:45",
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
-      "keynoteOrder": null,
       "id": "norman",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T090000/20230812T094500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9AAPM%20%E7%9A%84%E5%AE%88%E7%A0%B4%E9%9B%A2%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9ANorman%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Norman%20-%20APM%20%E7%9A%84%E5%AE%88%E7%A0%B4%E9%9B%A2%20%401003",
       "index": 27
     },
     {
@@ -761,12 +815,14 @@
       "expectedBenefits": "可以對網頁前後端跟資安都更了解，還有未來 HackMD 會如何發展",
       "session": "2023-08-11T15:20:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FW5l9SjAVSsSy1Z7zHxPlWA",
       "formattedSession": "8/11 (FRI.) 15:20 ~ 16:05",
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
-      "keynoteOrder": null,
       "id": "max-wu",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T152000/20230811T160500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9AHackMD%20%E7%9A%84%E5%89%8D%E4%B8%96%E8%88%87%E4%BB%8A%E7%94%9F%EF%BC%8C%E4%BB%A5%E5%8F%8A%E6%9C%AA%E4%BE%86%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AMax%20Wu%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Max%20Wu%20-%20HackMD%20%E7%9A%84%E5%89%8D%E4%B8%96%E8%88%87%E4%BB%8A%E7%94%9F%EF%BC%8C%E4%BB%A5%E5%8F%8A%E6%9C%AA%E4%BE%86%20%401101",
       "index": 28
     },
     {
@@ -787,12 +843,14 @@
       "expectedBenefits": "希望會眾可以藉由此次分享理解產品創新並非由一人推動，也並非一個線性流程。它包含了不同層面的思考，像是組織、產品開發流程、產品願景、產品團隊、個人心態、產品成熟度等等不同面相的思維。",
       "session": "2023-08-12T15:20:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FOmd5TqvoR_21Q3JARsjcew",
       "formattedSession": "8/12 (SAT.) 15:20 ~ 16:05",
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
-      "keynoteOrder": null,
       "id": "rice-tseng",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T152000/20230812T160500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9AFrom%200%20to%201%3A%20Navigating%20the%20Product%20Innovation%20Process%20%20%E5%BE%9E%200%20%E5%88%B0%201%EF%BC%9A%E7%94%A2%E5%93%81%E5%89%B5%E6%96%B0%E4%B9%8B%E8%B7%AF%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9ARice%20Tseng%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Rice%20Tseng%20-%20From%200%20to%201%3A%20Navigating%20the%20Product%20Innovation%20Process%20%20%E5%BE%9E%200%20%E5%88%B0%201%EF%BC%9A%E7%94%A2%E5%93%81%E5%89%B5%E6%96%B0%E4%B9%8B%E8%B7%AF%20%401001",
       "index": 29
     },
     {
@@ -813,12 +871,14 @@
       "expectedBenefits": "對於近幾年有意導入 K8S 作為目標的企業，對導入 K8S 有更多的認識以及想法能夠實踐。",
       "session": "2023-08-11T09:00:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F7QQ9xke6RpipDG2QOYb14A",
       "formattedSession": "8/11 (FRI.) 09:00 ~ 09:45",
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
-      "keynoteOrder": null,
       "id": "william",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T090000/20230811T094500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%94%B9%E9%80%B2%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2%EF%BC%9A%E6%88%90%E5%8A%9F%E5%B0%8E%E5%85%A5%20K8S%20%E7%9A%84%E7%B6%93%E9%A9%97%E8%88%87%E6%8C%91%E6%88%B0%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AWilliam%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20William%20-%20%E6%94%B9%E9%80%B2%E5%AE%B9%E5%99%A8%E5%8C%96%E9%83%A8%E7%BD%B2%EF%BC%9A%E6%88%90%E5%8A%9F%E5%B0%8E%E5%85%A5%20K8S%20%E7%9A%84%E7%B6%93%E9%A9%97%E8%88%87%E6%8C%91%E6%88%B0%20%401003",
       "index": 30
     },
     {
@@ -839,12 +899,14 @@
       "expectedBenefits": "* 實際案例學習：了解後端系統長期演進的實際案例。\n* 變遷策略：學習如何靈活應對第三方服務變動。\n* 技術演進：理解多種後端技術的選擇與演進。\n* 資源管理：了解如何在有限的資源下分配工作和設定優先順序。\n* 前後端協同：學會在後端演進時確保前端相容性。",
       "session": "2023-08-11T13:30:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FAB33rrJHSDWkRWGNkyF82Q",
       "formattedSession": "8/11 (FRI.) 13:30 ~ 14:15",
       "date": "08-11",
       "startTime": "13:30",
       "endTime": "14:15",
-      "keynoteOrder": null,
       "id": "kewang",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T133000/20230811T141500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%A6%82%E4%BD%95%E5%9C%A8%E6%9C%89%E9%99%90%E8%B3%87%E6%BA%90%E4%B8%8B%E5%AF%A6%E7%8F%BE%E5%8D%81%E5%B9%B4%E7%9A%84%E5%BE%8C%E7%AB%AF%E6%9C%8D%E5%8B%99%E6%BC%94%E9%80%B2%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AKewang%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Kewang%20-%20%E5%A6%82%E4%BD%95%E5%9C%A8%E6%9C%89%E9%99%90%E8%B3%87%E6%BA%90%E4%B8%8B%E5%AF%A6%E7%8F%BE%E5%8D%81%E5%B9%B4%E7%9A%84%E5%BE%8C%E7%AB%AF%E6%9C%8D%E5%8B%99%E6%BC%94%E9%80%B2%20%401101",
       "index": 31
     },
     {
@@ -865,12 +927,14 @@
       "expectedBenefits": "學習到 GitHub Copilot 的各式應用技巧",
       "session": "2023-08-11T09:00:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FT5tQ48y8S5GQkAUx9qlgng",
       "formattedSession": "8/11 (FRI.) 09:00 ~ 09:45",
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
-      "keynoteOrder": null,
       "id": "will-bao-ge",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T090000/20230811T094500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%B4%BB%E7%94%A8%20GitHub%20Copilot%20%E9%96%8B%E7%99%BC%20Web%20%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AWill%20%E4%BF%9D%E5%93%A5%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Will%20%E4%BF%9D%E5%93%A5%20-%20%E6%B4%BB%E7%94%A8%20GitHub%20Copilot%20%E9%96%8B%E7%99%BC%20Web%20%E6%87%89%E7%94%A8%E7%A8%8B%E5%BC%8F%20%401101",
       "index": 32
     },
     {
@@ -891,12 +955,14 @@
       "expectedBenefits": "1. 回顧並理解 Vue.js 有哪些狀態管理模式\n2. 如何透過上述模式，解決特定的開發痛點\n3. 在不同的開發場景中，如何根據其特性和優缺點選擇最適合的狀態管理模式\n\n透過這場議程，聽眾將對 Vue.js 的狀態管理模式有更全面的理解，並能夠更有信心地在自己的項目中應用這些知識。",
       "session": "2023-08-12T09:00:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FL5K9cqp6S0-7549MXXSb_g",
       "formattedSession": "8/12 (SAT.) 09:00 ~ 09:45",
       "date": "08-12",
       "startTime": "09:00",
       "endTime": "09:45",
-      "keynoteOrder": null,
       "id": "kuro-hsu",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T090000/20230812T094500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E6%B7%BA%E8%AB%87%20Vue.js%20%E7%9A%84%E7%8B%80%E6%85%8B%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AKuro%20Hsu%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Kuro%20Hsu%20-%20%E6%B7%BA%E8%AB%87%20Vue.js%20%E7%9A%84%E7%8B%80%E6%85%8B%E7%AE%A1%E7%90%86%E6%A8%A1%E5%BC%8F%20%401101",
       "index": 33
     },
     {
@@ -917,12 +983,14 @@
       "expectedBenefits": "中小型軟體服務開發團隊適合的開發流程與文化",
       "session": "2023-08-12T13:30:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FVqSM6iJiRh6KqyIDTIeBiA",
       "formattedSession": "8/12 (SAT.) 13:30 ~ 14:15",
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
-      "keynoteOrder": null,
       "id": "richard-lee",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T133000/20230812T141500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A10%20%E5%B9%B4%E5%9B%9E%E9%A1%A7%EF%BC%9A%E6%89%93%E9%80%A0%E6%84%9B%E6%96%99%E7%90%86%E9%96%8B%E7%99%BC%E5%8F%8A%E7%87%9F%E9%81%8B%E5%9C%98%E9%9A%8A%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9ARichard%20Lee%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Richard%20Lee%20-%2010%20%E5%B9%B4%E5%9B%9E%E9%A1%A7%EF%BC%9A%E6%89%93%E9%80%A0%E6%84%9B%E6%96%99%E7%90%86%E9%96%8B%E7%99%BC%E5%8F%8A%E7%87%9F%E9%81%8B%E5%9C%98%E9%9A%8A%20%401101",
       "index": 34
     },
     {
@@ -943,12 +1011,14 @@
       "expectedBenefits": "對於 LiveView / HotWire / LiveWire 如何運作有基本的概念，好處及缺點是什麼 。Elixir / Phoenix 寫起來是什麼樣子，以及這個語言帶來什麼不同的觀點。",
       "session": "2023-08-11T11:00:00+08:00",
       "room": "1003",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2Fk7hRoTQOSE2npLcZauRW2g",
       "formattedSession": "8/11 (FRI.) 11:00 ~ 11:45",
       "date": "08-11",
       "startTime": "11:00",
       "endTime": "11:45",
-      "keynoteOrder": null,
       "id": "su-tai-an",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T110000/20230811T114500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1003%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9ALive%2C%20Unified%20language%2C%20and%20(almost)%20everything%20important%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E8%98%87%E6%B3%B0%E5%AE%89%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E8%98%87%E6%B3%B0%E5%AE%89%20-%20Live%2C%20Unified%20language%2C%20and%20(almost)%20everything%20important%20%401003",
       "index": 35
     },
     {
@@ -969,12 +1039,14 @@
       "expectedBenefits": "瞭解更多新的CSS應用與絢麗功能，讓你腦洞大開！",
       "session": "2023-08-12T15:20:00+08:00",
       "room": "1101",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F-mWY8npJSIaaxLrYaQ0Nvg",
       "formattedSession": "8/12 (SAT.) 15:20 ~ 16:05",
       "date": "08-12",
       "startTime": "15:20",
       "endTime": "16:05",
-      "keynoteOrder": null,
       "id": "amos",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T152000/20230812T160500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1101%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E9%85%B7%EF%BC%81%E7%8E%A9%EF%BC%81%E5%95%A5%E9%AC%BCCSS%EF%BC%81%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AAmos%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Amos%20-%20%E9%85%B7%EF%BC%81%E7%8E%A9%EF%BC%81%E5%95%A5%E9%AC%BCCSS%EF%BC%81%20%401101",
       "index": 36
     },
     {
@@ -995,12 +1067,14 @@
       "expectedBenefits": "帶走一張UXUI的知識定位地圖在腦中，新學到的知識都可以歸納到當中",
       "session": "2023-08-12T10:50:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2F6qqw3WSaTtKORwlD3rzlmw",
       "formattedSession": "8/12 (SAT.) 10:50 ~ 11:35",
       "date": "08-12",
       "startTime": "10:50",
       "endTime": "11:35",
-      "keynoteOrder": null,
       "id": "zhuo-zhi-yuan",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T105000/20230812T113500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E5%BB%BA%E7%AB%8B%E4%BD%A0%E7%9A%84UXUI%E7%9F%A5%E8%AD%98%E5%9C%B0%E5%9C%96%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E5%8D%93%E8%87%B4%E9%81%A0%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E5%8D%93%E8%87%B4%E9%81%A0%20-%20%E5%BB%BA%E7%AB%8B%E4%BD%A0%E7%9A%84UXUI%E7%9F%A5%E8%AD%98%E5%9C%B0%E5%9C%96%20%401001",
       "index": 37
     },
     {
@@ -1021,12 +1095,14 @@
       "expectedBenefits": "了解如何提供「結構化的內容」，讓資訊產品在運作的過程可以有效的重複使用、組合、分拆利用。\n\n幫助設計師在介面設計之前，可以使用視覺化討論法，引導利害關係人與技術夥伴一起討論抽象的資訊架構議題，減少觀落陰。",
       "session": "2023-08-12T13:30:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FhUfiJkrySvqn9ptbjSOSgA",
       "formattedSession": "8/12 (SAT.) 13:30 ~ 14:15",
       "date": "08-12",
       "startTime": "13:30",
       "endTime": "14:15",
-      "keynoteOrder": null,
       "id": "soking",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T133000/20230812T141500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E8%B3%87%E8%A8%8A%E6%9E%B6%E6%A7%8B%E8%A8%AD%E8%A8%88%E6%96%B0%E9%AB%94%E9%A9%97%EF%BC%9A%E5%9C%A8%E9%9C%80%E6%B1%82%E6%83%85%E5%A2%83%E4%B8%AD%E9%81%8B%E7%94%A8%E9%A0%98%E5%9F%9F%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90%E6%8F%8F%E8%BF%B0%E7%B5%90%E6%A7%8B%E5%8C%96%E5%85%A7%E5%AE%B9%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9ASoking%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20Soking%20-%20%E8%B3%87%E8%A8%8A%E6%9E%B6%E6%A7%8B%E8%A8%AD%E8%A8%88%E6%96%B0%E9%AB%94%E9%A9%97%EF%BC%9A%E5%9C%A8%E9%9C%80%E6%B1%82%E6%83%85%E5%A2%83%E4%B8%AD%E9%81%8B%E7%94%A8%E9%A0%98%E5%9F%9F%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90%E6%8F%8F%E8%BF%B0%E7%B5%90%E6%A7%8B%E5%8C%96%E5%85%A7%E5%AE%B9%20%401001",
       "index": 38
     },
     {
@@ -1047,12 +1123,14 @@
       "expectedBenefits": "這些東西你可能本來就都知道，但透過這次的演講，點出這些事情的重要性，讓未來在做決策時，能夠有更明確的依循和指引。",
       "session": "2023-08-11T15:20:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FGmg_L6YOT-yMko_qZ_pEeg",
       "formattedSession": "8/11 (FRI.) 15:20 ~ 16:05",
       "date": "08-11",
       "startTime": "15:20",
       "endTime": "16:05",
-      "keynoteOrder": null,
       "id": "pj",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T152000/20230811T160500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E9%82%A3%E4%BA%9B%E7%90%86%E6%89%80%E7%95%B6%E7%84%B6%EF%BC%8C%E5%8D%BB%E5%83%8F%E7%A9%BA%E6%B0%A3%E8%88%AC%E9%87%8D%E8%A6%81%E7%9A%84%E5%B0%8F%E4%BA%8B%EF%BC%9A%E8%AB%87%E9%96%8B%E7%99%BC%E6%B5%81%E7%A8%8B%E3%80%81%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E8%88%87%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9APJ%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20PJ%20-%20%E9%82%A3%E4%BA%9B%E7%90%86%E6%89%80%E7%95%B6%E7%84%B6%EF%BC%8C%E5%8D%BB%E5%83%8F%E7%A9%BA%E6%B0%A3%E8%88%AC%E9%87%8D%E8%A6%81%E7%9A%84%E5%B0%8F%E4%BA%8B%EF%BC%9A%E8%AB%87%E9%96%8B%E7%99%BC%E6%B5%81%E7%A8%8B%E3%80%81%E7%A8%8B%E5%BC%8F%E6%9E%B6%E6%A7%8B%E8%88%87%E8%81%B7%E6%B6%AF%E7%99%BC%E5%B1%95%20%401001",
       "index": 39
     },
     {
@@ -1073,12 +1151,14 @@
       "expectedBenefits": "- 了解產品開發過程中常見的決策相關疑問，應該要怎麼樣利用科學化的判定跟測量方法，去解決跟評估。\n- 了解 UX 在其中扮演什麼樣的角色。\n- 了解各個職位的工作內容在商業藍圖中會是什麼樣的定位。",
       "session": "2023-08-12T14:25:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FDynzDLkMS_yp7eeg1G0svw",
       "formattedSession": "8/12 (SAT.) 14:25 ~ 15:10",
       "date": "08-12",
       "startTime": "14:25",
       "endTime": "15:10",
-      "keynoteOrder": null,
       "id": "ben-wan",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230812T142500/20230812T151000&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9AUX%20%E6%89%8D%E4%B8%8D%E5%8F%AA%E6%98%AF%E5%A5%BD%E4%B8%8D%E5%A5%BD%E7%94%A8%EF%BC%8C%E8%80%8C%E6%98%AF%E7%94%A2%E5%93%81%E9%96%8B%E7%99%BC%E7%A7%91%E5%AD%B8%E5%8C%96%E7%9A%84%E5%B7%A5%E5%85%B7%E3%80%81%E5%BE%9E%E6%AD%A4%E4%B8%8D%E5%86%8D%E9%80%9A%E9%9D%88%E7%9A%84%E9%97%9C%E9%8D%B5%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9A%E6%9C%AC%E4%B8%B8%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20%E6%9C%AC%E4%B8%B8%20-%20UX%20%E6%89%8D%E4%B8%8D%E5%8F%AA%E6%98%AF%E5%A5%BD%E4%B8%8D%E5%A5%BD%E7%94%A8%EF%BC%8C%E8%80%8C%E6%98%AF%E7%94%A2%E5%93%81%E9%96%8B%E7%99%BC%E7%A7%91%E5%AD%B8%E5%8C%96%E7%9A%84%E5%B7%A5%E5%85%B7%E3%80%81%E5%BE%9E%E6%AD%A4%E4%B8%8D%E5%86%8D%E9%80%9A%E9%9D%88%E7%9A%84%E9%97%9C%E9%8D%B5%20%401001",
       "index": 40
     },
     {
@@ -1099,12 +1179,14 @@
       "expectedBenefits": "發現圖標字型的百變魅力與無窮的可塑性。",
       "session": "2023-08-11T09:00:00+08:00",
       "room": "1001",
+      "keynoteOrder": null,
+      "noteLink": "https://hackmd.io/@webconf/BkImQ0Ds3/%2FSs2xq6dBR2C7L_AiCJSUEQ",
       "formattedSession": "8/11 (FRI.) 09:00 ~ 09:45",
       "date": "08-11",
       "startTime": "09:00",
       "endTime": "09:45",
-      "keynoteOrder": null,
       "id": "chingru",
+      "googleCalendarLink": "https://www.google.com/calendar/render?action=TEMPLATE&trp=true&sf=true&output=xml&dates=20230811T090000/20230811T094500&details=%E6%9C%83%E8%AD%B0%E5%AE%A4%EF%BC%9A1001%0A%0A%E6%BC%94%E8%AC%9B%E4%B8%BB%E9%A1%8C%EF%BC%9A%E7%95%AB%E9%BE%8D%E9%BB%9E%E7%9D%9B%E7%9A%84%E5%BE%AE%E5%B0%8F%E7%B4%B0%E7%AF%80%EF%BC%9A%E5%9C%96%E6%A8%99%E5%AD%97%E5%9E%8B%E9%82%84%E8%83%BD%E6%80%8E%E9%BA%BC%E7%8E%A9%EF%BC%9F%0A%0A%E8%AC%9B%E8%80%85%EF%BC%9AChingRu%0A%0A%E8%A9%B3%E7%B4%B0%E8%AD%B0%E7%A8%8B%3A%20https%3A%2F%2Fwebconf.tw%2F%23%2Fagenda&location=%E8%B2%A1%E5%9C%98%E6%B3%95%E4%BA%BA%E5%BC%B5%E6%A6%AE%E7%99%BC%E5%9F%BA%E9%87%91%E6%9C%83%E5%9C%8B%E9%9A%9B%E6%9C%83%E8%AD%B0%E4%B8%AD%E5%BF%83&text=%5BWEBCONF%202023%5D%20ChingRu%20-%20%E7%95%AB%E9%BE%8D%E9%BB%9E%E7%9D%9B%E7%9A%84%E5%BE%AE%E5%B0%8F%E7%B4%B0%E7%AF%80%EF%BC%9A%E5%9C%96%E6%A8%99%E5%AD%97%E5%9E%8B%E9%82%84%E8%83%BD%E6%80%8E%E9%BA%BC%E7%8E%A9%EF%BC%9F%20%401001",
       "index": 41
     }
   ]

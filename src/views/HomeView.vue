@@ -120,7 +120,8 @@
         </div>
 
         <div
-          class="logoMan hidden md:block md:w-300 md:h-370 md:bg-cover md:absolute md:top-0 md:right-[-15%] lg:right-[-18%] xl:right-[-14%]"
+          ref="logoMan2"
+          class="logoMan hidden md:block md:w-300 md:h-370 md:bg-cover md:absolute md:top-0 md:right-[-15%] lg:right-[-18%] xl:right-[-14%] opacity-0"
         ></div>
       </div>
       <!-- 第二區塊結束 -->
@@ -144,7 +145,7 @@
             <div class="md:flex md:flex-col md:items-center md:mt-8 md:mr-8 2xl:mr-0">
               <div
                 ref="logoMan3"
-                class="logoMan hidden mdl:block md:w-213 md:h-263 xl:w-[317px] xl:h-[392px] md:bg-cover"
+                class="logoMan hidden mdl:block md:w-213 md:h-263 xl:w-[317px] xl:h-[392px] md:bg-cover opacity-0"
               ></div>
               <router-link
                 href="#"
@@ -927,7 +928,7 @@ const section6 = ref();
 const banner = ref(null);
 const bannerText = ref(null);
 const isWindowHeight = ref(false);
-
+const logoMan2 = ref();
 const logoMan3 = ref();
 const speaker1 = ref();
 const speaker2 = ref();
@@ -943,7 +944,6 @@ let currentTransportation = null;
 let previousTransportation = null;
 let speakerMoveRightTl = null;
 let section1AnimeScrollTl = null;
-let section2AnimeScrollTl = null;
 
 const toggleTrafficInfo = (transportation, method, isFirst) => {
   previousTransportation = currentTransportation;
@@ -1057,20 +1057,94 @@ const section1ReturnAnime = () => {
   section1EnterAnime();
 };
 
+let section2AnimeTl = gsap.timeline();
+
 const section2Anime = () => {
   setTimeout(() => {
-    section2AnimeScrollTl = gsap.timeline({
+    section2AnimeTl = gsap.timeline({
       scrollTrigger: {
         trigger: section2.value,
-        start: "top-=50",
+        start: "top center",
         // endTrigger: section3.value,
-        // end: "top bottom",
-        pin: true,
-        markers: true,
+        // end: "center+=50 bottom",
+        // markers: true,
         scrub: true,
-        onUpdate: () => {},
+        once: true,
+        onEnter: () => {
+          section2EnterAnime();
+        },
+        // onLeaveBack: () => {
+        //   section2EnterAnime();
+        // },
+        // onLeave: () => {
+        //   section2LeaveAnime();
+        // },
+        // onUpdate: () => {
+        //   section2EnterAnime();
+        // },
       },
     });
+  });
+}
+
+const section2EnterAnime = () => {
+  section1AnimeTl.fromTo(
+    logoMan2.value,
+    {
+      x: "-50%",
+      opacity: 0,
+    },
+    {
+      x: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power4.out",
+    }
+  );
+};
+
+// const section2LeaveAnime = () => {
+//   section1AnimeTl.to(
+//     logoMan2.value,
+//     {
+//       opacity: 0,
+//       duration: 0,
+//       ease: "power4.out",
+//     }
+//   );
+// };
+
+let section3AnimeTl = gsap.timeline();
+
+const section3Anime = () => {
+  setTimeout(() => {
+    section3AnimeTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section3.value,
+        start: "top+=100 center",
+        // endTrigger: section3.value,
+        // end: "center+=50 bottom",
+        // markers: true,
+        scrub: true,
+        once: true,
+        onEnter: () => {
+          section3EnterAnime();
+        },
+      },
+    });
+
+    // speakerMoveRightTl = gsap.timeline({
+    //   scrollTrigger: {
+    //     trigger: section3.value,
+    //     start: "top+=60",
+    //     endTrigger: section4.value,
+    //     end: "top bottom",
+    //     pin: true,
+    //     // markers: true,
+    //     scrub: true,
+    //     onUpdate: () => {},
+    //   },
+    // });
 
     // const speaker = document.querySelector("#speaker");
     // const speaker1 = document.querySelector("#speaker1-1");
@@ -1084,21 +1158,20 @@ const section2Anime = () => {
     // const speaker9 = document.querySelector("#speaker2-4");
     // const speaker10 = document.querySelector("#speaker2-5");
 
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 345,
-    // });
+    // const screenWidth = window.innerWidth;
+
     // speakerMoveRightTl.to([speaker1, speaker6], {
     //   opacity: 1,
     // });
     // speakerMoveRightTl.to([speaker2, speaker7], {
     //   opacity: 1,
     // });
+    // speakerMoveRightTl.to(speaker, {
+    //   x: 150,
+    // });
+    
     // speakerMoveRightTl.to([speaker3, speaker8], {
     //   opacity: 1,
-    // });
-
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 690,
     // });
     // speakerMoveRightTl.to([speaker4, speaker9], {
     //   opacity: 1,
@@ -1107,123 +1180,56 @@ const section2Anime = () => {
     //   opacity: 1,
     // });
 
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 1035,
-    // });
-
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 1380,
-    // });
-
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 1725,
-    // });
-
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 2070,
-    // });
+    // if (screenWidth >= 768 && screenWidth < 900) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 1500,
+    //   });
+    // } else if (screenWidth >= 900 && screenWidth < 1024) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 1350,
+    //   });
+    // } else if (screenWidth >= 1024 && screenWidth < 1280) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 1200,
+    //   });
+    // } else if (screenWidth >= 1280 && screenWidth < 1400) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 900,
+    //   });
+    // } else if (screenWidth >= 1400 && screenWidth < 1536) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 800,
+    //   });
+    // } else if (screenWidth >= 1536 && screenWidth < 1670) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 650,
+    //   });
+    // } else if (screenWidth >= 1670 && screenWidth < 1920) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 470,
+    //   });
+    // } else if (screenWidth >= 1920) {
+    //   speakerMoveRightTl.to(speaker, {
+    //     x: 370,
+    //   });
+    // }
   });
-}
+};
 
-const section3Anime = () => {
-  setTimeout(() => {
-    speakerMoveRightTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section3.value,
-        start: "top+=60",
-        endTrigger: section4.value,
-        end: "top bottom",
-        pin: true,
-        // markers: true,
-        scrub: true,
-        onUpdate: () => {},
-      },
-    });
-
-    const speaker = document.querySelector("#speaker");
-    const speaker1 = document.querySelector("#speaker1-1");
-    const speaker2 = document.querySelector("#speaker1-2");
-    const speaker3 = document.querySelector("#speaker1-3");
-    const speaker4 = document.querySelector("#speaker1-4");
-    const speaker5 = document.querySelector("#speaker1-5");
-    const speaker6 = document.querySelector("#speaker2-1");
-    const speaker7 = document.querySelector("#speaker2-2");
-    const speaker8 = document.querySelector("#speaker2-3");
-    const speaker9 = document.querySelector("#speaker2-4");
-    const speaker10 = document.querySelector("#speaker2-5");
-
-    const screenWidth = window.innerWidth;
-
-    speakerMoveRightTl.to([speaker1, speaker6], {
+const section3EnterAnime = () => {
+  section1AnimeTl.fromTo(
+    logoMan3.value,
+    {
+      x: "-50%",
+      opacity: 0,
+    },
+    {
+      x: 0,
       opacity: 1,
-    });
-    speakerMoveRightTl.to([speaker2, speaker7], {
-      opacity: 1,
-    });
-    speakerMoveRightTl.to(speaker, {
-      x: 150,
-    });
-    
-    speakerMoveRightTl.to([speaker3, speaker8], {
-      opacity: 1,
-    });
-    speakerMoveRightTl.to([speaker4, speaker9], {
-      opacity: 1,
-    });
-    speakerMoveRightTl.to([speaker5, speaker10], {
-      opacity: 1,
-    });
-
-    if (screenWidth >= 768 && screenWidth < 900) {
-      speakerMoveRightTl.to(speaker, {
-        x: 1500,
-      });
-    } else if (screenWidth >= 900 && screenWidth < 1024) {
-      speakerMoveRightTl.to(speaker, {
-        x: 1350,
-      });
-    } else if (screenWidth >= 1024 && screenWidth < 1280) {
-      speakerMoveRightTl.to(speaker, {
-        x: 1200,
-      });
-    } else if (screenWidth >= 1280 && screenWidth < 1400) {
-      speakerMoveRightTl.to(speaker, {
-        x: 900,
-      });
-    } else if (screenWidth >= 1400 && screenWidth < 1536) {
-      speakerMoveRightTl.to(speaker, {
-        x: 800,
-      });
-    } else if (screenWidth >= 1536 && screenWidth < 1670) {
-      speakerMoveRightTl.to(speaker, {
-        x: 650,
-      });
-    } else if (screenWidth >= 1670 && screenWidth < 1920) {
-      speakerMoveRightTl.to(speaker, {
-        x: 470,
-      });
-    } else if (screenWidth >= 1920) {
-      speakerMoveRightTl.to(speaker, {
-        x: 370,
-      });
+      duration: 1,
+      ease: "power4.out",
     }
-    
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 1035,
-    // });
-
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 1380,
-    // });
-
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 1725,
-    // });
-
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 2070,
-    // });
-  });
+  );
 };
 
 const scrollIntoView = (num) => {
@@ -1347,8 +1353,8 @@ onMounted(() => {
     const viewportWidth = window.innerWidth;
     if (viewportWidth >= 768) {
       window.addEventListener("wheel", handleScroll);
-      // section3Anime();
-      // section2Anime();
+      section3Anime();
+      section2Anime();
     }
     swiperInit();
   });
