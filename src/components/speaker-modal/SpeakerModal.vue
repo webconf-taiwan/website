@@ -39,6 +39,7 @@
             <a
               :href="speakerInfo.facebookProfileLink"
               v-show="speakerInfo.facebookProfileLink"
+              target="_blank"
               class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
@@ -47,6 +48,7 @@
             <a
               :href="speakerInfo.twitterProfileLink"
               v-show="speakerInfo.twitterProfileLink"
+              target="_blank"
               class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
@@ -55,6 +57,7 @@
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconMedium class="stroke-current md:w-6 md:h-6" />
@@ -63,6 +66,7 @@
               <a
                 :href="link"
                 v-else-if="link !== '' && link.includes('instagram')"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconIg class="stroke-current md:w-6 md:h-6" />
@@ -71,6 +75,7 @@
               <a
                 :href="link"
                 v-else-if="link !== ''"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconLink class="svg-fill-current md:w-6 md:h-6" />

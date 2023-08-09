@@ -39,6 +39,7 @@
             <a
               :href="dualSpeakerArr[0].facebookProfileLink"
               v-show="dualSpeakerArr[0].facebookProfileLink"
+              target="_blank"
               class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
@@ -47,6 +48,7 @@
             <a
               :href="dualSpeakerArr[0].twitterProfileLink"
               v-show="dualSpeakerArr[0].twitterProfileLink"
+              target="_blank"
               class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
@@ -55,6 +57,7 @@
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconMedium class="stroke-current md:w-6 md:h-6" />
@@ -63,6 +66,7 @@
               <a
                 :href="link"
                 v-else-if="link !== '' && link.includes('instagram')"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconIg class="stroke-current md:w-6 md:h-6" />
@@ -71,6 +75,7 @@
               <a
                 :href="link"
                 v-else-if="link !== ''"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconLink class="svg-fill-current md:w-6 md:h-6" />
@@ -113,6 +118,7 @@
             <a
               :href="dualSpeakerArr[1].facebookProfileLink"
               v-show="dualSpeakerArr[1].facebookProfileLink"
+              target="_blank"
               class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconFacebook class="stroke-current md:w-6 md:h-6" />
@@ -121,6 +127,7 @@
             <a
               :href="dualSpeakerArr[1].twitterProfileLink"
               v-show="dualSpeakerArr[1].twitterProfileLink"
+              target="_blank"
               class="hover:text-custom-teal-700 active:text-custom-teal-500"
             >
               <iconTwitter class="svg-fill-current md:w-6 md:h-6" />
@@ -129,6 +136,7 @@
               <a
                 :href="link"
                 v-if="link !== '' && link.includes('medium')"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconMedium class="stroke-current md:w-6 md:h-6" />
@@ -137,6 +145,7 @@
               <a
                 :href="link"
                 v-else-if="link !== '' && link.includes('instagram')"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconIg class="stroke-current md:w-6 md:h-6" />
@@ -145,6 +154,7 @@
               <a
                 :href="link"
                 v-else-if="link !== ''"
+                target="_blank"
                 class="transition-colors duration-300 hover:text-custom-teal-700 active:text-custom-teal-500"
               >
                 <iconLink class="svg-fill-current md:w-6 md:h-6" />
