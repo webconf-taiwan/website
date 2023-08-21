@@ -169,9 +169,7 @@ const sponsors = [
         id: "sponsor_hexschool",
         sponsor_name: "六角學院",
         image: { sponsorsHexschool: true },
-        Introduction: [
-          "六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。",
-        ],
+        Introduction: ["六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。"],
         link: [
           {
             icon: "web",

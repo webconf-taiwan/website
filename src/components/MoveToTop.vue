@@ -1,8 +1,6 @@
 <template>
   <a href="#" ref="moveToTop" class="transition-opacity duration-300" @click.prevent="scrollToTop">
-    <div
-      class="relative flex flex-col items-center justify-end w-10 h-10 border border-custom-teal-500 bg-custom-gray-800"
-    >
+    <div class="relative flex flex-col items-center justify-end w-10 h-10 border border-custom-teal-500 bg-custom-gray-800">
       <div class="w-3 border border-custom-teal-500 absolute top-[6px]"></div>
       <div class="w-8 h-8 rotate-180 bg-cover arrow"></div>
     </div>

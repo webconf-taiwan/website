@@ -11,10 +11,7 @@
 
     <div class="flex justify-between">
       <div class="flex items-center gap-2">
-        <img
-          class="rounded-full h-10 w-10 border-custom-pink-700 border object-contain"
-          :src="`/speaker-img/${dualSpeakerInfoArr[0].id}.jpg`"
-        />
+        <img class="rounded-full h-10 w-10 border-custom-pink-700 border object-contain" :src="`/speaker-img/${dualSpeakerInfoArr[0].id}.jpg`" />
         <img
           class="rounded-full h-10 w-10 border-custom-pink-700 border object-contain -ml-5"
           :src="`/speaker-img/${dualSpeakerInfoArr[1].id}.jpg`"

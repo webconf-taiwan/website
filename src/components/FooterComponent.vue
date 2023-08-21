@@ -1,8 +1,5 @@
 <template>
-  <footer
-    v-if="currentPageName !== '2013WebConf'"
-    class="relative z-10 p-6 bg-custom-gray-800 md:px-8 md:py-3"
-  >
+  <footer v-if="currentPageName !== '2013WebConf'" class="relative z-10 p-6 bg-custom-gray-800 md:px-8 md:py-3">
     <div class="flex flex-col items-center md:flex-row md:justify-between">
       <ul class="flex">
         <li>
@@ -36,9 +33,7 @@
           <div class="w-6 h-6 bg-cover fbIcon"></div>
         </a>
         <div class="m-2 w-10 h-0.5 bg-custom-teal-500"></div>
-        <p class="text-sm font-normal text-custom-teal-500">
-          WebConf Taiwan 2023 All Rights Reserved.
-        </p>
+        <p class="text-sm font-normal text-custom-teal-500">WebConf Taiwan 2023 All Rights Reserved.</p>
       </div>
       <ul class="md:flex mr-14">
         <!-- <li class="hidden md:block">

@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="isModalOpen"
-    class="bg-drop-blur fixed inset-0 flex items-center justify-center z-50 bg-custom-teal-700 bg-opacity-20 max-h-screen px-5 py-5 md:py-10"
+    class="fixed inset-0 z-50 flex items-center justify-center max-h-screen px-5 py-5 bg-drop-blur bg-custom-teal-700 bg-opacity-20 md:py-10"
   >
     <!-- 避免 click outside 影響箭頭 -->
 
@@ -10,32 +10,25 @@
       ref="modalElement"
       class="relative border-custom-teal-700 border-2 rounded-sm bg-black pb-8 pt-12 px-4 md:px-5 text-white w-[792px] scroll overflow-y-auto max-h-full"
     >
-      <button
-        @click="onModalClose"
-        class="absolute top-3 right-5 md:right-7 md:top-5 stroke-current text-custom-teal-500"
-      >
-        <iconClose class="hover:text-custom-teal-700 active:text-custom-teal-500 w-6 h-6" />
+      <button @click="onModalClose" class="absolute stroke-current top-3 right-5 md:right-7 md:top-5 text-custom-teal-500">
+        <iconClose class="w-6 h-6 hover:text-custom-teal-700 active:text-custom-teal-500" />
       </button>
       <!-- 講者頭貼 -->
-      <div class="flex md:px-3 mb-9 md:mb-5 flex-col md:flex-row items-center md:items-stretch">
+      <div class="flex flex-col items-center md:px-3 mb-9 md:mb-5 md:flex-row md:items-stretch">
         <img
           class="mb-5 md:mb-0 mx-auto w-full max-w-[360px] max-h-[360px] md:w-[150px] md:h-[150px] border-2 border-custom-teal-500 md:mr-5 md:ml-0 object-cover"
           :src="`/speaker-img/${speakerInfo.id}.jpg`"
         />
         <div class="flex flex-col">
-          <h2
-            class="text-custom-teal-500 font-semibold text-2xl md:text-3xl mb-3 text-center md:text-left"
-          >
+          <h2 class="mb-3 text-2xl font-semibold text-center text-custom-teal-500 md:text-3xl md:text-left">
             {{ speakerInfo.speakerName }}
             <span v-if="speakerInfo.altName">{{ `(${speakerInfo.altName})` }}</span>
           </h2>
-          <p class="text-center md:text-left mb-5 md:mb-auto">
+          <p class="mb-5 text-center md:text-left md:mb-auto">
             {{ `${speakerInfo.organization} ${speakerInfo.jobTitle}` }}
           </p>
 
-          <div
-            class="flex text-custom-teal-500 justify-center md:justify-start gap-3 md:gap-2 -ml-1"
-          >
+          <div class="flex justify-center gap-3 -ml-1 text-custom-teal-500 md:justify-start md:gap-2">
             <a
               :href="speakerInfo.facebookProfileLink"
               v-show="speakerInfo.facebookProfileLink"
@@ -86,71 +79,52 @@
       </div>
 
       <!-- 講者介紹 -->
-      <div class="md:px-3 mb-3">
-        <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
-          講者介紹
-        </h3>
+      <div class="mb-3 md:px-3">
+        <h3 class="mb-2 text-lg font-semibold leading-tight md:text-xl text-custom-teal-500">講者介紹</h3>
         <p class="leading-normal whitespace-pre-line">{{ speakerInfo.personalIntroduction }}</p>
       </div>
 
       <!-- 議程資訊 -->
-      <div
-        class="cursor-pointer flex items-center justify-start border-b border-custom-teal-500 md:px-3 py-3 text-custom-teal-500"
-      >
-        <h3 class="text-lg md:text-xl font-semibold leading-tight mr-2">議程資訊</h3>
+      <div class="flex items-center justify-start py-3 border-b cursor-pointer border-custom-teal-500 md:px-3 text-custom-teal-500">
+        <h3 class="mr-2 text-lg font-semibold leading-tight md:text-xl">議程資訊</h3>
       </div>
       <Transition>
-        <section class="md:px-3 pt-6">
-          <h1 class="text-custom-teal-500 text-xl md:text-3xl font-semibold mb-2">
+        <section class="pt-6 md:px-3">
+          <h1 class="mb-2 text-xl font-semibold text-custom-teal-500 md:text-3xl">
             {{ speakerInfo.speechTopic }}
           </h1>
-          <div
-            class="flex text-custom-pink-700 items-center justify-start leading-none mb-7"
-            v-show="speakerInfo.date"
-          >
-            <iconTime class="svg-fill-current stroke-0 mr-1" />
+          <div class="flex items-center justify-start leading-none text-custom-pink-700 mb-7" v-show="speakerInfo.date">
+            <iconTime class="mr-1 stroke-0 svg-fill-current" />
             <p class="mr-5 pt-[1px]">{{ speakerInfo.formattedSession }}</p>
-            <iconLocation class="stroke-current mr-1" />
+            <iconLocation class="mr-1 stroke-current" />
             <p class="align-middle pt-[3px]">講廳 {{ speakerInfo.room }}</p>
           </div>
           <div class="mb-5">
             <p class="mb-3 whitespace-pre-line">{{ speakerInfo.speechSummary }}</p>
-            <div class="flex gap-3 flex-wrap">
+            <div class="flex flex-wrap gap-3">
               <CategoryTag :tag="tag" v-for="tag in speakerInfo.categoryTags" :key="tag" />
             </div>
           </div>
           <div class="mb-5">
-            <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
-              目標會眾
-            </h3>
+            <h3 class="mb-2 text-lg font-semibold leading-tight md:text-xl text-custom-teal-500">目標會眾</h3>
             <p class="whitespace-pre-line">
               {{ speakerInfo.targetAudience }}
             </p>
           </div>
 
           <div class="mb-5">
-            <h3 class="font-semibold text-lg md:text-xl text-custom-teal-500 leading-tight mb-2">
-              預期收穫
-            </h3>
+            <h3 class="mb-2 text-lg font-semibold leading-tight md:text-xl text-custom-teal-500">預期收穫</h3>
             <p class="whitespace-pre-line">
               {{ speakerInfo.expectedBenefits }}
             </p>
           </div>
 
-          <div class="flex flex-col-reverse md:flex-row gap-3">
-            <a
-              class="secondary-button transition-colors duration-300"
-              target="_blank"
-              :href="speakerInfo.noteLink"
-            >
+          <div class="flex flex-col-reverse gap-3 md:flex-row">
+            <a class="transition-colors duration-300 secondary-button" target="_blank" :href="speakerInfo.noteLink">
               <iconNote class="stroke-current" />
               <p>共筆文件</p>
             </a>
-            <a
-              class="secondary-button transition-colors duration-300"
-              target="_blank"
-              :href="speakerInfo.googleCalendarLink"
-            >
+            <a class="transition-colors duration-300 secondary-button" target="_blank" :href="speakerInfo.googleCalendarLink">
               <iconDate class="stroke-current" />
               <p>加入行事曆</p>
             </a>
@@ -162,15 +136,11 @@
 </template>
 
 <script setup>
-import { ref, defineProps, toRefs, onBeforeUnmount, onMounted, watchEffect } from "vue";
-
+import { ref, toRefs, onBeforeUnmount, onMounted, watchEffect } from "vue";
 import CategoryTag from "@/components/CategoryTag.vue";
-
 import iconTime from "@/assets/images/icon/ic_time_s.svg";
 import iconLocation from "@/assets/images/icon/ic_location_s.svg";
 import iconClose from "@/assets/images/icon/ic_close_s.svg";
-// import iconArrowDown from "@/assets/images/icon/ic_arrow_down_s.svg";
-// import iconArrowUp from "@/assets/images/icon/ic_arrow_up_s.svg";
 import iconFacebook from "@/assets/images/icon/ic_fb_l.svg";
 import iconTwitter from "@/assets/images/icon/ic_twitter_l.svg";
 import iconLink from "@/assets/images/icon/ic_web_l.svg";

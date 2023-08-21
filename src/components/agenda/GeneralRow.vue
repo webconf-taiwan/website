@@ -5,7 +5,7 @@
       <template v-for="(speaker, index) in speakerInfoArr" :key="index">
         <div
           v-if="speaker !== null"
-          class="w-full md:basis-1/3 border border-custom-teal-500 p-3 md:px-5 md:py-4 speaker-cell"
+          class="w-full p-3 border md:basis-1/3 border-custom-teal-500 md:px-5 md:py-4 speaker-cell"
           :class="{
             'md:block': speaker === null,
             'cursor-pointer': speaker !== null,
@@ -33,7 +33,7 @@
         </div>
         <div
           v-if="speaker === null"
-          class="hidden md:basis-1/3 border border-custom-teal-500 p-3 md:px-5 md:py-4"
+          class="hidden p-3 border md:basis-1/3 border-custom-teal-500 md:px-5 md:py-4"
           :class="{
             'md:block': speaker === null,
           }"
@@ -46,9 +46,6 @@
 <script setup>
 import TimelineCell from "@/components/agenda/TimelineCell.vue";
 import SpeakerCell from "@/components/agenda/SpeakerCell.vue";
-// import { ref, watchEffect} from "vue";
-// import { computed } from "vue";
-
 import DualSpeakerCell from "@/components/agenda/DualSpeakerCell.vue";
 
 const props = defineProps({

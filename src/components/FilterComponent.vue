@@ -4,9 +4,7 @@
     class="bg-drop-blur fixed inset-0 flex items-end i-center z-50 backdrop-blur-sm bg-custom-teal-700 bg-opacity-50 max-h-screen"
     @wheel="preventScroll"
   >
-    <div
-      class="border-t-2 border-custom-teal-700 bg-custom-gray-800 w-full flex justify-between items-center p-3"
-    >
+    <div class="border-t-2 border-custom-teal-700 bg-custom-gray-800 w-full flex justify-between items-center p-3">
       <ul class="flex flex-wrap gap-2 mr-3">
         <li
           v-for="tag in options"
@@ -22,11 +20,7 @@
           </a>
         </li>
       </ul>
-      <a
-        href="#"
-        class="closeMenuIcon w-10 h-10 flex-shrink-0 self-start"
-        @click.prevent="closeFilter"
-      ></a>
+      <a href="#" class="closeMenuIcon w-10 h-10 flex-shrink-0 self-start" @click.prevent="closeFilter"></a>
     </div>
   </div>
 </template>

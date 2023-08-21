@@ -4,9 +4,7 @@
     class="fixed top-0 z-30 flex flex-col justify-between w-screen h-12 py-1 overflow-hidden duration-500 border-b md:right-0 md:w-60px md:h-screen bg-custom-gray-800 md:flex-row-reverse md:border-l md:border-b-0 border-custom-teal-700 transition-height"
     :class="{ 'h-[524px]': isShowMenuList, 'md:w-[270px]': isShowMenuList }"
   >
-    <a href="#" class="h-40 mx-auto w-152"
-      ><img src="../assets/images/logo_txt.png" alt="logo" class="h-40 mx-auto w-152 md:hidden"
-    /></a>
+    <a href="#" class="h-40 mx-auto w-152"><img src="../assets/images/logo_txt.png" alt="logo" class="h-40 mx-auto w-152 md:hidden" /></a>
 
     <a
       href="#"
@@ -14,51 +12,24 @@
       class="absolute z-30 block w-10 h-10 text-lg text-white menuIcon top-1 right-2"
       @click.prevent="toggleMenuList"
     ></a>
-    <a
-      href="#"
-      v-else
-      class="absolute z-30 block w-10 h-10 text-lg text-white closeMenuIcon top-1 right-2"
-      @click.prevent="toggleMenuList"
-    ></a>
-    <div
-      v-if="!isScrolledToBottom && currentPageName === 'home'"
-      class="hidden md:block"
-      :class="{ 'md:hidden': isShowMenuList }"
-    >
-      <p class="absolute z-30 text-lg writing-vertical text-custom-teal-500 bottom-16 right-4">
-        scroll
-      </p>
-      <div
-        class="absolute z-30 w-10 h-10 text-lg arrowDownIcon animate-arrowDown bottom-3 right-2"
-      ></div>
+    <a href="#" v-else class="absolute z-30 block w-10 h-10 text-lg text-white closeMenuIcon top-1 right-2" @click.prevent="toggleMenuList"></a>
+    <div v-if="!isScrolledToBottom && currentPageName === 'home'" class="hidden md:block" :class="{ 'md:hidden': isShowMenuList }">
+      <p class="absolute z-30 text-lg writing-vertical text-custom-teal-500 bottom-16 right-4">scroll</p>
+      <div class="absolute z-30 w-10 h-10 text-lg arrowDownIcon animate-arrowDown bottom-3 right-2"></div>
     </div>
 
-    <div
-      v-if="currentPageName === 'home'"
-      class="absolute z-20 hidden md:block top-8"
-      :class="{ 'md:hidden': isShowMenuList }"
-      style="right: 2.5px"
-    >
+    <div v-if="currentPageName === 'home'" class="absolute z-20 hidden md:block top-8" :class="{ 'md:hidden': isShowMenuList }" style="right: 2.5px">
       <div ref="spiderLine" class="spiderLine"></div>
       <div class="relative z-40 bg-cover spider w-14 h-14" style="margin-top: -10px"></div>
     </div>
-    <div
-      v-else
-      class="absolute z-20 hidden md:block top-8"
-      :class="{ 'md:hidden': isShowMenuList }"
-      style="right: 2.5px"
-    >
+    <div v-else class="absolute z-20 hidden md:block top-8" :class="{ 'md:hidden': isShowMenuList }" style="right: 2.5px">
       <div class="spiderLine animate-spiderLine"></div>
       <div class="relative z-40 bg-cover spider w-14 h-14" style="margin-top: -10px"></div>
     </div>
 
     <div class="relative flex-shrink-0 hidden md:block w-60px">
       <div v-if="currentPageName === 'home'">
-        <a
-          href="#"
-          class="absolute z-20 p-3 top-1/4 right-3"
-          @click.prevent="scrollIntoView(1, true)"
-        >
+        <a href="#" class="absolute z-20 p-3 top-1/4 right-3" @click.prevent="scrollIntoView(1, true)">
           <div
             class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
@@ -68,11 +39,7 @@
             }"
           ></div>
         </a>
-        <a
-          href="#"
-          class="p-3 absolute z-20 top-[35%] right-3"
-          @click.prevent="scrollIntoView(2, true)"
-        >
+        <a href="#" class="p-3 absolute z-20 top-[35%] right-3" @click.prevent="scrollIntoView(2, true)">
           <div
             class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
@@ -82,11 +49,7 @@
             }"
           ></div>
         </a>
-        <a
-          href="#"
-          class="p-3 absolute z-20 top-[45%] right-3"
-          @click.prevent="scrollIntoView(3, true)"
-        >
+        <a href="#" class="p-3 absolute z-20 top-[45%] right-3" @click.prevent="scrollIntoView(3, true)">
           <div
             class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
@@ -96,11 +59,7 @@
             }"
           ></div>
         </a>
-        <a
-          href="#"
-          class="p-3 absolute z-20 top-[55%] right-3"
-          @click.prevent="scrollIntoView(4, true)"
-        >
+        <a href="#" class="p-3 absolute z-20 top-[55%] right-3" @click.prevent="scrollIntoView(4, true)">
           <div
             class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
@@ -110,11 +69,7 @@
             }"
           ></div>
         </a>
-        <a
-          href="#"
-          class="p-3 absolute z-20 top-[65%] right-3"
-          @click.prevent="scrollIntoView(5, true)"
-        >
+        <a href="#" class="p-3 absolute z-20 top-[65%] right-3" @click.prevent="scrollIntoView(5, true)">
           <div
             class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
@@ -124,11 +79,7 @@
             }"
           ></div>
         </a>
-        <a
-          href="#"
-          class="p-3 absolute z-20 top-[75%] right-3"
-          @click.prevent="scrollIntoView(6, true)"
-        >
+        <a href="#" class="p-3 absolute z-20 top-[75%] right-3" @click.prevent="scrollIntoView(6, true)">
           <div
             class="w-2 h-2 transition-opacity duration-1000 border rounded-full border-custom-teal-500"
             :class="{
@@ -259,8 +210,7 @@ import { useScrollStore } from "@/stores/scroll";
 import { usePageInfoStore } from "@/stores/pageInfo";
 
 const scrollStore = useScrollStore();
-const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } =
-  storeToRefs(scrollStore);
+const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } = storeToRefs(scrollStore);
 const { setSpiderLocation } = scrollStore;
 
 const pageInfoStore = usePageInfoStore();

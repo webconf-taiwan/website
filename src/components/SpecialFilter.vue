@@ -1,9 +1,5 @@
 <template>
-  <div
-    v-if="currentPageName === 'speaker' || currentPageName === 'agenda'"
-    ref="specialFilter"
-    class="hidden md:block md:sticky md:top-4 md:z-20"
-  >
+  <div v-if="currentPageName === 'speaker' || currentPageName === 'agenda'" ref="specialFilter" class="hidden md:block md:sticky md:top-4 md:z-20">
     <div
       class="w-full md:w-[600px] md:m-auto px-4 pt-4 pb-[6px] bg-custom-gray-800 border-t border-b md:border-r md:border-l md:rounded border-custom-teal-700 relative z-20"
     >
