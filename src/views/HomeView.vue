@@ -52,7 +52,7 @@
                   id="sellBtn"
                   href="#"
                   :to="{ name: 'agenda' }"
-                  class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700 opacity-0"
+                  class="px-10 py-2 text-lg font-medium transition-all duration-300 border-2 opacity-0 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
                   >查看議程資訊</router-link
                 >
               </div>
@@ -156,7 +156,7 @@
             </div>
 
             <div
-              class="mt-10 flex justify-around md:justify-center md:items-center md:flex-col md:flex-1"
+              class="flex justify-around mt-10 md:justify-center md:items-center md:flex-col md:flex-1"
             >
               <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20 mdl:mr-43 xl:mr-52">
                 <li
@@ -243,7 +243,7 @@
                 </li>
               </ul>
             </div>
-            <div class="md:hidden flex justify-center">
+            <div class="flex justify-center md:hidden">
               <router-link
                 href="#"
                 :to="{ name: 'agenda' }"
@@ -540,21 +540,6 @@
             ></div>
           </div>
           <div class="bg-cover timeAdd w-300 h-14 md:w-588 md:h-8 mb-7"></div>
-
-          <!-- 購票按鈕 -->
-          <a
-            href="https://www.accupass.com/event/2306070448221749426689"
-            target="_blank"
-            class="px-10 py-2 mb-4 text-lg font-medium transition-all duration-300 border-2 whitespace-nowrap border-custom-teal-500 text-custom-gray-800 hover:text-custom-teal-500 bg-custom-teal-500 hover:bg-custom-teal-700"
-            >前往購票</a
-          >
-
-          <a
-            href="https://www.facebook.com/WebConfTaiwan"
-            target="_blank"
-            class="text-sm font-normal text-white"
-            >敬請關注 Facebook 最新消息</a
-          >
         </div>
 
         <div class="mt-3 md:pr-[34px]">
@@ -796,8 +781,8 @@
 import { ref, onMounted, inject } from "vue";
 import { useRoute } from "vue-router";
 import { storeToRefs } from "pinia";
-import Swiper from 'swiper/bundle';
-import 'swiper/css/bundle';
+import Swiper from "swiper/bundle";
+import "swiper/css/bundle";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useScrollStore } from "@/stores/scroll";
@@ -808,101 +793,100 @@ import StylingTitle from "@/components/StylingTitle.vue";
 import StylingFBLink from "@/components/StylingFBLink.vue";
 
 const swiperInit = () => {
-  const swiper = new Swiper('.swiper', {
-  loop: true,
-  // slidesPerView: 5,
-  // spaceBetween: 8,
-  autoplay: {
-    delay: 3000,
-    reverseDirection: true,
-  },
-  breakpoints: {
-    250: {
-      slidesPerView: 2,
-      centeredSlides: true,
+  const swiper = new Swiper(".swiper", {
+    loop: true,
+    // slidesPerView: 5,
+    // spaceBetween: 8,
+    autoplay: {
+      delay: 3000,
+      reverseDirection: true,
     },
-    560: {
-      slidesPerView: 3,
-      centeredSlides: false,
+    breakpoints: {
+      250: {
+        slidesPerView: 2,
+        centeredSlides: true,
+      },
+      560: {
+        slidesPerView: 3,
+        centeredSlides: false,
+      },
+      768: {
+        slidesPerView: 5,
+        centeredSlides: false,
+      },
     },
-    768: {
-      slidesPerView: 5,
-      centeredSlides: false,
-    },
-  },
-  on: {
-    slideChange: function () {
-      const windowWidth = window.innerWidth;
-      const slides = this.slides;
-      const activeIndex = this.activeIndex;
+    on: {
+      slideChange: function () {
+        const windowWidth = window.innerWidth;
+        const slides = this.slides;
+        const activeIndex = this.activeIndex;
 
-      if (windowWidth >= 768) {
-        slides.forEach((slide, index) => {
-          let opacity = 0.2;
-          let scale = 0.5;
-          let transformOrigin = 'center';
-          if (index === activeIndex) {
-            opacity = 0.6
-            scale = 0.8
-            transformOrigin = 'right';
-          } else if (index === activeIndex + 1) {
-            opacity = 0.8
-            scale = 0.9
-            transformOrigin = 'right';
-            slide.style.marginRight = '17px';
-          } else if (index === activeIndex + 3) {
-            opacity = 0.8
-            scale = 0.9
-            transformOrigin = 'left';
-            slide.style.marginLeft = '17px';
-          } else if (index === activeIndex + 4) {
-            opacity = 0.6
-            scale = 0.8
-            transformOrigin = 'left';
-            slide.style.marginLeft = '0px';
-          } else if (index === activeIndex + 2) {
-            opacity = 1
-            scale = 1
-            slide.style.marginRight = '0px';
-          }
-          slide.style.opacity = opacity;
-          slide.style.transform = `scale(${scale})`;
-          slide.style.transformOrigin = transformOrigin;
-        });
-      } else if (windowWidth <= 767 && windowWidth >= 560) {
-        slides.forEach((slide, index) => {
-          let opacity = 0.2;
-          let scale = 0.5;
-          if (index === activeIndex) {
-            opacity = 0.8
-            scale = 0.9
-          } else if (index === activeIndex + 2) {
-            opacity = 0.8
-            scale = 0.9
-          } else if (index === activeIndex + 1) {
-            opacity = 1
-            scale = 1
-          }
-          slide.style.opacity = opacity;
-          slide.style.transform = `scale(${scale})`;
-        });
-      } else if (windowWidth < 560) {
-        slides.forEach((slide, index) => {
-          let opacity = 0.8;
-          let scale = 0.9;
-          if (index === activeIndex) {
-            opacity = 1
-            scale = 1
-          }
-          slide.style.opacity = opacity;
-          slide.style.transform = `scale(${scale})`;
-        });
-      }
+        if (windowWidth >= 768) {
+          slides.forEach((slide, index) => {
+            let opacity = 0.2;
+            let scale = 0.5;
+            let transformOrigin = "center";
+            if (index === activeIndex) {
+              opacity = 0.6;
+              scale = 0.8;
+              transformOrigin = "right";
+            } else if (index === activeIndex + 1) {
+              opacity = 0.8;
+              scale = 0.9;
+              transformOrigin = "right";
+              slide.style.marginRight = "17px";
+            } else if (index === activeIndex + 3) {
+              opacity = 0.8;
+              scale = 0.9;
+              transformOrigin = "left";
+              slide.style.marginLeft = "17px";
+            } else if (index === activeIndex + 4) {
+              opacity = 0.6;
+              scale = 0.8;
+              transformOrigin = "left";
+              slide.style.marginLeft = "0px";
+            } else if (index === activeIndex + 2) {
+              opacity = 1;
+              scale = 1;
+              slide.style.marginRight = "0px";
+            }
+            slide.style.opacity = opacity;
+            slide.style.transform = `scale(${scale})`;
+            slide.style.transformOrigin = transformOrigin;
+          });
+        } else if (windowWidth <= 767 && windowWidth >= 560) {
+          slides.forEach((slide, index) => {
+            let opacity = 0.2;
+            let scale = 0.5;
+            if (index === activeIndex) {
+              opacity = 0.8;
+              scale = 0.9;
+            } else if (index === activeIndex + 2) {
+              opacity = 0.8;
+              scale = 0.9;
+            } else if (index === activeIndex + 1) {
+              opacity = 1;
+              scale = 1;
+            }
+            slide.style.opacity = opacity;
+            slide.style.transform = `scale(${scale})`;
+          });
+        } else if (windowWidth < 560) {
+          slides.forEach((slide, index) => {
+            let opacity = 0.8;
+            let scale = 0.9;
+            if (index === activeIndex) {
+              opacity = 1;
+              scale = 1;
+            }
+            slide.style.opacity = opacity;
+            slide.style.transform = `scale(${scale})`;
+          });
+        }
+      },
     },
-  },
-});
-}
-
+  });
+};
 
 const route = useRoute();
 
@@ -1023,15 +1007,17 @@ const section1Anime = () => {
 const section1EnterAnime = () => {
   const sellBtn = document.querySelector("#sellBtn");
   section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
-  section1AnimeTl.fromTo(sellBtn, 
-  {
-    opacity: 0,
-  },
-  {
-    opacity: 1,
-    duration: 0.5,
-    ease: "power4.out",
-  },)
+  section1AnimeTl.fromTo(
+    sellBtn,
+    {
+      opacity: 0,
+    },
+    {
+      opacity: 1,
+      duration: 0.5,
+      ease: "power4.out",
+    }
+  );
   section1AnimeTl.fromTo(
     bannerText.value,
     {
@@ -1085,7 +1071,7 @@ const section2Anime = () => {
       },
     });
   });
-}
+};
 
 const section2EnterAnime = () => {
   section1AnimeTl.fromTo(
@@ -1169,7 +1155,7 @@ const section3Anime = () => {
     // speakerMoveRightTl.to(speaker, {
     //   x: 150,
     // });
-    
+
     // speakerMoveRightTl.to([speaker3, speaker8], {
     //   opacity: 1,
     // });
@@ -1236,7 +1222,7 @@ const scrollIntoView = (num) => {
   const section1Height = section1.value.offsetHeight;
   const section2Height = section2.value.offsetHeight;
   const scrollPosition = section1Height + section2Height - 50;
-  
+
   switch (num) {
     case 1:
       section1.value.scrollIntoView({ behavior: "smooth" });
@@ -1319,18 +1305,17 @@ const handleScroll = () => {
   }, 500);
 };
 
-
 const detectWindowHeight = () => {
   const windowHeight = window.innerHeight;
 
-  isWindowHeight.value = windowHeight < 746? true : false;
-}
+  isWindowHeight.value = windowHeight < 746 ? true : false;
+};
 
 onMounted(() => {
   // 計算蜘蛛圖片距離視窗最上方的距離
   calculateSpiderTop();
   detectWindowHeight();
-  
+
   // 模擬載入過程
   showHome.value = true;
   setTimeout(() => {
@@ -1359,5 +1344,4 @@ onMounted(() => {
     swiperInit();
   });
 });
-
 </script>
