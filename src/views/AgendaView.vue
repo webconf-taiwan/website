@@ -1,210 +1,3 @@
-<template>
-  <div class="relative py-16">
-    <div ref="fbDecorativeLink" class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6">
-      <StylingFBLink></StylingFBLink>
-    </div>
-
-    <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-30">
-      <OpenFilter class="mb-2"></OpenFilter>
-      <MoveToTop></MoveToTop>
-    </div>
-    <a href="#"><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div></a>
-
-    <div class="flex flex-col items-center mt-12 mb-16 md:mt-0">
-      <StylingTitle>
-        <template #default>
-          <span>議程資訊</span>
-        </template>
-      </StylingTitle>
-    </div>
-
-    <SpecialFilter class="mb-8"></SpecialFilter>
-
-    <div class="w-full mx-auto px-5 md:px-[140px]">
-      <div class="bg-black relative">
-        <div class="flex sticky top-12 md:static z-10">
-          <AgendaDateHeading :isActive="activeDate === '08-11'" :onActiveDateClick="() => handleActiveDateClick('08-11')">
-            <p class="text-center text-3xl md:text-4xl leading-none font-bold">
-              8/11 <span class="text-base md:text-2xl font-semibold">(FRI.)</span>
-            </p>
-          </AgendaDateHeading>
-          <AgendaDateHeading isRight :isActive="activeDate === '08-12'" :onActiveDateClick="() => handleActiveDateClick('08-12')">
-            <p class="text-center text-3xl md:text-4xl leading-none font-bold">
-              8/12 <span class="text-base md:text-2xl font-semibold">(SAT.)</span>
-            </p>
-          </AgendaDateHeading>
-        </div>
-        <div class="p-2 flex flex-col border border-t-0 border-custom-teal-500 gap-2">
-          <div class="hidden md:flex gap-2" ref="topHeaderRef">
-            <div class="basis-[10%]"></div>
-            <div class="basis-[90%] flex gap-2 text-lg">
-              <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1001</div>
-              <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1101</div>
-              <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1003</div>
-            </div>
-          </div>
-
-          <template v-for="session in filteredAgenda" :key="`${activeDate} ${session.id}`">
-            <IntroRow v-if="session.isIntro" :startTime="session.headerText[0]" :endTime="session.headerText[1]" />
-            <GeneralRow
-              v-if="!session.isKeynote && !session.isBreakTime && !session.isIntro"
-              :speakerInfoArr="session.data"
-              :startTime="session.headerText[0]"
-              :endTime="session.headerText[1]"
-              :onOpenSpeakerModal="handleOpenSpeakerModal"
-            />
-
-            <KeynoteSpeakerRow
-              v-if="session.isKeynote"
-              :speakerInfo="session.data[0]"
-              :startTime="session.headerText[0]"
-              :endTime="session.headerText[1]"
-              :onOpenSpeakerModal="handleOpenSpeakerModal"
-            />
-
-            <BreakTimeRow v-if="session.isBreakTime" :text="session.data[0]" />
-          </template>
-        </div>
-
-        <!-- 靜態 Footer -->
-        <div class="hidden border border-custom-teal-500 border-t-0 md:flex gap-2 p-2" ref="staticFooterRef">
-          <div class="basis-[10%] flex">
-            <div
-              @click="() => handleActiveDateClick('08-11')"
-              class="cursor-pointer text-lg grow flex items-center justify-center"
-              :class="{
-                'border border-custom-teal-700': activeDate !== '08-11',
-                'bg-black': activeDate !== '08-11',
-                'text-custom-teal-700': activeDate !== '08-11',
-                'bg-custom-teal-500': activeDate === '08-11',
-                'text-black': activeDate === '08-11',
-              }"
-            >
-              8/11
-            </div>
-            <div
-              @click="() => handleActiveDateClick('08-12')"
-              class="cursor-pointer text-lg grow flex justify-center items-center"
-              :class="{
-                'border border-custom-teal-700': activeDate !== '08-12',
-                'bg-black': activeDate !== '08-12',
-                'text-custom-teal-700': activeDate !== '08-12',
-                'bg-custom-teal-500': activeDate === '08-12',
-                'text-black': activeDate === '08-12',
-              }"
-            >
-              8/12
-            </div>
-          </div>
-          <div class="basis-[90%] flex gap-2 text-lg">
-            <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1001</div>
-            <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1101</div>
-            <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1003</div>
-          </div>
-        </div>
-
-        <!-- 吸底元件 -->
-        <div class="hidden md:block">
-          <div
-            class="footer right-0 left-0 px-[140px]"
-            :class="{
-              'footer-visible': isTurnOnDynamicFooter,
-              'footer-animated-hidden': !isTurnOnDynamicFooter,
-              hidden: isDisableDynamicFooter,
-            }"
-          >
-            <div class="p-2 flex gap-2 border border-custom-teal-500 bg-black">
-              <div class="basis-[10%] flex">
-                <div
-                  @click="() => handleActiveDateClick('08-11')"
-                  class="cursor-pointer text-lg grow flex items-center justify-center"
-                  :class="{
-                    'border border-custom-teal-700': activeDate !== '08-11',
-                    'bg-black': activeDate !== '08-11',
-                    'text-custom-teal-700': activeDate !== '08-11',
-                    'bg-custom-teal-500': activeDate === '08-11',
-                    'text-black': activeDate === '08-11',
-                  }"
-                >
-                  8/11
-                </div>
-                <div
-                  @click="() => handleActiveDateClick('08-12')"
-                  class="cursor-pointer text-lg grow flex justify-center items-center"
-                  :class="{
-                    'border border-custom-teal-700': activeDate !== '08-12',
-                    'bg-black': activeDate !== '08-12',
-                    'text-custom-teal-700': activeDate !== '08-12',
-                    'bg-custom-teal-500': activeDate === '08-12',
-                    'text-black': activeDate === '08-12',
-                  }"
-                >
-                  8/12
-                </div>
-              </div>
-              <div class="basis-[90%] flex gap-2 text-lg">
-                <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1001</div>
-                <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1101</div>
-                <div class="basis-1/3 bg-custom-pink-700 py-3 text-center">講廳 1003</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <FilterComponent />
-
-    <div>
-      <SpeakerModal
-        v-if="!!modalSpeakerData && modalSpeakerData.id !== 'dual'"
-        :speakerInfo="modalSpeakerData"
-        :onModalClose="() => handleModalClose()"
-        :isModalOpen="isModalOpen"
-      />
-      <DualSpeakerModal
-        v-if="!!modalSpeakerData && modalSpeakerData.id === 'dual'"
-        :dualSpeakerInfo="modalSpeakerData"
-        :onModalClose="() => handleModalClose()"
-        :isModalOpen="isModalOpen"
-      />
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.titleDecoration {
-  background: url("@/assets/images/title_display.svg") no-repeat;
-}
-
-.fbIcon {
-  background-image: url("@/assets/images/icon/ic_fb_l.svg");
-}
-
-.logoTxt {
-  background-image: url("@/assets/images/logo_windows_txt.png");
-}
-
-.writing-vertical {
-  writing-mode: vertical-rl;
-}
-
-.footer {
-  transition: all 0.5s ease;
-  position: fixed;
-  width: inherit;
-  bottom: 0;
-}
-
-.footer-animated-hidden {
-  transform: translateY(100%);
-}
-
-.footer-visible {
-  transform: translateY(0%);
-}
-</style>
-
 <script setup>
 import { onMounted, onBeforeUnmount, ref, computed } from "vue";
 import { storeToRefs } from "pinia";
@@ -400,3 +193,210 @@ onMounted(() => {
   isStaticFooterObserver.observe(staticFooterRef.value);
 });
 </script>
+
+<template>
+  <div class="relative py-16">
+    <div ref="fbDecorativeLink" class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6">
+      <StylingFBLink></StylingFBLink>
+    </div>
+
+    <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-30">
+      <OpenFilter class="mb-2"></OpenFilter>
+      <MoveToTop></MoveToTop>
+    </div>
+    <a href="#"><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div></a>
+
+    <div class="flex flex-col items-center mt-12 mb-16 md:mt-0">
+      <StylingTitle>
+        <template #default>
+          <span>議程資訊</span>
+        </template>
+      </StylingTitle>
+    </div>
+
+    <SpecialFilter class="mb-8"></SpecialFilter>
+
+    <div class="w-full mx-auto px-5 md:px-[140px]">
+      <div class="relative bg-black">
+        <div class="sticky z-10 flex top-12 md:static">
+          <AgendaDateHeading :isActive="activeDate === '08-11'" :onActiveDateClick="() => handleActiveDateClick('08-11')">
+            <p class="text-3xl font-bold leading-none text-center md:text-4xl">
+              8/11 <span class="text-base font-semibold md:text-2xl">(FRI.)</span>
+            </p>
+          </AgendaDateHeading>
+          <AgendaDateHeading isRight :isActive="activeDate === '08-12'" :onActiveDateClick="() => handleActiveDateClick('08-12')">
+            <p class="text-3xl font-bold leading-none text-center md:text-4xl">
+              8/12 <span class="text-base font-semibold md:text-2xl">(SAT.)</span>
+            </p>
+          </AgendaDateHeading>
+        </div>
+        <div class="flex flex-col gap-2 p-2 border border-t-0 border-custom-teal-500">
+          <div class="hidden gap-2 md:flex" ref="topHeaderRef">
+            <div class="basis-[10%]"></div>
+            <div class="basis-[90%] flex gap-2 text-lg">
+              <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1001</div>
+              <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1101</div>
+              <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1003</div>
+            </div>
+          </div>
+
+          <template v-for="session in filteredAgenda" :key="`${activeDate} ${session.id}`">
+            <IntroRow v-if="session.isIntro" :startTime="session.headerText[0]" :endTime="session.headerText[1]" />
+            <GeneralRow
+              v-if="!session.isKeynote && !session.isBreakTime && !session.isIntro"
+              :speakerInfoArr="session.data"
+              :startTime="session.headerText[0]"
+              :endTime="session.headerText[1]"
+              :onOpenSpeakerModal="handleOpenSpeakerModal"
+            />
+
+            <KeynoteSpeakerRow
+              v-if="session.isKeynote"
+              :speakerInfo="session.data[0]"
+              :startTime="session.headerText[0]"
+              :endTime="session.headerText[1]"
+              :onOpenSpeakerModal="handleOpenSpeakerModal"
+            />
+
+            <BreakTimeRow v-if="session.isBreakTime" :text="session.data[0]" />
+          </template>
+        </div>
+
+        <!-- 靜態 Footer -->
+        <div class="hidden gap-2 p-2 border border-t-0 border-custom-teal-500 md:flex" ref="staticFooterRef">
+          <div class="basis-[10%] flex">
+            <div
+              @click="() => handleActiveDateClick('08-11')"
+              class="flex items-center justify-center text-lg cursor-pointer grow"
+              :class="{
+                'border border-custom-teal-700': activeDate !== '08-11',
+                'bg-black': activeDate !== '08-11',
+                'text-custom-teal-700': activeDate !== '08-11',
+                'bg-custom-teal-500': activeDate === '08-11',
+                'text-black': activeDate === '08-11',
+              }"
+            >
+              8/11
+            </div>
+            <div
+              @click="() => handleActiveDateClick('08-12')"
+              class="flex items-center justify-center text-lg cursor-pointer grow"
+              :class="{
+                'border border-custom-teal-700': activeDate !== '08-12',
+                'bg-black': activeDate !== '08-12',
+                'text-custom-teal-700': activeDate !== '08-12',
+                'bg-custom-teal-500': activeDate === '08-12',
+                'text-black': activeDate === '08-12',
+              }"
+            >
+              8/12
+            </div>
+          </div>
+          <div class="basis-[90%] flex gap-2 text-lg">
+            <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1001</div>
+            <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1101</div>
+            <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1003</div>
+          </div>
+        </div>
+
+        <!-- 吸底元件 -->
+        <div class="hidden md:block">
+          <div
+            class="footer right-0 left-0 px-[140px]"
+            :class="{
+              'footer-visible': isTurnOnDynamicFooter,
+              'footer-animated-hidden': !isTurnOnDynamicFooter,
+              hidden: isDisableDynamicFooter,
+            }"
+          >
+            <div class="flex gap-2 p-2 bg-black border border-custom-teal-500">
+              <div class="basis-[10%] flex">
+                <div
+                  @click="() => handleActiveDateClick('08-11')"
+                  class="flex items-center justify-center text-lg cursor-pointer grow"
+                  :class="{
+                    'border border-custom-teal-700': activeDate !== '08-11',
+                    'bg-black': activeDate !== '08-11',
+                    'text-custom-teal-700': activeDate !== '08-11',
+                    'bg-custom-teal-500': activeDate === '08-11',
+                    'text-black': activeDate === '08-11',
+                  }"
+                >
+                  8/11
+                </div>
+                <div
+                  @click="() => handleActiveDateClick('08-12')"
+                  class="flex items-center justify-center text-lg cursor-pointer grow"
+                  :class="{
+                    'border border-custom-teal-700': activeDate !== '08-12',
+                    'bg-black': activeDate !== '08-12',
+                    'text-custom-teal-700': activeDate !== '08-12',
+                    'bg-custom-teal-500': activeDate === '08-12',
+                    'text-black': activeDate === '08-12',
+                  }"
+                >
+                  8/12
+                </div>
+              </div>
+              <div class="basis-[90%] flex gap-2 text-lg">
+                <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1001</div>
+                <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1101</div>
+                <div class="py-3 text-center basis-1/3 bg-custom-pink-700">講廳 1003</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <FilterComponent />
+
+    <div>
+      <SpeakerModal
+        v-if="!!modalSpeakerData && modalSpeakerData.id !== 'dual'"
+        :speakerInfo="modalSpeakerData"
+        :onModalClose="() => handleModalClose()"
+        :isModalOpen="isModalOpen"
+      />
+      <DualSpeakerModal
+        v-if="!!modalSpeakerData && modalSpeakerData.id === 'dual'"
+        :dualSpeakerInfo="modalSpeakerData"
+        :onModalClose="() => handleModalClose()"
+        :isModalOpen="isModalOpen"
+      />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.titleDecoration {
+  background: url("@/assets/images/title_display.svg") no-repeat;
+}
+
+.fbIcon {
+  background-image: url("@/assets/images/icon/ic_fb_l.svg");
+}
+
+.logoTxt {
+  background-image: url("@/assets/images/logo_windows_txt.png");
+}
+
+.writing-vertical {
+  writing-mode: vertical-rl;
+}
+
+.footer {
+  transition: all 0.5s ease;
+  position: fixed;
+  width: inherit;
+  bottom: 0;
+}
+
+.footer-animated-hidden {
+  transform: translateY(100%);
+}
+
+.footer-visible {
+  transform: translateY(0%);
+}
+</style>

@@ -1,3 +1,455 @@
+<script setup>
+/* eslint-disable */
+import { ref, onMounted, inject } from "vue";
+import { useRoute } from "vue-router";
+import { storeToRefs } from "pinia";
+import Swiper from "swiper/bundle";
+import "swiper/css/bundle";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
+import { useScrollStore } from "@/stores/scroll";
+import { usePageInfoStore } from "@/stores/pageInfo";
+import { speakers } from "@/content/speakers";
+import { trafficInfo } from "@/content/trafficInfo";
+import StylingTitle from "@/components/StylingTitle.vue";
+import StylingFBLink from "@/components/StylingFBLink.vue";
+
+const swiperInit = () => {
+  const swiper = new Swiper(".swiper", {
+    loop: true,
+    // slidesPerView: 5,
+    // spaceBetween: 8,
+    autoplay: {
+      delay: 3000,
+      reverseDirection: true,
+    },
+    breakpoints: {
+      250: {
+        slidesPerView: 2,
+        centeredSlides: true,
+      },
+      560: {
+        slidesPerView: 3,
+        centeredSlides: false,
+      },
+      768: {
+        slidesPerView: 5,
+        centeredSlides: false,
+      },
+    },
+    on: {
+      slideChange: function () {
+        const windowWidth = window.innerWidth;
+        const slides = this.slides;
+        const activeIndex = this.activeIndex;
+
+        if (windowWidth >= 768) {
+          slides.forEach((slide, index) => {
+            let opacity = 0.2;
+            let scale = 0.5;
+            let transformOrigin = "center";
+            if (index === activeIndex) {
+              opacity = 0.6;
+              scale = 0.8;
+              transformOrigin = "right";
+            } else if (index === activeIndex + 1) {
+              opacity = 0.8;
+              scale = 0.9;
+              transformOrigin = "right";
+              slide.style.marginRight = "17px";
+            } else if (index === activeIndex + 3) {
+              opacity = 0.8;
+              scale = 0.9;
+              transformOrigin = "left";
+              slide.style.marginLeft = "17px";
+            } else if (index === activeIndex + 4) {
+              opacity = 0.6;
+              scale = 0.8;
+              transformOrigin = "left";
+              slide.style.marginLeft = "0px";
+            } else if (index === activeIndex + 2) {
+              opacity = 1;
+              scale = 1;
+              slide.style.marginRight = "0px";
+            }
+            slide.style.opacity = opacity;
+            slide.style.transform = `scale(${scale})`;
+            slide.style.transformOrigin = transformOrigin;
+          });
+        } else if (windowWidth <= 767 && windowWidth >= 560) {
+          slides.forEach((slide, index) => {
+            let opacity = 0.2;
+            let scale = 0.5;
+            if (index === activeIndex) {
+              opacity = 0.8;
+              scale = 0.9;
+            } else if (index === activeIndex + 2) {
+              opacity = 0.8;
+              scale = 0.9;
+            } else if (index === activeIndex + 1) {
+              opacity = 1;
+              scale = 1;
+            }
+            slide.style.opacity = opacity;
+            slide.style.transform = `scale(${scale})`;
+          });
+        } else if (windowWidth < 560) {
+          slides.forEach((slide, index) => {
+            let opacity = 0.8;
+            let scale = 0.9;
+            if (index === activeIndex) {
+              opacity = 1;
+              scale = 1;
+            }
+            slide.style.opacity = opacity;
+            slide.style.transform = `scale(${scale})`;
+          });
+        }
+      },
+    },
+  });
+};
+
+const route = useRoute();
+
+const scrollStore = useScrollStore();
+const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } = storeToRefs(scrollStore);
+const { setSpiderLocation } = scrollStore;
+
+const pageInfoStore = usePageInfoStore();
+const { setCurrentPageName } = pageInfoStore;
+
+const gsap = inject("gsap");
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+const showHome = ref(false);
+const section1 = ref();
+const section2 = ref();
+const section3 = ref();
+const section4 = ref();
+const section5 = ref();
+const section6 = ref();
+
+const banner = ref(null);
+const bannerText = ref(null);
+const isWindowHeight = ref(false);
+const logoMan2 = ref();
+const logoMan3 = ref();
+const speaker1 = ref();
+const speaker2 = ref();
+const car = ref();
+const MRT = ref();
+const bus = ref();
+const currentTrafficInfo = ref({
+  transportation: "car",
+  method: "開車",
+  info: trafficInfo.car,
+});
+let currentTransportation = null;
+let previousTransportation = null;
+
+const toggleTrafficInfo = (transportation, method, isFirst) => {
+  previousTransportation = currentTransportation;
+  currentTransportation = transportation;
+
+  if (previousTransportation === transportation) return;
+
+  currentTrafficInfo.value = {
+    transportation,
+    method,
+    info: trafficInfo[transportation],
+  };
+
+  const refName = `${transportation}.value`;
+  const refValue = eval(refName);
+  gsap.to(refValue, {
+    top: "19rem",
+    right: "1rem",
+    duration: 0.5,
+    ease: "power2.out",
+  });
+
+  if (!isFirst) {
+    const previousRefName = `${previousTransportation}.value`;
+    const previousRefValue = eval(previousRefName);
+    gsap.to(previousRefValue, {
+      right: "-30rem",
+      duration: 0.5,
+      ease: "power2.out",
+      onComplete: () => {
+        moveBack(previousRefValue);
+      },
+    });
+  }
+};
+
+const moveBack = (previousRefValue) => {
+  const viewportWidth = window.innerWidth;
+  if (viewportWidth >= 2000) {
+    gsap.set(previousRefValue, { right: "300%" });
+  } else {
+    gsap.set(previousRefValue, { right: "200%" });
+  }
+};
+
+const showHomePage = () => {
+  gsap.to(loading.value, { autoAlpha: 0, duration: 0 });
+  section1Anime();
+  toggleTrafficInfo("car", "開車", true);
+};
+
+const section1AnimeTl = gsap.timeline();
+const section1LeaveAnimeTl = gsap.timeline();
+
+const section1Anime = () => {
+  section1EnterAnime();
+
+  setTimeout(() => {
+    section1AnimeScrollTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section1.value,
+        start: "center-=100",
+        end: "center+=100",
+        scrub: true,
+      },
+    });
+  });
+};
+
+const section1EnterAnime = () => {
+  const sellBtn = document.querySelector("#sellBtn");
+  section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
+  section1AnimeTl.fromTo(
+    sellBtn,
+    {
+      opacity: 0,
+    },
+    {
+      opacity: 1,
+      duration: 0.5,
+      ease: "power4.out",
+    }
+  );
+  section1AnimeTl.fromTo(
+    bannerText.value,
+    {
+      x: "-30%",
+      opacity: 0,
+    },
+    {
+      x: 0,
+      opacity: 1,
+      duration: 0.5,
+      ease: "power4.out",
+    }
+  );
+};
+
+const section1LeaveAnime = () => {
+  section1LeaveAnimeTl.to(section1.value, { xPercent: 100, opacity: 0, duration: 1 });
+  section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 0, duration: 0.2 });
+};
+
+const section1ReturnAnime = () => {
+  section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 1, duration: 0.2 });
+  section1EnterAnime();
+};
+
+let section2AnimeTl = gsap.timeline();
+
+const section2Anime = () => {
+  setTimeout(() => {
+    section2AnimeTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section2.value,
+        start: "top center",
+        scrub: true,
+        once: true,
+        onEnter: () => {
+          section2EnterAnime();
+        },
+      },
+    });
+  });
+};
+
+const section2EnterAnime = () => {
+  section1AnimeTl.fromTo(
+    logoMan2.value,
+    {
+      x: "-50%",
+      opacity: 0,
+    },
+    {
+      x: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power4.out",
+    }
+  );
+};
+
+let section3AnimeTl = gsap.timeline();
+
+const section3Anime = () => {
+  setTimeout(() => {
+    section3AnimeTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section3.value,
+        start: "top+=100 center",
+        scrub: true,
+        once: true,
+        onEnter: () => {
+          section3EnterAnime();
+        },
+      },
+    });
+  });
+};
+
+const section3EnterAnime = () => {
+  section1AnimeTl.fromTo(
+    logoMan3.value,
+    {
+      x: "-50%",
+      opacity: 0,
+    },
+    {
+      x: 0,
+      opacity: 1,
+      duration: 1,
+      ease: "power4.out",
+    }
+  );
+};
+
+const scrollIntoView = (num) => {
+  const section1Height = section1.value.offsetHeight;
+  const section2Height = section2.value.offsetHeight;
+  const scrollPosition = section1Height + section2Height - 50;
+
+  switch (num) {
+    case 1:
+      section1.value.scrollIntoView({ behavior: "smooth" });
+      break;
+    case 2:
+      section2.value.scrollIntoView({ behavior: "smooth" });
+      break;
+    case 3:
+      section3.value.scrollIntoView({ behavior: "smooth" });
+      break;
+    case 4:
+      section4.value.scrollIntoView({ behavior: "smooth" });
+      break;
+    case 5:
+      section5.value.scrollIntoView({ behavior: "smooth" });
+      break;
+    case 6:
+      section6.value.scrollIntoView({ behavior: "smooth" });
+      break;
+
+    default:
+      break;
+  }
+};
+
+// loading
+const loading = ref(null);
+const loadingAnime = ref();
+const loadingLine = ref();
+const spider = ref();
+const loadingPercent = ref(0);
+const spiderTop = ref();
+let initHeight;
+
+// 計算蜘蛛圖片距離視窗最上方的距離
+function calculateSpiderTop() {
+  const spiderRect = spider.value.getBoundingClientRect();
+  spiderTop.value = spiderRect.top + window.pageYOffset;
+  if (!initHeight) {
+    initHeight = spiderTop.value;
+  }
+}
+
+// 更新 loading 畫面的百分比和線條高度
+function updateLoading() {
+  gsap.to(loadingAnime.value, { y: -initHeight, duration: 1 });
+  gsap.to(loadingLine.value, { height: 10, duration: 1 });
+  setTimeout(() => {
+    loadingPercent.value = 100;
+  }, 800);
+}
+
+const handleScroll = () => {
+  if (isClicking.value) {
+    // 若正在點擊操作中，則不處理滾輪事件
+    return;
+  }
+
+  // 根據滾輪位置偵測區塊
+  const sections = [section1, section2, section3, section4, section5, section6];
+
+  let currentSectionIndex = -1;
+
+  let scrollTimeout = null;
+
+  clearTimeout(scrollTimeout);
+
+  scrollTimeout = setTimeout(() => {
+    for (let i = sections.length - 1; i >= 0; i--) {
+      if (sections[i].value.getBoundingClientRect().top <= window.innerHeight / 2) {
+        currentSectionIndex = i + 1;
+        break;
+      }
+    }
+
+    // 執行 setSpiderLocation()，傳遞當前區塊的索引
+    setSpiderLocation(currentSectionIndex);
+    toggleSpiderLineHeightFn.value(currentSectionIndex);
+  }, 500);
+};
+
+const detectWindowHeight = () => {
+  const windowHeight = window.innerHeight;
+
+  isWindowHeight.value = windowHeight < 746 ? true : false;
+};
+
+onMounted(() => {
+  // 計算蜘蛛圖片距離視窗最上方的距離
+  calculateSpiderTop();
+  detectWindowHeight();
+
+  // 模擬載入過程
+  showHome.value = true;
+  setTimeout(() => {
+    updateLoading();
+    setSpiderLocation(1, true);
+    toggleSpiderLineHeightFn.value(1);
+    setTimeout(() => {
+      showHomePage();
+    }, 1000);
+  }, 100);
+
+  setCurrentPageName(route.name);
+
+  scrollIntoViewFn.value = scrollIntoView;
+
+  speaker1.value = speakers.speaker1;
+  speaker2.value = speakers.speaker2;
+
+  setTimeout(() => {
+    const viewportWidth = window.innerWidth;
+    if (viewportWidth >= 768) {
+      window.addEventListener("wheel", handleScroll);
+      section3Anime();
+      section2Anime();
+    }
+    swiperInit();
+  });
+});
+</script>
+
 <template>
   <!-- loading 畫面 -->
   <div ref="loading" class="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen bg-custom-gray-900">
@@ -671,572 +1123,3 @@
   }
 }
 </style>
-
-<script setup>
-/* eslint-disable */
-import { ref, onMounted, inject } from "vue";
-import { useRoute } from "vue-router";
-import { storeToRefs } from "pinia";
-import Swiper from "swiper/bundle";
-import "swiper/css/bundle";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import { useScrollStore } from "@/stores/scroll";
-import { usePageInfoStore } from "@/stores/pageInfo";
-import { speakers } from "@/content/speakers";
-import { trafficInfo } from "@/content/trafficInfo";
-import StylingTitle from "@/components/StylingTitle.vue";
-import StylingFBLink from "@/components/StylingFBLink.vue";
-
-const swiperInit = () => {
-  const swiper = new Swiper(".swiper", {
-    loop: true,
-    // slidesPerView: 5,
-    // spaceBetween: 8,
-    autoplay: {
-      delay: 3000,
-      reverseDirection: true,
-    },
-    breakpoints: {
-      250: {
-        slidesPerView: 2,
-        centeredSlides: true,
-      },
-      560: {
-        slidesPerView: 3,
-        centeredSlides: false,
-      },
-      768: {
-        slidesPerView: 5,
-        centeredSlides: false,
-      },
-    },
-    on: {
-      slideChange: function () {
-        const windowWidth = window.innerWidth;
-        const slides = this.slides;
-        const activeIndex = this.activeIndex;
-
-        if (windowWidth >= 768) {
-          slides.forEach((slide, index) => {
-            let opacity = 0.2;
-            let scale = 0.5;
-            let transformOrigin = "center";
-            if (index === activeIndex) {
-              opacity = 0.6;
-              scale = 0.8;
-              transformOrigin = "right";
-            } else if (index === activeIndex + 1) {
-              opacity = 0.8;
-              scale = 0.9;
-              transformOrigin = "right";
-              slide.style.marginRight = "17px";
-            } else if (index === activeIndex + 3) {
-              opacity = 0.8;
-              scale = 0.9;
-              transformOrigin = "left";
-              slide.style.marginLeft = "17px";
-            } else if (index === activeIndex + 4) {
-              opacity = 0.6;
-              scale = 0.8;
-              transformOrigin = "left";
-              slide.style.marginLeft = "0px";
-            } else if (index === activeIndex + 2) {
-              opacity = 1;
-              scale = 1;
-              slide.style.marginRight = "0px";
-            }
-            slide.style.opacity = opacity;
-            slide.style.transform = `scale(${scale})`;
-            slide.style.transformOrigin = transformOrigin;
-          });
-        } else if (windowWidth <= 767 && windowWidth >= 560) {
-          slides.forEach((slide, index) => {
-            let opacity = 0.2;
-            let scale = 0.5;
-            if (index === activeIndex) {
-              opacity = 0.8;
-              scale = 0.9;
-            } else if (index === activeIndex + 2) {
-              opacity = 0.8;
-              scale = 0.9;
-            } else if (index === activeIndex + 1) {
-              opacity = 1;
-              scale = 1;
-            }
-            slide.style.opacity = opacity;
-            slide.style.transform = `scale(${scale})`;
-          });
-        } else if (windowWidth < 560) {
-          slides.forEach((slide, index) => {
-            let opacity = 0.8;
-            let scale = 0.9;
-            if (index === activeIndex) {
-              opacity = 1;
-              scale = 1;
-            }
-            slide.style.opacity = opacity;
-            slide.style.transform = `scale(${scale})`;
-          });
-        }
-      },
-    },
-  });
-};
-
-const route = useRoute();
-
-const scrollStore = useScrollStore();
-const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } = storeToRefs(scrollStore);
-const { setSpiderLocation } = scrollStore;
-
-const pageInfoStore = usePageInfoStore();
-const { setCurrentPageName } = pageInfoStore;
-
-const gsap = inject("gsap");
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
-const showHome = ref(false);
-const section1 = ref();
-const section2 = ref();
-const section3 = ref();
-const section4 = ref();
-const section5 = ref();
-const section6 = ref();
-
-const banner = ref(null);
-const bannerText = ref(null);
-const isWindowHeight = ref(false);
-const logoMan2 = ref();
-const logoMan3 = ref();
-const speaker1 = ref();
-const speaker2 = ref();
-const car = ref();
-const MRT = ref();
-const bus = ref();
-const currentTrafficInfo = ref({
-  transportation: "car",
-  method: "開車",
-  info: trafficInfo.car,
-});
-let currentTransportation = null;
-let previousTransportation = null;
-let speakerMoveRightTl = null;
-let section1AnimeScrollTl = null;
-
-const toggleTrafficInfo = (transportation, method, isFirst) => {
-  previousTransportation = currentTransportation;
-  currentTransportation = transportation;
-
-  if (previousTransportation === transportation) return;
-
-  currentTrafficInfo.value = {
-    transportation,
-    method,
-    info: trafficInfo[transportation],
-  };
-
-  const refName = `${transportation}.value`;
-  const refValue = eval(refName);
-  gsap.to(refValue, {
-    top: "19rem",
-    right: "1rem",
-    duration: 0.5,
-    ease: "power2.out",
-  });
-
-  if (!isFirst) {
-    const previousRefName = `${previousTransportation}.value`;
-    const previousRefValue = eval(previousRefName);
-    gsap.to(previousRefValue, {
-      right: "-30rem",
-      duration: 0.5,
-      ease: "power2.out",
-      onComplete: () => {
-        moveBack(previousRefValue);
-      },
-    });
-  }
-};
-
-const moveBack = (previousRefValue) => {
-  const viewportWidth = window.innerWidth;
-  if (viewportWidth >= 2000) {
-    gsap.set(previousRefValue, { right: "300%" });
-  } else {
-    gsap.set(previousRefValue, { right: "200%" });
-  }
-};
-
-const showHomePage = () => {
-  gsap.to(loading.value, { autoAlpha: 0, duration: 0 });
-  section1Anime();
-  toggleTrafficInfo("car", "開車", true);
-};
-
-const section1AnimeTl = gsap.timeline();
-const section1LeaveAnimeTl = gsap.timeline();
-
-const section1Anime = () => {
-  section1EnterAnime();
-
-  setTimeout(() => {
-    section1AnimeScrollTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section1.value,
-        start: "center-=100",
-        end: "center+=100",
-        // markers: true,
-        scrub: true,
-        // onLeaveBack: () => {
-        //   section1ReturnAnime();
-        // },
-        // onEnter: () => {
-        // section1LeaveAnime();
-        // },
-      },
-    });
-  });
-};
-
-const section1EnterAnime = () => {
-  const sellBtn = document.querySelector("#sellBtn");
-  section1AnimeTl.from(banner.value, { duration: 0.5, scale: 0.5, opacity: 0, ease: "power4.out" });
-  section1AnimeTl.fromTo(
-    sellBtn,
-    {
-      opacity: 0,
-    },
-    {
-      opacity: 1,
-      duration: 0.5,
-      ease: "power4.out",
-    }
-  );
-  section1AnimeTl.fromTo(
-    bannerText.value,
-    {
-      x: "-30%",
-      opacity: 0,
-    },
-    {
-      x: 0,
-      opacity: 1,
-      duration: 0.5,
-      ease: "power4.out",
-    }
-  );
-};
-
-const section1LeaveAnime = () => {
-  section1LeaveAnimeTl.to(section1.value, { xPercent: 100, opacity: 0, duration: 1 });
-  section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 0, duration: 0.2 });
-};
-
-const section1ReturnAnime = () => {
-  section1LeaveAnimeTl.to(section1.value, { xPercent: 0, opacity: 1, duration: 0.2 });
-  section1EnterAnime();
-};
-
-let section2AnimeTl = gsap.timeline();
-
-const section2Anime = () => {
-  setTimeout(() => {
-    section2AnimeTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section2.value,
-        start: "top center",
-        // endTrigger: section3.value,
-        // end: "center+=50 bottom",
-        // markers: true,
-        scrub: true,
-        once: true,
-        onEnter: () => {
-          section2EnterAnime();
-        },
-        // onLeaveBack: () => {
-        //   section2EnterAnime();
-        // },
-        // onLeave: () => {
-        //   section2LeaveAnime();
-        // },
-        // onUpdate: () => {
-        //   section2EnterAnime();
-        // },
-      },
-    });
-  });
-};
-
-const section2EnterAnime = () => {
-  section1AnimeTl.fromTo(
-    logoMan2.value,
-    {
-      x: "-50%",
-      opacity: 0,
-    },
-    {
-      x: 0,
-      opacity: 1,
-      duration: 1,
-      ease: "power4.out",
-    }
-  );
-};
-
-// const section2LeaveAnime = () => {
-//   section1AnimeTl.to(
-//     logoMan2.value,
-//     {
-//       opacity: 0,
-//       duration: 0,
-//       ease: "power4.out",
-//     }
-//   );
-// };
-
-let section3AnimeTl = gsap.timeline();
-
-const section3Anime = () => {
-  setTimeout(() => {
-    section3AnimeTl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section3.value,
-        start: "top+=100 center",
-        // endTrigger: section3.value,
-        // end: "center+=50 bottom",
-        // markers: true,
-        scrub: true,
-        once: true,
-        onEnter: () => {
-          section3EnterAnime();
-        },
-      },
-    });
-
-    // speakerMoveRightTl = gsap.timeline({
-    //   scrollTrigger: {
-    //     trigger: section3.value,
-    //     start: "top+=60",
-    //     endTrigger: section4.value,
-    //     end: "top bottom",
-    //     pin: true,
-    //     // markers: true,
-    //     scrub: true,
-    //     onUpdate: () => {},
-    //   },
-    // });
-
-    // const speaker = document.querySelector("#speaker");
-    // const speaker1 = document.querySelector("#speaker1-1");
-    // const speaker2 = document.querySelector("#speaker1-2");
-    // const speaker3 = document.querySelector("#speaker1-3");
-    // const speaker4 = document.querySelector("#speaker1-4");
-    // const speaker5 = document.querySelector("#speaker1-5");
-    // const speaker6 = document.querySelector("#speaker2-1");
-    // const speaker7 = document.querySelector("#speaker2-2");
-    // const speaker8 = document.querySelector("#speaker2-3");
-    // const speaker9 = document.querySelector("#speaker2-4");
-    // const speaker10 = document.querySelector("#speaker2-5");
-
-    // const screenWidth = window.innerWidth;
-
-    // speakerMoveRightTl.to([speaker1, speaker6], {
-    //   opacity: 1,
-    // });
-    // speakerMoveRightTl.to([speaker2, speaker7], {
-    //   opacity: 1,
-    // });
-    // speakerMoveRightTl.to(speaker, {
-    //   x: 150,
-    // });
-
-    // speakerMoveRightTl.to([speaker3, speaker8], {
-    //   opacity: 1,
-    // });
-    // speakerMoveRightTl.to([speaker4, speaker9], {
-    //   opacity: 1,
-    // });
-    // speakerMoveRightTl.to([speaker5, speaker10], {
-    //   opacity: 1,
-    // });
-
-    // if (screenWidth >= 768 && screenWidth < 900) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 1500,
-    //   });
-    // } else if (screenWidth >= 900 && screenWidth < 1024) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 1350,
-    //   });
-    // } else if (screenWidth >= 1024 && screenWidth < 1280) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 1200,
-    //   });
-    // } else if (screenWidth >= 1280 && screenWidth < 1400) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 900,
-    //   });
-    // } else if (screenWidth >= 1400 && screenWidth < 1536) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 800,
-    //   });
-    // } else if (screenWidth >= 1536 && screenWidth < 1670) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 650,
-    //   });
-    // } else if (screenWidth >= 1670 && screenWidth < 1920) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 470,
-    //   });
-    // } else if (screenWidth >= 1920) {
-    //   speakerMoveRightTl.to(speaker, {
-    //     x: 370,
-    //   });
-    // }
-  });
-};
-
-const section3EnterAnime = () => {
-  section1AnimeTl.fromTo(
-    logoMan3.value,
-    {
-      x: "-50%",
-      opacity: 0,
-    },
-    {
-      x: 0,
-      opacity: 1,
-      duration: 1,
-      ease: "power4.out",
-    }
-  );
-};
-
-const scrollIntoView = (num) => {
-  const section1Height = section1.value.offsetHeight;
-  const section2Height = section2.value.offsetHeight;
-  const scrollPosition = section1Height + section2Height - 50;
-
-  switch (num) {
-    case 1:
-      section1.value.scrollIntoView({ behavior: "smooth" });
-      break;
-    case 2:
-      section2.value.scrollIntoView({ behavior: "smooth" });
-      break;
-    case 3:
-      // window.scrollTo({ top: scrollPosition, behavior: "smooth" });
-      section3.value.scrollIntoView({ behavior: "smooth" });
-      break;
-    case 4:
-      section4.value.scrollIntoView({ behavior: "smooth" });
-      break;
-    case 5:
-      section5.value.scrollIntoView({ behavior: "smooth" });
-      break;
-    case 6:
-      section6.value.scrollIntoView({ behavior: "smooth" });
-      break;
-
-    default:
-      break;
-  }
-};
-
-// loading
-const loading = ref(null);
-const loadingAnime = ref();
-const loadingLine = ref();
-const spider = ref();
-const loadingPercent = ref(0);
-const spiderTop = ref();
-let initHeight;
-
-// 計算蜘蛛圖片距離視窗最上方的距離
-function calculateSpiderTop() {
-  const spiderRect = spider.value.getBoundingClientRect();
-  spiderTop.value = spiderRect.top + window.pageYOffset;
-  if (!initHeight) {
-    initHeight = spiderTop.value;
-  }
-}
-
-// 更新 loading 畫面的百分比和線條高度
-function updateLoading() {
-  gsap.to(loadingAnime.value, { y: -initHeight, duration: 1 });
-  gsap.to(loadingLine.value, { height: 10, duration: 1 });
-  setTimeout(() => {
-    loadingPercent.value = 100;
-  }, 800);
-}
-
-const handleScroll = () => {
-  if (isClicking.value) {
-    // 若正在點擊操作中，則不處理滾輪事件
-    return;
-  }
-
-  // 根據滾輪位置偵測區塊
-  const sections = [section1, section2, section3, section4, section5, section6];
-
-  let currentSectionIndex = -1;
-
-  let scrollTimeout = null;
-
-  clearTimeout(scrollTimeout);
-
-  scrollTimeout = setTimeout(() => {
-    for (let i = sections.length - 1; i >= 0; i--) {
-      if (sections[i].value.getBoundingClientRect().top <= window.innerHeight / 2) {
-        currentSectionIndex = i + 1;
-        break;
-      }
-    }
-
-    // 執行 setSpiderLocation()，傳遞當前區塊的索引
-    setSpiderLocation(currentSectionIndex);
-    toggleSpiderLineHeightFn.value(currentSectionIndex);
-  }, 500);
-};
-
-const detectWindowHeight = () => {
-  const windowHeight = window.innerHeight;
-
-  isWindowHeight.value = windowHeight < 746 ? true : false;
-};
-
-onMounted(() => {
-  // 計算蜘蛛圖片距離視窗最上方的距離
-  calculateSpiderTop();
-  detectWindowHeight();
-
-  // 模擬載入過程
-  showHome.value = true;
-  setTimeout(() => {
-    updateLoading();
-    setSpiderLocation(1, true);
-    toggleSpiderLineHeightFn.value(1);
-    setTimeout(() => {
-      showHomePage();
-    }, 1000);
-  }, 100);
-
-  setCurrentPageName(route.name);
-
-  scrollIntoViewFn.value = scrollIntoView;
-
-  speaker1.value = speakers.speaker1;
-  speaker2.value = speakers.speaker2;
-
-  setTimeout(() => {
-    const viewportWidth = window.innerWidth;
-    if (viewportWidth >= 768) {
-      window.addEventListener("wheel", handleScroll);
-      section3Anime();
-      section2Anime();
-    }
-    swiperInit();
-  });
-});
-</script>

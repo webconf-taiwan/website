@@ -1,3 +1,19 @@
+<script setup>
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { usePageInfoStore } from "@/stores/pageInfo";
+import { useFilterStore } from "@/stores/filter";
+
+const pageInfoStore = usePageInfoStore();
+const { currentPageName } = storeToRefs(pageInfoStore);
+
+const filterStore = useFilterStore();
+const { filterPage, options } = storeToRefs(filterStore);
+const { toggleTag } = filterStore;
+
+const specialFilter = ref();
+</script>
+
 <template>
   <div v-if="currentPageName === 'speaker' || currentPageName === 'agenda'" ref="specialFilter" class="hidden md:block md:sticky md:top-4 md:z-20">
     <div
@@ -12,7 +28,7 @@
         >
           <a
             href="#"
-            class="flex justify-between items-center py-1 px-2 rounded-md transition-all duration-300 hover:bg-custom-teal-700"
+            class="flex items-center justify-between px-2 py-1 transition-all duration-300 rounded-md hover:bg-custom-teal-700"
             @click.prevent="toggleTag(currentPageName, tag)"
             >{{ tag }}
           </a>
@@ -37,46 +53,3 @@
   background: #006a97;
 }
 </style>
-
-<script setup>
-import { ref } from "vue";
-import { storeToRefs } from "pinia";
-import { usePageInfoStore } from "@/stores/pageInfo";
-import { useFilterStore } from "@/stores/filter";
-
-const pageInfoStore = usePageInfoStore();
-const { currentPageName } = storeToRefs(pageInfoStore);
-
-const filterStore = useFilterStore();
-const { filterPage, options } = storeToRefs(filterStore);
-const { toggleTag } = filterStore;
-
-const specialFilter = ref();
-
-// const fixedSpecialFilter = () => {
-//   window.addEventListener("scroll", () => {
-//     const scrollPosition = window.scrollY;
-
-//     if (scrollPosition >= 200) {
-//       specialFilter.value.classList.add("fixed");
-//       specialFilter.value.classList.add("top-2");
-//       specialFilter.value.classList.add("left-1/2");
-//       specialFilter.value.classList.add("transform");
-//       specialFilter.value.classList.add("-translate-x-1/2");
-//     } else {
-//       specialFilter.value.classList.remove("fixed");
-//       specialFilter.value.classList.remove("top-2");
-//       specialFilter.value.classList.remove("left-1/2");
-//       specialFilter.value.classList.remove("transform");
-//       specialFilter.value.classList.remove("-translate-x-1/2");
-//     }
-//   });
-// };
-
-// onMounted(() => {
-//   const viewportWidth = window.innerWidth;
-//   if (viewportWidth >= 768) {
-//     fixedSpecialFilter();
-//   }
-// });
-</script>

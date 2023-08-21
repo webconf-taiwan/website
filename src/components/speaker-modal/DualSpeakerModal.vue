@@ -1,3 +1,85 @@
+<script setup>
+import { ref, toRefs, onBeforeUnmount, onMounted, watchEffect, reactive } from "vue";
+import CategoryTag from "@/components/CategoryTag.vue";
+import iconTime from "@/assets/images/icon/ic_time_s.svg";
+import iconLocation from "@/assets/images/icon/ic_location_s.svg";
+import iconClose from "@/assets/images/icon/ic_close_s.svg";
+import iconFacebook from "@/assets/images/icon/ic_fb_l.svg";
+import iconTwitter from "@/assets/images/icon/ic_twitter_l.svg";
+import iconLink from "@/assets/images/icon/ic_web_l.svg";
+import iconIg from "@/assets/images/icon/ic_ig_l.svg";
+import iconMedium from "@/assets/images/icon/ic_medium_l.svg";
+import iconNote from "@/assets/images/icon/ic_note_s.svg";
+
+const props = defineProps({
+  isMoreInfoOpen: {
+    default: false,
+    type: Boolean,
+  },
+  isModalOpen: {
+    default: false,
+    type: Boolean,
+  },
+  onModalClose: {
+    type: Function,
+  },
+  dualSpeakerInfo: {
+    type: Object,
+  },
+});
+const { onModalClose, isModalOpen } = toRefs(props);
+const dualSpeakerInfo = reactive(props.dualSpeakerInfo);
+
+const { data: dualSpeakerArr } = toRefs(dualSpeakerInfo);
+
+watchEffect(() => {
+  if (typeof window !== "undefined" && window.document) {
+    if (isModalOpen.value) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }
+});
+const onKeydown = (e) => {
+  if (e.key === "Escape" && isModalOpen.value) {
+    onModalClose.value();
+  }
+};
+
+const modalElement = ref(null);
+
+const onClickOutside = (e) => {
+  if (isModalOpen.value && modalElement.value && !modalElement.value.contains(e.target)) {
+    onModalClose.value();
+  }
+};
+
+let timeoutId;
+
+watchEffect(() => {
+  if (isModalOpen.value) {
+    timeoutId = setTimeout(() => {
+      window.addEventListener("click", onClickOutside);
+    }, 100);
+  } else {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    window.removeEventListener("click", onClickOutside);
+  }
+});
+
+onMounted(() => {
+  window.addEventListener("keydown", onKeydown);
+});
+
+onBeforeUnmount(() => {
+  window.removeEventListener("keydown", onKeydown);
+  window.removeEventListener("click", onClickOutside);
+});
+</script>
+
 <template>
   <div
     v-if="isModalOpen"
@@ -198,100 +280,11 @@
             <iconNote class="stroke-current" />
             <p>共筆文件</p>
           </a>
-          <a class="transition-colors duration-300 secondary-button" :href="dualSpeakerInfo.googleCalendarLink" target="_blank">
-            <iconDate class="stroke-current" />
-            <p>加入行事曆</p>
-          </a>
         </div>
       </section>
     </section>
   </div>
 </template>
-
-<script setup>
-import { ref, toRefs, onBeforeUnmount, onMounted, watchEffect, reactive } from "vue";
-
-import CategoryTag from "@/components/CategoryTag.vue";
-
-import iconTime from "@/assets/images/icon/ic_time_s.svg";
-import iconLocation from "@/assets/images/icon/ic_location_s.svg";
-import iconClose from "@/assets/images/icon/ic_close_s.svg";
-import iconFacebook from "@/assets/images/icon/ic_fb_l.svg";
-import iconTwitter from "@/assets/images/icon/ic_twitter_l.svg";
-import iconLink from "@/assets/images/icon/ic_web_l.svg";
-import iconIg from "@/assets/images/icon/ic_ig_l.svg";
-import iconMedium from "@/assets/images/icon/ic_medium_l.svg";
-import iconDate from "@/assets/images/icon/ic_date_s.svg";
-import iconNote from "@/assets/images/icon/ic_note_s.svg";
-
-const props = defineProps({
-  isMoreInfoOpen: {
-    default: false,
-    type: Boolean,
-  },
-  isModalOpen: {
-    default: false,
-    type: Boolean,
-  },
-  onModalClose: {
-    type: Function,
-  },
-  dualSpeakerInfo: {
-    type: Object,
-  },
-});
-const { onModalClose, isModalOpen } = toRefs(props);
-const dualSpeakerInfo = reactive(props.dualSpeakerInfo);
-
-const { data: dualSpeakerArr } = toRefs(dualSpeakerInfo);
-
-watchEffect(() => {
-  if (typeof window !== "undefined" && window.document) {
-    if (isModalOpen.value) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
-  }
-});
-const onKeydown = (e) => {
-  if (e.key === "Escape" && isModalOpen.value) {
-    onModalClose.value();
-  }
-};
-
-const modalElement = ref(null);
-
-const onClickOutside = (e) => {
-  if (isModalOpen.value && modalElement.value && !modalElement.value.contains(e.target)) {
-    onModalClose.value();
-  }
-};
-
-let timeoutId;
-
-watchEffect(() => {
-  if (isModalOpen.value) {
-    timeoutId = setTimeout(() => {
-      window.addEventListener("click", onClickOutside);
-    }, 100);
-  } else {
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    window.removeEventListener("click", onClickOutside);
-  }
-});
-
-onMounted(() => {
-  window.addEventListener("keydown", onKeydown);
-});
-
-onBeforeUnmount(() => {
-  window.removeEventListener("keydown", onKeydown);
-  window.removeEventListener("click", onClickOutside);
-});
-</script>
 
 <!-- scope 會使svg失效 -->
 <style scoped>

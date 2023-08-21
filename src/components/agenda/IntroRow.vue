@@ -1,3 +1,17 @@
+<script setup>
+import TimelineCell from "@/components/agenda/TimelineCell.vue";
+import LocationBar from "@/components/agenda/LocationBar.vue";
+
+defineProps({
+  startTime: {
+    type: String,
+  },
+  endTime: {
+    type: String,
+  },
+});
+</script>
+
 <template>
   <div class="flex flex-col md:flex-row min-h-[130px] gap-2">
     <TimelineCell :startTime="startTime" :endTime="endTime" />
@@ -24,19 +38,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import TimelineCell from "@/components/agenda/TimelineCell.vue";
-import LocationBar from "@/components/agenda/LocationBar.vue";
-
-defineProps({
-  startTime: {
-    type: String,
-  },
-  endTime: {
-    type: String,
-  },
-});
-</script>
-
-<style scoped></style>
