@@ -1,4 +1,4 @@
-import dragon from "@/assets/images/staff/dragon.jpg";
+import EddieKao from "@/assets/images/staff/EddieKao.jpg";
 import Charlie from "@/assets/images/staff/Charlie.jpg";
 import Rae from "@/assets/images/staff/Rae.jpg";
 import Melissa from "@/assets/images/staff/Melissa.jpg";
@@ -15,8 +15,8 @@ import Sabrina from "@/assets/images/staff/Sabrina.jpg";
 const staffs = [
   {
     name: "高見龍",
-    img: dragon,
-    tags: ["掃地兼敲鐘 "],
+    img: EddieKao,
+    tags: ["掃地兼敲鐘"],
     links: [
       {
         icon: "facebook",
@@ -107,7 +107,7 @@ const staffs = [
   {
     name: "田佩穎",
     img: Peiying,
-    tags: ["設計組 - 廠商聯繫"],
+    tags: ["廠商聯繫"],
     links: [
       {
         icon: "facebook",
@@ -118,7 +118,7 @@ const staffs = [
   {
     name: "EG",
     img: EG,
-    tags: ["設計組打雜工"],
+    tags: ["設計組"],
     links: [
       {
         icon: "facebook",
@@ -157,7 +157,7 @@ const staffs = [
   {
     name: "李彥儒",
     img: Yanru,
-    tags: ["衣服圖像設計"],
+    tags: ["T-shirt 設計"],
     links: [
       {
         icon: "instagram",
