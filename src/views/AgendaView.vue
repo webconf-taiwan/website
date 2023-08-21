@@ -1,9 +1,6 @@
 <template>
   <div class="relative py-16">
-    <div
-      ref="fbDecorativeLink"
-      class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6"
-    >
+    <div ref="fbDecorativeLink" class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6">
       <StylingFBLink></StylingFBLink>
     </div>
 
@@ -11,9 +8,7 @@
       <OpenFilter class="mb-2"></OpenFilter>
       <MoveToTop></MoveToTop>
     </div>
-    <a href="#"
-      ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
-    ></a>
+    <a href="#"><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div></a>
 
     <div class="flex flex-col items-center mt-12 mb-16 md:mt-0">
       <StylingTitle>
@@ -28,19 +23,12 @@
     <div class="w-full mx-auto px-5 md:px-[140px]">
       <div class="bg-black relative">
         <div class="flex sticky top-12 md:static z-10">
-          <AgendaDateHeading
-            :isActive="activeDate === '08-11'"
-            :onActiveDateClick="() => handleActiveDateClick('08-11')"
-          >
+          <AgendaDateHeading :isActive="activeDate === '08-11'" :onActiveDateClick="() => handleActiveDateClick('08-11')">
             <p class="text-center text-3xl md:text-4xl leading-none font-bold">
               8/11 <span class="text-base md:text-2xl font-semibold">(FRI.)</span>
             </p>
           </AgendaDateHeading>
-          <AgendaDateHeading
-            isRight
-            :isActive="activeDate === '08-12'"
-            :onActiveDateClick="() => handleActiveDateClick('08-12')"
-          >
+          <AgendaDateHeading isRight :isActive="activeDate === '08-12'" :onActiveDateClick="() => handleActiveDateClick('08-12')">
             <p class="text-center text-3xl md:text-4xl leading-none font-bold">
               8/12 <span class="text-base md:text-2xl font-semibold">(SAT.)</span>
             </p>
@@ -57,11 +45,7 @@
           </div>
 
           <template v-for="session in filteredAgenda" :key="`${activeDate} ${session.id}`">
-            <IntroRow
-              v-if="session.isIntro"
-              :startTime="session.headerText[0]"
-              :endTime="session.headerText[1]"
-            />
+            <IntroRow v-if="session.isIntro" :startTime="session.headerText[0]" :endTime="session.headerText[1]" />
             <GeneralRow
               v-if="!session.isKeynote && !session.isBreakTime && !session.isIntro"
               :speakerInfoArr="session.data"
@@ -83,10 +67,7 @@
         </div>
 
         <!-- 靜態 Footer -->
-        <div
-          class="hidden border border-custom-teal-500 border-t-0 md:flex gap-2 p-2"
-          ref="staticFooterRef"
-        >
+        <div class="hidden border border-custom-teal-500 border-t-0 md:flex gap-2 p-2" ref="staticFooterRef">
           <div class="basis-[10%] flex">
             <div
               @click="() => handleActiveDateClick('08-11')"
@@ -310,9 +291,7 @@ const genSpeakerInfoArr = (sessionData) => {
     const speakerData = speakerInfoMap[id];
     if (filterOptions.value.agenda.length === 0) return speakerData;
 
-    return filterOptions.value.agenda.some((option) => speakerData.categoryTags.includes(option))
-      ? speakerData
-      : null;
+    return filterOptions.value.agenda.some((option) => speakerData.categoryTags.includes(option)) ? speakerData : null;
   });
 
   return filteredArr;

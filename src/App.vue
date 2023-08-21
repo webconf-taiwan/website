@@ -10,10 +10,7 @@
         bgImage: currentPageName !== '2013WebConf',
       }"
     >
-      <div
-        v-if="currentPageName !== 'home' && currentPageName !== '2013WebConf'"
-        class="bg-gradient"
-      ></div>
+      <div v-if="currentPageName !== 'home' && currentPageName !== '2013WebConf'" class="bg-gradient"></div>
     </div>
     <Header ref="header" v-if="header"></Header>
     <router-view />

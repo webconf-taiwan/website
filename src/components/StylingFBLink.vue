@@ -1,8 +1,5 @@
 <template>
-  <div
-    ref="fbDecorativeLink"
-    class="flex flex-col items-center justify-center transition-opacity duration-300"
-  >
+  <div ref="fbDecorativeLink" class="flex flex-col items-center justify-center transition-opacity duration-300">
     <a href="https://www.facebook.com/WebConfTaiwan" target="_blank">
       <div class="w-6 h-6 bg-cover fbIcon"></div>
     </a>
@@ -26,8 +23,7 @@ import { ref, onMounted } from "vue";
 const fbDecorativeLink = ref();
 
 const scrollHandler = () => {
-  const scrollDistanceToBottom =
-    document.documentElement.scrollHeight - (window.innerHeight + window.pageYOffset);
+  const scrollDistanceToBottom = document.documentElement.scrollHeight - (window.innerHeight + window.pageYOffset);
 
   const isBottom = scrollDistanceToBottom < 100;
 

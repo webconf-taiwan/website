@@ -1,22 +1,13 @@
 <template>
   <!-- loading 畫面 -->
-  <div
-    ref="loading"
-    class="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen bg-custom-gray-900"
-  >
+  <div ref="loading" class="fixed top-0 left-0 z-50 flex items-center justify-center w-screen h-screen bg-custom-gray-900">
     <div
       ref="loadingLine"
       class="absolute top-0 left-1/2 transform -translate-x-1/2 w-0.5 bg-custom-teal-500"
       :style="{ height: `${spiderTop + 20}px` }"
     ></div>
     <div ref="loadingAnime" class="flex flex-col items-center">
-      <img
-        src="@/assets/images/spider.svg?url"
-        class="h-16 mb-2"
-        alt="loading spider"
-        style="transform: rotate(180deg)"
-        ref="spider"
-      />
+      <img src="@/assets/images/spider.svg?url" class="h-16 mb-2" alt="loading spider" style="transform: rotate(180deg)" ref="spider" />
       <div class="text-sm font-medium text-custom-teal-500">{{ loadingPercent }}%</div>
     </div>
   </div>
@@ -26,10 +17,7 @@
     <div class="relative flex flex-col bg-transparent">
       <!-- 第一區塊開始 -->
       <div ref="section1">
-        <div
-          ref="banner"
-          class="mainWidth h-[85vh] md:h-screen flex flex-col justify-center items-center w-full"
-        >
+        <div ref="banner" class="mainWidth h-[85vh] md:h-screen flex flex-col justify-center items-center w-full">
           <div
             class="relative flex flex-col items-center justify-between bg-center bg-no-repeat bg-contain logoM w-60 sm:w-1/2 h-3/4 md:w-full md:h-screen md:items-stretch"
           >
@@ -37,14 +25,9 @@
               class="titleBanner w-340 h-80 md:w-480 md:h-110 bg-cover bg-no-repeat bg-center mt-4 md:mt-14 md:ml-28 absolute left-1/2 top-[-5%] transform -translate-x-1/2 md:left-60 md:top-6"
             ></div>
             <div class="logoS w-[350px] h-[380px] bg-cover absolute top-14"></div>
-            <div
-              class="absolute left-1/2 bottom-[-10%] transform -translate-x-1/2 md:left-3/4 md:bottom-32 lg:bottom-16"
-            >
+            <div class="absolute left-1/2 bottom-[-10%] transform -translate-x-1/2 md:left-3/4 md:bottom-32 lg:bottom-16">
               <div class="flex flex-col items-center justify-end md:flex-row md:mr-20 lg:mr-44">
-                <p
-                  ref="bannerText"
-                  class="mb-5 text-lg font-normal text-center text-white whitespace-nowrap md:text-right md:mr-3 md:mb-0"
-                >
+                <p ref="bannerText" class="mb-5 text-lg font-normal text-center text-white whitespace-nowrap md:text-right md:mr-3 md:mb-0">
                   In 2023, Webconf Is Happening<br />Again After Ten Years.
                 </p>
 
@@ -63,18 +46,11 @@
       <!-- 第一區塊結束 -->
 
       <!-- 第二區塊開始 -->
-      <div
-        ref="section2"
-        class="relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:py-40 lg:pt-16 bg-transparent 2xl:m-auto 2xl:w-[60vw]"
-      >
+      <div ref="section2" class="relative mx-6 md:mx-24 lg:ml-32 lg:mr-60 my-6 md:my-0 md:py-40 lg:pt-16 bg-transparent 2xl:m-auto 2xl:w-[60vw]">
         <div class="flex flex-col items-end md:flex-row-reverse md:items-center md:justify-end">
           <div class="w-20 h-6 titleDecoration"></div>
-          <div
-            class="w-full px-5 py-2 mt-1 text-center border bg-custom-gray-800 border-custom-teal-500 md:w-436 md:mr-2 md:mt-0"
-          >
-            <h1 class="text-4xl font-normal text-custom-teal-500 whitespace-nowrap">
-              WebConf Taiwan
-            </h1>
+          <div class="w-full px-5 py-2 mt-1 text-center border bg-custom-gray-800 border-custom-teal-500 md:w-436 md:mr-2 md:mt-0">
+            <h1 class="text-4xl font-normal text-custom-teal-500 whitespace-nowrap">WebConf Taiwan</h1>
           </div>
         </div>
 
@@ -82,17 +58,13 @@
           <div class="w-8 mt-1 mb-1 mr-2 border-t border-b border-r border-custom-teal-700">
             <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
           </div>
-          <p class="text-base font-medium text-custom-pink-700 whitespace-nowrap">
-            BACK TO THE FUTURE OF WEBCONF.
-          </p>
+          <p class="text-base font-medium text-custom-pink-700 whitespace-nowrap">BACK TO THE FUTURE OF WEBCONF.</p>
           <div class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700">
             <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
           </div>
         </div>
         <div class="relative">
-          <div
-            class="overflow-hidden border-b border-r bg-custom-gray-800 border-custom-teal-500 md:border-l md:py-8"
-          >
+          <div class="overflow-hidden border-b border-r bg-custom-gray-800 border-custom-teal-500 md:border-l md:py-8">
             <div class="w-full flex md:relative md:left-[-680px]">
               <div class="hidden mr-2 bg-cover photo2 fixed-width h-350 md:block opacity-30"></div>
               <div class="mr-2 bg-cover photo1 fixed-width h-350"></div>
@@ -113,9 +85,7 @@
               WebConf
               不僅僅關注過去，還關注網頁的未來趨勢和新興技術，並提供業界趨勢及發展方向，以協助企業更好地了解未來網頁發展的方向。從人工智慧和機器學習的興起，到行動優化和響應式設計的重要性不斷提高，這個研討會將深入探討網頁開發的未來和企業如何在網頁技術的快速變化中保持競爭優勢。
             </p>
-            <p class="text-base font-normal text-white">
-              我們誠摯地邀請您加入我們，一起穿越時空，探索網頁技術的進，並了解未來十年網頁發展的趨勢。
-            </p>
+            <p class="text-base font-normal text-white">我們誠摯地邀請您加入我們，一起穿越時空，探索網頁技術的進，並了解未來十年網頁發展的趨勢。</p>
           </div>
         </div>
 
@@ -137,16 +107,9 @@
         </div>
 
         <div>
-          <div
-            id="speaker"
-            class="md:flex md:flex-row-reverse"
-            :class="{ topHight: isWindowHeight }"
-          >
+          <div id="speaker" class="md:flex md:flex-row-reverse" :class="{ topHight: isWindowHeight }">
             <div class="md:flex md:flex-col md:items-center md:mt-8 md:mr-8 2xl:mr-0">
-              <div
-                ref="logoMan3"
-                class="logoMan hidden mdl:block md:w-213 md:h-263 xl:w-[317px] xl:h-[392px] md:bg-cover opacity-0"
-              ></div>
+              <div ref="logoMan3" class="logoMan hidden mdl:block md:w-213 md:h-263 xl:w-[317px] xl:h-[392px] md:bg-cover opacity-0"></div>
               <router-link
                 href="#"
                 :to="{ name: 'agenda' }"
@@ -155,89 +118,51 @@
               >
             </div>
 
-            <div
-              class="flex justify-around mt-10 md:justify-center md:items-center md:flex-col md:flex-1"
-            >
+            <div class="flex justify-around mt-10 md:justify-center md:items-center md:flex-col md:flex-1">
               <ul class="flex flex-col md:flex-row-reverse md:mb-4 md:mr-20 mdl:mr-43 xl:mr-52">
-                <li
-                  class="flex-shrink-0 mb-4 md:mb-0 md:ml-10"
-                  v-for="speaker in speaker1"
-                  :key="speaker.displayName"
-                >
+                <li class="flex-shrink-0 mb-4 md:mb-0 md:ml-10" v-for="speaker in speaker1" :key="speaker.displayName">
                   <p
                     class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 border-custom-teal-500 md:w-40 md:ml-43"
                   >
                     {{ speaker.displayName }}
-                    <span class="text-sm font-medium" v-if="speaker.altName"
-                      >({{ speaker.altName }})</span
-                    >
+                    <span class="text-sm font-medium" v-if="speaker.altName">({{ speaker.altName }})</span>
                   </p>
                   <div class="md:flex">
-                    <div
-                      class="hidden px-2 border-t border-b border-l md:block border-custom-teal-500 bg-custom-gray-800"
-                    >
+                    <div class="hidden px-2 border-t border-b border-l md:block border-custom-teal-500 bg-custom-gray-800">
                       <div class="h-5 mx-1 mb-3 border-b border-l border-r border-custom-teal-700">
                         <div class="h-5 mx-1 border-l border-r w-7px border-custom-teal-700"></div>
                       </div>
-                      <p
-                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700"
-                      >
-                        SPEAKER
-                      </p>
+                      <p class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700">SPEAKER</p>
                       <div class="mx-1 border-t border-l border-r h-105 border-custom-teal-700">
-                        <div
-                          class="mx-1 border-l border-r w-7px h-105 border-custom-teal-700"
-                        ></div>
+                        <div class="mx-1 border-l border-r w-7px h-105 border-custom-teal-700"></div>
                       </div>
                     </div>
                     <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
-                      <img
-                        class="w-145 h-148 sm:w-202 sm:h-206"
-                        :src="speaker.avatar"
-                        alt="speaker"
-                      />
+                      <img class="w-145 h-148 sm:w-202 sm:h-206" :src="speaker.avatar" alt="speaker" />
                     </div>
                   </div>
                 </li>
               </ul>
               <ul class="flex flex-col mt-10 md:flex-row-reverse md:mt-0">
-                <li
-                  class="flex-shrink-0 mb-4 md:mb-0 md:ml-10 md:flex md:flex-col-reverse"
-                  v-for="speaker in speaker2"
-                  :key="speaker.displayName"
-                >
+                <li class="flex-shrink-0 mb-4 md:mb-0 md:ml-10 md:flex md:flex-col-reverse" v-for="speaker in speaker2" :key="speaker.displayName">
                   <p
                     class="p-1 text-xl font-medium border-t border-l border-r bg-custom-gray-800 text-custom-teal-500 md:border-b md:border-t-0 border-custom-teal-500 md:w-40 md:ml-43"
                   >
                     {{ speaker.displayName }}
-                    <span class="text-sm font-medium" v-if="speaker.altName"
-                      >({{ speaker.altName }})</span
-                    >
+                    <span class="text-sm font-medium" v-if="speaker.altName">({{ speaker.altName }})</span>
                   </p>
                   <div class="md:flex">
-                    <div
-                      class="hidden px-2 border-t border-b border-l md:block border-custom-teal-500 bg-custom-gray-800"
-                    >
+                    <div class="hidden px-2 border-t border-b border-l md:block border-custom-teal-500 bg-custom-gray-800">
                       <div class="h-5 mx-1 mb-3 border-b border-l border-r border-custom-teal-700">
                         <div class="h-5 mx-1 border-l border-r w-7px border-custom-teal-700"></div>
                       </div>
-                      <p
-                        class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700"
-                      >
-                        SPEAKER
-                      </p>
+                      <p class="mb-3 text-lg font-normal leading-tight writing-vertical text-custom-pink-700">SPEAKER</p>
                       <div class="mx-1 border-t border-l border-r h-105 border-custom-teal-700">
-                        <div
-                          class="mx-1 border-l border-r w-7px h-105 border-custom-teal-700"
-                        ></div>
+                        <div class="mx-1 border-l border-r w-7px h-105 border-custom-teal-700"></div>
                       </div>
                     </div>
                     <div class="p-1 border border-custom-teal-500 bg-custom-gray-800">
-                      <img
-                        class="w-145 h-148 sm:w-202 sm:h-206"
-                        :src="speaker.avatar"
-                        alt="speaker"
-                      />
+                      <img class="w-145 h-148 sm:w-202 sm:h-206" :src="speaker.avatar" alt="speaker" />
                     </div>
                   </div>
                 </li>
@@ -257,11 +182,7 @@
       <!-- 第三區塊結束 -->
 
       <!-- 第四區塊開始 -->
-      <div
-        ref="section4"
-        id="section4Trigger"
-        class="md:h-[80vh] 3xl:h-[60vh] relative py-6 px-5 overflow-hidden 2xl:w-[75vw] 2xl:mx-auto"
-      >
+      <div ref="section4" id="section4Trigger" class="md:h-[80vh] 3xl:h-[60vh] relative py-6 px-5 overflow-hidden 2xl:w-[75vw] 2xl:mx-auto">
         <div
           class="logoMan hidden md:w-[230px] md:h-[280px] md:bg-cover md:absolute md:z-20 md:transform md:-translate-x-1/2 md:top-32 md:right-[-20px]"
         ></div>
@@ -291,9 +212,7 @@
                 </div>
               </div>
 
-              <div
-                class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500"
-              >
+              <div class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500">
                 <p class="font-normal text-white">
                   包含Frontend、 Backend、 DevOps、技術管理等相關議題。將深入探討各種
                   Web技術的最新趨勢、過往發展，以及如何透過這些技術來提升網站或應用程式的品質、效能與安全性。
@@ -334,9 +253,7 @@
                 </div>
               </div>
 
-              <div
-                class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500"
-              >
+              <div class="px-3 py-4 border-b border-l border-r md:p-8 bg-custom-gray-800 border-custom-teal-500">
                 <p class="font-normal text-white">
                   本屆科技年會將探討 UI/UX
                   設計的最新趨勢，包括使用者界面設計、使用者體驗優化、人機互動設計等議題，以深入探討如何打造出引人入勝的用戶體驗，提升產品的價值和競爭力。
@@ -510,42 +427,24 @@
         </div>
 
         <div class="absolute right-0 z-0 hidden bg-cover logoMan xl:block w-370 h-456 top-36">
-          <div
-            ref="car"
-            class="carImage hidden xl:block w-[330px] h-[175px] bg-cover absolute top-72 right-[200%] 3xl:right-[300%] z-10"
-          ></div>
-          <div
-            ref="MRT"
-            class="MRTImage hidden xl:block w-[330px] h-[180px] bg-cover absolute top-72 right-[200%] 3xl:right-[300%] z-10"
-          ></div>
-          <div
-            ref="bus"
-            class="busImage hidden xl:block w-[330px] h-[180px] bg-cover absolute top-72 right-[200%] 3xl:right-[300%] z-10"
-          ></div>
+          <div ref="car" class="carImage hidden xl:block w-[330px] h-[175px] bg-cover absolute top-72 right-[200%] 3xl:right-[300%] z-10"></div>
+          <div ref="MRT" class="MRTImage hidden xl:block w-[330px] h-[180px] bg-cover absolute top-72 right-[200%] 3xl:right-[300%] z-10"></div>
+          <div ref="bus" class="busImage hidden xl:block w-[330px] h-[180px] bg-cover absolute top-72 right-[200%] 3xl:right-[300%] z-10"></div>
         </div>
       </div>
       <!-- 第五區塊結束 -->
 
       <!-- 第六區塊開始 -->
-      <div
-        ref="section6"
-        class="relative flex flex-col items-center justify-center py-20 overflow-hidden"
-      >
+      <div ref="section6" class="relative flex flex-col items-center justify-center py-20 overflow-hidden">
         <div class="flex flex-col items-center">
-          <div
-            class="mb-4 bg-cover logoSpider md:relative w-335 h-180 sm:w-374 sm:h-52 md:w-660 md:h-350"
-          >
-            <div
-              class="hidden bg-cover join md:block md:w-90 md:h-90 md:absolute md:left-16 md:top-20"
-            ></div>
+          <div class="mb-4 bg-cover logoSpider md:relative w-335 h-180 sm:w-374 sm:h-52 md:w-660 md:h-350">
+            <div class="hidden bg-cover join md:block md:w-90 md:h-90 md:absolute md:left-16 md:top-20"></div>
           </div>
           <div class="bg-cover timeAdd w-300 h-14 md:w-588 md:h-8 mb-7"></div>
         </div>
 
         <div class="mt-3 md:pr-[34px]">
-          <div
-            class="swiper w-[560px] h-[240px] xsm:w-[500px] xsm:h-[120px] md:w-[870px] md:h-[136px]"
-          >
+          <div class="swiper w-[560px] h-[240px] xsm:w-[500px] xsm:h-[120px] md:w-[870px] md:h-[136px]">
             <div class="swiper-wrapper">
               <div class="swiper-slide p-[3px] border border-custom-teal-500 bg-custom-gray-800">
                 <div class="sponsorsTrafficInfo"></div>
@@ -591,10 +490,7 @@
       <!-- 第六區塊結束 -->
     </div>
 
-    <div
-      class="fixed z-30 hidden md:block logoTxt w-138 h-9 top-6 left-6"
-      v-if="currentSpiderNum !== 1"
-    ></div>
+    <div class="fixed z-30 hidden md:block logoTxt w-138 h-9 top-6 left-6" v-if="currentSpiderNum !== 1"></div>
 
     <div
       class="fixed z-30 hidden transition-opacity duration-300 md:block bottom-6 left-6"
@@ -891,8 +787,7 @@ const swiperInit = () => {
 const route = useRoute();
 
 const scrollStore = useScrollStore();
-const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } =
-  storeToRefs(scrollStore);
+const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } = storeToRefs(scrollStore);
 const { setSpiderLocation } = scrollStore;
 
 const pageInfoStore = usePageInfoStore();

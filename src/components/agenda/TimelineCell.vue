@@ -5,9 +5,7 @@
     >
       <p>{{ startTime }}</p>
       <div class="grow flex justify-center items-center">
-        <div
-          class="w-[80%] border-t md:border-t md:border-l border-custom-teal-500 h-[1px] md:h-1/2"
-        ></div>
+        <div class="w-[80%] border-t md:border-t md:border-l border-custom-teal-500 h-[1px] md:h-1/2"></div>
       </div>
       <p>{{ endTime }}</p>
     </div>

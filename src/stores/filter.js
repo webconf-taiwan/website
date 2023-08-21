@@ -30,9 +30,7 @@ export const useFilterStore = defineStore("filter", {
     },
 
     filterTag(currentPageName) {
-      this.filterOptions[currentPageName] = Object.keys(this.filterPage[currentPageName]).filter(
-        (key) => this.filterPage[currentPageName][key]
-      );
+      this.filterOptions[currentPageName] = Object.keys(this.filterPage[currentPageName]).filter((key) => this.filterPage[currentPageName][key]);
     },
 
     isShowSpeaker(categoryTags) {

@@ -1,9 +1,7 @@
 <template>
   <div>
     <div class="relative py-20 md:py-16 px-5">
-      <a href="#"
-        ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
-      ></a>
+      <a href="#"><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div></a>
       <div class="flex flex-col items-center mb-8">
         <StylingTitle>
           <template #default>
@@ -17,25 +15,17 @@
       <div class="flex justify-center items-center first-letter flex-col md:flex-row">
         <img src="@/assets/images/logo_all_m.png" alt="" class="w-[250px] md:w-[350px] md:mr-3" />
         <div>
-          <p
-            class="text-center md:text-left font-semibold text-white text-2xl md:text-5xl md:leading-normal mb-6 md:mb-12"
-          >
+          <p class="text-center md:text-left font-semibold text-white text-2xl md:text-5xl md:leading-normal mb-6 md:mb-12">
             即刻加入 <br />
             成為<span class="text-custom-pink-700">贊助夥伴</span>
           </p>
-          <a href="mailto:hi@webconf.tw?subject=WebConf 贊助廠商諮詢" class="mailto-button">
-            前往諮詢
-          </a>
+          <a href="mailto:hi@webconf.tw?subject=WebConf 贊助廠商諮詢" class="mailto-button"> 前往諮詢 </a>
         </div>
       </div>
     </div>
     <div class="flex justify-center relative">
       <ul>
-        <li
-          v-for="level in sponsors"
-          :key="level.En_name"
-          class="text-white w-[332px] md:w-[600px] lg:w-[900px] xl:w-[1150px] 2xl:w-[1200px] mb-12"
-        >
+        <li v-for="level in sponsors" :key="level.En_name" class="text-white w-[332px] md:w-[600px] lg:w-[900px] xl:w-[1150px] 2xl:w-[1200px] mb-12">
           <h2
             class="border-t border-l border-r border-custom-teal-500 bg-custom-gray-800 text-custom-teal-500 text-[28px] md:text-32 leading-normal font-medium py-4 px-7 inline-block"
           >
@@ -44,18 +34,14 @@
           <ul>
             <li class="border border-custom-teal-500 bg-custom-gray-800 pt-2 pl-2 pr-2">
               <div v-for="sponsors in level.sponsors" :key="sponsors.id" class="mb-2">
-                <div
-                  class="flex items-center py-1 border border-custom-teal-500 bg-custom-gray-800"
-                >
+                <div class="flex items-center py-1 border border-custom-teal-500 bg-custom-gray-800">
                   <div class="w-8 mt-1 mb-1 mr-2 border-t border-b border-r border-custom-teal-700">
                     <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
                   </div>
                   <h3 class="text-2xl leading-normal text-custom-pink-700 whitespace-nowrap">
                     {{ sponsors.sponsor_name }}
                   </h3>
-                  <div
-                    class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700"
-                  >
+                  <div class="flex-grow mt-1 mb-1 ml-2 border-t border-b border-l border-custom-teal-700">
                     <div class="my-1 border-t border-b border-custom-teal-700 h-6px"></div>
                   </div>
                 </div>
@@ -71,18 +57,11 @@
                       class="flex items-center p-3 border-b-2 border-custom-teal-700 md:cursor-auto"
                     >
                       <p class="text-custom-teal-500 text-xl leading-6 font-medium">贊助商簡介</p>
-                      <div
-                        :data-arrow="sponsors.id"
-                        class="iconArrowDown w-5 h-5 ml-2 md:hidden"
-                      ></div>
+                      <div :data-arrow="sponsors.id" class="iconArrowDown w-5 h-5 ml-2 md:hidden"></div>
                     </a>
                     <div :data-introduction="sponsors.id" class="overflow-hidden h-[0px] md:h-auto">
                       <div class="pt-5 pr-3 pl-3">
-                        <p
-                          v-for="(Introduction, index) in sponsors.Introduction"
-                          :key="index"
-                          class="text-white text-base leading-6 mb-3"
-                        >
+                        <p v-for="(Introduction, index) in sponsors.Introduction" :key="index" class="text-white text-base leading-6 mb-3">
                           {{ Introduction }}
                         </p>
                       </div>

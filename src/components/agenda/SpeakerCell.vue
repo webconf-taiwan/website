@@ -11,10 +11,7 @@
 
     <div class="flex justify-between">
       <div class="flex items-center gap-2">
-        <img
-          class="rounded-full h-10 w-10 border-custom-pink-700 border object-contain"
-          :src="`/speaker-img/${id}.jpg`"
-        />
+        <img class="rounded-full h-10 w-10 border-custom-pink-700 border object-contain" :src="`/speaker-img/${id}.jpg`" />
         <h3 class="text-custom-pink-700">
           {{ speakerName }} <span v-if="altName !== ''">{{ `(${altName})` }}</span>
         </h3>

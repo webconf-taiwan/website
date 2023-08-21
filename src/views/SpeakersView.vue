@@ -12,9 +12,7 @@
     <div class="fixed bottom-32 md:bottom-[57px] right-2 sm:right-1 md:right-[72px] z-10">
       <MoveToTop></MoveToTop>
     </div>
-    <a href="#"
-      ><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div
-    ></a>
+    <a href="#"><div class="logoTxt hidden md:block w-[250px] h-[125px] bg-cover fixed left-0 top-2"></div></a>
 
     <div class="flex flex-col items-center mb-16">
       <StylingTitle>
@@ -27,9 +25,7 @@
     <SpecialFilter class="mb-8"></SpecialFilter>
 
     <div class="flex flex-col items-center relative">
-      <ul
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10"
-      >
+      <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10">
         <li
           v-for="speaker in speakerInfo.filter((item) => item.id !== 'dual')"
           :key="speaker.id"
@@ -43,9 +39,7 @@
               </div>
               <p class="mx-3 text-2xl font-medium text-custom-pink-700">
                 {{ speaker.speakerName }}
-                <span class="text-lg font-medium" v-if="speaker.altName"
-                  >({{ speaker.altName }})</span
-                >
+                <span class="text-lg font-medium" v-if="speaker.altName">({{ speaker.altName }})</span>
               </p>
               <div class="flex-grow py-1 my-2 border-t border-b border-l border-custom-teal-700">
                 <div class="border-t border-b h-6px border-custom-teal-700"></div>
@@ -55,14 +49,8 @@
               class="w-[245px] xs:w-[300px] sm:w-[245px] h-[245px] xs:h-[300px] sm:h-[245px] p-3 border-b border-l border-r bg-custom-gray-800 border-custom-teal-500"
             >
               <div class="overflow-hidden relative">
-                <img
-                  :src="`speaker-img/${speaker.id}.jpg`"
-                  alt="speaker avatar"
-                  class="object-cover"
-                />
-                <div
-                  class="hover-mask absolute top-0 inset-x-0 w-full h-full bg-custom-teal-700 opacity-60"
-                ></div>
+                <img :src="`speaker-img/${speaker.id}.jpg`" alt="speaker avatar" class="object-cover" />
+                <div class="hover-mask absolute top-0 inset-x-0 w-full h-full bg-custom-teal-700 opacity-60"></div>
               </div>
             </div>
           </a>
