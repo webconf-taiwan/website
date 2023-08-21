@@ -1,3 +1,29 @@
+<script setup>
+import Header from "@/components/HeaderComponent.vue";
+import Footer from "@/components/FooterComponent.vue";
+import { ref, onMounted } from "vue";
+import { storeToRefs } from "pinia";
+import { usePageInfoStore } from "@/stores/pageInfo";
+import { useFilterStore } from "@/stores/filter";
+
+const pageInfoStore = usePageInfoStore();
+const { currentPageName } = storeToRefs(pageInfoStore);
+
+const filterStore = useFilterStore();
+const { initializeObj } = filterStore;
+
+const header = ref(false);
+const footer = ref(false);
+
+onMounted(() => {
+  initializeObj();
+  setTimeout(() => {
+    header.value = true;
+    footer.value = true;
+  }, 100);
+});
+</script>
+
 <template>
   <div
     class="bg-container"
@@ -51,30 +77,3 @@
   }
 }
 </style>
-
-<script setup>
-import Header from "@/components/HeaderComponent.vue";
-import Footer from "@/components/FooterComponent.vue";
-// import { RouterLink, RouterView } from 'vue-router';
-import { ref, onMounted } from "vue";
-import { storeToRefs } from "pinia";
-import { usePageInfoStore } from "@/stores/pageInfo";
-import { useFilterStore } from "@/stores/filter";
-
-const pageInfoStore = usePageInfoStore();
-const { currentPageName } = storeToRefs(pageInfoStore);
-
-const filterStore = useFilterStore();
-const { initializeObj } = filterStore;
-
-const header = ref(false);
-const footer = ref(false);
-
-onMounted(() => {
-  initializeObj();
-  setTimeout(() => {
-    header.value = true;
-    footer.value = true;
-  }, 100);
-});
-</script>

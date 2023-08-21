@@ -1,3 +1,117 @@
+<script setup>
+import { ref, onMounted, inject } from "vue";
+import { storeToRefs } from "pinia";
+import { useScrollStore } from "@/stores/scroll";
+import { usePageInfoStore } from "@/stores/pageInfo";
+
+const scrollStore = useScrollStore();
+const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } = storeToRefs(scrollStore);
+const { setSpiderLocation } = scrollStore;
+
+const pageInfoStore = usePageInfoStore();
+const { currentPageName } = storeToRefs(pageInfoStore);
+
+const gsap = inject("gsap");
+const isShowMenuList = ref(false);
+const menuList = ref([
+  {
+    ChtName: "首頁",
+    EngName: "Home",
+    home: "home",
+  },
+  {
+    ChtName: "議程資訊",
+    EngName: "Agenda",
+    home: "agenda",
+  },
+  {
+    ChtName: "講者陣容",
+    EngName: "Speakers",
+    home: "speaker",
+  },
+  {
+    ChtName: "贊助夥伴",
+    EngName: "Sponsors",
+    home: "sponsors",
+  },
+  {
+    ChtName: "主辦團隊",
+    EngName: "Staff",
+    home: "staff",
+  },
+  {
+    ChtName: "時光機",
+    EngName: "Time machine",
+    home: "2013WebConf",
+  },
+]);
+const isScrolledToBottom = ref(false);
+const spiderLine = ref();
+
+const toggleSpiderLineHeight = (num) => {
+  isClicking.value = true;
+  const innerHeight = window.innerHeight - 130;
+  let height = 0;
+  switch (num) {
+    case 1:
+      height = innerHeight * 0.25;
+      break;
+    case 2:
+      height = innerHeight * 0.35;
+      break;
+    case 3:
+      height = innerHeight * 0.48;
+      break;
+    case 4:
+      height = innerHeight * 0.6;
+      break;
+    case 5:
+      height = innerHeight * 0.72;
+      break;
+    case 6:
+      height = innerHeight * 0.85;
+      break;
+    default:
+      break;
+  }
+  gsap.to(spiderLine.value, { height, duration: 0.5 });
+  setTimeout(() => {
+    isClicking.value = false;
+  }, 600);
+};
+
+const scrollIntoView = (num) => {
+  setSpiderLocation(num);
+  scrollIntoViewFn.value(num);
+  toggleSpiderLineHeight(num);
+  // emits('scrollIntoView', num);
+};
+
+const toggleMenuList = () => {
+  isShowMenuList.value = !isShowMenuList.value;
+};
+
+const checkScrollPosition = () => {
+  const { scrollY } = window;
+  const { innerHeight } = window;
+  const { scrollHeight } = document.documentElement;
+
+  if (scrollY + innerHeight >= scrollHeight) {
+    isScrolledToBottom.value = true;
+  } else {
+    isScrolledToBottom.value = false;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener("scroll", checkScrollPosition);
+  toggleSpiderLineHeightFn.value = toggleSpiderLineHeight;
+  setTimeout(() => {
+    scrollIntoView(1, true);
+  }, 1000);
+});
+</script>
+
 <template>
   <!-- 當增加 header menu 的列表時 高度要增加 h-[524px] 每新增一個列表 + 88px -->
   <header
@@ -202,117 +316,3 @@ li:hover::before {
   animation: spiderLineAnimation 3s infinite;
 }
 </style>
-
-<script setup>
-import { ref, onMounted, inject } from "vue";
-import { storeToRefs } from "pinia";
-import { useScrollStore } from "@/stores/scroll";
-import { usePageInfoStore } from "@/stores/pageInfo";
-
-const scrollStore = useScrollStore();
-const { currentSpiderNum, isClicking, scrollIntoViewFn, toggleSpiderLineHeightFn } = storeToRefs(scrollStore);
-const { setSpiderLocation } = scrollStore;
-
-const pageInfoStore = usePageInfoStore();
-const { currentPageName } = storeToRefs(pageInfoStore);
-
-const gsap = inject("gsap");
-const isShowMenuList = ref(false);
-const menuList = ref([
-  {
-    ChtName: "首頁",
-    EngName: "Home",
-    home: "home",
-  },
-  {
-    ChtName: "議程資訊",
-    EngName: "Agenda",
-    home: "agenda",
-  },
-  {
-    ChtName: "講者陣容",
-    EngName: "Speakers",
-    home: "speaker",
-  },
-  {
-    ChtName: "贊助夥伴",
-    EngName: "Sponsors",
-    home: "sponsors",
-  },
-  {
-    ChtName: "主辦團隊",
-    EngName: "Staff",
-    home: "staff",
-  },
-  {
-    ChtName: "時光機",
-    EngName: "Time machine",
-    home: "2013WebConf",
-  },
-]);
-const isScrolledToBottom = ref(false);
-const spiderLine = ref();
-
-const toggleSpiderLineHeight = (num) => {
-  isClicking.value = true;
-  const innerHeight = window.innerHeight - 130;
-  let height = 0;
-  switch (num) {
-    case 1:
-      height = innerHeight * 0.25;
-      break;
-    case 2:
-      height = innerHeight * 0.35;
-      break;
-    case 3:
-      height = innerHeight * 0.48;
-      break;
-    case 4:
-      height = innerHeight * 0.6;
-      break;
-    case 5:
-      height = innerHeight * 0.72;
-      break;
-    case 6:
-      height = innerHeight * 0.85;
-      break;
-    default:
-      break;
-  }
-  gsap.to(spiderLine.value, { height, duration: 0.5 });
-  setTimeout(() => {
-    isClicking.value = false;
-  }, 600);
-};
-
-const scrollIntoView = (num) => {
-  setSpiderLocation(num);
-  scrollIntoViewFn.value(num);
-  toggleSpiderLineHeight(num);
-  // emits('scrollIntoView', num);
-};
-
-const toggleMenuList = () => {
-  isShowMenuList.value = !isShowMenuList.value;
-};
-
-const checkScrollPosition = () => {
-  const { scrollY } = window;
-  const { innerHeight } = window;
-  const { scrollHeight } = document.documentElement;
-
-  if (scrollY + innerHeight >= scrollHeight) {
-    isScrolledToBottom.value = true;
-  } else {
-    isScrolledToBottom.value = false;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener("scroll", checkScrollPosition);
-  toggleSpiderLineHeightFn.value = toggleSpiderLineHeight;
-  setTimeout(() => {
-    scrollIntoView(1, true);
-  }, 1000);
-});
-</script>

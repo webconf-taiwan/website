@@ -1,5 +1,53 @@
+<script setup>
+import { onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { usePageInfoStore } from "@/stores/pageInfo";
+import StylingTitle from "@/components/StylingTitle.vue";
+import StylingFBLink from "@/components/StylingFBLink.vue";
+import MoveToTop from "@/components/MoveToTop.vue";
+import facebook from "@/assets/images/linkIcon/facebook.svg";
+import instagram from "@/assets/images/linkIcon/instagram.svg";
+import linkedin from "@/assets/images/linkIcon/linkedin.svg";
+import medium from "@/assets/images/linkIcon/medium.svg";
+import twitter from "@/assets/images/linkIcon/twitter.svg";
+import web from "@/assets/images/linkIcon/web.svg";
+import youtube from "@/assets/images/linkIcon/youtube.svg";
+
+import { staffs } from "@/content/staff";
+
+const route = useRoute();
+
+const pageInfoStore = usePageInfoStore();
+const { setCurrentPageName } = pageInfoStore;
+
+const getIconComponent = (icon) => {
+  switch (icon) {
+    case "facebook":
+      return facebook;
+    case "instagram":
+      return instagram;
+    case "linkedin":
+      return linkedin;
+    case "medium":
+      return medium;
+    case "twitter":
+      return twitter;
+    case "web":
+      return web;
+    case "youtube":
+      return youtube;
+    default:
+      return null;
+  }
+};
+
+onMounted(() => {
+  setCurrentPageName(route.name);
+});
+</script>
+
 <template>
-  <div class="relative py-20 md:py-16 min-h-screen">
+  <div class="relative min-h-screen py-20 md:py-16">
     <div class="fixed z-30 hidden md:block bottom-6 left-6">
       <StylingFBLink></StylingFBLink>
     </div>
@@ -17,7 +65,7 @@
       </StylingTitle>
     </div>
 
-    <div class="flex flex-col items-center relative">
+    <div class="relative flex flex-col items-center">
       <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[60px] xl:gap-10 2xl:gap-[60px] mx-10 lg:ml-6 lg:mr-10 2xl:mx-10">
         <li v-for="staff in staffs" :key="staff.name" class="w-[245px] xs:w-[300px] sm:w-[245px] hover-parent">
           <div href="#" class="relative">
@@ -35,9 +83,9 @@
             <div
               class="w-[245px] xs:w-[300px] sm:w-[245px] h-[245px] xs:h-[300px] sm:h-[245px] p-3 border-b border-l border-r bg-custom-gray-800 border-custom-teal-500"
             >
-              <div class="overflow-hidden relative">
+              <div class="relative overflow-hidden">
                 <img :src="staff.img" alt="speaker avatar" class="object-cover" />
-                <div class="hover-mask absolute top-0 inset-x-0 w-full h-full bg-custom-teal-700 opacity-60"></div>
+                <div class="absolute inset-x-0 top-0 w-full h-full hover-mask bg-custom-teal-700 opacity-60"></div>
               </div>
             </div>
             <ul
@@ -45,7 +93,7 @@
               class="absolute right-[-8px] bottom-[-8px] border border-custom-teal-500 bg-custom-gray-800 p-1 flex flex-col gap-1"
             >
               <li v-for="link in staff.links" :key="link.url">
-                <a :href="link.url" target="_blank" class="w-6 h-6 block text-custom-teal-500 hover:text-custom-teal-700 transition-all duration-300">
+                <a :href="link.url" target="_blank" class="block w-6 h-6 transition-all duration-300 text-custom-teal-500 hover:text-custom-teal-700">
                   <component
                     class="w-full h-full"
                     :class="{
@@ -100,51 +148,3 @@
   fill: currentColor;
 }
 </style>
-
-<script setup>
-import { onMounted } from "vue";
-import { useRoute } from "vue-router";
-import { usePageInfoStore } from "@/stores/pageInfo";
-import StylingTitle from "@/components/StylingTitle.vue";
-import StylingFBLink from "@/components/StylingFBLink.vue";
-import MoveToTop from "@/components/MoveToTop.vue";
-import facebook from "@/assets/images/linkIcon/facebook.svg";
-import instagram from "@/assets/images/linkIcon/instagram.svg";
-import linkedin from "@/assets/images/linkIcon/linkedin.svg";
-import medium from "@/assets/images/linkIcon/medium.svg";
-import twitter from "@/assets/images/linkIcon/twitter.svg";
-import web from "@/assets/images/linkIcon/web.svg";
-import youtube from "@/assets/images/linkIcon/youtube.svg";
-
-import { staffs } from "@/content/staff";
-
-const route = useRoute();
-
-const pageInfoStore = usePageInfoStore();
-const { setCurrentPageName } = pageInfoStore;
-
-const getIconComponent = (icon) => {
-  switch (icon) {
-    case "facebook":
-      return facebook;
-    case "instagram":
-      return instagram;
-    case "linkedin":
-      return linkedin;
-    case "medium":
-      return medium;
-    case "twitter":
-      return twitter;
-    case "web":
-      return web;
-    case "youtube":
-      return youtube;
-    default:
-      return null;
-  }
-};
-
-onMounted(() => {
-  setCurrentPageName(route.name);
-});
-</script>

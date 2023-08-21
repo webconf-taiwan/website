@@ -74,18 +74,6 @@ const sponsors = [
       },
     ],
   },
-  // {
-  //   En_name: "special",
-  //   Zh_name: "特別贊助",
-  //   sponsors: [
-  //     {
-  //       id: "sponsor_tenlong",
-  //       sponsor_name: "天瓏網路書店",
-  //       image: { sponsorsHexschool: true },
-  //       Introduction: [],
-  //     },
-  //   ],
-  // },
   {
     En_name: "silver",
     Zh_name: "銀牌贊助商",

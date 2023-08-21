@@ -1,3 +1,30 @@
+<script setup>
+import TimelineCell from "@/components/agenda/TimelineCell.vue";
+import SpeakerCell from "@/components/agenda/SpeakerCell.vue";
+import DualSpeakerCell from "@/components/agenda/DualSpeakerCell.vue";
+
+const props = defineProps({
+  speakerInfoArr: {
+    type: Array,
+  },
+  startTime: {
+    type: String,
+  },
+  endTime: {
+    type: String,
+  },
+  onOpenSpeakerModal: {
+    type: Function,
+  },
+});
+
+const handleOpenSpeakerModal = (speakerId) => {
+  if (speakerId) {
+    props.onOpenSpeakerModal(speakerId);
+  }
+};
+</script>
+
 <template>
   <div class="flex-col md:flex-row flex min-h-[186px] gap-2">
     <TimelineCell :startTime="startTime" :endTime="endTime" />
@@ -42,33 +69,6 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import TimelineCell from "@/components/agenda/TimelineCell.vue";
-import SpeakerCell from "@/components/agenda/SpeakerCell.vue";
-import DualSpeakerCell from "@/components/agenda/DualSpeakerCell.vue";
-
-const props = defineProps({
-  speakerInfoArr: {
-    type: Array,
-  },
-  startTime: {
-    type: String,
-  },
-  endTime: {
-    type: String,
-  },
-  onOpenSpeakerModal: {
-    type: Function,
-  },
-});
-
-const handleOpenSpeakerModal = (speakerId) => {
-  if (speakerId) {
-    props.onOpenSpeakerModal(speakerId);
-  }
-};
-</script>
 
 <style scoped>
 @media (min-width: 769px) {

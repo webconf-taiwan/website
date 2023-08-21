@@ -1,7 +1,3 @@
-<template>
-  <SpeakerModal :speakerInfo="speakerInfo" :isMoreInfoOpen="true" />
-</template>
-
 <script setup>
 import SpeakerModal from "@/components/speaker-modal/SpeakerModal.vue";
 
@@ -26,3 +22,7 @@ const speakerInfo = {
   location: "1001",
 };
 </script>
+
+<template>
+  <SpeakerModal :speakerInfo="speakerInfo" :isMoreInfoOpen="true" />
+</template>
