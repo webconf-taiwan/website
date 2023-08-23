@@ -49,12 +49,10 @@ const props = defineProps({
 const { onModalClose, speakerInfo, isModalOpen } = toRefs(props);
 
 watchEffect(() => {
-  if (typeof window !== "undefined" && window.document) {
-    if (isModalOpen.value) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+  if (isModalOpen.value) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
   }
 });
 
@@ -72,9 +70,9 @@ const onClickOutside = (e) => {
   }
 };
 
-let timeoutId;
-
 watchEffect(() => {
+  let timeoutId;
+
   if (isModalOpen.value) {
     timeoutId = setTimeout(() => {
       window.addEventListener("click", onClickOutside);
@@ -103,7 +101,6 @@ onBeforeUnmount(() => {
     class="fixed inset-0 z-50 flex items-center justify-center max-h-screen px-5 py-5 bg-drop-blur bg-custom-teal-700 bg-opacity-20 md:py-10"
   >
     <!-- 避免 click outside 影響箭頭 -->
-
     <section
       @click.stop
       ref="modalElement"
@@ -264,15 +261,6 @@ onBeforeUnmount(() => {
   border-radius: 2px;
 }
 
-/* .v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-} */
 .primary-button {
   @apply flex gap-1 justify-center items-center leading-none py-3 px-7 text-base;
   @apply bg-custom-teal-500 text-black;
