@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  input[type="text"]:focus {
+    @apply outline-none ring-0;
+  }
+}
+
+@layer components {
+  .my-btn {
+    @apply inline-block px-4 py-1 rounded bg-gray-600 [&:not(:disabled)]:bg-teal-600 dark:bg-gray-400 cursor-pointer [&:not(:disabled)]:hover:bg-teal-600 [&:not(:disabled)]:dark:hover:bg-teal-700 text-white disabled:bg-gray-600 disabled:opacity-50 disabled:cursor-default;
+  }
+
+  .my-link {
+    @apply rounded-lg hover:bg-gray-700/50 transition-all;
+  }
+}
