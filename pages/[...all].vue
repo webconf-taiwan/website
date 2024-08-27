@@ -21,7 +21,7 @@ const router = useRouter()
     <div>
       <button
         type="button"
-        class="my-btn"
+        class="rounded px-2 py-1 transition-all hover:bg-gray-300/50 dark:hover:bg-gray-700/50"
         @click="router.back()"
       >
         Back
