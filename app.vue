@@ -13,8 +13,4 @@ useHead({
 </template>
 
 <style>
-html.dark {
-  background-color: #282c34;
-  color: white;
-}
 </style>

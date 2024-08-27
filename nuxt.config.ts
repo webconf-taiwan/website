@@ -1,10 +1,13 @@
-import { appDescription } from './constants/index'
+import {
+  appDescription,
+  ogDescription,
+  ogTitle,
+} from './constants/index'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
-    '@nuxtjs/color-mode',
     '@pinia/nuxt',
     '@vueuse/nuxt',
   ],
@@ -18,10 +21,6 @@ export default defineNuxtConfig({
 
   css: ['@/assets/css/main.css'],
 
-  colorMode: {
-    classSuffix: '',
-  },
-
   pinia: {
     storesDirs: ['./store/**'],
   },
@@ -34,18 +33,11 @@ export default defineNuxtConfig({
     head: {
       meta: [
         { name: 'description', content: appDescription },
+        { property: 'og:title', content: ogTitle },
+        { property: 'og:description', content: ogDescription },
       ],
     },
   },
 
-  typescript: {
-    tsConfig: {
-      compilerOptions: {
-        strict: true,
-        // types: [],
-      },
-    },
-  },
-
-  compatibilityDate: '2024-08-24',
+  compatibilityDate: '2024-08-27',
 })
