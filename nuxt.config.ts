@@ -12,6 +12,10 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
   ],
 
+  plugins: [
+    '~/plugins/lenis.client.ts',
+  ],
+
   postcss: {
     plugins: {
       tailwindcss: {},

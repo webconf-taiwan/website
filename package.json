@@ -16,7 +16,8 @@
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.22"
+    "@headlessui/vue": "^1.7.22",
+    "lenis": "^1.1.13"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.27.3",

@@ -70,6 +70,7 @@ export default antfu(
   {
     rules: {
       'no-unused-vars': 'warn',
+      'no-console': 'warn',
       'node/prefer-global/process': 'off',
     },
   },
