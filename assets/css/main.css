@@ -8,7 +8,7 @@
   }
 
   body {
-    @apply relative;
+    @apply relative text-white bg-gradient-to-b from-gradient-bg-start to-gradient-bg-end;
     min-height: 500dvh;
   }
 
