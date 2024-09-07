@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
+    "gsap": "^3.12.5",
     "lenis": "^1.1.13"
   },
   "devDependencies": {

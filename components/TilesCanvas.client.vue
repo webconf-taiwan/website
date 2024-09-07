@@ -11,6 +11,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smallerOrEqual('lg')
 
 const tilesCanvas = ref<HTMLCanvasElement | null>(null)
+const offscreenCanvas = ref<HTMLCanvasElement | null>(null)
 
 const tileSize = computed(() => isMobile.value ? 72 : 144)
 const tileStrokeWidth = computed(() => isMobile.value ? 1 : 2)
@@ -23,13 +24,20 @@ const fadeOutDuration = 500
 
 const highlightedTiles: Map<string, Tile> = new Map()
 
+let animationFrameId: number | null = null
+
 function resizeCanvas(canvas: Ref<HTMLCanvasElement | null>, ctx: CanvasRenderingContext2D): void {
   canvas.value!.width = document.body.clientWidth
   canvas.value!.height = document.body.clientHeight
   rows = Math.ceil(canvas.value!.height / tileSize.value)
   cols = Math.ceil(canvas.value!.width / tileSize.value) + 1
   offsetX = (canvas.value!.width % tileSize.value) / 2 - tileSize.value / 2
-  drawGrid(canvas, ctx)
+
+  // Resize offscreen canvas
+  offscreenCanvas.value!.width = canvas.value!.width
+  offscreenCanvas.value!.height = canvas.value!.height
+
+  drawGrid(offscreenCanvas, offscreenCanvas.value!.getContext('2d')!)
 }
 
 function drawGrid(canvas: Ref<HTMLCanvasElement | null>, ctx: CanvasRenderingContext2D): void {
@@ -92,21 +100,28 @@ function updateHighlight(currentTime: number): void {
       cell.opacity = (1 - progress) * maxOpacity
     }
 
-    if (progress === 1 && !cell.fadeIn) {
-      if (!cell.fadeIn) {
-        highlightedTiles.delete(key)
-      }
-      else {
-        cell.opacity = maxOpacity
-      }
+    if (progress < 1) {
+      needsUpdate = true
     }
+    else if (!cell.fadeIn) {
+      highlightedTiles.delete(key)
+    }
+  })
+  const ctx = tilesCanvas.value!.getContext('2d')!
+  ctx.clearRect(0, 0, tilesCanvas.value!.width, tilesCanvas.value!.height)
+  ctx.drawImage(offscreenCanvas.value!, 0, 0)
 
-    needsUpdate = true
+  highlightedTiles.forEach((cell, key) => {
+    const [row, col] = key.split(',').map(Number)
+    ctx.fillStyle = `rgba(255, 255, 255, ${cell.opacity})`
+    ctx.fillRect(offsetX + col * tileSize.value, row * tileSize.value, tileSize.value, tileSize.value)
   })
 
   if (needsUpdate) {
-    drawGrid(tilesCanvas!, tilesCanvas.value!.getContext('2d')!)
-    requestAnimationFrame(updateHighlight)
+    animationFrameId = requestAnimationFrame(updateHighlight)
+  }
+  else {
+    animationFrameId = null
   }
 }
 
@@ -119,11 +134,13 @@ const throttledResizeFn = useThrottleFn(() => {
     return
 
   resizeCanvas(tilesCanvas, ctx)
+  ctx.drawImage(offscreenCanvas.value!, 0, 0)
 }, 100)
 
-function mouseMoveFn(event: MouseEvent) {
-  if (!tilesCanvas.value)
+const throttledMouseMoveFn = useThrottleFn((event: MouseEvent) => {
+  if (!tilesCanvas.value || isMobile.value)
     return
+
   const ctx = tilesCanvas.value.getContext('2d')
 
   if (!ctx)
@@ -133,6 +150,8 @@ function mouseMoveFn(event: MouseEvent) {
   const col = Math.floor((event.clientX - rect.left - offsetX) / tileSize.value)
   const row = Math.floor((event.clientY - rect.top) / tileSize.value)
 
+  let needsUpdate = false
+
   if (row >= 0 && row < rows && col >= 0 && col < cols) {
     const key: string = `${row},${col}`
     if (!highlightedTiles.has(key) || !highlightedTiles.get(key)!.fadeIn) {
@@ -141,7 +160,7 @@ function mouseMoveFn(event: MouseEvent) {
         fadeIn: true,
         startTime: performance.now(),
       })
-      requestAnimationFrame(updateHighlight)
+      needsUpdate = true
     }
   }
 
@@ -151,12 +170,17 @@ function mouseMoveFn(event: MouseEvent) {
       if (cell.fadeIn) {
         cell.fadeIn = false
         cell.startTime = performance.now()
+        needsUpdate = true
       }
     }
   })
-}
 
-useEventListener(document, 'mousemove', mouseMoveFn)
+  if (needsUpdate && !animationFrameId) {
+    animationFrameId = requestAnimationFrame(updateHighlight)
+  }
+}, 16) // Approximately 60 FPS
+
+useEventListener(document, 'mousemove', throttledMouseMoveFn)
 
 useEventListener(window, 'resize', throttledResizeFn)
 
@@ -164,11 +188,21 @@ onMounted(async () => {
   await nextTick()
   if (!tilesCanvas.value)
     return
+
+  offscreenCanvas.value = document.createElement('canvas')
   const ctx = tilesCanvas.value.getContext('2d')
 
   if (!ctx)
     return
+
   resizeCanvas(tilesCanvas, ctx)
+  ctx.drawImage(offscreenCanvas.value, 0, 0)
+})
+
+onUnmounted(() => {
+  if (animationFrameId) {
+    cancelAnimationFrame(animationFrameId)
+  }
 })
 </script>
 

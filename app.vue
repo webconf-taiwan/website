@@ -7,13 +7,14 @@ useHead({
 </script>
 
 <template>
-  <Body>
-    <TilesCanvas />
+  <Teleport to="body">
+    <!-- <TilesCanvas /> -->
+    <TilesBackground />
+  </Teleport>
 
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-  </Body>
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
 </template>
 
 <style>

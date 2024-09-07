@@ -1,0 +1,98 @@
+<script setup lang="ts">
+import { computed, ref } from 'vue'
+import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
+import gsap from 'gsap'
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isMobile = breakpoints.smallerOrEqual('lg')
+
+const { width, height } = useWindowSize()
+
+const tileSize = computed(() => isMobile.value ? 72 : 144)
+const columns = computed(() => Math.ceil(width.value / tileSize.value) + 1)
+const rows = computed(() => Math.ceil(height.value / tileSize.value))
+
+const container = ref<HTMLDivElement | null>(null)
+const gridContainer = ref<HTMLDivElement | null>(null)
+const tileElements = ref<HTMLDivElement[]>([])
+
+const tiles = computed(() => {
+  const tileCount = columns.value * rows.value
+  return Array.from({ length: tileCount }, (_, i) => ({
+    id: `tile-${i}`,
+  }))
+})
+
+const containerWidth = computed(() => columns.value * tileSize.value)
+
+const throttledMouseMoveFn = useThrottleFn((event: MouseEvent) => {
+  if (isMobile.value || !container.value || !gridContainer.value)
+    return
+
+  const containerRect = container.value.getBoundingClientRect()
+  const gridRect = gridContainer.value.getBoundingClientRect()
+
+  const offsetX = gridRect.left - containerRect.left
+
+  const relativeX = event.clientX - gridRect.left
+  const relativeY = event.clientY - gridRect.top
+
+  const col = Math.floor(relativeX / tileSize.value)
+  const row = Math.floor(relativeY / tileSize.value)
+  const index = row * columns.value + col
+
+  if (index >= 0 && index < tileElements.value.length) {
+    animateTile(index)
+  }
+}, 16) // Approximately 60 FPS
+
+function animateTile(index: number) {
+  const tile = tileElements.value[index]
+  if (!tile)
+    return
+
+  gsap.killTweensOf(tile)
+
+  gsap.to(tile, {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    duration: 0.15,
+    overwrite: true,
+    ease: 'power2.out',
+    onComplete: () => {
+      gsap.to(tile, {
+        backgroundColor: 'rgba(255, 255, 255, 0)',
+        duration: 1,
+        delay: 0,
+        ease: 'power1.out',
+      })
+    },
+  })
+}
+
+useEventListener(document, 'mousemove', throttledMouseMoveFn)
+</script>
+
+<template>
+  <div
+    ref="container"
+    class="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
+  >
+    <div
+      ref="gridContainer"
+      class="absolute left-1/2 grid -translate-x-1/2"
+      :style="{
+        width: `${containerWidth}px`,
+        gridTemplateColumns: `repeat(${columns}, ${tileSize}px)`,
+        gridTemplateRows: `repeat(${rows}, ${tileSize}px)`,
+      }"
+    >
+      <div
+        v-for="tile in tiles"
+        :key="tile.id"
+        :ref="el => { if (el) tileElements[Number(tile.id.split('-')[1])] = el as HTMLDivElement }"
+        class="size-[72px] border border-white/10 lg:size-36"
+        :style="{ backgroundColor: 'rgba(255, 255, 255, 0)' }"
+      ></div>
+    </div>
+  </div>
+</template>
