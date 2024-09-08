@@ -74,10 +74,10 @@ function drawGrid(canvas: Ref<HTMLCanvasElement | null>, ctx: CanvasRenderingCon
   if (isMobile.value)
     return
 
-  // Draw highlighted cells ( only desktop )
-  highlightedTiles.forEach((cell, key) => {
+  // Draw highlighted tiles ( only desktop )
+  highlightedTiles.forEach((tile, key) => {
     const [row, col] = key.split(',').map(Number)
-    ctx.fillStyle = `rgba(255, 255, 255, ${cell.opacity})`
+    ctx.fillStyle = `rgba(255, 255, 255, ${tile.opacity})`
     ctx.fillRect(offsetX + col * tileSize.value, row * tileSize.value, tileSize.value, tileSize.value)
   })
 }
@@ -88,22 +88,22 @@ function updateHighlight(currentTime: number): void {
 
   let needsUpdate: boolean = false
 
-  highlightedTiles.forEach((cell, key) => {
-    const elapsed: number = currentTime - cell.startTime
-    const duration: number = cell.fadeIn ? fadeInDuration : fadeOutDuration
+  highlightedTiles.forEach((tile, key) => {
+    const elapsed: number = currentTime - tile.startTime
+    const duration: number = tile.fadeIn ? fadeInDuration : fadeOutDuration
     const progress: number = Math.min(elapsed / duration, 1)
 
-    if (cell.fadeIn) {
-      cell.opacity = progress * maxOpacity
+    if (tile.fadeIn) {
+      tile.opacity = progress * maxOpacity
     }
     else {
-      cell.opacity = (1 - progress) * maxOpacity
+      tile.opacity = (1 - progress) * maxOpacity
     }
 
     if (progress < 1) {
       needsUpdate = true
     }
-    else if (!cell.fadeIn) {
+    else if (!tile.fadeIn) {
       highlightedTiles.delete(key)
     }
   })
@@ -111,9 +111,9 @@ function updateHighlight(currentTime: number): void {
   ctx.clearRect(0, 0, tilesCanvas.value!.width, tilesCanvas.value!.height)
   ctx.drawImage(offscreenCanvas.value!, 0, 0)
 
-  highlightedTiles.forEach((cell, key) => {
+  highlightedTiles.forEach((tile, key) => {
     const [row, col] = key.split(',').map(Number)
-    ctx.fillStyle = `rgba(255, 255, 255, ${cell.opacity})`
+    ctx.fillStyle = `rgba(255, 255, 255, ${tile.opacity})`
     ctx.fillRect(offsetX + col * tileSize.value, row * tileSize.value, tileSize.value, tileSize.value)
   })
 
@@ -164,12 +164,12 @@ const throttledMouseMoveFn = useThrottleFn((event: MouseEvent) => {
     }
   }
 
-  highlightedTiles.forEach((cell, key) => {
-    const [cellRow, cellCol] = key.split(',').map(Number)
-    if (cellRow !== row || cellCol !== col) {
-      if (cell.fadeIn) {
-        cell.fadeIn = false
-        cell.startTime = performance.now()
+  highlightedTiles.forEach((tile, key) => {
+    const [tileRow, tileCol] = key.split(',').map(Number)
+    if (tileRow !== row || tileCol !== col) {
+      if (tile.fadeIn) {
+        tile.fadeIn = false
+        tile.startTime = performance.now()
         needsUpdate = true
       }
     }

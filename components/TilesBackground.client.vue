@@ -13,7 +13,7 @@ const columns = computed(() => Math.ceil(width.value / tileSize.value) + 1)
 const rows = computed(() => Math.ceil(height.value / tileSize.value))
 
 const container = ref<HTMLDivElement | null>(null)
-const gridContainer = ref<HTMLDivElement | null>(null)
+const tilesContainer = ref<HTMLDivElement | null>(null)
 const tileElements = ref<HTMLDivElement[]>([])
 
 const tiles = computed(() => {
@@ -26,13 +26,10 @@ const tiles = computed(() => {
 const containerWidth = computed(() => columns.value * tileSize.value)
 
 const throttledMouseMoveFn = useThrottleFn((event: MouseEvent) => {
-  if (isMobile.value || !container.value || !gridContainer.value)
+  if (isMobile.value || !container.value || !tilesContainer.value)
     return
 
-  const containerRect = container.value.getBoundingClientRect()
-  const gridRect = gridContainer.value.getBoundingClientRect()
-
-  const offsetX = gridRect.left - containerRect.left
+  const gridRect = tilesContainer.value.getBoundingClientRect()
 
   const relativeX = event.clientX - gridRect.left
   const relativeY = event.clientY - gridRect.top
@@ -78,7 +75,7 @@ useEventListener(document, 'mousemove', throttledMouseMoveFn)
     class="pointer-events-none fixed inset-0 -z-10 overflow-hidden"
   >
     <div
-      ref="gridContainer"
+      ref="tilesContainer"
       class="absolute left-1/2 grid -translate-x-1/2"
       :style="{
         width: `${containerWidth}px`,
