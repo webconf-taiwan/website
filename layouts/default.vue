@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <main class="flex flex-col items-center px-8 py-16">
     <slot></slot>

@@ -3,7 +3,37 @@
 @tailwind utilities;
 
 @layer base {
+  html, body {
+    @apply min-h-screen;
+  }
+
+  body {
+    @apply relative text-white bg-gradient-to-b from-gradient-bg-start to-gradient-bg-end;
+    min-height: 500dvh;
+  }
+
   input[type="text"]:focus {
     @apply outline-none ring-0;
+  }
+  
+  /* Lenis CSS */
+  html.lenis, html.lenis body {
+    height: auto;
+  }
+  
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  
+  .lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+  }
+  
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+  
+  .lenis.lenis-smooth iframe {
+    pointer-events: none;
   }
 }

@@ -27,6 +27,8 @@ export default {
       },
       colors: {
         'primary-dark': '#282c34',
+        'gradient-bg-start': '#000033',
+        'gradient-bg-end': '#006666',
       },
     },
   },
