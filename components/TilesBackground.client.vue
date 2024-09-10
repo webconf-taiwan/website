@@ -8,7 +8,7 @@ const isMobile = breakpoints.smallerOrEqual('lg')
 
 const { width, height } = useWindowSize()
 
-const tileSize = computed(() => isMobile.value ? 72 : 144)
+const tileSize = computed(() => isMobile.value ? 60 : 144)
 const columns = computed(() => Math.ceil(width.value / tileSize.value) + 1)
 const rows = computed(() => Math.ceil(height.value / tileSize.value))
 
@@ -87,7 +87,7 @@ useEventListener(document, 'mousemove', throttledMouseMoveFn)
         v-for="tile in tiles"
         :key="tile.id"
         :ref="el => { if (el) tileElements[Number(tile.id.split('-')[1])] = el as HTMLDivElement }"
-        class="size-[72px] border border-white/10 lg:size-36"
+        class="size-[60px] border border-primary-green/10 lg:size-36"
         :style="{ backgroundColor: 'rgba(255, 255, 255, 0)' }"
       ></div>
     </div>
