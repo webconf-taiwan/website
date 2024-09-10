@@ -26,7 +26,7 @@ export default {
         screen: ['100vh', '100dvh'],
       },
       colors: {
-        'primary-dark': '#282c34',
+        'primary-green': '#00FFCC',
         'gradient-bg-start': '#000033',
         'gradient-bg-end': '#006666',
       },

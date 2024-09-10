@@ -96,7 +96,7 @@ onMounted(() => {
   >
     <div
       ref="horizontalLine"
-      class="absolute left-1/2 top-1/2 z-[1020] h-0.5 -translate-x-1/2 -translate-y-1/2 bg-[#00FFCC]"
+      class="absolute left-1/2 top-1/2 z-[1020] h-0.5 -translate-x-1/2 -translate-y-1/2 bg-primary-green"
       style="width: 0;"
     ></div>
 
@@ -106,47 +106,47 @@ onMounted(() => {
       class="absolute z-[1030]"
       style="opacity: 0;"
     >
-      <div class="h-[53px] w-3 rounded-[100%] border-2 border-white"></div>
+      <div class="h-[26px] w-1.5 rounded-[100%] border-2 border-white lg:h-[53px] lg:w-3"></div>
     </div>
 
     <!-- Second -->
     <div
       ref="secondOvalGroup"
-      class="absolute z-[1030] flex w-[100px] items-center justify-between"
+      class="absolute z-[1030] flex w-[50px] items-center justify-between lg:w-[100px]"
       style="opacity: 0;"
     >
-      <div class="h-[77px] w-4 rounded-[100%] border-2 border-[#00FFCC]"></div>
-      <div class="h-[77px] w-4 rounded-[100%] border-2 border-[#00FFCC]"></div>
+      <div class="h-[38px] w-2 rounded-[100%] border-2 border-primary-green lg:h-[77px] lg:w-4"></div>
+      <div class="h-[38px] w-2 rounded-[100%] border-2 border-primary-green lg:h-[77px] lg:w-4"></div>
     </div>
 
     <!-- Third -->
     <div
       ref="thirdOvalGroup"
-      class="absolute z-[1030] flex w-52 items-center justify-between"
+      class="absolute z-[1030] flex w-[104px] items-center justify-between lg:w-52"
       style="opacity: 0;"
     >
-      <div class="h-[117px] w-7 rounded-[100%] border-2 border-[#00FFCC]"></div>
-      <div class="h-[117px] w-7 rounded-[100%] border-2 border-[#00FFCC]"></div>
+      <div class="h-[58px] w-[13px] rounded-[100%] border-2 border-primary-green lg:h-[117px] lg:w-7"></div>
+      <div class="h-[58px] w-[13px] rounded-[100%] border-2 border-primary-green lg:h-[117px] lg:w-7"></div>
     </div>
 
     <!-- Fourth -->
     <div
       ref="fourthOvalGroup"
-      class="absolute z-[1030] flex w-[336px] items-center justify-between"
+      class="absolute z-[1030] flex w-[168px] items-center justify-between lg:w-[336px]"
       style="opacity: 0;"
     >
-      <div class="h-[156px] w-9 rounded-[100%] border-2 border-white"></div>
-      <div class="h-[156px] w-9 rounded-[100%] border-2 border-[#00FFCC]"></div>
+      <div class="h-[78px] w-[18px] rounded-[100%] border-2 border-white lg:h-[156px] lg:w-9"></div>
+      <div class="h-[78px] w-[18px] rounded-[100%] border-2 border-primary-green lg:h-[156px] lg:w-9"></div>
     </div>
 
     <!-- Fifth -->
     <div
       ref="fifthOvalGroup"
-      class="absolute z-[1030] flex w-[480px] items-center justify-between"
+      class="absolute z-[1030] flex w-60 items-center justify-between lg:w-[480px]"
       style="opacity: 0;"
     >
-      <div class="h-[196px] w-11 rounded-[100%] border-2 border-[#00FFCC]"></div>
-      <div class="h-[196px] w-11 rounded-[100%] border-2 border-white"></div>
+      <div class="h-[98px] w-[22px] rounded-[100%] border-2 border-primary-green lg:h-[196px] lg:w-11"></div>
+      <div class="h-[98px] w-[22px] rounded-[100%] border-2 border-white lg:h-[196px] lg:w-11"></div>
     </div>
 
     <div

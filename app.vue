@@ -11,7 +11,6 @@ useHead({
 <template>
   <Teleport to="body">
     <FirstLoadingAnimation v-if="!hasShownAnimation" />
-    <!-- <TilesCanvas /> -->
     <TilesBackground />
   </Teleport>
 
