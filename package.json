@@ -17,8 +17,10 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
+    "@lottiefiles/lottie-player": "^2.0.4",
     "gsap": "^3.12.5",
-    "lenis": "^1.1.13"
+    "lenis": "^1.1.13",
+    "lottie-web": "^5.12.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.2.0",
