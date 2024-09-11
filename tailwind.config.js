@@ -17,7 +17,12 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter var', ...defaultTheme.fontFamily.sans],
+        sans: [
+          'Mina',
+          '"Noto Sans TC"',
+          ...defaultTheme.fontFamily.sans.filter(font => font !== 'sans-serif'),
+          'sans-serif',
+        ],
       },
       height: {
         screen: ['100vh', '100dvh'],
@@ -29,6 +34,14 @@ export default {
         'primary-dark': '#282c34',
         'gradient-bg-start': '#000033',
         'gradient-bg-end': '#006666',
+      },
+      fontSize: {
+        h3: ['24px', { lineHeight: '120%', fontWeight: '500' }],
+        h4: ['20px', { lineHeight: '160%', fontWeight: '700' }],
+        h5: ['18px', { lineHeight: '160%', fontWeight: '500' }],
+        body: ['16px', { lineHeight: '160%', fontWeight: '400' }],
+        BTN: ['20px', { lineHeight: '150%', fontWeight: '500' }],
+        display: ['32px', { lineHeight: '120%', fontWeight: '400' }],
       },
     },
   },

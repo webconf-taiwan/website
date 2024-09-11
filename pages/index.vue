@@ -9,11 +9,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl font-bold">
-      WebConf Taiwan 2024
-    </h1>
-  </div>
-</template>
+  <HomeBanner />
 
-<style scoped></style>
+  <section class="h-screen bg-black"></section>
+</template>
