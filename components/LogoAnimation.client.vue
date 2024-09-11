@@ -1,18 +1,17 @@
 <script setup lang="ts">
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
-
 const { headerRef } = defineProps<{
   headerRef: HTMLDivElement | null
 }>()
 
-gsap.registerPlugin(ScrollTrigger)
+const { $gsap } = useNuxtApp()
 
 const headerLogoWordsRef = ref<HTMLImageElement | null>(null)
 const headerLogoLinkRef = ref<HTMLAnchorElement | null>(null)
 
-onMounted(() => {
-  const tl = gsap.timeline({
+onMounted(async () => {
+  await nextTick()
+
+  const tl = $gsap.timeline({
     scrollTrigger: {
       trigger: headerRef,
       start: 'top top',
@@ -58,10 +57,11 @@ onMounted(() => {
       class="absolute left-0 top-0 size-full"
     />
 
-    <NuxtLink
-      ref="headerLogoLinkRef"
-      to="/"
-      class="absolute left-0 top-0 size-full"
-    />
+    <div ref="headerLogoLinkRef">
+      <NuxtLink
+        to="/"
+        class="absolute left-0 top-0 size-full"
+      />
+    </div>
   </div>
 </template>

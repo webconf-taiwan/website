@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
-import gsap from 'gsap'
 import { computed, ref } from 'vue'
+
+const { $gsap } = useNuxtApp()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smallerOrEqual('lg')
@@ -48,15 +49,15 @@ function animateTile(index: number) {
   if (!tile)
     return
 
-  gsap.killTweensOf(tile)
+  $gsap.killTweensOf(tile)
 
-  gsap.to(tile, {
+  $gsap.to(tile, {
     backgroundColor: 'rgba(255, 255, 255, 0.1)',
     duration: 0.15,
     overwrite: true,
     ease: 'power2.out',
     onComplete: () => {
-      gsap.to(tile, {
+      $gsap.to(tile, {
         backgroundColor: 'rgba(255, 255, 255, 0)',
         duration: 1,
         delay: 0,

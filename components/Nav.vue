@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { navLinks } from '@/constants'
-import gsap from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
+// import gsap from 'gsap'
+// import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { onMounted, ref } from 'vue'
+import { navLinks } from '~/constants'
 
-gsap.registerPlugin(ScrollTrigger)
+const { $gsap } = useNuxtApp()
+
+// gsap.registerPlugin(ScrollTrigger)
 
 const navRef = ref<HTMLElement | null>(null)
 
 onMounted(() => {
-  const navTl = gsap.timeline({
+  const navTl = $gsap.timeline({
     delay: 4,
   })
 

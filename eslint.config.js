@@ -64,6 +64,7 @@ export default antfu(
       'src-tauri',
       'auto-imports.d.ts',
       'components.d.ts',
+      '**/lottie/*',
     ],
   },
   /* From the second arguments they are ESLint Flat Configs */

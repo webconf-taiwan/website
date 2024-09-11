@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import LogoAnimation from './LogoAnimation.vue'
+import LogoAnimation from './LogoAnimation.client.vue'
 import Nav from './Nav.vue'
 
 const headerRef = ref<HTMLDivElement | null>(null)
