@@ -1,12 +1,8 @@
 <script setup lang="ts">
-// import gsap from 'gsap'
-// import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { onMounted, ref } from 'vue'
 import { navLinks } from '~/constants'
 
 const { $gsap } = useNuxtApp()
-
-// gsap.registerPlugin(ScrollTrigger)
 
 const navRef = ref<HTMLElement | null>(null)
 
@@ -30,7 +26,8 @@ onMounted(() => {
 <template>
   <nav
     ref="navRef"
-    class="relative flex items-center bg-black"
+    class="absolute right-0 flex items-center bg-black"
+    style="opacity: 0; transform: translateX(100%);"
   >
     <div
       class="absolute left-0 top-0 h-full w-5 -translate-x-5 bg-black"

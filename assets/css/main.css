@@ -3,14 +3,22 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --main-bg-gradient-start: #000033;
+    --main-bg-gradient-end: #006666;
+  }
+
   html, body {
     @apply min-h-screen;
   }
 
   body {
-    @apply relative text-white bg-gradient-to-b from-gradient-bg-start to-gradient-bg-end;
-    /* min-height: 500dvh; */
-    /* font-family: 'Mina', 'Noto Sans TC', sans-serif; */
+    @apply relative text-white;
+    background-size: 100% 100dvh, 100% 100%;
+    background-image:
+      linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end)),
+      linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end));
+    background-repeat: no-repeat;
   }
 
   input[type="text"]:focus {
@@ -36,5 +44,32 @@
   
   .lenis.lenis-smooth iframe {
     pointer-events: none;
+  }
+}
+
+@layer components {
+  /* Layout */
+  .layout-grid {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    grid-template-areas:
+      ". content ."
+      "full full full"
+      ". wide .";
+  }
+
+  @media screen and (min-width: 1024px) {
+    .layout-grid {
+      grid-template-columns: [full-start] minmax(3rem, 1fr) [content-start] minmax(0, 1440px) [content-end] minmax(3rem, 1fr) [full-end];
+    }
+  }
+  
+  .layout-grid > * {
+    grid-column: content;
+  }
+  
+  .layout-grid > .full-bleed {
+    grid-column: full;
   }
 }

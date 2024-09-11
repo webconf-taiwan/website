@@ -3,7 +3,7 @@ import cubeAnimation from '~/assets/lottie/cube_animation.json'
 </script>
 
 <template>
-  <div class="bg-black">
+  <section class="full-bleed bg-black">
     <h2>AGENDA</h2>
 
     <HomeAgendaCubeAnimation
@@ -14,7 +14,7 @@ import cubeAnimation from '~/assets/lottie/cube_animation.json'
       height="400px"
       width="400px"
     />
-  </div>
+  </section>
 </template>
 
 <style scope></style>

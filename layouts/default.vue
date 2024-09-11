@@ -2,9 +2,9 @@
 </script>
 
 <template>
-  <Header />
-  <main>
+  <main class="layout-grid">
+    <Header />
     <slot></slot>
+    <Footer />
   </main>
-  <Footer />
 </template>
