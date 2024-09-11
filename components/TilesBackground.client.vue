@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
 import { breakpointsTailwind, useBreakpoints, useWindowSize } from '@vueuse/core'
 import gsap from 'gsap'
+import { computed, ref } from 'vue'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isMobile = breakpoints.smallerOrEqual('lg')

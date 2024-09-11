@@ -1,0 +1,50 @@
+<script setup lang="ts">
+import { navLinks } from '@/constants'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { onMounted, ref } from 'vue'
+
+gsap.registerPlugin(ScrollTrigger)
+
+const navRef = ref<HTMLElement | null>(null)
+
+onMounted(() => {
+  const navTl = gsap.timeline({
+    delay: 4,
+  })
+
+  navTl.fromTo(navRef.value, {
+    x: '100%',
+    opacity: 0,
+  }, {
+    x: '0%',
+    opacity: 1,
+    duration: 1,
+    ease: 'back.out',
+  })
+})
+</script>
+
+<template>
+  <nav
+    ref="navRef"
+    class="relative flex items-center bg-black"
+  >
+    <div
+      class="absolute left-0 top-0 h-full w-5 -translate-x-5 bg-black"
+      style="clip-path: polygon(100% 0%, 100% 50%, 100% 100%, 100% 100%, 0 65%, 0 0);"
+    ></div>
+
+    <router-link
+      v-for="link in navLinks"
+      :key="link.name"
+      :to="link.href"
+      class="group relative px-[14px] py-3 hover:text-white"
+    >
+      <span class="text-h5">
+        {{ link.name }}
+      </span>
+      <span class="absolute bottom-0 left-0 h-[1px] w-full origin-left scale-x-0 bg-white transition-transform duration-200 group-hover:scale-x-100"></span>
+    </router-link>
+  </nav>
+</template>

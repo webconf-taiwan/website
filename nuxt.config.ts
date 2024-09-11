@@ -7,14 +7,24 @@ import {
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: [
-    '@pinia/nuxt',
-    '@vueuse/nuxt',
-  ],
+  modules: ['@pinia/nuxt', '@vueuse/nuxt', '@nuxt/fonts', '@nuxt/image'],
 
   plugins: [
     '~/plugins/lenis.client.ts',
   ],
+
+  fonts: {
+    families: [
+      {
+        name: 'Mina',
+        weights: ['400', '700'],
+      },
+      {
+        name: 'Noto Sans TC',
+        weights: ['400', '500', '700'],
+      },
+    ],
+  },
 
   postcss: {
     plugins: {

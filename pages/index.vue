@@ -9,13 +9,6 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="w-full">
-    <h1 class="text-2xl font-bold">
-      WebConf Taiwan 2024
-    </h1>
-
-    <HomeAgendaSection />
-  </div>
+  <HomeBanner />
+  <HomeAgendaSection />
 </template>
-
-<style scoped></style>

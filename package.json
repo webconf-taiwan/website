@@ -25,6 +25,8 @@
   "devDependencies": {
     "@antfu/eslint-config": "^3.2.0",
     "@nuxt/devtools": "latest",
+    "@nuxt/fonts": "^0.7.2",
+    "@nuxt/image": "^1.8.0",
     "@pinia/nuxt": "^0.5.4",
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/container-queries": "^0.1.1",
