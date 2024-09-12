@@ -1,8 +1,6 @@
 <script setup lang="ts">
 interface Props {
   animationData: object
-  width: number
-  height: number
   loop?: boolean
   autoplay?: boolean
   speed?: number
@@ -43,6 +41,5 @@ watch(() => props.speed, (newVal) => {
 <template>
   <div
     v-lottie="lottieOptions"
-    :style="{ width: `${width}px`, height: `${height}px` }"
   ></div>
 </template>

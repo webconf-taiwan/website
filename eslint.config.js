@@ -90,7 +90,8 @@ export default antfu(
         'error',
         {
           whitelist: [
-            'my\\-(.*)', // You can rewrite this regex
+            'trapezoid\\-(.*)',
+            'section-title-text',
           ],
         },
       ],

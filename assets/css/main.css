@@ -9,7 +9,7 @@
   }
 
   html, body {
-    @apply min-h-screen;
+    @apply min-h-screen min-h-[300dvh];
   }
 
   body {
@@ -71,11 +71,5 @@
   
   .layout-grid > .full-bleed {
     grid-column: full;
-  }
-
-  /* Section Title Text (h2) */
-  .section-title-text {
-    @apply text-[clamp(3rem,_8vw,_92px)] font-bold text-[#d9d9d9]/10 tracking-wider leading-none;
-    -webkit-text-stroke: 1px white;
   }
 }
