@@ -11,6 +11,9 @@ importers:
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.4(typescript@5.5.4))
+      '@iconify-json/heroicons':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@lottiefiles/lottie-player':
         specifier: ^2.0.4
         version: 2.0.4
@@ -33,6 +36,9 @@ importers:
       '@nuxt/fonts':
         specifier: ^0.7.2
         version: 0.7.2(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.21.2)(vite@5.4.4(@types/node@22.5.4)(terser@5.32.0))
+      '@nuxt/icon':
+        specifier: ^1.5.1
+        version: 1.5.1(magicast@0.3.5)(rollup@4.21.2)(vite@5.4.4(@types/node@22.5.4)(terser@5.32.0))(vue@3.5.4(typescript@5.5.4))
       '@nuxt/image':
         specifier: ^1.8.0
         version: 1.8.0(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.21.2)
@@ -811,6 +817,23 @@ packages:
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
     engines: {node: '>=18.18'}
 
+  '@iconify-json/heroicons@1.2.0':
+    resolution: {integrity: sha512-EmvGN0L9EUJCmQ82rkLGZ4tkz0YGQfZV7ugKT6UvHni/bxNitQrD0gLj6NJj2W9zsSoXyNHyCX236+EJmO4pmA==}
+
+  '@iconify/collections@1.0.459':
+    resolution: {integrity: sha512-OoyCit2aKFH5ZpcLvaWJDnsFerWN+fb1108lpDVUpbccqRb0zjyeRwCvTEtL1QVYct+vxGUO/9USYmxCtRR+Qw==}
+
+  '@iconify/types@2.0.0':
+    resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
+
+  '@iconify/utils@2.1.32':
+    resolution: {integrity: sha512-LeifFZPPKu28O3AEDpYJNdEbvS4/ojAPyIW+pF/vUpJTYnbTiXUHkCh0bwgFRzKvdpb8H4Fbfd/742++MF4fPQ==}
+
+  '@iconify/vue@4.1.3-beta.1':
+    resolution: {integrity: sha512-N7iEOnWfhjbMqiyGMhotJKip23nrK5l3+T1hQwpEjKeMD2o4zOjm8zmeEfOOH81EXllhhOm7upR8jcH499YRWA==}
+    peerDependencies:
+      vue: '>=3'
+
   '@ioredis/commands@1.2.0':
     resolution: {integrity: sha512-Sx1pU8EM64o2BrqNpEO1CNLtKQwyhuXuqyfH7oGKCk+1a33d2r5saW8zNwm3j6BTExtjrv2BxTgzzkMwts6vGg==}
 
@@ -902,6 +925,9 @@ packages:
 
   '@nuxt/fonts@0.7.2':
     resolution: {integrity: sha512-Tu3Wn1agG96khZaRwFdpYAhr+HltUKWxXXAnK6qvhLWbFbVigEPyQOY352KZ4UjFlTlNxUz9hphwvDNioP3vUQ==}
+
+  '@nuxt/icon@1.5.1':
+    resolution: {integrity: sha512-NCCJFumuCfLTaPWyfB0NhOqSPmjK3OCCUbsAk0gfQIxwW0ERudrqiwhCtGJljxA8Ae/952OtI79Fpj1M5Sfuhg==}
 
   '@nuxt/image@1.8.0':
     resolution: {integrity: sha512-GBbORch+ZfWJ0KB8PaXABsPjaiEXB4B4plcpAUVNCdzKZi2qQ4beRnEXfAbtAWPUPefj3rgCG7b9AqAe51Qlzw==}
@@ -5233,6 +5259,33 @@ snapshots:
 
   '@humanwhocodes/retry@0.3.0': {}
 
+  '@iconify-json/heroicons@1.2.0':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify/collections@1.0.459':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify/types@2.0.0': {}
+
+  '@iconify/utils@2.1.32':
+    dependencies:
+      '@antfu/install-pkg': 0.4.1
+      '@antfu/utils': 0.7.10
+      '@iconify/types': 2.0.0
+      debug: 4.3.7
+      kolorist: 1.8.0
+      local-pkg: 0.5.0
+      mlly: 1.7.1
+    transitivePeerDependencies:
+      - supports-color
+
+  '@iconify/vue@4.1.3-beta.1(vue@3.5.4(typescript@5.5.4))':
+    dependencies:
+      '@iconify/types': 2.0.0
+      vue: 3.5.4(typescript@5.5.4)
+
   '@ioredis/commands@1.2.0': {}
 
   '@isaacs/cliui@8.0.2':
@@ -5442,6 +5495,28 @@ snapshots:
       - supports-color
       - uWebSockets.js
       - vite
+      - webpack-sources
+
+  '@nuxt/icon@1.5.1(magicast@0.3.5)(rollup@4.21.2)(vite@5.4.4(@types/node@22.5.4)(terser@5.32.0))(vue@3.5.4(typescript@5.5.4))':
+    dependencies:
+      '@iconify/collections': 1.0.459
+      '@iconify/types': 2.0.0
+      '@iconify/utils': 2.1.32
+      '@iconify/vue': 4.1.3-beta.1(vue@3.5.4(typescript@5.5.4))
+      '@nuxt/devtools-kit': 1.4.2(magicast@0.3.5)(rollup@4.21.2)(vite@5.4.4(@types/node@22.5.4)(terser@5.32.0))
+      '@nuxt/kit': 3.13.1(magicast@0.3.5)(rollup@4.21.2)
+      consola: 3.2.3
+      fast-glob: 3.3.2
+      local-pkg: 0.5.0
+      mlly: 1.7.1
+      pathe: 1.1.2
+      std-env: 3.7.0
+    transitivePeerDependencies:
+      - magicast
+      - rollup
+      - supports-color
+      - vite
+      - vue
       - webpack-sources
 
   '@nuxt/image@1.8.0(ioredis@5.4.1)(magicast@0.3.5)(rollup@4.21.2)':

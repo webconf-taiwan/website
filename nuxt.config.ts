@@ -7,10 +7,12 @@ import {
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: ['@pinia/nuxt', '@vueuse/nuxt', '@nuxt/fonts', '@nuxt/image'],
-
-  plugins: [
-    '~/plugins/lenis.client.ts',
+  modules: [
+    '@pinia/nuxt',
+    '@vueuse/nuxt',
+    '@nuxt/fonts',
+    '@nuxt/image',
+    '@nuxt/icon',
   ],
 
   fonts: {

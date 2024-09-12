@@ -13,7 +13,7 @@
   }
 
   body {
-    @apply relative text-white;
+    @apply relative text-white font-sans;
     background-size: 100% 100dvh, 100% 100%;
     background-image:
       linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end)),
@@ -71,5 +71,11 @@
   
   .layout-grid > .full-bleed {
     grid-column: full;
+  }
+
+  /* Section Title Text (h2) */
+  .section-title-text {
+    @apply text-[clamp(3rem,_8vw,_92px)] font-bold text-[#d9d9d9]/10 tracking-wider leading-none;
+    -webkit-text-stroke: 1px white;
   }
 }

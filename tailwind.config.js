@@ -18,8 +18,8 @@ export default {
     extend: {
       fontFamily: {
         sans: [
-          'Mina',
           '"Noto Sans TC"',
+          'Mina',
           ...defaultTheme.fontFamily.sans.filter(font => font !== 'sans-serif'),
           'sans-serif',
         ],

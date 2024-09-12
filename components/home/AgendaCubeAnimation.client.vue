@@ -1,44 +1,41 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-
 interface Props {
   animationData: object
-  width?: string
-  height?: string
+  width: number
+  height: number
   loop?: boolean
   autoplay?: boolean
   speed?: number
 }
 
-const {
-  animationData,
-  width = '100%',
-  height = 'auto',
-  loop = true,
-  autoplay = true,
-  speed = 1,
-} = defineProps<Props>()
-
-const lottieOptions = ref({
-  animationData,
-  loop,
-  autoplay,
-  speed,
+const props = withDefaults(defineProps<Props>(), {
+  loop: true,
+  autoplay: true,
+  speed: 1,
 })
 
-watch(() => animationData, (newVal) => {
+const lottieOptions = computed(() => {
+  return {
+    animationData: props.animationData,
+    loop: props.loop,
+    autoplay: props.autoplay,
+    speed: props.speed,
+  }
+})
+
+watch(() => props.animationData, (newVal) => {
   lottieOptions.value.animationData = newVal
 })
 
-watch(() => loop, (newVal) => {
+watch(() => props.loop, (newVal) => {
   lottieOptions.value.loop = newVal
 })
 
-watch(() => autoplay, (newVal) => {
+watch(() => props.autoplay, (newVal) => {
   lottieOptions.value.autoplay = newVal
 })
 
-watch(() => speed, (newVal) => {
+watch(() => props.speed, (newVal) => {
   lottieOptions.value.speed = newVal
 })
 </script>
@@ -46,6 +43,6 @@ watch(() => speed, (newVal) => {
 <template>
   <div
     v-lottie="lottieOptions"
-    :style="{ width, height }"
+    :style="{ width: `${width}px`, height: `${height}px` }"
   ></div>
 </template>
