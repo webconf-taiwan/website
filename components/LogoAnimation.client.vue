@@ -49,7 +49,7 @@ onMounted(async () => {
 <template>
   <div
     ref="headerLogoWordsRef"
-    class="relative h-10 w-[200px]"
+    class="relative hidden h-10 w-[200px] lg:block"
   >
     <NuxtImg
       src="/logoWords.svg"

@@ -24,9 +24,24 @@ onMounted(() => {
 </script>
 
 <template>
+  <!-- 手機版 -->
+  <nav class="fixed right-0 top-0 z-10 bg-black lg:hidden">
+    <div class="relative flex h-12 w-10 items-center pl-1">
+      <div
+        class="absolute left-0 top-0 h-full w-3 -translate-x-3 bg-black"
+        style="clip-path: polygon(100% 0%, 100% 50%, 100% 100%, 100% 100%, 0 65%, 0 0);"
+      ></div>
+      <Icon
+        name="heroicons:bars-3-16-solid"
+        class="size-6 text-primary-green"
+      />
+    </div>
+  </nav>
+  
+  <!-- 電腦版 -->
   <nav
     ref="navRef"
-    class="absolute right-0 flex items-center bg-black"
+    class="absolute right-0 hidden items-center bg-black lg:flex"
     style="opacity: 0; transform: translateX(100%);"
   >
     <div

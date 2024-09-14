@@ -89,6 +89,12 @@
     background-repeat: no-repeat;
   }
 
+@layer components {
+  .text-mina{
+    font-family: 'Mina', sans-serif;
+  }
+}
+
   input[type="text"]:focus {
     @apply outline-none ring-0;
   }
