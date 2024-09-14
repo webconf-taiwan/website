@@ -11,4 +11,5 @@ onMounted(() => {
 <template>
   <HomeBanner />
   <HomeAgendaSection />
+  <HomeSpeakersSection />
 </template>

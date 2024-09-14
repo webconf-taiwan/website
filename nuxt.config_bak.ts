@@ -13,7 +13,6 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/image',
     '@nuxt/icon',
-    'shadcn-nuxt',
   ],
 
   fonts: {
@@ -27,11 +26,6 @@ export default defineNuxtConfig({
         weights: ['400', '500', '700'],
       },
     ],
-  },
-
-  shadcn: {
-    prefix: '',
-    componentDir: './components/ui',
   },
 
   postcss: {
