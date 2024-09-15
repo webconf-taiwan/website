@@ -48,13 +48,13 @@ onMounted(() => {
             type="button"
             class="flex items-center justify-center gap-x-2 border border-primary-green bg-gradient-to-b from-primary-green/10 to-primary-green/50 px-9 py-4 text-xl"
           >
-            <span class="">關於我們</span>
+            <span>關於我們</span>
           </button>
           <button
             type="button"
             class="flex items-center justify-center gap-x-2 border border-primary-green bg-gradient-to-b from-primary-green/10 to-primary-green/50 px-9 py-4 text-xl"
           >
-            <span class="">查看議程</span>
+            <span>查看議程</span>
             <Icon
               name="i-heroicons-arrow-right"
               size="24"

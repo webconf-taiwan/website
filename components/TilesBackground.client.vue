@@ -16,6 +16,7 @@ const rows = computed(() => Math.ceil(height.value / tileSize.value))
 const container = ref<HTMLDivElement | null>(null)
 const tilesContainer = ref<HTMLDivElement | null>(null)
 const tileElements = ref<HTMLDivElement[]>([])
+const tempTileIndex = ref<number | null>(null)
 
 const tiles = computed(() => {
   const tileCount = columns.value * rows.value
@@ -40,9 +41,18 @@ const throttledMouseMoveFn = useThrottleFn((event: MouseEvent) => {
   const index = row * columns.value + col
 
   if (index >= 0 && index < tileElements.value.length) {
-    animateTile(index)
+    // animateTile(index)
+    tempTileIndex.value = index
   }
 }, 16) // Approximately 60 FPS
+
+watch(tempTileIndex, (index, prevIndex) => {
+  if (index === prevIndex)
+    return
+
+  if (index !== null)
+    animateTile(index)
+})
 
 function animateTile(index: number) {
   const tile = tileElements.value[index]

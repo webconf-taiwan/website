@@ -37,7 +37,7 @@ onMounted(() => {
       />
     </div>
   </nav>
-  
+
   <!-- 電腦版 -->
   <nav
     ref="navRef"

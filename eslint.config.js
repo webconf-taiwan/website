@@ -92,6 +92,10 @@ export default antfu(
           whitelist: [
             'trapezoid\\-(.*)',
             'section-title-text',
+            'mask',
+            'masked-image',
+            'grid-speakers',
+            'grid-speakers-separator-line',
           ],
         },
       ],

@@ -37,6 +37,7 @@
 
     --main-bg-gradient-start: #000033;
     --main-bg-gradient-end: #006666;
+    --primary-green: hsla(168, 100%, 50%, 1);
   }
 
   .dark {
@@ -82,18 +83,12 @@
 
   body {
     @apply relative text-white font-sans;
-    background-size: 100% 100dvh, 100% 100%;
+    background-size: 100% 125dvh, 100% 100%;
     background-image:
       linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end)),
       linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end));
     background-repeat: no-repeat;
   }
-
-@layer components {
-  .text-mina{
-    font-family: 'Mina', sans-serif;
-  }
-}
 
   input[type="text"]:focus {
     @apply outline-none ring-0;
@@ -145,5 +140,9 @@
   
   .layout-grid > .full-bleed {
     grid-column: full;
+  }
+
+  .text-mina{
+    font-family: 'Mina', sans-serif;
   }
 }
