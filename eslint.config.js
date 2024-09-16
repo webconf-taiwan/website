@@ -95,6 +95,7 @@ export default antfu(
             'mask',
             'masked-image',
             'grid-speakers-separator-line',
+            'speaker-name-tag',
           ],
         },
       ],

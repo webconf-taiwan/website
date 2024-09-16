@@ -20,9 +20,10 @@ defineProps<{
         </clipPath>
       </defs>
     </svg>
+
     <Carousel
       orientation="vertical"
-      class="max-w-[424px]"
+      class="max-w-[424px] before:absolute before:inset-x-0 before:bottom-0 before:z-10 before:h-1.5 before:bg-primary-green"
       style="clip-path: url(#square-with-corner-cut);"
       :opts="{
         align: 'start',
@@ -59,7 +60,19 @@ defineProps<{
         </svg>
       </template>
     </Carousel>
+
+    <div class="speaker-name-tag absolute bottom-1 right-0 flex h-8 w-[108px] items-center justify-center bg-primary-green pl-8 font-medium text-black sm:h-12 sm:w-[150px] sm:pl-10">
+      <span class="w-full text-xl sm:text-[28px]">Mosky</span>
+    </div>
   </div>
 </template>
 
-<style scope></style>
+<style scope>
+.speaker-name-tag {
+  clip-path: polygon(calc(0% + 24px) 0%, 100% 0%, 100% 100%, 0% 100%);
+
+  @media screen and (min-width: 640px) {
+    clip-path: polygon(calc(0% + 32px) 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+</style>
