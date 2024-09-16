@@ -44,7 +44,7 @@ export default defineNuxtConfig({
   css: ['@/assets/css/main.css'],
 
   pinia: {
-    storesDirs: ['./store/**'],
+    storesDirs: ['./stores/**'],
   },
 
   build: {

@@ -4,12 +4,14 @@ import { computed, ref } from 'vue'
 
 const { $gsap } = useNuxtApp()
 
+const tilesBackgroundStore = useTilesBackgroundStore()
+
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const isMobile = breakpoints.smallerOrEqual('lg')
+const isSmallerLg = breakpoints.smaller('lg')
 
 const { width, height } = useWindowSize()
 
-const tileSize = computed(() => isMobile.value ? 60 : 144)
+const tileSize = computed(() => isSmallerLg.value ? 60 : 144)
 const columns = computed(() => Math.ceil(width.value / tileSize.value) + 1)
 const rows = computed(() => Math.ceil(height.value / tileSize.value))
 
@@ -28,7 +30,7 @@ const tiles = computed(() => {
 const containerWidth = computed(() => columns.value * tileSize.value)
 
 const throttledMouseMoveFn = useThrottleFn((event: MouseEvent) => {
-  if (isMobile.value || !container.value || !tilesContainer.value)
+  if (isSmallerLg.value || !container.value || !tilesContainer.value)
     return
 
   const gridRect = tilesContainer.value.getBoundingClientRect()
@@ -41,7 +43,6 @@ const throttledMouseMoveFn = useThrottleFn((event: MouseEvent) => {
   const index = row * columns.value + col
 
   if (index >= 0 && index < tileElements.value.length) {
-    // animateTile(index)
     tempTileIndex.value = index
   }
 }, 16) // Approximately 60 FPS
@@ -51,10 +52,10 @@ watch(tempTileIndex, (index, prevIndex) => {
     return
 
   if (index !== null)
-    animateTile(index)
+    animateTile(index, tilesBackgroundStore.tilesTargetOpacity)
 })
 
-function animateTile(index: number) {
+function animateTile(index: number, targetOpacity: string = '0.1') {
   const tile = tileElements.value[index]
   if (!tile)
     return
@@ -62,7 +63,7 @@ function animateTile(index: number) {
   $gsap.killTweensOf(tile)
 
   $gsap.to(tile, {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: `rgba(255, 255, 255, ${targetOpacity})`,
     duration: 0.15,
     overwrite: true,
     ease: 'power2.out',
