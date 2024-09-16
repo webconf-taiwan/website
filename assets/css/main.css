@@ -78,7 +78,7 @@
   }
 
   html, body {
-    @apply min-h-screen min-h-[300dvh];
+    @apply min-h-screen;
   }
 
   body {

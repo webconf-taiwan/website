@@ -94,7 +94,6 @@ export default antfu(
             'section-title-text',
             'mask',
             'masked-image',
-            'grid-speakers',
             'grid-speakers-separator-line',
           ],
         },
