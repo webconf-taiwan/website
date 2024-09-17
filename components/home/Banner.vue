@@ -9,7 +9,7 @@
     <div class="flex items-end justify-between">
       <div
         id="logoContainer"
-        class="h-[150px] w-[72%]"
+        class="w-[72%] ring-1"
       >
         <NuxtImg
           src="/logo.svg"
