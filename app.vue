@@ -10,7 +10,7 @@ useHead({
 
 <template>
   <Teleport to="body">
-    <FirstLoadingAnimation v-if="!hasShownAnimation" />
+    <!-- <FirstLoadingAnimation v-if="!hasShownAnimation" /> -->
     <TilesBackground />
   </Teleport>
 
