@@ -6,6 +6,7 @@ const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerOrEqualSm = breakpoints.smallerOrEqual('sm')
 
 const isShowSkeleton = ref(true)
+const currentSpeakerId = ref<string | undefined>()
 
 const maskClipPath = computed(() => {
   return isSmallerOrEqualSm.value ? 'M144,0 H320 V320 H0 V30 L100,30 Z' : 'M192,0 H424 V424 H0 V40 L132,40 Z'
@@ -14,6 +15,14 @@ const maskClipPath = computed(() => {
 const filterSpeakers = computed(() => {
   return speakers.slice(0, isSmallerOrEqualSm.value ? 10 : 27)
 })
+
+function updateSpeakerId(speakerId?: string) {
+  currentSpeakerId.value = speakerId
+}
+
+const debounceHoverSpeakerName = useDebounceFn((speakerId: string) => {
+  console.log(speakerId)
+}, 500)
 
 onMounted(() => {
   isShowSkeleton.value = false
@@ -43,6 +52,7 @@ onMounted(() => {
       <HomeSpeakersCarousel
         :speakers="filterSpeakers"
         :mask-clip-path="maskClipPath"
+        @update-speaker-id="updateSpeakerId"
       />
 
       <!-- Speakers name list -->
@@ -62,10 +72,14 @@ onMounted(() => {
           <div
             v-for="speaker in filterSpeakers"
             :key="speaker.id"
+            class="relative before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:-translate-x-1/2 before:bg-primary-green/0 before:transition-colors before:duration-500"
+            :class="[currentSpeakerId === speaker.id ? 'before:bg-primary-green/100' : '']"
           >
             <button
               type="button"
-              class="flex size-full items-center truncate py-2 pl-4 pr-2"
+              class="size-full truncate pl-4 pr-2 text-left transition-colors duration-500"
+              :class="[currentSpeakerId === speaker.id ? 'text-primary-green' : 'text-white']"
+              @mouseenter="debounceHoverSpeakerName(speaker.id)"
             >
               {{ speaker.name }}
             </button>

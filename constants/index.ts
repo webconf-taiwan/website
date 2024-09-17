@@ -36,7 +36,7 @@ export const navLinks = [
 export const speakers: Speaker[] = [
   {
     id: 'speaker_1',
-    name: '講者 1',
+    name: '講者 1 的名字是很長的-大概有21個字元',
     avatar: '/speakers/avatar_424-1.jpg',
   },
   {

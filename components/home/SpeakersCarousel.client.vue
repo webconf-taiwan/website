@@ -1,10 +1,57 @@
 <script setup lang="ts">
+import Autoplay from 'embla-carousel-autoplay'
+import type { Carousel, CarouselApi } from '~/components/ui/carousel'
 import type { Speaker } from '~/types/speakers'
 
-defineProps<{
+const props = defineProps<{
   speakers: Speaker[]
   maskClipPath: string
 }>()
+
+const emit = defineEmits<{
+  updateSpeakerId: [speakerId?: string]
+}>()
+
+const carouselContainerRef = ref<InstanceType<typeof Carousel> | null>(null)
+const carouselApi = ref<CarouselApi>()
+
+const currentSpeakerIndex = ref<number | null>(null)
+
+const currentSpeakerName = computed<string>(() => {
+  if (currentSpeakerIndex.value === null)
+    return ''
+
+  return props.speakers[currentSpeakerIndex.value].name
+})
+
+const currentSpeakerId = computed(() => {
+  if (currentSpeakerIndex.value === null)
+    return
+
+  return props.speakers[currentSpeakerIndex.value].id
+})
+
+function setApi(val: CarouselApi) {
+  carouselApi.value = val
+}
+
+watchOnce(carouselApi, (api) => {
+  if (!api)
+    return
+
+  currentSpeakerIndex.value = api.selectedScrollSnap()
+
+  api.on('select', () => {
+    currentSpeakerIndex.value = api.selectedScrollSnap()
+  })
+})
+
+watch(currentSpeakerId, (speakerId) => {
+  if (speakerId === null)
+    return
+
+  emit('updateSpeakerId', speakerId)
+})
 </script>
 
 <template>
@@ -22,12 +69,17 @@ defineProps<{
     </svg>
 
     <Carousel
+      ref="carouselContainerRef"
       orientation="vertical"
       class="max-w-[424px] before:absolute before:inset-x-0 before:bottom-0 before:z-10 before:h-1.5 before:bg-primary-green"
       style="clip-path: url(#square-with-corner-cut);"
       :opts="{
         align: 'start',
       }"
+      :plugins="[Autoplay({
+        delay: 2000,
+      })]"
+      @init-api="setApi"
     >
       <CarouselContent class="size-80 sm:size-[424px]">
         <CarouselItem
@@ -61,8 +113,12 @@ defineProps<{
       </template>
     </Carousel>
 
-    <div class="speaker-name-tag absolute bottom-1 right-0 flex h-8 w-[108px] items-center justify-center bg-primary-green pl-8 font-medium text-black sm:h-12 sm:w-[150px] sm:pl-10">
-      <span class="w-full text-xl sm:text-[28px]">Mosky</span>
+    <div class="speaker-name-tag absolute bottom-1 right-0 flex h-8 w-fit items-center justify-center bg-primary-green pl-8 pr-5 font-medium text-black sm:h-12 sm:pl-10 sm:pr-4">
+      <span
+        class="inline-block w-full max-w-[20ch] truncate whitespace-nowrap text-xl sm:text-[28px]"
+      >
+        {{ currentSpeakerName }}
+      </span>
     </div>
   </div>
 </template>
