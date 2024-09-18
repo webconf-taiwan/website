@@ -123,18 +123,6 @@ function leaveSpeakerNameHandler() {
           :speakers-columns="speakersColumns"
         />
 
-        <!-- <template v-if="!isShowSkeleton">
-          <div
-            v-for="(_, colIndex) in speakersColumns"
-            v-show="isSpeakersColumnEmpty(colIndex)"
-            :key="`coming-soon-${colIndex}`"
-            class="absolute inset-y-0 flex w-1/2 items-center justify-center text-xl font-bold tracking-wider text-white/10 sm:w-1/3"
-            :class="speakersColumnsClasses[colIndex]"
-          >
-            coming soon
-          </div>
-        </template> -->
-
         <template v-if="isShowSkeleton">
           <Skeleton
             v-for="(_, index) in 3"
@@ -148,12 +136,12 @@ function leaveSpeakerNameHandler() {
           <div
             v-for="speaker in filterSpeakers"
             :key="speaker.id"
-            class="relative before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:-translate-x-1/2 before:bg-primary-green/0 before:transition-colors before:duration-500"
-            :class="[currentSpeakerId === speaker.id ? 'before:bg-primary-green/100' : '']"
+            class="relative before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:-translate-x-1/2 before:scale-y-50 before:bg-primary-green/0 before:transition-all before:duration-500"
+            :class="[currentSpeakerId === speaker.id ? 'before:scale-y-100 before:bg-primary-green/100' : '']"
           >
             <button
               type="button"
-              class="size-full truncate py-2 pl-4 pr-2 text-left transition-colors duration-500"
+              class="size-full truncate py-2 pl-4 pr-2 text-left text-base transition-colors duration-500 lg:text-lg"
               :class="[currentSpeakerId === speaker.id ? 'text-primary-green' : 'text-white']"
               @mouseenter="enterSpeakerNameHandler(speaker.id)"
               @mouseleave="leaveSpeakerNameHandler"
