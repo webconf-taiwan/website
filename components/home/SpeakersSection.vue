@@ -27,6 +27,7 @@ const filterSpeakers = computed(() => {
 })
 
 const speakersGridLayoutClasses = computed(() => {
+  // grid-cols-2 grid-rows-5 sm:grid-cols-3 lg:grid-rows-9
   return `grid-cols-${speakersMobileColumns} grid-rows-${speakersMobileRows} sm:grid-cols-${speakersDesktopColumns} lg:grid-rows-${speakersDesktopRows}`
 })
 
@@ -121,6 +122,18 @@ function leaveSpeakerNameHandler() {
           :speakers-rows="speakersRows"
           :speakers-columns="speakersColumns"
         />
+
+        <!-- <template v-if="!isShowSkeleton">
+          <div
+            v-for="(_, colIndex) in speakersColumns"
+            v-show="isSpeakersColumnEmpty(colIndex)"
+            :key="`coming-soon-${colIndex}`"
+            class="absolute inset-y-0 flex w-1/2 items-center justify-center text-xl font-bold tracking-wider text-white/10 sm:w-1/3"
+            :class="speakersColumnsClasses[colIndex]"
+          >
+            coming soon
+          </div>
+        </template> -->
 
         <template v-if="isShowSkeleton">
           <Skeleton

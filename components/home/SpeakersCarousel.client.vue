@@ -98,7 +98,6 @@ function recoverCarouselAutoplay() {
       style="clip-path: url(#square-with-corner-cut);"
       :opts="{
         align: 'start',
-        loop: true,
       }"
       :plugins="[Autoplay({
         delay: 2500,
