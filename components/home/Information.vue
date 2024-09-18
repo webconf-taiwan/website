@@ -60,6 +60,6 @@ const trafficInfos = [
       </div>
     </div>
 
-    <HomeSpaceInfoMarquee :reverse="true"/>
+    <HomeSpaceInfoMarquee :reverse="true" />
   </div>
 </template>

@@ -16,8 +16,6 @@
         <Button
           variant="custom"
           size="custom"
-          rounded="none"
-          class=""
         >
           <p class="text-xl">
             即將開賣

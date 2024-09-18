@@ -31,8 +31,7 @@
         <Button
           variant="custom"
           size="custom"
-          rounded="none"
-          class="mx-auto mt-[35px]  lg:max-w-none xl:max-w-[180px]"
+          class="mx-auto mt-[35px] lg:max-w-none xl:max-w-[180px]"
         >
           <p class="text-xl">
             即將開賣
@@ -89,7 +88,6 @@
         <Button
           variant="custom"
           size="custom"
-          rounded="none"
           class="mx-auto mt-[35px]"
         >
           <p class="text-xl">

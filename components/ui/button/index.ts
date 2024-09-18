@@ -16,7 +16,7 @@ export const buttonVariants = cva(
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
-        custom: 'border border-primary-green bg-transparent bg-gradient-to-t from-[rgba(0,255,204,0.5)] to-[rgba(0,255,204,0.1)] hover:from-[rgba(0,255,204,0.5)] hover:to-[rgba(0,255,204,0.5)]',
+        custom: 'relative z-[1] border border-primary-green bg-transparent bg-gradient-to-t from-[rgba(0,255,204,0.5)] to-[rgba(0,255,204,0.1)] *:relative *:z-[3] before:absolute before:inset-0 before:z-[2] before:bg-gradient-to-t before:from-[rgba(0,255,204,0.5)] before:to-[rgba(0,255,204,0.5)] before:opacity-0 before:transition-opacity hover:before:opacity-100',
       },
       size: {
         default: 'h-9 px-4 py-2',
@@ -34,7 +34,7 @@ export const buttonVariants = cva(
     defaultVariants: {
       variant: 'default',
       size: 'default',
-      rounded: 'default',
+      rounded: 'none',
     },
   },
 )

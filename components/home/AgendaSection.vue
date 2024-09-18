@@ -1,9 +1,17 @@
 <script setup lang="ts">
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import cubeAnimation from '~/assets/lottie/cube_animation.json'
 
 const { $gsap } = useNuxtApp()
 
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isSmallerOrEqualLg = breakpoints.smallerOrEqual('lg')
+
 const parallaxSection = ref<HTMLElement | null>(null)
+
+const parallaxSectionToPositionY = computed(() => {
+  return isSmallerOrEqualLg.value ? -150 : -250
+})
 
 onMounted(() => {
   if (!parallaxSection.value)
@@ -21,7 +29,7 @@ onMounted(() => {
   tl.fromTo(parallaxSection.value, {
     y: 0,
   }, {
-    y: -250,
+    y: parallaxSectionToPositionY.value,
     ease: 'power2.out',
   })
 })
@@ -30,7 +38,7 @@ onMounted(() => {
 <template>
   <section
     ref="parallaxSection"
-    class="full-bleed relative bg-black px-5 py-20"
+    class="full-bleed relative z-10 mt-24 bg-black px-5 py-20 lg:mt-0"
   >
     <div class="mx-auto max-w-[1096px]">
       <div class="mb-8 flex items-center justify-start lg:justify-between">
@@ -43,24 +51,15 @@ onMounted(() => {
           </template>
         </HomeSectionTitle>
 
-        <div class="hidden items-center gap-x-6 lg:flex">
-          <button
-            type="button"
-            class="flex items-center justify-center gap-x-2 border border-primary-green bg-gradient-to-b from-primary-green/10 to-primary-green/50 px-9 py-4 text-xl"
-          >
-            <span>關於我們</span>
-          </button>
-          <button
-            type="button"
-            class="flex items-center justify-center gap-x-2 border border-primary-green bg-gradient-to-b from-primary-green/10 to-primary-green/50 px-9 py-4 text-xl"
-          >
-            <span>查看議程</span>
-            <Icon
-              name="i-heroicons-arrow-right"
-              size="24"
-            />
-          </button>
-        </div>
+        <Button
+          type="button"
+          variant="custom"
+          size="custom"
+          rounded="none"
+          class="hidden lg:block"
+        >
+          <span class="text-xl">關於我們</span>
+        </Button>
       </div>
 
       <div class="mb-10 flex flex-col items-center gap-8 lg:mb-0 lg:flex-row lg:justify-between">
@@ -94,22 +93,15 @@ onMounted(() => {
       </div>
 
       <div class="mx-auto flex max-w-[180px] flex-col gap-y-4 lg:hidden">
-        <button
+        <Button
           type="button"
-          class="flex items-center justify-center gap-x-2 border border-primary-green bg-gradient-to-b from-primary-green/10 to-primary-green/50 py-4 text-xl"
+          variant="custom"
+          size="custom"
+          rounded="none"
+          class="hidden lg:block"
         >
-          <span class="">關於我們</span>
-        </button>
-        <button
-          type="button"
-          class="flex items-center justify-center gap-x-2 border border-primary-green bg-gradient-to-b from-primary-green/10 to-primary-green/50 py-4 text-xl"
-        >
-          <span class="">查看議程</span>
-          <Icon
-            name="i-heroicons-arrow-right"
-            size="24"
-          />
-        </button>
+          <span class="text-xl">關於我們</span>
+        </Button>
       </div>
     </div>
 

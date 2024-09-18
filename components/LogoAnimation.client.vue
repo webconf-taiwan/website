@@ -32,7 +32,6 @@ onMounted(async () => {
   if (logoContainerRef.value) {
     useResizeObserver(logoContainerRef, () => {
       updateLogoContainerWidth()
-      console.log('Logo container resized:', logoContainerWidth.value)
     })
   }
 
@@ -64,7 +63,7 @@ onMounted(async () => {
     isDesktopSm: `(min-width: 1024px) and (max-width: 1299px)`,
     isDesktopLg: `(min-width: 1300px)`,
   }, (context) => {
-    const { isPhone, isPad, isDesktopSm,isDesktopLg } = context.conditions as { isPhone: boolean, isPad: boolean, isDesktopSm: boolean, isDesktopLg: boolean }
+    const { isPhone, isPad, isDesktopSm, isDesktopLg } = context.conditions as { isPhone: boolean, isPad: boolean, isDesktopSm: boolean, isDesktopLg: boolean }
 
     if (isPhone) {
       tlSm.from(headerLogoWordsSmRef.value, {
@@ -109,7 +108,7 @@ onMounted(async () => {
   <!-- 電腦版 -->
   <div
     ref="headerLogoWordsRef"
-    class="relative hidden h-10 lg:block w-[14.5%]"
+    class="relative hidden h-10 w-[14.5%] lg:block"
   >
     <NuxtImg
       src="/logoWords.svg"
