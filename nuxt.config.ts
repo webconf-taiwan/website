@@ -14,6 +14,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     'shadcn-nuxt',
+    'nuxt-marquee',
   ],
 
   fonts: {

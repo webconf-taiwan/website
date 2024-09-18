@@ -29,4 +29,6 @@ onMounted(() => {
   <HomeBanner />
   <HomeAgendaSection />
   <HomeSpeakersSection ref="speakerSectionRef" />
+  <HomeInformation />
+  <HomeNews />
 </template>
