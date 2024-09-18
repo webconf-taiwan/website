@@ -95,3 +95,8 @@ export const speakers: Speaker[] = [
     avatar: '/speakers/avatar_424-12.jpg',
   },
 ]
+
+export const speakersDesktopColumns = 3
+export const speakersDesktopRows = 9
+export const speakersMobileColumns = 2
+export const speakersMobileRows = 5

@@ -1,32 +1,85 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { speakers } from '~/constants'
+import {
+  speakers,
+  speakersDesktopColumns,
+  speakersDesktopRows,
+  speakersMobileColumns,
+  speakersMobileRows,
+} from '~/constants'
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerOrEqualSm = breakpoints.smallerOrEqual('sm')
-
-const isShowSkeleton = ref(true)
-const currentSpeakerId = ref<string | undefined>()
+const isSmallerOrEqualLg = breakpoints.smallerOrEqual('lg')
 
 const maskClipPath = computed(() => {
   return isSmallerOrEqualSm.value ? 'M144,0 H320 V320 H0 V30 L100,30 Z' : 'M192,0 H424 V424 H0 V40 L132,40 Z'
 })
 
-const filterSpeakers = computed(() => {
-  return speakers.slice(0, isSmallerOrEqualSm.value ? 10 : 27)
+const speakersListLimit = computed(() => {
+  return isSmallerOrEqualSm.value
+    ? speakersMobileColumns * speakersMobileRows
+    : speakersDesktopColumns * speakersDesktopRows
 })
+
+const filterSpeakers = computed(() => {
+  return speakers.slice(0, speakersListLimit.value)
+})
+
+const speakersGridLayoutClasses = computed(() => {
+  // grid-cols-2 grid-rows-5 sm:grid-cols-3 lg:grid-rows-9
+  return `grid-cols-${speakersMobileColumns} grid-rows-${speakersMobileRows} sm:grid-cols-${speakersDesktopColumns} lg:grid-rows-${speakersDesktopRows}`
+})
+
+const speakersColumns = computed(() => {
+  return isSmallerOrEqualSm.value ? speakersMobileColumns : speakersDesktopColumns
+})
+
+const speakersRows = computed(() => {
+  return isSmallerOrEqualLg.value ? speakersMobileRows : speakersDesktopRows
+})
+
+const isShowSkeleton = ref(true)
+
+onMounted(() => {
+  isShowSkeleton.value = false
+})
+
+/**
+ * Interaction between carousel and speaker name list
+ */
+const currentSpeakerId = ref<string | undefined>()
+const canExecuteSelectSpeakerName = ref(false)
+const speakerCarouselRef = useTemplateRef('speakerCarouselRef')
+
+const { start: startTimer, stop: stopTimer } = useTimeoutFn((speakerId) => {
+  canExecuteSelectSpeakerName.value = true
+  selectSpeakerName(speakerId)
+}, 500)
 
 function updateSpeakerId(speakerId?: string) {
   currentSpeakerId.value = speakerId
 }
 
-const debounceHoverSpeakerName = useDebounceFn((speakerId: string) => {
-  console.log(speakerId)
-}, 500)
+function selectSpeakerName(speakerId: string) {
+  if (!canExecuteSelectSpeakerName.value) {
+    return
+  }
 
-onMounted(() => {
-  isShowSkeleton.value = false
-})
+  speakerCarouselRef.value?.selectSpeaker(speakerId)
+}
+
+function enterSpeakerNameHandler(speakerId: string) {
+  speakerCarouselRef.value?.stopCarouselAutoplay()
+  canExecuteSelectSpeakerName.value = false
+  startTimer(speakerId)
+}
+
+function leaveSpeakerNameHandler() {
+  speakerCarouselRef.value?.recoverCarouselAutoplay()
+  stopTimer()
+  canExecuteSelectSpeakerName.value = false
+}
 </script>
 
 <template>
@@ -50,14 +103,37 @@ onMounted(() => {
         :is-show-loading="true"
       />
       <HomeSpeakersCarousel
+        ref="speakerCarouselRef"
         :speakers="filterSpeakers"
         :mask-clip-path="maskClipPath"
         @update-speaker-id="updateSpeakerId"
       />
 
       <!-- Speakers name list -->
-      <div class="relative grid w-full grid-flow-col grid-cols-2 grid-rows-5 sm:grid-cols-3 lg:grid-rows-9">
-        <HomeSpeakersDividingLines :is-show-skeleton="isShowSkeleton" />
+      <div
+        class="relative grid w-full grid-flow-col"
+        :class="speakersGridLayoutClasses"
+      >
+        <HomeSpeakersDividingLines v-if="!isShowSkeleton" />
+
+        <HomeSpeakersComingSoon
+          v-if="!isShowSkeleton"
+          :speakers="filterSpeakers"
+          :speakers-rows="speakersRows"
+          :speakers-columns="speakersColumns"
+        />
+
+        <!-- <template v-if="!isShowSkeleton">
+          <div
+            v-for="(_, colIndex) in speakersColumns"
+            v-show="isSpeakersColumnEmpty(colIndex)"
+            :key="`coming-soon-${colIndex}`"
+            class="absolute inset-y-0 flex w-1/2 items-center justify-center text-xl font-bold tracking-wider text-white/10 sm:w-1/3"
+            :class="speakersColumnsClasses[colIndex]"
+          >
+            coming soon
+          </div>
+        </template> -->
 
         <template v-if="isShowSkeleton">
           <Skeleton
@@ -77,9 +153,10 @@ onMounted(() => {
           >
             <button
               type="button"
-              class="size-full truncate pl-4 pr-2 text-left transition-colors duration-500"
+              class="size-full truncate py-2 pl-4 pr-2 text-left transition-colors duration-500"
               :class="[currentSpeakerId === speaker.id ? 'text-primary-green' : 'text-white']"
-              @mouseenter="debounceHoverSpeakerName(speaker.id)"
+              @mouseenter="enterSpeakerNameHandler(speaker.id)"
+              @mouseleave="leaveSpeakerNameHandler"
             >
               {{ speaker.name }}
             </button>
@@ -91,13 +168,4 @@ onMounted(() => {
 </template>
 
 <style scope>
-.grid-speakers-separator-line {
-  position: absolute;
-  top: 0;
-  width: 1px;
-  height: 100%;
-  background-image: linear-gradient(to bottom, var(--primary-green), var(--primary-green) 4px, transparent 4px, transparent 8px);
-  background-repeat: repeat;
-  background-size: 100% 8px;
-}
 </style>

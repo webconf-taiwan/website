@@ -12,6 +12,12 @@ const emit = defineEmits<{
   updateSpeakerId: [speakerId?: string]
 }>()
 
+defineExpose({
+  selectSpeaker,
+  stopCarouselAutoplay,
+  recoverCarouselAutoplay,
+})
+
 const carouselContainerRef = ref<InstanceType<typeof Carousel> | null>(null)
 const carouselApi = ref<CarouselApi>()
 
@@ -52,6 +58,23 @@ watch(currentSpeakerId, (speakerId) => {
 
   emit('updateSpeakerId', speakerId)
 })
+
+function selectSpeaker(speakerId: string) {
+  const index = props.speakers.findIndex(speaker => speaker.id === speakerId)
+
+  if (index === -1)
+    return
+
+  carouselApi.value?.scrollTo(index)
+}
+
+function stopCarouselAutoplay() {
+  carouselApi.value?.plugins().autoplay?.stop()
+}
+
+function recoverCarouselAutoplay() {
+  carouselApi.value?.plugins().autoplay?.play()
+}
 </script>
 
 <template>
@@ -77,7 +100,8 @@ watch(currentSpeakerId, (speakerId) => {
         align: 'start',
       }"
       :plugins="[Autoplay({
-        delay: 2000,
+        delay: 2500,
+        stopOnInteraction: false,
       })]"
       @init-api="setApi"
     >
