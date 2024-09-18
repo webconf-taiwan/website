@@ -4,12 +4,12 @@
 <template>
   <!-- 電腦版 -->
   <section
-    class="mt-[60px] hidden h-[calc(100dvh-72px)] w-full ring-1 lg:block"
+    class="mt-[60px] hidden h-[calc(100dvh-72px)] w-full lg:block"
   >
-    <div class="flex items-end justify-between">
+    <div class="flex justify-between xl:items-end">
       <div
         id="logoContainer"
-        class="w-[72%] ring-1"
+        class="w-[72%] xl:w-[65%]"
       >
         <NuxtImg
           src="/logo.svg"
@@ -18,18 +18,26 @@
         />
       </div>
 
-      <div class=" ml-10 flex w-[28%] flex-col items-start justify-end ring-1">
-        <span class="font-bold tracking-[0.037em] md:text-xl">
-          2024｜12.27 - 28
-        </span>
-        <span class=" text-h3 tracking-[0.07em]">
-          瓶蓋工廠台北製造所
-        </span>
-      </div>
+      <div class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[35%] xl:items-end xl:justify-between">
+        <div class="text-center xl:text-start">
+          <p class="text-2xl font-bold tracking-[0.037em]">
+            2024｜12.27 - 28
+          </p>
+          <p class="text-md-h3 tracking-[0.07em]">
+            瓶蓋工廠台北製造所
+          </p>
+        </div>
 
-      <!-- TODO:等 shadcn 建置按鈕元件 -->
-      <div class=" hidden h-[60px] w-[155px] items-center justify-center lg:flex">
-        即將開賣
+        <Button
+          variant="custom"
+          size="custom"
+          rounded="none"
+          class="mx-auto mt-[35px]  lg:max-w-none xl:max-w-[180px]"
+        >
+          <p class="text-xl">
+            即將開賣
+          </p>
+        </Button>
       </div>
     </div>
 
@@ -51,7 +59,7 @@
       <div class="flex flex-col">
         <div
           id="logoSmContainer"
-          class="w-full ring-1"
+          class="w-full"
         >
           <NuxtImg
             src="/logo-sm.svg"
@@ -77,6 +85,17 @@
             瓶蓋工廠台北製造所
           </span>
         </div>
+
+        <Button
+          variant="custom"
+          size="custom"
+          rounded="none"
+          class="mx-auto mt-[35px]"
+        >
+          <p class="text-xl">
+            即將開賣
+          </p>
+        </Button>
       </div>
     </div>
   </section>

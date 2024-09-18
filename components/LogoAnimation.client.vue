@@ -44,6 +44,7 @@ onMounted(async () => {
       start: 'top top',
       end: 'bottom top',
       scrub: 1,
+      // markers: true,
     },
   })
 
@@ -53,16 +54,17 @@ onMounted(async () => {
       start: 'top top',
       end: 'bottom top',
       scrub: 1,
-      markers: true,
+      // markers: true,
     },
   })
 
   mm.add({
     isPhone: `(max-width: 719px)`,
-    isPad: `(min-width: 720px) and (max-width: 1024px)`,
-    isDesktop: `(min-width: 1025px)`,
+    isPad: `(min-width: 720px) and (max-width: 1023px)`,
+    isDesktopSm: `(min-width: 1024px) and (max-width: 1299px)`,
+    isDesktopLg: `(min-width: 1300px)`,
   }, (context) => {
-    const { isPhone, isPad, isDesktop } = context.conditions as { isPhone: boolean, isPad: boolean, isDesktop: boolean }
+    const { isPhone, isPad, isDesktopSm,isDesktopLg } = context.conditions as { isPhone: boolean, isPad: boolean, isDesktopSm: boolean, isDesktopLg: boolean }
 
     if (isPhone) {
       tlSm.from(headerLogoWordsSmRef.value, {
@@ -82,10 +84,19 @@ onMounted(async () => {
       })
     }
 
-    if (isDesktop) {
+    if (isDesktopSm) {
       tl.from(headerLogoWordsRef.value, {
         x: '-=40',
         y: '+=150',
+        width: () => `${logoContainerWidth.value}px`,
+        // scale: 3.78,
+      })
+    }
+
+    if (isDesktopLg) {
+      tl.from(headerLogoWordsRef.value, {
+        x: '-=40',
+        y: '+=160',
         width: () => `${logoContainerWidth.value}px`,
         // scale: 3.78,
       })
@@ -98,7 +109,7 @@ onMounted(async () => {
   <!-- 電腦版 -->
   <div
     ref="headerLogoWordsRef"
-    class="relative hidden h-10 lg:block w-[20%]"
+    class="relative hidden h-10 lg:block w-[14.5%]"
   >
     <NuxtImg
       src="/logoWords.svg"
