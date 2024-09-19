@@ -9,7 +9,7 @@
     <div class="flex justify-between xl:items-end">
       <div
         id="logoContainer"
-        class="w-[72%] xl:w-[65%]"
+        class="w-[72%] xl:w-[52%]"
       >
         <NuxtImg
           src="/logo.svg"
@@ -18,7 +18,7 @@
         />
       </div>
 
-      <div class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[35%] xl:items-end xl:justify-between">
+      <div class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[48%] xl:items-end xl:space-y-0">
         <div class="text-center xl:text-start">
           <p class="text-2xl font-bold tracking-[0.037em]">
             2024｜12.27 - 28
@@ -31,7 +31,8 @@
         <Button
           variant="custom"
           size="custom"
-          class="mx-auto mt-[35px] lg:max-w-none xl:max-w-[180px]"
+          rounded="none"
+          class="mx-auto mt-[35px] lg:max-w-none xl:mr-0 xl:max-w-[180px]"
         >
           <p class="text-xl">
             即將開賣

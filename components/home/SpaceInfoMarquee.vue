@@ -11,6 +11,7 @@ const { reverse } = defineProps<{
       :loop="0"
       :auto-fill="true"
       :direction="reverse ? 'right' : 'left'"
+      class="overflow-hidden"
     >
       <span class="text-mina mr-4 bg-gradient-to-r from-[#00FFCC33] to-[#00FFCC33] bg-clip-text text-[32px] font-bold uppercase text-transparent lg:text-[80px]">
         space information

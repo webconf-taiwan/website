@@ -1,39 +1,15 @@
 <script setup lang="ts">
-import { useResizeObserver } from '@vueuse/core'
-import { nextTick, onMounted, ref } from 'vue'
-
 const { headerRef } = defineProps<{
   headerRef: HTMLDivElement | null
 }>()
-
 const { $gsap } = useNuxtApp()
 const headerLogoWordsRef = ref<HTMLDivElement | null>(null)
 const headerLogoWordsSmRef = ref<HTMLDivElement | null>(null)
 const headerLogoLinkRef = ref<HTMLDivElement | null>(null)
 const headerLogoLinkSmRef = ref<HTMLDivElement | null>(null)
 
-const logoContainerRef = ref<HTMLElement | null>(null)
-const logoContainerWidth = ref(0)
-
-function updateLogoContainerWidth() {
-  const container = document.getElementById('logoContainer')
-  if (container) {
-    logoContainerWidth.value = container.offsetWidth
-  }
-}
-
 onMounted(async () => {
   await nextTick()
-
-  logoContainerRef.value = document.getElementById('logoContainer')
-  updateLogoContainerWidth()
-
-  // 使用 useResizeObserver 來監聽 logoContainer 的大小變化
-  if (logoContainerRef.value) {
-    useResizeObserver(logoContainerRef, () => {
-      updateLogoContainerWidth()
-    })
-  }
 
   const mm = $gsap.matchMedia()
 
@@ -43,7 +19,6 @@ onMounted(async () => {
       start: 'top top',
       end: 'bottom top',
       scrub: 1,
-      // markers: true,
     },
   })
 
@@ -53,51 +28,57 @@ onMounted(async () => {
       start: 'top top',
       end: 'bottom top',
       scrub: 1,
-      // markers: true,
     },
   })
 
   mm.add({
     isPhone: `(max-width: 719px)`,
     isPad: `(min-width: 720px) and (max-width: 1023px)`,
-    isDesktopSm: `(min-width: 1024px) and (max-width: 1299px)`,
-    isDesktopLg: `(min-width: 1300px)`,
+    isDesktopSm: `(min-width: 1024px) and (max-width: 1279px)`,
+    isDesktopLg: `(min-width: 1280px)`,
   }, (context) => {
     const { isPhone, isPad, isDesktopSm, isDesktopLg } = context.conditions as { isPhone: boolean, isPad: boolean, isDesktopSm: boolean, isDesktopLg: boolean }
 
     if (isPhone) {
+      tlSm.restart()
       tlSm.from(headerLogoWordsSmRef.value, {
-        y: '+=100',
+        y: 100,
         width: 'calc(100% - 40px)',
-        transformOrigin: 'top center',
+        // scale: 2,
+        transformOrigin: 'center center',
         ease: 'power3.inOut',
       })
+      tlSm.pause()
     }
 
     if (isPad) {
+      tlSm.restart()
       tlSm.from(headerLogoWordsSmRef.value, {
-        y: '+=110',
+        y: 110,
         width: 'calc(100% - 40px)',
         transformOrigin: 'top left',
         ease: 'power3.inOut',
       })
+      tlSm.pause()
     }
 
     if (isDesktopSm) {
       tl.from(headerLogoWordsRef.value, {
-        x: '-=40',
-        y: '+=150',
-        width: () => `${logoContainerWidth.value}px`,
-        // scale: 3.78,
+        x: 10,
+        y: 150,
+        transformOrigin: 'top left',
+        ease: 'power3.inOut',
+        scale: 4.7,
       })
     }
 
     if (isDesktopLg) {
       tl.from(headerLogoWordsRef.value, {
-        x: '-=40',
-        y: '+=160',
-        width: () => `${logoContainerWidth.value}px`,
-        // scale: 3.78,
+        x: 10,
+        y: 145,
+        transformOrigin: 'top left',
+        ease: 'power3.inOut',
+        scale: 3.44,
       })
     }
   })

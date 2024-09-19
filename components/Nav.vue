@@ -41,7 +41,7 @@ onMounted(() => {
   <!-- 電腦版 -->
   <nav
     ref="navRef"
-    class="absolute right-0 hidden items-center bg-black lg:flex"
+    class="relative hidden items-center bg-black lg:flex"
     style="opacity: 0; transform: translateX(100%);"
   >
     <div

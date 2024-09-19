@@ -7,7 +7,7 @@ const headerRef = ref<HTMLDivElement | null>(null)
 <template>
   <header
     ref="headerRef"
-    class="sticky top-0 z-50 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 py-4 lg:justify-between"
+    class="fixed top-0 z-50 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 py-4 lg:justify-between"
   >
     <LogoAnimation
       v-if="headerRef"
@@ -16,4 +16,7 @@ const headerRef = ref<HTMLDivElement | null>(null)
 
     <Nav />
   </header>
+
+  <!-- header 佔位格 -->
+  <div class="h-12 lg:h-[72px]"></div>
 </template>
