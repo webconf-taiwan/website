@@ -64,6 +64,7 @@ export default antfu(
       'src-tauri',
       'auto-imports.d.ts',
       'components.d.ts',
+      '**/lottie/*',
     ],
   },
   /* From the second arguments they are ESLint Flat Configs */
@@ -89,7 +90,14 @@ export default antfu(
         'error',
         {
           whitelist: [
-            'my\\-(.*)', // You can rewrite this regex
+            'trapezoid\\-(.*)',
+            'section-title-text',
+            'mask',
+            'masked-image',
+            'grid-speakers-separator-line',
+            'speaker-name-tag',
+            'marquee-text-outline',
+            'drawer-content',
           ],
         },
       ],
