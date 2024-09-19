@@ -13,6 +13,8 @@ const parallaxSectionToPositionY = computed(() => {
   return isSmallerOrEqualLg.value ? -150 : -250
 })
 
+const aboutUsDrawer = useTemplateRef('aboutUsDrawer')
+
 onMounted(() => {
   if (!parallaxSection.value)
     return
@@ -57,9 +59,25 @@ onMounted(() => {
           size="custom"
           rounded="none"
           class="hidden lg:block"
+          @click="aboutUsDrawer?.open()"
         >
           <span class="text-xl">關於我們</span>
         </Button>
+
+        <Teleport to="body">
+          <Drawer ref="aboutUsDrawer">
+            <div
+              v-for="i in 20"
+              :key="i"
+              class="mb-4"
+            >
+              <h3 class="text-lg font-semibold">
+                Section {{ i }}
+              </h3>
+              <p>This is some sample content for section {{ i }}.</p>
+            </div>
+          </Drawer>
+        </Teleport>
       </div>
 
       <div class="mb-10 flex flex-col items-center gap-8 lg:mb-0 lg:flex-row lg:justify-between">
@@ -98,7 +116,8 @@ onMounted(() => {
           variant="custom"
           size="custom"
           rounded="none"
-          class="hidden lg:block"
+          class="block lg:hidden"
+          @click="aboutUsDrawer?.open()"
         >
           <span class="text-xl">關於我們</span>
         </Button>

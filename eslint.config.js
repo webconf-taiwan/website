@@ -97,6 +97,7 @@ export default antfu(
             'grid-speakers-separator-line',
             'speaker-name-tag',
             'marquee-text-outline',
+            'drawer-content',
           ],
         },
       ],
