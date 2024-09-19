@@ -5,16 +5,18 @@ const headerRef = ref<HTMLDivElement | null>(null)
 </script>
 
 <template>
-  <header
-    ref="headerRef"
-    class="fixed top-0 z-50 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 py-4 lg:justify-between"
-  >
-    <LogoAnimation
-      v-if="headerRef"
-      :header-ref="headerRef"
-    />
+  <header class="lg:flex lg:justify-center">
+    <div
+      ref="headerRef"
+      class="fixed top-0 z-50 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 py-4 lg:max-w-[1440px] lg:justify-between"
+    >
+      <LogoAnimation
+        v-if="headerRef"
+        :header-ref="headerRef"
+      />
 
-    <Nav />
+      <Nav />
+    </div>
   </header>
 
   <!-- header 佔位格 -->
