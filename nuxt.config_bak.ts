@@ -13,8 +13,6 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/image',
     '@nuxt/icon',
-    'shadcn-nuxt',
-    'nuxt-marquee',
   ],
 
   fonts: {
@@ -30,11 +28,6 @@ export default defineNuxtConfig({
     ],
   },
 
-  shadcn: {
-    prefix: '',
-    componentDir: './components/ui',
-  },
-
   postcss: {
     plugins: {
       tailwindcss: {},
@@ -45,7 +38,7 @@ export default defineNuxtConfig({
   css: ['@/assets/css/main.css'],
 
   pinia: {
-    storesDirs: ['./stores/**'],
+    storesDirs: ['./store/**'],
   },
 
   build: {
@@ -55,7 +48,6 @@ export default defineNuxtConfig({
   app: {
     head: {
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: appDescription },
         { property: 'og:title', content: ogTitle },
         { property: 'og:description', content: ogDescription },

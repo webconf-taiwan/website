@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import gsap from 'gsap'
+const { $gsap } = useNuxtApp()
 
 const { setAnimationShown } = useLoadingState()
 
@@ -39,7 +39,7 @@ onMounted(() => {
   window.scrollTo(0, 0)
   disableScroll()
 
-  const tl = gsap.timeline({
+  const tl = $gsap.timeline({
     onComplete() {
       isVisible.value = false
       enableScroll()

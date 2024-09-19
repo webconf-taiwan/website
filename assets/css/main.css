@@ -3,13 +3,91 @@
 @tailwind utilities;
 
 @layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+
+    --primary: 240 5.9% 10%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 240 10% 3.9%;
+
+    --radius: 0.5rem;
+
+    --main-bg-gradient-start: #000033;
+    --main-bg-gradient-end: #006666;
+    --primary-green: hsla(168, 100%, 50%, 1);
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+
+    --ring: 240 4.9% 83.9%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
   html, body {
     @apply min-h-screen;
   }
 
   body {
-    @apply relative text-white bg-gradient-to-b from-gradient-bg-start to-gradient-bg-end;
-    min-height: 500dvh;
+    @apply relative text-white font-sans;
+    background-size: 100% 125dvh, 100% 100%;
+    background-image:
+      linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end)),
+      linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end));
+    background-repeat: no-repeat;
   }
 
   input[type="text"]:focus {
@@ -35,5 +113,36 @@
   
   .lenis.lenis-smooth iframe {
     pointer-events: none;
+  }
+}
+
+@layer components {
+  /* Layout */
+  .layout-grid {
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    grid-template-areas:
+      ". content ."
+      "full full full"
+      ". wide .";
+  }
+
+  @media screen and (min-width: 1024px) {
+    .layout-grid {
+      grid-template-columns: [full-start] minmax(3rem, 1fr) [content-start] minmax(0, 1440px) [content-end] minmax(3rem, 1fr) [full-end];
+    }
+  }
+  
+  .layout-grid > * {
+    grid-column: content;
+  }
+  
+  .layout-grid > .full-bleed {
+    grid-column: full;
+  }
+
+  .text-mina{
+    font-family: 'Mina', sans-serif;
   }
 }

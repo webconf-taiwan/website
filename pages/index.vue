@@ -1,5 +1,22 @@
 <script lang="ts" setup>
 const { hasShownAnimation } = useLoadingState()
+const tilesBackgroundStore = useTilesBackgroundStore()
+const nuxtApp = useNuxtApp()
+
+nuxtApp.hook('page:finish', () => {
+  window.scrollTo(0, 0)
+})
+
+const speakerSectionRef = useTemplateRef('speakerSectionRef')
+useIntersectionObserver(
+  speakerSectionRef,
+  ([{ isIntersecting }]) => {
+    tilesBackgroundStore.isReduceTargetOpacity = isIntersecting
+  },
+  {
+    rootMargin: '-40% 0px -40% 0px',
+  },
+)
 
 onMounted(() => {
   if (hasShownAnimation.value) {
@@ -9,11 +26,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div>
-    <h1 class="text-2xl font-bold">
-      WebConf Taiwan 2024
-    </h1>
-  </div>
+  <HomeBanner />
+  <HomeAgendaSection />
+  <HomeSpeakersSection ref="speakerSectionRef" />
+  <HomeInformation />
+  <HomeNews />
 </template>
-
-<style scoped></style>
