@@ -35,9 +35,10 @@ onMounted(async () => {
     isPhone: `(max-width: 719px)`,
     isPad: `(min-width: 720px) and (max-width: 1023px)`,
     isDesktopSm: `(min-width: 1024px) and (max-width: 1279px)`,
-    isDesktopLg: `(min-width: 1280px)`,
+    isDesktopLg: `(min-width: 1280px) and (max-width: 1530px)`,
+    isDesktopXl: `(min-width: 1531px)`,
   }, (context) => {
-    const { isPhone, isPad, isDesktopSm, isDesktopLg } = context.conditions as { isPhone: boolean, isPad: boolean, isDesktopSm: boolean, isDesktopLg: boolean }
+    const { isPhone, isPad, isDesktopSm, isDesktopLg, isDesktopXl } = context.conditions as { isPhone: boolean, isPad: boolean, isDesktopSm: boolean, isDesktopLg: boolean, isDesktopXl: boolean }
 
     if (isPhone) {
       tlSm.restart()
@@ -63,6 +64,7 @@ onMounted(async () => {
     }
 
     if (isDesktopSm) {
+      tl.restart()
       tl.from(headerLogoWordsRef.value, {
         x: 10,
         y: 150,
@@ -70,9 +72,11 @@ onMounted(async () => {
         ease: 'power3.inOut',
         scale: 4.7,
       })
+      tl.pause()
     }
 
     if (isDesktopLg) {
+      tl.restart()
       tl.from(headerLogoWordsRef.value, {
         x: 10,
         y: 145,
@@ -80,6 +84,19 @@ onMounted(async () => {
         ease: 'power3.inOut',
         scale: 3.44,
       })
+      tl.pause()
+    }
+
+    if (isDesktopXl) {
+      tl.restart()
+      tl.from(headerLogoWordsRef.value, {
+        x: -36,
+        y: 145,
+        transformOrigin: 'top left',
+        ease: 'power3.inOut',
+        scale: 3.67,
+      })
+      tl.pause()
     }
   })
 })
