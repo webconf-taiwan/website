@@ -12,11 +12,11 @@ const trafficInfos = [
 </script>
 
 <template>
-  <div class="full-bleed py-[60px]">
+  <section class="full-bleed py-[60px]">
     <HomeSpaceInfoMarquee />
 
     <div class="my-3 justify-center px-5 lg:flex">
-      <div class="w-full border border-primary-green/80 lg:flex lg:max-w-[1320px]">
+      <div class="group w-full border border-primary-green/80 lg:flex lg:max-w-[1320px]">
         <div class="w-full lg:flex-[3]">
           <NuxtImg
             src="/home/information/map-sm.svg"
@@ -40,9 +40,17 @@ const trafficInfos = [
           </HomeSectionTitle>
 
           <div class="mt-8">
-            <h3 class="text-h3 lg:text-md-h3">
+            <NuxtLink
+              to="https://www.google.com/maps/dir//%E7%93%B6%E8%93%8B%E5%B7%A5%E5%BB%A0%E5%8F%B0%E5%8C%97%E8%A3%BD%E9%80%A0%E6%89%80"
+              target="_blank"
+              class="text-h3 transition lg:text-md-h3 lg:underline-offset-4 lg:hover:underline lg:group-hover:text-primary-green"
+            >
               瓶蓋工廠台北製造所
-            </h3>
+              <Icon
+                name="ph:map-trifold"
+                class="size-6 text-primary-green  lg:text-white lg:group-hover:text-primary-green"
+              />
+            </NuxtLink>
 
             <ul class="mt-6 space-y-6">
               <li
@@ -63,5 +71,5 @@ const trafficInfos = [
     </div>
 
     <HomeSpaceInfoMarquee :reverse="true" />
-  </div>
+  </section>
 </template>

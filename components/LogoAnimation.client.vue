@@ -28,6 +28,7 @@ onMounted(async () => {
       start: 'top top',
       end: 'bottom top',
       scrub: 1,
+      // markers: true,
     },
   })
 
@@ -44,9 +45,10 @@ onMounted(async () => {
       tlSm.restart()
       tlSm.from(headerLogoWordsSmRef.value, {
         y: 100,
+        // x: -20,
         width: 'calc(100% - 40px)',
         // scale: 2,
-        transformOrigin: 'center center',
+        // transformOrigin: 'center center',
         ease: 'power3.inOut',
       })
       tlSm.pause()
@@ -57,7 +59,7 @@ onMounted(async () => {
       tlSm.from(headerLogoWordsSmRef.value, {
         y: 110,
         width: 'calc(100% - 40px)',
-        transformOrigin: 'top left',
+        transformOrigin: 'center center',
         ease: 'power3.inOut',
       })
       tlSm.pause()
@@ -125,7 +127,7 @@ onMounted(async () => {
   <!-- 手機版 -->
   <div
     ref="headerLogoWordsSmRef"
-    class="fixed h-10 w-[30%] lg:hidden"
+    class="fixed h-10 w-[30%] px-10 lg:hidden"
   >
     <NuxtImg
       id="headerLogoWordsSm"
