@@ -4,7 +4,7 @@
 <template>
   <!-- 電腦版 -->
   <section
-    class="mt-[60px] hidden h-[calc(100dvh-72px)] w-full lg:block"
+    class="py-24 hidden h-[calc(100dvh-72px)] w-full lg:block"
   >
     <div class="flex justify-between xl:items-end">
       <div

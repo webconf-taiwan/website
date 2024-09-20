@@ -69,7 +69,7 @@ onMounted(async () => {
       tl.restart()
       tl.from(headerLogoWordsRef.value, {
         x: 10,
-        y: 150,
+        y: 180,
         transformOrigin: 'top left',
         ease: 'power3.inOut',
         scale: 4.7,
@@ -81,7 +81,7 @@ onMounted(async () => {
       tl.restart()
       tl.from(headerLogoWordsRef.value, {
         x: 10,
-        y: 145,
+        y: 180,
         transformOrigin: 'top left',
         ease: 'power3.inOut',
         scale: 3.44,
@@ -93,7 +93,7 @@ onMounted(async () => {
       tl.restart()
       tl.from(headerLogoWordsRef.value, {
         x: -36,
-        y: 145,
+        y: 185,
         transformOrigin: 'top left',
         ease: 'power3.inOut',
         scale: 3.67,
