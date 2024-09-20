@@ -88,6 +88,10 @@
       linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end)),
       linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end));
     background-repeat: no-repeat;
+
+    @media (orientation: landscape) and (max-width: 1023px) {
+      background-size: 100% 300dvh, 100% 100%;
+    }
   }
 
   input[type="text"]:focus {

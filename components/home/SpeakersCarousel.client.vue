@@ -148,7 +148,7 @@ function recoverCarouselAutoplay() {
   </div>
 </template>
 
-<style scope>
+<style scoped>
 .speaker-name-tag {
   clip-path: polygon(calc(0% + 24px) 0%, 100% 0%, 100% 100%, 0% 100%);
 

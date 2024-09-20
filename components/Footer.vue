@@ -74,10 +74,11 @@ const contactInfos = [
         class="w-full"
       />
     </div>
-    <div class="trapezoid-top-left flex items-center justify-center">
+
+    <div class="trapezoid trapezoid-top-left">
       <NuxtLink
         to="mailto:hi@webconf.tw"
-        class="hidden items-center justify-center space-x-2 lg:mt-3 lg:flex lg:hover:underline xl:mt-[17px]"
+        class="hidden h-full items-center justify-center space-x-2 lg:flex lg:hover:underline"
       >
         <Icon
           name="heroicons:envelope"
@@ -86,10 +87,10 @@ const contactInfos = [
         <span>hi@webconf.tw</span>
       </NuxtLink>
     </div>
-    <div class="trapezoid-top-right">
+    <div class="trapezoid trapezoid-top-right">
       <NuxtLink
         to="https://www.facebook.com/WebConfTaiwan/?locale=zh_TW"
-        class="hidden items-center justify-center space-x-2 lg:mt-3 lg:flex lg:hover:underline xl:mt-[17px]"
+        class="hidden h-full items-center justify-center space-x-2 lg:flex lg:hover:underline"
       >
         <NuxtImg
           src="/footer/fb.svg"
@@ -101,26 +102,24 @@ const contactInfos = [
   </section>
 </template>
 
-<style scope>
-.trapezoid-top-left {
+<style scoped>
+.trapezoid {
   background-color: black;
   position: absolute;
-  top: 1px;
+  top: 0;
+  transform: translateY(calc(-100% + 24px));
+  height: 60px;
+}
+
+.trapezoid-top-left {
   left: 0;
-  transform: translateY(-100%);
   width: clamp(140px, 30dvw, 360px);
-  height: clamp(20px, 3dvw, 60px);
-  clip-path: polygon(0% 0%, calc(100% - 20px) 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(0% 0%, calc(100% - 36px) 0%, 100% 100%, 0% 100%);
 }
 
 .trapezoid-top-right {
-  background-color: black;
-  position: absolute;
-  top: 1px;
   right: 0;
-  transform: translateY(-100%);
   width: clamp(140px, 30dvw, 360px);
-  height: clamp(20px, 3dvw, 60px);
-  clip-path: polygon(calc(0% + 20px) 0%, 100% 0%, 100% 100%, 0% 100%);
+  clip-path: polygon(calc(0% + 36px) 0%, 100% 0%, 100% 100%, 0% 100%);
 }
 </style>

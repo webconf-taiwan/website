@@ -40,7 +40,7 @@ onMounted(() => {
 <template>
   <section
     ref="parallaxSection"
-    class="full-bleed relative z-10 mt-24 bg-black px-5 py-20 lg:mt-0"
+    class="full-bleed relative z-10 mt-40 bg-black px-5 py-36 sm:mt-28 lg:-mt-8"
   >
     <div class="mx-auto max-w-[1096px]">
       <div class="mb-8 flex items-center justify-start lg:justify-between">
@@ -124,16 +124,19 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="trapezoid-top-left"></div>
-    <div class="trapezoid-top-right"></div>
-    <div class="trapezoid-bottom-center"></div>
+    <div class="trapezoid trapezoid-top-left"></div>
+    <div class="trapezoid trapezoid-top-right"></div>
+    <div class="trapezoid trapezoid-bottom-center"></div>
   </section>
 </template>
 
-<style scope>
-.trapezoid-bottom-center {
+<style scoped>
+.trapezoid {
   background-color: black;
   position: absolute;
+}
+
+.trapezoid-bottom-center {
   bottom: 1px;
   left: 50%;
   transform: translateX(-50%) translateY(100%);
@@ -143,8 +146,6 @@ onMounted(() => {
 }
 
 .trapezoid-top-left {
-  background-color: black;
-  position: absolute;
   top: 1px;
   left: 0;
   transform: translateY(-100%);
@@ -154,8 +155,6 @@ onMounted(() => {
 }
 
 .trapezoid-top-right {
-  background-color: black;
-  position: absolute;
   top: 1px;
   right: 0;
   transform: translateY(-100%);

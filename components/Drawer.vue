@@ -67,7 +67,8 @@ defineExpose({
   <Transition name="fade">
     <div
       v-if="isActive"
-      class="fixed inset-0 z-40 bg-black/50"
+      class="fixed inset-0 z-40 from-primary-green/0 to-primary-green/100"
+      :class="[isSmallerOrEqualLg ? 'bg-gradient-to-b to-50%' : 'bg-gradient-to-r']"
     ></div>
   </Transition>
 
@@ -78,7 +79,7 @@ defineExpose({
   >
     <div
       v-if="isActive"
-      class="fixed z-[1000] flex flex-col overflow-y-auto bg-black shadow-lg"
+      class="fixed z-[1000] flex min-h-[50dvh] flex-col bg-black shadow-lg lg:min-h-full lg:w-[50dvw]"
       :class="[
         isSmallerOrEqualLg ? 'inset-x-0 bottom-0 h-2/3' : 'inset-y-0 right-0 w-80',
       ]"
@@ -124,12 +125,13 @@ defineExpose({
 <style scoped>
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+  @apply lg:translate-x-full translate-y-full lg:translate-y-0;
 }
 
 .slide-up-enter-active,

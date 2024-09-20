@@ -90,6 +90,7 @@ export default antfu(
         'error',
         {
           whitelist: [
+            'trapezoid',
             'trapezoid\\-(.*)',
             'section-title-text',
             'mask',

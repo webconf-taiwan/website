@@ -136,8 +136,8 @@ function leaveSpeakerNameHandler() {
           <div
             v-for="speaker in filterSpeakers"
             :key="speaker.id"
-            class="relative before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:-translate-x-1/2 before:scale-y-50 before:bg-primary-green/0 before:transition-all before:duration-500"
-            :class="[currentSpeakerId === speaker.id ? 'before:scale-y-100 before:bg-primary-green/100' : '']"
+            class="relative before:absolute before:left-0 before:top-0 before:h-full before:w-1 before:-translate-x-1/2 before:bg-primary-green/0 before:transition-all before:duration-500"
+            :class="[currentSpeakerId === speaker.id ? 'before:scale-y-100 before:bg-primary-green/100' : 'before:scale-y-50']"
           >
             <button
               type="button"
@@ -155,5 +155,5 @@ function leaveSpeakerNameHandler() {
   </section>
 </template>
 
-<style scope>
+<style scoped>
 </style>
