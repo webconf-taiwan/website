@@ -1,10 +1,8 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
-// const modelValue = defineModel<boolean>({ required: true })
-
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const isSmallerOrEqualLg = breakpoints.smallerOrEqual('lg')
+const isSmallerLg = breakpoints.smaller('lg')
 
 const { isDrawerActive, openDrawer, closeDrawer } = useDrawerState()
 
@@ -67,57 +65,63 @@ defineExpose({
   <Transition name="fade">
     <div
       v-if="isActive"
-      class="fixed inset-0 z-40 from-primary-green/0 to-primary-green/100"
-      :class="[isSmallerOrEqualLg ? 'bg-gradient-to-b to-50%' : 'bg-gradient-to-r']"
+      class="fixed inset-0 z-40 from-primary-green/0"
+      :class="[isSmallerLg ? 'bg-gradient-to-b to-primary-green/80 to-60%' : 'bg-gradient-to-r to-primary-green/90']"
     ></div>
   </Transition>
 
   <!-- Drawer -->
   <Transition
-    :name="isSmallerOrEqualLg ? 'slide-up' : 'slide-left'"
+    :name="isSmallerLg ? 'slide-up' : 'slide-left'"
     @after-leave="restoreScroll"
   >
     <div
       v-if="isActive"
-      class="fixed z-[1000] flex min-h-[50dvh] flex-col bg-black shadow-lg lg:min-h-full lg:w-[50dvw]"
+      class="fixed z-[1000] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10"
       :class="[
-        isSmallerOrEqualLg ? 'inset-x-0 bottom-0 h-2/3' : 'inset-y-0 right-0 w-80',
+        isSmallerLg ? 'inset-x-0 bottom-0 max-h-[85dvh] min-h-[30dvh]' : 'inset-y-0 right-0 w-80',
       ]"
     >
-      <!-- Drawer Header -->
-      <div class="flex items-center justify-between border-b p-4">
-        <h2 class="text-lg font-semibold">
-          Drawer Title
-        </h2>
-        <button
-          class="text-gray-500 hover:text-gray-700"
-          @click="close"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="size-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        </button>
+      <!-- Drawer header -->
+      <div class="mb-8 space-y-2 px-5 lg:px-10">
+        <NuxtImg
+          src="/drawer/drawer-top-decorate-lg.svg"
+          class="hidden w-full sm:block"
+        />
+        <NuxtImg
+          src="/drawer/drawer-top-decorate.svg"
+          class="block w-full sm:hidden"
+        />
+        <slot name="header"></slot>
       </div>
 
-      <!-- Scrollable Content Area -->
+      <!-- Scrollable content area -->
       <div
         ref="scrollableContent"
         data-lenis-prevent
-        class="drawer-content flex-1 overflow-y-auto p-4"
+        class="drawer-content mb-10 min-h-[20dvh] flex-1 overflow-y-auto px-5 lg:px-10"
       >
-        <slot></slot>
+        <slot name="content"></slot>
       </div>
+
+      <!-- Drawer footer -->
+      <div class="space-y-2">
+        <div class="flex h-3 justify-center space-x-1.5">
+          <span
+            v-for="(_, index) in 6"
+            :key="index"
+            class="h-full w-[2px] bg-primary-green"
+          ></span>
+        </div>
+
+        <div class="w-full border-t border-primary-green"></div>
+      </div>
+
+      <!-- Close button -->
+      <DrawerClose
+        breakpoint="lg"
+        @close="close"
+      />
     </div>
   </Transition>
 </template>
@@ -154,19 +158,10 @@ defineExpose({
 /* 自定義滾動條樣式 */
 .drawer-content {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e0 #f7fafc;
-}
-
-.drawer-content::-webkit-scrollbar {
-  width: 6px;
-}
-
-.drawer-content::-webkit-scrollbar-track {
-  background: #f7fafc;
+  scrollbar-color: var(--primary-green) black;
 }
 
 .drawer-content::-webkit-scrollbar-thumb {
-  background-color: #cbd5e0;
-  border-radius: 3px;
+  border-radius: 6px;
 }
 </style>
