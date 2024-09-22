@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { spaceGoogleMapLink } from '~/constants'
+
 const trafficInfos = [
   {
     title: '搭乘捷運',
@@ -41,9 +43,9 @@ const trafficInfos = [
 
           <div class="mt-8">
             <NuxtLink
-              to="https://www.google.com/maps/dir//%E7%93%B6%E8%93%8B%E5%B7%A5%E5%BB%A0%E5%8F%B0%E5%8C%97%E8%A3%BD%E9%80%A0%E6%89%80"
+              :to="spaceGoogleMapLink"
               target="_blank"
-              class="text-h3 transition lg:text-md-h3 lg:underline-offset-4 lg:hover:underline lg:group-hover:text-primary-green"
+              class="text-h3 transition lg:text-md-h3 lg:underline-offset-4 lg:hover:text-primary-green lg:hover:underline"
             >
               瓶蓋工廠台北製造所
               <Icon

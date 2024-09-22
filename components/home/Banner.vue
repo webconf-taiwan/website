@@ -4,7 +4,7 @@
 <template>
   <!-- 電腦版 -->
   <section
-    class="py-24 hidden h-[calc(100dvh-72px)] w-full lg:block"
+    class="hidden h-[calc(100dvh-72px)] max-h-[1024px] w-full py-24 lg:block"
   >
     <div class="flex justify-between xl:items-end">
       <div
@@ -12,7 +12,7 @@
         class="w-[72%] xl:w-[52%]"
       >
         <NuxtImg
-          src="/logo.svg"
+          src="/logo-top-decoration.svg"
           alt="logo"
           class="h-auto w-full"
         />
@@ -29,6 +29,7 @@
         </div>
 
         <Button
+          type="button"
           variant="custom"
           size="custom"
           rounded="none"
@@ -44,7 +45,7 @@
     <!-- TODO:等 Lottie 動畫 -->
     <div class="mt-[60px] hidden h-[281px] w-full lg:block">
       <NuxtImg
-        src="/home/banner/futurePlan.svg"
+        src="/home/banner/future-plan.svg"
         alt="bg"
         sizes="100vw"
       />
@@ -62,7 +63,7 @@
           class="w-full"
         >
           <NuxtImg
-            src="/logo-sm.svg"
+            src="/logo-top-decoration.svg"
             alt="logo"
             class="size-full"
           />
@@ -71,7 +72,7 @@
         <!-- TODO:等 Lottie 動畫 -->
         <div class="mt-14 w-full">
           <NuxtImg
-            src="/home/banner/futurePlan-sm.svg"
+            src="/home/banner/future-plan-sm.svg"
             alt="bg"
             class="w-full"
           />
@@ -87,6 +88,7 @@
         </div>
 
         <Button
+          type="button"
           variant="custom"
           size="custom"
           class="mx-auto mt-[35px]"

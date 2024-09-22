@@ -141,7 +141,7 @@ function leaveSpeakerNameHandler() {
           >
             <button
               type="button"
-              class="size-full truncate py-2 pl-4 pr-2 text-left text-base transition-colors duration-500 lg:text-lg"
+              class="size-full truncate py-2 pl-4 pr-2 text-left text-base duration-500 lg:text-lg lg:hover:bg-white/5"
               :class="[currentSpeakerId === speaker.id ? 'text-primary-green' : 'text-white']"
               @mouseenter="enterSpeakerNameHandler(speaker.id)"
               @mouseleave="leaveSpeakerNameHandler"

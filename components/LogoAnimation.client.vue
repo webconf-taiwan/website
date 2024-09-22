@@ -111,7 +111,7 @@ onMounted(async () => {
     class="relative hidden h-10 w-[14.5%] lg:block"
   >
     <NuxtImg
-      src="/logoWords.svg"
+      src="/logo-words.svg"
       alt="logoWords"
       class="absolute left-0 top-0 h-auto w-full"
     />
@@ -131,7 +131,7 @@ onMounted(async () => {
   >
     <NuxtImg
       id="headerLogoWordsSm"
-      src="/logoWords.svg"
+      src="/logo-words.svg"
       alt="logoWords"
       class="absolute left-0 top-4 h-auto w-full"
     />

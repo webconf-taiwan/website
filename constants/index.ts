@@ -100,3 +100,5 @@ export const speakersDesktopColumns = 3
 export const speakersDesktopRows = 9
 export const speakersMobileColumns = 2
 export const speakersMobileRows = 5
+
+export const spaceGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'

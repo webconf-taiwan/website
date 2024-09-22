@@ -83,7 +83,7 @@
 
   body {
     @apply relative text-white font-sans;
-    background-size: 100% 125dvh, 100% 100%;
+    background-size: 100% 120dvh, 100% 100%;
     background-image:
       linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end)),
       linear-gradient(to bottom, var(--main-bg-gradient-start), var(--main-bg-gradient-end));
