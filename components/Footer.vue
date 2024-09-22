@@ -1,12 +1,14 @@
 <script setup lang="ts">
 const contactInfos = [
   {
+    trapezoidClass: 'trapezoid-top-left',
     iconName: 'heroicons:envelope',
     content: 'hi@webconf.tw',
     href: 'mailto:hi@webconf.tw',
   },
   {
-    iconSrc: '/footer/fb.svg',
+    trapezoidClass: 'trapezoid-top-right',
+    iconName: 'iconoir:facebook',
     content: 'WebConf Taiwan',
     href: 'https://www.facebook.com/WebConfTaiwan/?locale=zh_TW',
   },
@@ -20,23 +22,18 @@ const contactInfos = [
     <div class="lg:max-w-[1320px]">
       <ul class="space-y-[10px] border-b border-footer-border py-6 lg:hidden">
         <li
-          v-for="(info) in contactInfos"
-          :key="info.content"
+          v-for="info in contactInfos"
+          :key="info.href"
         >
           <NuxtLink
             :to="info.href"
+            target="_blank"
             :external="!info.href.startsWith('mailto:')"
             class="flex items-center space-x-2 lg:hover:underline"
           >
             <Icon
-              v-if="info.iconName"
               :name="info.iconName"
               size="24"
-            />
-            <NuxtImg
-              v-else-if="info.iconSrc"
-              :src="info.iconSrc"
-              class="w-6"
             />
             <span>{{ info.content }}</span>
           </NuxtLink>
@@ -75,29 +72,25 @@ const contactInfos = [
       />
     </div>
 
-    <div class="trapezoid trapezoid-top-left">
-      <NuxtLink
-        to="mailto:hi@webconf.tw"
-        class="hidden h-full items-center justify-center space-x-2 lg:flex lg:hover:underline"
-      >
-        <Icon
-          name="heroicons:envelope"
-          size="24"
-        />
-        <span>hi@webconf.tw</span>
-      </NuxtLink>
-    </div>
-    <div class="trapezoid trapezoid-top-right">
-      <NuxtLink
-        to="https://www.facebook.com/WebConfTaiwan/?locale=zh_TW"
-        class="hidden h-full items-center justify-center space-x-2 lg:flex lg:hover:underline"
-      >
-        <NuxtImg
-          src="/footer/fb.svg"
-          class="w-6"
-        />
-        <span>WebConf Taiwan</span>
-      </NuxtLink>
+    <div
+      v-for="info in contactInfos"
+      :key="info.href"
+      :class="info.trapezoidClass"
+      class="trapezoid"
+    >
+      <div class="hidden h-full items-center justify-center lg:flex">
+        <NuxtLink
+          :to="info.href"
+          target="_blank"
+          class="flex items-center justify-center space-x-2 lg:underline-offset-2 lg:hover:underline"
+        >
+          <Icon
+            :name="info.iconName"
+            size="24"
+          />
+          <span>{{ info.content }}</span>
+        </NuxtLink>
+      </div>
     </div>
   </section>
 </template>
