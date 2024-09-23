@@ -60,6 +60,9 @@ export default defineNuxtConfig({
         { property: 'og:title', content: ogTitle },
         { property: 'og:description', content: ogDescription },
       ],
+      link: [
+        { rel: 'stylesheet', href: 'https://unpkg.com/aos@next/dist/aos.css' },
+      ],
     },
   },
 

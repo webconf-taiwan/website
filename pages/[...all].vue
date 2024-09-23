@@ -30,4 +30,4 @@ const router = useRouter()
   </main>
 </template>
 
-<style scope></style>
+<style scoped></style>

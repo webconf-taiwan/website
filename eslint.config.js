@@ -90,6 +90,7 @@ export default antfu(
         'error',
         {
           whitelist: [
+            'trapezoid',
             'trapezoid\\-(.*)',
             'section-title-text',
             'mask',
@@ -98,6 +99,7 @@ export default antfu(
             'speaker-name-tag',
             'marquee-text-outline',
             'drawer-content',
+            'glitch-effect',
           ],
         },
       ],

@@ -63,13 +63,13 @@ function animateTile(index: number, targetOpacity: string = '0.1') {
   $gsap.killTweensOf(tile)
 
   $gsap.to(tile, {
-    backgroundColor: `rgba(255, 255, 255, ${targetOpacity})`,
+    backgroundColor: `hsla(168, 100%, 50%, ${targetOpacity})`,
     duration: 0.15,
     overwrite: true,
     ease: 'power2.out',
     onComplete: () => {
       $gsap.to(tile, {
-        backgroundColor: 'rgba(255, 255, 255, 0)',
+        backgroundColor: 'hsla(168, 100%, 50%, 0)',
         duration: 1,
         delay: 0,
         ease: 'power1.out',
@@ -100,7 +100,7 @@ useEventListener(document, 'mousemove', throttledMouseMoveFn)
         :key="tile.id"
         :ref="el => { if (el) tileElements[Number(tile.id.split('-')[1])] = el as HTMLDivElement }"
         class="size-[60px] border border-primary-green/10 lg:size-36"
-        :style="{ backgroundColor: 'rgba(255, 255, 255, 0)' }"
+        :style="{ backgroundColor: 'hsla(168, 100%, 50%, 0)' }"
       ></div>
     </div>
   </div>

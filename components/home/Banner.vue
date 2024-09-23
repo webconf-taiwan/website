@@ -1,10 +1,17 @@
 <script lang="ts" setup>
+import AOS from 'aos'
+
+onMounted(() => {
+  AOS.init({
+    duration: 1000,
+  })
+})
 </script>
 
 <template>
   <!-- 電腦版 -->
   <section
-    class="mt-[60px] hidden h-[calc(100dvh-72px)] w-full lg:block"
+    class="hidden h-[calc(100dvh-72px)] max-h-[1024px] w-full py-24 lg:block"
   >
     <div class="flex justify-between xl:items-end">
       <div
@@ -12,13 +19,17 @@
         class="w-[72%] xl:w-[52%]"
       >
         <NuxtImg
-          src="/logo.svg"
+          src="/logo-top-decoration.svg"
           alt="logo"
           class="h-auto w-full"
         />
       </div>
 
-      <div class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[48%] xl:items-end xl:space-y-0">
+      <div
+        class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[48%] xl:items-end xl:space-y-0"
+        data-aos="fade-up"
+        data-aos-delay="3000"
+      >
         <div class="text-center xl:text-start">
           <p class="text-2xl font-bold tracking-[0.037em]">
             2024｜12.27 - 28
@@ -29,6 +40,7 @@
         </div>
 
         <Button
+          type="button"
           variant="custom"
           size="custom"
           rounded="none"
@@ -42,9 +54,13 @@
     </div>
 
     <!-- TODO:等 Lottie 動畫 -->
-    <div class="mt-[60px] hidden h-[281px] w-full lg:block">
+    <div
+      class="mt-[60px] hidden h-[281px] w-full lg:block"
+      data-aos="fade-up"
+      data-aos-delay="3300"
+    >
       <NuxtImg
-        src="/home/banner/futurePlan.svg"
+        src="/home/banner/future-plan.svg"
         alt="bg"
         sizes="100vw"
       />
@@ -62,22 +78,30 @@
           class="w-full"
         >
           <NuxtImg
-            src="/logo-sm.svg"
+            src="/logo-top-decoration.svg"
             alt="logo"
             class="size-full"
           />
         </div>
 
         <!-- TODO:等 Lottie 動畫 -->
-        <div class="mt-14 w-full">
+        <div
+          class="mt-14 w-full"
+          data-aos="fade-up"
+          data-aos-delay="3000"
+        >
           <NuxtImg
-            src="/home/banner/futurePlan-sm.svg"
+            src="/home/banner/future-plan-sm.svg"
             alt="bg"
             class="w-full"
           />
         </div>
 
-        <div class="mt-[35px] flex flex-col items-center justify-center space-y-1 py-3">
+        <div
+          class="mt-[35px] flex flex-col items-center justify-center space-y-1 py-3"
+          data-aos="fade-up"
+          data-aos-delay="3300"
+        >
           <span class="text-mina text-xl font-bold leading-8 tracking-[0.037em] md:text-xl">
             2024｜12.27 - 28
           </span>
@@ -87,9 +111,12 @@
         </div>
 
         <Button
+          type="button"
           variant="custom"
           size="custom"
           class="mx-auto mt-[35px]"
+          data-aos="fade-up"
+          data-aos-delay="3400"
         >
           <p class="text-xl">
             即將開賣
@@ -99,3 +126,15 @@
     </div>
   </section>
 </template>
+
+<style scoped>
+body[data-aos-delay='3300'] [data-aos],
+[data-aos][data-aos][data-aos-delay='3300'] {
+  transition-delay: 3300ms;
+}
+
+body[data-aos-delay='3400'] [data-aos],
+[data-aos][data-aos][data-aos-delay='3400'] {
+  transition-delay:3400ms;
+}
+</style>
