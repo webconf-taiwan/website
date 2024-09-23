@@ -1,4 +1,9 @@
 <script lang="ts" setup>
+import AOS from 'aos'
+
+onMounted(() => {
+  AOS.init()
+})
 </script>
 
 <template>
@@ -18,7 +23,12 @@
         />
       </div>
 
-      <div class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[48%] xl:items-end xl:space-y-0">
+      <div
+        class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[48%] xl:items-end xl:space-y-0"
+        data-aos="fade-up"
+        data-aos-delay="3500"
+        data-aos-duration="2000"
+      >
         <div class="text-center xl:text-start">
           <p class="text-2xl font-bold tracking-[0.037em]">
             2024｜12.27 - 28
@@ -43,7 +53,12 @@
     </div>
 
     <!-- TODO:等 Lottie 動畫 -->
-    <div class="mt-[60px] hidden h-[281px] w-full lg:block">
+    <div
+      class="mt-[60px] hidden h-[281px] w-full lg:block"
+      data-aos="fade-up"
+      data-aos-delay="4000"
+      data-aos-duration="2000"
+    >
       <NuxtImg
         src="/home/banner/future-plan.svg"
         alt="bg"
@@ -70,7 +85,12 @@
         </div>
 
         <!-- TODO:等 Lottie 動畫 -->
-        <div class="mt-14 w-full">
+        <div
+          class="mt-14 w-full"
+          data-aos="fade-up"
+          data-aos-delay="3500"
+          data-aos-duration="2000"
+        >
           <NuxtImg
             src="/home/banner/future-plan-sm.svg"
             alt="bg"
@@ -78,7 +98,12 @@
           />
         </div>
 
-        <div class="mt-[35px] flex flex-col items-center justify-center space-y-1 py-3">
+        <div
+          class="mt-[35px] flex flex-col items-center justify-center space-y-1 py-3"
+          data-aos="fade-up"
+          data-aos-delay="3800"
+          data-aos-duration="2000"
+        >
           <span class="text-mina text-xl font-bold leading-8 tracking-[0.037em] md:text-xl">
             2024｜12.27 - 28
           </span>
@@ -92,6 +117,9 @@
           variant="custom"
           size="custom"
           class="mx-auto mt-[35px]"
+          data-aos="fade-up"
+          data-aos-delay="4000"
+          data-aos-duration="2000"
         >
           <p class="text-xl">
             即將開賣
@@ -101,3 +129,20 @@
     </div>
   </section>
 </template>
+
+<style scoped>
+body[data-aos-delay='3500'] [data-aos],
+[data-aos][data-aos][data-aos-delay='3500'] {
+  transition-delay: 3500ms;
+}
+
+body[data-aos-delay='3800'] [data-aos],
+[data-aos][data-aos][data-aos-delay='3800'] {
+  transition-delay: 3800ms;
+}
+
+body[data-aos-delay='4000'] [data-aos],
+[data-aos][data-aos][data-aos-delay='4000'] {
+  transition-delay: 4000ms;
+}
+</style>
