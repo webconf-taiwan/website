@@ -2,15 +2,16 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import {
   speakers,
-  speakersDesktopColumns,
-  speakersDesktopRows,
-  speakersMobileColumns,
-  speakersMobileRows,
 } from '~/constants'
+
+const speakersDesktopColumns = 3
+const speakersDesktopRows = 9
+const speakersMobileColumns = 2
+const speakersMobileRows = 5
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerOrEqualSm = breakpoints.smallerOrEqual('sm')
-const isSmallerOrEqualLg = breakpoints.smallerOrEqual('lg')
+const isSmallerLg = breakpoints.smaller('lg')
 
 const maskClipPath = computed(() => {
   return isSmallerOrEqualSm.value ? 'M144,0 H320 V320 H0 V30 L100,30 Z' : 'M192,0 H424 V424 H0 V40 L132,40 Z'
@@ -26,17 +27,12 @@ const filterSpeakers = computed(() => {
   return speakers.slice(0, speakersListLimit.value)
 })
 
-const speakersGridLayoutClasses = computed(() => {
-  // grid-cols-2 grid-rows-5 sm:grid-cols-3 lg:grid-rows-9
-  return `grid-cols-${speakersMobileColumns} grid-rows-${speakersMobileRows} sm:grid-cols-${speakersDesktopColumns} lg:grid-rows-${speakersDesktopRows}`
-})
-
 const speakersColumns = computed(() => {
   return isSmallerOrEqualSm.value ? speakersMobileColumns : speakersDesktopColumns
 })
 
 const speakersRows = computed(() => {
-  return isSmallerOrEqualLg.value ? speakersMobileRows : speakersDesktopRows
+  return isSmallerLg.value ? speakersMobileRows : speakersDesktopRows
 })
 
 const isShowSkeleton = ref(true)
@@ -57,28 +53,49 @@ const { start: startTimer, stop: stopTimer } = useTimeoutFn((speakerId) => {
   selectSpeakerName(speakerId)
 }, 500)
 
+const { start: startRecoverAutoplayTimer } = useTimeoutFn(() => {
+  speakerCarouselRef.value?.recoverCarouselAutoplay()
+  canExecuteSelectSpeakerName.value = false
+}, 3000)
+
 function updateSpeakerId(speakerId?: string) {
   currentSpeakerId.value = speakerId
 }
 
 function selectSpeakerName(speakerId: string) {
-  if (!canExecuteSelectSpeakerName.value) {
+  if (!canExecuteSelectSpeakerName.value)
     return
-  }
 
   speakerCarouselRef.value?.selectSpeaker(speakerId)
 }
 
 function enterSpeakerNameHandler(speakerId: string) {
+  if (isSmallerLg.value)
+    return
+
   speakerCarouselRef.value?.stopCarouselAutoplay()
   canExecuteSelectSpeakerName.value = false
   startTimer(speakerId)
 }
 
 function leaveSpeakerNameHandler() {
+  if (isSmallerLg.value)
+    return
+
   speakerCarouselRef.value?.recoverCarouselAutoplay()
   stopTimer()
   canExecuteSelectSpeakerName.value = false
+}
+
+function clickSpeakerNameHandler(speakerId: string) {
+  if (!isSmallerLg.value)
+    return
+
+  canExecuteSelectSpeakerName.value = true
+  selectSpeakerName(speakerId)
+  speakerCarouselRef.value?.stopCarouselAutoplay()
+
+  startRecoverAutoplayTimer()
 }
 </script>
 
@@ -111,8 +128,7 @@ function leaveSpeakerNameHandler() {
 
       <!-- Speakers name list -->
       <div
-        class="relative grid w-full grid-flow-col"
-        :class="speakersGridLayoutClasses"
+        class="relative grid w-full grid-flow-col grid-cols-2 grid-rows-5 sm:grid-cols-3 lg:grid-rows-9"
       >
         <HomeSpeakersDividingLines v-if="!isShowSkeleton" />
 
@@ -143,10 +159,11 @@ function leaveSpeakerNameHandler() {
               type="button"
               class="size-full truncate py-2 pl-4 pr-2 text-left text-base duration-500 lg:text-lg lg:hover:bg-white/5"
               :class="[currentSpeakerId === speaker.id ? 'text-primary-green' : 'text-white']"
+              @click="clickSpeakerNameHandler(speaker.id)"
               @mouseenter="enterSpeakerNameHandler(speaker.id)"
               @mouseleave="leaveSpeakerNameHandler"
             >
-              {{ speaker.name }}
+              {{ speaker.displayName }}
             </button>
           </div>
         </ClientOnly>

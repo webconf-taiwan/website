@@ -99,6 +99,7 @@ export default antfu(
             'speaker-name-tag',
             'marquee-text-outline',
             'drawer-content',
+            'glitch-effect',
           ],
         },
       ],

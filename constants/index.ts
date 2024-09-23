@@ -36,69 +36,49 @@ export const navLinks = [
 export const speakers: Speaker[] = [
   {
     id: 'speaker_1',
-    name: '講者 1 的名字是很長的-大概有21個字元',
-    avatar: '/speakers/avatar_424-1.jpg',
+    displayName: 'Mosky',
+    avatar: '/speakers/avatar_mosky.png',
   },
   {
     id: 'speaker_2',
-    name: '講者 2',
-    avatar: '/speakers/avatar_424-2.jpg',
+    displayName: '郭藺瑩 Lydia',
+    avatar: '/speakers/avatar_lydia.png',
   },
   {
     id: 'speaker_3',
-    name: '講者 3',
-    avatar: '/speakers/avatar_424-3.jpg',
+    displayName: '張文鈿 iHower',
+    avatar: '/speakers/avatar_ihower.png',
   },
   {
     id: 'speaker_4',
-    name: '講者 4',
-    avatar: '/speakers/avatar_424-4.jpg',
+    displayName: 'PJwang',
+    avatar: '/speakers/avatar_pjwang.png',
   },
   {
     id: 'speaker_5',
-    name: '講者 5',
-    avatar: '/speakers/avatar_424-5.jpg',
+    displayName: 'Kuro',
+    avatar: '/speakers/avatar_kuro.png',
   },
   {
     id: 'speaker_6',
-    name: '講者 6',
-    avatar: '/speakers/avatar_424-6.jpg',
+    displayName: '李德俊 (紅豆)',
+    avatar: '/speakers/avatar_djlee.png',
   },
   {
     id: 'speaker_7',
-    name: '講者 7',
-    avatar: '/speakers/avatar_424-7.jpg',
+    displayName: '高玉璁 Samuel',
+    avatar: '/speakers/avatar_samuel.png',
   },
   {
     id: 'speaker_8',
-    name: '講者 8',
-    avatar: '/speakers/avatar_424-8.jpg',
+    displayName: '林沅霖 Yuanlin Lin',
+    avatar: '/speakers/avatar_yuanlin.png',
   },
   {
     id: 'speaker_9',
-    name: '講者 9',
-    avatar: '/speakers/avatar_424-9.jpg',
-  },
-  {
-    id: 'speaker_10',
-    name: '講者 10',
-    avatar: '/speakers/avatar_424-10.jpg',
-  },
-  {
-    id: 'speaker_11',
-    name: '講者 11',
-    avatar: '/speakers/avatar_424-11.jpg',
-  },
-  {
-    id: 'speaker_12',
-    name: '講者 12',
-    avatar: '/speakers/avatar_424-12.jpg',
+    displayName: 'Summer',
+    avatar: '/speakers/avatar_summer.png',
   },
 ]
-
-export const speakersDesktopColumns = 3
-export const speakersDesktopRows = 9
-export const speakersMobileColumns = 2
-export const speakersMobileRows = 5
 
 export const spaceGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'
