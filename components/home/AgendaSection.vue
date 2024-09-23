@@ -5,12 +5,12 @@ import cubeAnimation from '~/assets/lottie/cube_animation.json'
 const { $gsap } = useNuxtApp()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const isSmallerOrEqualLg = breakpoints.smallerOrEqual('lg')
+const isSmallerLg = breakpoints.smaller('lg')
 
 const parallaxSection = ref<HTMLElement | null>(null)
 
 const parallaxSectionToPositionY = computed(() => {
-  return isSmallerOrEqualLg.value ? -150 : -250
+  return isSmallerLg.value ? -150 : -250
 })
 
 const aboutUsDrawer = useTemplateRef('aboutUsDrawer')
@@ -40,7 +40,7 @@ onMounted(() => {
 <template>
   <section
     ref="parallaxSection"
-    class="full-bleed relative z-10 mt-24 bg-black px-5 py-20 lg:mt-0"
+    class="full-bleed relative z-10 mt-40 bg-black px-5 py-36 sm:mt-28 lg:-mt-8"
   >
     <div class="mx-auto max-w-[1096px]">
       <div class="mb-8 flex items-center justify-start lg:justify-between">
@@ -66,16 +66,29 @@ onMounted(() => {
 
         <Teleport to="body">
           <Drawer ref="aboutUsDrawer">
-            <div
-              v-for="i in 20"
-              :key="i"
-              class="mb-4"
-            >
-              <h3 class="text-lg font-semibold">
-                Section {{ i }}
-              </h3>
-              <p>This is some sample content for section {{ i }}.</p>
-            </div>
+            <template #header>
+              <HomeSectionTitle>
+                <template #title>
+                  About
+                </template>
+                <template #subTitle>
+                  關於
+                </template>
+              </HomeSectionTitle>
+            </template>
+            <template #content>
+              <div class="space-y-5 leading-7">
+                <p>
+                  WebConf Taiwan 是一個聚集網頁技術愛好者和專家的年度盛會，讓大家一起探索網頁技術的演進和未來發展趨勢。過去幾年，網路世界變化迅速，我們將在這次研討會上回顧網頁技術的演變歷程，了解那些改變遊戲規則的關鍵時刻。
+                </p>
+                <p>
+                  除了回顧過去，WebConf Taiwan 更專注於未來。我們會討論如何利用人工智慧和機器學習來改善使用者體驗，以及行動優化和響應式設計在現代網頁開發中的重要性。還有最新的業界趨勢分享，幫助企業把握未來發展方向，保持競爭優勢。
+                </p>
+                <p>
+                  這將是一個充滿創意和靈感的活動，讓你與來自各地的網頁技術專業人士互動交流，共同探討未來的技術創新和可能性。
+                </p>
+              </div>
+            </template>
           </Drawer>
         </Teleport>
       </div>
@@ -124,16 +137,19 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="trapezoid-top-left"></div>
-    <div class="trapezoid-top-right"></div>
-    <div class="trapezoid-bottom-center"></div>
+    <div class="trapezoid trapezoid-top-left"></div>
+    <div class="trapezoid trapezoid-top-right"></div>
+    <div class="trapezoid trapezoid-bottom-center"></div>
   </section>
 </template>
 
-<style scope>
-.trapezoid-bottom-center {
+<style scoped>
+.trapezoid {
   background-color: black;
   position: absolute;
+}
+
+.trapezoid-bottom-center {
   bottom: 1px;
   left: 50%;
   transform: translateX(-50%) translateY(100%);
@@ -143,8 +159,6 @@ onMounted(() => {
 }
 
 .trapezoid-top-left {
-  background-color: black;
-  position: absolute;
   top: 1px;
   left: 0;
   transform: translateY(-100%);
@@ -154,8 +168,6 @@ onMounted(() => {
 }
 
 .trapezoid-top-right {
-  background-color: black;
-  position: absolute;
   top: 1px;
   right: 0;
   transform: translateY(-100%);

@@ -27,7 +27,7 @@ const currentSpeakerName = computed<string>(() => {
   if (currentSpeakerIndex.value === null)
     return ''
 
-  return props.speakers[currentSpeakerIndex.value].name
+  return props.speakers[currentSpeakerIndex.value].displayName
 })
 
 const currentSpeakerId = computed(() => {
@@ -41,6 +41,17 @@ function setApi(val: CarouselApi) {
   carouselApi.value = val
 }
 
+const isGlitching = ref(false)
+
+const { start: cancelGlitching } = useTimeoutFn(() => {
+  isGlitching.value = false
+}, 500)
+
+function triggerGlitch() {
+  isGlitching.value = true
+  cancelGlitching()
+}
+
 watchOnce(carouselApi, (api) => {
   if (!api)
     return
@@ -49,6 +60,7 @@ watchOnce(carouselApi, (api) => {
 
   api.on('select', () => {
     currentSpeakerIndex.value = api.selectedScrollSnap()
+    triggerGlitch()
   })
 })
 
@@ -65,7 +77,7 @@ function selectSpeaker(speakerId: string) {
   if (index === -1)
     return
 
-  carouselApi.value?.scrollTo(index)
+  carouselApi.value?.scrollTo(index, true)
 }
 
 function stopCarouselAutoplay() {
@@ -95,14 +107,18 @@ function recoverCarouselAutoplay() {
       ref="carouselContainerRef"
       orientation="vertical"
       class="max-w-[424px] before:absolute before:inset-x-0 before:bottom-0 before:z-10 before:h-1.5 before:bg-primary-green"
+      :class="{ 'glitch-effect': isGlitching }"
       style="clip-path: url(#square-with-corner-cut);"
       :opts="{
         align: 'start',
         loop: true,
+        duration: 20,
+        watchDrag: false,
       }"
       :plugins="[Autoplay({
         delay: 2500,
         stopOnInteraction: false,
+        jump: true,
       })]"
       @init-api="setApi"
     >
@@ -115,7 +131,7 @@ function recoverCarouselAutoplay() {
           <div class="relative aspect-[1/1] w-full">
             <NuxtImg
               :src="speaker.avatar"
-              :alt="speaker.name"
+              :alt="speaker.displayName"
               class="h-auto w-full object-cover"
               format="webp"
               :placeholder="[32, 32, 80, 5]"
@@ -145,10 +161,69 @@ function recoverCarouselAutoplay() {
         {{ currentSpeakerName }}
       </span>
     </div>
+
+    <div class="absolute inset-x-0 bottom-0 h-1 bg-primary-green"></div>
   </div>
 </template>
 
-<style scope>
+<style scoped>
+@keyframes glitch-anim {
+  0% {
+    clip-path: inset(40% 0 61% 0);
+    filter: hue-rotate(-10deg);
+  }
+  20% {
+    clip-path: inset(92% 0 1% 0);
+    filter: hue-rotate(10deg) saturate(110%);
+  }
+  40% {
+    clip-path: inset(43% 0 1% 0);
+    filter: hue-rotate(20deg) contrast(110%);
+  }
+  60% {
+    clip-path: inset(50% 0 20% 0);
+    filter: hue-rotate(-15deg) brightness(110%);
+  }
+  80% {
+    clip-path: inset(54% 0 7% 0);
+    filter: hue-rotate(15deg) saturate(105%);
+  }
+  100% {
+    clip-path: inset(58% 0 43% 0);
+    filter: hue-rotate(0deg);
+  }
+}
+
+.glitch-effect::before,
+.glitch-effect::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: inherit;
+  clip-path: inset(0);
+  opacity: 0.5;
+}
+
+.glitch-effect::before {
+  left: 1px;
+  background-color: hsla(168, 100%, 50%, 1);
+  animation: glitch-anim 300ms infinite linear alternate-reverse;
+}
+
+.glitch-effect::after {
+  left: -1px;
+  background-color: hsla(168, 100%, 50%, 1);
+  animation: glitch-anim 300ms infinite linear alternate-reverse;
+}
+
+.glitch-effect {
+  animation: glitch-anim 1000ms infinite;
+  animation-timing-function: steps(3, end);
+}
+
 .speaker-name-tag {
   clip-path: polygon(calc(0% + 24px) 0%, 100% 0%, 100% 100%, 0% 100%);
 

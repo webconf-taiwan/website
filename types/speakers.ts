@@ -1,5 +1,5 @@
 export interface Speaker {
   id: string
-  name: string
+  displayName: string
   avatar: string
 }

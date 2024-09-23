@@ -32,4 +32,4 @@ function isSpeakersColumnEmpty(colIndex: number) {
   </div>
 </template>
 
-<style scope></style>
+<style scoped></style>

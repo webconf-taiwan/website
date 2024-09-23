@@ -2,11 +2,11 @@
 </script>
 
 <template>
-  <div class="py-20 lg:flex lg:justify-center lg:py-[160px]">
+  <section class="py-20 lg:flex lg:justify-center lg:py-[160px]">
     <div class="w-full lg:max-w-[648px]">
       <div class="w-full">
         <NuxtImg
-          src="logo-full-sm.svg"
+          src="/logo-full-sm.svg"
           alt="news"
           class="w-full"
         />
@@ -14,6 +14,7 @@
 
       <div class="mt-10 flex flex-col items-center justify-center lg:mt-[52px]">
         <Button
+          type="button"
           variant="custom"
           size="custom"
         >
@@ -27,5 +28,5 @@
         </p>
       </div>
     </div>
-  </div>
+  </section>
 </template>
