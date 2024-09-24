@@ -135,6 +135,7 @@ function recoverCarouselAutoplay() {
               class="h-auto w-full object-cover"
               format="webp"
               :placeholder="[32, 32, 80, 5]"
+              draggable="false"
             />
           </div>
         </CarouselItem>
@@ -156,7 +157,7 @@ function recoverCarouselAutoplay() {
 
     <div class="speaker-name-tag absolute bottom-1 right-0 flex h-8 w-fit items-center justify-center bg-primary-green pl-8 pr-5 font-medium text-black sm:h-12 sm:pl-10 sm:pr-4">
       <span
-        class="inline-block w-full max-w-[20ch] truncate whitespace-nowrap text-xl sm:text-[28px]"
+        class="inline-block size-full max-w-[20ch] content-center truncate whitespace-nowrap text-xl sm:text-[28px]"
       >
         {{ currentSpeakerName }}
       </span>
