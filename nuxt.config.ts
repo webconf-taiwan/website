@@ -1,7 +1,5 @@
 import {
   appDescription,
-  ogDescription,
-  ogTitle,
   speakers,
 } from './constants'
 
@@ -66,11 +64,10 @@ export default defineNuxtConfig({
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: appDescription },
-        { property: 'og:title', content: ogTitle },
-        { property: 'og:description', content: ogDescription },
       ],
       link: [
         { rel: 'stylesheet', href: 'https://unpkg.com/aos@next/dist/aos.css' },
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
       ],
     },
   },

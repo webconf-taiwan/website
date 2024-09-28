@@ -1,12 +1,7 @@
 <script lang="ts" setup>
-import { appName } from '@/constants'
 import { showEasterEgg } from './utils/easterEgg'
 
 const { hasShownAnimation } = useLoadingState()
-
-useHead({
-  title: appName,
-})
 
 showEasterEgg()
 </script>
