@@ -157,7 +157,7 @@ function clickSpeakerNameHandler(speakerId: string) {
           >
             <button
               type="button"
-              class="size-full truncate py-2 pl-4 pr-2 text-left text-base duration-500 lg:text-lg lg:hover:bg-white/5"
+              class="size-full truncate py-2 pl-4 pr-2 text-left text-base font-bold duration-500 lg:text-lg lg:font-medium lg:hover:bg-white/5"
               :class="[currentSpeakerId === speaker.id ? 'text-primary-green' : 'text-white']"
               @click="clickSpeakerNameHandler(speaker.id)"
               @mouseenter="enterSpeakerNameHandler(speaker.id)"

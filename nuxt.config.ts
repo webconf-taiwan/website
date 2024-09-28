@@ -1,8 +1,12 @@
 import {
   appDescription,
-  ogDescription,
-  ogTitle,
-} from './constants/index'
+  speakers,
+} from './constants'
+
+const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
+  `/_ipx/f_webp&q_80&blur_5&s_32x32${speaker.avatar}`,
+  `/_ipx/f_webp${speaker.avatar}`,
+])
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -54,17 +58,30 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      htmlAttrs: {
+        lang: 'zh-Hant',
+      },
       meta: [
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         { name: 'description', content: appDescription },
-        { property: 'og:title', content: ogTitle },
-        { property: 'og:description', content: ogDescription },
       ],
       link: [
         { rel: 'stylesheet', href: 'https://unpkg.com/aos@next/dist/aos.css' },
+        { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
       ],
     },
   },
 
-  compatibilityDate: '2024-08-27',
+  nitro: {
+    prerender: {
+      routes: [
+        ...speakersAvatarPrerenderRoutes,
+        '/_ipx/_/logo-words.svg',
+        '/_ipx/_/drawer/drawer-top-decorate-lg.svg',
+        '/_ipx/_/drawer/drawer-top-decorate.svg',
+      ],
+    },
+  },
+
+  compatibilityDate: '2024-09-24',
 })

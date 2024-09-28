@@ -147,12 +147,12 @@ defineExpose({
 
 .slide-up-enter-from,
 .slide-up-leave-to {
-  transform: translateY(100%);
+  transform: translateY(calc(100% + 48px));
 }
 
 .slide-left-enter-from,
 .slide-left-leave-to {
-  transform: translateX(100%);
+  transform: translateX(calc(100% + 56px));
 }
 
 /* 自定義滾動條樣式 */

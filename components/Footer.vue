@@ -42,9 +42,9 @@ const contactInfos = [
 
       <div class="pt-6">
         <div class="flex space-x-3 font-bold">
-          <h4 class="text-xl lg:text-2xl">
+          <h2 class="text-xl lg:text-2xl">
             CODE OF CONDUCT
-          </h4>
+          </h2>
           <p>行為準則</p>
         </div>
 
@@ -68,6 +68,7 @@ const contactInfos = [
     <div class="absolute left-1/2 top-5 w-14 -translate-x-1/2">
       <NuxtImg
         src="/footer/bar.svg"
+        alt="decorative bar"
         class="w-full"
       />
     </div>
