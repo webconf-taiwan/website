@@ -31,7 +31,7 @@ onMounted(() => {
         data-aos-delay="3000"
       >
         <div class="text-center xl:text-start">
-          <p class="text-2xl font-bold tracking-[0.037em]">
+          <p class="text-mina text-2xl font-bold tracking-[0.037em]">
             2024｜12.27 - 28
           </p>
           <p class="text-md-h3 tracking-[0.07em]">

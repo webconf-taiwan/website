@@ -79,6 +79,7 @@
 
   html, body {
     @apply min-h-screen;
+    scrollbar-width: thin;
   }
 
   body {
