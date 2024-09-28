@@ -79,4 +79,4 @@ export const speakers: Speaker[] = [
   },
 ]
 
-export const spaceGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'
+export const venueGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'

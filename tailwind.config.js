@@ -47,8 +47,10 @@ export default {
         'background': 'hsl(var(--background))',
         'foreground': 'hsl(var(--foreground))',
         'primary': {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          'DEFAULT': 'hsl(var(--primary))',
+          'foreground': 'hsl(var(--primary-foreground))',
+          'green': 'hsla(168, 100%, 50%, 1)',
+          'dark-green': 'hsla(180, 100%, 18%, 1)',
         },
         'secondary': {
           DEFAULT: 'hsl(var(--secondary))',
@@ -74,7 +76,6 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        'primary-green': 'hsla(168, 100%, 50%, 1)',
         'gradient-bg-start': '#000033',
         'gradient-bg-end': '#006666',
         'footer-border': '#444444',

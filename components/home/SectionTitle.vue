@@ -8,7 +8,7 @@
       ></span>
     </div>
 
-    <span class="section-title-text font-['Mina']">
+    <span class="section-title-text font-['Mina'] uppercase">
       <slot name="title"></slot>
     </span>
 
