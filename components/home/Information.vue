@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { spaceGoogleMapLink } from '~/constants'
+import { venueGoogleMapLink } from '~/constants'
 
 const trafficInfos = [
   {
@@ -15,26 +15,21 @@ const trafficInfos = [
 
 <template>
   <section class="full-bleed py-[60px]">
-    <HomeSpaceInfoMarquee />
+    <HomeVenueInfoMarquee />
 
     <div class="my-3 justify-center px-5 lg:flex">
       <div class="group w-full border border-primary-green/80 lg:flex lg:max-w-[1320px]">
         <div class="w-full lg:flex-[3]">
           <NuxtImg
-            src="/home/information/map-sm.svg"
+            src="/home/information/venue-map.svg"
             alt="space information"
-            class="w-full lg:hidden"
-          />
-          <NuxtImg
-            src="/home/information/map.svg"
-            alt="space information"
-            class="hidden size-full object-cover lg:block"
+            class="size-full object-cover"
           />
         </div>
         <div class="mt-8 px-3 pb-3 lg:mt-0 lg:flex lg:flex-[1] lg:flex-col lg:justify-between lg:px-10 lg:py-6">
           <HomeSectionTitle>
             <template #title>
-              SPACE
+              VENUE
             </template>
             <template #subTitle>
               場域
@@ -43,7 +38,7 @@ const trafficInfos = [
 
           <div class="mt-8">
             <NuxtLink
-              :to="spaceGoogleMapLink"
+              :to="venueGoogleMapLink"
               target="_blank"
               class="text-h3 transition lg:text-md-h3 lg:underline-offset-4 lg:hover:text-primary-green lg:hover:underline"
             >
@@ -72,6 +67,6 @@ const trafficInfos = [
       </div>
     </div>
 
-    <HomeSpaceInfoMarquee :reverse="true" />
+    <HomeVenueInfoMarquee :reverse="true" />
   </section>
 </template>
