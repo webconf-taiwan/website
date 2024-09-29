@@ -45,10 +45,7 @@ onMounted(async () => {
       tlSm.restart()
       tlSm.from(headerLogoWordsSmRef.value, {
         y: 100,
-        // x: -20,
         width: 'calc(100% - 40px)',
-        // scale: 2,
-        // transformOrigin: 'center center',
         ease: 'power3.inOut',
       })
       tlSm.pause()
@@ -68,8 +65,8 @@ onMounted(async () => {
     if (isDesktopSm) {
       tl.restart()
       tl.from(headerLogoWordsRef.value, {
-        x: 10,
-        y: 180,
+        x: 8,
+        y: 115,
         transformOrigin: 'top left',
         ease: 'power3.inOut',
         scale: 4.7,
@@ -80,8 +77,8 @@ onMounted(async () => {
     if (isDesktopLg) {
       tl.restart()
       tl.from(headerLogoWordsRef.value, {
-        x: 10,
-        y: 180,
+        x: 8,
+        y: 130,
         transformOrigin: 'top left',
         ease: 'power3.inOut',
         scale: 3.44,
@@ -92,11 +89,11 @@ onMounted(async () => {
     if (isDesktopXl) {
       tl.restart()
       tl.from(headerLogoWordsRef.value, {
-        x: -36,
-        y: 185,
+        x: -40,
+        y: 132,
         transformOrigin: 'top left',
         ease: 'power3.inOut',
-        scale: 3.67,
+        scale: 3.7,
       })
       tl.pause()
     }
@@ -108,12 +105,12 @@ onMounted(async () => {
   <!-- 電腦版 -->
   <div
     ref="headerLogoWordsRef"
-    class="relative hidden h-10 w-[14.5%] lg:block"
+    class="relative hidden h-10 w-full max-w-[14.5%] lg:block"
   >
     <NuxtImg
       src="/logo-words.svg"
       alt="logoWords"
-      class="absolute left-0 top-0 h-auto w-full"
+      class="absolute left-0 top-4 h-auto w-full"
     />
 
     <div ref="headerLogoLinkSmRef">
