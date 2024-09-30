@@ -68,6 +68,7 @@ export default defineNuxtConfig({
       link: [
         { rel: 'stylesheet', href: 'https://unpkg.com/aos@next/dist/aos.css' },
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
       ],
     },
   },
