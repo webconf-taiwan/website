@@ -58,6 +58,11 @@ defineExpose({
   open,
   close,
 })
+
+function handleClose() {
+  close()
+  console.log(1)
+}
 </script>
 
 <template>
@@ -65,8 +70,7 @@ defineExpose({
   <Transition name="fade">
     <div
       v-if="isActive"
-      class="fixed inset-0 z-40 from-primary-green/0"
-      :class="[isSmallerLg ? 'bg-gradient-to-t to-primary-green/80 to-60%' : 'bg-gradient-to-r to-primary-green/90']"
+      class="fixed inset-0 z-40 bg-gradient-to-t from-primary-green/0 to-primary-green/80 to-60%"
     ></div>
   </Transition>
 
@@ -77,21 +81,13 @@ defineExpose({
   >
     <div
       v-if="isActive"
-      class="fixed z-[1000] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10"
+      class="fixed z-[1000] flex flex-col bg-black px-0 pt-3"
       :class="[
         isSmallerLg ? 'inset-x-0 top-0 max-h-[85dvh] min-h-[30dvh]' : 'inset-y-0 right-0 w-80',
       ]"
     >
       <!-- Drawer header -->
-      <div class="mb-8 space-y-2 px-5 lg:px-10">
-        <NuxtImg
-          src="/drawer/drawer-top-decorate-lg.svg"
-          class="hidden w-full sm:block"
-        />
-        <NuxtImg
-          src="/drawer/drawer-top-decorate.svg"
-          class="block w-full sm:hidden"
-        />
+      <div class="mb-8 flex justify-center space-y-2 px-10">
         <slot name="header"></slot>
       </div>
 
@@ -99,7 +95,7 @@ defineExpose({
       <div
         ref="scrollableContent"
         data-lenis-prevent
-        class="drawer-content mb-10 min-h-[20dvh] flex-1 overflow-y-auto px-5 lg:px-10"
+        class="drawer-content mb-10 min-h-[20dvh] flex-1 px-10 lg:px-10"
       >
         <slot name="content"></slot>
       </div>
@@ -122,6 +118,16 @@ defineExpose({
         breakpoint="lg"
         @close="close"
       /> -->
+
+      <button
+        class="fixed right-0 top-0 p-3"
+        @click="close"
+      >
+        <Icon
+          name="material-symbols:close"
+          class="size-6 text-primary-green"
+        />
+      </button>
     </div>
   </Transition>
 </template>
