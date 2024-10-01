@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
+const { isHamburgerActive } = defineProps<{
+  isHamburgerActive?: boolean
+}>()
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
 
 const { isDrawerActive, openDrawer, closeDrawer } = useDrawerState()
-
-const scrollableContent = ref<HTMLElement | null>(null)
 
 const isActive = computed(() => isDrawerActive())
 
@@ -58,77 +59,88 @@ defineExpose({
   open,
   close,
 })
+
+// 判斷 Overlay 方向
+const overlayDirection = computed(() => {
+  if (isSmallerLg.value && isHamburgerActive) {
+    return 'bg-gradient-to-t to-primary-green/80 to-60%'
+  }
+  if (isSmallerLg.value) {
+    return 'bg-gradient-to-b to-primary-green/80 to-60%'
+  }
+  return 'bg-gradient-to-r to-primary-green/90'
+})
+
+// 判斷 Overlay 動畫方向
+const overlayTransition = computed(() => {
+  if (isSmallerLg.value && isHamburgerActive) {
+    return 'fade-bottom'
+  }
+  return 'fade'
+})
+// 判斷 Drawer 開啟方向
+const drawerDirection = computed(() => {
+  if (isSmallerLg.value && isHamburgerActive) {
+    return 'slide-down'
+  }
+  if (isSmallerLg.value) {
+    return 'slide-up'
+  }
+  return 'slide-left'
+})
+
+// 判斷 Drawer Content 各斷點樣式
+const drawerContentDirection = computed(() => {
+  if (isSmallerLg.value && isHamburgerActive) {
+    return 'inset-x-0 top-0 max-h-[85dvh] min-h-[30dvh]'
+  }
+  if (isSmallerLg.value) {
+    return 'inset-x-0 bottom-0 max-h-[85dvh] min-h-[30dvh]'
+  }
+  return 'inset-y-0 right-0 w-80'
+})
 </script>
 
 <template>
   <!-- Overlay -->
-  <Transition name="fade">
+  <Transition :name="overlayTransition">
     <div
       v-if="isActive"
       class="fixed inset-0 z-40 from-primary-green/0"
-      :class="[isSmallerLg ? 'bg-gradient-to-b to-primary-green/80 to-60%' : 'bg-gradient-to-r to-primary-green/90']"
+      :class="overlayDirection"
     ></div>
   </Transition>
 
   <!-- Drawer -->
   <Transition
-    :name="isSmallerLg ? 'slide-up' : 'slide-left'"
+    :name="drawerDirection"
     @after-leave="restoreScroll"
   >
     <div
       v-if="isActive"
       class="fixed z-[1000] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10"
-      :class="[
-        isSmallerLg ? 'inset-x-0 bottom-0 max-h-[85dvh] min-h-[30dvh]' : 'inset-y-0 right-0 w-80',
-      ]"
+      :class="drawerContentDirection"
     >
       <!-- Drawer header -->
-      <div class="mb-8 space-y-2 px-5 lg:px-10">
-        <NuxtImg
-          src="/drawer/drawer-top-decorate-lg.svg"
-          class="hidden w-full sm:block"
-        />
-        <NuxtImg
-          src="/drawer/drawer-top-decorate.svg"
-          class="block w-full sm:hidden"
-        />
-        <slot name="header"></slot>
-      </div>
+      <slot name="header"></slot>
 
       <!-- Scrollable content area -->
-      <div
-        ref="scrollableContent"
-        data-lenis-prevent
-        class="drawer-content mb-10 min-h-[20dvh] flex-1 overflow-y-auto px-5 lg:px-10"
-      >
-        <slot name="content"></slot>
-      </div>
+      <slot name="content"></slot>
 
       <!-- Drawer footer -->
-      <div class="space-y-2">
-        <div class="flex h-3 justify-center space-x-1.5">
-          <span
-            v-for="(_, index) in 6"
-            :key="index"
-            class="h-full w-[2px] bg-primary-green"
-          ></span>
-        </div>
-
-        <div class="w-full border-t border-primary-green"></div>
-      </div>
+      <slot name="footer"></slot>
 
       <!-- Close button -->
-      <DrawerClose
-        breakpoint="lg"
-        @close="close"
-      />
+      <slot name="close-button"></slot>
     </div>
   </Transition>
 </template>
 
 <style scoped>
 .fade-enter-active,
-.fade-leave-active {
+.fade-leave-active,
+.fade-bottom-enter-active,
+.fade-bottom-leave-active {
   transition: all 0.5s ease;
 }
 
@@ -136,6 +148,12 @@ defineExpose({
 .fade-leave-to {
   opacity: 0;
   @apply lg:translate-x-full translate-y-full lg:translate-y-0;
+}
+
+.fade-bottom-enter-from,
+.fade-bottom-leave-to {
+  opacity: 0;
+  @apply -translate-y-full;
 }
 
 .slide-up-enter-active,
@@ -153,6 +171,16 @@ defineExpose({
 .slide-left-enter-from,
 .slide-left-leave-to {
   transform: translateX(calc(100% + 56px));
+}
+
+.slide-down-enter-active,
+.slide-down-leave-active {
+  transition: transform 0.3s ease;
+}
+
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(calc(-100% - 48px));
 }
 
 /* 自定義滾動條樣式 */

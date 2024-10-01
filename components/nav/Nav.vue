@@ -9,11 +9,6 @@ import {
 import { navLinks } from '~/constants'
 
 const aboutUsDrawer = useTemplateRef('aboutUsDrawer')
-
-function test() {
-  console.log(1)
-  aboutUsDrawer?.value?.open()
-}
 </script>
 
 <template>
@@ -21,7 +16,7 @@ function test() {
   <nav class="fixed right-0 top-0 z-40 bg-black lg:hidden">
     <button
       class="relative flex h-12 w-10 items-center pl-1"
-      @click="test"
+      @click="aboutUsDrawer?.open()"
     >
       <!-- 裝飾用多邊形 -->
       <div
@@ -35,31 +30,22 @@ function test() {
       />
 
       <Teleport to="body">
-        <NavHamburger ref="aboutUsDrawer">
+        <Drawer
+          ref="aboutUsDrawer"
+          :is-hamburger-active="true"
+        >
           <template #header>
-            <HomeSectionTitle>
-              <template #title>
-                About
-              </template>
-              <template #subTitle>
-                關於
-              </template>
-            </HomeSectionTitle>
+            <NavDrawerHeader />
           </template>
+
           <template #content>
-            <div class="space-y-5 text-justify leading-7 tracking-wide">
-              <p>
-                WebConf Taiwan 是一個聚集網頁技術愛好者和專家的年度盛會，讓大家一起探索網頁技術的演進和未來發展趨勢。過去幾年，網路世界變化迅速，我們將在這次研討會上回顧網頁技術的演變歷程，了解那些改變遊戲規則的關鍵時刻。
-              </p>
-              <p>
-                除了回顧過去，WebConf Taiwan 更專注於未來。我們會討論如何利用人工智慧和機器學習來改善使用者體驗，以及行動優化和響應式設計在現代網頁開發中的重要性。還有最新的業界趨勢分享，幫助企業把握未來發展方向，保持競爭優勢。
-              </p>
-              <p>
-                這將是一個充滿創意和靈感的活動，讓你與來自各地的網頁技術專業人士互動交流，共同探討未來的技術創新和可能性。
-              </p>
-            </div>
+            <NavDrawerContent :nav-links="navLinks" />
           </template>
-        </NavHamburger>
+
+          <template #close-button>
+            <NavDrawerCloseBtn :close-drawer="aboutUsDrawer?.close!" />
+          </template>
+        </Drawer>
       </Teleport>
     </button>
   </nav>
@@ -80,7 +66,7 @@ function test() {
         v-for="link in navLinks"
         :key="link.name"
       >
-        <router-link
+        <NuxtLink
           v-if="link.name !== '歷屆'"
           :to="link.href"
           class="relative px-[14px] py-3 hover:text-primary-green"
@@ -88,7 +74,7 @@ function test() {
           <span class="text-h5">
             {{ link.name }}
           </span>
-        </router-link>
+        </NuxtLink>
 
         <div v-else>
           <HoverCard
@@ -108,20 +94,22 @@ function test() {
             >
               <ul class="space-y-6">
                 <li>
-                  <router-link
-                    to="/2013"
+                  <NuxtLink
+                    to="https://webconf.tw/2013/"
+                    target="_blank"
                     class="px-3 py-[2px] hover:text-primary-green"
                   >
                     2013
-                  </router-link>
+                  </NuxtLink>
                 </li>
                 <li>
-                  <router-link
-                    to="/2023"
+                  <NuxtLink
+                    to="https://webconf.tw/2023/"
+                    target="_blank"
                     class="px-3 py-[2px] hover:text-primary-green"
                   >
                     2023
-                  </router-link>
+                  </NuxtLink>
                 </li>
               </ul>
             </HoverCardContent>
