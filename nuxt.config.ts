@@ -9,7 +9,10 @@ const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
 ])
 
 export default defineNuxtConfig({
-  devtools: { enabled: false },
+  devtools: {
+    enabled: true,
+    componentInspector: false,
+  },
 
   modules: [
     '@pinia/nuxt',
