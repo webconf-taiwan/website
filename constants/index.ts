@@ -5,28 +5,39 @@ export const appDescription = '本屆榮幸邀請到各領域專業講者，包�
 
 // Header－導航列連結
 export const navLinks = [
-  {
-    name: '講者',
-    href: '#',
-  },
-  {
-    name: '議程',
-    href: '#',
-  },
-  {
-    name: '場域',
-    href: '#',
-  },
-  {
-    name: '籌備',
-    href: '#',
-  },
-  {
-    name: '徵才',
-    href: '#',
-  },
+  // {
+  //   name: '議程',
+  //   engName: 'AGENDA',
+  //   href: '#',
+  // },
+  // {
+  //   name: '講者',
+  //   engName: 'SPEAKERS',
+  //   href: '#',
+  // },
+  // {
+  //   name: '場域',
+  //   engName: 'VENUE',
+  //   href: '#',
+  // },
+  // {
+  //   name: '贊助',
+  //   engName: 'SPONSOR',
+  //   href: '#',
+  // },
+  // {
+  //   name: '徵才',
+  //   engName: 'RECRUIT',
+  //   href: '#',
+  // },
+  // {
+  //   name: '籌備',
+  //   engName: 'STAFF',
+  //   href: '#',
+  // },
   {
     name: '歷屆',
+    engName: 'HISTORY',
     href: '#',
   },
 ]
