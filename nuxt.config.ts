@@ -9,7 +9,10 @@ const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
 ])
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
+  devtools: {
+    enabled: true,
+    componentInspector: false,
+  },
 
   modules: [
     '@pinia/nuxt',
@@ -68,6 +71,7 @@ export default defineNuxtConfig({
       link: [
         { rel: 'stylesheet', href: 'https://unpkg.com/aos@next/dist/aos.css' },
         { rel: 'icon', href: '/favicon.ico', sizes: 'any' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
       ],
     },
   },

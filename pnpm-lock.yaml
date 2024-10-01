@@ -11,9 +11,6 @@ importers:
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.10(typescript@5.6.2))
-      '@iconify-json/heroicons':
-        specifier: ^1.2.0
-        version: 1.2.0
       '@radix-icons/vue':
         specifier: ^1.0.0
         version: 1.0.0(vue@3.5.10(typescript@5.6.2))
@@ -63,6 +60,9 @@ importers:
       '@antfu/eslint-config':
         specifier: ^3.7.3
         version: 3.7.3(@typescript-eslint/utils@8.7.0(eslint@9.11.1(jiti@1.21.6))(typescript@5.6.2))(@vue/compiler-sfc@3.5.10)(eslint@9.11.1(jiti@1.21.6))(typescript@5.6.2)
+      '@iconify-json/heroicons':
+        specifier: ^1.2.0
+        version: 1.2.0
       '@iconify-json/iconoir':
         specifier: ^1.2.1
         version: 1.2.1
