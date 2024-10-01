@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
-const { isHamburgerActive } = defineProps<{
-  isHamburgerActive?: boolean
-}>()
+const props = withDefaults(defineProps<{
+  defaultCloseBtn?: boolean
+  slideDirection?: 'slide-left' | 'slide-right' | 'slide-up' | 'slide-down'
+}>(), {
+  defaultCloseBtn: true,
+  slideDirection: 'slide-up',
+})
+
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
 
@@ -20,9 +25,8 @@ function close() {
 }
 
 function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && isActive.value) {
+  if (event.key === 'Escape' && isActive.value)
     close()
-  }
 }
 
 function handlePageScroll() {
@@ -40,9 +44,8 @@ function restoreScroll() {
 }
 
 watch(isActive, (newValue) => {
-  if (newValue) {
+  if (newValue)
     handlePageScroll()
-  }
 })
 
 useEventListener(window, 'keydown', handleKeydown)
@@ -60,44 +63,42 @@ defineExpose({
   close,
 })
 
-// 判斷 Overlay 方向
-const overlayDirection = computed(() => {
-  if (isSmallerLg.value && isHamburgerActive) {
-    return 'bg-gradient-to-t to-primary-green/80 to-60%'
-  }
-  if (isSmallerLg.value) {
-    return 'bg-gradient-to-b to-primary-green/80 to-60%'
-  }
-  return 'bg-gradient-to-r to-primary-green/90'
-})
+/**
+ * 判斷 Overlay 方向
+ */
+const overlayClassMap = {
+  'slide-left': 'bg-gradient-to-r to-primary-green/90',
+  'slide-right': 'bg-gradient-to-l to-primary-green/90',
+  'slide-up': 'bg-gradient-to-b to-primary-green/80 to-60%',
+  'slide-down': 'bg-gradient-to-t to-primary-green/80 to-60%',
+}
 
-// 判斷 Overlay 動畫方向
-const overlayTransition = computed(() => {
-  if (isSmallerLg.value && isHamburgerActive) {
-    return 'fade-bottom'
-  }
-  return 'fade'
-})
-// 判斷 Drawer 開啟方向
-const drawerDirection = computed(() => {
-  if (isSmallerLg.value && isHamburgerActive) {
-    return 'slide-down'
-  }
-  if (isSmallerLg.value) {
-    return 'slide-up'
-  }
-  return 'slide-left'
-})
+const overlayClass = computed(() =>
+  overlayClassMap[props.slideDirection] || overlayClassMap['slide-up'],
+)
 
-// 判斷 Drawer Content 各斷點樣式
-const drawerContentDirection = computed(() => {
-  if (isSmallerLg.value && isHamburgerActive) {
-    return 'inset-x-0 top-0 max-h-[85dvh] min-h-[30dvh]'
+/**
+ * 判斷 Overlay 動畫方向
+ */
+const overlayTransition = computed(() => `fade-${props.slideDirection.split('-')[1]}`)
+
+/**
+ * 判斷 Drawer Content 各斷點樣式
+ */
+const drawerContentClass = computed(() => {
+  const baseClasses = {
+    'slide-up': 'inset-x-0 bottom-0 max-h-[85dvh] min-h-[30dvh]',
+    'slide-down': 'inset-x-0 top-0 max-h-[85dvh] min-h-[30dvh]',
+    'slide-left': 'inset-y-0 right-0 w-80',
+    'slide-right': 'inset-y-0 left-0 w-80',
   }
+
   if (isSmallerLg.value) {
-    return 'inset-x-0 bottom-0 max-h-[85dvh] min-h-[30dvh]'
+    return baseClasses[props.slideDirection] || baseClasses['slide-up']
   }
-  return 'inset-y-0 right-0 w-80'
+  else {
+    return baseClasses[props.slideDirection] || 'inset-y-0 right-0 w-80'
+  }
 })
 </script>
 
@@ -107,59 +108,76 @@ const drawerContentDirection = computed(() => {
     <div
       v-if="isActive"
       class="fixed inset-0 z-40 from-primary-green/0"
-      :class="overlayDirection"
+      :class="overlayClass"
     ></div>
   </Transition>
 
   <!-- Drawer -->
   <Transition
-    :name="drawerDirection"
+    :name="slideDirection"
     @after-leave="restoreScroll"
   >
     <div
       v-if="isActive"
       class="fixed z-[1000] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10"
-      :class="drawerContentDirection"
+      :class="drawerContentClass"
     >
-      <!-- Drawer header -->
-      <slot name="header"></slot>
+      <slot></slot>
+      <slot name="custom"></slot>
 
-      <!-- Scrollable content area -->
-      <slot name="content"></slot>
-
-      <!-- Drawer footer -->
-      <slot name="footer"></slot>
-
-      <!-- Close button -->
-      <slot name="close-button"></slot>
+      <DrawerClose
+        v-if="defaultCloseBtn"
+        breakpoint="lg"
+        @close="close"
+      />
     </div>
   </Transition>
 </template>
 
 <style scoped>
-.fade-enter-active,
-.fade-leave-active,
-.fade-bottom-enter-active,
-.fade-bottom-leave-active {
+.fade-up-enter-active,
+.fade-up-leave-active,
+.fade-down-enter-active,
+.fade-down-leave-active,
+.fade-left-enter-active,
+.fade-left-leave-active,
+.fade-right-enter-active,
+.fade-right-leave-active {
   transition: all 0.5s ease;
 }
 
-.fade-enter-from,
-.fade-leave-to {
+.fade-up-enter-from,
+.fade-up-leave-to {
   opacity: 0;
-  @apply lg:translate-x-full translate-y-full lg:translate-y-0;
+  @apply translate-y-full;
 }
 
-.fade-bottom-enter-from,
-.fade-bottom-leave-to {
+.fade-down-enter-from,
+.fade-down-leave-to {
   opacity: 0;
   @apply -translate-y-full;
 }
 
+.fade-left-enter-from,
+.fade-left-leave-to {
+  opacity: 0;
+  @apply translate-x-full;
+}
+
+.fade-right-enter-from,
+.fade-right-leave-to {
+  opacity: 0;
+  @apply -translate-x-full;
+}
+
 .slide-up-enter-active,
 .slide-up-leave-active,
+.slide-down-enter-active,
+.slide-down-leave-active,
 .slide-left-enter-active,
-.slide-left-leave-active {
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
   transition: transform 0.3s ease;
 }
 
@@ -168,19 +186,19 @@ const drawerContentDirection = computed(() => {
   transform: translateY(calc(100% + 48px));
 }
 
+.slide-down-enter-from,
+.slide-down-leave-to {
+  transform: translateY(calc(-100% - 48px));
+}
+
 .slide-left-enter-from,
 .slide-left-leave-to {
   transform: translateX(calc(100% + 56px));
 }
 
-.slide-down-enter-active,
-.slide-down-leave-active {
-  transition: transform 0.3s ease;
-}
-
-.slide-down-enter-from,
-.slide-down-leave-to {
-  transform: translateY(calc(-100% - 48px));
+.slide-right-enter-from,
+.slide-right-leave-to {
+  transform: translateX(calc(-100% - 56px));
 }
 
 /* 自定義滾動條樣式 */

@@ -22,7 +22,6 @@ const { navLinks } = defineProps<{
           v-if="link.name !== '歷屆'"
           :to="link.href"
           class="flex items-center space-x-4 py-3 pl-6"
-          @click="aboutUsDrawer?.close()"
         >
           <p class="text-mina text-xl font-bold">
             {{ link.engName }}
@@ -50,7 +49,7 @@ const { navLinks } = defineProps<{
               <NuxtLink
                 to="https://webconf.tw/2013/"
                 target="_blank"
-                class="border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
+                class="flex items-center justify-center border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
               >
                 2013
               </NuxtLink>
@@ -60,7 +59,7 @@ const { navLinks } = defineProps<{
               <NuxtLink
                 to="https://webconf.tw/2023/"
                 target="_blank"
-                class="border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
+                class="flex items-center justify-center border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
               >
                 2023
               </NuxtLink>

@@ -1,14 +1,20 @@
 <script setup lang="ts">
-import { Button } from '@/components/ui/button'
-
 import {
   HoverCard,
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { navLinks } from '~/constants'
 
-const aboutUsDrawer = useTemplateRef('aboutUsDrawer')
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isSmallerLg = breakpoints.smaller('lg')
+
+const navDrawer = useTemplateRef('navDrawer')
+
+watch(isSmallerLg, () => {
+  navDrawer.value?.close()
+})
 </script>
 
 <template>
@@ -16,7 +22,7 @@ const aboutUsDrawer = useTemplateRef('aboutUsDrawer')
   <nav class="fixed right-0 top-0 z-40 bg-black lg:hidden">
     <button
       class="relative flex h-12 w-10 items-center pl-1"
-      @click="aboutUsDrawer?.open()"
+      @click="navDrawer?.open()"
     >
       <!-- 裝飾用多邊形 -->
       <div
@@ -31,19 +37,14 @@ const aboutUsDrawer = useTemplateRef('aboutUsDrawer')
 
       <Teleport to="body">
         <Drawer
-          ref="aboutUsDrawer"
-          :is-hamburger-active="true"
+          ref="navDrawer"
+          slide-direction="slide-down"
+          :default-close-btn="false"
         >
-          <template #header>
+          <template #custom>
             <NavDrawerHeader />
-          </template>
-
-          <template #content>
             <NavDrawerContent :nav-links="navLinks" />
-          </template>
-
-          <template #close-button>
-            <NavDrawerCloseBtn :close-drawer="aboutUsDrawer?.close!" />
+            <NavDrawerCloseBtn @close="navDrawer?.close" />
           </template>
         </Drawer>
       </Teleport>
