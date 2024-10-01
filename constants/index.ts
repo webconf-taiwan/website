@@ -91,3 +91,5 @@ export const speakers: Speaker[] = [
 ]
 
 export const venueGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'
+
+export const accupassLink = 'https://www.accupass.com/event/2409191151131735941095'

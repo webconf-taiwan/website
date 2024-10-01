@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { accupassLink } from '~/constants'
 </script>
 
 <template>
@@ -18,9 +19,13 @@
           variant="custom"
           size="custom"
         >
-          <p class="text-xl">
+          <NuxtLink
+            :to="accupassLink"
+            target="_blank"
+            class="text-xl"
+          >
             即將開賣
-          </p>
+          </NuxtLink>
         </Button>
 
         <p class="mt-4">
