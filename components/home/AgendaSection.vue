@@ -85,7 +85,7 @@ onMounted(() => {
                 </HomeSectionTitle>
               </template>
               <template #content>
-                <div class="space-y-5 text-justify leading-7 tracking-wide">
+                <div class="space-y-5 text-justify leading-7 tracking-wide lg:flex-1">
                   <p>
                     WebConf Taiwan 是一個聚集網頁技術愛好者和專家的年度盛會，讓大家一起探索網頁技術的演進和未來發展趨勢。過去幾年，網路世界變化迅速，我們將在這次研討會上回顧網頁技術的演變歷程，了解那些改變遊戲規則的關鍵時刻。
                   </p>
