@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import AOS from 'aos'
 import { accupassLink } from '~/constants'
+
 onMounted(() => {
   AOS.init({
     duration: 1000,
@@ -120,6 +121,7 @@ onMounted(() => {
           size="custom"
           class="mx-auto mt-[35px]"
           data-aos="fade-up"
+          data-aos-anchor="body"
           data-aos-delay="3400"
         >
           <NuxtLink

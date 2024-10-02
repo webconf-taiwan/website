@@ -28,7 +28,7 @@ import { accupassLink } from '~/constants'
           </NuxtLink>
         </Button>
 
-        <p class="mt-4">
+        <p class="mt-4 mb-[10rem]">
           敬請關注 Facebook 最新消息
         </p>
       </div>
