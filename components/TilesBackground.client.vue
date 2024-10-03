@@ -99,7 +99,7 @@ useEventListener(document, 'mousemove', throttledMouseMoveFn)
         v-for="tile in tiles"
         :key="tile.id"
         :ref="el => { if (el) tileElements[Number(tile.id.split('-')[1])] = el as HTMLDivElement }"
-        class="size-[60px] border border-primary-green/10 lg:size-36"
+        class="size-[60px] border border-primary-green/5 lg:size-36"
         :style="{ backgroundColor: 'hsla(168, 100%, 50%, 0)' }"
       ></div>
     </div>

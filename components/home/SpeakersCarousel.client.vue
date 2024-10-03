@@ -116,7 +116,7 @@ function recoverCarouselAutoplay() {
         watchDrag: false,
       }"
       :plugins="[Autoplay({
-        delay: 2500,
+        delay: 3000,
         stopOnInteraction: false,
         jump: true,
       })]"
@@ -155,9 +155,11 @@ function recoverCarouselAutoplay() {
       </template>
     </Carousel>
 
-    <div class="speaker-name-tag absolute bottom-1 right-0 flex h-8 w-fit items-center justify-center bg-primary-green pl-8 pr-5 font-medium text-black sm:h-12 sm:pl-10 sm:pr-4">
+    <div class="speaker-name-tag absolute bottom-1 right-0 flex h-8 w-fit items-center justify-center bg-primary-green pl-8 pr-5 font-medium sm:h-12 sm:pl-10 sm:pr-4">
       <span
-        class="inline-block size-full max-w-[20ch] content-center truncate whitespace-nowrap text-xl sm:text-[28px]"
+        :data-text="currentSpeakerName"
+        class="relative inline-block size-full max-w-[20ch] content-center truncate whitespace-nowrap px-2 text-xl sm:text-[28px]"
+        :class="[{ 'text-glitch': isGlitching }, isGlitching ? 'text-black/20' : 'text-black']"
       >
         {{ currentSpeakerName }}
       </span>
@@ -168,6 +170,57 @@ function recoverCarouselAutoplay() {
 </template>
 
 <style scoped>
+@keyframes text-glitch {
+  0% {
+    transform: translateX(0);
+    clip: rect(0, 100%, 100%, 0);
+  }
+  25% {
+    transform: translateX(-6px);
+    clip: rect(10px, 900px, 100px, 0);
+  }
+  50% {
+    transform: translateX(20px);
+    clip: rect(50px, 900px, 200px, 0);
+  }
+  75% {
+    transform: translateX(-4px);
+    clip: rect(75px, 900px, 300px, 0);
+  }
+  100% {
+    transform: translateX(0);
+    clip: rect(100px, 900px, 400px, 0);
+  }
+}
+
+.text-glitch::before,
+.text-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  align-content: center;
+  text-align: center;
+}
+
+.text-glitch::before {
+  color: #f0f;
+  opacity: 0.7;
+  z-index: -1;
+  animation: text-glitch 0.8s infinite;
+  animation-timing-function: steps(3, end);
+}
+
+.text-glitch::after {
+  color: blue;
+  opacity: 0.7;
+  z-index: -2;
+  animation: text-glitch 0.8s infinite 0.1s;
+  animation-timing-function: steps(3, end);
+}
+
 @keyframes glitch-anim {
   0% {
     clip-path: inset(40% 0 61% 0);

@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import AOS from 'aos'
+import { accupassLink } from '~/constants'
 
 onMounted(() => {
   AOS.init({
@@ -46,9 +47,13 @@ onMounted(() => {
           rounded="none"
           class="mx-auto mt-[35px] lg:max-w-none xl:mr-0 xl:max-w-[180px]"
         >
-          <p class="text-xl">
+          <NuxtLink
+            :to="accupassLink"
+            target="_blank"
+            class="text-xl"
+          >
             即將開賣
-          </p>
+          </NuxtLink>
         </Button>
       </div>
     </div>
@@ -116,11 +121,16 @@ onMounted(() => {
           size="custom"
           class="mx-auto mt-[35px]"
           data-aos="fade-up"
+          data-aos-anchor="body"
           data-aos-delay="3400"
         >
-          <p class="text-xl">
+          <NuxtLink
+            :to="accupassLink"
+            target="_blank"
+            class="text-xl"
+          >
             即將開賣
-          </p>
+          </NuxtLink>
         </Button>
       </div>
     </div>
