@@ -128,7 +128,7 @@ function clickSpeakerNameHandler(speakerId: string) {
 
       <!-- Speakers name list -->
       <div
-        class="relative grid w-full grid-flow-col grid-cols-2 grid-rows-5 sm:grid-cols-3 lg:grid-rows-9"
+        class="relative grid w-full grid-flow-col grid-cols-2 grid-rows-5 sm:grid-cols-3 sm:grid-rows-9"
       >
         <HomeSpeakersDividingLines v-if="!isShowSkeleton" />
 

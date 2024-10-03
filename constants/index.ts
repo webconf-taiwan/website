@@ -88,6 +88,58 @@ export const speakers: Speaker[] = [
     displayName: 'Summer',
     avatar: '/speakers/avatar_summer.png',
   },
+  {
+    id: 'speaker_10',
+    displayName: '設計師勞哥',
+    avatar: '/speakers/avatar_maylogger.png',
+  },
+  {
+    id: 'speaker_11',
+    displayName: '王偉任 Weithenn',
+    avatar: '/speakers/avatar_weithenn.png',
+  },
+  {
+    id: 'speaker_12',
+    displayName: 'Zet',
+    avatar: '/speakers/avatar_zet.png',
+  },
+  {
+    id: 'speaker_13',
+    displayName: '奶綠茶',
+    avatar: '/speakers/avatar_milkmidi.png',
+  },
+  {
+    id: 'speaker_14',
+    displayName: '李建杭 Amos',
+    avatar: '/speakers/avatar_amos.png',
+  },
+  {
+    id: 'speaker_15',
+    displayName: 'Taiming',
+    avatar: '/speakers/avatar_taiming.png',
+  },
+  {
+    id: 'speaker_16',
+    displayName: '在地上滾的工程師 Nic',
+    avatar: '/speakers/avatar_nic.png',
+  },
+  {
+    id: 'speaker_17',
+    displayName: '黃睿霖',
+    avatar: '/speakers/avatar_huangruilin.png',
+  },
+  {
+    id: 'speaker_18',
+    displayName: 'Anthony Fu',
+    avatar: '/speakers/avatar_antfu.png',
+  },
+  {
+    id: 'speaker_19',
+    displayName: 'GUGU',
+    avatar: '/speakers/avatar_gugu.png',
+  },
 ]
 
 export const venueGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'
+
+export const accupassLink = 'https://www.accupass.com/event/2409191151131735941095'

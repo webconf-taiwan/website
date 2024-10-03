@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
+type SlideDirection = 'slide-left' | 'slide-right' | 'slide-up' | 'slide-up-full' | 'slide-down'
+
 const props = withDefaults(defineProps<{
   defaultCloseBtn?: boolean
-  slideDirection?: 'slide-left' | 'slide-right' | 'slide-up' | 'slide-down'
+  slideDirection?: SlideDirection
 }>(), {
   defaultCloseBtn: true,
   slideDirection: 'slide-up',
+
 })
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -69,8 +72,9 @@ defineExpose({
 const overlayClassMap = {
   'slide-left': 'bg-gradient-to-r to-primary-green/90',
   'slide-right': 'bg-gradient-to-l to-primary-green/90',
-  'slide-up': 'bg-gradient-to-b to-primary-green/80 to-60%',
-  'slide-down': 'bg-gradient-to-t to-primary-green/80 to-60%',
+  'slide-up': 'bg-gradient-to-b to-primary-green to-80%',
+  'slide-up-full': 'bg-gradient-to-b to-primary-green to-30%',
+  'slide-down': 'bg-gradient-to-t to-primary-green/90 to-60%',
 }
 
 const overlayClass = computed(() =>
@@ -87,7 +91,8 @@ const overlayTransition = computed(() => `fade-${props.slideDirection.split('-')
  */
 const drawerContentClass = computed(() => {
   const baseClasses = {
-    'slide-up': 'inset-x-0 bottom-0 max-h-[85dvh] min-h-[30dvh]',
+    'slide-up': 'inset-x-0 bottom-0 max-h-[calc(100dvh-48px)] sm:max-h-[calc(100dvh-56px)]',
+    'slide-up-full': 'inset-x-0 bottom-0 h-[calc(100dvh-48px)] sm:h-[calc(100dvh-56px)]',
     'slide-down': 'inset-x-0 top-0 max-h-[85dvh] min-h-[30dvh]',
     'slide-left': 'inset-y-0 right-0 w-80',
     'slide-right': 'inset-y-0 left-0 w-80',
@@ -107,8 +112,15 @@ const drawerContentClass = computed(() => {
   <Transition :name="overlayTransition">
     <div
       v-if="isActive"
-      class="fixed inset-0 z-40 from-primary-green/0"
+      class="fixed inset-0 z-[1020] from-primary-green/0"
       :class="overlayClass"
+    ></div>
+  </Transition>
+
+  <Transition name="mask">
+    <div
+      v-if="isActive"
+      class="fixed inset-0 z-[1010] bg-black/80 delay-200"
     ></div>
   </Transition>
 
@@ -119,7 +131,7 @@ const drawerContentClass = computed(() => {
   >
     <div
       v-if="isActive"
-      class="fixed z-[1000] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10"
+      class="fixed z-[1030] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10"
       :class="drawerContentClass"
     >
       <slot></slot>
@@ -135,6 +147,20 @@ const drawerContentClass = computed(() => {
 </template>
 
 <style scoped>
+.mask-enter-active,
+.mask-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.mask-leave-active {
+  transition-delay: 0.2s;
+}
+
+.mask-enter-from,
+.mask-leave-to {
+  opacity: 0;
+}
+
 .fade-up-enter-active,
 .fade-up-leave-active,
 .fade-down-enter-active,
@@ -172,6 +198,8 @@ const drawerContentClass = computed(() => {
 
 .slide-up-enter-active,
 .slide-up-leave-active,
+.slide-up-full-enter-active,
+.slide-up-full-leave-active,
 .slide-down-enter-active,
 .slide-down-leave-active,
 .slide-left-enter-active,
@@ -182,13 +210,15 @@ const drawerContentClass = computed(() => {
 }
 
 .slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(calc(100% + 48px));
+.slide-up-leave-to,
+.slide-up-full-enter-from,
+.slide-up-full-leave-to {
+  transform: translateY(100%);
 }
 
 .slide-down-enter-from,
 .slide-down-leave-to {
-  transform: translateY(calc(-100% - 48px));
+  transform: translateY(-100%);
 }
 
 .slide-left-enter-from,
@@ -199,15 +229,5 @@ const drawerContentClass = computed(() => {
 .slide-right-enter-from,
 .slide-right-leave-to {
   transform: translateX(calc(-100% - 56px));
-}
-
-/* 自定義滾動條樣式 */
-.drawer-content {
-  scrollbar-width: thin;
-  scrollbar-color: var(--primary-green) black;
-}
-
-.drawer-content::-webkit-scrollbar-thumb {
-  border-radius: 6px;
 }
 </style>

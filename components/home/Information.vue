@@ -21,12 +21,17 @@ const trafficInfos = [
       <div class="group w-full border border-primary-green/80 lg:flex lg:max-w-[1320px]">
         <div class="w-full lg:flex-[3]">
           <NuxtImg
+            src="/home/information/venue-map-sm.svg"
+            alt="space information"
+            class="size-full object-cover lg:hidden"
+          />
+          <NuxtImg
             src="/home/information/venue-map.svg"
             alt="space information"
-            class="size-full object-cover"
+            class="hidden size-full object-cover lg:block"
           />
         </div>
-        <div class="mt-8 px-3 pb-3 lg:mt-0 lg:flex lg:flex-[1] lg:flex-col lg:justify-between lg:px-10 lg:py-6">
+        <div class="mt-8 px-3 pb-3 lg:mt-0 lg:flex lg:flex-[1.4] lg:flex-col lg:justify-between lg:px-5 lg:py-6  xl:px-10">
           <HomeSectionTitle>
             <template #title>
               VENUE
