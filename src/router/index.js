@@ -21,7 +21,9 @@ const router = createRouter({
     {
       path: "/2013",
       name: "2013WebConf",
-      component: () => import("@/views/WebConf2013.vue"),
+      redirect: () => {
+        window.location.href = "https://2013.webconf.tw";
+      },
     },
     {
       path: "/sponsors",
