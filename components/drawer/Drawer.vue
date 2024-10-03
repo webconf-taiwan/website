@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
+type SlideDirection = 'slide-left' | 'slide-right' | 'slide-up' | 'slide-up-full' | 'slide-down'
+
 const props = withDefaults(defineProps<{
   defaultCloseBtn?: boolean
-  slideDirection?: 'slide-left' | 'slide-right' | 'slide-up' | 'slide-down'
+  slideDirection?: SlideDirection
 }>(), {
   defaultCloseBtn: true,
   slideDirection: 'slide-up',
+
 })
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -69,7 +72,8 @@ defineExpose({
 const overlayClassMap = {
   'slide-left': 'bg-gradient-to-r to-primary-green/90',
   'slide-right': 'bg-gradient-to-l to-primary-green/90',
-  'slide-up': 'bg-gradient-to-b to-primary-green to-30%',
+  'slide-up': 'bg-gradient-to-b to-primary-green to-80%',
+  'slide-up-full': 'bg-gradient-to-b to-primary-green to-30%',
   'slide-down': 'bg-gradient-to-t to-primary-green/90 to-60%',
 }
 
@@ -87,7 +91,8 @@ const overlayTransition = computed(() => `fade-${props.slideDirection.split('-')
  */
 const drawerContentClass = computed(() => {
   const baseClasses = {
-    'slide-up': 'inset-x-0 bottom-0 h-[calc(100dvh-48px)] sm:h-[calc(100dvh-56px)]',
+    'slide-up': 'inset-x-0 bottom-0 max-h-[calc(100dvh-48px)] sm:max-h-[calc(100dvh-56px)]',
+    'slide-up-full': 'inset-x-0 bottom-0 h-[calc(100dvh-48px)] sm:h-[calc(100dvh-56px)]',
     'slide-down': 'inset-x-0 top-0 max-h-[85dvh] min-h-[30dvh]',
     'slide-left': 'inset-y-0 right-0 w-80',
     'slide-right': 'inset-y-0 left-0 w-80',
@@ -147,6 +152,10 @@ const drawerContentClass = computed(() => {
   transition: opacity 0.3s ease;
 }
 
+.mask-leave-active {
+  transition-delay: 0.2s;
+}
+
 .mask-enter-from,
 .mask-leave-to {
   opacity: 0;
@@ -189,6 +198,8 @@ const drawerContentClass = computed(() => {
 
 .slide-up-enter-active,
 .slide-up-leave-active,
+.slide-up-full-enter-active,
+.slide-up-full-leave-active,
 .slide-down-enter-active,
 .slide-down-leave-active,
 .slide-left-enter-active,
@@ -199,13 +210,15 @@ const drawerContentClass = computed(() => {
 }
 
 .slide-up-enter-from,
-.slide-up-leave-to {
-  transform: translateY(calc(100% + 48px));
+.slide-up-leave-to,
+.slide-up-full-enter-from,
+.slide-up-full-leave-to {
+  transform: translateY(100%);
 }
 
 .slide-down-enter-from,
 .slide-down-leave-to {
-  transform: translateY(calc(-100% - 48px));
+  transform: translateY(-100%);
 }
 
 .slide-left-enter-from,

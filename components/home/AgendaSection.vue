@@ -16,7 +16,7 @@ const parallaxSectionToPositionY = computed(() => {
 const aboutUsDrawer = useTemplateRef('aboutUsDrawer')
 
 const drawerSlideDirection = computed(() => {
-  return isSmallerLg.value ? 'slide-up' : 'slide-left'
+  return isSmallerLg.value ? 'slide-up-full' : 'slide-left'
 })
 
 onMounted(() => {
