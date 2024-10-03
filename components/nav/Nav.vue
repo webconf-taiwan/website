@@ -19,14 +19,14 @@ watch(isSmallerLg, () => {
 
 <template>
   <!-- 手機版 -->
-  <nav class="fixed right-0 top-0 z-40 bg-black lg:hidden">
+  <nav class="fixed top-0 right-0 z-40 bg-black lg:hidden">
     <button
-      class="relative flex h-12 w-10 items-center pl-1"
+      class="relative flex items-center w-10 h-12 pl-1"
       @click="navDrawer?.open()"
     >
       <!-- 裝飾用多邊形 -->
       <div
-        class="absolute left-0 top-0 h-full w-3 -translate-x-3 bg-black"
+        class="absolute top-0 left-0 w-3 h-full -translate-x-3 bg-black"
         style="clip-path: polygon(100% 0%, 100% 50%, 100% 100%, 100% 100%, 0 65%, 0 0);"
       ></div>
 
@@ -52,7 +52,7 @@ watch(isSmallerLg, () => {
   </nav>
 
   <!-- 電腦版 -->
-  <nav class="fixed right-0 top-0 z-40">
+  <nav class="fixed top-0 right-0 z-40">
     <div
       class="relative hidden items-center bg-black px-[30px] lg:flex"
       data-aos="fade-down"
@@ -83,7 +83,7 @@ watch(isSmallerLg, () => {
             :open-delay="0"
           >
             <HoverCardTrigger as-child>
-              <Button class="h-full bg-black py-4 hover:bg-black hover:text-primary-green">
+              <Button class="h-full py-4 bg-black hover:bg-black hover:text-primary-green">
                 <span class="text-lg">
                   {{ link.name }}
                 </span>
@@ -91,12 +91,12 @@ watch(isSmallerLg, () => {
             </HoverCardTrigger>
 
             <HoverCardContent
-              class="w-auto rounded-none border-none bg-black p-0 px-6 py-5 text-white"
+              class="w-auto p-0 px-6 py-5 text-white bg-black border-none rounded-none"
             >
               <ul class="space-y-6">
                 <li>
                   <NuxtLink
-                    to="https://webconf.tw/2013/"
+                    to="https://2013.webconf.tw/"
                     target="_blank"
                     class="px-3 py-[2px] hover:text-primary-green"
                   >
@@ -105,7 +105,7 @@ watch(isSmallerLg, () => {
                 </li>
                 <li>
                   <NuxtLink
-                    to="https://webconf.tw/2023/"
+                    to="https://2023.webconf.tw/"
                     target="_blank"
                     class="px-3 py-[2px] hover:text-primary-green"
                   >
