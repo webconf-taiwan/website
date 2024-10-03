@@ -125,7 +125,7 @@ export const speakers: Speaker[] = [
   },
   {
     id: 'speaker_17',
-    displayName: '黃睿霖',
+    displayName: '黃睿霖 Rei',
     avatar: '/speakers/avatar_huangruilin.png',
   },
   {
@@ -137,6 +137,16 @@ export const speakers: Speaker[] = [
     id: 'speaker_19',
     displayName: 'GUGU',
     avatar: '/speakers/avatar_gugu.png',
+  },
+  {
+    id: 'speaker_20',
+    displayName: 'Leo 李歐',
+    avatar: '/speakers/avatar_leo.png',
+  },
+  {
+    id: 'speaker_21',
+    displayName: '李郁欣',
+    avatar: '/speakers/avatar_sylviauk.png',
   },
 ]
 
