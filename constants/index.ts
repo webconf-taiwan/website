@@ -149,6 +149,11 @@ export const speakers: Speaker[] = [
     displayName: '李郁欣',
     avatar: '/speakers/avatar_sylviauk.png',
   },
+  {
+    id: 'speaker_22',
+    displayName: '楊時鈞 Steven Yeo',
+    avatar: '/speakers/avatar_stevenyeo.png',
+  },
 ]
 
 export const venueGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'

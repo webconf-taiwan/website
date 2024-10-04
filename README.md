@@ -1,30 +1,27 @@
 # WebConf Taiwan 2024
 
-![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/nuxt/dev?color=00dc82)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/tailwindcss/dev?color=0ea5e9)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/pinia/dev?color=ffd859)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/%40vueuse%2Fnuxt/dev?color=41b883)　![GitHub package.json dependency version (dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/%40headlessui%2Fvue/dev)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/eslint/dev?color=4B32C3)
+![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/nuxt/main?color=00dc82)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/tailwindcss/main?color=0ea5e9)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/pinia/main?color=ffd859)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/%40vueuse%2Fnuxt/main?color=41b883)　![GitHub package.json dependency version (dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/%40headlessui%2Fvue/main)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/eslint/main?color=4B32C3)
 
-Website : https://webconf.tw
+Website : https://webconf.tw<br>
+Facebook : https://www.facebook.com/WebConfTaiwan
 
 ## Features
 
 - [Nuxt 3](https://nuxt.com/)
+- [Pinia](https://pinia.vuejs.org/)
+- [VueUse](https://vueuse.org/)
 - [ESLint](https://eslint.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
-- [tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
-- [tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
-- [tailwindcss/aspect-ratio](https://github.com/tailwindlabs/tailwindcss-aspect-ratio)
-- [tailwindcss/container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries)
-- [headless UI](https://headlessui.com/)
-
-Nuxt Modules :
-
-- [Pinia](https://nuxt.com/modules/pinia)
-- [VueUse](https://nuxt.com/modules/vueuse)
-- [color-mode](https://nuxt.com/modules/color-mode)
+- [shadcn-vue](https://www.shadcn-vue.com/)
+- [GSAP](https://gsap.com/)
+- [AOS](https://michalsnik.github.io/aos/)
+- [lenis](https://lenis.darkroom.engineering/)
+- [Embla Carousel](https://www.embla-carousel.com/)
 
 ## Prerequistes
 
 - Node.js >= v20.0.0
-- pnpm >= v9.8.0
+- pnpm >= v9.11.0
 - [VS Code](https://code.visualstudio.com/)
 
 ### VS Code Extensions
