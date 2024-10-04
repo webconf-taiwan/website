@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { appDescription, appName } from '~/constants'
+import { appDescription, appName, ogImageLink } from '~/constants'
 
 const { hasShownAnimation } = useLoadingState()
 const tilesBackgroundStore = useTilesBackgroundStore()
@@ -10,10 +10,10 @@ useSeoMeta({
   description: appDescription,
   ogTitle: appName,
   ogDescription: appDescription,
-  ogImage: '/og-image.webp',
+  ogImage: ogImageLink,
   twitterTitle: appName,
   twitterDescription: appDescription,
-  twitterImage: '/og-image.webp',
+  twitterImage: ogImageLink,
   twitterCard: 'summary_large_image',
 })
 
