@@ -7,9 +7,15 @@ const headerLogoWordsRef = ref<HTMLDivElement | null>(null)
 const headerLogoWordsSmRef = ref<HTMLDivElement | null>(null)
 const headerLogoLinkRef = ref<HTMLDivElement | null>(null)
 const headerLogoLinkSmRef = ref<HTMLDivElement | null>(null)
+const route = useRoute()
+const isHomePage = computed(() => route.path === '/')
 
 onMounted(async () => {
   await nextTick()
+
+  if (!isHomePage.value) {
+    return
+  }
 
   const mm = $gsap.matchMedia()
 

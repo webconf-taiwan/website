@@ -3,12 +3,14 @@ import { showEasterEgg } from './utils/easterEgg'
 
 const { hasShownAnimation } = useLoadingState()
 
+const route = useRoute()
+
 showEasterEgg()
 </script>
 
 <template>
   <Teleport to="body">
-    <FirstLoadingAnimation v-if="!hasShownAnimation" />
+    <FirstLoadingAnimation v-if="!hasShownAnimation && route.name === 'index'" />
     <TilesBackground />
   </Teleport>
 

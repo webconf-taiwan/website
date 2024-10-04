@@ -16,7 +16,7 @@ const contactInfos = [
 </script>
 
 <template>
-  <section
+  <footer
     class="full-bleed relative bg-black px-5 pb-6 pt-[30px] lg:flex lg:justify-center"
   >
     <div class="lg:max-w-[1320px]">
@@ -93,7 +93,7 @@ const contactInfos = [
         </NuxtLink>
       </div>
     </div>
-  </section>
+  </footer>
 </template>
 
 <style scoped>
