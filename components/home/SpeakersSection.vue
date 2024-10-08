@@ -102,14 +102,14 @@ function clickSpeakerNameHandler(speakerId: string) {
 <template>
   <section class="mx-auto w-[min(100%,1096px)] border-white/20 pb-[60px] lg:pb-20">
     <div class="mb-10 flex items-center justify-between lg:mb-20">
-      <HomeSectionTitle>
+      <SectionTitle>
         <template #title>
           SPEAKERS
         </template>
         <template #subTitle>
           講者
         </template>
-      </HomeSectionTitle>
+      </SectionTitle>
     </div>
 
     <div class="flex flex-col items-center lg:flex-row lg:items-stretch">

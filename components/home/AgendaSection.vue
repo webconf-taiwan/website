@@ -48,14 +48,14 @@ onMounted(() => {
   >
     <div class="mx-auto max-w-[1096px]">
       <div class="mb-8 flex items-center justify-start lg:justify-between">
-        <HomeSectionTitle>
+        <SectionTitle>
           <template #title>
             AGENDA
           </template>
           <template #subTitle>
             議程
           </template>
-        </HomeSectionTitle>
+        </SectionTitle>
 
         <Button
           type="button"
@@ -75,14 +75,14 @@ onMounted(() => {
           >
             <DrawerContentLayout>
               <template #header>
-                <HomeSectionTitle>
+                <SectionTitle>
                   <template #title>
                     About
                   </template>
                   <template #subTitle>
                     關於
                   </template>
-                </HomeSectionTitle>
+                </SectionTitle>
               </template>
               <template #content>
                 <div class="space-y-5 text-justify leading-7 tracking-wide lg:flex-1">

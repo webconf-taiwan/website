@@ -6,11 +6,11 @@ export const ogImageLink = 'https://webconf.tw/og-image.webp'
 
 // Header－導航列連結
 export const navLinks = [
-  // {
-  //   name: '議程',
-  //   engName: 'AGENDA',
-  //   href: '#',
-  // },
+  {
+    name: '議程',
+    engName: 'AGENDA',
+    href: 'agenda',
+  },
   // {
   //   name: '講者',
   //   engName: 'SPEAKERS',

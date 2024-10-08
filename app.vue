@@ -9,6 +9,8 @@ showEasterEgg()
 </script>
 
 <template>
+  <NuxtRouteAnnouncer />
+
   <Teleport to="body">
     <FirstLoadingAnimation v-if="!hasShownAnimation && route.name === 'index'" />
     <TilesBackground />
