@@ -1,10 +1,21 @@
 <script lang="ts" setup>
 import AOS from 'aos'
+import { useRouteWatcher } from '~/composables/useRouteWatcher'
 import { accupassLink } from '~/constants'
+
+const { previousRoute } = useRouteWatcher()
+const isFirstVisit = ref(true)
+
+onBeforeMount(() => {
+  if (previousRoute.value !== '/') {
+    isFirstVisit.value = false
+  }
+})
 
 onMounted(() => {
   AOS.init({
     duration: 1000,
+    once: true,
   })
 })
 </script>
@@ -29,7 +40,7 @@ onMounted(() => {
       <div
         class="ml-10 w-[28%] space-y-3 xl:flex xl:w-[48%] xl:items-end xl:space-y-0"
         data-aos="fade-up"
-        data-aos-delay="3000"
+        :data-aos-delay="isFirstVisit ? 3000 : 0"
       >
         <div class="text-center xl:text-start">
           <p class="text-mina text-2xl font-bold tracking-[0.037em]">
@@ -62,7 +73,7 @@ onMounted(() => {
     <div
       class="mt-[60px] hidden h-[281px] w-full lg:block"
       data-aos="fade-up"
-      data-aos-delay="3300"
+      :data-aos-delay="isFirstVisit ? 3300 : 0"
     >
       <NuxtImg
         src="/home/banner/future-plan.svg"
@@ -93,7 +104,7 @@ onMounted(() => {
         <div
           class="mt-14 w-full"
           data-aos="fade-up"
-          data-aos-delay="3000"
+          :data-aos-delay="isFirstVisit ? 3000 : 0"
         >
           <NuxtImg
             src="/home/banner/future-plan-sm.svg"
@@ -105,7 +116,7 @@ onMounted(() => {
         <div
           class="mt-[35px] flex flex-col items-center justify-center space-y-1 py-3"
           data-aos="fade-up"
-          data-aos-delay="3300"
+          :data-aos-delay="isFirstVisit ? 3300 : 0"
         >
           <span class="text-mina text-xl font-bold leading-8 tracking-[0.037em] md:text-xl">
             2024｜12.27 - 28
@@ -122,7 +133,7 @@ onMounted(() => {
           class="mx-auto mt-[35px]"
           data-aos="fade-up"
           data-aos-anchor="body"
-          data-aos-delay="3400"
+          :data-aos-delay="isFirstVisit ? 3400 : 0"
         >
           <NuxtLink
             :to="accupassLink"
