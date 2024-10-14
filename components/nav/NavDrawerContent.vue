@@ -47,7 +47,7 @@ const { navLinks } = defineProps<{
           <ul class="flex space-x-4">
             <li>
               <NuxtLink
-                to="https://webconf.tw/2013/"
+                to="https://2013.webconf.tw/"
                 target="_blank"
                 class="flex items-center justify-center border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
               >
@@ -57,7 +57,7 @@ const { navLinks } = defineProps<{
 
             <li>
               <NuxtLink
-                to="https://webconf.tw/2023/"
+                to="https://2023.webconf.tw/"
                 target="_blank"
                 class="flex items-center justify-center border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
               >
