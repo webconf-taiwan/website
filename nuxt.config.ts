@@ -87,5 +87,19 @@ export default defineNuxtConfig({
     },
   },
 
+  $production: {
+    app: {
+      head: {
+        script: [
+          {
+            'src': 'https://a.5xcamp.us/script.js',
+            'defer': true,
+            'data-website-id': '41664933-5ac4-4e59-ad44-2b69cc1dbbf4',
+          },
+        ],
+      },
+    },
+  },
+
   compatibilityDate: '2024-09-24',
 })

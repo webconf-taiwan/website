@@ -52,7 +52,7 @@ onMounted(() => {
             target="_blank"
             class="text-xl"
           >
-            即將開賣
+            前往購票
           </NuxtLink>
         </Button>
       </div>
@@ -129,7 +129,7 @@ onMounted(() => {
             target="_blank"
             class="text-xl"
           >
-            即將開賣
+            前往購票
           </NuxtLink>
         </Button>
       </div>
