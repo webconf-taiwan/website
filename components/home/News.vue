@@ -24,11 +24,11 @@ import { accupassLink } from '~/constants'
             target="_blank"
             class="text-xl"
           >
-            即將開賣
+            前往購票
           </NuxtLink>
         </Button>
 
-        <p class="mt-4 mb-[10rem]">
+        <p class="mb-[10rem] mt-4">
           敬請關注 Facebook 最新消息
         </p>
       </div>

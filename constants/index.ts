@@ -154,6 +154,66 @@ export const speakers: Speaker[] = [
     displayName: '楊時鈞 Steven Yeo',
     avatar: '/speakers/avatar_stevenyeo.png',
   },
+  {
+    id: 'speaker_23',
+    displayName: '史蒂夫·葉',
+    avatar: '/speakers/avatar_stevenyeh.png',
+  },
+  {
+    id: 'speaker_24',
+    displayName: '郭丞哲 Doppler kuo',
+    avatar: '/speakers/avatar_doppler.png',
+  },
+  {
+    id: 'speaker_25',
+    displayName: '甘韋',
+    avatar: '/speakers/avatar_weikan.png',
+  },
+  {
+    id: 'speaker_26',
+    displayName: '魏銘信 Ivan Wei',
+    avatar: '/speakers/avatar_ivanwei.png',
+  },
+  {
+    id: 'speaker_27',
+    displayName: '劉宥筠 Iris',
+    avatar: '/speakers/avatar_iris.png',
+  },
+  {
+    id: 'speaker_28',
+    displayName: '李智樺 Ruddy',
+    avatar: '/speakers/avatar_ruddy.png',
+  },
+  {
+    id: 'speaker_29',
+    displayName: '謝舒婷 (小雨)',
+    avatar: '/speakers/avatar_lindsay.png',
+  },
+  {
+    id: 'speaker_30',
+    displayName: '林威宇',
+    avatar: '/speakers/avatar_wylin.png',
+  },
+  {
+    id: 'speaker_31',
+    displayName: '海馬',
+    avatar: '/speakers/avatar_leethi.png',
+  },
+  {
+    id: 'speaker_32',
+    displayName: 'Singz Hsieh',
+    avatar: '/speakers/avatar_singz.png',
+  },
+  {
+    id: 'speaker_33',
+    displayName: '維元',
+    avatar: '/speakers/avatar_dscareer.png',
+  },
+  {
+    id: 'speaker_34',
+    displayName: '賴怡玲 (小賴)',
+    avatar: '/speakers/avatar_lightda.png',
+  },
 ]
 
 export const venueGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'
