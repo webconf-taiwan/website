@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { accupassLink } from '~/constants'
+import { accupassLink, contactInfos } from '@/constants'
 </script>
 
 <template>
@@ -29,7 +29,14 @@ import { accupassLink } from '~/constants'
         </Button>
 
         <p class="mb-[10rem] mt-4">
-          敬請關注 Facebook 最新消息
+          敬請關注 <NuxtLink
+            :to="contactInfos[1].href"
+            target="_blank"
+            class="lg:hover:text-primary-green lg:hover:underline"
+          >
+            Facebook
+          </NuxtLink>
+          最新消息
         </p>
       </div>
     </div>
