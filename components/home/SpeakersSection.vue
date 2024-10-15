@@ -2,7 +2,7 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import {
   speakers,
-} from '~/constants'
+} from '~/constants/speakers'
 
 const speakersDesktopColumns = 3
 const speakersDesktopRows = 9
