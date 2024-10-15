@@ -4,6 +4,7 @@ import { showEasterEgg } from './utils/easterEgg'
 
 const { hasShownAnimation } = useLoadingState()
 const { isTimeUp } = useDateCountdown()
+
 const route = useRoute()
 
 showEasterEgg()
