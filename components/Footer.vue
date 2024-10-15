@@ -1,23 +1,10 @@
 <script setup lang="ts">
-const contactInfos = [
-  {
-    trapezoidClass: 'trapezoid-top-left',
-    iconName: 'heroicons:envelope',
-    content: 'hi@webconf.tw',
-    href: 'mailto:hi@webconf.tw',
-  },
-  {
-    trapezoidClass: 'trapezoid-top-right',
-    iconName: 'iconoir:facebook',
-    content: 'WebConf Taiwan',
-    href: 'https://www.facebook.com/WebConfTaiwan/?locale=zh_TW',
-  },
-]
+import { contactInfos } from '@/constants'
 </script>
 
 <template>
   <footer
-    class="full-bleed relative bg-black px-5 pb-6 pt-[30px] lg:flex lg:justify-center"
+    class="full-bleed relative bg-black px-5 pb-[60px] pt-[30px] lg:flex lg:justify-center md:pb-[50px]"
   >
     <div class="lg:max-w-[1320px]">
       <ul class="space-y-[10px] border-b border-footer-border py-6 lg:hidden">
