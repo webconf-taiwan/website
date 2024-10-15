@@ -15,7 +15,7 @@ import { accupassLink, contactInfos } from '@/constants'
 
       <div class="mt-10 flex flex-col items-center justify-center lg:mt-[52px]">
         <Button
-          type="button"
+          as-child
           variant="custom"
           size="custom"
         >
@@ -24,7 +24,7 @@ import { accupassLink, contactInfos } from '@/constants'
             target="_blank"
             class="text-xl"
           >
-            前往購票
+            <span>前往購票</span>
           </NuxtLink>
         </Button>
 
