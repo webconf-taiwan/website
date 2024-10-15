@@ -1,7 +1,5 @@
-import {
-  appDescription,
-  speakers,
-} from './constants'
+import { appDescription } from './constants'
+import { speakers } from './constants/speakers'
 
 const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
   `/_ipx/f_webp&q_80&blur_5&s_32x32${speaker.avatar}`,
