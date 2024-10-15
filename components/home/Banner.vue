@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import AOS from 'aos'
 import { useRouteWatcher } from '~/composables/useRouteWatcher'
 import { accupassLink } from '~/constants'
 
@@ -10,13 +9,6 @@ onBeforeMount(() => {
   if (previousRoute.value !== '/') {
     isFirstVisit.value = false
   }
-})
-
-onMounted(() => {
-  AOS.init({
-    duration: 1000,
-    once: true,
-  })
 })
 </script>
 

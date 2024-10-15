@@ -3,9 +3,9 @@ import { useEventListener } from '@vueuse/core'
 
 const headerRef = ref<HTMLDivElement | null>(null)
 const gradientOpacity = ref(0)
-const { currentRoute } = useRouteWatcher()
 
-
+const route = useRoute()
+const isHome = computed(() => route.name === 'index')
 
 /**
  * 計算漸層的透明度，滾動距離越大，透明度越高
@@ -28,14 +28,14 @@ useEventListener(window, 'scroll', checkScroll)
         class="absolute inset-0 bg-gradient-to-t from-transparent to-gradient-bg-start/70 transition-opacity duration-150 lg:hidden"
         :style="{ opacity: gradientOpacity }"
       ></div>
-      <template v-if="currentRoute === '/'">
+      <template v-if="isHome">
         <LogoAnimation
           v-if="headerRef"
           :header-ref="headerRef"
         />
       </template>
       <template v-else>
-        <div class="h-6 w-[192px] z-30">
+        <div class="z-30 h-6 w-[192px]">
           <NuxtLink to="/">
             <NuxtImg
               src="/logo-words.svg"
@@ -49,5 +49,8 @@ useEventListener(window, 'scroll', checkScroll)
   </header>
 
   <!-- header 佔位格 -->
-  <div class="h-12 lg:h-[72px]"></div>
+  <div
+    v-if="isHome"
+    class="h-12 lg:h-[72px]"
+  ></div>
 </template>
