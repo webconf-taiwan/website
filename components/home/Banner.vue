@@ -41,7 +41,7 @@ onMounted(() => {
         </div>
 
         <Button
-          type="button"
+          as-child
           variant="custom"
           size="custom"
           rounded="none"
@@ -52,7 +52,7 @@ onMounted(() => {
             target="_blank"
             class="text-xl"
           >
-            前往購票
+            <span>前往購票</span>
           </NuxtLink>
         </Button>
       </div>
@@ -116,7 +116,7 @@ onMounted(() => {
         </div>
 
         <Button
-          type="button"
+          as-child
           variant="custom"
           size="custom"
           class="mx-auto mt-[35px]"
@@ -129,7 +129,7 @@ onMounted(() => {
             target="_blank"
             class="text-xl"
           >
-            前往購票
+            <span>前往購票</span>
           </NuxtLink>
         </Button>
       </div>
