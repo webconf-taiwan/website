@@ -2,7 +2,6 @@
 import { useDateCountdown } from '@/composables/useCountDown'
 import { accupassLink } from '@/constants'
 
-
 const { remainingTime } = useDateCountdown()
 </script>
 
@@ -14,8 +13,8 @@ const { remainingTime } = useDateCountdown()
         <span class="font-bold">{{ remainingTime.days }} 天 {{ remainingTime.hours }} 時 {{ remainingTime.minutes }} 分 {{ remainingTime.seconds }} 秒</span>
       </div>
       <Button
-        type="button"
-        variant="footerBar"
+        as-child
+        variant="custom"
         size="footerBar"
       >
         <NuxtLink
@@ -23,7 +22,7 @@ const { remainingTime } = useDateCountdown()
           target="_blank"
           class="text-base"
         >
-          前往購票
+          <span>前往購票</span>
         </NuxtLink>
       </Button>
     </div>
