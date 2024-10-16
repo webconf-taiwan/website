@@ -7,6 +7,7 @@ const { hasShownAnimation } = useLoadingState()
 const { isTimeUp } = useDateCountdown()
 
 const route = useRoute()
+const isHome = computed(() => route.name === 'index')
 
 showEasterEgg()
 
@@ -22,14 +23,16 @@ onMounted(() => {
   <NuxtRouteAnnouncer />
 
   <Teleport to="body">
-    <FirstLoadingAnimation v-if="!hasShownAnimation && route.name === 'index'" />
+    <FirstLoadingAnimation v-if="!hasShownAnimation && isHome" />
     <TilesBackground />
     <CountBar v-if="!isTimeUp" />
   </Teleport>
 
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <Body :class="{ 'home-bg': isHome }">
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </Body>
 </template>
 
 <style>

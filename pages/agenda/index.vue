@@ -16,7 +16,7 @@ useSeoMeta({
 
 <template>
   <div class="mx-auto">
-    <SectionTitle>
+    <SectionTitle class="mb-12 justify-center">
       <template #title>
         PROGRAM
       </template>
@@ -25,9 +25,7 @@ useSeoMeta({
       </template>
     </SectionTitle>
 
-    <!-- TODO: Labels -->
-    <div>
-    </div>
+    <AgendaTags />
   </div>
 </template>
 
