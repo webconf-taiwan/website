@@ -1,7 +1,7 @@
 import { onMounted, onUnmounted, ref } from 'vue'
 
 export function useDateCountdown() {
-  const deadlineDate = '2024-10-17 12:30:00'
+  const deadlineDate = '2024-10-18 12:30:00'
   const remainingTime = ref({ days: '00', hours: '00', minutes: '00', seconds: '00' })
   const isTimeUp = ref(false)
   let intervalId: NodeJS.Timeout
