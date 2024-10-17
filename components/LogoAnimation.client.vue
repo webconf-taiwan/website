@@ -44,7 +44,7 @@ onMounted(async () => {
       tlSm.restart()
       tlSm.from(headerLogoWordsSmRef.value, {
         y: 100,
-        width: '1200%',
+        width: 'calc(100% - 40px)',
         ease: 'power3.inOut',
       })
       tlSm.pause()
