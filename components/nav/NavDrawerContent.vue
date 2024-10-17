@@ -6,6 +6,12 @@ const { navLinks } = defineProps<{
     engName: string
   }[]
 }>()
+
+const emit = defineEmits(['navigate'])
+
+function directToAnotherPage(href: string) {
+  emit('navigate', href)
+}
 </script>
 
 <template>
@@ -20,8 +26,9 @@ const { navLinks } = defineProps<{
       >
         <NuxtLink
           v-if="link.name !== '歷屆'"
-          :to="link.href"
+          type="button"
           class="flex items-center space-x-4 py-3 pl-6"
+          @click="directToAnotherPage(link.href)"
         >
           <p class="text-mina text-xl font-bold">
             {{ link.engName }}

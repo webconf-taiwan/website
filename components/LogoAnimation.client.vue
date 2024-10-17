@@ -2,6 +2,7 @@
 const { headerRef } = defineProps<{
   headerRef: HTMLDivElement | null
 }>()
+
 const { $gsap } = useNuxtApp()
 const headerLogoWordsRef = ref<HTMLDivElement | null>(null)
 const headerLogoWordsSmRef = ref<HTMLDivElement | null>(null)
@@ -43,7 +44,7 @@ onMounted(async () => {
       tlSm.restart()
       tlSm.from(headerLogoWordsSmRef.value, {
         y: 100,
-        width: 'calc(100% - 40px)',
+        width: '1200%',
         ease: 'power3.inOut',
       })
       tlSm.pause()

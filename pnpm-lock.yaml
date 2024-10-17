@@ -69,6 +69,9 @@ importers:
       '@iconify-json/iconoir':
         specifier: ^1.2.1
         version: 1.2.1
+      '@iconify-json/ph':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@nuxt/devtools':
         specifier: latest
         version: 1.4.2(rollup@4.21.3)(vite@5.4.5(@types/node@22.5.5)(terser@5.32.0))(vue@3.5.11(typescript@5.6.2))
@@ -1047,6 +1050,9 @@ packages:
 
   '@iconify-json/iconoir@1.2.1':
     resolution: {integrity: sha512-x55gpORwMGkmmT9UO11rzfMOp40k0ggQnPiOoh9axbyuHrkFMN7pdoCbaXkzqAdShcoI1dLzARbdqXi2sAPJXQ==}
+
+  '@iconify-json/ph@1.2.1':
+    resolution: {integrity: sha512-x0DNfwWrS18dbsBYOq3XGiZnGz4CgRyC+YSl/TZvMQiKhIUl1woWqUbMYqqfMNUBzjyk7ulvaRovpRsIlqIf8g==}
 
   '@iconify/collections@1.0.468':
     resolution: {integrity: sha512-B8K/NcupKk7CkJGWw6Ldx0z4HojL/3eQfrMv6Q4wdDZBi7cvjrxYCChMP/+D37rJEGnfdWVWgtceQAL7LMHeDg==}
@@ -5979,6 +5985,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/iconoir@1.2.1':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/ph@1.2.1':
     dependencies:
       '@iconify/types': 2.0.0
 
