@@ -22,7 +22,7 @@ useEventListener(window, 'scroll', checkScroll)
   <header class="lg:flex lg:justify-center">
     <div
       ref="headerRef"
-      class="fixed left-0 top-0 z-30 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 lg:fixed lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-between"
+      class="fixed left-0 top-0 z-30 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-between"
     >
       <div
         class="absolute inset-0 bg-gradient-to-t from-transparent to-gradient-bg-start/70 transition-opacity duration-150 lg:hidden"

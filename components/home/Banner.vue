@@ -82,7 +82,6 @@ onBeforeMount(() => {
     <div class="flex flex-col">
       <div class="flex flex-col">
         <div
-          id="logoSmContainer"
           class="w-full"
         >
           <NuxtImg
