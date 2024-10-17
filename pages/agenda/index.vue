@@ -15,7 +15,7 @@ useSeoMeta({
 </script>
 
 <template>
-  <div class="mx-auto">
+  <div class="mx-auto mt-20 lg:mt-32">
     <SectionTitle class="mb-12 justify-center">
       <template #title>
         PROGRAM
@@ -25,7 +25,9 @@ useSeoMeta({
       </template>
     </SectionTitle>
 
-    <AgendaTags />
+    <AgendaTags class="mb-9 lg:mb-11" />
+
+    <AgendaDatepicker />
   </div>
 </template>
 

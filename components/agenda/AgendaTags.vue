@@ -1,5 +1,12 @@
 <script setup lang="ts">
 import { agendaTags } from '~/constants/agendas'
+import type { AgendaTag } from '~/types/agendas'
+
+const agendasStore = useAgendasStore()
+
+function isSelected(tagId: AgendaTag['id']) {
+  return agendasStore.selectedTags.includes(tagId)
+}
 </script>
 
 <template>
@@ -14,7 +21,13 @@ import { agendaTags } from '~/constants/agendas'
         v-for="tag in agendaTags"
         :key="tag.id"
         type="button"
-        class="relative z-[1] border border-primary-green bg-transparent px-3 py-2 text-[hsla(170,100%,35%,1)] *:relative *:z-[3] before:absolute before:inset-0 before:z-[2] before:bg-[hsla(176,99%,29%,1)] before:opacity-0 before:transition-opacity hover:text-white hover:before:opacity-100"
+        class="border border-primary-mid-green bg-transparent px-3 py-2 transition-colors"
+        :class="[
+          isSelected(tag.id)
+            ? 'bg-gradient-to-t from-[rgba(0,255,204,0.5)] to-[rgba(0,255,204,0.1)] text-white'
+            : 'text-primary-mid-green lg:hover:bg-[hsla(176,99%,29%,1)] lg:hover:text-white',
+        ]"
+        @click="agendasStore.toggleTag(tag.id)"
       >
         <span>{{ tag.text }}</span>
       </button>
