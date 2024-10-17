@@ -12,7 +12,7 @@ const agendaDateTextMap = [
     :default-value="agendaDateTextMap[0][0]"
     class="w-full"
   >
-    <TabsList class="sticky left-0 top-[3.75rem] flex h-[46px] w-full lg:relative lg:h-[52px]">
+    <TabsList class="sticky left-0 top-[3.75rem] flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
       <TabsTrigger
         v-for="(date, index) in agendaDateTextMap"
         :key="date[0]"
@@ -21,7 +21,7 @@ const agendaDateTextMap = [
         :class="[index === 0 ? 'tabs-clip-right left-0 z-[2]' : 'tabs-clip-left right-0 z-[1]']"
       >
         <div
-          class="relative flex items-center gap-x-2 truncate pt-1 lg:justify-center lg:pt-2"
+          class="relative flex items-center gap-x-2 truncate pt-1 tracking-wide lg:justify-center lg:pt-2"
           :class="[index === 0 ? 'justify-start pl-4' : 'justify-end pr-4']"
         >
           <span>{{ useDateFormat(date[0], 'MM/DD') }}</span> <span class="lg:text-2xl">{{ date[1] }}</span>
@@ -32,7 +32,6 @@ const agendaDateTextMap = [
     <TabsContent
       v-for="date in agendaDateTextMap"
       :key="date[0]"
-      class="min-h-[100dvh]"
       :value="date[0]"
     >
       <AgendaContent :agenda-time-slots="agendaData[date[0]]" />

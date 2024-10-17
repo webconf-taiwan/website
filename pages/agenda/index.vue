@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { appDescription, appName, ogImageLink } from '~/constants'
 
 useSeoMeta({
@@ -12,6 +13,9 @@ useSeoMeta({
   twitterImage: ogImageLink,
   twitterCard: 'summary_large_image',
 })
+
+const breakpoints = useBreakpoints(breakpointsTailwind)
+const isSmallerLg = breakpoints.smaller('lg')
 </script>
 
 <template>
@@ -29,6 +33,13 @@ useSeoMeta({
 
     <AgendaDatepicker />
   </div>
+
+  <ClientOnly>
+    <FloatingActionButtons v-if="isSmallerLg">
+      <FilterButton />
+      <MoveToTop :over-top="300" />
+    </FloatingActionButtons>
+  </ClientOnly>
 </template>
 
 <style scoped></style>

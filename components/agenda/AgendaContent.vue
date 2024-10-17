@@ -7,10 +7,12 @@ defineProps<{
 </script>
 
 <template>
-  <div>
-    <pre>
+  <div
+    class="mb-24 min-h-[100dvh] bg-black"
+  >
+    <!-- <pre>
       {{ JSON.stringify(agendaTimeSlots, null, 2) }}
-    </pre>
+    </pre> -->
   </div>
 </template>
 
