@@ -1,8 +1,9 @@
-import type { AgendaTag, DaySchedule } from '~/types/agendas'
+import type { AgendaTag } from '~/types/agendas'
 
 export const useAgendasStore = defineStore('agendas', () => {
   const selectedTags = ref<AgendaTag['id'][]>([])
-  const currentDay = ref<keyof DaySchedule>('2024-12-27')
+
+  const isShowAllAgendas = computed(() => selectedTags.value.length === 0)
 
   function toggleTag(tagId: AgendaTag['id']) {
     const index = selectedTags.value.indexOf(tagId)
@@ -17,6 +18,7 @@ export const useAgendasStore = defineStore('agendas', () => {
   return {
     selectedTags,
     toggleTag,
+    isShowAllAgendas,
   }
 })
 

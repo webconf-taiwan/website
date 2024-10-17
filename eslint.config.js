@@ -101,6 +101,8 @@ export default antfu(
             'drawer-content',
             'glitch-effect',
             'home-bg',
+            'tabs-clip-right',
+            'tabs-clip-left',
           ],
         },
       ],
