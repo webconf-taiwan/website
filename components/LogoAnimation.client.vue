@@ -5,17 +5,9 @@ const { headerRef } = defineProps<{
 const { $gsap } = useNuxtApp()
 const headerLogoWordsRef = ref<HTMLDivElement | null>(null)
 const headerLogoWordsSmRef = ref<HTMLDivElement | null>(null)
-const headerLogoLinkRef = ref<HTMLDivElement | null>(null)
-const headerLogoLinkSmRef = ref<HTMLDivElement | null>(null)
-const route = useRoute()
-const isHomePage = computed(() => route.path === '/')
 
 onMounted(async () => {
   await nextTick()
-
-  if (!isHomePage.value) {
-    return
-  }
 
   const mm = $gsap.matchMedia()
 
@@ -118,13 +110,6 @@ onMounted(async () => {
       alt="logoWords"
       class="absolute left-0 top-4 h-auto w-full"
     />
-
-    <div ref="headerLogoLinkSmRef">
-      <NuxtLink
-        to="/"
-        class="absolute left-0 top-0 size-full"
-      />
-    </div>
   </div>
 
   <!-- 手機版 -->
@@ -138,12 +123,5 @@ onMounted(async () => {
       alt="logoWords"
       class="absolute left-0 top-4 h-auto w-full"
     />
-
-    <div ref="headerLogoLinkRef">
-      <NuxtLink
-        to="/"
-        class="absolute left-0 top-0 size-full"
-      />
-    </div>
   </div>
 </template>

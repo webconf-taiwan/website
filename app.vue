@@ -1,25 +1,38 @@
 <script lang="ts" setup>
 import { useDateCountdown } from '@/composables/useCountDown'
+import AOS from 'aos'
 import { showEasterEgg } from './utils/easterEgg'
 
 const { hasShownAnimation } = useLoadingState()
 const { isTimeUp } = useDateCountdown()
 
 const route = useRoute()
+const isHome = computed(() => route.name === 'index')
 
 showEasterEgg()
+
+onMounted(() => {
+  AOS.init({
+    duration: 1000,
+    once: true,
+  })
+})
 </script>
 
 <template>
+  <NuxtRouteAnnouncer />
+
   <Teleport to="body">
-    <FirstLoadingAnimation v-if="!hasShownAnimation && route.name === 'index'" />
+    <FirstLoadingAnimation v-if="!hasShownAnimation && isHome" />
     <TilesBackground />
     <CountBar v-if="!isTimeUp" />
   </Teleport>
 
-  <NuxtLayout>
-    <NuxtPage />
-  </NuxtLayout>
+  <Body :class="{ 'home-bg': isHome }">
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
+  </Body>
 </template>
 
 <style>

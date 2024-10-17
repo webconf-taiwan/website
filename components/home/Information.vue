@@ -32,14 +32,14 @@ const trafficInfos = [
           />
         </div>
         <div class="mt-8 px-3 pb-3 lg:mt-0 lg:flex lg:flex-[1.4] lg:flex-col lg:justify-between lg:px-5 lg:py-6  xl:px-10">
-          <HomeSectionTitle>
+          <SectionTitle>
             <template #title>
               VENUE
             </template>
             <template #subTitle>
               場域
             </template>
-          </HomeSectionTitle>
+          </SectionTitle>
 
           <div class="mt-8">
             <NuxtLink

@@ -100,6 +100,7 @@ export default antfu(
             'marquee-text-outline',
             'drawer-content',
             'glitch-effect',
+            'home-bg',
           ],
         },
       ],
