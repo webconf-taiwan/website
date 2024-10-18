@@ -233,6 +233,13 @@ export const agendaData: DaySchedule = {
         },
       },
     },
+    {
+      startTime: '17:00',
+      endTime: '00:00',
+      type: 'break',
+      breakTitle: '明天見',
+      isBroadcast: false,
+    },
   ],
   '2024-12-28': [
     {
@@ -449,6 +456,13 @@ export const agendaData: DaySchedule = {
           speakerCodes: [],
         },
       },
+    },
+    {
+      startTime: '17:00',
+      endTime: '00:00',
+      type: 'break',
+      breakTitle: '結束',
+      isBroadcast: false,
     },
   ],
 }

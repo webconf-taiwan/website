@@ -12,17 +12,15 @@ export interface AgendaItem {
   speakerCodes: Speaker['code'][]
 }
 
+export type AgendaLocation = 'M' | 'F' | 'A2'
+
 export interface TimeSlot {
   startTime: string
   endTime: string
   type: 'agenda' | 'break'
   breakTitle?: string
   isBroadcast: boolean
-  agendas?: {
-    M?: AgendaItem
-    F?: AgendaItem
-    A2?: AgendaItem
-  }
+  agendas?: Partial<Record<AgendaLocation, AgendaItem>>
 }
 
 export interface DaySchedule {

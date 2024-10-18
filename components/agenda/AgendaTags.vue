@@ -10,7 +10,7 @@ function isSelected(tagId: AgendaTag['id']) {
 </script>
 
 <template>
-  <div class="relative mx-auto bg-[hsla(198,98%,16%,1)] px-4 py-5 md:px-9">
+  <div>
     <div class="absolute left-2 top-2 size-[10px] border-l border-t border-primary-green"></div>
     <div class="absolute right-2 top-2 size-[10px] border-r border-t border-primary-green"></div>
     <div class="absolute bottom-2 right-2 size-[10px] border-b border-r border-primary-green"></div>

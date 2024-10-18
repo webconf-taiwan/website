@@ -16,9 +16,21 @@ useSeoMeta({
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
+
+/**
+ * TOOD :
+ * 變更議程日期時，url 加上 query string
+ */
 </script>
 
 <template>
+  <ClientOnly>
+    <FloatingActionButtons>
+      <FilterButton v-if="isSmallerLg" />
+      <MoveToTop :over-top="300" />
+    </FloatingActionButtons>
+  </ClientOnly>
+
   <div class="mx-auto mt-20 lg:mt-32">
     <SectionTitle class="mb-12 justify-center">
       <template #title>
@@ -29,17 +41,10 @@ const isSmallerLg = breakpoints.smaller('lg')
       </template>
     </SectionTitle>
 
-    <AgendaTags class="mb-9 lg:mb-11" />
+    <AgendaTagsContainer class="mb-9 lg:mb-11" />
 
     <AgendaDatepicker />
   </div>
-
-  <ClientOnly>
-    <FloatingActionButtons v-if="isSmallerLg">
-      <FilterButton />
-      <MoveToTop :over-top="300" />
-    </FloatingActionButtons>
-  </ClientOnly>
 </template>
 
 <style scoped></style>
