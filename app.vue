@@ -1,10 +1,8 @@
 <script lang="ts" setup>
-import { useDateCountdown } from '@/composables/useCountDown'
 import AOS from 'aos'
 import { showEasterEgg } from './utils/easterEgg'
 
 const { hasShownAnimation } = useLoadingState()
-const { isTimeUp } = useDateCountdown()
 
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
@@ -25,7 +23,6 @@ onMounted(() => {
   <Teleport to="body">
     <FirstLoadingAnimation v-if="!hasShownAnimation && isHome" />
     <TilesBackground />
-    <CountBar v-if="!isTimeUp" />
   </Teleport>
 
   <Body :class="{ 'home-bg': isHome }">
