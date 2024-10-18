@@ -72,10 +72,10 @@ export default defineNuxtConfig({
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
       ],
     },
-    // pageTransition: {
-    //   name: 'page',
-    //   mode: 'out-in',
-    // },
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
   },
 
   nitro: {

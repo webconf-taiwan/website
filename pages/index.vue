@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { appDescription, appName, ogImageLink } from '~/constants'
 
-const { hasShownAnimation } = useLoadingState()
 const tilesBackgroundStore = useTilesBackgroundStore()
 const nuxtApp = useNuxtApp()
 
@@ -17,8 +16,11 @@ useSeoMeta({
   twitterCard: 'summary_large_image',
 })
 
-nuxtApp.hook('page:finish', () => {
+nuxtApp.hook('page:finish', async () => {
   window.scrollTo(0, 0)
+  await nextTick(() => {
+    nuxtApp.$lenis.scrollTo(0)
+  })
 })
 
 const speakerSectionRef = useTemplateRef('speakerSectionRef')
@@ -31,18 +33,14 @@ useIntersectionObserver(
     rootMargin: '-40% 0px -40% 0px',
   },
 )
-
-onMounted(() => {
-  if (hasShownAnimation.value) {
-    window.scrollTo(0, 0)
-  }
-})
 </script>
 
 <template>
-  <HomeBanner />
-  <HomeAgendaSection />
-  <HomeSpeakersSection ref="speakerSectionRef" />
-  <HomeInformation />
-  <HomeNews />
+  <main class="layout-grid min-h-screen">
+    <HomeBanner />
+    <HomeAgendaSection />
+    <HomeSpeakersSection ref="speakerSectionRef" />
+    <HomeInformation />
+    <HomeNews />
+  </main>
 </template>
