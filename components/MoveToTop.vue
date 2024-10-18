@@ -3,6 +3,8 @@ const { overTop = 0 } = defineProps<{
   overTop?: number
 }>()
 
+const { $lenis } = useNuxtApp()
+
 const { y: windowY } = useWindowScroll()
 </script>
 
@@ -18,9 +20,9 @@ const { y: windowY } = useWindowScroll()
     <button
       v-if="windowY >= overTop"
       type="button"
-      class="flex size-10 items-center justify-center bg-primary-green transition-opacity duration-300"
+      class="flex size-10 items-center justify-center bg-primary-green transition-opacity duration-300 lg:hover:bg-primary-green/80"
       style="clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 12px 100%, 0% calc(100% - 12px));"
-      @click="() => console.log('click')"
+      @click="$lenis.scrollTo(0)"
     >
       <Icon
         name="i-heroicons-arrow-small-up"

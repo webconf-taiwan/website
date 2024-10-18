@@ -11,6 +11,12 @@ export default defineNuxtPlugin({
     }
 
     requestAnimationFrame(raf)
+
+    return {
+      provide: {
+        lenis,
+      },
+    }
   },
   env: {
     islands: false,
