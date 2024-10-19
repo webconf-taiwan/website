@@ -9,26 +9,31 @@ defineProps<{
 </script>
 
 <template>
-  <div
+  <button
     v-if="isBroadcast"
-    class="max-w-[334px]"
+    type="button"
+    class="block max-w-[334px] bg-black transition-colors lg:hover:bg-primary-deep-green"
   >
     <template v-if="agenda.title === '同步聯播'">
-      <p class="h-full content-center text-center text-lg font-medium text-primary-green">
-        {{ agenda.title }}
-      </p>
+      <div class="h-full content-center">
+        <p class="text-center text-lg font-medium text-primary-green">
+          {{ agenda.title }}
+        </p>
+      </div>
     </template>
     <template v-else>
       <AgendaItem :agenda="agenda" />
     </template>
-  </div>
+  </button>
 
-  <div
+  <button
     v-else
-    class="max-w-[334px] border border-primary-green"
+    type="button"
+    class="group relative block max-w-[334px] overflow-hidden border border-primary-green bg-black"
   >
+    <div class="absolute inset-0 z-0 scale-75 bg-primary-deep-green opacity-0 blur-sm transition ease-in lg:group-hover:scale-105 lg:group-hover:opacity-100"></div>
     <AgendaItem :agenda="agenda" />
-  </div>
+  </button>
 </template>
 
 <style scoped></style>

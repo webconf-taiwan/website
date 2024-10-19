@@ -10,19 +10,10 @@ const locations: AgendaLocation[] = ['M', 'F', 'A2']
 
 <template>
   <div
-    class="mb-24 min-h-[100dvh] space-y-2 bg-black p-2"
+    class="mb-24 space-y-2 bg-black p-2"
   >
     <!-- Locations header -->
-    <div class="mb-2 grid grid-cols-[118px_2fr_2fr_2fr] gap-x-2">
-      <div></div>
-      <div
-        v-for="location in locations"
-        :key="location"
-        class="bg-[hsla(186,36%,40%,1)] py-3 text-center text-xl"
-      >
-        {{ location }}&nbsp;棟
-      </div>
-    </div>
+    <AgendaLocations :locations="locations" />
 
     <!-- Time slots -->
     <div
@@ -51,8 +42,25 @@ const locations: AgendaLocation[] = ['M', 'F', 'A2']
       </template>
     </div>
 
-    <!-- Locations footer -->
-    <div></div>
+    <!-- Footer -->
+    <div class="sticky bottom-0">
+      <AgendaLocations :locations="locations">
+        <div class="flex">
+          <button
+            type="button"
+            class="block w-full bg-primary-green font-['Mina'] text-sm text-black"
+          >
+            12/27
+          </button>
+          <button
+            type="button"
+            class="block w-full bg-primary-deep-green font-['Mina'] text-sm text-white"
+          >
+            12/28
+          </button>
+        </div>
+      </AgendaLocations>
+    </div>
   </div>
 </template>
 
