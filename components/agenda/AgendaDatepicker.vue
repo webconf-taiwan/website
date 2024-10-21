@@ -5,14 +5,30 @@ const agendaDateTextMap = [
   ['2024-12-27', '(FRI.)'],
   ['2024-12-28', '(SAT.)'],
 ]
+
+const agendaContentFooterDates = agendaDateTextMap.map(([date]) => date)
+
+const defaultContent = computed(() => {
+  return agendaDateTextMap[0][0]
+})
+
+const currentAgendaDate = ref(defaultContent.value)
+
+const tabsRef = ref<HTMLDivElement | null>(null)
+const { top: tabsTop } = useElementBounding(tabsRef)
+
+function changeCurrentAgendaDate(date: string) {
+  currentAgendaDate.value = date
+}
 </script>
 
 <template>
   <Tabs
-    :default-value="agendaDateTextMap[0][0]"
+    ref="tabsRef"
+    v-model="currentAgendaDate"
     class="w-full"
   >
-    <TabsList class="sticky left-0 top-[3.75rem] flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
+    <TabsList class="sticky left-0 top-[3.75rem] z-10 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
       <TabsTrigger
         v-for="(date, index) in agendaDateTextMap"
         :key="date[0]"
@@ -33,8 +49,15 @@ const agendaDateTextMap = [
       v-for="date in agendaDateTextMap"
       :key="date[0]"
       :value="date[0]"
+      :force-mount="true"
     >
-      <AgendaContent :agenda-time-slots="agendaData[date[0]]" />
+      <AgendaContent
+        :agenda-time-slots="agendaData[date[0]]"
+        :tabs-top="tabsTop"
+        :agenda-content-footer-dates="agendaContentFooterDates"
+        :current-agenda-date="currentAgendaDate"
+        @update:current-agenda-date="changeCurrentAgendaDate"
+      />
     </TabsContent>
   </Tabs>
 </template>

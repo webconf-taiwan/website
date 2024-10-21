@@ -30,14 +30,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="layout-grid min-h-screen">
+  <main class="layout-grid mt-8 min-h-screen lg:mt-[70px]">
     <ClientOnly>
       <FloatingActionButtons>
         <FilterButton v-if="isSmallerLg" />
         <MoveToTop :over-top="300" />
       </FloatingActionButtons>
     </ClientOnly>
-    <div class="mx-auto mt-20 lg:mt-32">
+    <div class="mx-auto">
       <SectionTitle class="mb-12 justify-center">
         <template #title>
           PROGRAM

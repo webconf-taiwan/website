@@ -12,10 +12,12 @@ defineProps<{
   <button
     v-if="isBroadcast"
     type="button"
-    class="block max-w-[334px] bg-black transition-colors lg:hover:bg-primary-deep-green"
+    class="group relative block max-w-[334px] overflow-hidden bg-black transition-colors"
   >
+    <div class="absolute inset-0 z-0 scale-75 bg-primary-deep-green opacity-0 blur-sm transition ease-in lg:group-hover:scale-105 lg:group-hover:opacity-100"></div>
+
     <template v-if="agenda.title === '同步聯播'">
-      <div class="h-full content-center">
+      <div class="relative h-full content-center">
         <p class="text-center text-lg font-medium text-primary-green">
           {{ agenda.title }}
         </p>

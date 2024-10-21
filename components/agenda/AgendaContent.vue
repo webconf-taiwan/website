@@ -3,6 +3,13 @@ import type { AgendaLocation, TimeSlot } from '~/types/agendas'
 
 defineProps<{
   agendaTimeSlots: TimeSlot[]
+  tabsTop: number
+  agendaContentFooterDates: string[]
+  currentAgendaDate: string
+}>()
+
+defineEmits<{
+  'update:current-agenda-date': [value: string]
 }>()
 
 const locations: AgendaLocation[] = ['M', 'F', 'A2']
@@ -43,20 +50,21 @@ const locations: AgendaLocation[] = ['M', 'F', 'A2']
     </div>
 
     <!-- Footer -->
-    <div class="sticky bottom-0">
+    <div
+      class="sticky bottom-0 transition duration-300"
+      :class="[tabsTop < 60 ? 'translate-y-0 opacity-100' : 'translate-y-5 opacity-0']"
+    >
       <AgendaLocations :locations="locations">
         <div class="flex">
           <button
+            v-for="date in agendaContentFooterDates"
+            :key="date"
             type="button"
-            class="block w-full bg-primary-green font-['Mina'] text-sm text-black"
+            class="block w-full font-['Mina'] text-sm"
+            :class="[date === currentAgendaDate ? 'bg-primary-green font-semibold text-black' : 'bg-primary-deep-green font-normal text-white']"
+            @click="() => $emit('update:current-agenda-date', date)"
           >
-            12/27
-          </button>
-          <button
-            type="button"
-            class="block w-full bg-primary-deep-green font-['Mina'] text-sm text-white"
-          >
-            12/28
+            <span>{{ useDateFormat(date, 'MM/DD') }}</span>
           </button>
         </div>
       </AgendaLocations>
