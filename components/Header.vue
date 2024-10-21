@@ -19,10 +19,10 @@ useEventListener(window, 'scroll', checkScroll)
 </script>
 
 <template>
-  <header class="lg:flex lg:justify-center">
+  <header class="flex h-12 items-center lg:h-[72px] lg:justify-center">
     <div
       ref="headerRef"
-      class="fixed left-0 top-0 z-30 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-between"
+      class="fixed left-0 top-0 z-30 flex w-full items-center justify-center overflow-x-clip lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-between lg:px-10 px-5"
     >
       <div
         class="absolute inset-0 bg-gradient-to-t from-transparent to-gradient-bg-start/70 transition-opacity duration-150 lg:hidden"
@@ -35,8 +35,11 @@ useEventListener(window, 'scroll', checkScroll)
         />
       </template>
       <template v-else>
-        <div class="z-30 h-6 w-[192px]">
-          <NuxtLink to="/">
+        <div class="z-30  h-6 w-[192px]">
+          <NuxtLink
+            to="/"
+            class="block py-3"
+          >
             <NuxtImg
               src="/logo-words.svg"
               alt="logo"
@@ -47,10 +50,4 @@ useEventListener(window, 'scroll', checkScroll)
       </template>
     </div>
   </header>
-
-  <!-- header 佔位格 -->
-  <div
-    v-if="isHome"
-    class="h-12 lg:h-[72px]"
-  ></div>
 </template>

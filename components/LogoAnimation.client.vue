@@ -42,9 +42,12 @@ onMounted(async () => {
 
     if (isPhone) {
       tlSm.restart()
-      tlSm.from(headerLogoWordsSmRef.value, {
+      tlSm.fromTo(headerLogoWordsSmRef.value, {
         y: 100,
-        width: 'calc(100% - 40px)',
+        width: 'calc(100vw - 40px)',
+      }, {
+        y: 0,
+        width: '30dvw',
         ease: 'power3.inOut',
       })
       tlSm.pause()
@@ -52,9 +55,13 @@ onMounted(async () => {
 
     if (isPad) {
       tlSm.restart()
-      tlSm.from(headerLogoWordsSmRef.value, {
+      tlSm.fromTo(headerLogoWordsSmRef.value, {
         y: 110,
-        width: 'calc(100% - 40px)',
+        width: 'calc(100vw - 40px)',
+        transformOrigin: 'center center',
+      }, {
+        y: 0,
+        width: '30dvw',
         transformOrigin: 'center center',
         ease: 'power3.inOut',
       })
@@ -116,7 +123,7 @@ onMounted(async () => {
   <!-- 手機版 -->
   <div
     ref="headerLogoWordsSmRef"
-    class="fixed h-10 w-[30%] px-10 lg:hidden"
+    class="relative h-10 w-full lg:hidden"
   >
     <NuxtImg
       id="headerLogoWordsSm"

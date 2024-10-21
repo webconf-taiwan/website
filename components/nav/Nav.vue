@@ -85,7 +85,7 @@ function handleNavigation(href: string) {
           :to="link.href"
           class="relative px-[14px] py-3 hover:text-primary-green"
         >
-          <span class="text-h5">
+          <span class="text-lg">
             {{ link.name }}
           </span>
         </NuxtLink>
