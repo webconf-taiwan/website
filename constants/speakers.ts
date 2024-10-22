@@ -223,10 +223,10 @@ export const speakers: Speaker[] = [
     displayName: '邱宏瑋',
     avatar: '/speakers/avatar_hungweichiu.png',
   },
-  {
-    id: 'speaker_38',
-    code: 'henrylin',
-    displayName: '林義閎',
-    avatar: '/speakers/avatar_henrylin.png',
-  },
+  // {
+  //   id: 'speaker_38',
+  //   code: 'henrylin',
+  //   displayName: '林義閎',
+  //   avatar: '/speakers/avatar_henrylin.png',
+  // },
 ]

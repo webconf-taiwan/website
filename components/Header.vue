@@ -22,7 +22,7 @@ useEventListener(window, 'scroll', checkScroll)
   <header class="flex h-12 items-center lg:h-[72px] lg:justify-center">
     <div
       ref="headerRef"
-      class="fixed left-0 top-0 z-30 flex w-full items-center justify-center overflow-x-clip lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-between lg:px-10 px-5"
+      class="fixed left-0 top-0 z-30 flex w-full items-center justify-center overflow-x-clip px-5 lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-between lg:px-10"
     >
       <div
         class="absolute inset-0 bg-gradient-to-t from-transparent to-gradient-bg-start/70 transition-opacity duration-150 lg:hidden"
@@ -35,7 +35,7 @@ useEventListener(window, 'scroll', checkScroll)
         />
       </template>
       <template v-else>
-        <div class="z-30  h-6 w-[192px]">
+        <div class="h-6 w-[192px]">
           <NuxtLink
             to="/"
             class="block py-3"
