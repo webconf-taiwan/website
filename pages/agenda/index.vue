@@ -46,8 +46,8 @@ onMounted(() => {
           議程
         </template>
       </SectionTitle>
-      <AgendaTagsContainer class="mb-9 lg:mb-11" />
-      <AgendaDatepicker />
+      <AgendaTagsWrapper class="mb-9 lg:mb-11" />
+      <AgendaContentWrapper />
     </div>
   </main>
 </template>
