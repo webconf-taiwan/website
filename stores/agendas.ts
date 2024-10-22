@@ -1,4 +1,6 @@
+import { speakers } from '~/constants/speakers'
 import type { AgendaTag } from '~/types/agendas'
+import type { Speaker } from '~/types/speakers'
 
 export const useAgendasStore = defineStore('agendas', () => {
   const selectedTags = ref<AgendaTag['id'][]>([])
@@ -15,10 +17,16 @@ export const useAgendasStore = defineStore('agendas', () => {
     }
   }
 
+  function findSpeakers(speakerCodes: string[]) {
+    return speakerCodes
+      .map(speakerCode => speakers.find(speaker => speaker.code === speakerCode) as Speaker || [])
+  }
+
   return {
     selectedTags,
     toggleTag,
     isShowAllAgendas,
+    findSpeakers,
   }
 })
 

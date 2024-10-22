@@ -1,5 +1,3 @@
-import type { Speaker } from '~/types/speakers'
-
 export interface AgendaTag {
   id: 'frontend' | 'backend' | 'uiux' | 'agile' | 'devops' | 'security' | 'ai' | 'team-management' | 'product-design' | 'design-ops'
   text: string
@@ -9,7 +7,7 @@ export interface AgendaItem {
   id: string
   title: string
   tags: AgendaTag['id'][]
-  speakerCodes: Speaker['code'][]
+  speakerCodes: string[]
 }
 
 export type AgendaLocation = 'M' | 'F' | 'A2'

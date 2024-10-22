@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div
-    class="relative grid h-[216px] grid-cols-3 gap-x-2 overflow-x-clip"
+    class="relative grid max-h-[221px] min-h-[200px] grid-cols-3 gap-x-2 overflow-x-clip"
     :class="[slotData.isBroadcast ? 'outline outline-1 outline-primary-green' : '']"
   >
     <div
