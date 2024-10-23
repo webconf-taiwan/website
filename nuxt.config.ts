@@ -20,6 +20,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     'shadcn-nuxt',
     'nuxt-marquee',
+    '@nuxtjs/device',
   ],
 
   fonts: {

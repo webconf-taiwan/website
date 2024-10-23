@@ -1,14 +1,35 @@
 <script setup lang="ts">
 import type { TimeSlot } from '~/types/agendas'
 
-defineProps<{
+const props = defineProps<{
   slotData: TimeSlot
 }>()
+
+const agendasStore = useAgendasStore()
+const { selectedTags, isShowAllAgendas } = storeToRefs(agendasStore)
+
+const agendaGroupTagsCollection = computed(() => {
+  if (!props.slotData.agendas)
+    return []
+
+  const allAgendaGroupTags = [...new Set(
+    Object.values(props.slotData.agendas).flatMap(agenda => agenda.tags),
+  )]
+
+  return allAgendaGroupTags
+})
+
+const isAgendaGroupVisible = computed(() => {
+  if (isShowAllAgendas.value)
+    return true
+  return agendaGroupTagsCollection.value.some(tag => selectedTags.value.includes(tag))
+})
 </script>
 
 <template>
   <div
-    class="relative grid max-h-[221px] min-h-[200px] grid-cols-3 gap-x-2 overflow-x-clip"
+    v-show="isAgendaGroupVisible"
+    class="relative grid gap-2 overflow-x-clip px-2 lg:max-h-[221px] lg:min-h-[200px] lg:grid-cols-3 lg:px-0"
     :class="[slotData.isBroadcast ? 'outline outline-1 outline-primary-green' : '']"
   >
     <div

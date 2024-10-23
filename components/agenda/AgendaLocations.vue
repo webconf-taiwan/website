@@ -14,7 +14,7 @@ defineProps<{
     <div
       v-for="location in locations"
       :key="location"
-      class="bg-[hsla(186,36%,40%,1)] py-3 text-center text-xl"
+      class="bg-primary-faint-green py-3 text-center text-xl"
     >
       {{ location }}&nbsp;棟
     </div>

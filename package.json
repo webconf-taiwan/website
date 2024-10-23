@@ -43,6 +43,7 @@
     "@nuxt/fonts": "^0.10.0",
     "@nuxt/icon": "^1.5.5",
     "@nuxt/image": "^1.8.1",
+    "@nuxtjs/device": "^3.2.4",
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@pinia/nuxt": "^0.5.5",
     "@tailwindcss/container-queries": "^0.1.1",

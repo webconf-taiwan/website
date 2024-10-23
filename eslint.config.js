@@ -99,6 +99,7 @@ export default antfu(
             'speaker-name-tag',
             'marquee-text-outline',
             'drawer-content',
+            'agenda-content',
             'glitch-effect',
             'home-bg',
             'tabs-clip-right',

@@ -28,7 +28,7 @@ function changeCurrentAgendaDate(date: string) {
     v-model="currentAgendaDate"
     class="w-full"
   >
-    <TabsList class="sticky left-0 top-[3.75rem] z-10 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
+    <TabsList class="sticky left-0 top-12 z-20 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
       <TabsTrigger
         v-for="(date, index) in agendaDateTextMap"
         :key="date[0]"

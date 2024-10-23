@@ -1,3 +1,4 @@
+import { agendaData } from '~/constants/agendas'
 import { speakers } from '~/constants/speakers'
 import type { AgendaTag } from '~/types/agendas'
 import type { Speaker } from '~/types/speakers'
@@ -6,6 +7,18 @@ export const useAgendasStore = defineStore('agendas', () => {
   const selectedTags = ref<AgendaTag['id'][]>([])
 
   const isShowAllAgendas = computed(() => selectedTags.value.length === 0)
+
+  const allTags = computed(() => {
+    const tags = Object.values(agendaData).flatMap(daySlots =>
+      daySlots
+        .filter(slot => slot.type === 'agenda' && slot.agendas)
+        .flatMap(slot => Object.values(slot.agendas || {}))
+        .flatMap(agenda => agenda.tags)
+        .filter(tag => tag.length > 0),
+    )
+
+    return [...new Set(tags)]
+  })
 
   function toggleTag(tagId: AgendaTag['id']) {
     const index = selectedTags.value.indexOf(tagId)
@@ -24,8 +37,9 @@ export const useAgendasStore = defineStore('agendas', () => {
 
   return {
     selectedTags,
-    toggleTag,
     isShowAllAgendas,
+    allTags,
+    toggleTag,
     findSpeakers,
   }
 })

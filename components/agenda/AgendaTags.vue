@@ -4,6 +4,10 @@ import type { AgendaTag } from '~/types/agendas'
 
 const agendasStore = useAgendasStore()
 
+const filteredAgendaTags = computed(() => {
+  return agendaTags.filter(tag => agendasStore.allTags.includes(tag.id))
+})
+
 function isSelected(tagId: AgendaTag['id']) {
   return agendasStore.selectedTags.includes(tagId)
 }
@@ -18,7 +22,7 @@ function isSelected(tagId: AgendaTag['id']) {
 
     <div class="flex flex-wrap content-center justify-center gap-3">
       <button
-        v-for="tag in agendaTags"
+        v-for="tag in filteredAgendaTags"
         :key="tag.id"
         type="button"
         class="border border-primary-mid-green bg-transparent px-3 py-2 transition-colors"
