@@ -4,7 +4,7 @@ import { contactInfos } from '@/constants'
 
 <template>
   <footer
-    class="full-bleed relative bg-black px-5 py-[30px] lg:flex lg:justify-center md:pb-6"
+    class="full-bleed relative bg-black px-5 py-[30px] md:pb-6 lg:flex lg:justify-center"
   >
     <div class="lg:max-w-[1320px]">
       <ul class="space-y-[10px] border-b border-footer-border py-6 lg:hidden">

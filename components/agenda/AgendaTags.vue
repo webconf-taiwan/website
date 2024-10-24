@@ -15,10 +15,7 @@ function isSelected(tagId: AgendaTag['id']) {
 
 <template>
   <div>
-    <div class="absolute left-2 top-2 size-[10px] border-l border-t border-primary-green"></div>
-    <div class="absolute right-2 top-2 size-[10px] border-r border-t border-primary-green"></div>
-    <div class="absolute bottom-2 right-2 size-[10px] border-b border-r border-primary-green"></div>
-    <div class="absolute bottom-2 left-2 size-[10px] border-b border-l border-primary-green"></div>
+    <BorderDecoration :position-value="2" />
 
     <div class="flex flex-wrap content-center justify-center gap-3">
       <button
