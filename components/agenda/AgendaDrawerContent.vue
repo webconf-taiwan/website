@@ -45,7 +45,18 @@ const tabsRef = ref<HTMLDivElement | null>(null)
                 :key="link.href"
                 class="relative bg-primary-green/10"
               >
-                <BorderDecoration :position-value="1" />
+                <div
+                  class="absolute left-1 top-1 size-[10px] border-l border-t border-primary-green"
+                ></div>
+                <div
+                  class="absolute right-1 top-1 size-[10px] border-r border-t border-primary-green"
+                ></div>
+                <div
+                  class="absolute bottom-1 right-1 size-[10px] border-b border-r border-primary-green"
+                ></div>
+                <div
+                  class="absolute bottom-1 left-1 size-[10px] border-b border-l border-primary-green"
+                ></div>
 
                 <NuxtLink
                   :to="link.href"
