@@ -9,7 +9,6 @@ const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
 export default defineNuxtConfig({
   devtools: {
     enabled: true,
-    componentInspector: false,
   },
 
   modules: [
@@ -21,6 +20,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     'nuxt-marquee',
     '@nuxtjs/device',
+    'dayjs-nuxt',
   ],
 
   fonts: {
@@ -52,6 +52,13 @@ export default defineNuxtConfig({
 
   pinia: {
     storesDirs: ['./stores/**'],
+  },
+
+  dayjs: {
+    locales: ['zh-tw'],
+    plugins: ['relativeTime', 'utc', 'timezone', 'isSameOrAfter'],
+    defaultLocale: 'zh-tw',
+    defaultTimezone: 'Asia/Taipei',
   },
 
   build: {

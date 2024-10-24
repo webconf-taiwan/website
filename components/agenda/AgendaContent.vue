@@ -6,11 +6,11 @@ defineProps<{
   agendaTimeSlots: TimeSlot[]
   tabsTop: number
   agendaContentFooterDates: string[]
-  currentAgendaDate: string
+  currentAgendaDate: string | number
 }>()
 
 defineEmits<{
-  'update:current-agenda-date': [value: string]
+  'update:current-agenda-date': [value: string | number]
 }>()
 
 const { $device } = useNuxtApp()

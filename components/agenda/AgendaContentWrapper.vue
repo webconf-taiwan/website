@@ -6,20 +6,40 @@ const agendaDateTextMap = [
   ['2024-12-28', '(SAT.)'],
 ]
 
+const route = useRoute()
+const router = useRouter()
+const dayjs = useDayjs()
+
 const agendaContentFooterDates = agendaDateTextMap.map(([date]) => date)
 
-const defaultContent = computed(() => {
-  return agendaDateTextMap[0][0]
+const defaultDate = computed(() => {
+  return dayjs.tz().isSameOrAfter(dayjs.tz('2024-12-28'))
+    ? agendaDateTextMap[1][0]
+    : agendaDateTextMap[0][0]
 })
 
-const currentAgendaDate = ref(defaultContent.value)
+const currentAgendaDate = ref<string | number>(defaultDate.value)
 
 const tabsRef = ref<HTMLDivElement | null>(null)
 const { top: tabsTop } = useElementBounding(tabsRef)
 
-function changeCurrentAgendaDate(date: string) {
+function changeCurrentAgendaDate(date: string | number) {
   currentAgendaDate.value = date
+  router.push({
+    query: {
+      date,
+    },
+  })
 }
+
+watch(() => route.query.date, (date) => {
+  if (date) {
+    currentAgendaDate.value = date as string
+  }
+  else {
+    currentAgendaDate.value = defaultDate.value
+  }
+}, { immediate: true })
 </script>
 
 <template>
@@ -27,6 +47,7 @@ function changeCurrentAgendaDate(date: string) {
     ref="tabsRef"
     v-model="currentAgendaDate"
     class="w-full bg-black"
+    @update:model-value="changeCurrentAgendaDate"
   >
     <TabsList class="sticky left-0 top-12 z-20 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
       <TabsTrigger
