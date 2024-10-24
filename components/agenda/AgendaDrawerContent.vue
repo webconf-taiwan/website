@@ -23,8 +23,12 @@ const tabsRef = ref<HTMLDivElement | null>(null)
 <template>
   <div class="space-y-5 text-justify leading-7 tracking-wide lg:flex-1">
     <div class="mt-[1px] w-full md:flex md:space-x-5">
-      <div class="h-[320px] w-full shrink-0 ring-1 md:h-auto lg:w-[200px]">
-        講者圖片
+      <div class="aspect-square w-full shrink-0 overflow-hidden md:w-[200px]">
+        <NuxtImg
+          src="/speakers/avatar_antfu.png"
+          alt="講者圖片"
+          class="size-full object-cover"
+        />
       </div>
 
       <div class="w-full">
@@ -34,7 +38,7 @@ const tabsRef = ref<HTMLDivElement | null>(null)
 
         <div class="lg:flex lg:justify-between lg:space-x-2 xl:space-x-10">
           <!-- 名稱＆連結 -->
-          <div class="md:space-y-[60px]">
+          <div class="md:space-y-[30px] lg:space-y-[60px]">
             <p class="text-mina mt-8 text-[32px] font-bold md:mt-4">
               郭藺瑩 Lydia
             </p>
