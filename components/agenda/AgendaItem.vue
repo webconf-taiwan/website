@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { AgendaItem } from '~/types/agendas'
+import type { AgendaItem, AgendaLocation } from '~/types/agendas'
 
 const props = defineProps<{
   agenda: AgendaItem
+  location: AgendaLocation
 }>()
 
 const agendasStore = useAgendasStore()
@@ -13,7 +14,7 @@ const combinedSpeakersDisplayName = speakersData.map(speaker => speaker.displayN
 </script>
 
 <template>
-  <div class="relative flex h-full flex-col px-5 py-4">
+  <div class="relative flex h-full flex-col p-3 lg:px-5 lg:py-4">
     <!-- Agenda title -->
     <h3 class="mb-2 line-clamp-2 text-start text-lg font-medium text-white">
       {{ agenda.title }}
@@ -52,6 +53,14 @@ const combinedSpeakersDisplayName = speakersData.map(speaker => speaker.displayN
           :title="combinedSpeakersDisplayName"
           class="line-clamp-2 grow tracking-wide"
         >{{ combinedSpeakersDisplayName }}</span>
+
+        <div class="flex shrink-0 items-center gap-x-1 text-[hsla(182,25%,74%,1)] lg:hidden">
+          <Icon
+            name="i-heroicons-map-pin"
+            size="16"
+          />
+          <span>{{ location }} 棟</span>
+        </div>
       </div>
     </div>
   </div>

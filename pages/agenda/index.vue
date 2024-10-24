@@ -38,7 +38,7 @@ onMounted(() => {
       </FloatingActionButtons>
     </ClientOnly>
     <div class="mx-auto">
-      <SectionTitle class="mb-12 justify-center">
+      <SectionTitle class="mb-5 justify-center lg:mb-12">
         <template #title>
           PROGRAM
         </template>

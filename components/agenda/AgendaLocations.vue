@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <div class="mb-2 grid grid-cols-[118px_2fr_2fr_2fr] gap-x-2">
+  <div class="grid grid-cols-[118px_2fr_2fr_2fr] gap-x-2">
     <slot>
       <div></div>
     </slot>

@@ -27,14 +27,24 @@ const isAgendaVisible = computed(() => {
     <div class="absolute inset-0 z-0 scale-75 rounded-xl bg-primary-deep-green opacity-0 blur-sm transition ease-in lg:group-hover:scale-105 lg:group-hover:opacity-100"></div>
 
     <template v-if="agenda.title === '同步聯播'">
-      <div class="relative h-full content-center">
-        <p class="text-center text-lg font-medium text-primary-green">
+      <div class="relative flex h-full content-center items-center justify-between px-3 py-4 max-lg:border-t max-lg:border-t-primary-green/30 lg:justify-center">
+        <p class="text-left text-base font-normal text-primary-green lg:text-center lg:text-lg lg:font-medium">
           {{ agenda.title }}
         </p>
+        <div class="flex shrink-0 items-center gap-x-1 text-[hsla(182,25%,74%,1)] lg:hidden">
+          <Icon
+            name="i-heroicons-map-pin"
+            size="16"
+          />
+          <span>{{ location }} 棟</span>
+        </div>
       </div>
     </template>
     <template v-else>
-      <AgendaItem :agenda="agenda" />
+      <AgendaItem
+        :agenda="agenda"
+        :location="location"
+      />
     </template>
   </button>
 
@@ -45,7 +55,11 @@ const isAgendaVisible = computed(() => {
     class="group relative block overflow-hidden border border-primary-green bg-black lg:max-w-[334px]"
   >
     <div class="absolute inset-0 z-0 scale-75 rounded-xl bg-primary-deep-green opacity-0 blur-sm transition ease-in lg:group-hover:scale-105 lg:group-hover:opacity-100"></div>
-    <AgendaItem :agenda="agenda" />
+
+    <AgendaItem
+      :agenda="agenda"
+      :location="location"
+    />
   </button>
 </template>
 

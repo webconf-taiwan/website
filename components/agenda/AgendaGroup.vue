@@ -30,15 +30,15 @@ const isAgendaGroupVisible = computed(() => {
   <div
     v-show="isAgendaGroupVisible"
     class="relative grid gap-2 overflow-x-clip px-2 lg:max-h-[221px] lg:min-h-[200px] lg:grid-cols-3 lg:px-0"
-    :class="[slotData.isBroadcast ? 'outline outline-1 outline-primary-green' : '']"
+    :class="[slotData.isBroadcast ? 'mx-2 outline outline-1 outline-primary-green lg:mx-0' : '']"
   >
     <div
       v-if="slotData.isBroadcast"
-      class="absolute left-1/3 top-1/2 h-[84%] w-[1px] -translate-y-1/2 bg-primary-green/30"
+      class="absolute left-1/3 top-1/2 hidden h-[84%] w-[1px] -translate-y-1/2 bg-primary-green/30 lg:block"
     ></div>
     <div
       v-if="slotData.isBroadcast"
-      class="absolute left-2/3 top-1/2 h-[84%] w-[1px] -translate-y-1/2 bg-primary-green/30"
+      class="absolute left-2/3 top-1/2 hidden h-[84%] w-[1px] -translate-y-1/2 bg-primary-green/30 lg:block"
     ></div>
 
     <AgendaItemWrapper

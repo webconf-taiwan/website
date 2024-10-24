@@ -29,7 +29,7 @@ const dataLenisPrevent = computed(() => {
 
 <template>
   <div
-    class="agenda-content mb-24 space-y-2 bg-black lg:p-2"
+    class="agenda-content mb-24 space-y-2 bg-black pb-2 lg:p-2"
     v-bind="dataLenisPrevent"
   >
     <!-- Locations header -->
@@ -46,15 +46,19 @@ const dataLenisPrevent = computed(() => {
     >
       <!-- Time -->
       <template v-if="slot.type === 'agenda'">
-        <div class="sticky left-0 top-[calc(3rem+46px)] z-10 flex h-10 shrink-0 flex-row items-center justify-center gap-x-2 bg-primary-faint-green px-3 font-['Mina'] text-xl font-bold lg:h-auto lg:min-h-36 lg:flex-col lg:justify-between lg:gap-x-0 lg:gap-y-[10px] lg:bg-transparent lg:px-0 lg:py-5 lg:text-2xl">
-          <div>{{ slot.startTime }}</div>
+        <div class="sticky left-0 top-[calc(3rem+46px)] z-10 flex h-10 shrink-0 flex-row items-center justify-center gap-x-2 bg-primary-faint-green px-3 font-['Mina'] text-xl font-bold lg:h-auto lg:min-h-36 lg:flex-col lg:justify-between lg:gap-x-0 lg:gap-y-4 lg:bg-transparent lg:px-0 lg:py-5 lg:text-2xl">
+          <div class="h-6">
+            {{ slot.startTime }}
+          </div>
           <div class="h-[1px] w-auto grow bg-[hsla(183,24%,53%,1)] lg:h-auto lg:w-[1px] lg:bg-white"></div>
-          <div>{{ slot.endTime }}</div>
+          <div class="h-6">
+            {{ slot.endTime }}
+          </div>
         </div>
       </template>
       <template v-else-if="slot.type === 'break'">
         <div></div>
-        <div class="h-[60px] content-center text-center text-lg font-medium text-[hsla(182,25%,74%,1)]">
+        <div class="mb-2 h-[60px] content-center text-center text-lg font-medium tracking-wider text-[hsla(182,25%,74%,1)] lg:mb-0">
           {{ slot.breakTitle }}
         </div>
       </template>
