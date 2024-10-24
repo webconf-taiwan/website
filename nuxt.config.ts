@@ -17,9 +17,10 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/image',
     '@nuxt/icon',
-    'shadcn-nuxt',
-    'nuxt-marquee',
+    '@nuxt/content',
     '@nuxtjs/device',
+    'nuxt-marquee',
+    'shadcn-nuxt',
     'dayjs-nuxt',
   ],
 
@@ -84,6 +85,11 @@ export default defineNuxtConfig({
       name: 'page',
       mode: 'out-in',
     },
+  },
+
+  content: {
+    documentDriven: false,
+    ignores: ['drafts'],
   },
 
   nitro: {

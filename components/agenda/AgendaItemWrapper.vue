@@ -80,7 +80,7 @@ const socialLinks = [
     v-else
     v-show="isAgendaVisible"
     type="button"
-    class="group relative block max-w-[334px] overflow-hidden border border-primary-green bg-black"
+    class="group relative block overflow-hidden border border-primary-green bg-black lg:max-w-[334px]"
     @click="agendaDrawer?.open()"
   >
     <div class="absolute inset-0 z-0 scale-75 rounded-xl bg-primary-deep-green opacity-0 blur-sm transition ease-in lg:group-hover:scale-105 lg:group-hover:opacity-100"></div>
