@@ -24,25 +24,6 @@ const drawerSlideDirection = computed(() => {
 })
 
 const agendaDrawer = useTemplateRef('agendaDrawer')
-
-const socialLinks = [
-  {
-    icon: 'iconoir:facebook',
-    href: 'https://www.facebook.com/webconf.tw',
-  },
-  {
-    icon: 'ri:twitter-x-fill',
-    href: 'https://x.com/webconf_tw',
-  },
-  {
-    icon: 'heroicons:globe-alt',
-    href: 'https://www.youtube.com/@webconf.tw',
-  },
-  {
-    icon: 'mdi:instagram',
-    href: 'https://www.instagram.com/webconf.tw/',
-  },
-]
 </script>
 
 <template>
@@ -95,11 +76,11 @@ const socialLinks = [
     <Drawer
       ref="agendaDrawer"
       :slide-direction="drawerSlideDirection"
-      drawer-class="lg:w-[75dvw] xl:w-[55dvw]"
+      drawer-class="lg:w-[80dvw] xl:w-[67dvw]"
     >
       <DrawerContentLayout>
         <template #content>
-          <AgendaDrawerContent :social-links="socialLinks" />
+          <AgendaDrawerWrapper />
         </template>
       </DrawerContentLayout>
     </Drawer>
