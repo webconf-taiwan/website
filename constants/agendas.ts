@@ -466,3 +466,6 @@ export const agendaData: DaySchedule = {
     },
   ],
 }
+
+// export const agendaShareBaseUrl = 'https://webconf-phase2.hkg1.zeabur.app'
+export const agendaShareBaseUrl = 'http://localhost:3000/agenda'

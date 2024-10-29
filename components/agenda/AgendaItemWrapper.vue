@@ -24,25 +24,6 @@ const drawerSlideDirection = computed(() => {
 })
 
 const agendaDrawer = useTemplateRef('agendaDrawer')
-
-const socialLinks = [
-  {
-    icon: 'iconoir:facebook',
-    href: 'https://www.facebook.com/webconf.tw',
-  },
-  {
-    icon: 'ri:twitter-x-fill',
-    href: 'https://x.com/webconf_tw',
-  },
-  {
-    icon: 'heroicons:globe-alt',
-    href: 'https://www.youtube.com/@webconf.tw',
-  },
-  {
-    icon: 'mdi:instagram',
-    href: 'https://www.instagram.com/webconf.tw/',
-  },
-]
 </script>
 
 <template>
@@ -80,7 +61,7 @@ const socialLinks = [
     v-else
     v-show="isAgendaVisible"
     type="button"
-    class="group relative block max-w-[334px] overflow-hidden border border-primary-green bg-black"
+    class="group relative block overflow-hidden border border-primary-green bg-black lg:max-w-[334px]"
     @click="agendaDrawer?.open()"
   >
     <div class="absolute inset-0 z-0 scale-75 rounded-xl bg-primary-deep-green opacity-0 blur-sm transition ease-in lg:group-hover:scale-105 lg:group-hover:opacity-100"></div>
@@ -95,11 +76,11 @@ const socialLinks = [
     <Drawer
       ref="agendaDrawer"
       :slide-direction="drawerSlideDirection"
-      drawer-class="lg:w-[75dvw] xl:w-[55dvw]"
+      drawer-class="lg:w-[80dvw] xl:w-[67dvw]"
     >
       <DrawerContentLayout>
         <template #content>
-          <AgendaDrawerContent :social-links="socialLinks" />
+          <AgendaDrawerWrapper />
         </template>
       </DrawerContentLayout>
     </Drawer>

@@ -22,11 +22,6 @@ const isSmallerLg = breakpoints.smaller('lg')
 onMounted(() => {
   $lenis.scrollTo(0)
 })
-
-/**
- * TOOD :
- * 變更議程日期時，url 加上 query string
- */
 </script>
 
 <template>

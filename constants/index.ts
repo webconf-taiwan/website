@@ -7,7 +7,7 @@ export const navLinks = [
   {
     name: '議程',
     engName: 'AGENDA',
-    href: 'agenda',
+    href: '/agenda',
   },
   // {
   //   name: '講者',
