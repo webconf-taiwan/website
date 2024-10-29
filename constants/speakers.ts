@@ -252,10 +252,34 @@ export const speakers: Speaker[] = [
     displayName: '邱宏瑋',
     avatar: '/speakers/avatar_hungweichiu.png',
   },
-  // {
-  //   id: 'speaker_38',
-  //   code: 'henrylin',
-  //   displayName: '林義閎',
-  //   avatar: '/speakers/avatar_henrylin.png',
-  // },
+  {
+    id: 'speaker_38',
+    code: 'henrylin',
+    displayName: '林義閎',
+    avatar: '/speakers/avatar_henrylin.png',
+  },
+  {
+    id: 'speaker_39',
+    code: 'gipi',
+    displayName: '游舒帆',
+    avatar: '/speakers/avatar_gipi.png',
+  },
+  {
+    id: 'speaker_40',
+    code: 'kyocheng',
+    displayName: 'Kyo Cheng',
+    avatar: '/speakers/avatar_kyocheng.png',
+  },
+  {
+    id: 'speaker_41',
+    code: 'seal',
+    displayName: 'Seal Tseng',
+    avatar: '/speakers/avatar_seal.png',
+  },
+  {
+    id: 'speaker_42',
+    code: 'fin',
+    displayName: 'Fin',
+    avatar: '/speakers/avatar_fin.png',
+  },
 ]
