@@ -63,10 +63,17 @@ function getShareUrl(id: string) {
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerOrEqualMd = breakpoints.smallerOrEqual('md')
 const maskClipPath = computed(() => {
-  console.log('isSmallerOrEqualMd', isSmallerOrEqualMd.value)
-
-  return isSmallerOrEqualMd.value ? 'M144,0 H320 V320 H0 V30 L100,30 Z' : 'M192,0 H200 V200 H0 V40 L132,40 Z'
+  return isSmallerOrEqualMd.value 
+    ? 'M144,0 H320 V320 H0 V30 L100,30 Z' 
+    : 'M100,0 H200 V200 H0 V30 L58,30 L100 ,0 Z'
 })
+
+const svgViewBox = computed(() => {
+  return isSmallerOrEqualMd.value
+    ? '0 0 320 320'
+    : '0 0 200 200'
+})
+
 </script>
 
 <template>
@@ -84,7 +91,7 @@ const maskClipPath = computed(() => {
             </clipPath>
           </defs>
         </svg>
-        <div class="relative h-auto w-[320px] shrink-0 md:w-[200px]">
+        <div class="relative h-auto w-[320px] shrink-0 md:w-[200px] mt-[1px]">
           <NuxtImg
             src="/speakers/avatar_antfu.png"
             alt="講者圖片"
@@ -93,10 +100,12 @@ const maskClipPath = computed(() => {
           />
 
           <div class="absolute inset-x-0 bottom-0 z-10 h-1.5 bg-primary-green"></div>
+          <div class="absolute w-[100px] top-[3px] z-10 h-[1px] bg-primary-green md:w-[70px]"></div>
+          <div class="absolute w-[70px] top-[15px] z-10 h-[1px] bg-primary-green md:w-[50px]"></div>
 
           <svg
             class="pointer-events-none absolute left-0 top-0 size-full"
-            viewBox="0 0 320 320"
+            :view-box="svgViewBox"
           >
             <path
               :d="maskClipPath"
