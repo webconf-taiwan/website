@@ -123,7 +123,7 @@ onMounted(async () => {
   <!-- 手機版 -->
   <div
     ref="headerLogoWordsSmRef"
-    class="relative h-10 w-full lg:hidden min-w-[192px]"
+    class="relative h-10 w-full min-w-[192px] lg:hidden"
   >
     <NuxtImg
       id="headerLogoWordsSm"

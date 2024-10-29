@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<{
   defaultCloseBtn: true,
   slideDirection: 'slide-up',
 })
-
+const agendasStore = useAgendasStore()
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
 
@@ -27,11 +27,14 @@ function open() {
 
 function close() {
   closeDrawer()
+  agendasStore.cleanDrawerRenderData()
 }
 
 function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && isActive.value)
+  if (event.key === 'Escape' && isActive.value) {
     close()
+    agendasStore.cleanDrawerRenderData()
+  }
 }
 
 function handlePageScroll() {

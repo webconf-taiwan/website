@@ -1,6 +1,6 @@
 import { agendaData } from '~/constants/agendas'
 import { speakers } from '~/constants/speakers'
-import type { AgendaTag } from '~/types/agendas'
+import type { AgendaDrawerRenderData, AgendaItem, AgendaTag } from '~/types/agendas'
 import type { Speaker } from '~/types/speakers'
 
 export const useAgendasStore = defineStore('agendas', () => {
@@ -35,12 +35,44 @@ export const useAgendasStore = defineStore('agendas', () => {
       .map(speakerCode => speakers.find(speaker => speaker.code === speakerCode) as Speaker || [])
   }
 
+  const initAgendaDrawerData: AgendaDrawerRenderData = {
+    speakerName: '',
+    speakerAvatar: '',
+    agendaTitle: '',
+    jobTitle: '',
+    socialLinks: [],
+    agendaDescription: '',
+    agendaPaperLinks: [],
+    agendaTags: [],
+  }
+
+  const agendaDrawerRenderData = ref<AgendaDrawerRenderData>({ ...initAgendaDrawerData })
+
+  function cleanDrawerRenderData() {
+    agendaDrawerRenderData.value = { ...initAgendaDrawerData }
+  }
+
+  function setAgendaDrawerRenderData(agenda: AgendaItem) {
+    const filteredSpeaker = findSpeakers(agenda.speakerCodes)
+    agendaDrawerRenderData.value.speakerName = filteredSpeaker[0].displayName
+    agendaDrawerRenderData.value.speakerAvatar = filteredSpeaker[0].avatar
+    agendaDrawerRenderData.value.agendaTitle = agenda.title
+    agendaDrawerRenderData.value.jobTitle = filteredSpeaker[0].jobTitle || ''
+    agendaDrawerRenderData.value.socialLinks = filteredSpeaker[0].socialLinks || []
+    agendaDrawerRenderData.value.agendaDescription = 'null'
+    agendaDrawerRenderData.value.agendaPaperLinks = agenda.paperLinks || []
+    agendaDrawerRenderData.value.agendaTags = agenda.tags
+  }
+
   return {
     selectedTags,
     isShowAllAgendas,
     allTags,
+    agendaDrawerRenderData,
     toggleTag,
     findSpeakers,
+    setAgendaDrawerRenderData,
+    cleanDrawerRenderData,
   }
 })
 

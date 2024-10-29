@@ -253,6 +253,16 @@ export const agendaData: DaySchedule = {
           title: 'TBD',
           tags: ['frontend', 'backend', 'agile', 'devops'],
           speakerCodes: ['mosky'],
+          paperLinks: [
+            {
+              type: 'note',
+              href: 'https://www.google.com',
+            },
+            {
+              type: 'slide',
+              href: 'https://www.youtube.com',
+            },
+          ],
         },
         F: {
           id: '1228-1-f',

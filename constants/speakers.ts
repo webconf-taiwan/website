@@ -5,7 +5,26 @@ export const speakers: Speaker[] = [
     id: 'speaker_1',
     code: 'mosky',
     displayName: 'Mosky',
+    jobTitle: 'ex-test-test-test-test-test-test JOB Title',
     avatar: '/speakers/avatar_mosky.png',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/mosky.tw',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/moskytw',
+      },
+      {
+        type: 'website',
+        url: 'https://www.facebook.com/mosky.tw',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/mosky.tw',
+      },
+    ],
   },
   {
     id: 'speaker_2',
@@ -18,6 +37,16 @@ export const speakers: Speaker[] = [
     code: 'ihower',
     displayName: '張文鈿 iHower',
     avatar: '/speakers/avatar_ihower.png',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/mosky.tw',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/moskytw',
+      },
+    ],
   },
   {
     id: 'speaker_4',

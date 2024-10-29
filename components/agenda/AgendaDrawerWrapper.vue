@@ -1,39 +1,30 @@
 <script lang="ts" setup>
 import { useToast } from '@/components/ui/toast/use-toast'
 import { breakpointsTailwind, useBreakpoints, useClipboard } from '@vueuse/core'
+import { socialIconMap } from '~/constants'
 import { agendaShareBaseUrl } from '~/constants/agendas'
+import type { SocialLinkType } from '~/types/speakers'
 
-const socialLinks = ref([
-  {
-    icon: 'iconoir:facebook',
-    href: 'https://www.facebook.com/webconf.tw',
-  },
-  {
-    icon: 'iconoir:x',
-    href: 'https://x.com/webconf_tw',
-  },
-  {
-    icon: 'heroicons:globe-alt',
-    href: 'https://www.youtube.com/@webconf.tw',
-  },
-  {
-    icon: 'iconoir:instagram',
-    href: 'https://www.instagram.com/webconf.tw/',
-  },
-])
+const agendasStore = useAgendasStore()
+const { agendaDrawerRenderData } = storeToRefs(agendasStore)
 
-const agendaPaperLinks = ref([
-  {
-    title: '共筆文件',
-    icon: 'heroicons:document-text',
-    href: '#',
-  },
-  {
-    title: '投影片',
-    icon: 'heroicons:presentation-chart-line',
-    href: '#',
-  },
-])
+// Mapping 社群連結
+const socialLinks = computed(() => {
+  return agendaDrawerRenderData.value.socialLinks.map(link => ({
+    href: link.url,
+    icon: socialIconMap[link.type as SocialLinkType] || '',
+    type: link.type,
+  }))
+})
+
+// 組合議程共筆＆PPT連結
+const agendaPaperLinks = computed(() => {
+  return agendaDrawerRenderData.value.agendaPaperLinks.map(link => ({
+    title: link.type === 'note' ? '共筆文件' : '投影片',
+    icon: link.type === 'note' ? 'heroicons:document-text' : 'heroicons:presentation-chart-line',
+    href: link.href,
+  }))
+})
 
 const agendaDrawerContentTabsMap = [
   ['議程資訊'],
@@ -43,19 +34,16 @@ const agendaDrawerContentTabsMap = [
 const defaultContentTab = computed(() => {
   return agendaDrawerContentTabsMap[0][0]
 })
-
 const currentContentTab = ref(defaultContentTab.value)
-
 const tabsRef = ref<HTMLDivElement | null>(null)
 
-const { toast } = useToast()
 const source = ref('')
+const { toast } = useToast()
 const { copy } = useClipboard({ source })
-
 function getShareUrl(id: string) {
   toast({
     title: '議程資訊連結｜複製成功',
-    description: `郭藺瑩 Lydia｜以 Kotlin Multiplatform 制霸全平台`,
+    description: `${agendaDrawerRenderData.value.speakerName}｜${agendaDrawerRenderData.value.agendaTitle}`,
   })
   return `${agendaShareBaseUrl}/${id}`
 }
@@ -63,17 +51,15 @@ function getShareUrl(id: string) {
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerOrEqualMd = breakpoints.smallerOrEqual('md')
 const maskClipPath = computed(() => {
-  return isSmallerOrEqualMd.value 
-    ? 'M144,0 H320 V320 H0 V30 L100,30 Z' 
+  return isSmallerOrEqualMd.value
+    ? 'M144,0 H320 V320 H0 V30 L100,30 Z'
     : 'M100,0 H200 V200 H0 V30 L58,30 L100 ,0 Z'
 })
-
 const svgViewBox = computed(() => {
   return isSmallerOrEqualMd.value
     ? '0 0 320 320'
     : '0 0 200 200'
 })
-
 </script>
 
 <template>
@@ -91,17 +77,17 @@ const svgViewBox = computed(() => {
             </clipPath>
           </defs>
         </svg>
-        <div class="relative h-auto w-[320px] shrink-0 md:w-[200px] mt-[1px]">
+        <div class="relative mt-[1px] h-auto w-[320px] shrink-0 md:w-[200px]">
           <NuxtImg
-            src="/speakers/avatar_antfu.png"
+            :src="agendaDrawerRenderData.speakerAvatar"
             alt="講者圖片"
             class="size-full object-cover"
             style="clip-path: url(#square-with-corner-cut);"
           />
 
           <div class="absolute inset-x-0 bottom-0 z-10 h-1.5 bg-primary-green"></div>
-          <div class="absolute w-[100px] top-[3px] z-10 h-[1px] bg-primary-green md:w-[70px]"></div>
-          <div class="absolute w-[70px] top-[15px] z-10 h-[1px] bg-primary-green md:w-[50px]"></div>
+          <div class="absolute top-[3px] z-10 h-[1px] w-[100px] bg-primary-green md:w-[70px]"></div>
+          <div class="absolute top-[15px] z-10 h-[1px] w-[70px] bg-primary-green md:w-[50px]"></div>
 
           <svg
             class="pointer-events-none absolute left-0 top-0 size-full"
@@ -120,19 +106,19 @@ const svgViewBox = computed(() => {
       <div class="mt-5 w-full md:mt-0 lg:flex lg:flex-col lg:items-center lg:justify-between">
         <div class="w-full">
           <p class="text-mina border-b pb-[17px] text-sm">
-            ex-Yahoo - Global Media Product Design - Sr. Design manager
+            {{ agendaDrawerRenderData.jobTitle }}
           </p>
           <p class="text-mina mt-5 text-[32px] font-bold md:mt-4">
-            郭藺瑩 Lydia
+            {{ agendaDrawerRenderData.speakerName }}
           </p>
         </div>
 
-        <div class="mt-6 w-full space-y-2 md:flex md:items-center md:space-x-6 md:space-y-0">
+        <div class="mt-6 w-full space-y-2 md:flex md:items-center md:justify-between md:space-x-6 md:space-y-0">
           <!-- 連結 -->
           <ul class="flex min-w-[216px] gap-x-2">
             <li
               v-for="link in socialLinks"
-              :key="link.href"
+              :key="link.type"
               class="group relative bg-primary-green/10"
             >
               <div
@@ -168,6 +154,7 @@ const svgViewBox = computed(() => {
               v-for="link in agendaPaperLinks"
               :key="link.href"
               :to="link.href"
+              target="_blank"
               class="flex w-1/2 items-center justify-center gap-x-2 border border-primary-green px-1 py-2 text-center text-xl duration-150 lg:hover:bg-primary-dark-green"
             >
               {{ link.title }}

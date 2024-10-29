@@ -40,7 +40,7 @@ useEventListener(window, 'scroll', checkScroll)
         class="absolute inset-0 bg-gradient-to-t from-transparent to-gradient-bg-start/70 transition-opacity duration-150 lg:hidden"
         :style="{ opacity: gradientOpacity }"
       ></div>
-      
+
       <template v-if="isHome">
         <LogoAnimation
           v-if="headerRef"
