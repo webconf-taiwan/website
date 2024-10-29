@@ -64,7 +64,7 @@ export const agendaData: DaySchedule = {
         },
         A2: {
           id: '1227-2-a2',
-          title: 'TBD',
+          title: '談組織內部的產品創業：由技術選型、優劣勢分析、階段性目標再到團隊設計',
           tags: ['uiux', 'team-management'],
           speakerCodes: ['samuel'],
         },
@@ -324,8 +324,8 @@ export const agendaData: DaySchedule = {
         },
         A2: {
           id: '1228-3-a2',
-          title: 'TBD',
-          tags: [],
+          title: '深入淺出B2B產品設計成功方程式 - 真有此式？',
+          tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['seal'],
         },
       },
