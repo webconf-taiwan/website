@@ -4,6 +4,7 @@ import type { AgendaItem, AgendaLocation } from '~/types/agendas'
 const props = defineProps<{
   agenda: AgendaItem
   location: AgendaLocation
+  isAgendaDisabled: boolean
 }>()
 
 const agendasStore = useAgendasStore()
@@ -14,7 +15,10 @@ const combinedSpeakersDisplayName = speakersData.map(speaker => speaker.displayN
 </script>
 
 <template>
-  <div class="relative flex h-full flex-col p-3 lg:px-5 lg:py-4">
+  <div
+    class="relative flex h-full flex-col p-3 transition-opacity lg:px-5 lg:py-4"
+    :class="[isAgendaDisabled ? 'opacity-30' : 'opacity-100']"
+  >
     <!-- Agenda title -->
     <h3 class="mb-2 line-clamp-2 text-start text-lg font-medium text-white">
       {{ agenda.title }}

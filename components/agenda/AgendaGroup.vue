@@ -19,18 +19,23 @@ const agendaGroupTagsCollection = computed(() => {
   return allAgendaGroupTags
 })
 
-const isAgendaGroupVisible = computed(() => {
+const isAgendaGroupDisabled = computed(() => {
   if (isShowAllAgendas.value)
-    return true
-  return agendaGroupTagsCollection.value.some(tag => selectedTags.value.includes(tag))
+    return false
+  return !agendaGroupTagsCollection.value.some(tag => selectedTags.value.includes(tag))
 })
 </script>
 
 <template>
   <div
-    v-show="isAgendaGroupVisible"
     class="relative grid gap-2 overflow-x-clip px-2 lg:max-h-[221px] lg:min-h-[200px] lg:grid-cols-3 lg:px-0"
-    :class="[slotData.isBroadcast ? 'mx-2 outline outline-1 outline-primary-green lg:mx-0' : '']"
+    :class="[
+      slotData.isBroadcast
+        ? isAgendaGroupDisabled
+          ? 'mx-2 outline outline-1 outline-primary-green/30 lg:mx-0'
+          : 'mx-2 outline outline-1 outline-primary-green lg:mx-0'
+        : '',
+    ]"
   >
     <div
       v-if="slotData.isBroadcast"
