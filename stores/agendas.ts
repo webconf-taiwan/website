@@ -35,7 +35,10 @@ export const useAgendasStore = defineStore('agendas', () => {
       .map(speakerCode => speakers.find(speaker => speaker.code === speakerCode) as Speaker || [])
   }
 
+  const currentAgendaDrawerId = ref<string>('')
   const agendasMarkdownData = ref<ParsedAgendaData[] | null>(null)
+
+  const currentAgendaDrawerPath = computed(() => `/agendas/${currentAgendaDrawerId.value}`)
 
   const initAgendaDrawerData: AgendaDrawerRenderData = {
     speakerName: '',
@@ -70,6 +73,8 @@ export const useAgendasStore = defineStore('agendas', () => {
     selectedTags,
     isShowAllAgendas,
     allTags,
+    currentAgendaDrawerId,
+    currentAgendaDrawerPath,
     agendasMarkdownData,
     agendaDrawerRenderData,
     toggleTag,

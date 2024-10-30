@@ -27,6 +27,7 @@ const drawerSlideDirection = computed(() => {
 const agendaDrawer = useTemplateRef('agendaDrawer')
 
 function triggerAgenda(agenda: AgendaItem) {
+  agendasStore.currentAgendaDrawerId = agenda.id
   agendasStore.setAgendaDrawerRenderData(agenda)
   agendaDrawer.value?.open()
 }
