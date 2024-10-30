@@ -1,6 +1,6 @@
 import { agendaData } from '~/constants/agendas'
 import { speakers } from '~/constants/speakers'
-import type { AgendaDrawerRenderData, AgendaItem, AgendaTag } from '~/types/agendas'
+import type { AgendaDrawerRenderData, AgendaItem, AgendaTag, ParsedAgendaData } from '~/types/agendas'
 import type { Speaker } from '~/types/speakers'
 
 export const useAgendasStore = defineStore('agendas', () => {
@@ -35,6 +35,8 @@ export const useAgendasStore = defineStore('agendas', () => {
       .map(speakerCode => speakers.find(speaker => speaker.code === speakerCode) as Speaker || [])
   }
 
+  const agendasMarkdownData = ref<ParsedAgendaData[] | null>(null)
+
   const initAgendaDrawerData: AgendaDrawerRenderData = {
     speakerName: '',
     speakerAvatar: '',
@@ -68,6 +70,7 @@ export const useAgendasStore = defineStore('agendas', () => {
     selectedTags,
     isShowAllAgendas,
     allTags,
+    agendasMarkdownData,
     agendaDrawerRenderData,
     toggleTag,
     findSpeakers,

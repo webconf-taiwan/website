@@ -1,3 +1,4 @@
+import type { MarkdownParsedContent } from '@nuxt/content'
 import type { SocialLinkType } from '~/types/speakers'
 
 export interface AgendaTag {
@@ -43,4 +44,10 @@ export interface AgendaDrawerRenderData {
     href: string
   }[]
   agendaTags: AgendaTag['id'][]
+}
+
+export interface ParsedAgendaData extends MarkdownParsedContent {
+  title: string
+  tags: AgendaTag['id'][]
+  speakerCodes: string[]
 }

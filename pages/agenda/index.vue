@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { appDescription, appName, ogImageLink } from '~/constants'
+import type { ParsedAgendaData } from '~/types/agendas'
 
 const { $lenis } = useNuxtApp()
+
+const agendasStore = useAgendasStore()
 
 useSeoMeta({
   title: '議程 | 2024 WebConf Taiwan',
@@ -18,6 +21,9 @@ useSeoMeta({
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
+
+const { data: agendasMarkdownData } = await useAsyncData('agendas', () => queryContent<ParsedAgendaData>('agendas').find())
+agendasStore.agendasMarkdownData = agendasMarkdownData.value
 
 onMounted(() => {
   $lenis.scrollTo(0)
