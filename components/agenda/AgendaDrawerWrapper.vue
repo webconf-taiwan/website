@@ -6,7 +6,12 @@ import { agendaShareBaseUrl } from '~/constants/agendas'
 import type { SocialLinkType } from '~/types/speakers'
 
 const agendasStore = useAgendasStore()
-const { agendaDrawerRenderData } = storeToRefs(agendasStore)
+const {
+  agendaDrawerContentTabsMap,
+  currentContentTab,
+  agendaDrawerRenderData,
+  currentAgendaMarkdownData,
+} = storeToRefs(agendasStore)
 
 // Mapping 社群連結
 const socialLinks = computed(() => {
@@ -26,15 +31,6 @@ const agendaPaperLinks = computed(() => {
   }))
 })
 
-const agendaDrawerContentTabsMap = [
-  ['議程資訊'],
-  ['講者介紹'],
-]
-
-const defaultContentTab = computed(() => {
-  return agendaDrawerContentTabsMap[0][0]
-})
-const currentContentTab = ref(defaultContentTab.value)
 const tabsRef = ref<HTMLDivElement | null>(null)
 
 const source = ref('')
@@ -177,9 +173,9 @@ const svgViewBox = computed(() => {
       >
         <TabsList class="sticky left-0 top-2 z-20 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
           <TabsTrigger
-            v-for="(date, index) in agendaDrawerContentTabsMap"
-            :key="date[0]"
-            :value="date[0]"
+            v-for="(tab, index) in agendaDrawerContentTabsMap"
+            :key="tab[0]"
+            :value="tab[0]"
             class="group absolute size-full w-[56%] bg-primary-deep-green font-['Mina'] text-xl font-bold leading-none text-white transition-all duration-300 data-[state=active]:z-[3] data-[state=active]:h-[calc(100%+6px)] data-[state=active]:w-[56%] data-[state=active]:bg-primary-green data-[state=active]:text-black lg:w-[51%] lg:text-[2rem] lg:data-[state=active]:h-[calc(100%+8px)] lg:data-[state=active]:w-[53%] lg:data-[state=inactive]:hover:bg-[hsla(176,99%,29%,1)]"
             :class="[index === 0 ? 'tabs-clip-right left-0 z-[2]' : 'tabs-clip-left right-0 z-[1]']"
           >
@@ -187,15 +183,15 @@ const svgViewBox = computed(() => {
               class="relative flex items-center gap-x-2 truncate pt-1 tracking-wide lg:justify-center lg:pt-2"
               :class="[index === 0 ? 'justify-start pl-4' : 'justify-end pr-4']"
             >
-              <span>{{ (date[0]) }}</span> <span class="lg:text-2xl">{{ (date[1]) }}</span>
+              <span class="lg:text-[1.75rem]">{{ (tab[1]) }}</span>
             </div>
           </TabsTrigger>
         </TabsList>
 
         <TabsContent
-          v-for="date in agendaDrawerContentTabsMap"
-          :key="date[0]"
-          :value="date[0]"
+          v-for="tab in agendaDrawerContentTabsMap"
+          :key="tab[0]"
+          :value="tab[0]"
           :force-mount="true"
         >
           <div class="mt-[-1px] w-full border border-primary-green px-5 py-6 md:px-7">
@@ -203,11 +199,15 @@ const svgViewBox = computed(() => {
               name="fade"
               mode="out-in"
             >
-              <template v-if="currentContentTab === '議程資訊'">
-                <AgendaDrawerContent />
+              <template v-if="currentContentTab === 'agenda-info'">
+                <div>
+                  <ContentRenderer :value="currentAgendaMarkdownData" />
+                </div>
               </template>
               <template v-else>
-                <AgendaDrawerSpeakerContent />
+                <div>
+                  <ContentRenderer :value="currentAgendaMarkdownData" />
+                </div>
               </template>
             </Transition>
           </div>

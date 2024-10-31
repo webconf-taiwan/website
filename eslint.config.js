@@ -100,6 +100,7 @@ export default antfu(
             'marquee-text-outline',
             'drawer-content',
             'agenda-content',
+            'text-glitch',
             'glitch-effect',
             'home-bg',
             'tabs-clip-right',

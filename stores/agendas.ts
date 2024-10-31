@@ -35,10 +35,22 @@ export const useAgendasStore = defineStore('agendas', () => {
       .map(speakerCode => speakers.find(speaker => speaker.code === speakerCode) as Speaker || [])
   }
 
+  const agendaDrawerContentTabsMap = reactive([
+    ['agenda-info', '議程資訊'],
+    ['speaker-intro', '講者介紹'],
+  ])
+
+  const defaultContentTab = computed(() => {
+    return agendaDrawerContentTabsMap[0][0]
+  })
+  const currentContentTab = ref(defaultContentTab.value)
+
   const currentAgendaDrawerId = ref<string>('')
   const agendasMarkdownData = ref<ParsedAgendaData[] | null>(null)
 
-  const currentAgendaDrawerPath = computed(() => `/agendas/${currentAgendaDrawerId.value}`)
+  const currentAgendaMarkdownData = computed(() => {
+    return agendasMarkdownData.value?.find(agenda => agenda._path?.split('/').pop() === currentAgendaDrawerId.value)
+  })
 
   const initAgendaDrawerData: AgendaDrawerRenderData = {
     speakerName: '',
@@ -73,8 +85,10 @@ export const useAgendasStore = defineStore('agendas', () => {
     selectedTags,
     isShowAllAgendas,
     allTags,
+    agendaDrawerContentTabsMap,
+    currentContentTab,
     currentAgendaDrawerId,
-    currentAgendaDrawerPath,
+    currentAgendaMarkdownData,
     agendasMarkdownData,
     agendaDrawerRenderData,
     toggleTag,

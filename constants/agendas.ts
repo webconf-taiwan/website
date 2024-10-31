@@ -27,14 +27,14 @@ export const agendaData: DaySchedule = {
         M: {
           id: '1227-1-m',
           title: 'TBD',
-          tags: [],
+          tags: ['backend', 'agile'],
           speakerCodes: ['ihower'],
         },
         F: {
           id: '1227-1-f',
           title: 'TBD',
           tags: [],
-          speakerCodes: [],
+          speakerCodes: ['kyocheng'],
         },
         A2: {
           id: '1227-1-a2',
