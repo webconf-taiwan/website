@@ -39,10 +39,10 @@ export const useAgendasStore = defineStore('agendas', () => {
   ])
 
   function setAgendaDrawerRenderData(agenda: AgendaItem) {
-    const filteredSpeaker = findSpeakers(agenda.speakerCodes)
-    
+    const filteredSpeakers = findSpeakers(agenda.speakerCodes)
+
     // 根據講者數量重置 agendaDrawerRenderData
-    agendaDrawerRenderData.value = filteredSpeaker.map(speaker => ({
+    agendaDrawerRenderData.value = filteredSpeakers.map(speaker => ({
       speakerName: speaker.displayName,
       agendaTitle: agenda.title,
       speakerAvatar: speaker.avatar,
