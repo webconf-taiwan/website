@@ -72,7 +72,7 @@ watch(() => route.query.date, (date) => {
       :value="date[0]"
       :force-mount="true"
     >
-      <AgendaContent
+      <AgendaSlots
         :agenda-time-slots="agendaData[date[0]]"
         :tabs-top="tabsTop"
         :agenda-content-footer-dates="agendaContentFooterDates"

@@ -25,7 +25,7 @@ const combinedSpeakersDisplayName = speakersData.map(speaker => speaker.displayN
     </h3>
 
     <!-- Agenda tags -->
-    <AgendaTypeTag :tags="agenda.tags" />
+    <AgendaItemTags :tags="agenda.tags" />
 
     <!-- Agenda speakers -->
     <div class="mt-3 grow content-end text-start">

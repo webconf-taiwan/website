@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import AgendaSlotsWrapper from '~/components/agenda/AgendaSlotsWrapper.vue'
 import { appDescription, appName, ogImageLink } from '~/constants'
 import type { ParsedAgendaData } from '~/types/agendas'
 
@@ -48,7 +49,7 @@ onMounted(() => {
         </template>
       </SectionTitle>
       <AgendaTagsWrapper class="mb-9 lg:mb-11" />
-      <AgendaContentWrapper />
+      <AgendaSlotsWrapper />
     </div>
   </main>
 </template>
