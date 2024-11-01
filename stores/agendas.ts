@@ -25,33 +25,47 @@ export const useAgendasStore = defineStore('agendas', () => {
     return agendasMarkdownData.value?.find(agenda => agenda._path?.split('/').pop() === currentAgendaDrawerId.value)
   })
 
-  const initAgendaDrawerData: AgendaDrawerRenderData = {
-    speakerName: '',
-    speakerAvatar: '',
-    agendaTitle: '',
-    jobTitle: '',
-    socialLinks: [],
-    agendaDescription: '',
-    agendaPaperLinks: [],
-    agendaTags: [],
-  }
-
-  const agendaDrawerRenderData = ref<AgendaDrawerRenderData>({ ...initAgendaDrawerData })
-
-  function cleanDrawerRenderData() {
-    agendaDrawerRenderData.value = { ...initAgendaDrawerData }
-  }
+  const agendaDrawerRenderData = ref<AgendaDrawerRenderData[]>([
+    {
+      speakerName: '',
+      speakerAvatar: '',
+      agendaTitle: '',
+      jobTitle: '',
+      socialLinks: [],
+      agendaDescription: '',
+      agendaPaperLinks: [],
+      agendaTags: [],
+    },
+  ])
 
   function setAgendaDrawerRenderData(agenda: AgendaItem) {
     const filteredSpeaker = findSpeakers(agenda.speakerCodes)
-    agendaDrawerRenderData.value.speakerName = filteredSpeaker[0].displayName
-    agendaDrawerRenderData.value.speakerAvatar = filteredSpeaker[0].avatar
-    agendaDrawerRenderData.value.agendaTitle = agenda.title
-    agendaDrawerRenderData.value.jobTitle = filteredSpeaker[0].jobTitle || ''
-    agendaDrawerRenderData.value.socialLinks = filteredSpeaker[0].socialLinks || []
-    agendaDrawerRenderData.value.agendaDescription = 'null'
-    agendaDrawerRenderData.value.agendaPaperLinks = agenda.paperLinks || []
-    agendaDrawerRenderData.value.agendaTags = agenda.tags
+    
+    // 根據講者數量重置 agendaDrawerRenderData
+    agendaDrawerRenderData.value = filteredSpeaker.map(speaker => ({
+      speakerName: speaker.displayName,
+      agendaTitle: agenda.title,
+      speakerAvatar: speaker.avatar,
+      socialLinks: speaker.socialLinks || [],
+      jobTitle: speaker.jobTitle || '',
+      agendaDescription: 'null',
+      agendaPaperLinks: agenda.paperLinks || [],
+      agendaTags: agenda.tags,
+    }))
+  }
+
+  function cleanDrawerRenderData() {
+    // 重置為單一空白資料
+    agendaDrawerRenderData.value = [{
+      speakerName: '',
+      speakerAvatar: '',
+      agendaTitle: '',
+      jobTitle: '',
+      socialLinks: [],
+      agendaDescription: '',
+      agendaPaperLinks: [],
+      agendaTags: [],
+    }]
   }
 
   return {

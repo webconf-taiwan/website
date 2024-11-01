@@ -43,6 +43,7 @@ export const navLinks = [
   },
 ]
 
+// Footer－聯絡資訊
 export const contactInfos = [
   {
     trapezoidClass: 'trapezoid-top-left',
@@ -58,13 +59,28 @@ export const contactInfos = [
   },
 ]
 
-export const venueGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'
-
-export const accupassLink = 'https://www.accupass.com/event/2409191151131735941095'
-
+// 社群連結 Map
 export const socialIconMap: Record<SocialLinkType, string> = {
   facebook: 'iconoir:facebook',
   x: 'iconoir:x',
   website: 'heroicons:globe-alt',
   instagram: 'iconoir:instagram',
 }
+
+// 歷屆連結
+export const historyLinks = [
+  {
+    name: '2013',
+    href: 'https://2013.webconf.tw/',
+  },
+  {
+    name: '2023',
+    href: 'https://2023.webconf.tw/',
+  },
+]
+
+// 場地 Google Map 連結
+export const venueGoogleMapLink = 'https://maps.app.goo.gl/MbsHihMJY9Wkg1eF7'
+
+// Accupass 連結
+export const accupassLink = 'https://www.accupass.com/event/2409191151131735941095'

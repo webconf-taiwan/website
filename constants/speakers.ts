@@ -35,6 +35,7 @@ export const speakers: Speaker[] = [
   {
     id: 'speaker_3',
     code: 'ihower',
+    jobTitle: 'ex-test-test-test-test-test-test JOB Title',
     displayName: '張文鈿 iHower',
     avatar: '/speakers/avatar_ihower.png',
     socialLinks: [
@@ -269,6 +270,20 @@ export const speakers: Speaker[] = [
     code: 'kyocheng',
     displayName: 'Kyo Cheng',
     avatar: '/speakers/avatar_kyocheng.png',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/mosky.tw',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/moskytw',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/mosky.tw',
+      },
+    ],
   },
   {
     id: 'speaker_41',

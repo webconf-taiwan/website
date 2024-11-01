@@ -10,21 +10,20 @@ import { navLinks } from '~/constants'
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
 
-const router = useRouter()
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
-
 const navDrawer = useTemplateRef('navDrawer')
 
 watch(isSmallerLg, () => {
   navDrawer.value?.close()
 })
 
-const aosDelay = computed(() => isHome.value ? 3000 : 0)
-function handleNavigation(href: string) {
-  router.push(href)
+// 當 route 改變時，關閉 navDrawer
+watch(route, () => {
   navDrawer.value?.close()
-}
+})
+
+const aosDelay = computed(() => isHome.value ? 3000 : 0)
 </script>
 
 <template>
@@ -55,7 +54,6 @@ function handleNavigation(href: string) {
             <NavDrawerHeader />
             <NavDrawerContent
               :nav-links="navLinks"
-              @navigate="handleNavigation"
             />
             <NavDrawerCloseBtn @close="navDrawer?.close" />
           </template>

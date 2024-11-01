@@ -27,13 +27,13 @@ function open() {
 
 function close() {
   closeDrawer()
-  agendasStore.cleanDrawerRenderData()
+  // agendasStore.cleanDrawerRenderData()
 }
 
 function handleKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape' && isActive.value) {
     close()
-    agendasStore.cleanDrawerRenderData()
+    // agendasStore.cleanDrawerRenderData()
   }
 }
 
