@@ -41,7 +41,6 @@ export const useAgendasStore = defineStore('agendas', () => {
   function setAgendaDrawerRenderData(agenda: AgendaItem) {
     const filteredSpeakers = findSpeakers(agenda.speakerCodes)
 
-    // 根據講者數量重置 agendaDrawerRenderData
     agendaDrawerRenderData.value = filteredSpeakers.map(speaker => ({
       speakerName: speaker.displayName,
       agendaTitle: agenda.title,
@@ -55,7 +54,6 @@ export const useAgendasStore = defineStore('agendas', () => {
   }
 
   function cleanDrawerRenderData() {
-    // 重置為單一空白資料
     agendaDrawerRenderData.value = [{
       speakerName: '',
       speakerAvatar: '',
