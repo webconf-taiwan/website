@@ -5,8 +5,8 @@ const props = defineProps<{
   slotData: TimeSlot
 }>()
 
-const agendasStore = useAgendasStore()
-const { selectedTags, isShowAllAgendas } = storeToRefs(agendasStore)
+const tagsStore = useTagsStore()
+const { selectedTags, IsSelectedTagsEmpty } = storeToRefs(tagsStore)
 
 const agendaGroupTagsCollection = computed(() => {
   if (!props.slotData.agendas)
@@ -20,7 +20,7 @@ const agendaGroupTagsCollection = computed(() => {
 })
 
 const isAgendaGroupDisabled = computed(() => {
-  if (isShowAllAgendas.value)
+  if (IsSelectedTagsEmpty.value)
     return false
   return !agendaGroupTagsCollection.value.some(tag => selectedTags.value.includes(tag))
 })

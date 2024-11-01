@@ -9,12 +9,12 @@ const props = defineProps<{
 }>()
 
 const agendasStore = useAgendasStore()
-const { selectedTags, isShowAllAgendas } = storeToRefs(agendasStore)
+const tagsStore = useTagsStore()
 
 const isAgendaDisabled = computed(() => {
-  if (isShowAllAgendas.value)
+  if (tagsStore.IsSelectedTagsEmpty)
     return false
-  return !selectedTags.value.some(tag => props.agenda.tags.includes(tag))
+  return !tagsStore.selectedTags.some(tag => props.agenda.tags.includes(tag))
 })
 
 const breakpoints = useBreakpoints(breakpointsTailwind)

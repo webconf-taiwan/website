@@ -2,14 +2,14 @@
 import { agendaTags } from '~/constants/agendas'
 import type { AgendaTag } from '~/types/agendas'
 
-const agendasStore = useAgendasStore()
+const tagsStore = useTagsStore()
 
 const filteredAgendaTags = computed(() => {
-  return agendaTags.filter(tag => agendasStore.allTags.includes(tag.id))
+  return agendaTags.filter(tag => tagsStore.allTags.includes(tag.id))
 })
 
 function isSelected(tagId: AgendaTag['id']) {
-  return agendasStore.selectedTags.includes(tagId)
+  return tagsStore.selectedTags.includes(tagId)
 }
 </script>
 
@@ -39,7 +39,7 @@ function isSelected(tagId: AgendaTag['id']) {
             ? 'bg-gradient-to-t from-[rgba(0,255,204,0.5)] to-[rgba(0,255,204,0.1)] text-white'
             : 'text-primary-mid-green lg:hover:bg-[hsla(176,99%,29%,1)] lg:hover:text-white',
         ]"
-        @click="agendasStore.toggleTag(tag.id)"
+        @click="tagsStore.toggleTag(tag.id)"
       >
         <span>{{ tag.text }}</span>
       </button>
