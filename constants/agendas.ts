@@ -60,7 +60,7 @@ export const agendaData: DaySchedule = {
           id: '1227-1-a2',
           title: '串連品牌從實體到數位的體驗',
           tags: ['uiux'],
-          speakerCodes: ['weikan'],
+          speakerCodes: ['weikan', 'weithenn'],
         },
       },
     },

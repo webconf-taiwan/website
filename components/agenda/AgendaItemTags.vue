@@ -2,7 +2,7 @@
 import type { AgendaTag } from '~/types/agendas'
 
 const props = defineProps<{
-  tags: AgendaTag['id'][]
+  tags?: AgendaTag['id'][]
 }>()
 
 const tagsStore = useTagsStore()

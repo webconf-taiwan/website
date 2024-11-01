@@ -95,6 +95,7 @@ export const speakers: Speaker[] = [
     id: 'speaker_11',
     code: 'weithenn',
     displayName: '王偉任 Weithenn',
+    jobTitle: 'Micron IT Staff Architect',
     avatar: '/speakers/avatar_weithenn.png',
   },
   {
@@ -179,6 +180,7 @@ export const speakers: Speaker[] = [
     id: 'speaker_25',
     code: 'weikan',
     displayName: '甘韋',
+    jobTitle: 'Rytass 八拍子 創意總監',
     avatar: '/speakers/avatar_weikan.png',
   },
   {

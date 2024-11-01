@@ -32,7 +32,10 @@ export const useTagsStore = defineStore('tags', () => {
     selectedTags.value = []
   }
 
-  function filterAgendaTags(tagIds: AgendaTag['id'][]) {
+  function filterAgendaTags(tagIds?: AgendaTag['id'][]) {
+    if (!tagIds || tagIds.length === 0)
+      return []
+
     return agendaTags.filter(tag => tagIds.includes(tag.id))
   }
 
