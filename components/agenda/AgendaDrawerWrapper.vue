@@ -14,22 +14,22 @@ const {
 } = storeToRefs(agendasStore)
 
 // Mapping 社群連結
-const socialLinks = computed(() => {
-  return agendaDrawerRenderData.value.socialLinks.map(link => ({
+function getSocialLinks(links: typeof agendaDrawerRenderData.value[number]['socialLinks']) {
+  return links.map(link => ({
     href: link.url,
     icon: socialIconMap[link.type as SocialLinkType] || '',
     type: link.type,
   }))
-})
+}
 
 // 組合議程共筆＆PPT連結
-const agendaPaperLinks = computed(() => {
-  return agendaDrawerRenderData.value.agendaPaperLinks.map(link => ({
+function getAgendaPaperLinks(links: typeof agendaDrawerRenderData.value[number]['agendaPaperLinks']) {
+  return links.map(link => ({
     title: link.type === 'note' ? '共筆文件' : '投影片',
     icon: link.type === 'note' ? 'heroicons:document-text' : 'heroicons:presentation-chart-line',
     href: link.href,
   }))
-})
+}
 
 const tabsRef = ref<HTMLDivElement | null>(null)
 
@@ -37,9 +37,13 @@ const source = ref('')
 const { toast } = useToast()
 const { copy } = useClipboard({ source })
 function getShareUrl(id: string) {
+  const speakerNames = agendaDrawerRenderData.value
+    .map(speaker => speaker.speakerName)
+    .join('、')
+
   toast({
     title: '議程資訊連結｜複製成功',
-    description: `${agendaDrawerRenderData.value.speakerName}｜${agendaDrawerRenderData.value.agendaTitle}`,
+    description: `${speakerNames}｜${agendaDrawerRenderData.value[0].agendaTitle}`,
   })
   return `${agendaShareBaseUrl}/${id}`
 }
@@ -59,8 +63,14 @@ const svgViewBox = computed(() => {
 </script>
 
 <template>
-  <div class="space-y-5 text-justify leading-7 tracking-wide lg:flex-1">
-    <div class="mt-[1px] w-full md:flex md:space-x-5">
+  <div class="space-y-8 text-justify leading-7 tracking-wide lg:flex-1">
+    <div
+      v-for="(speaker, index) in agendaDrawerRenderData"
+      :key="speaker.speakerName"
+      class="mt-[1px] w-full md:flex md:space-x-5"
+      :class="{ 'mt-8': index > 0 }"
+    >
+      <!-- 講者頭像 -->
       <div class="flex w-full shrink-0 items-center justify-center overflow-hidden md:h-full md:w-[200px]">
         <svg
           class="absolute"
@@ -75,8 +85,8 @@ const svgViewBox = computed(() => {
         </svg>
         <div class="relative mt-[1px] h-auto w-[320px] shrink-0 md:w-[200px]">
           <NuxtImg
-            :src="agendaDrawerRenderData.speakerAvatar"
-            alt="講者圖片"
+            :src="speaker.speakerAvatar"
+            :alt="`${speaker.speakerName} 講者圖片`"
             class="size-full object-cover"
             style="clip-path: url(#square-with-corner-cut);"
           />
@@ -99,21 +109,22 @@ const svgViewBox = computed(() => {
         </div>
       </div>
 
+      <!-- 講者資訊 -->
       <div class="mt-5 w-full md:mt-0 lg:flex lg:flex-col lg:items-center lg:justify-between">
         <div class="w-full">
           <p class="text-mina border-b pb-[17px] text-sm">
-            {{ agendaDrawerRenderData.jobTitle }}
+            {{ speaker.jobTitle }}
           </p>
           <p class="text-mina mt-5 text-[32px] font-bold md:mt-4">
-            {{ agendaDrawerRenderData.speakerName }}
+            {{ speaker.speakerName }}
           </p>
         </div>
 
         <div class="mt-6 w-full space-y-2 md:flex md:items-center md:justify-between md:space-x-6 md:space-y-0">
-          <!-- 連結 -->
+          <!-- 社群連結 -->
           <ul class="flex min-w-[216px] gap-x-2">
             <li
-              v-for="link in socialLinks"
+              v-for="link in getSocialLinks(speaker.socialLinks)"
               :key="link.type"
               class="group relative bg-primary-green/10"
             >
@@ -144,10 +155,13 @@ const svgViewBox = computed(() => {
             </li>
           </ul>
 
-          <!-- 共筆＆PPT -->
-          <div class="flex w-full items-end justify-center gap-x-2 lg:max-w-[380px] ">
+          <!-- 共筆＆PPT - 只在單講者時顯示 -->
+          <div
+            v-if="agendaDrawerRenderData.length === 1"
+            class="flex w-full items-end justify-center gap-x-2 lg:max-w-[380px]"
+          >
             <NuxtLink
-              v-for="link in agendaPaperLinks"
+              v-for="link in getAgendaPaperLinks(speaker.agendaPaperLinks)"
               :key="link.href"
               :to="link.href"
               target="_blank"
@@ -163,6 +177,27 @@ const svgViewBox = computed(() => {
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- 雙講者時的議程文件 -->
+    <div
+      v-if="agendaDrawerRenderData.length === 2"
+      class="flex w-full items-end justify-center gap-x-2 lg:max-w-[380px]"
+    >
+      <NuxtLink
+        v-for="link in agendaDrawerRenderData[0].agendaPaperLinks"
+        :key="link.href"
+        :to="link.href"
+        target="_blank"
+        class="flex w-1/2 items-center justify-center gap-x-2 border border-primary-green px-1 py-2 text-center text-xl duration-150 lg:hover:bg-primary-dark-green"
+      >
+        {{ link.type === 'note' ? '共筆文件' : '投影片' }}
+        <Icon
+          :name="link.type === 'note' ? 'heroicons:document-text' : 'heroicons:presentation-chart-line'"
+          size="24"
+          class="hidden xl:block"
+        />
+      </NuxtLink>
     </div>
 
     <div class="mt-6 w-full">

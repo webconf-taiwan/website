@@ -28,13 +28,33 @@ export const agendaData: DaySchedule = {
           id: '1227-1-m',
           title: 'TBD',
           tags: ['backend', 'agile'],
-          speakerCodes: ['ihower'],
+          speakerCodes: ['ihower', 'mosky'],
+          paperLinks: [
+            {
+              type: 'note',
+              href: 'https://www.google.com',
+            },
+            {
+              type: 'slide',
+              href: 'https://www.youtube.com',
+            },
+          ],
         },
         F: {
           id: '1227-1-f',
           title: 'TBD',
           tags: [],
           speakerCodes: ['kyocheng'],
+          paperLinks: [
+            {
+              type: 'note',
+              href: 'https://www.google.com',
+            },
+            {
+              type: 'slide',
+              href: 'https://www.youtube.com',
+            },
+          ],
         },
         A2: {
           id: '1227-1-a2',
