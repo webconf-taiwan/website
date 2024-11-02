@@ -24,7 +24,7 @@ onMounted(async () => {
   const tlSm = $gsap.timeline({
     scrollTrigger: {
       trigger: headerRef,
-      start: 'top top',
+      start: '-1px top',
       end: 'bottom top',
       scrub: 1,
       // markers: true,

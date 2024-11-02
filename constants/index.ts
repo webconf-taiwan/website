@@ -11,11 +11,11 @@ export const navLinks = [
     engName: 'AGENDA',
     href: '/agenda',
   },
-  // {
-  //   name: '講者',
-  //   engName: 'SPEAKERS',
-  //   href: '#',
-  // },
+  {
+    name: '講者',
+    engName: 'SPEAKERS',
+    href: '/speaker',
+  },
   // {
   //   name: '場域',
   //   engName: 'VENUE',
