@@ -1,11 +1,11 @@
 ---
 title: TBD
 date: 2024-12-27
-startTime: 09:00
-endTime: 09:45
+startTime: 15:20
+endTime: 16:05
 location: M
 tags: []
-speakerCodes: ['ihower']
+speakerCodes: []
 ---
 
 ::agenda-tabs-content

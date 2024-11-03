@@ -1,0 +1,41 @@
+---
+title: 設計很豐滿，開發很骨感 — 淺談設計交付
+date: 2024-12-27
+startTime: 11:55
+endTime: 12:40
+location: A2
+tags: ['frontend', 'uiux', 'product-design', 'team-management']
+speakerCodes: ['rei']
+---
+
+::agenda-tabs-content
+<!--議程資訊-->
+#agenda
+:::agenda-title
+{{ $doc.title }}
+:::
+
+:::agenda-info{:date="date" :start-time="startTime" :end-time="endTime" :location="location"}
+:::
+
+<!--議程資訊(內容)-->
+設計交付一直是一個重要但卻很少人討論的議題，它剛好介在設計與開發之間，當設計師完成畫面的設計，然後呢？由誰交付？如何交付？如何確保產品的設計品質？後續又該如何維護設計？這些都是值得討論的議題。其實每一次的設計交付，對產品經理、設計師與工程師，都是很好的學習的機會，透過設計交付可以更了解彼此對於產品的想像與期待，並降低雙方的認知差異，提高團隊的開發效率。
+
+:::agenda-content-tags
+:::
+
+---
+
+:::agenda-title
+目標會眾
+:::
+
+<!--目標會眾(內容)-->
+設計師、前端工程師（ web、ios、android ）、產品經理
+
+<!--講者介紹-->
+#speaker
+<!--講者介紹(內容)-->
+我是Rei。憑藉自學累積了 10 年的 UI 和視覺設計經驗，專精介面設計，熟悉不同裝置的設計規範，擅長建立設計系統，並致力於透過設計流程優化提升產品的開發效率。之前在金融公司擔任 Principle Desinger，目前為金谷設計的負責人，提供專業的設計服務。
+
+::
