@@ -3,7 +3,9 @@ import { useToast } from '@/components/ui/toast/use-toast'
 import { breakpointsTailwind, useBreakpoints, useClipboard } from '@vueuse/core'
 import { socialIconMap } from '~/constants'
 import { agendaShareBaseUrl } from '~/constants/agendas'
+import type { AgendaDrawerRenderData } from '~/types/agendas'
 import type { SocialLinkType } from '~/types/speakers'
+import AgendaDrawerOtherLinks from './AgendaDrawerOtherLinks.vue'
 
 const agendasStore = useAgendasStore()
 const {
@@ -14,20 +16,11 @@ const {
 } = storeToRefs(agendasStore)
 
 // Mapping 社群連結
-function getSocialLinks(links: typeof agendaDrawerRenderData.value[number]['socialLinks']) {
+function getSocialLinks(links: AgendaDrawerRenderData['socialLinks']) {
   return links.map(link => ({
     href: link.url,
     icon: socialIconMap[link.type as SocialLinkType] || '',
     type: link.type,
-  }))
-}
-
-// 組合議程共筆＆PPT連結
-function getAgendaPaperLinks(links: typeof agendaDrawerRenderData.value[number]['agendaPaperLinks']) {
-  return links.map(link => ({
-    title: link.type === 'note' ? '共筆文件' : '投影片',
-    icon: link.type === 'note' ? 'heroicons:document-text' : 'heroicons:presentation-chart-line',
-    href: link.href,
   }))
 }
 
@@ -112,7 +105,7 @@ const svgViewBox = computed(() => {
       <!-- 講者資訊 -->
       <div class="mt-5 w-full md:mt-0 lg:flex lg:flex-col lg:items-center lg:justify-between">
         <div class="w-full">
-          <p class="text-mina border-b pb-[17px] text-sm">
+          <p class="text-mina border-b pb-4 text-sm">
             {{ speaker.jobTitle }}
           </p>
           <p class="text-mina mt-5 text-[32px] font-bold md:mt-4">
@@ -156,49 +149,21 @@ const svgViewBox = computed(() => {
           </ul>
 
           <!-- 共筆＆PPT - 只在單講者時顯示 -->
-          <div
+          <AgendaDrawerOtherLinks
             v-if="agendaDrawerRenderData.length === 1"
-            class="flex w-full items-end justify-center gap-x-2 lg:max-w-[380px]"
-          >
-            <NuxtLink
-              v-for="link in getAgendaPaperLinks(speaker.agendaPaperLinks)"
-              :key="link.href"
-              :to="link.href"
-              target="_blank"
-              class="flex w-1/2 items-center justify-center gap-x-2 border border-primary-green px-1 py-2 text-center text-xl duration-150 lg:hover:bg-primary-dark-green"
-            >
-              {{ link.title }}
-              <Icon
-                :name="link.icon"
-                size="24"
-                class="hidden xl:block"
-              />
-            </NuxtLink>
-          </div>
+            :agenda-other-links="speaker.agendaOtherLinks"
+            class="justify-end"
+          />
         </div>
       </div>
     </div>
 
-    <!-- 雙講者時的議程文件 -->
-    <div
-      v-if="agendaDrawerRenderData.length === 2"
-      class="flex w-full items-end justify-center gap-x-2 lg:max-w-[380px]"
-    >
-      <NuxtLink
-        v-for="link in agendaDrawerRenderData[0].agendaPaperLinks"
-        :key="link.href"
-        :to="link.href"
-        target="_blank"
-        class="flex w-1/2 items-center justify-center gap-x-2 border border-primary-green px-1 py-2 text-center text-xl duration-150 lg:hover:bg-primary-dark-green"
-      >
-        {{ link.type === 'note' ? '共筆文件' : '投影片' }}
-        <Icon
-          :name="link.type === 'note' ? 'heroicons:document-text' : 'heroicons:presentation-chart-line'"
-          size="24"
-          class="hidden xl:block"
-        />
-      </NuxtLink>
-    </div>
+    <!-- 多講者時的議程文件 -->
+    <AgendaDrawerOtherLinks
+      v-if="agendaDrawerRenderData.length > 1"
+      :agenda-other-links="agendaDrawerRenderData[0].agendaOtherLinks"
+      class="justify-start"
+    />
 
     <div class="mt-6 w-full">
       <Tabs
@@ -211,7 +176,7 @@ const svgViewBox = computed(() => {
             v-for="(tab, index) in agendaDrawerContentTabsMap"
             :key="tab[0]"
             :value="tab[0]"
-            class="group absolute size-full w-[56%] bg-primary-deep-green font-['Mina'] text-xl font-bold leading-none text-white transition-all duration-300 data-[state=active]:z-[3] data-[state=active]:h-[calc(100%+6px)] data-[state=active]:w-[56%] data-[state=active]:bg-primary-green data-[state=active]:text-black lg:w-[51%] lg:text-[2rem] lg:data-[state=active]:h-[calc(100%+8px)] lg:data-[state=active]:w-[53%] lg:data-[state=inactive]:hover:bg-[hsla(176,99%,29%,1)]"
+            class="group absolute size-full w-[56%] bg-primary-deep-green font-['Mina'] text-xl font-bold leading-none text-white transition-all duration-300 data-[state=active]:z-[3] data-[state=active]:h-[calc(100%+6px)] data-[state=active]:w-[56%] data-[state=active]:bg-primary-green data-[state=active]:text-black lg:w-[52%] lg:text-[2rem] lg:data-[state=active]:h-[calc(100%+8px)] lg:data-[state=active]:w-[55%] lg:data-[state=inactive]:hover:bg-[hsla(176,99%,29%,1)]"
             :class="[index === 0 ? 'tabs-clip-right left-0 z-[2]' : 'tabs-clip-left right-0 z-[1]']"
           >
             <div

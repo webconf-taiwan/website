@@ -33,7 +33,7 @@ export const useAgendasStore = defineStore('agendas', () => {
       jobTitle: '',
       socialLinks: [],
       agendaDescription: '',
-      agendaPaperLinks: [],
+      agendaOtherLinks: [],
       agendaTags: [],
     },
   ])
@@ -48,7 +48,7 @@ export const useAgendasStore = defineStore('agendas', () => {
       socialLinks: speaker.socialLinks || [],
       jobTitle: speaker.jobTitle || '',
       agendaDescription: 'null',
-      agendaPaperLinks: agenda.paperLinks || [],
+      agendaOtherLinks: agenda.otherLinks || [],
       agendaTags: agenda.tags,
     }))
   }
@@ -61,7 +61,7 @@ export const useAgendasStore = defineStore('agendas', () => {
       jobTitle: '',
       socialLinks: [],
       agendaDescription: '',
-      agendaPaperLinks: [],
+      agendaOtherLinks: [],
       agendaTags: [],
     }]
   }

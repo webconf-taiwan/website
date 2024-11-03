@@ -5,7 +5,8 @@ const tags = computed(() => agendasStore.currentAgendaMarkdownData?.tags)
 </script>
 
 <template>
-  <div>
-    <AgendaItemTags :tags="tags" />
-  </div>
+  <AgendaItemTags
+    class="mt-4"
+    :tags="tags"
+  />
 </template>

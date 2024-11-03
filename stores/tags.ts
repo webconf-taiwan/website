@@ -1,4 +1,4 @@
-import { agendaData, agendaTags } from '~/constants/agendas'
+import { agendaData } from '~/constants/agendas'
 import type { AgendaTag } from '~/types/agendas'
 
 export const useTagsStore = defineStore('tags', () => {
@@ -32,20 +32,12 @@ export const useTagsStore = defineStore('tags', () => {
     selectedTags.value = []
   }
 
-  function filterAgendaTags(tagIds?: AgendaTag['id'][]) {
-    if (!tagIds || tagIds.length === 0)
-      return []
-
-    return agendaTags.filter(tag => tagIds.includes(tag.id))
-  }
-
   return {
     selectedTags,
     IsSelectedTagsEmpty,
     allTags,
     toggleTag,
     resetTags,
-    filterAgendaTags,
   }
 })
 

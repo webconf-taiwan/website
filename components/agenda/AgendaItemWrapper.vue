@@ -93,7 +93,7 @@ function triggerAgenda(agenda: AgendaItem) {
     <Drawer
       ref="agendaDrawer"
       :slide-direction="drawerSlideDirection"
-      drawer-class="lg:w-[80dvw] xl:w-[67dvw]"
+      drawer-class="lg:w-[60dvw]"
     >
       <DrawerContentLayout>
         <template #content>

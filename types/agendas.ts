@@ -6,12 +6,23 @@ export interface AgendaTag {
   text: string
 }
 
+export interface AgendaOtherLinksMap {
+  type: 'note' | 'slide'
+  icon: string
+  text: string
+}
+
+export interface AgendaOtherLink {
+  type: AgendaOtherLinksMap['type']
+  href: string
+}
+
 export interface AgendaItem {
   id: string
   title: string
   tags: AgendaTag['id'][]
   speakerCodes: string[]
-  paperLinks?: {
+  otherLinks?: {
     type: 'note' | 'slide'
     href: string
   }[]
@@ -39,10 +50,7 @@ export interface AgendaDrawerRenderData {
   jobTitle: string
   socialLinks: { type: SocialLinkType, url: string }[] | []
   agendaDescription: string
-  agendaPaperLinks: {
-    type: 'note' | 'slide'
-    href: string
-  }[]
+  agendaOtherLinks: AgendaOtherLink[]
   agendaTags: AgendaTag['id'][]
 }
 

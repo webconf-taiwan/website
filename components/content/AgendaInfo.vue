@@ -10,7 +10,7 @@ const formatted = useDateFormat(props.date, 'MM/DD (ddd.)', { locales: 'en' })
 </script>
 
 <template>
-  <div class="mb-4 flex flex-col items-center gap-y-2 tracking-wider text-primary-green lg:flex-row lg:gap-x-10">
+  <div class="mb-4 flex flex-col items-start gap-y-2 tracking-wider text-primary-green lg:flex-row lg:items-center lg:gap-x-10">
     <div class="flex items-center gap-x-1">
       <Icon
         name="i-heroicons-clock"

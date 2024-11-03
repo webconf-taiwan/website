@@ -8,8 +8,6 @@ const { speaker, agendaData } = defineProps<{
   agendaData: DaySchedule
 }>()
 
-const tagsStore = useTagsStore()
-
 // 依據 Speaker Code 取得個人標籤
 function getPersonalTags(speakerCode: string): string[] {
   const tagsSet = new Set<string>()
@@ -26,7 +24,7 @@ function getPersonalTags(speakerCode: string): string[] {
     })
   })
 
-  const tags = tagsStore.filterAgendaTags(Array.from(tagsSet) as AgendaTag['id'][])
+  const tags = filterAgendaTags(Array.from(tagsSet) as AgendaTag['id'][])
 
   return tags.map(tag => tag.text)
 }

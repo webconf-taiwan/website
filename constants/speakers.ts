@@ -182,6 +182,16 @@ export const speakers: Speaker[] = [
     displayName: '甘韋',
     jobTitle: 'Rytass 八拍子 創意總監',
     avatar: '/speakers/avatar_weikan.png',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/profile.php?id=100005594084804',
+      },
+      {
+        type: 'website',
+        url: 'https://www.linkedin.com/in/kanweinyc/',
+      },
+    ],
   },
   {
     id: 'speaker_26',

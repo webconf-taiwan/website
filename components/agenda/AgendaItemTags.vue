@@ -5,9 +5,7 @@ const props = defineProps<{
   tags?: AgendaTag['id'][]
 }>()
 
-const tagsStore = useTagsStore()
-
-const tags = tagsStore.filterAgendaTags(props.tags)
+const tags = filterAgendaTags(props.tags)
 </script>
 
 <template>
@@ -15,7 +13,7 @@ const tags = tagsStore.filterAgendaTags(props.tags)
     <div
       v-for="tag in tags"
       :key="tag.id"
-      class="rounded border border-primary-green/30 px-2 py-1 text-center font-['Mina'] text-sm text-primary-green"
+      class="h-[30px] content-center rounded border border-primary-green/30 px-2 text-center font-['Mina'] text-sm tracking-wider text-primary-green"
     >
       #{{ tag.text }}
     </div>
