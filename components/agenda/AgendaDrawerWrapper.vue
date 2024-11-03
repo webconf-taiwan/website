@@ -10,8 +10,9 @@ import AgendaDrawerOtherLinks from './AgendaDrawerOtherLinks.vue'
 const agendasStore = useAgendasStore()
 const {
   agendaDrawerContentTabsMap,
-  currentContentTab,
   agendaDrawerRenderData,
+  currentContentTab,
+  currentAgendaDrawerId,
   currentAgendaMarkdownData,
 } = storeToRefs(agendasStore)
 
@@ -82,6 +83,9 @@ const svgViewBox = computed(() => {
             :alt="`${speaker.speakerName} 講者圖片`"
             class="size-full object-cover"
             style="clip-path: url(#square-with-corner-cut);"
+            placeholder="/speakers/avatar_placeholder.svg"
+            format="webp"
+            draggable="false"
           />
 
           <div class="absolute inset-x-0 bottom-0 z-10 h-1.5 bg-primary-green"></div>
@@ -119,7 +123,7 @@ const svgViewBox = computed(() => {
             <li
               v-for="link in getSocialLinks(speaker.socialLinks)"
               :key="link.type"
-              class="group relative bg-primary-green/10"
+              class="group relative size-12 bg-primary-green/10"
             >
               <div
                 class="absolute left-1 top-1 size-[10px] border-l border-t border-primary-green transition-all duration-150 lg:group-hover:left-0 lg:group-hover:top-0"
@@ -137,7 +141,7 @@ const svgViewBox = computed(() => {
               <NuxtLink
                 :to="link.href"
                 target="_blank"
-                class="flex size-12 items-center justify-center"
+                class="relative flex size-full items-center justify-center"
               >
                 <Icon
                   :name="link.icon"
@@ -171,7 +175,7 @@ const svgViewBox = computed(() => {
         v-model="currentContentTab"
         class="w-full"
       >
-        <TabsList class="sticky left-0 top-2 z-20 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
+        <TabsList class="sticky left-0 top-0 z-20 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
           <TabsTrigger
             v-for="(tab, index) in agendaDrawerContentTabsMap"
             :key="tab[0]"
@@ -181,7 +185,7 @@ const svgViewBox = computed(() => {
           >
             <div
               class="relative flex items-center gap-x-2 truncate pt-1 tracking-wide lg:justify-center lg:pt-2"
-              :class="[index === 0 ? 'justify-start pl-4' : 'justify-end pr-4']"
+              :class="[index === 0 ? 'justify-start pl-6' : 'justify-end pr-6']"
             >
               <span class="lg:text-[1.75rem]">{{ (tab[1]) }}</span>
             </div>
@@ -201,12 +205,20 @@ const svgViewBox = computed(() => {
             >
               <template v-if="currentContentTab === 'agenda-info'">
                 <div>
-                  <ContentRenderer :value="currentAgendaMarkdownData" />
+                  <ContentRenderer :value="currentAgendaMarkdownData">
+                    <template #empty>
+                      <p>沒有任何內容。</p>
+                    </template>
+                  </ContentRenderer>
                 </div>
               </template>
               <template v-else>
                 <div>
-                  <ContentRenderer :value="currentAgendaMarkdownData" />
+                  <ContentRenderer :value="currentAgendaMarkdownData">
+                    <template #empty>
+                      <p>沒有任何內容。</p>
+                    </template>
+                  </ContentRenderer>
                 </div>
               </template>
             </Transition>
@@ -225,7 +237,7 @@ const svgViewBox = computed(() => {
         size="custom"
         rounded="none"
         class="max-w-none"
-        @click="copy(getShareUrl('123456'))"
+        @click="copy(getShareUrl(currentAgendaDrawerId))"
       >
         <span class="flex items-center gap-x-[10px] text-xl">
           分享資訊
