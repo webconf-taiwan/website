@@ -18,6 +18,10 @@ export const useAgendasStore = defineStore('agendas', () => {
   })
   const currentContentTab = ref(defaultContentTab.value)
 
+  function resetContentTab() {
+    currentContentTab.value = defaultContentTab.value
+  }
+
   const currentAgendaDrawerId = ref<string>('')
   const agendasMarkdownData = ref<ParsedAgendaData[] | null>(null)
 
@@ -74,6 +78,7 @@ export const useAgendasStore = defineStore('agendas', () => {
     agendasMarkdownData,
     agendaDrawerRenderData,
     findSpeakers,
+    resetContentTab,
     setAgendaDrawerRenderData,
     cleanDrawerRenderData,
   }

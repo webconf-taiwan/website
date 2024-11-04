@@ -185,7 +185,7 @@ const svgViewBox = computed(() => {
           >
             <div
               class="relative flex items-center gap-x-2 truncate pt-1 tracking-wide lg:justify-center lg:pt-2"
-              :class="[index === 0 ? 'justify-start pl-6' : 'justify-end pr-6']"
+              :class="[index === 0 ? 'justify-start pl-6 lg:pl-0' : 'justify-end pr-6 lg:pr-0']"
             >
               <span class="lg:text-[1.75rem]">{{ (tab[1]) }}</span>
             </div>

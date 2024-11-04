@@ -37,7 +37,8 @@ function triggerAgenda(agenda: AgendaItem) {
   <button
     v-if="isBroadcast"
     type="button"
-    class="group relative block overflow-hidden bg-black transition-colors lg:max-w-[334px]"
+    class="group relative block overflow-hidden bg-black transition-colors focus-visible:outline-none lg:max-w-[334px]"
+    @click="triggerAgenda(agenda)"
   >
     <div
       v-show="!isAgendaDisabled"
@@ -73,7 +74,7 @@ function triggerAgenda(agenda: AgendaItem) {
   <button
     v-else
     type="button"
-    class="group relative block overflow-hidden border bg-black transition-colors lg:max-w-[334px]"
+    class="group relative block overflow-hidden border bg-black transition-colors focus-visible:outline-none lg:max-w-[334px]"
     :class="[isAgendaDisabled ? 'border-primary-green/30' : 'border-primary-green']"
     @click="triggerAgenda(agenda)"
   >
@@ -94,6 +95,7 @@ function triggerAgenda(agenda: AgendaItem) {
       ref="agendaDrawer"
       :slide-direction="drawerSlideDirection"
       drawer-class="lg:w-[60dvw]"
+      @close="agendasStore.resetContentTab"
     >
       <DrawerContentLayout>
         <template #content>

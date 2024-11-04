@@ -25,6 +25,14 @@ const dataLenisPrevent = computed(() => {
     ? { 'data-lenis-prevent': '' }
     : {}
 })
+
+function isSeparateSlots(slot: TimeSlot) {
+  return slot.type === 'agenda' && slot.agendas && !slot.isBroadcast && Object.keys(slot.agendas).length > 0
+}
+
+function isBroadcastSlot(slot: TimeSlot) {
+  return slot.type === 'agenda' && slot.agendas && slot.isBroadcast
+}
 </script>
 
 <template>
@@ -63,9 +71,14 @@ const dataLenisPrevent = computed(() => {
         </div>
       </template>
 
-      <!-- Agenda items -->
-      <template v-if="slot.agendas && Object.keys(slot.agendas).length > 0">
+      <!-- Normal slots items -->
+      <template v-if="isSeparateSlots(slot)">
         <AgendaGroup :slot-data="slot" />
+      </template>
+
+      <!-- Broadcast slot items -->
+      <template v-if="isBroadcastSlot(slot)">
+        <AgendaBroadcast :slot-data="slot" />
       </template>
     </div>
 
