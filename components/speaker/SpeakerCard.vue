@@ -1,33 +1,12 @@
 <script lang="ts" setup>
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import type { AgendaTag, DaySchedule } from '~/types/agendas'
+import type { DaySchedule } from '~/types/agendas'
 import type { Speaker } from '~/types/speakers'
 
-const { speaker, agendaData } = defineProps<{
-  speaker: Speaker
+const { speaker } = defineProps<{
+  speaker: Speaker & { tags: string[] }
   agendaData: DaySchedule
 }>()
-
-// 依據 Speaker Code 取得個人標籤
-function getPersonalTags(speakerCode: string): string[] {
-  const tagsSet = new Set<string>()
-
-  Object.values(agendaData).forEach((daySchedule) => {
-    daySchedule.forEach((timeSlot) => {
-      if (timeSlot.type === 'agenda' && timeSlot.agendas) {
-        Object.values(timeSlot.agendas).forEach((agenda) => {
-          if (agenda.speakerCodes.includes(speakerCode)) {
-            agenda.tags.forEach(tag => tagsSet.add(tag))
-          }
-        })
-      }
-    })
-  })
-
-  const tags = filterAgendaTags(Array.from(tagsSet) as AgendaTag['id'][])
-
-  return tags.map(tag => tag.text)
-}
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 
@@ -84,6 +63,9 @@ const svgViewBox = computed(() => {
         :src="speaker.avatar"
         :alt="speaker.displayName"
         class="size-full object-cover"
+        format="webp"
+        :placeholder="[32, 32, 80, 5]"
+        draggable="false"
         style="clip-path: url(#square-with-corner-cut);"
       />
       <svg
@@ -128,9 +110,9 @@ const svgViewBox = computed(() => {
 
     <ul class="mt-4 flex w-full max-w-[288px] flex-wrap gap-2 md:max-w-[197px] lg:max-w-[288px]">
       <li
-        v-for="tag in getPersonalTags(speaker.code)"
+        v-for="tag in speaker.tags"
         :key="tag"
-        class=" flex items-center justify-center border border-primary-green bg-gradient-to-t from-[#00A987] to-[#025966] px-3 py-[5px]"
+        class="flex items-center justify-center border border-primary-green bg-gradient-to-t from-[#00A987] to-[#025966] px-3 py-[5px]"
       >
         <p class="text-mina text-sm tracking-wider">
           {{ tag }}
