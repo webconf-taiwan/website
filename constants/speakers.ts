@@ -6,11 +6,11 @@ export const speakers: Speaker[] = [
     code: 'mosky',
     displayName: 'Mosky',
     avatar: '/speakers/avatar_mosky.png',
-    jobTitle: 'ex-test-test-test-test-test-test JOB Title',
+    jobTitle: 'Independent GenAI Consultant',
     socialLinks: [
       {
         type: 'facebook',
-        url: 'https://www.facebook.com/mosky.tw',
+        url: 'https://www.facebook.com/mosky.liu',
       },
       {
         type: 'x',
@@ -18,11 +18,7 @@ export const speakers: Speaker[] = [
       },
       {
         type: 'website',
-        url: 'https://www.facebook.com/mosky.tw',
-      },
-      {
-        type: 'instagram',
-        url: 'https://www.instagram.com/mosky.tw',
+        url: 'https://medium.com/@mosky',
       },
     ],
   },
@@ -31,8 +27,21 @@ export const speakers: Speaker[] = [
     code: 'lydia',
     displayName: '郭藺瑩 Lydia',
     avatar: '/speakers/avatar_lydia.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: 'ex-yahoo! International head of design & research',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/profile.php?id=61558666255989',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/lydiakuo_ux/',
+      },
+      {
+        type: 'website',
+        url: 'https://www.threads.net/@lydiakuo_ux?hl=en',
+      },
+    ],
   },
   {
     id: 'speaker_3',
@@ -64,7 +73,7 @@ export const speakers: Speaker[] = [
     code: 'kuro',
     displayName: 'Kuro Hsu',
     avatar: '/speakers/avatar_kuro.png',
-    jobTitle: '',
+    jobTitle: 'Vue.js Taiwan',
     socialLinks: [],
   },
   {
@@ -72,8 +81,17 @@ export const speakers: Speaker[] = [
     code: 'djlee',
     displayName: '李德俊 (紅豆)',
     avatar: '/speakers/avatar_djlee.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '李德設計 體驗策略總監',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/dejiun.lee',
+      },
+      {
+        type: 'website',
+        url: 'https://www.leeder.com.tw/',
+      },
+    ],
   },
   {
     id: 'speaker_7',
@@ -151,8 +169,21 @@ export const speakers: Speaker[] = [
     code: 'maylogger',
     displayName: '設計師勞哥',
     avatar: '/speakers/avatar_maylogger.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '設計師勞哥 設計師',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/maylogger.vtuber',
+      },
+      {
+        type: 'x',
+        url: 'https://twitter.com/may_logger',
+      },
+      {
+        type: 'website',
+        url: 'https://www.twitch.tv/may_logger',
+      },
+    ],
   },
   {
     id: 'speaker_11',
@@ -210,16 +241,30 @@ export const speakers: Speaker[] = [
     code: 'amos',
     displayName: '李建杭 Amos',
     avatar: '/speakers/avatar_amos.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '友達光電 工程經理',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/banPrint/',
+      },
+      {
+        type: 'website',
+        url: 'https://csscoke.com/',
+      },
+    ],
   },
   {
     id: 'speaker_15',
     code: 'taiming',
     displayName: 'Taiming',
     avatar: '/speakers/avatar_taiming.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: 'Everflow Creative Software Engineer',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/timing.chen',
+      },
+    ],
   },
   {
     id: 'speaker_16',
@@ -272,24 +317,63 @@ export const speakers: Speaker[] = [
     code: 'antfu',
     displayName: 'Anthony Fu',
     avatar: '/speakers/avatar_antfu.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: 'NuxtLabs Framework Developer',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/anthonyfu117/',
+      },
+      {
+        type: 'x',
+        url: 'https://twitter.com/antfu7',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/antfu7',
+      },
+      {
+        type: 'website',
+        url: 'https://antfu.me/',
+      },
+    ],
   },
   {
     id: 'speaker_19',
     code: 'gugu',
     displayName: 'GUGU',
     avatar: '/speakers/avatar_gugu.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '熊熊幹大事 BearDBT UI/UX Designer',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/mypstom',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/gugu.beardbt/',
+      },
+      {
+        type: 'website',
+        url: 'https://beardbt.com',
+      },
+    ],
   },
   {
     id: 'speaker_20',
     code: 'leo',
     displayName: 'Leo 李歐',
     avatar: '/speakers/avatar_leo.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: 'Angular Taiwan 打雜工',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/leoscodinglife',
+      },
+      {
+        type: 'website',
+        url: 'https://blog.leochen.dev/',
+      },
+    ],
   },
   {
     id: 'speaker_21',
@@ -321,8 +405,25 @@ export const speakers: Speaker[] = [
     code: 'stevenyeh',
     displayName: '史蒂夫·葉',
     avatar: '/speakers/avatar_stevenyeh.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: 'SYSTEX Technical Director',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/steven.yeh',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/steven_yeh',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/steven_uiux',
+      },
+      {
+        type: 'website',
+        url: 'https://www.threads.net/@steven_uiux',
+      },
+    ],
   },
   {
     id: 'speaker_24',
@@ -393,8 +494,13 @@ export const speakers: Speaker[] = [
     code: 'ruddy',
     displayName: '李智樺 Ruddy',
     avatar: '/speakers/avatar_ruddy.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '集英信誠 顧問',
+    socialLinks: [
+      {
+        type: 'website',
+        url: 'https://ruddyblog.wordpress.com/',
+      },
+    ],
   },
   {
     id: 'speaker_29',
@@ -435,8 +541,21 @@ export const speakers: Speaker[] = [
     code: 'leethi',
     displayName: '海馬',
     avatar: '/speakers/avatar_leethi.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '海家帶你游程式 小學生',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'http://facebook.com/leethi1024',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/leethi1024',
+      },
+      {
+        type: 'website',
+        url: 'https://www.threads.net/@leethi1024',
+      },
+    ],
   },
   {
     id: 'speaker_32',
@@ -472,8 +591,17 @@ export const speakers: Speaker[] = [
     code: 'lightda',
     displayName: '賴怡玲 (小賴)',
     avatar: '/speakers/avatar_lightda.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '自由工作者 技術講師',
+    socialLinks: [
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/lightda2024',
+      },
+      {
+        type: 'website',
+        url: 'https://www.threads.net/@lightda2024',
+      },
+    ],
   },
   {
     id: 'speaker_35',
@@ -497,24 +625,55 @@ export const speakers: Speaker[] = [
     code: 'chacha',
     displayName: '劉又瑄 (叉叉)',
     avatar: '/speakers/avatar_chacha.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: 'OOOPEN Lab 遊戲管理員 X',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/cha.cha.5095',
+      },
+      {
+        type: 'website',
+        url: 'https://portaly.cc/xx',
+      },
+    ],
   },
   {
     id: 'speaker_37',
     code: 'hungweichiu',
     displayName: '邱宏瑋',
     avatar: '/speakers/avatar_hungweichiu.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '台積電 技術副理',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/hongwei.qiu/',
+      },
+      {
+        type: 'website',
+        url: 'https://hwchiu.com',
+      },
+    ],
   },
   {
     id: 'speaker_38',
     code: 'henrylin',
-    displayName: '林義閎',
+    displayName: 'Henry',
     avatar: '/speakers/avatar_henrylin.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: 'BASED DESIGN 設計總監',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/LinYiHung',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/henry.lin.designer/',
+      },
+      {
+        type: 'website',
+        url: 'https://based.design/',
+      },
+    ],
   },
   {
     id: 'speaker_39',
@@ -546,8 +705,21 @@ export const speakers: Speaker[] = [
     code: 'seal',
     displayName: 'Seal Tseng',
     avatar: '/speakers/avatar_seal.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '產品設計師',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/BB.Designhighfive',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/bb.design.highfive/',
+      },
+      {
+        type: 'website',
+        url: 'https://medium.com/@tsengseal',
+      },
+    ],
   },
   {
     id: 'speaker_42',
@@ -555,6 +727,27 @@ export const speakers: Speaker[] = [
     displayName: 'Fin',
     avatar: '/speakers/avatar_fin.png',
     jobTitle: '網頁開發雜記 大叔',
+    socialLinks: [],
+  },
+  {
+    id: 'speaker_43',
+    code: 'tonyq',
+    displayName: '王景弘',
+    avatar: '/speakers/avatar_tonyq.png',
+    jobTitle: '',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/tonylovejava',
+      },
+    ],
+  },
+  {
+    id: 'speaker_44',
+    code: 'xiaofeng',
+    displayName: '陳鋒逸（小風）',
+    avatar: '/speakers/avatar_xiaofeng.png',
+    jobTitle: '',
     socialLinks: [],
   },
 ]

@@ -222,8 +222,8 @@ export const agendaData: DaySchedule = {
       agendas: {
         M: {
           id: 'day1-7-m',
-          title: 'TBD',
-          tags: [],
+          title: '網站專案時程的挑戰跟威脅',
+          tags: ['product-design', 'team-management'],
           speakerCodes: ['tonyq'],
           otherLinks: [],
         },
@@ -289,7 +289,7 @@ export const agendaData: DaySchedule = {
       agendas: {
         M: {
           id: 'day2-1-m',
-          title: 'TBD',
+          title: '在 AI 時代如何成為資深工程師？',
           tags: ['frontend', 'backend', 'agile', 'devops'],
           speakerCodes: ['mosky'],
           otherLinks: [],
@@ -303,7 +303,7 @@ export const agendaData: DaySchedule = {
         },
         A2: {
           id: 'day2-1-a2',
-          title: '工作坊＋AI ：創意又高效的規劃執行',
+          title: '工作坊＋AI：創意又高效的規劃執行',
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['djlee'],
           otherLinks: [],
@@ -318,7 +318,7 @@ export const agendaData: DaySchedule = {
       agendas: {
         M: {
           id: 'day2-2-m',
-          title: '擁抱漸進式體驗—設計驅動企業改革動能',
+          title: '擁抱漸進式體驗 — 設計驅動企業改革動能',
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['lydia'],
           otherLinks: [],
@@ -361,7 +361,7 @@ export const agendaData: DaySchedule = {
         },
         A2: {
           id: 'day2-3-a2',
-          title: '深入淺出B2B產品設計成功方程式 - 真有此式？',
+          title: '深入淺出 B2B 產品設計成功方程式 - 真有此式？',
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['seal'],
           otherLinks: [],
@@ -412,9 +412,9 @@ export const agendaData: DaySchedule = {
       agendas: {
         M: {
           id: 'day2-5-m',
-          title: 'TBD',
-          tags: [],
-          speakerCodes: [],
+          title: '從零開始打造金融業的開發者平台',
+          tags: ['devops'],
+          speakerCodes: ['xiaofeng'],
           otherLinks: [],
         },
         F: {
@@ -484,7 +484,7 @@ export const agendaData: DaySchedule = {
         },
         A2: {
           id: 'day2-7-a2',
-          title: '[暫] 遊戲化產品背後的遊戲化經營：如何在無形中建立數位產品的存在感',
+          title: '遊戲化產品背後的遊戲化經營：如何在無形中建立數位產品的存在感',
           tags: ['product-design', 'team-management'],
           speakerCodes: ['chacha'],
           otherLinks: [],
