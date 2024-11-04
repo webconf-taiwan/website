@@ -194,8 +194,8 @@ export const agendaData: DaySchedule = {
         M: {
           id: 'day1-6-m',
           title: '《天下》如何思考數位敘事？從流程到技術大公開',
-          tags: ['frontend', 'uiux', 'team-management'],
-          speakerCodes: ['stevenyeo'],
+          tags: ['frontend', 'uiux', 'agile', 'team-management'],
+          speakerCodes: ['sylviauk', 'stevenyeo'],
           otherLinks: [],
         },
         F: {

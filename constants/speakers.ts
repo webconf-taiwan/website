@@ -17,7 +17,7 @@ export const speakers: Speaker[] = [
         url: 'https://x.com/moskytw',
       },
       {
-        type: 'website',
+        type: 'medium',
         url: 'https://medium.com/@mosky',
       },
     ],
@@ -38,7 +38,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.instagram.com/lydiakuo_ux/',
       },
       {
-        type: 'website',
+        type: 'thread',
         url: 'https://www.threads.net/@lydiakuo_ux?hl=en',
       },
     ],
@@ -59,12 +59,12 @@ export const speakers: Speaker[] = [
     jobTitle: 'ExplainThis Co-Founder',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/r05922080',
-      },
-      {
         type: 'website',
         url: 'https://www.explainthis.io/zh-hant',
+      },
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/r05922080',
       },
     ],
   },
@@ -84,12 +84,12 @@ export const speakers: Speaker[] = [
     jobTitle: '李德設計 體驗策略總監',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/dejiun.lee',
-      },
-      {
         type: 'website',
         url: 'https://www.leeder.com.tw/',
+      },
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/dejiun.lee',
       },
     ],
   },
@@ -109,7 +109,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.instagram.com/citysite1025/',
       },
       {
-        type: 'website',
+        type: 'linkedin',
         url: 'https://www.linkedin.com/in/samuel-kao-87972482/',
       },
     ],
@@ -122,20 +122,20 @@ export const speakers: Speaker[] = [
     jobTitle: 'Zeabur Founder',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/yuaanlin',
+        type: 'website',
+        url: 'https://yual.in/',
       },
       {
-        type: 'x',
-        url: 'https://x.com/yuaanlin',
+        type: 'facebook',
+        url: 'https://www.facebook.com/yuaanlin',
       },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/yuaanlin/',
       },
       {
-        type: 'website',
-        url: 'https://yual.in/',
+        type: 'x',
+        url: 'https://x.com/yuaanlin',
       },
     ],
   },
@@ -147,20 +147,20 @@ export const speakers: Speaker[] = [
     jobTitle: '',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/cythilya',
+        type: 'website',
+        url: 'https://www.cythilya.tw/',
       },
       {
-        type: 'x',
-        url: 'https://twitter.com/cythilya',
+        type: 'facebook',
+        url: 'https://www.facebook.com/cythilya',
       },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/cythilya.dev/',
       },
       {
-        type: 'website',
-        url: 'https://www.cythilya.tw/',
+        type: 'x',
+        url: 'https://twitter.com/cythilya',
       },
     ],
   },
@@ -214,7 +214,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.instagram.com/zet_chou/',
       },
       {
-        type: 'website',
+        type: 'linkedin',
         url: 'https://www.linkedin.com/in/tz5514/',
       },
     ],
@@ -231,7 +231,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.facebook.com/milkmidifans',
       },
       {
-        type: 'website',
+        type: 'medium',
         url: 'https://milkmidi.medium.com/',
       },
     ],
@@ -246,10 +246,6 @@ export const speakers: Speaker[] = [
       {
         type: 'facebook',
         url: 'https://www.facebook.com/banPrint/',
-      },
-      {
-        type: 'website',
-        url: 'https://csscoke.com/',
       },
     ],
   },
@@ -282,7 +278,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.instagram.com/niclin_tw/',
       },
       {
-        type: 'website',
+        type: 'youtube',
         url: 'https://www.youtube.com/@niclin',
       },
     ],
@@ -295,20 +291,20 @@ export const speakers: Speaker[] = [
     jobTitle: '金谷設計 設計總監',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/kaznut7',
+        type: 'website',
+        url: 'https://huangruilin.tw/',
       },
       {
-        type: 'x',
-        url: 'https://twitter.com/hrl_rei',
+        type: 'facebook',
+        url: 'https://www.facebook.com/kaznut7',
       },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/huangruilin_art/',
       },
       {
-        type: 'website',
-        url: 'https://huangruilin.tw/',
+        type: 'x',
+        url: 'https://twitter.com/hrl_rei',
       },
     ],
   },
@@ -320,20 +316,20 @@ export const speakers: Speaker[] = [
     jobTitle: 'NuxtLabs Framework Developer',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/anthonyfu117/',
+        type: 'website',
+        url: 'https://antfu.me/',
       },
       {
-        type: 'x',
-        url: 'https://twitter.com/antfu7',
+        type: 'facebook',
+        url: 'https://www.facebook.com/anthonyfu117/',
       },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/antfu7',
       },
       {
-        type: 'website',
-        url: 'https://antfu.me/',
+        type: 'x',
+        url: 'https://twitter.com/antfu7',
       },
     ],
   },
@@ -345,16 +341,16 @@ export const speakers: Speaker[] = [
     jobTitle: '熊熊幹大事 BearDBT UI/UX Designer',
     socialLinks: [
       {
+        type: 'website',
+        url: 'https://beardbt.com',
+      },
+      {
         type: 'facebook',
         url: 'https://www.facebook.com/mypstom',
       },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/gugu.beardbt/',
-      },
-      {
-        type: 'website',
-        url: 'https://beardbt.com',
       },
     ],
   },
@@ -366,12 +362,12 @@ export const speakers: Speaker[] = [
     jobTitle: 'Angular Taiwan 打雜工',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/leoscodinglife',
-      },
-      {
         type: 'website',
         url: 'https://blog.leochen.dev/',
+      },
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/leoscodinglife',
       },
     ],
   },
@@ -380,8 +376,21 @@ export const speakers: Speaker[] = [
     code: 'sylviauk',
     displayName: '李郁欣',
     avatar: '/speakers/avatar_sylviauk.png',
-    jobTitle: '',
-    socialLinks: [],
+    jobTitle: '天下雜誌 數位策展主任',
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/sylviauk/',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/sylviauk',
+      },
+      {
+        type: 'linkedin',
+        url: 'https://www.linkedin.com/in/yu-hsin-lee-6b96a887/',
+      },
+    ],
   },
   {
     id: 'speaker_22',
@@ -391,12 +400,12 @@ export const speakers: Speaker[] = [
     jobTitle: '天下雜誌 前端工程師',
     socialLinks: [
       {
-        type: 'x',
-        url: 'https://x.com/shihjyunyeo',
-      },
-      {
         type: 'website',
         url: 'https://shihjyunyeo.com/',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/shihjyunyeo',
       },
     ],
   },
@@ -412,16 +421,16 @@ export const speakers: Speaker[] = [
         url: 'https://www.facebook.com/steven.yeh',
       },
       {
-        type: 'x',
-        url: 'https://x.com/steven_yeh',
-      },
-      {
         type: 'instagram',
         url: 'https://www.instagram.com/steven_uiux',
       },
       {
-        type: 'website',
+        type: 'thread',
         url: 'https://www.threads.net/@steven_uiux',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/steven_yeh',
       },
     ],
   },
@@ -437,7 +446,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.facebook.com/mobetas30487',
       },
       {
-        type: 'website',
+        type: 'medium',
         url: 'https://medium.com/@doppler',
       },
     ],
@@ -454,7 +463,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.facebook.com/profile.php?id=100005594084804',
       },
       {
-        type: 'website',
+        type: 'linkedin',
         url: 'https://www.linkedin.com/in/kanweinyc/',
       },
     ],
@@ -471,7 +480,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.facebook.com/ivangraphic',
       },
       {
-        type: 'website',
+        type: 'linkedin',
         url: 'https://www.linkedin.com/in/ivangraphic',
       },
     ],
@@ -523,16 +532,16 @@ export const speakers: Speaker[] = [
     jobTitle: '財報狗資訊股份有限公司 產品經理',
     socialLinks: [
       {
+        type: 'website',
+        url: 'https://wylin.tw/',
+      },
+      {
         type: 'facebook',
         url: 'https://www.facebook.com/uyiewnil/',
       },
       {
         type: 'instagram',
         url: 'https://www.facebook.com/uyiewnil/',
-      },
-      {
-        type: 'website',
-        url: 'https://wylin.tw/',
       },
     ],
   },
@@ -552,7 +561,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.instagram.com/leethi1024',
       },
       {
-        type: 'website',
+        type: 'thread',
         url: 'https://www.threads.net/@leethi1024',
       },
     ],
@@ -573,16 +582,16 @@ export const speakers: Speaker[] = [
     jobTitle: '資料科學家的工作日常 社群發起人',
     socialLinks: [
       {
+        type: 'website',
+        url: 'https://portaly.cc/dsdaily',
+      },
+      {
         type: 'facebook',
         url: 'https://www.facebook.com/dscareer',
       },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/___dsdaily___/',
-      },
-      {
-        type: 'website',
-        url: 'https://portaly.cc/dsdaily',
       },
     ],
   },
@@ -598,8 +607,12 @@ export const speakers: Speaker[] = [
         url: 'https://www.instagram.com/lightda2024',
       },
       {
-        type: 'website',
+        type: 'thread',
         url: 'https://www.threads.net/@lightda2024',
+      },
+      {
+        type: 'medium',
+        url: 'https://azole.medium.com/',
       },
     ],
   },
@@ -628,12 +641,12 @@ export const speakers: Speaker[] = [
     jobTitle: 'OOOPEN Lab 遊戲管理員 X',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/cha.cha.5095',
-      },
-      {
         type: 'website',
         url: 'https://portaly.cc/xx',
+      },
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/cha.cha.5095',
       },
     ],
   },
@@ -645,12 +658,12 @@ export const speakers: Speaker[] = [
     jobTitle: '台積電 技術副理',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/hongwei.qiu/',
-      },
-      {
         type: 'website',
         url: 'https://hwchiu.com',
+      },
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/hongwei.qiu/',
       },
     ],
   },
@@ -662,16 +675,16 @@ export const speakers: Speaker[] = [
     jobTitle: 'BASED DESIGN 設計總監',
     socialLinks: [
       {
+        type: 'website',
+        url: 'https://based.design/',
+      },
+      {
         type: 'facebook',
         url: 'https://www.facebook.com/LinYiHung',
       },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/henry.lin.designer/',
-      },
-      {
-        type: 'website',
-        url: 'https://based.design/',
       },
     ],
   },
@@ -683,12 +696,12 @@ export const speakers: Speaker[] = [
     jobTitle: '商業思維學院 院長',
     socialLinks: [
       {
-        type: 'facebook',
-        url: 'https://www.facebook.com/gipi.net/',
-      },
-      {
         type: 'website',
         url: 'http://bizthinking.com.tw',
+      },
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/gipi.net/',
       },
     ],
   },
@@ -716,7 +729,7 @@ export const speakers: Speaker[] = [
         url: 'https://www.instagram.com/bb.design.highfive/',
       },
       {
-        type: 'website',
+        type: 'medium',
         url: 'https://medium.com/@tsengseal',
       },
     ],

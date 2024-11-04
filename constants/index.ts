@@ -61,10 +61,14 @@ export const contactInfos = [
 
 // 社群連結 Map
 export const socialIconMap: Record<SocialLinkType, string> = {
+  website: 'heroicons:globe-alt',
   facebook: 'iconoir:facebook',
   x: 'iconoir:x',
-  website: 'heroicons:globe-alt',
   instagram: 'iconoir:instagram',
+  thread: 'i-iconoir:threads',
+  youtube: 'i-iconoir:youtube',
+  medium: 'i-uil:medium-m',
+  linkedin: 'i-uil:linkedin',
 }
 
 // 歷屆連結

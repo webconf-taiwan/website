@@ -4,8 +4,8 @@ date: 2024-12-27
 startTime: 14:25
 endTime: 15:10
 location: M
-tags: ['frontend', 'uiux', 'team-management']
-speakerCodes: ['stevenyeo']
+tags: ['frontend', 'uiux', 'agile', 'team-management']
+speakerCodes: ['sylviauk', 'stevenyeo']
 ---
 
 ::agenda-tabs-content
@@ -35,6 +35,19 @@ speakerCodes: ['stevenyeo']
 
 <!--講者介紹-->
 #speaker
+:::speaker-name
+李郁欣
+:::
+
+<!--講者介紹(內容)-->
+ENFP，偶爾也有「隱性I人」的時候，屬於雜食系探索者。從電視台記者到雜誌編輯，再一路斜槓到PM，一腳踏進數位敘事技術的大坑，始終保持對新知的無限好奇。
+
+---
+
+:::speaker-name
+楊時鈞 Steven Yeo
+:::
+
 <!--講者介紹(內容)-->
 財金系畢業，因喜歡資料視覺化而誤入媒體業到現在。
 <br><br>

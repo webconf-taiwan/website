@@ -10,4 +10,4 @@ export interface Speaker {
   }[]
 }
 
-export type SocialLinkType = 'facebook' | 'x' | 'website' | 'instagram'
+export type SocialLinkType = 'facebook' | 'x' | 'instagram' | 'website' | 'youtube' | 'thread' | 'medium' | 'linkedin'
