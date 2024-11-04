@@ -25,7 +25,7 @@ const { navLinks } = defineProps<{
           :to="link.href"
           class="flex items-center space-x-4 py-3 pl-6"
         >
-          <p class="text-mina text-xl font-bold">
+          <p class="text-mina h-[1.45rem] text-xl font-bold">
             {{ link.engName }}
           </p>
           <p class="font-bold">
@@ -38,7 +38,7 @@ const { navLinks } = defineProps<{
           class="space-y-4 py-3 pl-6"
         >
           <div class="flex items-center space-x-4">
-            <p class="text-mina text-xl font-bold">
+            <p class="text-mina h-[1.45rem] text-xl font-bold">
               {{ link.engName }}
             </p>
             <p class="font-bold">
