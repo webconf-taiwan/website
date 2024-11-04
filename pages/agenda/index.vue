@@ -2,7 +2,7 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import AgendaSlotsWrapper from '~/components/agenda/AgendaSlotsWrapper.vue'
 import { appDescription, appName, ogImageLink } from '~/constants'
-import type { ParsedAgendaData } from '~/types/agendas'
+import type { AgendaItem, ParsedAgendaData } from '~/types/agendas'
 
 const { $lenis } = useNuxtApp()
 
@@ -22,6 +22,20 @@ useSeoMeta({
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
+
+const drawerSlideDirection = computed(() => {
+  return isSmallerLg.value ? 'slide-up-full' : 'slide-left'
+})
+
+const agendaDrawer = useTemplateRef('agendaDrawer')
+
+function triggerAgenda(agenda: AgendaItem) {
+  agendasStore.currentAgendaDrawerId = agenda.id
+  agendasStore.setAgendaDrawerRenderData(agenda)
+  agendaDrawer.value?.open()
+}
+
+provide('triggerAgenda', triggerAgenda)
 
 const { data: agendasMarkdownData } = await useAsyncData('agendas', () => queryContent<ParsedAgendaData>('agendas').find())
 agendasStore.agendasMarkdownData = agendasMarkdownData.value
@@ -51,6 +65,21 @@ onMounted(() => {
       <AgendaTagsWrapper class="mb-9 lg:mb-11" />
       <AgendaSlotsWrapper />
     </div>
+
+    <Teleport to="body">
+      <Drawer
+        ref="agendaDrawer"
+        :slide-direction="drawerSlideDirection"
+        drawer-class="lg:w-[60dvw]"
+        @close="agendasStore.resetContentTab"
+      >
+        <DrawerContentLayout>
+          <template #content>
+            <AgendaDrawerWrapper />
+          </template>
+        </DrawerContentLayout>
+      </Drawer>
+    </Teleport>
   </main>
 </template>
 

@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import type { AgendaLocation, TimeSlot } from '~/types/agendas'
+import type { AgendaItem, AgendaLocation, TimeSlot } from '~/types/agendas'
 
 const props = defineProps<{
   slotData: TimeSlot
 }>()
+
+const triggerAgenda = inject('triggerAgenda') as (agenda: AgendaItem) => void
 
 const tagsStore = useTagsStore()
 
@@ -38,7 +40,9 @@ const isAgendaDisabled = computed(() => {
 <template>
   <button
     type="button"
-    class="group relative mx-2 grid gap-2 overflow-hidden overflow-x-clip px-2 outline outline-1 outline-primary-green focus-visible:outline-none lg:mx-0 lg:max-h-[221px] lg:min-h-[200px] lg:grid-cols-3 lg:px-0"
+    class="group relative mx-2 grid gap-2 overflow-hidden overflow-x-clip px-2 outline outline-1 focus-visible:outline-none lg:mx-0 lg:max-h-[221px] lg:min-h-[200px] lg:grid-cols-3 lg:px-0"
+    :class="[isAgendaDisabled ? 'outline-primary-green/30' : 'outline-primary-green']"
+    @click="triggerAgenda(mainAgenda!)"
   >
     <div
       v-show="!isAgendaDisabled"

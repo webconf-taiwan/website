@@ -49,7 +49,7 @@ const trafficInfos = [
             >
               瓶蓋工廠台北製造所
               <Icon
-                name="ph:map-trifold"
+                name="i-heroicons:map"
                 class="size-6 text-primary-green  lg:text-white lg:group-hover:text-primary-green"
               />
             </NuxtLink>

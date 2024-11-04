@@ -66,7 +66,7 @@ importers:
       '@iconify-json/iconoir':
         specifier: ^1.2.3
         version: 1.2.3
-      '@iconify-json/ph':
+      '@iconify-json/uil':
         specifier: ^1.2.1
         version: 1.2.1
       '@nuxt/content':
@@ -1059,8 +1059,8 @@ packages:
   '@iconify-json/iconoir@1.2.3':
     resolution: {integrity: sha512-CIPFznjl417Y5zBPqZP4+lhHwdTr7aDenzUOL/z92ufuMoX7SOZbZ8dK9/wNaLwCr+2w+MrxfVKc7zjUj9K0Dg==}
 
-  '@iconify-json/ph@1.2.1':
-    resolution: {integrity: sha512-x0DNfwWrS18dbsBYOq3XGiZnGz4CgRyC+YSl/TZvMQiKhIUl1woWqUbMYqqfMNUBzjyk7ulvaRovpRsIlqIf8g==}
+  '@iconify-json/uil@1.2.1':
+    resolution: {integrity: sha512-bQPtDp1nVaDL+ejECPENHJalspCQCZreCJ2LHWazm0pfoz34afKAQKMSb1mH8K/CPnibCQTM29AvXrHMpyjbtg==}
 
   '@iconify/collections@1.0.476':
     resolution: {integrity: sha512-CHErIMzMRq1zWnGsSeWFu3o1fwIRg/dLQwSVlmmUFr8k7pJEsD5HFQyW79u1YcEjUWa1m50/qzz0SCcAZUK6Tw==}
@@ -6293,7 +6293,7 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
 
-  '@iconify-json/ph@1.2.1':
+  '@iconify-json/uil@1.2.1':
     dependencies:
       '@iconify/types': 2.0.0
 
