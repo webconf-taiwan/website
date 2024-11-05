@@ -1,3 +1,4 @@
+import { agendaData } from '~/constants/agendas'
 import { speakers } from '~/constants/speakers'
 import type { AgendaDrawerRenderData, AgendaItem, ParsedAgendaData } from '~/types/agendas'
 import type { Speaker } from '~/types/speakers'
@@ -6,6 +7,23 @@ export const useAgendasStore = defineStore('agendas', () => {
   function findSpeakers(speakerCodes: string[]) {
     return speakerCodes
       .map(speakerCode => speakers.find(speaker => speaker.code === speakerCode) as Speaker || [])
+  }
+
+  function findAgendaById(id: string) {
+    if (!id)
+      throw new Error('Agenda ID is required')
+
+    const flatAgendaData = Object.values(agendaData).flat()
+
+    const agenda = flatAgendaData
+      .filter(slot => slot.type === 'agenda')
+      .flatMap(slot => Object.values(slot.agendas || {}))
+      .find(agenda => agenda.id === id)
+
+    if (!agenda)
+      return null
+
+    return agenda
   }
 
   const agendaDrawerContentTabsMap = reactive([
@@ -24,8 +42,12 @@ export const useAgendasStore = defineStore('agendas', () => {
 
   const currentAgendaDrawerId = ref<string>('')
   const agendasMarkdownData = ref<ParsedAgendaData[] | null>(null)
+  const singleAgendaMarkdownData = ref<ParsedAgendaData | null>(null)
 
   const currentAgendaMarkdownData = computed(() => {
+    if (singleAgendaMarkdownData.value)
+      return singleAgendaMarkdownData.value
+
     return agendasMarkdownData.value?.find(agenda => agenda._path?.split('/').pop() === currentAgendaDrawerId.value)
   })
 
@@ -36,7 +58,6 @@ export const useAgendasStore = defineStore('agendas', () => {
       agendaTitle: '',
       jobTitle: '',
       socialLinks: [],
-      agendaDescription: '',
       agendaOtherLinks: [],
       agendaTags: [],
     },
@@ -51,7 +72,6 @@ export const useAgendasStore = defineStore('agendas', () => {
       speakerAvatar: speaker.avatar,
       socialLinks: speaker.socialLinks || [],
       jobTitle: speaker.jobTitle || '',
-      agendaDescription: 'null',
       agendaOtherLinks: agenda.otherLinks || [],
       agendaTags: agenda.tags,
     }))
@@ -64,7 +84,6 @@ export const useAgendasStore = defineStore('agendas', () => {
       agendaTitle: '',
       jobTitle: '',
       socialLinks: [],
-      agendaDescription: '',
       agendaOtherLinks: [],
       agendaTags: [],
     }]
@@ -74,10 +93,12 @@ export const useAgendasStore = defineStore('agendas', () => {
     agendaDrawerContentTabsMap,
     currentContentTab,
     currentAgendaDrawerId,
-    currentAgendaMarkdownData,
     agendasMarkdownData,
+    singleAgendaMarkdownData,
+    currentAgendaMarkdownData,
     agendaDrawerRenderData,
     findSpeakers,
+    findAgendaById,
     resetContentTab,
     setAgendaDrawerRenderData,
     cleanDrawerRenderData,

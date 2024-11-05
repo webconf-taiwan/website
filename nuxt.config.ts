@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/content',
     '@nuxtjs/device',
+    '@nuxtjs/seo',
     'nuxt-marquee',
     'shadcn-nuxt',
     'dayjs-nuxt',
@@ -85,6 +86,12 @@ export default defineNuxtConfig({
       name: 'page',
       mode: 'out-in',
     },
+  },
+
+  site: {
+    url: 'https://webconf.tw/',
+    name: '2024 WebConf Taiwan 技術研討會',
+    defaultLocale: 'zh-TW',
   },
 
   content: {

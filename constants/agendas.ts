@@ -145,7 +145,16 @@ export const agendaData: DaySchedule = {
           title: '設計很豐滿，開發很骨感 — 淺談設計交付',
           tags: ['frontend', 'uiux', 'product-design', 'team-management'],
           speakerCodes: ['rei'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://www.google.com',
+            },
+            {
+              type: 'slide',
+              href: 'https://www.google.com',
+            },
+          ],
         },
       },
     },
@@ -196,7 +205,16 @@ export const agendaData: DaySchedule = {
           title: '《天下》如何思考數位敘事？從流程到技術大公開',
           tags: ['frontend', 'uiux', 'agile', 'team-management'],
           speakerCodes: ['sylviauk', 'stevenyeo'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://www.google.com',
+            },
+            {
+              type: 'slide',
+              href: 'https://www.google.com',
+            },
+          ],
         },
         F: {
           id: 'day1-6-f',
@@ -529,6 +547,3 @@ export const agendaData: DaySchedule = {
     },
   ],
 }
-
-// export const agendaShareBaseUrl = 'https://webconf-phase2.hkg1.zeabur.app'
-export const agendaShareBaseUrl = 'http://localhost:3000/agenda'

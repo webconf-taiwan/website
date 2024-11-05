@@ -8,7 +8,7 @@ const { $lenis } = useNuxtApp()
 const agendasStore = useAgendasStore()
 
 useSeoMeta({
-  title: '議程 | 2024 WebConf Taiwan',
+  title: '講者',
   description: appDescription,
   ogTitle: appName,
   ogDescription: appDescription,
@@ -24,6 +24,18 @@ const isSmallerLg = breakpoints.smaller('lg')
 
 const { data: agendasMarkdownData } = await useAsyncData('agendas', () => queryContent<ParsedAgendaData>('agendas').find())
 agendasStore.agendasMarkdownData = agendasMarkdownData.value
+
+useSchemaOrg([
+  defineBreadcrumb({
+    itemListElement: [
+      { name: '首頁', item: '/' },
+      { name: '講者' },
+    ],
+  }),
+  defineWebPage({
+    '@type': 'CollectionPage',
+  }),
+])
 
 onMounted(() => {
   $lenis.scrollTo(0)

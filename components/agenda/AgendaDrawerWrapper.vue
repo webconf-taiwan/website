@@ -2,7 +2,6 @@
 import { useToast } from '@/components/ui/toast/use-toast'
 import { breakpointsTailwind, useBreakpoints, useClipboard } from '@vueuse/core'
 import { socialIconMap } from '~/constants'
-import { agendaShareBaseUrl } from '~/constants/agendas'
 import type { AgendaDrawerRenderData } from '~/types/agendas'
 import type { SocialLinkType } from '~/types/speakers'
 import AgendaDrawerOtherLinks from './AgendaDrawerOtherLinks.vue'
@@ -30,25 +29,36 @@ const tabsRef = ref<HTMLDivElement | null>(null)
 const source = ref('')
 const { toast } = useToast()
 const { copy } = useClipboard({ source })
+
 function getShareUrl(id: string) {
   const speakerNames = agendaDrawerRenderData.value
     .map(speaker => speaker.speakerName)
     .join('、')
 
+  const toastDescription = speakerNames
+    ? `${speakerNames}｜${currentAgendaMarkdownData.value?.title}`
+    : ''
+
   toast({
     title: '議程資訊連結｜複製成功',
-    description: `${speakerNames}｜${agendaDrawerRenderData.value[0].agendaTitle}`,
+    description: toastDescription,
   })
-  return `${agendaShareBaseUrl}/${id}`
+
+  if (!id)
+    return location.href
+
+  return `${location.host}/agenda/${id}`
 }
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerOrEqualMd = breakpoints.smallerOrEqual('md')
+
 const maskClipPath = computed(() => {
   return isSmallerOrEqualMd.value
     ? 'M144,0 H320 V320 H0 V30 L100,30 Z'
     : 'M100,0 H200 V200 H0 V30 L58,30 L100 ,0 Z'
 })
+
 const svgViewBox = computed(() => {
   return isSmallerOrEqualMd.value
     ? '0 0 320 320'
@@ -117,9 +127,9 @@ const svgViewBox = computed(() => {
           </p>
         </div>
 
-        <div class="mt-6 w-full space-y-2 md:flex md:items-center md:justify-between md:space-x-6 md:space-y-0">
+        <div class="mt-4 flex w-full flex-wrap gap-x-6 gap-y-2 md:items-center md:justify-between">
           <!-- 社群連結 -->
-          <ul class="flex min-w-[216px] gap-x-2">
+          <ul class="flex gap-x-2">
             <li
               v-for="link in getSocialLinks(speaker.socialLinks)"
               :key="link.type"
@@ -154,9 +164,8 @@ const svgViewBox = computed(() => {
 
           <!-- 共筆＆PPT - 只在單講者時顯示 -->
           <AgendaDrawerOtherLinks
-            v-if="agendaDrawerRenderData.length === 1"
+            v-if="agendaDrawerRenderData.length === 1 && speaker.agendaOtherLinks.length > 0"
             :agenda-other-links="speaker.agendaOtherLinks"
-            class="justify-end"
           />
         </div>
       </div>

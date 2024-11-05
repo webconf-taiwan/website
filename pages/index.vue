@@ -5,7 +5,6 @@ const tilesBackgroundStore = useTilesBackgroundStore()
 const nuxtApp = useNuxtApp()
 
 useSeoMeta({
-  title: appName,
   description: appDescription,
   ogTitle: appName,
   ogDescription: appDescription,

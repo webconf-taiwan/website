@@ -49,13 +49,16 @@ export interface AgendaDrawerRenderData {
   agendaTitle: string
   jobTitle: string
   socialLinks: { type: SocialLinkType, url: string }[] | []
-  agendaDescription: string
   agendaOtherLinks: AgendaOtherLink[]
   agendaTags: AgendaTag['id'][]
 }
 
 export interface ParsedAgendaData extends MarkdownParsedContent {
   title: string
+  date: string
+  startTime: string
+  endTime: string
+  location: AgendaLocation
   tags: AgendaTag['id'][]
   speakerCodes: string[]
 }

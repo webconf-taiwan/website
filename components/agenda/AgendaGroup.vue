@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div
-    class="relative grid gap-2 overflow-x-clip px-2 lg:max-h-[221px] lg:min-h-[200px] lg:grid-cols-3 lg:px-0 "
+    class="relative grid gap-2 overflow-x-clip px-2 lg:max-h-[221px] lg:min-h-[200px] lg:grid-cols-3 lg:px-0"
   >
     <AgendaItemWrapper
       v-for="(agenda, location) in slotData.agendas"

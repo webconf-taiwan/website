@@ -1,5 +1,5 @@
 {
-  "name": "nuxt3-template",
+  "name": "webconf-website",
   "type": "module",
   "private": true,
   "packageManager": "pnpm@9.11.0",
@@ -44,6 +44,7 @@
     "@nuxt/icon": "^1.6.1",
     "@nuxt/image": "^1.8.1",
     "@nuxtjs/device": "^3.2.4",
+    "@nuxtjs/seo": "2.0.0-rc.23",
     "@nuxtjs/tailwindcss": "^6.12.2",
     "@pinia/nuxt": "^0.6.0",
     "@tailwindcss/container-queries": "^0.1.1",
