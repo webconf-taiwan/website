@@ -1,5 +1,6 @@
 ---
 title: DevOps 與 GenAI：在人工智慧時代的未來之路
+description: 在 GenAI 興起的時代，開發者效率大幅提升，然而，對於專注於架構設計、開發流程及 CI/CD 的 DevOps 工程師來說，GenAI 能帶來哪些幫助？本演講將探索 DevOps 應該要以何種方式去面對 GenAI 的演進並且如何嘗試將這類型的工具整合到日常工作中
 date: 2024-12-28
 startTime: 14:25
 endTime: 15:10

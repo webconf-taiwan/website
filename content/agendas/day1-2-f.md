@@ -1,5 +1,6 @@
 ---
 title: DevOps, GitOps, and AIOps
+description: 在企業或組織所打造的 DevOps 團隊，常常是 Dev 開發人員兼顧維運任務，或 Ops 系統人員跨域撰寫程式碼，從而演變成一條龍服務。有鑑於此，從而演變出 SRE 團隊，能夠跨越開發和維運兩者之間，穩定企業和組織的營運服務，使 DevOps 團隊能專注於整體流程。
 date: 2024-12-27
 startTime: 10:05
 endTime: 10:50

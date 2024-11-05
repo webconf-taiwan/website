@@ -1,5 +1,6 @@
 ---
 title: 有限狀態機與 RxJS
+description: 各種狀態難以操控嗎 ? 亂七八糟的程式碼嗎? 來聽聽如何用有限狀態機 與 RxJS 優化你的程式碼。
 date: 2024-12-27
 startTime: 13:30
 endTime: 14:15

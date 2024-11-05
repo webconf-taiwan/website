@@ -1,5 +1,6 @@
 ---
 title: 當 Vue 與 View 分手之後⋯
+description: 受到 Solid.js 與 Svelte 的啟發，Vue.js 團隊正在開發 Vue Vapor 這個令人期待的新特性，與傳統的 vDOM 渲染模式相比，Vue Vapor 目標在除去 vDOM 操作的抽象層，可望降低執行時的記憶體消耗，同時也提升執行時的效能。由於 Vue 3 的核心響應式系統 @vue/reactivity 已被設計為獨立套件，這代表著開發者可以不必依靠 Vue.js 本身，甚至也能在後端的 node.js 上使用 Vue 響應式系統來進行開發。而 Vue Vapor Mode 的基礎即是從 @vue/reactivity 這個核心模組開始出發的。在這場議程中，我們將探討當 @vue/reactivity 突破 Vue.js 框架的束縛之後，如何為 Vue.js 與 Vue Vapor 帶來全新的可能性。
 date: 2024-12-28
 startTime: 15:20
 endTime: 16:05

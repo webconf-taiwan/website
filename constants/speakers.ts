@@ -144,7 +144,7 @@ export const speakers: Speaker[] = [
     code: 'summer',
     displayName: 'Summer',
     avatar: '/speakers/avatar_summer.png',
-    jobTitle: '',
+    jobTitle: 'Appier 資深工程師',
     socialLinks: [
       {
         type: 'website',
@@ -747,7 +747,7 @@ export const speakers: Speaker[] = [
     code: 'tonyq',
     displayName: '王景弘',
     avatar: '/speakers/avatar_tonyq.png',
-    jobTitle: '',
+    jobTitle: 'AUTHME 架構師',
     socialLinks: [
       {
         type: 'facebook',
@@ -760,7 +760,7 @@ export const speakers: Speaker[] = [
     code: 'xiaofeng',
     displayName: '陳鋒逸（小風）',
     avatar: '/speakers/avatar_xiaofeng.png',
-    jobTitle: '',
+    jobTitle: '街口支付 技術長',
     socialLinks: [],
   },
 ]

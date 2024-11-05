@@ -1,5 +1,6 @@
 ---
-title: TBD
+title: Flex out！ CSS Grid 玩起來！
+description: 自從Flex出來後，網頁排版迎來了巨大的改變，但 CSS Grid 出來後，網頁排版更佳的便利了，過往一些不好處理的版面，用 Grid 都能輕鬆達成，今天就來看看 Grid 可以怎麼玩吧。
 date: 2024-12-28
 startTime: 11:45
 endTime: 12:30
@@ -19,7 +20,7 @@ speakerCodes: ['amos']
 :::
 
 <!--議程資訊(內容)-->
-TBD
+自從Flex出來後，網頁排版迎來了巨大的改變，但 CSS Grid 出來後，網頁排版更佳的便利了，過往一些不好處理的版面，用 Grid 都能輕鬆達成，今天就來看看 Grid 可以怎麼玩吧。
 
 :::agenda-content-tags
 :::

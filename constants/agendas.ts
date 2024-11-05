@@ -49,16 +49,7 @@ export const agendaData: DaySchedule = {
           title: '串連品牌從實體到數位的體驗',
           tags: ['uiux'],
           speakerCodes: ['weikan'],
-          otherLinks: [
-            {
-              type: 'note',
-              href: 'https://www.google.com',
-            },
-            {
-              type: 'slide',
-              href: 'https://www.google.com',
-            },
-          ],
+          otherLinks: [],
         },
       },
     },
@@ -145,16 +136,7 @@ export const agendaData: DaySchedule = {
           title: '設計很豐滿，開發很骨感 — 淺談設計交付',
           tags: ['frontend', 'uiux', 'product-design', 'team-management'],
           speakerCodes: ['rei'],
-          otherLinks: [
-            {
-              type: 'note',
-              href: 'https://www.google.com',
-            },
-            {
-              type: 'slide',
-              href: 'https://www.google.com',
-            },
-          ],
+          otherLinks: [],
         },
       },
     },
@@ -205,16 +187,7 @@ export const agendaData: DaySchedule = {
           title: '《天下》如何思考數位敘事？從流程到技術大公開',
           tags: ['frontend', 'uiux', 'agile', 'team-management'],
           speakerCodes: ['sylviauk', 'stevenyeo'],
-          otherLinks: [
-            {
-              type: 'note',
-              href: 'https://www.google.com',
-            },
-            {
-              type: 'slide',
-              href: 'https://www.google.com',
-            },
-          ],
+          otherLinks: [],
         },
         F: {
           id: 'day1-6-f',
@@ -394,7 +367,7 @@ export const agendaData: DaySchedule = {
       agendas: {
         M: {
           id: 'day2-4-m',
-          title: 'TBD',
+          title: 'Flex out！ CSS Grid 玩起來！',
           tags: ['frontend', 'uiux'],
           speakerCodes: ['amos'],
           otherLinks: [],

@@ -1,5 +1,6 @@
 ---
 title: 十年回首：React 的過去、現在與未來發展
+description: React 從誕生之初至今已逾十年，讓我們一起回顧 React 自誕生以來的發展歷程，從最初的設計核心理念，如何推動了前端開發的變革，一步步發展至如今強大的 React 生態系。其中也會探討近年來引入的關鍵新特性，例如 Concurrent Features 和 Server Components，並深入解析這些更新背後的思考與動機。我們也會關注 React 社群的現狀、它對整個前端開發生態的影響，並展望 React 19 及未來版本的發展方向，協助開發者為即將到來的變革做好準備。
 date: 2024-12-27
 startTime: 13:30
 endTime: 14:15

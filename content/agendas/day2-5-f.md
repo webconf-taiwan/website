@@ -1,5 +1,6 @@
 ---
 title: 用 AI 幫助開發 Apple Watch App 實戰分享
+description: 如何使用 Claude AI 跟 ChatGPT 提升製作 Apple Watch App 的開發效率，強調 AI 生成出來的東西可能不是自己想要的內容，介紹如果遇到 AI 生成出來的東西不是自己想要的，要怎麼處理，開發過程中，因為使用 AI 而大幅加快開發進度，最後會分享自己開發的「9歲記帳」這款 App 使用到的 Claude AI prompt 和 GitHub repository 給大家參考，並介紹我開發過程中的實戰經驗！
 date: 2024-12-28
 startTime: 13:30
 endTime: 14:15

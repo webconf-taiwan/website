@@ -1,5 +1,6 @@
 ---
 title: TBD
+description:
 date: 2024-12-27
 startTime: 09:00
 endTime: 09:45
