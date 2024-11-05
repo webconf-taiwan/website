@@ -98,9 +98,9 @@ const svgViewBox = computed(() => {
   </ClientOnly>
 
   <!-- 姓名、標籤 -->
-  <div class="flex size-full max-w-[288px] flex-col justify-between md:max-w-[197px] lg:max-w-[288px]">
+  <div class="flex size-full max-w-[288px] flex-col md:max-w-[197px] lg:max-w-[288px] xl:max-w-[260px]">
     <div class="mt-2 w-full">
-      <p>
+      <p class="line-clamp-2">
         {{ speaker.jobTitle }}
       </p>
       <p class="mt-1 text-xl">
