@@ -112,9 +112,9 @@ const svgViewBox = computed(() => {
       <li
         v-for="tag in speaker.tags"
         :key="tag"
-        class="flex items-center justify-center border border-primary-green bg-gradient-to-t from-[#00A987] to-[#025966] px-3 py-[5px]"
+        class="flex h-8 content-center items-center justify-center border border-primary-green bg-gradient-to-t from-[#00A987] to-[#025966] px-3"
       >
-        <p class="text-mina text-sm tracking-wider">
+        <p class="text-mina h-4 text-sm tracking-wider">
           {{ tag }}
         </p>
       </li>

@@ -94,6 +94,16 @@ export default defineNuxtConfig({
     defaultLocale: 'zh-TW',
   },
 
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls',
+    ],
+  },
+
+  ogImage: {
+    fonts: ['Noto+Sans+TC:700'],
+  },
+
   content: {
     documentDriven: false,
     ignores: ['drafts'],
@@ -106,6 +116,7 @@ export default defineNuxtConfig({
         '/_ipx/_/logo-words.svg',
         '/_ipx/_/drawer/drawer-top-decorate-lg.svg',
         '/_ipx/_/drawer/drawer-top-decorate.svg',
+        '/sitemap.xml',
       ],
     },
   },

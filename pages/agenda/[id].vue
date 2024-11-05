@@ -7,6 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import { ogImageLink } from '~/constants'
 import type { ParsedAgendaData } from '~/types/agendas'
 
 const route = useRoute()
@@ -32,21 +33,26 @@ if (agendaMarkdownData.value) {
 }
 
 const agenda = agendasStore.findAgendaById(id)
+
 if (agenda) {
   agendasStore.setAgendaDrawerRenderData(agenda)
 }
 
-// TODO: SEO
+const speakerNames = computed(() => {
+  return agendasStore.agendaDrawerRenderData.map(item => item.speakerName).join('、')
+})
+
 useSeoMeta({
-  title: `議程 | ${agendasStore.singleAgendaMarkdownData?.title}`,
-  description: agendasStore.agendaDrawerRenderData[0].speakerName,
-  // ogTitle: '',
-  // ogDescription: '',
-  // ogImage: '',
-  // twitterTitle: '',
-  // twitterDescription: '',
-  // twitterImage: '',
-  // twitterCard: '',
+  title: agendaMarkdownData.value?.title,
+  description: agendaMarkdownData.value?.description,
+  author: () => speakerNames.value,
+  ogTitle: agendaMarkdownData.value?.title,
+  ogDescription: agendaMarkdownData.value?.description,
+  ogImage: ogImageLink,
+  twitterTitle: agendaMarkdownData.value?.title,
+  twitterDescription: agendaMarkdownData.value?.description,
+  twitterImage: ogImageLink,
+  twitterCard: 'summary_large_image',
 })
 
 useSchemaOrg([
@@ -113,7 +119,7 @@ onUnmounted(() => {
 
           <BreadcrumbItem>
             <BreadcrumbPage class="text-base font-bold text-white">
-              郭藺瑩 Lydia - {{ id }}
+              {{ speakerNames }}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
