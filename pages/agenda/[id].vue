@@ -43,7 +43,7 @@ const speakerNames = computed(() => {
 })
 
 useSeoMeta({
-  title: agendaMarkdownData.value?.title,
+  title: `${agendaMarkdownData.value?.title} - ${speakerNames.value}`,
   description: agendaMarkdownData.value?.description,
   author: () => speakerNames.value,
   ogTitle: agendaMarkdownData.value?.title,

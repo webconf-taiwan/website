@@ -36,7 +36,7 @@ function getShareUrl(id: string) {
     .join('、')
 
   const toastDescription = speakerNames
-    ? `${speakerNames}｜${currentAgendaMarkdownData.value?.title}`
+    ? `${currentAgendaMarkdownData.value?.title} - ${speakerNames}`
     : ''
 
   toast({
@@ -47,7 +47,7 @@ function getShareUrl(id: string) {
   if (!id)
     return location.href
 
-  return `${location.host}/agenda/${id}`
+  return `${location.href}/agenda/${id}`
 }
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
