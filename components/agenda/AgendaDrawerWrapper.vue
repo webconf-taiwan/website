@@ -47,7 +47,7 @@ function getShareUrl(id: string) {
   if (!id)
     return location.href
 
-  return `${location.href}/agenda/${id}`
+  return `${location.origin}/agenda/${id}`
 }
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -150,6 +150,7 @@ const svgViewBox = computed(() => {
 
               <NuxtLink
                 :to="link.href"
+                :title="link.type"
                 target="_blank"
                 class="relative flex size-full items-center justify-center"
               >
@@ -158,6 +159,7 @@ const svgViewBox = computed(() => {
                   size="24"
                   class="text-primary-green"
                 />
+                <span class="sr-only">{{ link.type }}</span>
               </NuxtLink>
             </li>
           </ul>
