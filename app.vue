@@ -1,6 +1,20 @@
 <script lang="ts" setup>
 import AOS from 'aos'
+import { appDescription, appName, ogImageUrl } from '~/constants'
 import { showEasterEgg } from './utils/easterEgg'
+
+const siteConfig = useSiteConfig()
+
+useSeoMeta({
+  description: appDescription,
+  ogTitle: appName,
+  ogDescription: appDescription,
+  ogImage: `${siteConfig.url}${ogImageUrl}`,
+  twitterTitle: appName,
+  twitterDescription: appDescription,
+  twitterImage: `${siteConfig.url}${ogImageUrl}`,
+  twitterCard: 'summary_large_image',
+})
 
 const { hasShownAnimation } = useLoadingState()
 const tagsStore = useTagsStore()

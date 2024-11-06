@@ -38,7 +38,6 @@ speakerCodes: ['weithenn']
 :::
 
 <!--目標會眾(內容)-->
-TBD
 
 <!--講者介紹-->
 #speaker

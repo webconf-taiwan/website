@@ -7,8 +7,10 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { ogImageLink } from '~/constants'
+import { ogImageUrl } from '~/constants'
 import type { ParsedAgendaData } from '~/types/agendas'
+
+const siteConfig = useSiteConfig()
 
 const route = useRoute()
 const id = route.params.id as string
@@ -44,13 +46,11 @@ useSeoMeta({
   title: `${agendaMarkdownData.value?.title} - ${speakerNames}`,
   description: agendaMarkdownData.value?.description,
   author: () => speakerNames,
-  ogTitle: agendaMarkdownData.value?.title,
+  ogTitle: `${agendaMarkdownData.value?.title} - ${speakerNames}`,
   ogDescription: agendaMarkdownData.value?.description,
-  ogImage: ogImageLink,
-  twitterTitle: agendaMarkdownData.value?.title,
+  ogImage: `${siteConfig.url}${ogImageUrl}`,
+  twitterTitle: `${agendaMarkdownData.value?.title} - ${speakerNames}`,
   twitterDescription: agendaMarkdownData.value?.description,
-  twitterImage: ogImageLink,
-  twitterCard: 'summary_large_image',
 })
 
 useSchemaOrg([

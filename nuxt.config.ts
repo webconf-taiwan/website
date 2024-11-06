@@ -1,13 +1,13 @@
 import { appDescription } from './constants'
 import { speakers } from './constants/speakers'
-import { getAllAgendaIds } from './utils/index'
+// import { getAllAgendaIds } from './utils/index'
 
 const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
   `/_ipx/f_webp&q_80&blur_5&s_32x32${speaker.avatar}`,
   `/_ipx/f_webp${speaker.avatar}`,
 ])
 
-const singleAgendaRoutes = getAllAgendaIds().map(id => `/agenda/${id}`)
+// const singleAgendaRoutes = getAllAgendaIds().map(id => `/agenda/${id}`)
 
 export default defineNuxtConfig({
   devtools: {
@@ -92,7 +92,7 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://webconf.tw/',
+    url: 'https://webconf.tw',
     name: '2024 WebConf Taiwan 技術研討會',
     defaultLocale: 'zh-TW',
   },
@@ -119,7 +119,7 @@ export default defineNuxtConfig({
         '/_ipx/_/logo-words.svg',
         '/_ipx/_/drawer/drawer-top-decorate-lg.svg',
         '/_ipx/_/drawer/drawer-top-decorate.svg',
-        ...singleAgendaRoutes,
+        // ...singleAgendaRoutes,
         '/sitemap.xml',
       ],
     },

@@ -39,7 +39,7 @@ export const agendaData: DaySchedule = {
         },
         M: {
           id: 'day1-1-m',
-          title: 'TBD',
+          title: '',
           tags: [],
           speakerCodes: ['ihower'],
           otherLinks: [],

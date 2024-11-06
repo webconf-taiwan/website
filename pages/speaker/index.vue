@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { appDescription, appName, ogImageLink } from '~/constants'
+import { appDescription, appName } from '~/constants'
 import type { ParsedAgendaData } from '~/types/agendas'
 
 const { $lenis } = useNuxtApp()
@@ -9,14 +9,9 @@ const agendasStore = useAgendasStore()
 
 useSeoMeta({
   title: '講者',
-  description: appDescription,
-  ogTitle: appName,
+  ogTitle: `講者 | ${appName}`,
   ogDescription: appDescription,
-  ogImage: ogImageLink,
-  twitterTitle: appName,
-  twitterDescription: appDescription,
-  twitterImage: ogImageLink,
-  twitterCard: 'summary_large_image',
+  twitterTitle: `講者 | ${appName}`,
 })
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
