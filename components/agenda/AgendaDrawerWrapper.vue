@@ -75,46 +75,46 @@ const svgViewBox = computed(() => {
       :class="{ 'mt-8': index > 0 }"
     >
       <!-- 講者頭像 -->
-      <div class="flex w-full shrink-0 items-center justify-center overflow-hidden md:h-full md:w-[200px]">
-        <svg
-          class="absolute"
-          width="0"
-          height="0"
-        >
-          <defs>
-            <clipPath id="square-with-corner-cut">
-              <path :d="maskClipPath" />
-            </clipPath>
-          </defs>
-        </svg>
-        <div class="relative mt-[1px] h-auto w-[320px] shrink-0 md:w-[200px]">
-          <NuxtImg
-            :src="speaker.speakerAvatar"
-            :alt="`${speaker.speakerName} 講者圖片`"
-            class="size-full object-cover"
-            style="clip-path: url(#square-with-corner-cut);"
-            placeholder="/speakers/avatar_placeholder.svg"
-            format="webp"
-            draggable="false"
-          />
-
-          <div class="absolute inset-x-0 bottom-0 z-10 h-1.5 bg-primary-green"></div>
-          <div class="absolute top-[3px] z-10 h-[1px] w-[100px] bg-primary-green md:w-[70px]"></div>
-          <div class="absolute top-[15px] z-10 h-[1px] w-[70px] bg-primary-green md:w-[50px]"></div>
-
+      <ClientOnly>
+        <div class="flex w-full shrink-0 items-center justify-center overflow-hidden md:h-full md:w-[200px]">
           <svg
-            class="pointer-events-none absolute left-0 top-0 size-full"
-            :view-box="svgViewBox"
+            class="absolute"
+            width="0"
+            height="0"
           >
-            <path
-              :d="maskClipPath"
-              fill="none"
-              stroke="var(--primary-green)"
-              stroke-width="3"
-            />
+            <defs>
+              <clipPath id="square-with-corner-cut">
+                <path :d="maskClipPath" />
+              </clipPath>
+            </defs>
           </svg>
+          <div class="relative mt-[1px] h-auto w-[320px] shrink-0 md:w-[200px]">
+            <NuxtImg
+              :src="speaker.speakerAvatar"
+              :alt="`${speaker.speakerName} 講者圖片`"
+              class="size-full object-cover"
+              style="clip-path: url(#square-with-corner-cut);"
+              placeholder="/speakers/avatar_placeholder.svg"
+              format="webp"
+              draggable="false"
+            />
+            <div class="absolute inset-x-0 bottom-0 z-10 h-1.5 bg-primary-green"></div>
+            <div class="absolute top-[3px] z-10 h-[1px] w-[100px] bg-primary-green md:w-[70px]"></div>
+            <div class="absolute top-[15px] z-10 h-[1px] w-[70px] bg-primary-green md:w-[50px]"></div>
+            <svg
+              class="pointer-events-none absolute left-0 top-0 size-full"
+              :view-box="svgViewBox"
+            >
+              <path
+                :d="maskClipPath"
+                fill="none"
+                stroke="var(--primary-green)"
+                stroke-width="3"
+              />
+            </svg>
+          </div>
         </div>
-      </div>
+      </ClientOnly>
 
       <!-- 講者資訊 -->
       <div class="mt-5 w-full md:mt-0 lg:flex lg:flex-col lg:items-center lg:justify-between">
@@ -253,7 +253,7 @@ const svgViewBox = computed(() => {
         <span class="flex items-center gap-x-[10px] text-xl">
           分享資訊
           <Icon
-            name="ic:round-share"
+            name="i-heroicons:share"
             class="text-2xl"
           />
         </span>

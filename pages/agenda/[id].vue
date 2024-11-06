@@ -38,14 +38,12 @@ if (agenda) {
   agendasStore.setAgendaDrawerRenderData(agenda)
 }
 
-const speakerNames = computed(() => {
-  return agendasStore.agendaDrawerRenderData.map(item => item.speakerName).join('、')
-})
+const speakerNames = agendasStore.agendaDrawerRenderData.map(item => item.speakerName).join('、')
 
 useSeoMeta({
-  title: `${agendaMarkdownData.value?.title} - ${speakerNames.value}`,
+  title: `${agendaMarkdownData.value?.title} - ${speakerNames}`,
   description: agendaMarkdownData.value?.description,
-  author: () => speakerNames.value,
+  author: () => speakerNames,
   ogTitle: agendaMarkdownData.value?.title,
   ogDescription: agendaMarkdownData.value?.description,
   ogImage: ogImageLink,

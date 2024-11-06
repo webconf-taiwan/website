@@ -26,7 +26,7 @@ onMounted(() => {
   <NuxtRouteAnnouncer />
 
   <Teleport to="body">
-    <FirstLoadingAnimation v-if="!hasShownAnimation && isHome" />
+    <!-- <FirstLoadingAnimation v-if="!hasShownAnimation && isHome" /> -->
     <TilesBackground />
   </Teleport>
 
