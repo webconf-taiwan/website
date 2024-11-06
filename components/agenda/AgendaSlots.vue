@@ -15,7 +15,7 @@ defineEmits<{
 
 const { $device } = useNuxtApp()
 
-const locations: AgendaLocation[] = ['M', 'F', 'A2']
+const locations: AgendaLocation[] = ['F', 'M', 'A2']
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')

@@ -30,18 +30,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-1-m',
-          title: 'TBD',
-          tags: [],
-          speakerCodes: ['ihower'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-1-f',
           title: '靈能的挑戰：從碼農開始的通靈王之路',
           tags: ['backend', 'agile'],
           speakerCodes: ['kyocheng'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-1-m',
+          title: 'TBD',
+          tags: [],
+          speakerCodes: ['ihower'],
           otherLinks: [],
         },
         A2: {
@@ -59,18 +59,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-2-m',
-          title: '個人專案到產品：善用 AI 工具打造可盈利產品',
-          tags: ['frontend', 'backend', 'agile', 'product-design'],
-          speakerCodes: ['pjwang'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-2-f',
           title: 'DevOps, GitOps, and AIOps',
           tags: ['devops'],
           speakerCodes: ['weithenn'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-2-m',
+          title: '個人專案到產品：善用 AI 工具打造可盈利產品',
+          tags: ['frontend', 'backend', 'agile', 'product-design'],
+          speakerCodes: ['pjwang'],
           otherLinks: [],
         },
         A2: {
@@ -88,18 +88,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-3-m',
-          title: '如何撰寫具彈性的測試程式',
-          tags: ['frontend'],
-          speakerCodes: ['summer'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-3-f',
           title: '來一場兼顧程式碼品質以及開發效率的 Code Review',
           tags: ['frontend', 'backend', 'team-management'],
           speakerCodes: ['fin'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-3-m',
+          title: '如何撰寫具彈性的測試程式',
+          tags: ['frontend'],
+          speakerCodes: ['summer'],
           otherLinks: [],
         },
         A2: {
@@ -117,18 +117,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-4-m',
-          title: '從技術專才到領導者：1 到 100 人的管理之路',
-          tags: ['team-management'],
-          speakerCodes: ['singz'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-4-f',
           title: '從單體應用到微服務的監控演化淺談',
           tags: ['backend', 'team-management'],
           speakerCodes: ['nic'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-4-m',
+          title: '從技術專才到領導者：1 到 100 人的管理之路',
+          tags: ['team-management'],
+          speakerCodes: ['singz'],
           otherLinks: [],
         },
         A2: {
@@ -153,18 +153,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-5-m',
-          title: '有限狀態機與 RxJS',
-          tags: ['frontend'],
-          speakerCodes: ['milkmidi'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-5-f',
           title: '十年回首：React 的過去、現在與未來發展',
           tags: ['frontend'],
           speakerCodes: ['zet'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-5-m',
+          title: '有限狀態機與 RxJS',
+          tags: ['frontend'],
+          speakerCodes: ['milkmidi'],
           otherLinks: [],
         },
         A2: {
@@ -182,18 +182,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-6-m',
-          title: '《天下》如何思考數位敘事？從流程到技術大公開',
-          tags: ['frontend', 'uiux', 'agile', 'team-management'],
-          speakerCodes: ['sylviauk', 'stevenyeo'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-6-f',
           title: '在現有軟體服務中整合 Copilot 功能：Context 與 UI 的新挑戰',
           tags: ['frontend', 'backend', 'uiux'],
           speakerCodes: ['kewang'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-6-m',
+          title: '《天下》如何思考數位敘事？從流程到技術大公開',
+          tags: ['frontend', 'uiux', 'agile', 'team-management'],
+          speakerCodes: ['sylviauk', 'stevenyeo'],
           otherLinks: [],
         },
         A2: {
@@ -211,18 +211,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-7-m',
-          title: '網站專案時程的挑戰跟威脅',
-          tags: ['product-design', 'team-management'],
-          speakerCodes: ['tonyq'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-7-f',
           title: 'AI、Data 與 Web，跨領域的資料科學工作者之路',
           tags: ['frontend', 'backend'],
           speakerCodes: ['dscareer'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-7-m',
+          title: '網站專案時程的挑戰跟威脅',
+          tags: ['product-design', 'team-management'],
+          speakerCodes: ['tonyq'],
           otherLinks: [],
         },
         A2: {
@@ -240,18 +240,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day1-8-m',
-          title: 'AI+商業思維：軟體工程師如何擁抱趨勢，提升職場價值',
-          tags: ['team-management'],
-          speakerCodes: ['gipi'],
-          otherLinks: [],
-        },
         F: {
           id: 'day1-8-f',
           title: 'Zeabur：雲端部署平台 PaaS 核心技術大揭秘',
           tags: ['frontend', 'backend', 'devops'],
           speakerCodes: ['yuanlin'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day1-8-m',
+          title: 'AI+商業思維：軟體工程師如何擁抱趨勢，提升職場價值',
+          tags: ['team-management'],
+          speakerCodes: ['gipi'],
           otherLinks: [],
         },
         A2: {
@@ -278,18 +278,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day2-1-m',
-          title: '在 AI 時代如何成為資深工程師？',
-          tags: ['frontend', 'backend', 'agile', 'devops'],
-          speakerCodes: ['mosky'],
-          otherLinks: [],
-        },
         F: {
           id: 'day2-1-f',
           title: '實戰！以 Web 3D 技術開發商品客製編輯器',
           tags: ['frontend', 'uiux'],
           speakerCodes: ['gugu'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day2-1-m',
+          title: '在 AI 時代如何成為資深工程師？',
+          tags: ['frontend', 'backend', 'agile', 'devops'],
+          speakerCodes: ['mosky'],
           otherLinks: [],
         },
         A2: {
@@ -307,16 +307,16 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: true,
       agendas: {
-        M: {
-          id: 'day2-2-m',
-          title: '擁抱漸進式體驗 — 設計驅動企業改革動能',
+        F: {
+          id: 'day2-2-f',
+          title: '同步聯播',
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['lydia'],
           otherLinks: [],
         },
-        F: {
-          id: 'day2-2-f',
-          title: '同步聯播',
+        M: {
+          id: 'day2-2-m',
+          title: '擁抱漸進式體驗 — 設計驅動企業改革動能',
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['lydia'],
           otherLinks: [],
@@ -336,18 +336,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day2-3-m',
-          title: 'ESLint One for All Made Easy',
-          tags: ['frontend'],
-          speakerCodes: ['antfu'],
-          otherLinks: [],
-        },
         F: {
           id: 'day2-3-f',
           title: 'Woops，網站打不開了怎麼辦？來當一天系統管理員吧！',
           tags: ['frontend', 'backend', 'devops'],
           speakerCodes: ['lightda'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day2-3-m',
+          title: 'ESLint One for All Made Easy',
+          tags: ['frontend'],
+          speakerCodes: ['antfu'],
           otherLinks: [],
         },
         A2: {
@@ -365,18 +365,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day2-4-m',
-          title: 'Flex out！ CSS Grid 玩起來！',
-          tags: ['frontend', 'uiux'],
-          speakerCodes: ['amos'],
-          otherLinks: [],
-        },
         F: {
           id: 'day2-4-f',
           title: 'Woops，網站打不開了怎麼辦？來當一天系統管理員吧！',
           tags: ['frontend', 'backend', 'devops'],
           speakerCodes: ['lightda'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day2-4-m',
+          title: 'Flex out！ CSS Grid 玩起來！',
+          tags: ['frontend', 'uiux'],
+          speakerCodes: ['amos'],
           otherLinks: [],
         },
         A2: {
@@ -401,18 +401,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day2-5-m',
-          title: '從零開始打造金融業的開發者平台',
-          tags: ['devops'],
-          speakerCodes: ['xiaofeng'],
-          otherLinks: [],
-        },
         F: {
           id: 'day2-5-f',
           title: '用 AI 幫助開發 Apple Watch App 實戰分享',
           tags: ['frontend', 'product-design'],
           speakerCodes: ['leethi'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day2-5-m',
+          title: '從零開始打造金融業的開發者平台',
+          tags: ['devops'],
+          speakerCodes: ['xiaofeng'],
           otherLinks: [],
         },
         A2: {
@@ -430,18 +430,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day2-6-m',
-          title: 'DevOps 與 GenAI：在人工智慧時代的未來之路',
-          tags: ['devops'],
-          speakerCodes: ['hungweichiu'],
-          otherLinks: [],
-        },
         F: {
           id: 'day2-6-f',
           title: '這些年，你所不知道的 Angular',
           tags: ['frontend'],
           speakerCodes: ['leo'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day2-6-m',
+          title: 'DevOps 與 GenAI：在人工智慧時代的未來之路',
+          tags: ['devops'],
+          speakerCodes: ['hungweichiu'],
           otherLinks: [],
         },
         A2: {
@@ -459,18 +459,18 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: false,
       agendas: {
-        M: {
-          id: 'day2-7-m',
-          title: '當 Vue 與 View 分手之後⋯',
-          tags: ['frontend'],
-          speakerCodes: ['kuro'],
-          otherLinks: [],
-        },
         F: {
           id: 'day2-7-f',
           title: '接案失敗學：前端後端設計端，我還要具備什麼端才能出來江湖闖盪？談小白鼠闖入黑森林被XXX的淒慘故事',
           tags: ['frontend', 'backend', 'product-design'],
           speakerCodes: ['taiming'],
+          otherLinks: [],
+        },
+        M: {
+          id: 'day2-7-m',
+          title: '當 Vue 與 View 分手之後⋯',
+          tags: ['frontend'],
+          speakerCodes: ['kuro'],
           otherLinks: [],
         },
         A2: {
@@ -488,16 +488,16 @@ export const agendaData: DaySchedule = {
       type: 'agenda',
       isBroadcast: true,
       agendas: {
-        M: {
-          id: 'day2-8-m',
-          title: '工程師成長之路：由時間管理到職涯規劃',
+        F: {
+          id: 'day2-8-f',
+          title: '同步聯播',
           tags: ['agile', 'team-management'],
           speakerCodes: ['ruddy'],
           otherLinks: [],
         },
-        F: {
-          id: 'day2-8-f',
-          title: '同步聯播',
+        M: {
+          id: 'day2-8-m',
+          title: '工程師成長之路：由時間管理到職涯規劃',
           tags: ['agile', 'team-management'],
           speakerCodes: ['ruddy'],
           otherLinks: [],
