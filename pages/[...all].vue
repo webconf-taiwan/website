@@ -4,7 +4,7 @@ const router = useRouter()
 
 <template>
   <main>
-    <div class="flex min-h-[calc(100dvh-100px)] md:min-h-[calc(100dvh-120px)] flex-col items-center justify-center gap-y-4 text-primary-green">
+    <div class="flex min-h-[calc(100dvh-100px)] flex-col items-center justify-center gap-y-4 text-primary-green md:min-h-[calc(100dvh-120px)]">
       <div>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +28,7 @@ const router = useRouter()
           class=" px-6 py-2 text-white transition-all md:hover:bg-gray-300/50"
           @click="router.back()"
         >
-        <span class="text-xl">Back</span>
+          <span class="text-xl">Back</span>
         </Button>
       </div>
     </div>

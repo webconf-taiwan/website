@@ -9,6 +9,7 @@ Facebook : https://www.facebook.com/WebConfTaiwan
 
 - [Nuxt 3](https://nuxt.com/)
 - [Pinia](https://pinia.vuejs.org/)
+- [Nuxt Content](https://content.nuxt.com/)
 - [VueUse](https://vueuse.org/)
 - [ESLint](https://eslint.org/)
 - [Tailwind CSS](https://tailwindcss.com/)

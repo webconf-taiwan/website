@@ -4,6 +4,12 @@ import { useEventListener } from '@vueuse/core'
 const headerRef = ref<HTMLDivElement | null>(null)
 const gradientOpacity = ref(0)
 
+const route = useRoute()
+const isHome = computed(() => route.name === 'index')
+
+const { y: windowY } = useWindowScroll()
+const showBlackBg = computed(() => windowY.value > 60)
+
 /**
  * 計算漸層的透明度，滾動距離越大，透明度越高
  */
@@ -16,22 +22,45 @@ useEventListener(window, 'scroll', checkScroll)
 </script>
 
 <template>
-  <header class="lg:flex lg:justify-center">
+  <header class="flex h-12 items-center lg:h-[72px] lg:justify-center">
     <div
       ref="headerRef"
-      class="fixed left-0 top-0 z-30 flex min-h-12 w-full items-center justify-center overflow-x-clip px-10 lg:fixed lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-between"
+      class="fixed left-0 top-0 z-30 flex h-12 w-full items-center justify-center overflow-x-clip px-5 lg:left-1/2 lg:max-w-[1440px] lg:-translate-x-1/2 lg:justify-start lg:px-10"
     >
+      <ClientOnly>
+        <div
+          v-if="!isHome"
+          class="absolute block h-12 w-full transition-colors duration-300 lg:hidden"
+          :class="[showBlackBg ? 'bg-black/100' : 'bg-black/0']"
+        ></div>
+      </ClientOnly>
+
       <div
-        class=" absolute inset-0 bg-gradient-to-t from-transparent to-gradient-bg-start/70 transition-opacity duration-150 lg:hidden"
+        v-if="isHome"
+        class="absolute inset-0 bg-gradient-to-t from-transparent to-gradient-bg-start/70 transition-opacity duration-150 lg:hidden"
         :style="{ opacity: gradientOpacity }"
       ></div>
-      <LogoAnimation
-        v-if="headerRef"
-        :header-ref="headerRef"
-      />
+
+      <template v-if="isHome">
+        <LogoAnimation
+          v-if="headerRef"
+          :header-ref="headerRef"
+        />
+      </template>
+      <template v-else>
+        <div class="relative h-full w-[192px] content-center">
+          <NuxtLink
+            to="/"
+            class="block py-3"
+          >
+            <NuxtImg
+              src="/logo-words.svg"
+              alt="logo"
+              class="h-auto w-full"
+            />
+          </NuxtLink>
+        </div>
+      </template>
     </div>
   </header>
-
-  <!-- header 佔位格 -->
-  <div class="h-12 lg:h-[72px]"></div>
 </template>

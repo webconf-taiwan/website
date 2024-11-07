@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import { historyLinks } from '~/constants'
+
 const { navLinks } = defineProps<{
   navLinks: {
     name: string
@@ -23,7 +25,7 @@ const { navLinks } = defineProps<{
           :to="link.href"
           class="flex items-center space-x-4 py-3 pl-6"
         >
-          <p class="text-mina text-xl font-bold">
+          <p class="text-mina h-[1.45rem] text-xl font-bold">
             {{ link.engName }}
           </p>
           <p class="font-bold">
@@ -36,7 +38,7 @@ const { navLinks } = defineProps<{
           class="space-y-4 py-3 pl-6"
         >
           <div class="flex items-center space-x-4">
-            <p class="text-mina text-xl font-bold">
+            <p class="text-mina h-[1.45rem] text-xl font-bold">
               {{ link.engName }}
             </p>
             <p class="font-bold">
@@ -45,23 +47,16 @@ const { navLinks } = defineProps<{
           </div>
 
           <ul class="flex space-x-4">
-            <li>
+            <li
+              v-for="historyLink in historyLinks"
+              :key="historyLink.name"
+            >
               <NuxtLink
-                to="https://2013.webconf.tw/"
+                :to="historyLink.href"
                 target="_blank"
                 class="flex items-center justify-center border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
               >
-                2013
-              </NuxtLink>
-            </li>
-
-            <li>
-              <NuxtLink
-                to="https://2023.webconf.tw/"
-                target="_blank"
-                class="flex items-center justify-center border border-primary-green px-3 py-[2px] text-lg active:bg-primary-green/50"
-              >
-                2023
+                {{ historyLink.name }}
               </NuxtLink>
             </li>
           </ul>

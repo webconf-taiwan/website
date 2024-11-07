@@ -1,15 +1,17 @@
 import { appDescription } from './constants'
 import { speakers } from './constants/speakers'
+// import { getAllAgendaIds } from './utils/index'
 
 const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
   `/_ipx/f_webp&q_80&blur_5&s_32x32${speaker.avatar}`,
   `/_ipx/f_webp${speaker.avatar}`,
 ])
 
+// const singleAgendaRoutes = getAllAgendaIds().map(id => `/agenda/${id}`)
+
 export default defineNuxtConfig({
   devtools: {
     enabled: true,
-    componentInspector: false,
   },
 
   modules: [
@@ -18,8 +20,12 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/image',
     '@nuxt/icon',
-    'shadcn-nuxt',
+    '@nuxt/content',
+    '@nuxtjs/device',
+    '@nuxtjs/seo',
     'nuxt-marquee',
+    'shadcn-nuxt',
+    'dayjs-nuxt',
   ],
 
   fonts: {
@@ -53,6 +59,13 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**'],
   },
 
+  dayjs: {
+    locales: ['zh-tw'],
+    plugins: ['relativeTime', 'utc', 'timezone', 'isSameOrAfter'],
+    defaultLocale: 'zh-tw',
+    defaultTimezone: 'Asia/Taipei',
+  },
+
   build: {
     transpile: ['@headlessui/vue', 'gsap'],
   },
@@ -72,6 +85,31 @@ export default defineNuxtConfig({
         { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
       ],
     },
+    pageTransition: {
+      name: 'page',
+      mode: 'out-in',
+    },
+  },
+
+  site: {
+    url: 'https://webconf.tw',
+    name: '2024 WebConf Taiwan 技術研討會',
+    defaultLocale: 'zh-TW',
+  },
+
+  sitemap: {
+    sources: [
+      '/api/__sitemap__/urls',
+    ],
+  },
+
+  ogImage: {
+    fonts: ['Noto+Sans+TC:700'],
+  },
+
+  content: {
+    documentDriven: false,
+    ignores: ['drafts'],
   },
 
   nitro: {
@@ -81,6 +119,8 @@ export default defineNuxtConfig({
         '/_ipx/_/logo-words.svg',
         '/_ipx/_/drawer/drawer-top-decorate-lg.svg',
         '/_ipx/_/drawer/drawer-top-decorate.svg',
+        // ...singleAgendaRoutes,
+        '/sitemap.xml',
       ],
     },
   },

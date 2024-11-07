@@ -2,20 +2,13 @@
 const { headerRef } = defineProps<{
   headerRef: HTMLDivElement | null
 }>()
+
 const { $gsap } = useNuxtApp()
 const headerLogoWordsRef = ref<HTMLDivElement | null>(null)
 const headerLogoWordsSmRef = ref<HTMLDivElement | null>(null)
-const headerLogoLinkRef = ref<HTMLDivElement | null>(null)
-const headerLogoLinkSmRef = ref<HTMLDivElement | null>(null)
-const route = useRoute()
-const isHomePage = computed(() => route.path === '/')
 
 onMounted(async () => {
   await nextTick()
-
-  if (!isHomePage.value) {
-    return
-  }
 
   const mm = $gsap.matchMedia()
 
@@ -31,7 +24,7 @@ onMounted(async () => {
   const tlSm = $gsap.timeline({
     scrollTrigger: {
       trigger: headerRef,
-      start: 'top top',
+      start: '-1px top',
       end: 'bottom top',
       scrub: 1,
       // markers: true,
@@ -49,9 +42,12 @@ onMounted(async () => {
 
     if (isPhone) {
       tlSm.restart()
-      tlSm.from(headerLogoWordsSmRef.value, {
+      tlSm.fromTo(headerLogoWordsSmRef.value, {
         y: 100,
-        width: 'calc(100% - 40px)',
+        width: 'calc(100vw - 40px)',
+      }, {
+        y: 0,
+        width: '30dvw',
         ease: 'power3.inOut',
       })
       tlSm.pause()
@@ -59,9 +55,13 @@ onMounted(async () => {
 
     if (isPad) {
       tlSm.restart()
-      tlSm.from(headerLogoWordsSmRef.value, {
+      tlSm.fromTo(headerLogoWordsSmRef.value, {
         y: 110,
-        width: 'calc(100% - 40px)',
+        width: 'calc(100vw - 40px)',
+        transformOrigin: 'center center',
+      }, {
+        y: 0,
+        width: '30dvw',
         transformOrigin: 'center center',
         ease: 'power3.inOut',
       })
@@ -118,19 +118,12 @@ onMounted(async () => {
       alt="logoWords"
       class="absolute left-0 top-4 h-auto w-full"
     />
-
-    <div ref="headerLogoLinkSmRef">
-      <NuxtLink
-        to="/"
-        class="absolute left-0 top-0 size-full"
-      />
-    </div>
   </div>
 
   <!-- 手機版 -->
   <div
     ref="headerLogoWordsSmRef"
-    class="fixed h-10 w-[30%] px-10 lg:hidden"
+    class="relative h-10 w-full min-w-[192px] lg:hidden"
   >
     <NuxtImg
       id="headerLogoWordsSm"
@@ -138,12 +131,5 @@ onMounted(async () => {
       alt="logoWords"
       class="absolute left-0 top-4 h-auto w-full"
     />
-
-    <div ref="headerLogoLinkRef">
-      <NuxtLink
-        to="/"
-        class="absolute left-0 top-0 size-full"
-      />
-    </div>
   </div>
 </template>

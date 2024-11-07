@@ -1,16 +1,22 @@
 <script setup lang="ts">
+import type { HTMLAttributes } from 'vue'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import { cn } from '~/lib/utils'
 
 type SlideDirection = 'slide-left' | 'slide-right' | 'slide-up' | 'slide-up-full' | 'slide-down'
 
 const props = withDefaults(defineProps<{
   defaultCloseBtn?: boolean
   slideDirection?: SlideDirection
+  drawerClass?: HTMLAttributes['class']
 }>(), {
   defaultCloseBtn: true,
   slideDirection: 'slide-up',
-
 })
+
+const emit = defineEmits<{
+  close: []
+}>()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')
@@ -25,11 +31,13 @@ function open() {
 
 function close() {
   closeDrawer()
+  emit('close')
 }
 
 function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape' && isActive.value)
+  if (event.key === 'Escape' && isActive.value) {
     close()
+  }
 }
 
 function handlePageScroll() {
@@ -131,8 +139,11 @@ const drawerContentClass = computed(() => {
   >
     <div
       v-if="isActive"
-      class="fixed z-[1030] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10"
-      :class="drawerContentClass"
+      :class="cn(
+        'fixed z-[1030] flex flex-col bg-black px-0 py-5 shadow-lg lg:w-[50dvw] lg:p-10',
+        drawerContentClass,
+        props.drawerClass,
+      )"
     >
       <slot></slot>
       <slot name="custom"></slot>

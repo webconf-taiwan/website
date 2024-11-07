@@ -3,10 +3,10 @@ import Nav from '~/components/nav/Nav.vue'
 </script>
 
 <template>
-  <main class="layout-grid">
+  <div>
     <Header />
     <Nav />
     <slot></slot>
     <Footer />
-  </main>
+  </div>
 </template>

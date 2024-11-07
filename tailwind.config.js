@@ -50,7 +50,10 @@ export default {
           'DEFAULT': 'hsl(var(--primary))',
           'foreground': 'hsl(var(--primary-foreground))',
           'green': 'hsla(168, 100%, 50%, 1)',
+          'mid-green': 'hsla(170, 100%, 35%, 1)',
+          'faint-green': 'hsla(186, 36%, 40%, 1)',
           'dark-green': 'hsla(180, 100%, 18%, 1)',
+          'deep-green': 'hsla(194, 96%, 19%, 1)',
         },
         'secondary': {
           DEFAULT: 'hsl(var(--secondary))',
