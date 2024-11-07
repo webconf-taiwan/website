@@ -44,7 +44,7 @@ onMounted(() => {
 <template>
   <section
     ref="parallaxSection"
-    class="full-bleed relative z-10 mt-40 bg-black px-5 py-36 sm:mt-28 lg:-mt-8"
+    class="full-bleed relative z-10 mt-40 bg-black px-5 py-20 sm:mt-28 lg:-mt-8 lg:py-36"
   >
     <div class="mx-auto max-w-[1096px]">
       <div class="mb-8 flex items-center justify-start lg:justify-between">
@@ -57,16 +57,36 @@ onMounted(() => {
           </template>
         </SectionTitle>
 
-        <Button
-          type="button"
-          variant="custom"
-          size="custom"
-          rounded="none"
-          class="hidden lg:block"
-          @click="aboutUsDrawer?.open()"
-        >
-          <span class="text-xl">關於我們</span>
-        </Button>
+        <div class="flex items-center gap-x-6">
+          <Button
+            type="button"
+            variant="custom"
+            size="custom"
+            rounded="none"
+            class="hidden px-9 lg:block"
+            @click="aboutUsDrawer?.open()"
+          >
+            <span class="text-xl tracking-wide">關於我們</span>
+          </Button>
+          <Button
+            as-child
+            variant="custom"
+            size="custom"
+            rounded="none"
+          >
+            <NuxtLink
+              to="/agenda"
+              class="group hidden space-x-2 px-9 pr-6 text-base lg:flex lg:items-center"
+            >
+              <span class="text-xl tracking-wide">查看議程</span>
+              <Icon
+                name="i-heroicons:arrow-right"
+                size="24"
+                class="shrink-0 animate-parallel-wiggle [animation-play-state:paused] group-hover:[animation-play-state:running]"
+              />
+            </NuxtLink>
+          </Button>
+        </div>
 
         <Teleport to="body">
           <Drawer
@@ -159,7 +179,25 @@ onMounted(() => {
           class="block lg:hidden"
           @click="aboutUsDrawer?.open()"
         >
-          <span class="text-xl">關於我們</span>
+          <span class="text-xl tracking-wide">關於我們</span>
+        </Button>
+        <Button
+          as-child
+          variant="custom"
+          size="custom"
+          rounded="none"
+        >
+          <NuxtLink
+            to="/agenda"
+            class="block space-x-2 px-9 pr-6 text-base lg:hidden"
+          >
+            <span class="text-xl tracking-wide">查看議程</span>
+            <Icon
+              name="i-heroicons:arrow-right"
+              size="24"
+              class="shrink-0"
+            />
+          </NuxtLink>
         </Button>
       </div>
     </div>
