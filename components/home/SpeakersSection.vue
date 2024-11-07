@@ -110,9 +110,28 @@ function clickSpeakerNameHandler(speakerId: string) {
           講者
         </template>
       </SectionTitle>
+
+      <Button
+        as-child
+        variant="custom"
+        size="custom"
+        rounded="none"
+      >
+        <NuxtLink
+          to="/speakers"
+          class="group hidden space-x-2 px-9 pr-6 text-base lg:flex lg:items-center"
+        >
+          <span class="text-xl tracking-wide">查看講者</span>
+          <Icon
+            name="i-heroicons:arrow-right"
+            size="24"
+            class="shrink-0 animate-parallel-wiggle [animation-play-state:paused] group-hover:[animation-play-state:running]"
+          />
+        </NuxtLink>
+      </Button>
     </div>
 
-    <div class="flex flex-col items-center lg:flex-row lg:items-stretch">
+    <div class="mb-10 flex flex-col items-center lg:flex-row lg:items-stretch">
       <!-- Speakers carousel -->
       <Skeleton
         v-if="isShowSkeleton"
@@ -169,8 +188,26 @@ function clickSpeakerNameHandler(speakerId: string) {
         </ClientOnly>
       </div>
     </div>
+
+    <div class="flex justify-center">
+      <Button
+        as-child
+        variant="custom"
+        size="custom"
+        rounded="none"
+      >
+        <NuxtLink
+          to="/speakers"
+          class="block space-x-2 px-9 pr-6 text-base lg:hidden"
+        >
+          <span class="text-xl tracking-wide">查看講者</span>
+          <Icon
+            name="i-heroicons:arrow-right"
+            size="24"
+            class="shrink-0"
+          />
+        </NuxtLink>
+      </Button>
+    </div>
   </section>
 </template>
-
-<style scoped>
-</style>
