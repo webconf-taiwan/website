@@ -15,7 +15,7 @@ export const navLinks = [
   {
     name: '講者',
     engName: 'SPEAKERS',
-    href: '/speaker',
+    href: '/speakers',
   },
   // {
   //   name: '場域',
