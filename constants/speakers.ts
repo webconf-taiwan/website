@@ -74,7 +74,20 @@ export const speakers: Speaker[] = [
     displayName: 'Kuro Hsu',
     avatar: '/speakers/avatar_kuro.png',
     jobTitle: 'Vue.js Taiwan',
-    socialLinks: [],
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/kurotanshi/',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/kurotanshi/',
+      },
+      {
+        type: 'x',
+        url: 'https://x.com/kurotanshi',
+      },
+    ],
   },
   {
     id: 'speaker_6',

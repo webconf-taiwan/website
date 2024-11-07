@@ -21,6 +21,12 @@ const combinedSpeakersDisplayName = speakersData.map(speaker => speaker.displayN
   >
     <!-- Agenda title -->
     <h3 class="mb-2 line-clamp-2 text-start text-lg font-medium text-white">
+      <span
+        v-if="agenda.isWorkshop"
+        class="mr-1 inline-block h-[25px] content-center border border-primary-green/30 bg-primary-faint-green px-2 text-sm lg:mr-2"
+      >
+        工作坊
+      </span>
       {{ agenda.title }}
     </h3>
 

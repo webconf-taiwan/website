@@ -5,6 +5,7 @@ date: 2024-12-28
 startTime: 10:50
 endTime: 11:35
 location: F
+isWorkshop: true
 tags: ['frontend', 'backend', 'devops']
 speakerCodes: ['lightda']
 ---
@@ -12,7 +13,7 @@ speakerCodes: ['lightda']
 ::agenda-tabs-content
 <!--議程資訊-->
 #agenda
-:::agenda-title
+:::agenda-title{:isWorkshop="isWorkshop"}
 {{ $doc.title }}
 :::
 

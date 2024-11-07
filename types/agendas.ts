@@ -21,6 +21,7 @@ export interface AgendaItem {
   id: string
   title: string
   tags: AgendaTag['id'][]
+  isWorkshop?: boolean
   speakerCodes: string[]
   otherLinks?: {
     type: 'note' | 'slide'
@@ -59,6 +60,7 @@ export interface ParsedAgendaData extends MarkdownParsedContent {
   startTime: string
   endTime: string
   location: AgendaLocation
+  isWorkshop?: boolean
   tags: AgendaTag['id'][]
   speakerCodes: string[]
 }
