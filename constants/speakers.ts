@@ -301,7 +301,7 @@ export const speakers: Speaker[] = [
     code: 'rei',
     displayName: '黃睿霖 Rei',
     avatar: '/speakers/avatar_huangruilin.png',
-    jobTitle: '金谷設計 設計總監',
+    jobTitle: '前金融科技公司 設計總監',
     socialLinks: [
       {
         type: 'website',
