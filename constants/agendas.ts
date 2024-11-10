@@ -40,10 +40,10 @@ export const agendaData: DaySchedule = {
         },
         M: {
           id: 'day1-1-m',
-          title: 'TBD',
+          title: '有限狀態機與 RxJS',
           isWorkshop: false,
-          tags: [],
-          speakerCodes: ['ihower'],
+          tags: ['frontend'],
+          speakerCodes: ['milkmidi'],
           otherLinks: [],
         },
         A2: {
@@ -175,10 +175,10 @@ export const agendaData: DaySchedule = {
         },
         M: {
           id: 'day1-5-m',
-          title: '有限狀態機與 RxJS',
+          title: 'TBD',
           isWorkshop: false,
-          tags: ['frontend'],
-          speakerCodes: ['milkmidi'],
+          tags: [],
+          speakerCodes: ['ihower'],
           otherLinks: [],
         },
         A2: {
