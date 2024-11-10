@@ -2,8 +2,8 @@
 title: TBD
 description:
 date: 2024-12-27
-startTime: 09:00
-endTime: 09:45
+startTime: 13:30
+endTime: 14:15
 location: M
 tags: []
 speakerCodes: ['ihower']
