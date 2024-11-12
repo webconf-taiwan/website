@@ -66,7 +66,7 @@ const svgViewBox = computed(() => {
         format="webp"
         :placeholder="[32, 32, 80, 5]"
         draggable="false"
-        style="clip-path: url(#square-with-corner-cut);"
+        style="clip-path: url(#square-with-corner-cut-speaker-list);"
       />
       <svg
         class="absolute"
@@ -74,7 +74,7 @@ const svgViewBox = computed(() => {
         height="0"
       >
         <defs>
-          <clipPath id="square-with-corner-cut">
+          <clipPath id="square-with-corner-cut-speaker-list">
             <path :d="maskClipPath" />
           </clipPath>
         </defs>
@@ -99,7 +99,7 @@ const svgViewBox = computed(() => {
 
   <!-- 姓名、標籤 -->
   <div class="flex size-full max-w-[288px] flex-col md:max-w-[197px] lg:max-w-[288px] xl:max-w-[260px]">
-    <div class="mt-2 w-full">
+    <div class="mt-2 w-full text-start">
       <p class="line-clamp-2">
         {{ speaker.jobTitle }}
       </p>
