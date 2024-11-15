@@ -1,3 +1,4 @@
+const { setupInspiraUI } = require('@inspira-ui/plugins')
 const defaultTheme = require('tailwindcss/defaultTheme')
 const animate = require('tailwindcss-animate')
 
@@ -139,5 +140,6 @@ export default {
     require('@tailwindcss/typography'),
     require('@tailwindcss/container-queries'),
     animate,
+    setupInspiraUI,
   ],
 }

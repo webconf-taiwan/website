@@ -20,15 +20,12 @@ importers:
       '@vueuse/core':
         specifier: ^11.1.0
         version: 11.1.0(vue@3.5.12(typescript@5.6.3))
+      '@vueuse/motion':
+        specifier: ^2.2.6
+        version: 2.2.6(magicast@0.3.5)(rollup@4.21.3)(vue@3.5.12(typescript@5.6.3))
       aos:
         specifier: ^2.3.4
         version: 2.3.4
-      class-variance-authority:
-        specifier: ^0.7.0
-        version: 0.7.0
-      clsx:
-        specifier: ^2.1.1
-        version: 2.1.1
       embla-carousel-autoplay:
         specifier: ^8.3.1
         version: 8.3.1(embla-carousel@8.3.1)
@@ -50,9 +47,6 @@ importers:
       sitemap:
         specifier: ^8.0.0
         version: 8.0.0
-      tailwind-merge:
-        specifier: ^2.5.4
-        version: 2.5.4
       tailwindcss-animate:
         specifier: ^1.0.7
         version: 1.0.7(tailwindcss@3.4.14)
@@ -72,6 +66,9 @@ importers:
       '@iconify-json/uil':
         specifier: ^1.2.1
         version: 1.2.1
+      '@inspira-ui/plugins':
+        specifier: ^0.0.1
+        version: 0.0.1
       '@nuxt/content':
         specifier: ^2.13.4
         version: 2.13.4(ioredis@5.4.1)(magicast@0.3.5)(nuxt@3.13.2(@parcel/watcher@2.4.1)(@types/node@22.5.5)(eslint@9.13.0(jiti@2.3.3))(ioredis@5.4.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.21.3)(terser@5.32.0)(typescript@5.6.3)(vite@5.4.5(@types/node@22.5.5)(terser@5.32.0))(vue-tsc@2.1.10(typescript@5.6.3)))(rollup@4.21.3)(vue@3.5.12(typescript@5.6.3))
@@ -114,6 +111,12 @@ importers:
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
+      clsx:
+        specifier: ^2.1.1
+        version: 2.1.1
       dayjs-nuxt:
         specifier: ^2.1.11
         version: 2.1.11(magicast@0.3.5)(rollup@4.21.3)
@@ -138,6 +141,9 @@ importers:
       shadcn-nuxt:
         specifier: ^0.10.4
         version: 0.10.4(magicast@0.3.5)(rollup@4.21.3)
+      tailwind-merge:
+        specifier: ^2.5.4
+        version: 2.5.4
       tailwindcss:
         specifier: ^3.4.14
         version: 3.4.14
@@ -1082,6 +1088,9 @@ packages:
     peerDependencies:
       vue: '>=3'
 
+  '@inspira-ui/plugins@0.0.1':
+    resolution: {integrity: sha512-gM4iZptDoStA7QT1lltC6Jl4qRLhkZwVtcXomQy/PPxe0lAxhrZx40KXEUJakRZLOSmyfVJCExzZhRzOrE6DBQ==}
+
   '@internationalized/date@3.5.5':
     resolution: {integrity: sha512-H+CfYvOZ0LTJeeLOqm19E3uj/4YjrmOFtBufDHPfvtI80hFAMqtrp7oCACpe4Cil5l8S0Qu/9dYfZc/5lY8WQQ==}
 
@@ -2007,6 +2016,11 @@ packages:
 
   '@vueuse/metadata@11.1.0':
     resolution: {integrity: sha512-l9Q502TBTaPYGanl1G+hPgd3QX5s4CGnpXriVBR5fEZ/goI6fvDaVmIl3Td8oKFurOxTmbXvBPSsgrd6eu6HYg==}
+
+  '@vueuse/motion@2.2.6':
+    resolution: {integrity: sha512-gKFktPtrdypSv44SaW1oBJKLBiP6kE5NcoQ6RsAU3InemESdiAutgQncfPe/rhLSLCtL4jTAhMmFfxoR6gm5LQ==}
+    peerDependencies:
+      vue: '>=3.0.0'
 
   '@vueuse/nuxt@11.1.0':
     resolution: {integrity: sha512-ZPYigcqgPPe9vk9nBHLF8p0zshX8qvWV/ox1Y4GdV4k2flPiw7+2THNTpU2NZDBXSOXlhB2sao+paGCsvJm/Qw==}
@@ -3223,6 +3237,9 @@ packages:
   fraction.js@4.3.7:
     resolution: {integrity: sha512-ZsDfxO51wGAXREY55a7la9LScWpwv9RxIrYABrlvOFBlH/ShPnrtsXeuUIfXKKOVicNxQ+o8JTbJvjS4M89yew==}
 
+  framesync@6.1.2:
+    resolution: {integrity: sha512-jBTqhX6KaQVDyus8muwZbBeGGP0XgujBRbQ7gM7BRdS3CadCZIHiawyzYLnafYcvZIh5j8WE7cxZKFn7dXhu9g==}
+
   fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
@@ -3440,6 +3457,9 @@ packages:
   hex-rgb@4.3.0:
     resolution: {integrity: sha512-Ox1pJVrDCyGHMG9CFg1tmrRUMRPRsAWYc/PinY0XzJU4K7y7vjNoLKIQ7BR5UJMCxNN8EM1MNDmHWA/B3aZUuw==}
     engines: {node: '>=6'}
+
+  hey-listen@1.0.8:
+    resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
 
   hookable@5.5.3:
     resolution: {integrity: sha512-Yc+BQe8SvoXH1643Qez1zqLRmbA5rCL+sSmk6TVos0LWVfNIB7PGncdlId77WzLGSIB5KaWgTaNTs2lNVEI6VQ==}
@@ -4564,6 +4584,9 @@ packages:
     resolution: {integrity: sha512-Nc3IT5yHzflTfbjgqWcCPpo7DaKy4FnpB0l/zCAW0Tc7jxAiuqSxHasntB3D7887LSrA93kDJ9IXovxJYxyLCA==}
     engines: {node: '>=4'}
 
+  popmotion@11.0.5:
+    resolution: {integrity: sha512-la8gPM1WYeFznb/JqF4GiTkRRPZsfaj2+kCxqQgr2MJylMmIKUwBfWW8Wa5fml/8gmtlD5yI01MP1QCZPWmppA==}
+
   portfinder@1.0.32:
     resolution: {integrity: sha512-on2ZJVVDXRADWE6jnQaX0ioEylzgBpQk8r55NE4wjXW1ZxO+BgDlY6DXwj20i0V8eB4SenDQ00WEaxfiIQPcxg==}
     engines: {node: '>= 0.12.0'}
@@ -5278,6 +5301,9 @@ packages:
   strip-literal@2.1.0:
     resolution: {integrity: sha512-Op+UycaUt/8FbN/Z2TWPBLge3jWrP3xj10f3fnYxf052bKuS3EKs1ZQcVGjnEMdsNVAM+plXRdmjrZ/KgG3Skw==}
 
+  style-value-types@5.1.2:
+    resolution: {integrity: sha512-Vs9fNreYF9j6W2VvuDTP7kepALi7sk0xtk2Tu8Yxi9UoajJdEVpNpCov0HsLTqXvNGKX+Uv09pkozVITi1jf3Q==}
+
   stylehacks@7.0.4:
     resolution: {integrity: sha512-i4zfNrGMt9SB4xRK9L83rlsFCgdGANfeDAYacO1pkqcE7cRHPdWHwnKZVz7WY17Veq/FvyYsRAU++Ga+qDFIww==}
     engines: {node: ^18.12.0 || ^20.9.0 || >=22.0}
@@ -5446,6 +5472,9 @@ packages:
 
   ts-interface-checker@0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+
+  tslib@2.4.0:
+    resolution: {integrity: sha512-d6xOpEDfsi2CZVlPQzGeux8XMwLT9hssAsaPYExaQMuYskwb+x1x7J371tWlbBdWHroy99KnVB6qIkUbs5X3UQ==}
 
   tslib@2.7.0:
     resolution: {integrity: sha512-gLXCKdN1/j47AiHiOkJN69hJmcbGTHI0ImLmbYLHykhgeN0jVGola9yVjFgzCUklsZQMW55o+dW7IXv3RCXDzA==}
@@ -6721,6 +6750,10 @@ snapshots:
     dependencies:
       '@iconify/types': 2.0.0
       vue: 3.5.12(typescript@5.6.3)
+
+  '@inspira-ui/plugins@0.0.1':
+    dependencies:
+      mini-svg-data-uri: 1.4.4
 
   '@internationalized/date@3.5.5':
     dependencies:
@@ -8229,6 +8262,24 @@ snapshots:
 
   '@vueuse/metadata@11.1.0': {}
 
+  '@vueuse/motion@2.2.6(magicast@0.3.5)(rollup@4.21.3)(vue@3.5.12(typescript@5.6.3))':
+    dependencies:
+      '@vueuse/core': 10.11.1(vue@3.5.12(typescript@5.6.3))
+      '@vueuse/shared': 10.11.1(vue@3.5.12(typescript@5.6.3))
+      csstype: 3.1.3
+      framesync: 6.1.2
+      popmotion: 11.0.5
+      style-value-types: 5.1.2
+      vue: 3.5.12(typescript@5.6.3)
+    optionalDependencies:
+      '@nuxt/kit': 3.13.2(magicast@0.3.5)(rollup@4.21.3)
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - magicast
+      - rollup
+      - supports-color
+      - webpack-sources
+
   '@vueuse/nuxt@11.1.0(magicast@0.3.5)(nuxt@3.13.2(@parcel/watcher@2.4.1)(@types/node@22.5.5)(eslint@9.13.0(jiti@2.3.3))(ioredis@5.4.1)(magicast@0.3.5)(optionator@0.9.4)(rollup@4.21.3)(terser@5.32.0)(typescript@5.6.3)(vite@5.4.5(@types/node@22.5.5)(terser@5.32.0))(vue-tsc@2.1.10(typescript@5.6.3)))(rollup@4.21.3)(vue@3.5.12(typescript@5.6.3))':
     dependencies:
       '@nuxt/kit': 3.13.2(magicast@0.3.5)(rollup@4.21.3)
@@ -9628,6 +9679,10 @@ snapshots:
 
   fraction.js@4.3.7: {}
 
+  framesync@6.1.2:
+    dependencies:
+      tslib: 2.4.0
+
   fresh@0.5.2: {}
 
   fs-constants@1.0.0:
@@ -9918,6 +9973,8 @@ snapshots:
   he@1.2.0: {}
 
   hex-rgb@4.3.0: {}
+
+  hey-listen@1.0.8: {}
 
   hookable@5.5.3: {}
 
@@ -11581,6 +11638,13 @@ snapshots:
 
   pluralize@8.0.0: {}
 
+  popmotion@11.0.5:
+    dependencies:
+      framesync: 6.1.2
+      hey-listen: 1.0.8
+      style-value-types: 5.1.2
+      tslib: 2.4.0
+
   portfinder@1.0.32:
     dependencies:
       async: 2.6.4
@@ -12440,6 +12504,11 @@ snapshots:
     dependencies:
       js-tokens: 9.0.0
 
+  style-value-types@5.1.2:
+    dependencies:
+      hey-listen: 1.0.8
+      tslib: 2.4.0
+
   stylehacks@7.0.4(postcss@8.4.47):
     dependencies:
       browserslist: 4.23.3
@@ -12652,6 +12721,8 @@ snapshots:
       typescript: 5.6.3
 
   ts-interface-checker@0.1.13: {}
+
+  tslib@2.4.0: {}
 
   tslib@2.7.0: {}
 
