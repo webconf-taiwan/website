@@ -34,8 +34,8 @@ export type AgendaLocation = 'M' | 'F' | 'A2'
 export interface TimeSlot {
   startTime: string
   endTime: string
-  type: 'agenda' | 'break'
-  breakTitle?: string
+  type: 'agenda' | 'break' | 'disseminate'
+  title?: string
   isBroadcast: boolean
   agendas?: Partial<Record<AgendaLocation, AgendaItem>>
 }
