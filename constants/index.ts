@@ -27,11 +27,11 @@ export const navLinks = [
   //   engName: 'VENUE',
   //   href: '#',
   // },
-  // {
-  //   name: '贊助',
-  //   engName: 'SPONSOR',
-  //   href: '#',
-  // },
+  {
+    name: '贊助',
+    engName: 'SPONSOR',
+    href: '/sponsors',
+  },
   // {
   //   name: '徵才',
   //   engName: 'RECRUIT',

@@ -123,7 +123,7 @@ onMounted(() => {
       </div>
 
       <div class="mb-10 flex flex-col items-center gap-8 lg:mb-0 lg:flex-row lg:justify-between">
-        <HomeAgendaCubeAnimation
+        <CubeAnimation
           class="w-[clamp(320px,_60dvw,_100%)] shrink-0 lg:w-[clamp(320px,_50dvw,424px)]"
           :animation-data="cubeAnimation"
           :loop="true"
