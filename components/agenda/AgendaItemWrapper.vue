@@ -12,7 +12,7 @@ const triggerAgenda = inject('triggerAgenda') as (agenda: AgendaItem) => void
 const tagsStore = useTagsStore()
 
 const isAgendaDisabled = computed(() => {
-  if (tagsStore.IsSelectedTagsEmpty)
+  if (tagsStore.isSelectedTagsEmpty)
     return false
   return !tagsStore.selectedTags.some(tag => props.agenda.tags.includes(tag))
 })

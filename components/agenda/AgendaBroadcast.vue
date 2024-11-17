@@ -27,7 +27,7 @@ const mainAgenda = computed(() => {
 })
 
 const isAgendaDisabled = computed(() => {
-  if (tagsStore.IsSelectedTagsEmpty)
+  if (tagsStore.isSelectedTagsEmpty)
     return false
 
   if (!mainAgenda.value)
