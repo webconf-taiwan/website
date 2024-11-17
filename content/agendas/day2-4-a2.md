@@ -2,8 +2,8 @@
 title: 當設計遇到資本主義 - 人月鬼話
 description: 「越急迫的專案，總是越晚上線」。累積數年各大企業與政府單位的設計開發案，將透過本次演講分享其中的甘苦談，也期待為後繼之人提供解方。
 date: 2024-12-28
-startTime: 11:45
-endTime: 12:30
+startTime: 12:00
+endTime: 12:45
 location: A2
 tags: ['agile', 'uiux', 'team-management']
 speakerCodes: ['stevenyeh']

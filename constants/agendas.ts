@@ -25,8 +25,22 @@ export const agendaOtherLinksMap: AgendaOtherLinksMap[] = [
 export const agendaData: DaySchedule = {
   '2024-12-27': [
     {
+      startTime: '08:30',
+      endTime: '09:00',
+      type: 'break',
+      breakTitle: '08:30 - 09:00 報到',
+      isBroadcast: false,
+    },
+    {
       startTime: '09:00',
-      endTime: '09:45',
+      endTime: '09:10',
+      type: 'break',
+      breakTitle: '09:00 - 09:10 開幕引言',
+      isBroadcast: false,
+    },
+    {
+      startTime: '09:10',
+      endTime: '09:55',
       type: 'agenda',
       isBroadcast: false,
       agendas: {
@@ -297,6 +311,13 @@ export const agendaData: DaySchedule = {
   ],
   '2024-12-28': [
     {
+      startTime: '08:30',
+      endTime: '09:00',
+      type: 'break',
+      breakTitle: '08:30 - 09:00 報到',
+      isBroadcast: false,
+    },
+    {
       startTime: '09:00',
       endTime: '09:45',
       type: 'agenda',
@@ -329,8 +350,8 @@ export const agendaData: DaySchedule = {
       },
     },
     {
-      startTime: '09:55',
-      endTime: '10:40',
+      startTime: '10:00',
+      endTime: '10:45',
       type: 'agenda',
       isBroadcast: true,
       agendas: {
@@ -361,8 +382,8 @@ export const agendaData: DaySchedule = {
       },
     },
     {
-      startTime: '10:50',
-      endTime: '11:35',
+      startTime: '11:05',
+      endTime: '11:50',
       type: 'agenda',
       isBroadcast: false,
       agendas: {
@@ -393,8 +414,8 @@ export const agendaData: DaySchedule = {
       },
     },
     {
-      startTime: '11:45',
-      endTime: '12:30',
+      startTime: '12:00',
+      endTime: '12:45',
       type: 'agenda',
       isBroadcast: false,
       agendas: {
@@ -425,7 +446,7 @@ export const agendaData: DaySchedule = {
       },
     },
     {
-      startTime: '12:30',
+      startTime: '12:45',
       endTime: '13:30',
       type: 'break',
       breakTitle: '午餐時間',
@@ -561,6 +582,13 @@ export const agendaData: DaySchedule = {
     },
     {
       startTime: '17:00',
+      endTime: '17:10',
+      type: 'break',
+      breakTitle: '17:00 - 17:10 閉幕致詞',
+      isBroadcast: false,
+    },
+    {
+      startTime: '17:10',
       endTime: '00:00',
       type: 'break',
       breakTitle: '下次見 !',
