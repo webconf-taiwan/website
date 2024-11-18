@@ -31,6 +31,7 @@ onMounted(() => {
   <main class="layout-grid mt-8 min-h-screen lg:mt-[70px]">
     <SponsorBanner />
     <SponsorSection />
+    <SponsorOrganizerSection />
   </main>
 </template>
 

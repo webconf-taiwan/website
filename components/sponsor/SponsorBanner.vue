@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import cubeAnimation from '~/assets/lottie/cube_animation.json'
 </script>
 
 <template>
@@ -14,13 +13,11 @@ import cubeAnimation from '~/assets/lottie/cube_animation.json'
     </SectionTitle>
 
     <div class="flex flex-col items-center justify-center gap-x-10 gap-y-8 lg:flex-row">
-      <CubeAnimation
-        class="order-2 w-[clamp(262px,_50dvw,_100%)] shrink-0 lg:order-1 lg:w-[clamp(220px,_50dvw,262px)]"
-        :animation-data="cubeAnimation"
-        :loop="true"
-        :autoplay="true"
-        :speed="1"
-      />
+      <img
+        src="/cube.svg"
+        alt="cube"
+        class="order-2 w-[clamp(262px,_50dvw,_400px)] shrink-0 lg:order-1 lg:w-[clamp(220px,_50dvw,262px)]"
+      >
 
       <div class="order-1 flex max-w-[520px] flex-col gap-y-5 lg:order-2 lg:max-w-[340px]">
         <p class="text-center text-xl font-bold leading-8 tracking-wide lg:text-left">

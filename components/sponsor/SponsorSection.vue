@@ -37,12 +37,18 @@ onMounted(() => {
 <template>
   <section
     ref="parallaxSection"
-    class="full-bleed relative z-10 mt-40 bg-black px-5 py-20 sm:mt-28 lg:-mt-8 lg:py-36"
+    class="full-bleed relative z-10 mt-24 bg-black px-5 py-20 sm:mt-28 lg:-mt-8 lg:py-36"
   >
     <div class="mx-auto max-w-[1096px]">
       <SponsorTitle>
         <template #title>
           贊助商
+        </template>
+      </SponsorTitle>
+
+      <SponsorTitle>
+        <template #title>
+          特別贊助
         </template>
       </SponsorTitle>
     </div>
