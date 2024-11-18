@@ -3,7 +3,7 @@ import { useToast } from '@/components/ui/toast/use-toast'
 import { breakpointsTailwind, useBreakpoints, useClipboard } from '@vueuse/core'
 import { socialIconMap } from '~/constants'
 import type { AgendaDrawerRenderData } from '~/types/agendas'
-import type { SocialLinkType } from '~/types/speakers'
+import type { SocialLinkType } from '~/types/common'
 import AgendaDrawerOtherLinks from './AgendaDrawerOtherLinks.vue'
 
 const agendasStore = useAgendasStore()

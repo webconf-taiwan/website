@@ -1,5 +1,5 @@
 import type { MarkdownParsedContent } from '@nuxt/content'
-import type { SocialLinkType } from '~/types/speakers'
+import type { SocialLinkType } from '~/types/common'
 
 export interface AgendaTag {
   id: 'frontend' | 'backend' | 'uiux' | 'agile' | 'devops' | 'security' | 'ai' | 'team-management' | 'product-design' | 'design-ops'

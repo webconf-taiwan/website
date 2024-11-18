@@ -2,20 +2,11 @@
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import CardItem from '~/components/ui/card3d/CardItem.vue'
 import { socialIconMap } from '~/constants'
-
-type SocialLinkType = keyof typeof socialIconMap
+import type { SocialLinkType } from '~/types/common'
+import type { Staff } from '~/types/staff'
 
 const { staff } = defineProps<{
-  staff: {
-    name: string
-    jobTitle: string
-    avatar: string
-    socialLinks: {
-      type: string
-      url: string
-    }[]
-  }
-
+  staff: Staff
 }>()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)

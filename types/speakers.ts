@@ -1,3 +1,5 @@
+import type { SocialLinkType } from './common'
+
 export interface Speaker {
   id: string
   code: string
@@ -9,5 +11,3 @@ export interface Speaker {
     url: string
   }[]
 }
-
-export type SocialLinkType = 'facebook' | 'x' | 'instagram' | 'website' | 'youtube' | 'thread' | 'medium' | 'linkedin'

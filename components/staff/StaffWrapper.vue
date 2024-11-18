@@ -1,6 +1,6 @@
 <script lang="ts" setup>
-import { staffData } from '@/constants'
 import Card3d from '~/components/ui/card3d/Index.vue'
+import { staffData } from '~/constants/staff'
 </script>
 
 <template>
