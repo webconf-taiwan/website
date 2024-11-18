@@ -64,10 +64,26 @@ function isBroadcastSlot(slot: TimeSlot) {
           </div>
         </div>
       </template>
+
       <template v-else-if="slot.type === 'break'">
         <div></div>
         <div class="mb-2 h-[60px] content-center text-center text-lg font-medium tracking-wider text-[hsla(182,25%,74%,1)] lg:mb-0">
-          {{ slot.breakTitle }}
+          {{ slot.title }}
+        </div>
+      </template>
+
+      <template v-else-if="slot.type === 'disseminate'">
+        <div class="sticky left-0 top-[calc(3rem+46px)] z-10 flex h-10 shrink-0 flex-row items-center justify-center gap-x-2 bg-primary-faint-green px-3 font-['Mina'] text-xl font-bold lg:h-auto lg:min-h-[78px] lg:flex-col lg:justify-between lg:gap-x-0 lg:gap-y-4 lg:bg-transparent lg:px-0 lg:py-5 lg:text-2xl">
+          <div class="h-6">
+            {{ slot.startTime }}
+          </div>
+          <div class="block h-[1px] w-auto grow bg-[hsla(183,24%,53%,1)] lg:hidden lg:h-auto lg:w-[1px] lg:bg-white"></div>
+          <div class="block h-6 lg:hidden">
+            {{ slot.endTime }}
+          </div>
+        </div>
+        <div class="mx-2 content-center border border-primary-green text-center text-lg tracking-wider max-lg:h-[60px] lg:mx-0">
+          {{ slot.title }}
         </div>
       </template>
 

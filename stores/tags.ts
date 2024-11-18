@@ -4,7 +4,7 @@ import type { AgendaTag } from '~/types/agendas'
 export const useTagsStore = defineStore('tags', () => {
   const selectedTags = ref<AgendaTag['id'][]>([])
 
-  const IsSelectedTagsEmpty = computed(() => selectedTags.value.length === 0)
+  const isSelectedTagsEmpty = computed(() => selectedTags.value.length === 0)
 
   const allTags = computed(() => {
     const tags = Object.values(agendaData).flatMap(daySlots =>
@@ -34,7 +34,7 @@ export const useTagsStore = defineStore('tags', () => {
 
   return {
     selectedTags,
-    IsSelectedTagsEmpty,
+    isSelectedTagsEmpty,
     allTags,
     toggleTag,
     resetTags,

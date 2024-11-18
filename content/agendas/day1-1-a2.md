@@ -2,8 +2,8 @@
 title: 串連品牌從實體到數位的體驗
 description: 除了視覺識別，要如何落實行為識別及理念識別？在追逐數據的時代，開始能夠透過企業流程管理（BPM）去定義或引導員工的行為，這當中品牌策略師該如何發揮影響力？又應該如何與系統架構師協作，讓品牌識別得以貫徹？本章節將以綜合案例比較及探討。
 date: 2024-12-27
-startTime: 09:00
-endTime: 09:45
+startTime: 09:10
+endTime: 09:55
 location: A2
 tags: ['uiux']
 speakerCodes: ['weikan']

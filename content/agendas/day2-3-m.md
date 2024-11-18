@@ -2,7 +2,7 @@
 title: ESLint One for All Made Easy
 description: 介紹 ESLint 新引入的 Flat Config 配置格式，並了解它如何為你的的開發作業流程和體驗帶來改進和新的可能性。
 date: 2024-12-28
-startTime: 10:50
+startTime: 11:05
 endTime: 11:35
 location: M
 tags: ['frontend']
