@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@css-inline/css-inline':
+        specifier: ^0.14.3
+        version: 0.14.3
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.13(typescript@5.6.3))
@@ -382,6 +385,76 @@ packages:
   '@cloudflare/kv-asset-handler@0.3.4':
     resolution: {integrity: sha512-YLPHc8yASwjNkmcDMQMY35yiWjoKAKnhUbPRszBRS0YgH+IXtsMp61j+yTcnCE3oO2DgP0U3iejLC8FTtKDC8Q==}
     engines: {node: '>=16.13'}
+
+  '@css-inline/css-inline-android-arm-eabi@0.14.3':
+    resolution: {integrity: sha512-efrnL0nr+KA9SRsZuQjDcYALI4jL+dFlqmPP2weA7nqXDKTXylrzx/G4yoM1KR03/4MUdrSns29JYoshxRodSg==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [android]
+
+  '@css-inline/css-inline-android-arm64@0.14.3':
+    resolution: {integrity: sha512-lgOQXpAFszYpTcGOVLR4DFCUlZBQLP9PpiYVjy5YbI+NDQD3j04BWjLMIPlTvY2zX0gQGmwwkJPGv3zS1602KQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [android]
+
+  '@css-inline/css-inline-darwin-arm64@0.14.3':
+    resolution: {integrity: sha512-8vIFQj0iffZC29zXgF8zJOncPvi0GCYKb6xirIfJ+YS00lmN0koLcLoltfZamNN4CknG//JNPjJZLMUD3ckFHw==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [darwin]
+
+  '@css-inline/css-inline-darwin-x64@0.14.3':
+    resolution: {integrity: sha512-L9ImaUHz01DbPEMLITLCHWgIlb+HzK73ZwuY7CV+gGrAghVA3BqmsS9Rq4wQaTw/UPSaFZDn1G5ojvyja4BMyQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [darwin]
+
+  '@css-inline/css-inline-linux-arm-gnueabihf@0.14.3':
+    resolution: {integrity: sha512-aIpb77rBWwLLh2GSgUe6a4OpMVoLOgj0jhIeKNjaRMapszg8mEQBpG3eQ9FPSODk2CJUfy6J9yIyUkk9cBKqfQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm]
+    os: [linux]
+
+  '@css-inline/css-inline-linux-arm64-gnu@0.14.3':
+    resolution: {integrity: sha512-/4UxPYDZP7SuvpbNB/yFfR500tSrQt4g07NCnO2uGmw0W5e0h/e8I49y4aA/MzXDGM4tD5sF3LAqaSRO83x8JQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@css-inline/css-inline-linux-arm64-musl@0.14.3':
+    resolution: {integrity: sha512-3NmFdFI8szGFg6LQRWT+yOIWEy0egvsMHe1XWATbBKOfXg70UZO1Fv8ulb4mlC1F8vTfeo36jgVt1gcD1yx63A==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [linux]
+
+  '@css-inline/css-inline-linux-x64-gnu@0.14.3':
+    resolution: {integrity: sha512-ItUPBUWMBihPfJqwx1I3QsSO0V4xSHMWtY46BhShOap7oJNTd5IynTVC1bRNtN9HKSE/ogOrHp4Pvimh5qilNQ==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@css-inline/css-inline-linux-x64-musl@0.14.3':
+    resolution: {integrity: sha512-xUP5lAPEj5FdJurG2whVC0+cnLiEpPdacj6yqrbpIbScrimMRopEfb84AvfYQnplKXXtqUB1apEjwLREbyfRGA==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [linux]
+
+  '@css-inline/css-inline-win32-arm64-msvc@0.14.3':
+    resolution: {integrity: sha512-i85uB19ra5rfhA1jFN/H7i+AS1LDlXX3na9VVb9YDms5NRD3B1eo04xTyI7SzX0FoAE0IlbBmeCJJc+wWlI3xQ==}
+    engines: {node: '>= 10'}
+    cpu: [arm64]
+    os: [win32]
+
+  '@css-inline/css-inline-win32-x64-msvc@0.14.3':
+    resolution: {integrity: sha512-N1UXxM+/XaYk6ve5R0QEzOOFthl1DVsIOEwyHU9XI/tmJSBBwIPZztIKdgrmLoORdn7gWR83wKvWDn2TbDjZRw==}
+    engines: {node: '>= 10'}
+    cpu: [x64]
+    os: [win32]
+
+  '@css-inline/css-inline@0.14.3':
+    resolution: {integrity: sha512-Ft6/Yrdlw0frpqLTfxbLAEXa6j7OFJ1RCUKqZyQ5EpYC/8oj4KJukUorEAvqpUB0tN+aQNUi+HEmk/M7/tvN7A==}
+    engines: {node: '>= 10'}
 
   '@csstools/selector-resolve-nested@3.0.0':
     resolution: {integrity: sha512-ZoK24Yku6VJU1gS79a5PFmC8yn3wIapiKmPgun0hZgEI5AOqgH2kiPRsPz1qkGv4HL+wuDLH83yQyk6inMYrJQ==}
@@ -5913,6 +5986,53 @@ snapshots:
   '@cloudflare/kv-asset-handler@0.3.4':
     dependencies:
       mime: 3.0.0
+
+  '@css-inline/css-inline-android-arm-eabi@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-android-arm64@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-darwin-arm64@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-darwin-x64@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-linux-arm-gnueabihf@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-linux-arm64-gnu@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-linux-arm64-musl@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-linux-x64-gnu@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-linux-x64-musl@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-win32-arm64-msvc@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline-win32-x64-msvc@0.14.3':
+    optional: true
+
+  '@css-inline/css-inline@0.14.3':
+    optionalDependencies:
+      '@css-inline/css-inline-android-arm-eabi': 0.14.3
+      '@css-inline/css-inline-android-arm64': 0.14.3
+      '@css-inline/css-inline-darwin-arm64': 0.14.3
+      '@css-inline/css-inline-darwin-x64': 0.14.3
+      '@css-inline/css-inline-linux-arm-gnueabihf': 0.14.3
+      '@css-inline/css-inline-linux-arm64-gnu': 0.14.3
+      '@css-inline/css-inline-linux-arm64-musl': 0.14.3
+      '@css-inline/css-inline-linux-x64-gnu': 0.14.3
+      '@css-inline/css-inline-linux-x64-musl': 0.14.3
+      '@css-inline/css-inline-win32-arm64-msvc': 0.14.3
+      '@css-inline/css-inline-win32-x64-msvc': 0.14.3
 
   '@csstools/selector-resolve-nested@3.0.0(postcss-selector-parser@7.0.0)':
     dependencies:

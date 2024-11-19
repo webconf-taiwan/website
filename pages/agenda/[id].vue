@@ -59,6 +59,19 @@ useSchemaOrg([
   }),
 ])
 
+const ogImageOptions = {
+  component: 'OgImageTemplate',
+  title: agendaMarkdownData.value?.title,
+  description: agendaMarkdownData.value?.description,
+  author: speakerNames,
+  location: agendaMarkdownData.value?.location,
+  date: agendaMarkdownData.value?.date.split('T')[0],
+  startTime: agendaMarkdownData.value?.startTime,
+  endTime: agendaMarkdownData.value?.endTime,
+}
+
+defineOgImage(ogImageOptions)
+
 onUnmounted(() => {
   agendasStore.singleAgendaMarkdownData = null
 })

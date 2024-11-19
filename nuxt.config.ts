@@ -104,7 +104,7 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    fonts: ['Noto+Sans+TC:700'],
+    fonts: ['Noto+Sans+TC:700', 'Mina:700'],
   },
 
   content: {
