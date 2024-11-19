@@ -15,7 +15,7 @@ const { remainingTime } = useDateCountdown()
       <Button
         as-child
         variant="custom"
-        size="footerBar"
+        size="footer-bar"
       >
         <NuxtLink
           :to="accupassLink"

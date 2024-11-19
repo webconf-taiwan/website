@@ -1,12 +1,13 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { sponsorsData } from '~/constants/sponsors'
+</script>
 
 <template>
-  <section class="mx-auto min-h-screen w-full max-w-[1096px]">
-    <SponsorTitle>
-      <template #title>
-        主辦單位
-      </template>
-    </SponsorTitle>
+  <section class="mx-auto w-full max-w-[1096px] pb-28">
+    <SponsorList
+      :sponsor-list="sponsorsData.organizers"
+      type-name="主辦單位"
+    />
   </section>
 </template>
 

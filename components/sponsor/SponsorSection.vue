@@ -40,10 +40,15 @@ onMounted(() => {
     ref="parallaxSection"
     class="full-bleed relative z-10 mt-24 bg-black px-5 py-20 sm:mt-28 lg:-mt-8 lg:py-36"
   >
-    <div class="mx-auto max-w-[1096px]">
+    <div class="mx-auto max-w-[1096px] space-y-[60px] md:space-y-16">
       <SponsorList
-        :render-data="sponsorsData.sponsors"
+        :sponsor-list="sponsorsData.sponsors"
         type-name="贊助商"
+      />
+
+      <SponsorList
+        :sponsor-list="sponsorsData.specialSponsors"
+        type-name="特別贊助"
       />
     </div>
 

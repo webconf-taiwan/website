@@ -40,6 +40,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
       name: 'zeabur',
       introduction: '新加坡商鈦坦科技是一間軟體開發公司，提供線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品 Jira Software & Confluence、線上視覺化白板 Miro ，以自身實際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提供企業客製化敏捷課程及顧問諮詢服務。',
       logo: '/sponsors/sponsor_zeabur.png',
+      socialLinks: [],
     },
   ],
   organizers: [
@@ -58,7 +59,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
     {
       name: '悠識學院',
       introduction: '悠識學院提供實戰型 UX 學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業 UX 方法，講座及實務研討關注 AI/UX、DesignOps 設計營運、數位職涯發展。我們也營運 IG、Threads、Podcasat「UX有差嗎？」等社群平台，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
-      logo: 'public/sponsors/organizer_userxper.png',
+      logo: '/sponsors/organizer_userxper.png',
       socialLinks: [],
     },
   ],

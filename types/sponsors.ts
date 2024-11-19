@@ -7,7 +7,7 @@ export interface Sponsor {
   logo: string
   introduction: string
   recruitmentUrl?: string
-  socialLinks?: {
+  socialLinks: {
     type: SocialLinkType
     url: string
   }[]
