@@ -5,12 +5,25 @@ export const staffData: Staff[] = [
     name: '高見龍',
     jobTitle: '掃地兼敲鐘',
     avatar: '/staff/avatar_eddie.jpg',
-    socialLinks: [],
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/eddiekao',
+      },
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/kaochenlong/',
+      },
+      {
+        type: 'x',
+        url: 'https://twitter.com/eddiekao',
+      },
+    ],
   },
   {
     name: '廖洧杰',
     jobTitle: '專業推坑王',
-    avatar: '/speakers/avatar_placeholder.svg',
+    avatar: '/staff/avatar_gonsakon.jpg',
     socialLinks: [
       {
         type: 'facebook',
@@ -61,8 +74,12 @@ export const staffData: Staff[] = [
   {
     name: '楊正弘',
     jobTitle: '設計小夥伴',
-    avatar: '/speakers/avatar_placeholder.svg',
+    avatar: '/staff/avatar_scott.jpg',
     socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/scottyang0011',
+      },
       {
         type: 'instagram',
         url: 'https://www.instagram.com/helloscott23050000/',

@@ -3,7 +3,7 @@ import { sponsorsData } from '~/constants/sponsors'
 </script>
 
 <template>
-  <section class="mx-auto w-full max-w-[1096px] pb-28">
+  <section class="mx-auto -mt-20 w-full max-w-[1096px] pb-28">
     <SponsorList
       :sponsor-list="sponsorsData.organizers"
       type-name="主辦單位"

@@ -25,6 +25,8 @@ const isOpen = ref(false)
           <Icon
             name="i-heroicons:chevron-down"
             size="20"
+            class="transition-transform"
+            :class="[isOpen ? '-rotate-180' : '']"
           />
         </button>
       </CollapsibleTrigger>

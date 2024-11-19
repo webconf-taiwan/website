@@ -1,4 +1,4 @@
-import type { SocialLinks } from './common'
+import type { SocialLink } from './common'
 
 export interface Speaker {
   id: string
@@ -6,5 +6,5 @@ export interface Speaker {
   displayName: string
   avatar: string
   jobTitle?: string
-  socialLinks?: SocialLinks[]
+  socialLinks?: SocialLink[]
 }

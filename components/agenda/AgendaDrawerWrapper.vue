@@ -1,9 +1,6 @@
 <script lang="ts" setup>
 import { useToast } from '@/components/ui/toast/use-toast'
 import { breakpointsTailwind, useBreakpoints, useClipboard } from '@vueuse/core'
-import { socialIconMap } from '~/constants'
-import type { AgendaDrawerRenderData } from '~/types/agendas'
-import type { SocialLinkType } from '~/types/common'
 import AgendaDrawerOtherLinks from './AgendaDrawerOtherLinks.vue'
 
 const agendasStore = useAgendasStore()
@@ -14,15 +11,6 @@ const {
   currentAgendaDrawerId,
   currentAgendaMarkdownData,
 } = storeToRefs(agendasStore)
-
-// Mapping 社群連結
-function getSocialLinks(links: AgendaDrawerRenderData['socialLinks']) {
-  return links.map(link => ({
-    href: link.url,
-    icon: socialIconMap[link.type as SocialLinkType] || '',
-    type: link.type,
-  }))
-}
 
 const tabsRef = ref<HTMLDivElement | null>(null)
 
@@ -129,40 +117,7 @@ const svgViewBox = computed(() => {
 
         <div class="mt-4 flex w-full flex-wrap gap-x-6 gap-y-2 md:items-center md:justify-between">
           <!-- 社群連結 -->
-          <ul class="flex gap-x-2">
-            <li
-              v-for="link in getSocialLinks(speaker.socialLinks)"
-              :key="link.type"
-              class="group relative size-12 bg-primary-green/10"
-            >
-              <div
-                class="absolute left-1 top-1 size-[10px] border-l border-t border-primary-green transition-all duration-150 lg:group-hover:left-0 lg:group-hover:top-0"
-              ></div>
-              <div
-                class="absolute right-1 top-1 size-[10px] border-r border-t border-primary-green transition-all duration-150 lg:group-hover:right-0 lg:group-hover:top-0"
-              ></div>
-              <div
-                class="absolute bottom-1 right-1 size-[10px] border-b border-r border-primary-green transition-all duration-150 lg:group-hover:bottom-0 lg:group-hover:right-0"
-              ></div>
-              <div
-                class="absolute bottom-1 left-1 size-[10px] border-b border-l border-primary-green transition-all duration-150 lg:group-hover:bottom-0 lg:group-hover:left-0"
-              ></div>
-
-              <NuxtLink
-                :to="link.href"
-                :title="link.type"
-                target="_blank"
-                class="relative flex size-full items-center justify-center"
-              >
-                <Icon
-                  :name="link.icon"
-                  size="24"
-                  class="text-primary-green"
-                />
-                <span class="sr-only">{{ link.type }}</span>
-              </NuxtLink>
-            </li>
-          </ul>
+          <SocialLinks :social-links="speaker.socialLinks" />
 
           <!-- 共筆＆PPT - 只在單講者時顯示 -->
           <AgendaDrawerOtherLinks

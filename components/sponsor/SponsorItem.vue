@@ -16,7 +16,7 @@ const maskClipPath = computed(() => {
     return 'M135,0 H320 V320 H0 V35 L90,35 Z'
 
   if (tablet.value)
-    return 'M85,0 H220 V220 H0 V25 L60,25 Z'
+    return 'M85,0 H240 V240 H0 V25 L60,25 Z'
 
   return 'M110,0 H280 V280 H0 V30 L70,30 Z'
 })
@@ -26,7 +26,7 @@ const svgViewBox = computed(() => {
     return '0 0 320 320'
 
   if (tablet.value)
-    return '0 0 220 220'
+    return '0 0 240 240'
 
   return '0 0 280 280'
 })
@@ -35,7 +35,7 @@ const svgViewBox = computed(() => {
 <template>
   <!-- Organization logo -->
   <ClientOnly>
-    <div class="relative size-[320px] shrink-0 md:size-[220px] lg:size-[280px]">
+    <div class="relative size-[320px] shrink-0 md:size-[240px] lg:size-[280px]">
       <svg
         class="absolute"
         width="0"
@@ -73,10 +73,10 @@ const svgViewBox = computed(() => {
     </div>
   </ClientOnly>
 
-  <div class="grow space-y-5 md:space-y-6">
+  <div class="w-full grow space-y-5 md:space-y-6">
     <!-- Organization name -->
     <div class="flex flex-col items-center gap-x-4 md:flex-row md:justify-between md:border-b md:border-white md:pb-4">
-      <h3 class="mb-5 text-[2rem] font-bold tracking-wider md:mb-0 md:text-2xl lg:text-[2rem]">
+      <h3 class="text-[2rem] font-bold tracking-wider md:mb-0 md:text-2xl lg:text-[2rem]">
         {{ sponsorData.name }}
       </h3>
 
@@ -89,7 +89,7 @@ const svgViewBox = computed(() => {
         >
           <NuxtLink
             :to="sponsorData.recruitmentUrl"
-            class="flex items-center justify-between space-x-2 px-5 pr-6 text-base md:px-9"
+            class="flex items-center justify-between space-x-2 px-5 pr-6 text-base max-md:mt-5 md:px-9"
           >
             <span class="text-xl tracking-wide">企業徵才</span>
             <Icon

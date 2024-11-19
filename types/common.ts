@@ -1,6 +1,6 @@
 export type SocialLinkType = 'facebook' | 'x' | 'instagram' | 'website' | 'youtube' | 'thread' | 'medium' | 'linkedin'
 
-export interface SocialLinks {
+export interface SocialLink {
   type: SocialLinkType
   url: string
 }

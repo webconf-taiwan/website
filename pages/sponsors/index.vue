@@ -29,6 +29,12 @@ onMounted(() => {
 
 <template>
   <main class="layout-grid mt-8 min-h-screen lg:mt-[70px]">
+    <ClientOnly>
+      <FloatingActionButtons>
+        <MoveToTop :over-top="300" />
+      </FloatingActionButtons>
+    </ClientOnly>
+
     <SponsorBanner />
     <SponsorSection />
     <SponsorOrganizerSection />
