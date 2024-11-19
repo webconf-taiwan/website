@@ -1,7 +1,7 @@
 import type { Sponsor, SponsorType } from '~/types/sponsors'
 
 export const sponsorsData: Record<SponsorType, Sponsor[]> = {
-  sponsor: [
+  sponsors: [
     {
       name: '瑞嘉軟體科技股份有限公司',
       introduction: '新加坡商鈦坦科技是一間軟體開發公司，提供線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品 Jira Software & Confluence、線上視覺化白板 Miro ，以自身實際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提供企業客製化敏捷課程及顧問諮詢服務。用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維。',
@@ -29,7 +29,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
       socialLinks: [],
     },
   ],
-  specialSponsor: [
+  specialSponsors: [
     {
       name: 'JETBRAINS',
       introduction: '新加坡商鈦坦科技是一間軟體開發公司，提供線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品 Jira Software & Confluence、線上視覺化白板 Miro ，以自身實際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提供企業客製化敏捷課程及顧問諮詢服務。',
@@ -42,7 +42,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
       logo: '/sponsors/sponsor_zeabur.png',
     },
   ],
-  organizer: [
+  organizers: [
     {
       name: '五倍學院',
       introduction: '五倍學院，由資深開發者高見龍創立，致力於提供具有專業度跟高品質的程式教育。我們提供多元且完整的技術課程，提升學習者在程式開發領域上的能力。無論您是初學者或進階學習者，都能在五倍學院找能為您提供到最合適資源，有效地提升您自己在職場上的競爭力。\n五倍學院同時也積極參與許多國內外企業及各領域的專案開發。以豐富的專業知識和技術能力，協助客戶訂定開發計畫，並確保按準時交付各種客製化的專案需求。此外，還為企業量身打造訓練課程，幫助員工有效提升技能，並能夠將所學應用於實際工作中。\n如果您是一家企業正在尋找可靠的合作夥伴，五倍學院將是您的理想選擇。',

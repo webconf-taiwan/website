@@ -1,15 +1,16 @@
 <script setup lang="ts">
 import { breakpointsTailwind } from '@vueuse/core'
+import { sponsorsData } from '~/constants/sponsors'
 
 const { $gsap } = useNuxtApp()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
-const isSmallerLg = breakpoints.smaller('lg')
+const desktop = breakpoints.greater('lg')
 
 const parallaxSection = ref<HTMLElement | null>(null)
 
 const parallaxSectionToPositionY = computed(() => {
-  return isSmallerLg.value ? -150 : -250
+  return desktop.value ? -250 : -150
 })
 
 onMounted(() => {
@@ -40,17 +41,10 @@ onMounted(() => {
     class="full-bleed relative z-10 mt-24 bg-black px-5 py-20 sm:mt-28 lg:-mt-8 lg:py-36"
   >
     <div class="mx-auto max-w-[1096px]">
-      <SponsorTitle>
-        <template #title>
-          贊助商
-        </template>
-      </SponsorTitle>
-
-      <SponsorTitle>
-        <template #title>
-          特別贊助
-        </template>
-      </SponsorTitle>
+      <SponsorList
+        :render-data="sponsorsData.sponsors"
+        type-name="贊助商"
+      />
     </div>
 
     <div class="trapezoid trapezoid-top-left"></div>

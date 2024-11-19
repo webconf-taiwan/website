@@ -1,6 +1,6 @@
 import type { SocialLinkType } from './common'
 
-export type SponsorType = 'sponsor' | 'specialSponsor' | 'organizer'
+export type SponsorType = 'sponsors' | 'specialSponsors' | 'organizers'
 
 export interface Sponsor {
   name: string

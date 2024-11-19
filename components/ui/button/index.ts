@@ -25,6 +25,7 @@ export const buttonVariants = cva(
         lg: 'h-10 rounded-md px-8',
         icon: 'size-9',
         custom: 'h-[60px] w-full max-w-[180px]',
+        customSmall: 'h-[48px] w-full max-w-[160px]',
         footerBar: 'h-10 w-full max-w-[114px] px-6 py-2',
       },
       rounded: {
