@@ -1,13 +1,19 @@
 <script setup lang="ts">
-import { appDescription, appName } from '~/constants'
+import { appDescription, appName, ogImageUrl } from '~/constants'
 
 const { $lenis } = useNuxtApp()
+const siteConfig = useSiteConfig()
 
 useSeoMeta({
   title: '主辦',
+  description: appDescription,
   ogTitle: `主辦 | ${appName}`,
   ogDescription: appDescription,
+  ogImage: `${siteConfig.url}${ogImageUrl}`,
   twitterTitle: `主辦 | ${appName}`,
+  twitterDescription: appDescription,
+  twitterImage: `${siteConfig.url}${ogImageUrl}`,
+  twitterCard: 'summary_large_image',
 })
 
 useSchemaOrg([

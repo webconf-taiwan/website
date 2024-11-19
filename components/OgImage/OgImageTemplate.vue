@@ -47,7 +47,7 @@ defineProps<{
 .background {
   position: absolute;
   width: 1200px;
-  height: 630px;
+  height: 600px;
   top: 0;
 }
 
