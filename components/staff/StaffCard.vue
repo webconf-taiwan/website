@@ -62,7 +62,7 @@ function getSocialLinks(links: {
       <NuxtImg
         :src="staff.avatar"
         :alt="`avatar｜${staff.name}`"
-        class="h-auto w-full"
+        class="size-full"
         format="webp"
         :placeholder="[32, 32, 80, 5]"
         draggable="false"

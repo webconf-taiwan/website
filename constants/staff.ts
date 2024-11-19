@@ -44,7 +44,7 @@ export const staffData: Staff[] = [
   {
     name: 'EG',
     jobTitle: '設計小夥伴',
-    avatar: '/speakers/avatar_placeholder.svg',
+    avatar: '/staff/avatar_eg.jpg',
     socialLinks: [
       {
         type: 'facebook',
