@@ -2,8 +2,8 @@
 title: 深入淺出 B2B 產品設計成功方程式 - 真有此式？
 description: 在複雜的B2B產品設計中，設計師主要面臨兩大挑戰。首先是如何有效理解和規劃複雜的系統生態，迅速鞏固產業知識，以滿足B端專業用戶的需求。其次，在大型企業中，設計師常常面對組織、跨部門甚或決策者的客製化需求，但又難以獲取B端用戶的直接反饋，這可能導致對自身工作價值的懷疑。此次分享將針對這些挑戰進行探討，旨在啟發聽眾重塑自己的成功方程式。
 date: 2024-12-28
-startTime: 11:05
-endTime: 11:50
+startTime: 10:55
+endTime: 11:40
 location: A2
 tags: ['uiux', 'product-design', 'team-management']
 speakerCodes: ['seal']

@@ -382,8 +382,8 @@ export const agendaData: DaySchedule = {
       },
     },
     {
-      startTime: '11:05',
-      endTime: '11:50',
+      startTime: '10:55',
+      endTime: '11:40',
       type: 'agenda',
       isBroadcast: false,
       agendas: {
@@ -414,8 +414,8 @@ export const agendaData: DaySchedule = {
       },
     },
     {
-      startTime: '12:00',
-      endTime: '12:45',
+      startTime: '11:50',
+      endTime: '12:35',
       type: 'agenda',
       isBroadcast: false,
       agendas: {
@@ -446,7 +446,7 @@ export const agendaData: DaySchedule = {
       },
     },
     {
-      startTime: '12:45',
+      startTime: '12:35',
       endTime: '13:30',
       type: 'break',
       title: '午餐時間',
