@@ -5,6 +5,7 @@ import SponsorIntro from './SponsorIntro.vue'
 
 defineProps<{
   sponsorData: Sponsor
+  introTitle: string
 }>()
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
@@ -13,7 +14,7 @@ const tablet = breakpoints.between('md', 'lg')
 
 const maskClipPath = computed(() => {
   if (mobile.value)
-    return 'M135,0 H320 V320 H0 V35 L90,35 Z'
+    return 'M135,0 H288 V288 H0 V35 L90,35 Z'
 
   if (tablet.value)
     return 'M85,0 H240 V240 H0 V25 L60,25 Z'
@@ -23,7 +24,7 @@ const maskClipPath = computed(() => {
 
 const svgViewBox = computed(() => {
   if (mobile.value)
-    return '0 0 320 320'
+    return '0 0 288 288'
 
   if (tablet.value)
     return '0 0 240 240'
@@ -35,7 +36,7 @@ const svgViewBox = computed(() => {
 <template>
   <!-- Organization logo -->
   <ClientOnly>
-    <div class="relative size-[320px] shrink-0 md:size-[240px] lg:size-[280px]">
+    <div class="relative size-[288px] shrink-0 md:size-[240px] lg:size-[280px]">
       <svg
         class="absolute"
         width="0"
@@ -89,12 +90,13 @@ const svgViewBox = computed(() => {
         >
           <NuxtLink
             :to="sponsorData.recruitmentUrl"
-            class="flex items-center justify-between space-x-2 px-5 pr-6 text-base max-md:mt-5 md:px-9"
+            target="_blank"
+            class="flex items-center justify-between px-5 pr-6 text-base max-md:mt-5 md:justify-center md:gap-x-2 md:px-0"
           >
             <span class="text-xl tracking-wide">企業徵才</span>
             <Icon
               name="i-heroicons:link-20-solid"
-              size="24"
+              size="20"
               class="shrink-0"
             />
           </NuxtLink>
@@ -105,6 +107,7 @@ const svgViewBox = computed(() => {
     <!-- Organization introduction -->
     <SponsorIntroMobile
       v-show="mobile"
+      :intro-title="introTitle"
       :introduction="sponsorData.introduction"
     />
     <SponsorIntro

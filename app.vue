@@ -21,6 +21,7 @@ const tagsStore = useTagsStore()
 
 const route = useRoute()
 const isHome = computed(() => route.name === 'index')
+const isSponsors = computed(() => route.name === 'sponsors')
 
 watch(() => route.path, () => {
   tagsStore.resetTags()
@@ -44,7 +45,7 @@ onMounted(() => {
     <TilesBackground />
   </Teleport>
 
-  <Body :class="{ 'home-bg': isHome }">
+  <Body :class="{ 'home-bg': isHome || isSponsors }">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

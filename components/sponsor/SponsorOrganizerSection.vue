@@ -7,6 +7,7 @@ import { sponsorsData } from '~/constants/sponsors'
     <SponsorList
       :sponsor-list="sponsorsData.organizers"
       type-name="主辦單位"
+      intro-title="主辦單位"
     />
   </section>
 </template>

@@ -4,21 +4,25 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
   sponsors: [
     {
       name: '瑞嘉軟體科技股份有限公司',
-      introduction: '新加坡商鈦坦科技是一間軟體開發公司，提供線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品 Jira Software & Confluence、線上視覺化白板 Miro ，以自身實際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提供企業客製化敏捷課程及顧問諮詢服務。用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維。',
+      introduction: 'ONElab (瑞嘉軟體) 是英國知名線上軟體設計集團ONEworks旗下的台灣研發中心。自2010年成立以來，迅速發展至擁有超過250名員工，辦公室位於台北內湖科技園區，並擴展至新竹和台中。ONElab專注於尖端軟體開發及維運，提供專業客製化服務，成功將平台推廣至亞洲及全球，客戶涵蓋歐、美、亞等地的重量級企業和跨國集團。我們深信員工是重要的夥伴，所以營造如家庭般的工作環境，並推行彈性上班制，福利比照歐美同業標準。以“好奇心、勇氣、客戶滿意、誠信、團隊合作”為核心價值，ONElab歡迎各路高手加入，共創美好未來。',
       logo: '/sponsors/sponsor_onelab.png',
-      recruitmentUrl: 'https://www.onelab.tw/',
+      recruitmentUrl: 'https://www.104.com.tw/company/bjl4o88',
       socialLinks: [
+        {
+          type: 'website',
+          url: ' https://www.onelab.tw/ONElab',
+        },
         {
           type: 'facebook',
           url: 'https://www.facebook.com/ONElabTW',
         },
         {
-          type: 'instagram',
-          url: 'https://www.instagram.com/onelab.tw/',
+          type: 'linkedin',
+          url: 'https://www.linkedin.com/company/%E7%91%9E%E5%98%89%E8%BB%9F%E9%AB%94%E7%A7%91%E6%8A%80%E8%82%A1%E4%BB%BD%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8/?originalSubdomain=tw',
         },
         {
-          type: 'youtube',
-          url: 'https://www.youtube.com/channel/UCcnxKVR9nDauQ32y6ZH6Ndw/featured',
+          type: 'instagram',
+          url: 'https://www.instagram.com/onelab.tw/',
         },
       ],
     },

@@ -38,17 +38,19 @@ onMounted(() => {
 <template>
   <section
     ref="parallaxSection"
-    class="full-bleed relative z-10 mt-24 bg-black px-5 py-20 sm:mt-28 lg:-mt-8 lg:py-36"
+    class="full-bleed relative z-10 mt-20 bg-black px-5 py-20 sm:mt-32 lg:-mt-20"
   >
     <div class="mx-auto max-w-[1096px] space-y-[60px] md:space-y-16">
       <SponsorList
         :sponsor-list="sponsorsData.sponsors"
         type-name="贊助商"
+        intro-title="贊助商"
       />
 
       <SponsorList
         :sponsor-list="sponsorsData.specialSponsors"
         type-name="特別贊助"
+        intro-title="贊助商"
       />
     </div>
 

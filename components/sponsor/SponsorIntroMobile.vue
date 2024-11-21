@@ -8,6 +8,7 @@ import type { Sponsor } from '~/types/sponsors'
 
 defineProps<{
   introduction: Sponsor['introduction']
+  introTitle: string
 }>()
 
 const isOpen = ref(false)
@@ -21,7 +22,7 @@ const isOpen = ref(false)
           type="button"
           class="flex w-full items-center justify-between text-xl md:hidden"
         >
-          <span>贊助商簡介</span>
+          <span>{{ introTitle }}簡介</span>
           <Icon
             name="i-heroicons:chevron-down"
             size="20"
