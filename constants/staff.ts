@@ -40,8 +40,13 @@ export const staffData: Staff[] = [
   {
     name: '陳彥宇',
     jobTitle: '年度視覺擔當',
-    avatar: '/speakers/avatar_placeholder.svg',
-    socialLinks: [],
+    avatar: '/staff/avatar_karas.jpg',
+    socialLinks: [
+      {
+        type: 'instagram',
+        url: 'https://www.instagram.com/karasnov3',
+      },
+    ],
   },
   {
     name: '豪萱',
