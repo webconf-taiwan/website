@@ -97,6 +97,7 @@ export default antfu(
             'masked-image',
             'grid-speakers-separator-line',
             'speaker-name-tag',
+            'speaker-social-links-tag',
             'marquee-text-outline',
             'drawer-content',
             'agenda-content',

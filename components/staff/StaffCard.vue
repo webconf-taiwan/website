@@ -92,40 +92,31 @@ function getSocialLinks(links: {
       </svg>
 
       <!-- 社群連結 -->
-      <div class="absolute bottom-0 right-0 flex items-end">
-        <!-- 裝飾三角形 -->
-        <div
-          v-if="staff.socialLinks.length > 0"
-          class="h-[34px] w-6 bg-primary-green"
-          style="clip-path: polygon(100% 0, 0 100%, 100% 100%);"
-        ></div>
-
-        <ul
-          v-if="staff.socialLinks.length > 0"
-          class="flex gap-x-2 bg-primary-green p-[5px] pr-3"
+      <ul
+        v-if="staff.socialLinks.length > 0"
+        class="speaker-social-links-tag absolute bottom-0 right-0 flex items-end gap-x-2 bg-primary-green p-[5px] pl-[25px] pr-2 lg:pl-8"
+      >
+        <li
+          v-for="socialLink in getSocialLinks(staff.socialLinks)"
+          :key="socialLink.type"
+          class="group bg-primary-green"
         >
-          <li
-            v-for="socialLink in getSocialLinks(staff.socialLinks)"
-            :key="socialLink.type"
-            class="group bg-primary-green"
+          <NuxtLink
+            :to="socialLink.href"
+            :title="socialLink.type"
+            target="_blank"
+            :aria-label="socialLink.type"
+            class="relative flex size-full items-center justify-center transition-all duration-150 lg:group-hover:scale-110"
           >
-            <NuxtLink
-              :to="socialLink.href"
-              :title="socialLink.type"
-              target="_blank"
-              :aria-label="socialLink.type"
-              class="relative flex size-full items-center justify-center transition-all duration-150 lg:group-hover:scale-110"
-            >
-              <Icon
-                :name="socialLink.icon"
-                size="24"
-                class="text-black"
-              />
-              <span class="sr-only">{{ socialLink.type }}</span>
-            </NuxtLink>
-          </li>
-        </ul>
-      </div>
+            <Icon
+              :name="socialLink.icon"
+              size="24"
+              class="text-black"
+            />
+            <span class="sr-only">{{ socialLink.type }}</span>
+          </NuxtLink>
+        </li>
+      </ul>
 
       <div class="absolute inset-x-0 bottom-0 z-10 h-1.5 bg-primary-green"></div>
       <div class="absolute top-[3px] z-10 h-[1px] w-[100px] bg-primary-green md:w-[65px] lg:w-[88px]"></div>
@@ -152,3 +143,13 @@ function getSocialLinks(links: {
     </p>
   </CardItem>
 </template>
+
+<style scoped>
+.speaker-social-links-tag {
+  clip-path: polygon(calc(0% + 24px) 0%, 100% 0%, 100% 100%, 0% 100%);
+
+  @media screen and (min-width: 640px) {
+    clip-path: polygon(calc(0% + 32px) 0%, 100% 0%, 100% 100%, 0% 100%);
+  }
+}
+</style>
