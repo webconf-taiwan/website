@@ -135,14 +135,14 @@ export const staffData: Staff[] = [
   {
     name: 'Sabrina',
     jobTitle: '活動工頭',
-    avatar: '/speakers/avatar_placeholder.png',
+    avatar: '/staff/avatar_sabrina.jpg',
     socialLinks: [],
   },
 
   {
     name: 'Melissa',
     jobTitle: '錢錢擔當',
-    avatar: '/speakers/avatar_placeholder.png',
+    avatar: '/staff/avatar_melissa.jpg',
     socialLinks: [],
   },
 ]

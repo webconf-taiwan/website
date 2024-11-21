@@ -106,7 +106,7 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://webconf.tw',
+    url: process.env.NUXT_SITE_URL || 'https://webconf.tw',
     name: '2024 WebConf Taiwan 技術研討會',
     defaultLocale: 'zh-TW',
   },
