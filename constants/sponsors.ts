@@ -10,7 +10,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
       socialLinks: [
         {
           type: 'website',
-          url: ' https://www.onelab.tw/ONElab',
+          url: ' https://www.onelab.tw/',
         },
         {
           type: 'facebook',
@@ -52,19 +52,34 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
       name: '五倍學院',
       introduction: '五倍學院，由資深開發者高見龍創立，致力於提供具有專業度跟高品質的程式教育。我們提供多元且完整的技術課程，提升學習者在程式開發領域上的能力。無論您是初學者或進階學習者，都能在五倍學院找能為您提供到最合適資源，有效地提升您自己在職場上的競爭力。\n五倍學院同時也積極參與許多國內外企業及各領域的專案開發。以豐富的專業知識和技術能力，協助客戶訂定開發計畫，並確保按準時交付各種客製化的專案需求。此外，還為企業量身打造訓練課程，幫助員工有效提升技能，並能夠將所學應用於實際工作中。\n如果您是一家企業正在尋找可靠的合作夥伴，五倍學院將是您的理想選擇。',
       logo: '/sponsors/organizer_5xcampus.png',
-      socialLinks: [],
+      socialLinks: [
+        {
+          type: 'website',
+          url: 'https://5xcampus.com/',
+        },
+      ],
     },
     {
       name: '六角學院',
       introduction: '六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。',
       logo: '/sponsors/organizer_hexschool.png',
-      socialLinks: [],
+      socialLinks: [
+        {
+          type: 'website',
+          url: 'https://www.hexschool.com/',
+        },
+      ],
     },
     {
       name: '悠識學院',
       introduction: '悠識學院提供實戰型 UX 學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業 UX 方法，講座及實務研討關注 AI/UX、DesignOps 設計營運、數位職涯發展。我們也營運 IG、Threads、Podcasat「UX有差嗎？」等社群平台，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
       logo: '/sponsors/organizer_userxper.png',
-      socialLinks: [],
+      socialLinks: [
+        {
+          type: 'website',
+          url: 'https://edu.userxper.com/',
+        },
+      ],
     },
   ],
 }

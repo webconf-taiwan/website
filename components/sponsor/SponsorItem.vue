@@ -89,8 +89,10 @@ const svgViewBox = computed(() => {
           rounded="none"
         >
           <NuxtLink
+            external
             :to="sponsorData.recruitmentUrl"
             target="_blank"
+            aria-label="企業徵才"
             class="flex items-center justify-between px-5 pr-6 text-base max-md:mt-5 md:justify-center md:gap-x-2 md:px-0"
           >
             <span class="text-xl tracking-wide">企業徵才</span>

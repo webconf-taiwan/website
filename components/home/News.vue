@@ -20,6 +20,7 @@ import { accupassLink, contactInfos } from '@/constants'
           size="custom"
         >
           <NuxtLink
+            external
             :to="accupassLink"
             target="_blank"
             class="text-xl"
@@ -30,8 +31,10 @@ import { accupassLink, contactInfos } from '@/constants'
 
         <p class="mb-[10rem] mt-4">
           敬請關注 <NuxtLink
+            external
             :to="contactInfos[1].href"
             target="_blank"
+            aria-label="Facebook"
             class="lg:hover:text-primary-green lg:hover:underline"
           >
             Facebook

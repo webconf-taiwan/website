@@ -37,6 +37,7 @@
             to="/sponsors"
             target="_blank"
             class="text-xl"
+            aria-label="前往諮詢"
           >
             <span>前往諮詢</span>
           </NuxtLink>

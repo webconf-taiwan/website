@@ -18,6 +18,7 @@ const { remainingTime } = useDateCountdown()
         size="footer-bar"
       >
         <NuxtLink
+          external
           :to="accupassLink"
           target="_blank"
           class="text-base"

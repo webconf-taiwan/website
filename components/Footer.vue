@@ -16,6 +16,7 @@ import { contactInfos } from '@/constants'
             :to="info.href"
             target="_blank"
             :external="!info.href.startsWith('mailto:')"
+            :aria-label="info.ariaLabel"
             class="flex items-center space-x-2 lg:hover:underline"
           >
             <Icon

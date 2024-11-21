@@ -32,6 +32,7 @@ function getSocialIcon(type: SocialLinkType) {
       ></div>
 
       <NuxtLink
+        external
         :to="link.url"
         :title="link.type"
         target="_blank"

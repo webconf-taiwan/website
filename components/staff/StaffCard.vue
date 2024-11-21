@@ -113,6 +113,7 @@ function getSocialLinks(links: {
               :to="socialLink.href"
               :title="socialLink.type"
               target="_blank"
+              :aria-label="socialLink.type"
               class="relative flex size-full items-center justify-center transition-all duration-150 lg:group-hover:scale-110"
             >
               <Icon

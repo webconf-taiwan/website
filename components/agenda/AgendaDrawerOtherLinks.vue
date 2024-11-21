@@ -24,8 +24,10 @@ function getAgendaOtherLinks(links: AgendaOtherLink[]) {
     <NuxtLink
       v-for="link in getAgendaOtherLinks(agendaOtherLinks)"
       :key="link.href"
+      external
       :to="link.href"
       target="_blank"
+      aria-label="其他連結"
       class="flex shrink-0 items-center justify-center gap-x-2 border border-primary-green px-6 py-2 text-center text-xl duration-150 lg:hover:bg-primary-dark-green"
     >
       <span>{{ link.text }}</span>

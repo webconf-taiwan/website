@@ -52,12 +52,14 @@ export const contactInfos = [
     iconName: 'heroicons:envelope',
     content: 'hi@webconf.tw',
     href: 'mailto:hi@webconf.tw',
+    ariaLabel: 'WebConf 信箱',
   },
   {
     trapezoidClass: 'trapezoid-top-right',
     iconName: 'iconoir:facebook',
     content: 'WebConf Taiwan',
     href: 'https://www.facebook.com/WebConfTaiwan/?locale=zh_TW',
+    ariaLabel: 'WebConf Facebook',
   },
 ]
 
