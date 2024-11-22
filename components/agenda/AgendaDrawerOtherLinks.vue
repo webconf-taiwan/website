@@ -19,7 +19,7 @@ function getAgendaOtherLinks(links: AgendaOtherLink[]) {
 
 <template>
   <div
-    class="grid w-full grid-cols-2 gap-x-2 lg:flex lg:max-w-[380px]"
+    class="grid w-full grid-cols-2 justify-end gap-x-2 lg:flex lg:w-auto lg:max-w-[380px]"
   >
     <NuxtLink
       v-for="link in getAgendaOtherLinks(agendaOtherLinks)"
