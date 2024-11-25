@@ -49,7 +49,12 @@ export const speakers: Speaker[] = [
     jobTitle: '愛好資訊科技有限公司 創辦人',
     displayName: '張文鈿 iHower',
     avatar: '/speakers/avatar_ihower.png',
-    socialLinks: [],
+    socialLinks: [
+      {
+        type: 'website',
+        url: 'https://ihower.tw/blog/',
+      },
+    ],
   },
   {
     id: 'speaker_4',

@@ -254,9 +254,9 @@ export const agendaData: DaySchedule = {
         },
         M: {
           id: 'day1-5-m',
-          title: 'TBD',
+          title: '淺談 LLM-based AI Agents 應用開發',
           isWorkshop: false,
-          tags: [],
+          tags: ['product-design'],
           speakerCodes: ['ihower'],
           otherLinks: [
             {
