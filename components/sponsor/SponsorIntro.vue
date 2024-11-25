@@ -8,7 +8,7 @@ defineProps<{
 
 <template>
   <div>
-    <p>
+    <p class="whitespace-pre-line">
       {{ introduction }}
     </p>
   </div>

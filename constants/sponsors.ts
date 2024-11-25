@@ -28,9 +28,31 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
     },
     {
       name: '新加坡商鈦坦科技',
-      introduction: '新加坡商鈦坦科技是一間軟體開發公司，提供線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品 Jira Software & Confluence、線上視覺化白板 Miro ，以自身實際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提供企業客製化敏捷課程及顧問諮詢服務。際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提。',
+      introduction: '鈦坦在台北、台中、高雄都有辦公室，而三地最大的共同點，就是舒適開放的大空間，以及擺放著各式酒類的吧台。我們相信員工都是「成年人」，只要能夠將事情做好做完，想喝酒、玩桌遊、打電動都是沒有問題的，只要你了解，要享受「自由」前，必須先「自律」！\n我們的工作模式，就事論事，對事不對人，學歷經歷都不重要，有貢獻就有回饋，我們擁抱改變，並隨機應變。',
       logo: '/sponsors/sponsor_titansoft.png',
-      socialLinks: [],
+      recruitmentUrl: 'https://gotica.io/hiring/Webconf',
+      socialLinks: [
+        {
+          type: 'website',
+          url: 'https://gotica.io/%E9%88%A6%E5%9D%A6%E5%A4%A7%E5%B0%8F%E4%BA%8B/WebConf',
+        },
+        {
+          type: 'facebook',
+          url: 'https://gotica.io/%E9%88%A6%E5%9D%A6%E7%B2%89%E5%B0%88/WebConf',
+        },
+        {
+          type: 'instagram',
+          url: 'https://gotica.io/Titaner/WebConf',
+        },
+        {
+          type: 'youtube',
+          url: 'https://gotica.io/%E9%88%A6%E5%9D%A6%E5%BD%B1%E9%99%A2/WebConf',
+        },
+        {
+          type: 'linkedin',
+          url: 'https://gotica.io/Career/WebConf',
+        },
+      ],
     },
   ],
   specialSponsors: [

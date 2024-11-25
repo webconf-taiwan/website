@@ -32,7 +32,7 @@ const isOpen = ref(false)
         </button>
       </CollapsibleTrigger>
       <CollapsibleContent class="mt-3 pb-2">
-        <p class="leading-[1.6rem] tracking-wider">
+        <p class="whitespace-pre-line leading-[1.6rem] tracking-wider">
           {{ introduction }}
         </p>
       </CollapsibleContent>
