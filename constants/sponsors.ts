@@ -54,6 +54,17 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
         },
       ],
     },
+    {
+      name: '台北市電腦公會',
+      introduction: '台北市電腦公會（簡稱 TCA）成立於 1974 年，由近 4,000 家 ICT 廠商組成，涵蓋上下游完整生態，是資訊產業具代表性的公會。TCA 是業者與政府的溝通橋樑，提供服務協助會員交流、掌握市場趨勢及拓展商機。\n\n在數位內容產業方面，TCA 推動在地產業的國際化與多元發展，涵蓋科技與數位內容等領域。透過舉辦台北國際電腦展（COMPUTEX）、台北國際電玩展（Taipei Game Show）等展會，提供開發者、製作商及用戶交流平台。並協助業者掌握市場趨勢與技術革新，促進國際合作，推動在地優秀團隊與作品進軍國際，強化全球競爭力。',
+      logo: '/sponsors/sponsor_tca.png',
+      socialLinks: [
+        {
+          type: 'website',
+          url: 'https://edm.bnext.com.tw/2024terrace-2/',
+        },
+      ],
+    },
   ],
   specialSponsors: [
     {
