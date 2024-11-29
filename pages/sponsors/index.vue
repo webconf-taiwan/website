@@ -34,7 +34,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="layout-grid mt-8 min-h-screen lg:mt-[70px]">
+  <main class="layout-grid mb-11 mt-8 min-h-screen lg:mt-[70px]">
     <ClientOnly>
       <FloatingActionButtons>
         <MoveToTop :over-top="300" />
