@@ -34,7 +34,8 @@
           class="max-lg:mx-auto"
         >
           <NuxtLink
-            to="/sponsors"
+            external
+            to="mailto:hi@webconf.tw"
             target="_blank"
             class="text-xl"
             aria-label="前往諮詢"

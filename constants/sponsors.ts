@@ -69,13 +69,13 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
   specialSponsors: [
     {
       name: 'JETBRAINS',
-      introduction: '新加坡商鈦坦科技是一間軟體開發公司，提供線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品 Jira Software & Confluence、線上視覺化白板 Miro ，以自身實際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提供企業客製化敏捷課程及顧問諮詢服務。',
+      introduction: 'JetBrains 是知名 IntelliJ IDEA、ReSharper、GoLand、PyCharm、WebStorm、PhpStorm…等 IDE 工具及 Kotlin 程式語言背後的公司。過去 20 年來，JetBrains 專注於生產能提升開發效率的工具，透過智能提示、快速修正，自動化地處理繁瑣且重複性高的任務，讓開發者有更多時間和精神專注在創新、設計、架構及更多美好的事物上。目前全球已有超過 1,140 萬使用者、225 多個國家信任 JetBrains 的相關產品。',
       logo: '/sponsors/sponsor_jetbrains.png',
       socialLinks: [],
     },
     {
-      name: 'zeabur',
-      introduction: '新加坡商鈦坦科技是一間軟體開發公司，提供線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品 Jira Software & Confluence、線上視覺化白板 Miro ，以自身實際使用經驗提供一站式導入服務。身處快速變動的軟體產業，我們採用敏捷開發，同時將敏捷思維注入公司文化，目的是快速、靈活地應對客戶和市場需求的變化，在多年導入及迭代的經驗下，我們也開始提供企業客製化敏捷課程及顧問諮詢服務。',
+      name: 'Zeabur',
+      introduction: 'Zeabur 是一間致力於幫助開發者簡化雲端部署流程，加速團隊開發效率的台灣新創公司，目前已經幫助全球超過 30,000+ 位獨立開發者以及 20+ 間新創公司實現了專案的一鍵部署上雲。作為 Google Cloud Platform 官方認證的 PaaS 合作夥伴及 AWS Activate 新創加速計畫的成員，Zeabur 以最專業的角度為開發者提供最簡單快速的雲端部署服務。',
       logo: '/sponsors/sponsor_zeabur.png',
       socialLinks: [],
     },
