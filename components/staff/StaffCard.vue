@@ -1,9 +1,9 @@
 <script lang="ts" setup>
+import type { SocialLinkType } from '~/types/common'
+import type { Staff } from '~/types/staff'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import CardItem from '~/components/ui/card3d/CardItem.vue'
 import { socialIconMap } from '~/constants'
-import type { SocialLinkType } from '~/types/common'
-import type { Staff } from '~/types/staff'
 
 const { staff } = defineProps<{
   staff: Staff

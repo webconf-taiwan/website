@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { socialIconMap } from '~/constants'
 import type { SocialLink, SocialLinkType } from '~/types/common'
+import { socialIconMap } from '~/constants'
 
 defineProps<{
   socialLinks: SocialLink[]
