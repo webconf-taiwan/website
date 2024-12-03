@@ -56,7 +56,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
     },
     {
       name: '台北市電腦公會',
-      introduction: '台北市電腦公會（簡稱 TCA）成立於 1974 年，由近 4,000 家 ICT 廠商組成，涵蓋上下游完整生態，是資訊產業具代表性的公會。TCA 是業者與政府的溝通橋樑，提供服務協助會員交流、掌握市場趨勢及拓展商機。\n\n在數位內容產業方面，TCA 推動在地產業的國際化與多元發展，涵蓋科技與數位內容等領域。透過舉辦台北國際電腦展（COMPUTEX）、台北國際電玩展（Taipei Game Show）等展會，提供開發者、製作商及用戶交流平台。並協助業者掌握市場趨勢與技術革新，促進國際合作，推動在地優秀團隊與作品進軍國際，強化全球競爭力。',
+      introduction: '台北市電腦公會（簡稱 TCA）成立於 1974 年，由近 4,000 家 ICT 廠商組成，涵蓋上下游完整生態，是資訊產業具代表性的公會。TCA 是業者與政府的溝通橋樑，提供服務協助會員交流、掌握市場趨勢及拓展商機。\n在數位內容產業方面，TCA 推動在地產業的國際化與多元發展，涵蓋科技與數位內容等領域。透過舉辦台北國際電腦展（COMPUTEX）、台北國際電玩展（Taipei Game Show）等展會，提供開發者、製作商及用戶交流平台。並協助業者掌握市場趨勢與技術革新，促進國際合作，推動在地優秀團隊與作品進軍國際，強化全球競爭力。',
       logo: '/sponsors/sponsor_tca.png',
       socialLinks: [
         {
@@ -68,7 +68,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
   ],
   specialSponsors: [
     {
-      name: 'JETBRAINS',
+      name: 'JetBrains',
       introduction: 'JetBrains 是知名 IntelliJ IDEA、ReSharper、GoLand、PyCharm、WebStorm、PhpStorm…等 IDE 工具及 Kotlin 程式語言背後的公司。過去 20 年來，JetBrains 專注於生產能提升開發效率的工具，透過智能提示、快速修正，自動化地處理繁瑣且重複性高的任務，讓開發者有更多時間和精神專注在創新、設計、架構及更多美好的事物上。目前全球已有超過 1,140 萬使用者、225 多個國家信任 JetBrains 的相關產品。',
       logo: '/sponsors/sponsor_jetbrains.png',
       socialLinks: [],
