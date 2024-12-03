@@ -118,7 +118,7 @@ export const staffData: Staff[] = [
     socialLinks: [
       {
         type: 'linkedin',
-        url: 'https://www.linkedin.com/in/timinitime/',
+        url: 'https://www.linkedin.com/in/timemo/',
       },
       {
         type: 'website',

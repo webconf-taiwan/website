@@ -4,7 +4,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
   sponsors: [
     {
       name: '瑞嘉軟體科技股份有限公司',
-      introduction: 'ONElab (瑞嘉軟體) 是英國知名線上軟體設計集團ONEworks旗下的台灣研發中心。自2010年成立以來，迅速發展至擁有超過250名員工，辦公室位於台北內湖科技園區，並擴展至新竹和台中。ONElab專注於尖端軟體開發及維運，提供專業客製化服務，成功將平台推廣至亞洲及全球，客戶涵蓋歐、美、亞等地的重量級企業和跨國集團。我們深信員工是重要的夥伴，所以營造如家庭般的工作環境，並推行彈性上班制，福利比照歐美同業標準。以“好奇心、勇氣、客戶滿意、誠信、團隊合作”為核心價值，ONElab歡迎各路高手加入，共創美好未來。',
+      introduction: 'ONElab (瑞嘉軟體) 是英國知名線上軟體設計集團 ONEworks 旗下的台灣研發中心。自2010年成立以來，迅速發展至擁有超過250名員工，辦公室位於台北內湖科技園區，並擴展至新竹和台中。ONElab 專注於尖端軟體開發及維運，提供專業客製化服務，成功將平台推廣至亞洲及全球，客戶涵蓋歐、美、亞等地的重量級企業和跨國集團。我們深信員工是重要的夥伴，所以營造如家庭般的工作環境，並推行彈性上班制，福利比照歐美同業標準。以“好奇心、勇氣、客戶滿意、誠信、團隊合作”為核心價值，ONElab歡迎各路高手加入，共創美好未來。',
       logo: '/sponsors/sponsor_onelab.png',
       recruitmentUrl: 'https://www.104.com.tw/company/bjl4o88',
       socialLinks: [
@@ -115,7 +115,7 @@ export const sponsorsData: Record<SponsorType, Sponsor[]> = {
     },
     {
       name: '悠識學院',
-      introduction: '悠識學院提供實戰型 UX 學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業 UX 方法，講座及實務研討關注 AI/UX、DesignOps 設計營運、數位職涯發展。我們也營運 IG、Threads、Podcasat「UX有差嗎？」等社群平台，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
+      introduction: '悠識學院提供實戰型 UX 學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業 UX 方法，講座及實務研討關注 AI/UX、DesignOps 設計營運、數位職涯發展。我們也營運 IG、Threads、Podcast「UX有差嗎？」等社群平台，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
       logo: '/sponsors/organizer_userxper.png',
       socialLinks: [
         {
