@@ -35,7 +35,12 @@ export const staffData: Staff[] = [
     name: '理查哥',
     jobTitle: 'UX 土地公',
     avatar: '/staff/avatar_richard.jpg',
-    socialLinks: [],
+    socialLinks: [
+      {
+        type: 'facebook',
+        url: 'https://www.facebook.com/uxrichard',
+      },
+    ],
   },
   {
     name: '陳彥宇',
