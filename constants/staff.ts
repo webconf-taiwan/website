@@ -137,7 +137,7 @@ export const staffData: Staff[] = [
     avatar: '/staff/avatar_sha.jpg',
     socialLinks: [
       {
-        type: 'website',
+        type: 'facebook',
         url: 'https://www.facebook.com/yutingsyuesha/',
       },
     ],
