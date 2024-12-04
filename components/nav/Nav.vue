@@ -107,8 +107,10 @@ const aosDelay = computed(() => isHome.value ? 3000 : 0)
               <ul class="space-y-6">
                 <li>
                   <NuxtLink
+                    external
                     to="https://2013.webconf.tw/"
                     target="_blank"
+                    aria-label="2013 WebConf 連結"
                     class="px-3 py-[2px] hover:text-primary-green"
                   >
                     2013
@@ -116,8 +118,10 @@ const aosDelay = computed(() => isHome.value ? 3000 : 0)
                 </li>
                 <li>
                   <NuxtLink
+                    external
                     to="https://2023.webconf.tw/"
                     target="_blank"
+                    aria-label="2023 WebConf 連結"
                     class="px-3 py-[2px] hover:text-primary-green"
                   >
                     2023

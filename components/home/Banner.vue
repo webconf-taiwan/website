@@ -51,6 +51,7 @@ onBeforeMount(() => {
           class="mx-auto mt-[35px] lg:max-w-none xl:mr-0 xl:max-w-[180px]"
         >
           <NuxtLink
+            external
             :to="accupassLink"
             target="_blank"
             class="text-xl"

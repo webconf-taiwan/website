@@ -1,26 +1,13 @@
 <script lang="ts" setup>
 import AOS from 'aos'
-import { appDescription, appName, ogImageUrl } from '~/constants'
 import { showEasterEgg } from './utils/easterEgg'
-
-const siteConfig = useSiteConfig()
-
-useSeoMeta({
-  description: appDescription,
-  ogTitle: appName,
-  ogDescription: appDescription,
-  ogImage: `${siteConfig.url}${ogImageUrl}`,
-  twitterTitle: appName,
-  twitterDescription: appDescription,
-  twitterImage: `${siteConfig.url}${ogImageUrl}`,
-  twitterCard: 'summary_large_image',
-})
 
 const { hasShownAnimation } = useLoadingState()
 const tagsStore = useTagsStore()
-
 const route = useRoute()
+
 const isHome = computed(() => route.name === 'index')
+const isSponsors = computed(() => route.name === 'sponsors')
 
 watch(() => route.path, () => {
   tagsStore.resetTags()
@@ -44,7 +31,7 @@ onMounted(() => {
     <TilesBackground />
   </Teleport>
 
-  <Body :class="{ 'home-bg': isHome }">
+  <Body :class="{ 'home-bg': isHome || isSponsors }">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

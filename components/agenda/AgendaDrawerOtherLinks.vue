@@ -19,13 +19,15 @@ function getAgendaOtherLinks(links: AgendaOtherLink[]) {
 
 <template>
   <div
-    class="grid w-full grid-cols-2 gap-x-2 lg:flex lg:max-w-[380px]"
+    class="grid w-full grid-cols-2 justify-end gap-x-2 lg:flex lg:w-auto lg:max-w-[380px]"
   >
     <NuxtLink
       v-for="link in getAgendaOtherLinks(agendaOtherLinks)"
       :key="link.href"
+      external
       :to="link.href"
       target="_blank"
+      aria-label="其他連結"
       class="flex shrink-0 items-center justify-center gap-x-2 border border-primary-green px-6 py-2 text-center text-xl duration-150 lg:hover:bg-primary-dark-green"
     >
       <span>{{ link.text }}</span>

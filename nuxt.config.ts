@@ -1,13 +1,27 @@
 import { appDescription } from './constants'
 import { speakers } from './constants/speakers'
-// import { getAllAgendaIds } from './utils/index'
+import { sponsorsData } from './constants/sponsors'
+import { staffData } from './constants/staff'
+import { getAllAgendaIds } from './utils/index'
 
 const speakersAvatarPrerenderRoutes = speakers.flatMap(speaker => [
   `/_ipx/f_webp&q_80&blur_5&s_32x32${speaker.avatar}`,
   `/_ipx/f_webp${speaker.avatar}`,
 ])
 
-// const singleAgendaRoutes = getAllAgendaIds().map(id => `/agenda/${id}`)
+const sponsorsLogoPrerenderRoutes = Object.values(sponsorsData).flatMap(sponsors =>
+  sponsors.flatMap(sponsor => [
+    `/_ipx/f_webp&q_80&blur_5&s_32x32${sponsor.logo}`,
+    `/_ipx/f_webp${sponsor.logo}`,
+  ]),
+)
+
+const staffAvatarPrerenderRoutes = staffData.flatMap(staff => [
+  `/_ipx/f_webp&q_80&blur_5&s_32x32${staff.avatar}`,
+  `/_ipx/f_webp${staff.avatar}`,
+])
+
+const singleAgendaRoutes = getAllAgendaIds().map(id => `/agenda/${id}`)
 
 export default defineNuxtConfig({
   devtools: {
@@ -92,7 +106,7 @@ export default defineNuxtConfig({
   },
 
   site: {
-    url: 'https://webconf.tw',
+    url: process.env.NUXT_SITE_URL || 'https://webconf.tw',
     name: '2024 WebConf Taiwan 技術研討會',
     defaultLocale: 'zh-TW',
   },
@@ -104,7 +118,7 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    fonts: ['Noto+Sans+TC:700'],
+    fonts: ['Noto+Sans+TC:700', 'Mina:700'],
   },
 
   content: {
@@ -116,10 +130,13 @@ export default defineNuxtConfig({
     prerender: {
       routes: [
         ...speakersAvatarPrerenderRoutes,
+        ...sponsorsLogoPrerenderRoutes,
+        ...staffAvatarPrerenderRoutes,
         '/_ipx/_/logo-words.svg',
         '/_ipx/_/drawer/drawer-top-decorate-lg.svg',
         '/_ipx/_/drawer/drawer-top-decorate.svg',
-        // ...singleAgendaRoutes,
+        '/agenda',
+        ...singleAgendaRoutes,
         '/sitemap.xml',
       ],
     },

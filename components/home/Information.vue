@@ -43,6 +43,7 @@ const trafficInfos = [
 
           <div class="mt-8">
             <NuxtLink
+              external
               :to="venueGoogleMapLink"
               target="_blank"
               class="text-h3 transition lg:text-md-h3 lg:underline-offset-4 lg:hover:text-primary-green lg:hover:underline"

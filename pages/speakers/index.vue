@@ -1,17 +1,22 @@
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
-import { appDescription, appName } from '~/constants'
 import type { ParsedAgendaData } from '~/types/agendas'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
+import { appDescription, appName, ogImageUrl } from '~/constants'
 
 const { $lenis } = useNuxtApp()
-
+const siteConfig = useSiteConfig()
 const agendasStore = useAgendasStore()
 
 useSeoMeta({
   title: '講者',
+  description: appDescription,
   ogTitle: `講者 | ${appName}`,
   ogDescription: appDescription,
+  ogImage: `${siteConfig.url}${ogImageUrl}`,
   twitterTitle: `講者 | ${appName}`,
+  twitterDescription: appDescription,
+  twitterImage: `${siteConfig.url}${ogImageUrl}`,
+  twitterCard: 'summary_large_image',
 })
 
 const breakpoints = useBreakpoints(breakpointsTailwind)

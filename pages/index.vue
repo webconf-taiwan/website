@@ -1,6 +1,20 @@
 <script lang="ts" setup>
+import { appDescription, appName, ogImageUrl } from '~/constants'
+
 const tilesBackgroundStore = useTilesBackgroundStore()
 const nuxtApp = useNuxtApp()
+const siteConfig = useSiteConfig()
+
+useSeoMeta({
+  description: appDescription,
+  ogTitle: appName,
+  ogDescription: appDescription,
+  ogImage: `${siteConfig.url}${ogImageUrl}`,
+  twitterTitle: appName,
+  twitterDescription: appDescription,
+  twitterImage: `${siteConfig.url}${ogImageUrl}`,
+  twitterCard: 'summary_large_image',
+})
 
 nuxtApp.hook('page:finish', async () => {
   window.scrollTo(0, 0)

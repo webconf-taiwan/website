@@ -70,7 +70,15 @@ export default antfu(
   /* From the second arguments they are ESLint Flat Configs */
   {
     rules: {
-      'no-unused-vars': 'warn',
+      'no-unused-vars': [
+        'warn',
+        {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
+          argsIgnorePattern: '^_',
+        },
+      ],
       'no-console': 'warn',
       'node/prefer-global/process': 'off',
     },
@@ -97,6 +105,7 @@ export default antfu(
             'masked-image',
             'grid-speakers-separator-line',
             'speaker-name-tag',
+            'speaker-social-links-tag',
             'marquee-text-outline',
             'drawer-content',
             'agenda-content',

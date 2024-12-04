@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import type { AgendaLocation, TimeSlot } from '~/types/agendas'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 defineProps<{
   agendaTimeSlots: TimeSlot[]

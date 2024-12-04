@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ParsedAgendaData } from '~/types/agendas'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,15 +8,12 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import { ogImageUrl } from '~/constants'
-import type { ParsedAgendaData } from '~/types/agendas'
-
-const siteConfig = useSiteConfig()
 
 const route = useRoute()
 const id = route.params.id as string
 
 const agendasStore = useAgendasStore()
+
 agendasStore.currentAgendaDrawerId = id
 
 const { data: agendaMarkdownData, error } = await useAsyncData(
@@ -48,9 +46,9 @@ useSeoMeta({
   author: () => speakerNames,
   ogTitle: `${agendaMarkdownData.value?.title} - ${speakerNames}`,
   ogDescription: agendaMarkdownData.value?.description,
-  ogImage: `${siteConfig.url}${ogImageUrl}`,
   twitterTitle: `${agendaMarkdownData.value?.title} - ${speakerNames}`,
   twitterDescription: agendaMarkdownData.value?.description,
+  twitterCard: 'summary_large_image',
 })
 
 useSchemaOrg([
@@ -58,6 +56,21 @@ useSchemaOrg([
     '@type': 'ProfilePage',
   }),
 ])
+
+const ogImageOptions = {
+  component: 'OgImageTemplate',
+  props: {
+    title: agendaMarkdownData.value?.title,
+    description: agendaMarkdownData.value?.description,
+    author: speakerNames,
+    location: agendaMarkdownData.value?.location,
+    date: agendaMarkdownData.value?.date.split('T')[0],
+    startTime: agendaMarkdownData.value?.startTime,
+    endTime: agendaMarkdownData.value?.endTime,
+  },
+}
+
+defineOgImage(ogImageOptions)
 
 onUnmounted(() => {
   agendasStore.singleAgendaMarkdownData = null

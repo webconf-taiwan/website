@@ -50,7 +50,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['backend', 'agile'],
           speakerCodes: ['kyocheng'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F7dO26WhtRjua8ufeYu90Bw',
+            },
+          ],
         },
         M: {
           id: 'day1-1-m',
@@ -58,7 +63,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend'],
           speakerCodes: ['milkmidi'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FZ5mdWoHoTKuYqapQTeR2Gw',
+            },
+          ],
         },
         A2: {
           id: 'day1-1-a2',
@@ -66,7 +76,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux'],
           speakerCodes: ['weikan'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fb6IouZwAToaXTITL7hpo0w',
+            },
+          ],
         },
       },
     },
@@ -82,7 +97,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['devops'],
           speakerCodes: ['weithenn'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FBwR0nuGERCSfrCtY6BKbFw',
+            },
+          ],
         },
         M: {
           id: 'day1-2-m',
@@ -90,7 +110,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'backend', 'agile', 'product-design'],
           speakerCodes: ['pjwang'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F0EiYKrCQQFKpuErgA1zIvQ',
+            },
+          ],
         },
         A2: {
           id: 'day1-2-a2',
@@ -98,7 +123,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['samuel'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F7dA7rD0gQ82pvBBUugcGdw',
+            },
+          ],
         },
       },
     },
@@ -114,7 +144,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'backend', 'team-management'],
           speakerCodes: ['fin'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FTz9q-XSwQK-9SvmycxtXPA',
+            },
+          ],
         },
         M: {
           id: 'day1-3-m',
@@ -122,7 +157,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend'],
           speakerCodes: ['summer'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FmIdCScKdTgSQuwjNcyrXTg',
+            },
+          ],
         },
         A2: {
           id: 'day1-3-a2',
@@ -130,7 +170,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['iris'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FpHWTQ5SnSsGcJ0-xEWiROg',
+            },
+          ],
         },
       },
     },
@@ -146,7 +191,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['backend', 'team-management'],
           speakerCodes: ['nic'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FNAoMFQ4YTGyjHdUiRc4T2g',
+            },
+          ],
         },
         M: {
           id: 'day1-4-m',
@@ -154,7 +204,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['team-management'],
           speakerCodes: ['singz'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FXotjX_3RSNeKD5o-FXpyhg',
+            },
+          ],
         },
         A2: {
           id: 'day1-4-a2',
@@ -162,7 +217,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'uiux', 'product-design', 'team-management'],
           speakerCodes: ['rei'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F2AL3eh0PRHy_SytJ_L74rQ',
+            },
+          ],
         },
       },
     },
@@ -185,7 +245,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend'],
           speakerCodes: ['zet'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FIrITxP3rRpKxab5nDlkw6w',
+            },
+          ],
         },
         M: {
           id: 'day1-5-m',
@@ -193,7 +258,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['product-design'],
           speakerCodes: ['ihower'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fs9voMrBsQ2qH3yKFzAEzAQ',
+            },
+          ],
         },
         A2: {
           id: 'day1-5-a2',
@@ -201,7 +271,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['agile', 'product-design', 'team-management'],
           speakerCodes: ['lindsay'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F-feHQuIeT5SzIU4cBnI7EQ',
+            },
+          ],
         },
       },
     },
@@ -217,7 +292,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'backend', 'uiux'],
           speakerCodes: ['kewang'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FtQwdpxCkRfyeQp2uEE7KTw',
+            },
+          ],
         },
         M: {
           id: 'day1-6-m',
@@ -225,7 +305,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'uiux', 'agile', 'team-management'],
           speakerCodes: ['sylviauk', 'stevenyeo'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F8xw9A1UfS-muu8kL2_necQ',
+            },
+          ],
         },
         A2: {
           id: 'day1-6-a2',
@@ -233,7 +318,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['wylin'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FZ0_clry4SeSj0GcZx5m2zg',
+            },
+          ],
         },
       },
     },
@@ -249,7 +339,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'backend'],
           speakerCodes: ['dscareer'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FXuOekBPwQg6rSV1_-7mgDg',
+            },
+          ],
         },
         M: {
           id: 'day1-7-m',
@@ -257,7 +352,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['product-design', 'team-management'],
           speakerCodes: ['tonyq'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FZNxp16PySUCoKhzf8wRX7w',
+            },
+          ],
         },
         A2: {
           id: 'day1-7-a2',
@@ -265,7 +365,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'agile', 'uiux', 'product-design', 'team-management'],
           speakerCodes: ['doppler'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F7MwziMGdSfCLzkrHCkI-AQ',
+            },
+          ],
         },
       },
     },
@@ -281,7 +386,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'backend', 'devops'],
           speakerCodes: ['yuanlin'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FLe2Yc5gySPWxBZE1EWYGAA',
+            },
+          ],
         },
         M: {
           id: 'day1-8-m',
@@ -289,7 +399,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['team-management'],
           speakerCodes: ['gipi'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FKkTRz5AqQ5WtksSdtm-dIA',
+            },
+          ],
         },
         A2: {
           id: 'day1-8-a2',
@@ -297,7 +412,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux', 'team-management'],
           speakerCodes: ['ivanwei'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FSODQ9UQOSkyrLQvCPESaPw',
+            },
+          ],
         },
       },
     },
@@ -329,7 +449,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'uiux'],
           speakerCodes: ['gugu'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F8UKsTuNmShylopzFwlh38A',
+            },
+          ],
         },
         M: {
           id: 'day2-1-m',
@@ -337,7 +462,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'backend', 'agile', 'devops'],
           speakerCodes: ['mosky'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FNZLRM8oCRvi2voyfL68tIg',
+            },
+          ],
         },
         A2: {
           id: 'day2-1-a2',
@@ -345,7 +475,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['djlee'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FQA7D_pp3TOC41AjJWuxOCg',
+            },
+          ],
         },
       },
     },
@@ -369,7 +504,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['lydia'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FENkeFDshRMWYiV_gSyzAhw',
+            },
+          ],
         },
         A2: {
           id: 'day2-2-a2',
@@ -393,7 +533,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: true,
           tags: ['frontend', 'backend', 'devops'],
           speakerCodes: ['lightda'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fp0uvB9gPRt6n9vFShm3lTw',
+            },
+          ],
         },
         M: {
           id: 'day2-3-m',
@@ -401,7 +546,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend'],
           speakerCodes: ['antfu'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FuUCLipjyTyCrzGDCRHV9BA',
+            },
+          ],
         },
         A2: {
           id: 'day2-3-a2',
@@ -409,7 +559,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['seal'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F4YLxjTqvTyWncvdl2dwpew',
+            },
+          ],
         },
       },
     },
@@ -425,7 +580,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: true,
           tags: ['frontend', 'backend', 'devops'],
           speakerCodes: ['lightda'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fp0uvB9gPRt6n9vFShm3lTw',
+            },
+          ],
         },
         M: {
           id: 'day2-4-m',
@@ -433,7 +593,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'uiux'],
           speakerCodes: ['amos'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FbfiLdEW-QLCiM8oO0qwNMw',
+            },
+          ],
         },
         A2: {
           id: 'day2-4-a2',
@@ -441,7 +606,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['agile', 'uiux', 'team-management'],
           speakerCodes: ['stevenyeh'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fiyk7w2K9TLqX_VLlce1pPA',
+            },
+          ],
         },
       },
     },
@@ -464,7 +634,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'product-design'],
           speakerCodes: ['leethi'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fv0_Ufs51S7GvfC01w8kmAg',
+            },
+          ],
         },
         M: {
           id: 'day2-5-m',
@@ -472,7 +647,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['devops'],
           speakerCodes: ['xiaofeng'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FFlZ2qOWARxGTsxaZCUCWIg',
+            },
+          ],
         },
         A2: {
           id: 'day2-5-a2',
@@ -480,7 +660,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'uiux', 'product-design'],
           speakerCodes: ['maylogger'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F4SbzPuObTpC4fp8ytpLARg',
+            },
+          ],
         },
       },
     },
@@ -496,7 +681,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend'],
           speakerCodes: ['leo'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FoUduGHHmT66C7EUcyt_7Pw',
+            },
+          ],
         },
         M: {
           id: 'day2-6-m',
@@ -504,7 +694,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['devops'],
           speakerCodes: ['hungweichiu'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fa07Z0KkRR5eJC_D1pEckcQ',
+            },
+          ],
         },
         A2: {
           id: 'day2-6-a2',
@@ -512,7 +707,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['uiux'],
           speakerCodes: ['henrylin'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FB5Pobs06R9mL440Cx0kaPg',
+            },
+          ],
         },
       },
     },
@@ -528,7 +728,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend', 'backend', 'product-design'],
           speakerCodes: ['taiming'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FLaGp4Hb0SLSlkZRex_nhAw',
+            },
+          ],
         },
         M: {
           id: 'day2-7-m',
@@ -536,7 +741,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['frontend'],
           speakerCodes: ['kuro'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F-xKP138XSgWlkBh1jIHdXA',
+            },
+          ],
         },
         A2: {
           id: 'day2-7-a2',
@@ -544,7 +754,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['product-design', 'team-management'],
           speakerCodes: ['chacha'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FwkU0FNV2QGG2Lj_YcujDsw',
+            },
+          ],
         },
       },
     },
@@ -568,7 +783,12 @@ export const agendaData: DaySchedule = {
           isWorkshop: false,
           tags: ['agile', 'team-management'],
           speakerCodes: ['ruddy'],
-          otherLinks: [],
+          otherLinks: [
+            {
+              type: 'note',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FT1FfJOxEQ3mLD-6lSltHgA',
+            },
+          ],
         },
         A2: {
           id: 'day2-8-a2',

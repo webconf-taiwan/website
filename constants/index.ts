@@ -1,4 +1,4 @@
-import type { SocialLinkType } from '~/types/speakers'
+import type { SocialLinkType } from '~/types/common'
 
 export const appName = '2024 WebConf Taiwan 技術研討會'
 export const appDescription = '本屆榮幸邀請到各領域專業講者，包含網站開發、前端設計、UIUX 以及團隊管理、軟性主題等各方面相關議題分享。希望能讓所有對 Web 開發、設計有熱情的人，共同創造一個充滿回憶與影響力的盛會！'
@@ -17,26 +17,27 @@ export const navLinks = [
     engName: 'SPEAKERS',
     href: '/speakers',
   },
+  {
+    name: '主辦',
+    engName: 'STAFF',
+    href: '/staff',
+  },
   // {
   //   name: '場域',
   //   engName: 'VENUE',
   //   href: '#',
   // },
-  // {
-  //   name: '贊助',
-  //   engName: 'SPONSOR',
-  //   href: '#',
-  // },
+  {
+    name: '贊助',
+    engName: 'SPONSOR',
+    href: '/sponsors',
+  },
   // {
   //   name: '徵才',
   //   engName: 'RECRUIT',
   //   href: '#',
   // },
-  // {
-  //   name: '籌備',
-  //   engName: 'STAFF',
-  //   href: '#',
-  // },
+
   {
     name: '歷屆',
     engName: 'HISTORY',
@@ -51,12 +52,14 @@ export const contactInfos = [
     iconName: 'heroicons:envelope',
     content: 'hi@webconf.tw',
     href: 'mailto:hi@webconf.tw',
+    ariaLabel: 'WebConf 信箱',
   },
   {
     trapezoidClass: 'trapezoid-top-right',
     iconName: 'iconoir:facebook',
     content: 'WebConf Taiwan',
     href: 'https://www.facebook.com/WebConfTaiwan/?locale=zh_TW',
+    ariaLabel: 'WebConf Facebook',
   },
 ]
 

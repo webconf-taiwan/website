@@ -37,11 +37,15 @@ This template uses [@antfu/eslint-config](https://github.com/antfu/eslint-config
 
 ## Development
 
+Copy `.env.example` to `.env.local` and fill in the necessary values.
+
 ```bash
 pnpm dev
 ```
 
 ## Production
+
+Copy `.env.example` to `.env.production` and fill in the necessary values.
 
 ```bash
 pnpm build
