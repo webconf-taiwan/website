@@ -136,61 +136,62 @@ const svgViewBox = computed(() => {
     />
 
     <div class="mt-6 w-full">
-      <Tabs
-        ref="tabsRef"
-        v-model="currentContentTab"
-        class="w-full"
-      >
-        <TabsList class="sticky left-0 top-0 z-20 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
-          <TabsTrigger
-            v-for="(tab, index) in agendaDrawerContentTabsMap"
+      <ClientOnly>
+        <Tabs
+          ref="tabsRef"
+          v-model="currentContentTab"
+          class="w-full"
+        >
+          <TabsList class="sticky left-0 top-0 z-20 flex h-[46px] w-full lg:relative lg:top-0 lg:h-[52px]">
+            <TabsTrigger
+              v-for="(tab, index) in agendaDrawerContentTabsMap"
+              :key="tab[0]"
+              :value="tab[0]"
+              class="group absolute size-full w-[56%] bg-primary-deep-green font-['Mina'] text-xl font-bold leading-none text-white transition-all duration-300 data-[state=active]:z-[3] data-[state=active]:h-[calc(100%+6px)] data-[state=active]:w-[56%] data-[state=active]:bg-primary-green data-[state=active]:text-black lg:w-[52%] lg:text-[2rem] lg:data-[state=active]:h-[calc(100%+8px)] lg:data-[state=active]:w-[55%] lg:data-[state=inactive]:hover:bg-[hsla(176,99%,29%,1)]"
+              :class="[index === 0 ? 'tabs-clip-right left-0 z-[2]' : 'tabs-clip-left right-0 z-[1]']"
+            >
+              <div
+                class="relative flex items-center gap-x-2 truncate pt-1 tracking-wide lg:justify-center lg:pt-2"
+                :class="[index === 0 ? 'justify-start pl-6 lg:pl-0' : 'justify-end pr-6 lg:pr-0']"
+              >
+                <span class="lg:text-[1.75rem]">{{ (tab[1]) }}</span>
+              </div>
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent
+            v-for="tab in agendaDrawerContentTabsMap"
             :key="tab[0]"
             :value="tab[0]"
-            class="group absolute size-full w-[56%] bg-primary-deep-green font-['Mina'] text-xl font-bold leading-none text-white transition-all duration-300 data-[state=active]:z-[3] data-[state=active]:h-[calc(100%+6px)] data-[state=active]:w-[56%] data-[state=active]:bg-primary-green data-[state=active]:text-black lg:w-[52%] lg:text-[2rem] lg:data-[state=active]:h-[calc(100%+8px)] lg:data-[state=active]:w-[55%] lg:data-[state=inactive]:hover:bg-[hsla(176,99%,29%,1)]"
-            :class="[index === 0 ? 'tabs-clip-right left-0 z-[2]' : 'tabs-clip-left right-0 z-[1]']"
+            :force-mount="true"
           >
-            <div
-              class="relative flex items-center gap-x-2 truncate pt-1 tracking-wide lg:justify-center lg:pt-2"
-              :class="[index === 0 ? 'justify-start pl-6 lg:pl-0' : 'justify-end pr-6 lg:pr-0']"
-            >
-              <span class="lg:text-[1.75rem]">{{ (tab[1]) }}</span>
+            <div class="mt-[-1px] w-full border border-primary-green px-5 py-6 md:px-7">
+              <Transition
+                name="fade"
+                mode="out-in"
+              >
+                <template v-if="currentContentTab === 'agenda-info'">
+                  <div>
+                    <ContentRenderer :value="currentAgendaMarkdownData">
+                      <template #empty>
+                        <p>沒有任何內容。</p>
+                      </template>
+                    </ContentRenderer>
+                  </div>
+                </template>
+                <template v-else>
+                  <div>
+                    <ContentRenderer :value="currentAgendaMarkdownData">
+                      <template #empty>
+                        <p>沒有任何內容。</p>
+                      </template>
+                    </ContentRenderer>
+                  </div>
+                </template>
+              </Transition>
             </div>
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent
-          v-for="tab in agendaDrawerContentTabsMap"
-          :key="tab[0]"
-          :value="tab[0]"
-          :force-mount="true"
-        >
-          <div class="mt-[-1px] w-full border border-primary-green px-5 py-6 md:px-7">
-            <Transition
-              name="fade"
-              mode="out-in"
-            >
-              <template v-if="currentContentTab === 'agenda-info'">
-                <div>
-                  <ContentRenderer :value="currentAgendaMarkdownData">
-                    <template #empty>
-                      <p>沒有任何內容。</p>
-                    </template>
-                  </ContentRenderer>
-                </div>
-              </template>
-              <template v-else>
-                <div>
-                  <ContentRenderer :value="currentAgendaMarkdownData">
-                    <template #empty>
-                      <p>沒有任何內容。</p>
-                    </template>
-                  </ContentRenderer>
-                </div>
-              </template>
-            </Transition>
-          </div>
-        </TabsContent>
-      </Tabs>
+          </TabsContent>
+        </Tabs>
+      </ClientOnly>
     </div>
 
     <div class="!my-6 md:!mt-8 lg:!mb-10">

@@ -4,8 +4,8 @@ import { showEasterEgg } from './utils/easterEgg'
 
 const { hasShownAnimation } = useLoadingState()
 const tagsStore = useTagsStore()
-
 const route = useRoute()
+
 const isHome = computed(() => route.name === 'index')
 const isSponsors = computed(() => route.name === 'sponsors')
 

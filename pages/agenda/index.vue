@@ -75,7 +75,9 @@ onMounted(() => {
         </template>
       </SectionTitle>
       <AgendaTagsWrapper class="mb-9 lg:mb-11" />
-      <AgendaSlotsWrapper />
+      <ClientOnly>
+        <AgendaSlotsWrapper />
+      </ClientOnly>
     </div>
 
     <Teleport to="body">
