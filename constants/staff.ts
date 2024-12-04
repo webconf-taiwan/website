@@ -135,7 +135,12 @@ export const staffData: Staff[] = [
     name: '薛羽婷',
     jobTitle: '設計軌講者獵人',
     avatar: '/staff/avatar_sha.jpg',
-    socialLinks: [],
+    socialLinks: [
+      {
+        type: 'website',
+        url: 'https://www.facebook.com/yutingsyuesha/',
+      },
+    ],
   },
   {
     name: 'Sabrina',
