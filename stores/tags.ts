@@ -1,5 +1,5 @@
-import type { AgendaTag } from '~/types/agendas'
 import { agendaData } from '~/constants/agendas'
+import type { AgendaTag } from '~/types/agendas'
 
 export const useTagsStore = defineStore('tags', () => {
   const selectedTags = ref<AgendaTag['id'][]>([])

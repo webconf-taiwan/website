@@ -1,7 +1,7 @@
-import type { AgendaDrawerRenderData, AgendaItem, ParsedAgendaData } from '~/types/agendas'
-import type { Speaker } from '~/types/speakers'
 import { agendaData } from '~/constants/agendas'
 import { speakers } from '~/constants/speakers'
+import type { AgendaDrawerRenderData, AgendaItem, ParsedAgendaData } from '~/types/agendas'
+import type { Speaker } from '~/types/speakers'
 
 export const useAgendasStore = defineStore('agendas', () => {
   function findSpeakers(speakerCodes: string[]) {

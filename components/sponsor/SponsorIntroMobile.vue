@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Sponsor } from '~/types/sponsors'
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/components/ui/collapsible'
+import type { Sponsor } from '~/types/sponsors'
 
 defineProps<{
   introduction: Sponsor['introduction']

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Sponsor } from '~/types/sponsors'
 import { breakpointsTailwind } from '@vueuse/core'
+import type { Sponsor } from '~/types/sponsors'
 import SponsorIntro from './SponsorIntro.vue'
 
 defineProps<{

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { ParsedAgendaData } from '~/types/agendas'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,6 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
+import type { ParsedAgendaData } from '~/types/agendas'
 
 const route = useRoute()
 const id = route.params.id as string
