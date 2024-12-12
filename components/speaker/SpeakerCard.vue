@@ -1,7 +1,7 @@
 <script lang="ts" setup>
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import type { DaySchedule } from '~/types/agendas'
 import type { Speaker } from '~/types/speakers'
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 const { speaker } = defineProps<{
   speaker: Speaker & { tags: string[] }

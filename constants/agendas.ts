@@ -119,14 +119,14 @@ export const agendaData: DaySchedule = {
         },
         A2: {
           id: 'day1-2-a2',
-          title: '談組織內部的產品創業：由技術選型、優劣勢分析、階段性目標再到團隊設計',
+          title: '工作坊＋AI：創意又高效的規劃執行',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
-          speakerCodes: ['samuel'],
+          speakerCodes: ['djlee'],
           otherLinks: [
             {
               type: 'note',
-              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F7dA7rD0gQ82pvBBUugcGdw',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FQA7D_pp3TOC41AjJWuxOCg',
             },
           ],
         },
@@ -471,14 +471,14 @@ export const agendaData: DaySchedule = {
         },
         A2: {
           id: 'day2-1-a2',
-          title: '工作坊＋AI：創意又高效的規劃執行',
+          title: '談組織內部的產品創業：由技術選型、優劣勢分析、階段性目標再到團隊設計',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
-          speakerCodes: ['djlee'],
+          speakerCodes: ['samuel'],
           otherLinks: [
             {
               type: 'note',
-              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FQA7D_pp3TOC41AjJWuxOCg',
+              href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F7dA7rD0gQ82pvBBUugcGdw',
             },
           ],
         },

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { AgendaTag } from '~/types/agendas'
 import { agendaTags } from '~/constants/agendas'
+import type { AgendaTag } from '~/types/agendas'
 
 const tagsStore = useTagsStore()
 
