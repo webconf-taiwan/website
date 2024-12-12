@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import Autoplay from 'embla-carousel-autoplay'
 import type { Carousel, CarouselApi } from '~/components/ui/carousel'
 import type { Speaker } from '~/types/speakers'
-import Autoplay from 'embla-carousel-autoplay'
 
 const props = defineProps<{
   speakers: Speaker[]

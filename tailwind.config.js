@@ -1,6 +1,6 @@
 const { setupInspiraUI } = require('@inspira-ui/plugins')
-const animate = require('tailwindcss-animate')
 const defaultTheme = require('tailwindcss/defaultTheme')
+const animate = require('tailwindcss-animate')
 
 /** @type {import('tailwindcss').Config} */
 export default {
