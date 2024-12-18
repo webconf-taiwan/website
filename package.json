@@ -34,7 +34,7 @@
     "vaul-vue": "^0.2.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.11.2",
+    "@antfu/eslint-config": "^3.12.0",
     "@iconify-json/heroicons": "^1.2.1",
     "@iconify-json/iconoir": "^1.2.5",
     "@iconify-json/uil": "^1.2.1",

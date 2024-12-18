@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { ParsedAgendaData } from '~/types/agendas'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { appDescription, appName, ogImageUrl } from '~/constants'
-import type { ParsedAgendaData } from '~/types/agendas'
 
 const { $lenis } = useNuxtApp()
 const siteConfig = useSiteConfig()
