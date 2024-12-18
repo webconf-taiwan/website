@@ -18,15 +18,15 @@ export const navLinks = [
     href: '/speakers',
   },
   {
+    name: '場域',
+    engName: 'VENUE',
+    href: '/venue',
+  },
+  {
     name: '主辦',
     engName: 'STAFF',
     href: '/staff',
   },
-  // {
-  //   name: '場域',
-  //   engName: 'VENUE',
-  //   href: '#',
-  // },
   {
     name: '贊助',
     engName: 'SPONSOR',

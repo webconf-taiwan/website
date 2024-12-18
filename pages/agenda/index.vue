@@ -65,6 +65,7 @@ onMounted(() => {
         <MoveToTop :over-top="300" />
       </FloatingActionButtons>
     </ClientOnly>
+
     <div class="mx-auto">
       <SectionTitle class="mb-5 justify-center lg:mb-12">
         <template #title>
