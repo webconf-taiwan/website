@@ -157,4 +157,8 @@
   .text-mina {
     font-family: 'Mina', sans-serif;
   }
+
+  .venue-title-trapezoid {
+    clip-path: polygon(3% 0%, 97% 0%, 100% 100%, 0% 100%);
+  }
 }

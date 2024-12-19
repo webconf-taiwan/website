@@ -24,7 +24,7 @@ useSchemaOrg([
     ],
   }),
   defineWebPage({
-    '@type': 'CollectionPage',
+    '@type': 'WebPage',
   }),
 ])
 
@@ -41,7 +41,7 @@ onMounted(() => {
       </FloatingActionButtons>
     </ClientOnly>
 
-    <div class="mx-auto">
+    <div class="mx-auto w-full max-w-[1162px]">
       <SectionTitle class="mb-5 justify-center lg:mb-12">
         <template #title>
           VENUE
@@ -50,6 +50,9 @@ onMounted(() => {
           場域
         </template>
       </SectionTitle>
+
+      <VenueFloorPlan />
+      <VenueTraffic />
     </div>
   </main>
 </template>
