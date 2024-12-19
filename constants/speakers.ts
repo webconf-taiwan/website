@@ -763,7 +763,7 @@ export const speakers: Speaker[] = [
   {
     id: 'speaker_43',
     code: 'tonyq',
-    displayName: '王景弘',
+    displayName: '王景弘 TonyQ',
     avatar: '/speakers/avatar_tonyq.png',
     jobTitle: 'AUTHME 架構師',
     socialLinks: [
