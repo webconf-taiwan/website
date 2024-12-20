@@ -3,6 +3,18 @@ import { appDescription, appName, ogImageUrl } from '~/constants'
 
 const { $lenis } = useNuxtApp()
 const siteConfig = useSiteConfig()
+const tilesBackgroundStore = useTilesBackgroundStore()
+
+const venueFloorPlanRef = useTemplateRef('venueFloorPlanRef')
+useIntersectionObserver(
+  venueFloorPlanRef,
+  ([{ isIntersecting }]) => {
+    tilesBackgroundStore.isReduceTargetOpacity = isIntersecting
+  },
+  {
+    rootMargin: '-40% 0px -40% 0px',
+  },
+)
 
 useSeoMeta({
   title: '場域',
@@ -51,7 +63,10 @@ onMounted(() => {
         </template>
       </SectionTitle>
 
-      <VenueFloorPlan />
+      <VenueFloorPlan
+        ref="venueFloorPlanRef"
+        class="mb-[50px]"
+      />
       <VenueTraffic />
     </div>
   </main>
