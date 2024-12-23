@@ -16,14 +16,14 @@ import { venueGoogleMapLink } from '~/constants'
     <NuxtImg
       src="/venue/location-lg.png"
       alt="場域外觀"
-      class="hidden w-[66%] lg:block "
+      class="hidden w-[66%] lg:block"
       :placeholder="[32, 32, 80, 5]"
       format="webp"
       draggable="false"
     />
 
     <NuxtLink
-      class="group relative mt-5 flex flex-col p-5 lg:mt-auto xl:px-7 items-center"
+      class="group relative mt-5 flex flex-col items-center p-5 lg:mt-auto xl:px-7"
       :to="venueGoogleMapLink"
       target="_blank"
       external

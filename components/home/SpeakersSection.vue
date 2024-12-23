@@ -119,6 +119,7 @@ function clickSpeakerNameHandler(speakerId: string) {
       >
         <NuxtLink
           to="/speakers"
+          aria-label="查看講者"
           class="group hidden space-x-2 px-9 pr-6 text-base lg:flex lg:items-center"
         >
           <span class="text-xl tracking-wide">查看講者</span>

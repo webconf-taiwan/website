@@ -159,12 +159,12 @@ defineExpose({
           class="w-full bg-primary-green/20"
         >
           <div class="relative aspect-[1/1] size-full">
-            <NuxtImg
+            <img
               :src="`${location.carouselImage}${carrouselImageSrcSuffix}.svg`"
               :alt="location.text"
               class="size-full object-cover"
               draggable="false"
-            />
+            >
           </div>
         </CarouselItem>
       </CarouselContent>

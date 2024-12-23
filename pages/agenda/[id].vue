@@ -16,7 +16,10 @@ definePageMeta({
 
       if (id.endsWith('a2')) {
         const newId = id.replace(/a2$/, 'a')
-        return navigateTo(`/agenda/${newId}`)
+        return navigateTo(`/agenda/${newId}`, {
+          redirectCode: 301,
+          replace: true,
+        })
       }
     },
   ],

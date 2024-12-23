@@ -63,9 +63,10 @@ onMounted(() => {
         </template>
       </SectionTitle>
 
+      <VenueBanner />
       <VenueFloorPlan
         ref="venueFloorPlanRef"
-        class="mb-[50px]"
+        class="mb-[50px] lg:mb-[100px]"
       />
       <VenueTraffic />
     </div>
