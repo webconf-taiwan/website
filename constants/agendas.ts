@@ -70,8 +70,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-1-a2',
+        A: {
+          id: 'day1-1-a',
           title: '串連品牌從實體到數位的體驗',
           isWorkshop: false,
           tags: ['uiux'],
@@ -117,8 +117,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-2-a2',
+        A: {
+          id: 'day1-2-a',
           title: '工作坊＋AI：創意又高效的規劃執行',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
@@ -164,8 +164,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-3-a2',
+        A: {
+          id: 'day1-3-a',
           title: '結合品牌策略與用戶需求，翻轉品牌印象，打造更具競爭力的產品體驗',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
@@ -211,8 +211,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-4-a2',
+        A: {
+          id: 'day1-4-a',
           title: '設計很豐滿，開發很骨感 — 淺談設計交付',
           isWorkshop: false,
           tags: ['frontend', 'uiux', 'product-design', 'team-management'],
@@ -265,8 +265,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-5-a2',
+        A: {
+          id: 'day1-5-a',
           title: '從專注細節到全局掌控：工程師轉職產品經理的心態與轉變',
           isWorkshop: false,
           tags: ['agile', 'product-design', 'team-management'],
@@ -312,8 +312,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-6-a2',
+        A: {
+          id: 'day1-6-a',
           title: '產品 AI 整合路徑：分階段為現有產品找到最佳 AI 整合方案',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
@@ -359,8 +359,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-7-a2',
+        A: {
+          id: 'day1-7-a',
           title: '從商業策略出發的產品、服務體驗設計：以 USPACE 產品為例',
           isWorkshop: false,
           tags: ['frontend', 'agile', 'uiux', 'product-design', 'team-management'],
@@ -406,8 +406,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day1-8-a2',
+        A: {
+          id: 'day1-8-a',
           title: '覺察與共情：如何在一對一中激發團隊潛能',
           isWorkshop: false,
           tags: ['uiux', 'team-management'],
@@ -469,8 +469,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-1-a2',
+        A: {
+          id: 'day2-1-a',
           title: '談組織內部的產品創業：由技術選型、優劣勢分析、階段性目標再到團隊設計',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
@@ -511,8 +511,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-2-a2',
+        A: {
+          id: 'day2-2-a',
           title: '同步聯播',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
@@ -553,8 +553,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-3-a2',
+        A: {
+          id: 'day2-3-a',
           title: '深入淺出 B2B 產品設計成功方程式 - 真有此式？',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
@@ -600,8 +600,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-4-a2',
+        A: {
+          id: 'day2-4-a',
           title: '當設計遇到資本主義 - 人月鬼話',
           isWorkshop: false,
           tags: ['agile', 'uiux', 'team-management'],
@@ -654,8 +654,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-5-a2',
+        A: {
+          id: 'day2-5-a',
           title: '從零到頂尖：無懈可擊的網頁設計',
           isWorkshop: false,
           tags: ['frontend', 'uiux', 'product-design'],
@@ -701,8 +701,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-6-a2',
+        A: {
+          id: 'day2-6-a',
           title: '從生活啟程的網站設計體驗',
           isWorkshop: false,
           tags: ['uiux'],
@@ -748,8 +748,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-7-a2',
+        A: {
+          id: 'day2-7-a',
           title: '遊戲化產品背後的遊戲化經營：如何在無形中建立數位產品的存在感',
           isWorkshop: false,
           tags: ['product-design', 'team-management'],
@@ -790,8 +790,8 @@ export const agendaData: DaySchedule = {
             },
           ],
         },
-        A2: {
-          id: 'day2-8-a2',
+        A: {
+          id: 'day2-8-a',
           title: '同步聯播',
           isWorkshop: false,
           tags: ['agile', 'team-management'],
