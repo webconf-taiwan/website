@@ -20,31 +20,33 @@ import { venueGoogleMapLink } from '~/constants'
       draggable="false"
     />
 
-    <div class="relative mt-5 p-5 lg:mt-auto xl:px-7">
+    <NuxtLink
+      class="group relative mt-5 p-5 lg:mt-auto xl:px-7"
+      :to="venueGoogleMapLink"
+      target="_blank"
+      external
+    >
       <!-- 四邊定位的正方形 -->
-      <div class="absolute inset-0 size-[10px] border-l border-t border-primary-green"></div>
-      <div class="absolute bottom-0 right-0 size-[10px] border-b border-r border-primary-green"></div>
-      <div class="absolute bottom-0 left-0 size-[10px] border-b border-l border-primary-green"></div>
-      <div class="absolute right-0 top-0 size-[10px] border-r border-t border-primary-green"></div>
+      <div class="absolute inset-0 size-[10px] border-l border-t border-primary-green duration-300 ease-in-out lg:group-hover:left-1 lg:group-hover:top-1"></div>
+      <div class="absolute bottom-0 right-0 size-[10px] border-b border-r border-primary-green duration-300 ease-in-out lg:group-hover:bottom-1 lg:group-hover:right-1"></div>
+      <div class="absolute bottom-0 left-0 size-[10px] border-b border-l border-primary-green duration-300 ease-in-out lg:group-hover:bottom-1 lg:group-hover:left-1"></div>
+      <div class="absolute right-0 top-0 size-[10px] border-r border-t border-primary-green duration-300 ease-in-out lg:group-hover:right-1 lg:group-hover:top-1"></div>
 
       <div class="group flex items-center space-x-3">
-        <NuxtLink
-          external
-          :to="venueGoogleMapLink"
-          target="_blank"
-          class="text-h3 transition lg:text-md-h3 lg:underline-offset-4 lg:hover:text-primary-green lg:hover:underline"
+        <div
+          class="text-h3 transition lg:text-md-h3 lg:underline-offset-4 lg:group-hover:text-primary-green lg:group-hover:underline"
         >
           瓶蓋工廠台北製造所
           <Icon
             name="heroicons:arrow-top-right-on-square"
-            class="size-6 text-primary-green duration-300 ease-in-out lg:group-hover:-translate-y-1"
+            class="size-6 text-primary-green"
           />
-        </NuxtLink>
+        </div>
       </div>
 
       <p class="mt-4">
         115 台北市南港區南港路二段 13 號
       </p>
-    </div>
+    </NuxtLink>
   </section>
 </template>
