@@ -54,7 +54,7 @@ onMounted(() => {
     </ClientOnly>
 
     <div class="mx-auto w-full max-w-[1162px]">
-      <SectionTitle class="mb-5 justify-center lg:mb-12">
+      <SectionTitle class="mb-5 justify-start lg:mb-12 lg:justify-center">
         <template #title>
           VENUE
         </template>

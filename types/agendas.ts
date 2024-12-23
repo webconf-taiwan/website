@@ -29,7 +29,7 @@ export interface AgendaItem {
   }[]
 }
 
-export type AgendaLocation = 'M' | 'F' | 'A2'
+export type AgendaLocation = 'M' | 'F' | 'A'
 
 export interface TimeSlot {
   startTime: string
