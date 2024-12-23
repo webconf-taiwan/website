@@ -24,6 +24,7 @@
     "@vueuse/motion": "^2.2.6",
     "aos": "^2.3.4",
     "embla-carousel-autoplay": "^8.5.1",
+    "embla-carousel-fade": "^8.5.1",
     "embla-carousel-vue": "^8.5.1",
     "gsap": "^3.12.5",
     "lenis": "^1.1.17",

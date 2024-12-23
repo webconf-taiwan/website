@@ -5,7 +5,7 @@
     class="absolute left-0 top-0 h-full w-1 bg-primary-green"
   ></div>
   <div
-    class="absolute left-1/2 top-0 h-full w-1 bg-primary-green sm:left-1/3"
+    class="absolute left-1/2 top-0 h-full w-1 bg-primary-green lg:hidden"
   ></div>
 </template>
 

@@ -114,6 +114,7 @@ export default antfu(
             'home-bg',
             'tabs-clip-right',
             'tabs-clip-left',
+            'venue-carousel-tag',
           ],
         },
       ],
