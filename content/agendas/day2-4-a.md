@@ -4,7 +4,7 @@ description: 「越急迫的專案，總是越晚上線」。累積數年各大�
 date: 2024-12-28
 startTime: 11:50
 endTime: 12:35
-location: A2
+location: A
 tags: ['agile', 'uiux', 'team-management']
 speakerCodes: ['stevenyeh']
 ---

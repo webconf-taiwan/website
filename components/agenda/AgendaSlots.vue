@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import type { AgendaLocation, TimeSlot } from '~/types/agendas'
+import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 
 defineProps<{
   agendaTimeSlots: TimeSlot[]
@@ -15,7 +15,7 @@ defineEmits<{
 
 const { $device } = useNuxtApp()
 
-const locations: AgendaLocation[] = ['F', 'M', 'A2']
+const locations: AgendaLocation[] = ['F', 'M', 'A']
 
 const breakpoints = useBreakpoints(breakpointsTailwind)
 const isSmallerLg = breakpoints.smaller('lg')

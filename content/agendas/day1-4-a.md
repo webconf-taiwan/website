@@ -4,7 +4,7 @@ description: 設計交付一直是一個重要但卻很少人討論的議題，�
 date: 2024-12-27
 startTime: 11:55
 endTime: 12:40
-location: A2
+location: A
 tags: ['frontend', 'uiux', 'product-design', 'team-management']
 speakerCodes: ['rei']
 ---

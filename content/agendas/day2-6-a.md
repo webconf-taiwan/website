@@ -4,7 +4,7 @@ description: 探索如何從生活中的細節出發，打造深具連結性且�
 date: 2024-12-28
 startTime: 14:25
 endTime: 15:10
-location: A2
+location: A
 tags: ['uiux']
 speakerCodes: ['henrylin']
 ---

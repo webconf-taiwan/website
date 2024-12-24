@@ -4,7 +4,7 @@ description: 作為管理者，我們容易獲得專案和績效管理的資源�
 date: 2024-12-27
 startTime: 16:15
 endTime: 17:00
-location: A2
+location: A
 tags: ['uiux', 'team-management']
 speakerCodes: ['ivanwei']
 ---

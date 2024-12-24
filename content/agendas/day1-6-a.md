@@ -4,7 +4,7 @@ description: 分享財報狗在既有產品中逐步導入 AI 的經驗。我們
 date: 2024-12-27
 startTime: 14:25
 endTime: 15:10
-location: A2
+location: A
 tags: ['uiux', 'product-design', 'team-management']
 speakerCodes: ['wylin']
 ---

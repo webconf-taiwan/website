@@ -16,7 +16,7 @@ speakerCodes: ['lydia']
 {{ $doc.title }}
 :::
 
-:::agenda-info{:date="date" :start-time="startTime" :end-time="endTime" :location="location" remark="F棟、A2棟 同步聯播"}
+:::agenda-info{:date="date" :start-time="startTime" :end-time="endTime" :location="location" remark="F棟、A棟 同步聯播"}
 :::
 
 <!--議程資訊(內容)-->

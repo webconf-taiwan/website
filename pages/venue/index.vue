@@ -3,14 +3,26 @@ import { appDescription, appName, ogImageUrl } from '~/constants'
 
 const { $lenis } = useNuxtApp()
 const siteConfig = useSiteConfig()
+const tilesBackgroundStore = useTilesBackgroundStore()
+
+const venueFloorPlanRef = useTemplateRef('venueFloorPlanRef')
+useIntersectionObserver(
+  venueFloorPlanRef,
+  ([{ isIntersecting }]) => {
+    tilesBackgroundStore.isReduceTargetOpacity = isIntersecting
+  },
+  {
+    rootMargin: '-40% 0px -40% 0px',
+  },
+)
 
 useSeoMeta({
-  title: '主辦',
+  title: '場域',
   description: appDescription,
-  ogTitle: `主辦 | ${appName}`,
+  ogTitle: `場域 | ${appName}`,
   ogDescription: appDescription,
   ogImage: `${siteConfig.url}${ogImageUrl}`,
-  twitterTitle: `主辦 | ${appName}`,
+  twitterTitle: `場域 | ${appName}`,
   twitterDescription: appDescription,
   twitterImage: `${siteConfig.url}${ogImageUrl}`,
   twitterCard: 'summary_large_image',
@@ -20,11 +32,11 @@ useSchemaOrg([
   defineBreadcrumb({
     itemListElement: [
       { name: '首頁', item: '/' },
-      { name: '主辦' },
+      { name: '場域' },
     ],
   }),
   defineWebPage({
-    '@type': 'CollectionPage',
+    '@type': 'WebPage',
   }),
 ])
 
@@ -34,23 +46,31 @@ onMounted(() => {
 </script>
 
 <template>
-  <main class="layout-grid mb-20 mt-8 min-h-screen lg:mb-24 lg:mt-[70px]">
+  <main class="layout-grid mb-11 mt-8 min-h-screen lg:mt-[70px]">
     <ClientOnly>
       <FloatingActionButtons>
         <MoveToTop :over-top="300" />
       </FloatingActionButtons>
     </ClientOnly>
 
-    <div class="mx-auto">
-      <SectionTitle class="mb-8 justify-center lg:mb-12">
+    <div class="mx-auto w-full max-w-[1162px]">
+      <SectionTitle class="mb-5 justify-start lg:mb-12 lg:justify-center">
         <template #title>
-          STAFF
+          VENUE
         </template>
         <template #subTitle>
-          主辦團隊
+          場域
         </template>
       </SectionTitle>
-      <StaffWrapper />
+
+      <VenueBanner />
+      <VenueFloorPlan
+        ref="venueFloorPlanRef"
+        class="mb-[50px] lg:mb-[100px]"
+      />
+      <VenueTraffic />
     </div>
   </main>
 </template>
+
+<style scoped></style>

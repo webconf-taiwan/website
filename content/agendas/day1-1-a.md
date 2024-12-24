@@ -4,7 +4,7 @@ description: 除了視覺識別，要如何落實行為識別及理念識別？�
 date: 2024-12-27
 startTime: 09:10
 endTime: 09:55
-location: A2
+location: A
 tags: ['uiux']
 speakerCodes: ['weikan']
 ---

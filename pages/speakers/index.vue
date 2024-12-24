@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import type { ParsedAgendaData } from '~/types/agendas'
 import { breakpointsTailwind, useBreakpoints } from '@vueuse/core'
 import { appDescription, appName, ogImageUrl } from '~/constants'
-import type { ParsedAgendaData } from '~/types/agendas'
 
 const { $lenis } = useNuxtApp()
 const siteConfig = useSiteConfig()
@@ -50,6 +50,7 @@ onMounted(() => {
         <MoveToTop :over-top="300" />
       </FloatingActionButtons>
     </ClientOnly>
+
     <div class="mx-auto">
       <SectionTitle class="mb-5 justify-center lg:mb-12">
         <template #title>

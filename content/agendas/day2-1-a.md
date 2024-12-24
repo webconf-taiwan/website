@@ -4,7 +4,7 @@ description: 內部創業的執行風險與綜合評估、技術選型與架構�
 date: 2024-12-28
 startTime: 09:05
 endTime: 09:45
-location: A2
+location: A
 tags: ['uiux', 'product-design', 'team-management']
 speakerCodes: ['samuel']
 ---

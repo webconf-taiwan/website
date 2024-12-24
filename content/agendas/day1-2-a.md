@@ -4,7 +4,7 @@ description: 這場分享會介紹工作坊規劃與執行的流程及角色，�
 date: 2024-12-27
 startTime: 10:05
 endTime: 10:50
-location: A2
+location: A
 tags: ['uiux', 'product-design', 'team-management']
 speakerCodes: ['djlee']
 ---

@@ -4,7 +4,7 @@ description: 小雨將分享她從工程師轉職到產品經理的過程及心�
 date: 2024-12-27
 startTime: 13:30
 endTime: 14:15
-location: A2
+location: A
 tags: ['agile', 'product-design', 'team-management']
 speakerCodes: ['lindsay']
 ---

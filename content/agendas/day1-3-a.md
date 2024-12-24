@@ -4,7 +4,7 @@ description: 乙方設計顧問的旅程，從深入探索商業目標開始，�
 date: 2024-12-27
 startTime: 11:00
 endTime: 11:45
-location: A2
+location: A
 tags: ['uiux', 'product-design', 'team-management']
 speakerCodes: ['iris']
 ---

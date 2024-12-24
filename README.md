@@ -33,7 +33,7 @@ Facebook : https://www.facebook.com/WebConfTaiwan
 
 ## ESLint Configuration
 
-This template uses [@antfu/eslint-config](https://github.com/antfu/eslint-config).
+This project uses [@antfu/eslint-config](https://github.com/antfu/eslint-config).
 
 ## Development
 

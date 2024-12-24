@@ -4,7 +4,7 @@ description: 好的數位產品該如何拿捏自己的存在感？既想要用�
 date: 2024-12-28
 startTime: 15:20
 endTime: 16:05
-location: A2
+location: A
 tags: ['product-design', 'team-management']
 speakerCodes: ['chacha']
 ---

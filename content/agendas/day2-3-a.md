@@ -4,7 +4,7 @@ description: 在複雜的B2B產品設計中，設計師主要面臨兩大挑戰�
 date: 2024-12-28
 startTime: 10:55
 endTime: 11:40
-location: A2
+location: A
 tags: ['uiux', 'product-design', 'team-management']
 speakerCodes: ['seal']
 ---

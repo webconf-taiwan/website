@@ -24,6 +24,7 @@
     "@vueuse/motion": "^2.2.6",
     "aos": "^2.3.4",
     "embla-carousel-autoplay": "^8.5.1",
+    "embla-carousel-fade": "^8.5.1",
     "embla-carousel-vue": "^8.5.1",
     "gsap": "^3.12.5",
     "lenis": "^1.1.17",
@@ -34,7 +35,7 @@
     "vaul-vue": "^0.2.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.11.2",
+    "@antfu/eslint-config": "^3.12.0",
     "@iconify-json/heroicons": "^1.2.1",
     "@iconify-json/iconoir": "^1.2.5",
     "@iconify-json/uil": "^1.2.1",

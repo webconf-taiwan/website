@@ -4,7 +4,7 @@ description: 設計師勞哥將會分享如何從零開始，經過不斷的創�
 date: 2024-12-28
 startTime: 13:30
 endTime: 14:15
-location: A2
+location: A
 tags: ['frontend', 'uiux', 'product-design']
 speakerCodes: ['maylogger']
 ---

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { ParsedAgendaData } from '~/types/agendas'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -7,11 +8,25 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
-import type { ParsedAgendaData } from '~/types/agendas'
+
+definePageMeta({
+  middleware: [
+    (to, _from) => {
+      const id = Array.isArray(to.params.id) ? to.params.id[0] : to.params.id
+
+      if (id.endsWith('a2')) {
+        const newId = id.replace(/a2$/, 'a')
+        return navigateTo(`/agenda/${newId}`, {
+          redirectCode: 301,
+          replace: true,
+        })
+      }
+    },
+  ],
+})
 
 const route = useRoute()
 const id = route.params.id as string
-
 const agendasStore = useAgendasStore()
 
 agendasStore.currentAgendaDrawerId = id

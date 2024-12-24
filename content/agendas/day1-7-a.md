@@ -4,7 +4,7 @@ description: 在「業務導向」的公司背景下，產品團隊往往感受�
 date: 2024-12-27
 startTime: 15:20
 endTime: 16:05
-location: A2
+location: A
 tags: ['frontend', 'agile', 'uiux', 'product-design', 'team-management']
 speakerCodes: ['doppler']
 ---
