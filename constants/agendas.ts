@@ -538,6 +538,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fp0uvB9gPRt6n9vFShm3lTw',
             },
+            {
+              type: 'slide',
+              href: 'https://lightda-tw.notion.site/Troubleshooting-Lab-1612ceabc70c80c5bc5cc445c22487b4',
+            },
           ],
         },
         M: {
@@ -584,6 +588,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fp0uvB9gPRt6n9vFShm3lTw',
+            },
+            {
+              type: 'slide',
+              href: 'https://lightda-tw.notion.site/Troubleshooting-Lab-1612ceabc70c80c5bc5cc445c22487b4',
             },
           ],
         },
