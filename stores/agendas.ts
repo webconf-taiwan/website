@@ -45,9 +45,13 @@ export const useAgendasStore = defineStore('agendas', () => {
   const singleAgendaMarkdownData = ref<ParsedAgendaData | null>(null)
 
   const currentAgendaMarkdownData = computed(() => {
-    if (singleAgendaMarkdownData.value)
+    console.log("觸發 currentAgendaMarkdownData Computed")
+    if (singleAgendaMarkdownData.value) {
+      console.log("markdownData 一樣，直接回傳")
       return singleAgendaMarkdownData.value
+    }
 
+    console.log("markdownData 不一樣，開始找新的 markdownData")
     return agendasMarkdownData.value?.find(agenda => agenda._path?.split('/').pop() === currentAgendaDrawerId.value)
   })
 

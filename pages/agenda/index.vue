@@ -30,7 +30,9 @@ const drawerSlideDirection = computed(() => {
 const agendaDrawer = useTemplateRef('agendaDrawer')
 
 function triggerAgenda(agenda: AgendaItem) {
+  console.log("triggerAgenda 觸發：把 currentAgendaDrawerId 設為 agenda.id")
   agendasStore.currentAgendaDrawerId = agenda.id
+  console.log("把當前 agenda 設為 agendaDrawerRenderData")
   agendasStore.setAgendaDrawerRenderData(agenda)
   agendaDrawer.value?.open()
 }
