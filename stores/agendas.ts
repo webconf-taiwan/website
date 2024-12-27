@@ -42,12 +42,9 @@ export const useAgendasStore = defineStore('agendas', () => {
 
   const currentAgendaDrawerId = ref<string>('')
   const agendasMarkdownData = ref<ParsedAgendaData[] | null>(null)
-  const singleAgendaMarkdownData = ref<ParsedAgendaData | null>(null)
+  const standaloneAgendaMarkdownData = ref<ParsedAgendaData>()
 
   const currentAgendaMarkdownData = computed(() => {
-    if (singleAgendaMarkdownData.value)
-      return singleAgendaMarkdownData.value
-
     return agendasMarkdownData.value?.find(agenda => agenda._path?.split('/').pop() === currentAgendaDrawerId.value)
   })
 
@@ -94,7 +91,7 @@ export const useAgendasStore = defineStore('agendas', () => {
     currentContentTab,
     currentAgendaDrawerId,
     agendasMarkdownData,
-    singleAgendaMarkdownData,
+    standaloneAgendaMarkdownData,
     currentAgendaMarkdownData,
     agendaDrawerRenderData,
     findSpeakers,

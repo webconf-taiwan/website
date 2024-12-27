@@ -32,7 +32,7 @@ const agendasStore = useAgendasStore()
 agendasStore.currentAgendaDrawerId = id
 
 const { data: agendaMarkdownData, error } = await useAsyncData(
-  'agendas',
+  `agendas-${id}`,
   () => queryContent<ParsedAgendaData>(`agendas/${id}`).findOne(),
 )
 
@@ -44,7 +44,7 @@ if (error.value) {
 }
 
 if (agendaMarkdownData.value) {
-  agendasStore.singleAgendaMarkdownData = agendaMarkdownData.value
+  agendasStore.standaloneAgendaMarkdownData = agendaMarkdownData.value
 }
 
 const agenda = agendasStore.findAgendaById(id)
@@ -88,7 +88,7 @@ const ogImageOptions = {
 defineOgImage(ogImageOptions)
 
 onUnmounted(() => {
-  agendasStore.singleAgendaMarkdownData = null
+  agendasStore.standaloneAgendaMarkdownData = undefined
 })
 </script>
 
@@ -152,7 +152,7 @@ onUnmounted(() => {
       </Breadcrumb>
 
       <div class="grow">
-        <AgendaDrawerWrapper />
+        <AgendaDrawerWrapper :is-standalone-page="true" />
       </div>
 
       <!-- 裝飾用 Footer -->
