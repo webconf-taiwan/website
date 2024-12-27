@@ -21,7 +21,7 @@ const staffAvatarPrerenderRoutes = staffData.flatMap(staff => [
   `/_ipx/f_webp${staff.avatar}`,
 ])
 
-const singleAgendaRoutes = getAllAgendaIds().map(id => `/agenda/${id}`)
+const standaloneAgendaRoutes = getAllAgendaIds().map(id => `/agenda/${id}`)
 
 export default defineNuxtConfig({
   devtools: {
@@ -136,7 +136,7 @@ export default defineNuxtConfig({
         '/_ipx/_/drawer/drawer-top-decorate-lg.svg',
         '/_ipx/_/drawer/drawer-top-decorate.svg',
         '/agenda',
-        ...singleAgendaRoutes,
+        ...standaloneAgendaRoutes,
         '/sitemap.xml',
       ],
     },
@@ -156,5 +156,10 @@ export default defineNuxtConfig({
     },
   },
 
-  compatibilityDate: '2024-12-24',
+  sourcemap: {
+    server: true,
+    client: true,
+  },
+
+  compatibilityDate: '2024-12-28',
 })

@@ -3,6 +3,10 @@ import { useToast } from '@/components/ui/toast/use-toast'
 import { breakpointsTailwind, useBreakpoints, useClipboard } from '@vueuse/core'
 import AgendaDrawerOtherLinks from './AgendaDrawerOtherLinks.vue'
 
+const props = defineProps<{
+  isStandalonePage?: boolean
+}>()
+
 const agendasStore = useAgendasStore()
 const {
   agendaDrawerContentTabsMap,
@@ -10,6 +14,7 @@ const {
   currentContentTab,
   currentAgendaDrawerId,
   currentAgendaMarkdownData,
+  standaloneAgendaMarkdownData,
 } = storeToRefs(agendasStore)
 
 const tabsRef = ref<HTMLDivElement | null>(null)
@@ -51,6 +56,12 @@ const svgViewBox = computed(() => {
   return isSmallerOrEqualMd.value
     ? '0 0 320 320'
     : '0 0 200 200'
+})
+
+const renderMarkdownData = computed(() => {
+  return props.isStandalonePage
+    ? standaloneAgendaMarkdownData.value
+    : currentAgendaMarkdownData.value
 })
 </script>
 
@@ -171,7 +182,7 @@ const svgViewBox = computed(() => {
               >
                 <template v-if="currentContentTab === 'agenda-info'">
                   <div>
-                    <ContentRenderer :value="currentAgendaMarkdownData">
+                    <ContentRenderer :value="renderMarkdownData">
                       <template #empty>
                         <p>沒有任何內容。</p>
                       </template>
@@ -180,7 +191,7 @@ const svgViewBox = computed(() => {
                 </template>
                 <template v-else>
                   <div>
-                    <ContentRenderer :value="currentAgendaMarkdownData">
+                    <ContentRenderer :value="renderMarkdownData">
                       <template #empty>
                         <p>沒有任何內容。</p>
                       </template>

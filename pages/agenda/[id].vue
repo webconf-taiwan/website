@@ -44,7 +44,7 @@ if (error.value) {
 }
 
 if (agendaMarkdownData.value) {
-  agendasStore.singleAgendaMarkdownData = agendaMarkdownData.value
+  agendasStore.standaloneAgendaMarkdownData = agendaMarkdownData.value
 }
 
 const agenda = agendasStore.findAgendaById(id)
@@ -88,9 +88,7 @@ const ogImageOptions = {
 defineOgImage(ogImageOptions)
 
 onUnmounted(() => {
-  // console.log("onUnmounted 觸發")
-  console.log("onUnmounted 觸發：把 singleAgendaMarkdownData 設為 null")
-  agendasStore.singleAgendaMarkdownData = null
+  agendasStore.standaloneAgendaMarkdownData = undefined
 })
 </script>
 
@@ -154,7 +152,7 @@ onUnmounted(() => {
       </Breadcrumb>
 
       <div class="grow">
-        <AgendaDrawerWrapper />
+        <AgendaDrawerWrapper :is-standalone-page="true" />
       </div>
 
       <!-- 裝飾用 Footer -->

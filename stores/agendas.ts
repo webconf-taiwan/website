@@ -42,16 +42,9 @@ export const useAgendasStore = defineStore('agendas', () => {
 
   const currentAgendaDrawerId = ref<string>('')
   const agendasMarkdownData = ref<ParsedAgendaData[] | null>(null)
-  const singleAgendaMarkdownData = ref<ParsedAgendaData | null>(null)
+  const standaloneAgendaMarkdownData = ref<ParsedAgendaData>()
 
   const currentAgendaMarkdownData = computed(() => {
-    console.log("觸發 currentAgendaMarkdownData Computed")
-    if (singleAgendaMarkdownData.value) {
-      console.log("markdownData 一樣，直接回傳")
-      return singleAgendaMarkdownData.value
-    }
-
-    console.log("markdownData 不一樣，開始找新的 markdownData")
     return agendasMarkdownData.value?.find(agenda => agenda._path?.split('/').pop() === currentAgendaDrawerId.value)
   })
 
@@ -98,7 +91,7 @@ export const useAgendasStore = defineStore('agendas', () => {
     currentContentTab,
     currentAgendaDrawerId,
     agendasMarkdownData,
-    singleAgendaMarkdownData,
+    standaloneAgendaMarkdownData,
     currentAgendaMarkdownData,
     agendaDrawerRenderData,
     findSpeakers,

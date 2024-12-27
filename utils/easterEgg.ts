@@ -12,6 +12,6 @@ export function showEasterEgg() {
       'text-shadow: 2px 2px 4px rgba(0,0,0,0.5)',
     ].join(';')
 
-    console.log('%c你這個小壞蛋，我就知道你會打開來看😏\n還不快去 ACCUPASS 買票 ! 🥳🤡🥳', styles)
+    console.log('%c你這個小壞蛋，我就知道你會打開來看😏', styles)
   }
 }
