@@ -88,8 +88,9 @@ const ogImageOptions = {
 defineOgImage(ogImageOptions)
 
 onUnmounted(() => {
-  console.log("onUnmounted 觸發：把 singleAgendaMarkdownData 設為 null")
-  agendasStore.singleAgendaMarkdownData = null
+  console.log("onUnmounted 觸發")
+  // console.log("onUnmounted 觸發：把 singleAgendaMarkdownData 設為 null")
+  // agendasStore.singleAgendaMarkdownData = null
 })
 </script>
 
