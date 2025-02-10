@@ -3,9 +3,7 @@ import { contactInfos } from '@/constants'
 </script>
 
 <template>
-  <footer
-    class="full-bleed relative bg-black px-5 py-[30px] md:pb-6 lg:flex lg:justify-center"
-  >
+  <footer class="full-bleed relative bg-black px-5 py-[30px] md:pb-6 lg:flex lg:justify-center">
     <div class="lg:max-w-[1320px]">
       <ul class="space-y-[10px] border-b border-footer-border py-6 lg:hidden">
         <li
@@ -29,21 +27,29 @@ import { contactInfos } from '@/constants'
       </ul>
 
       <div class="pt-6">
-        <div class="flex space-x-3 font-bold">
+        <div class="flex items-center space-x-3 font-bold">
           <h2 class="text-xl lg:text-2xl">
-            CODE OF CONDUCT
+            行為準則
           </h2>
-          <p>行為準則</p>
+          <p>CODE OF CONDUCT</p>
         </div>
 
         <p class="mt-4 leading-7">
-          WebConf Taiwan 致力於為所有參與者提供一個無騷擾、尊重且包容的會議環境。我們堅決反對任何形式的騷擾，包括性別歧視、種族主義或排他性笑話，並期望所有參與者在會議期間（包括數位平台）都能遵守這些準則。<br>我們鼓勵大家共同合作，確保每位成員都能享有平等、尊重的會議體驗。感謝您的配合與支持，讓我們一起努力，打造一個開放、尊重和創新的會議平台。
+          WebConf Taiwan
+          致力於為所有參與者提供一個無騷擾、尊重且包容的會議環境。我們堅決反對任何形式的騷擾，包括性別歧視、種族主義或排他性笑話，並期望所有參與者在會議期間（包括數位平台）都能遵守這些準則。我們鼓勵大家共同合作，確保每位成員都能享有平等、尊重的會議體驗。感謝您的配合與支持，讓我們一起努力，打造一個開放、尊重和創新的會議平台。
+        </p>
+        <p class="mt-4 leading-7">
+          WebConf Taiwan is committed to providing a harassment-free, respectful, and inclusive environment for all
+          participants. We firmly oppose any form of harassment, including sexism, racism, or exclusionary jokes, and
+          expect all participants to adhere to these guidelines throughout the conference, including on digital
+          platforms. We encourage everyone to work together to ensure that every individual enjoys an equitable and
+          respectful conference experience. Thank you for your cooperation and support as we strive to create an open,
+          respectful,
+          and innovative conference platform.
         </p>
       </div>
 
-      <div
-        class="text-mina mt-4 border-t border-footer-border py-4 text-sm uppercase lg:mt-6 lg:pt-5"
-      >
+      <div class="py-4 mt-4 text-sm uppercase border-t text-mina border-footer-border lg:mt-6 lg:pt-5">
         <p class="lg:hidden">
           WebConf Taiwan 2024 All Rights <br>Reserved.
         </p>
@@ -53,7 +59,7 @@ import { contactInfos } from '@/constants'
       </div>
     </div>
 
-    <div class="absolute left-1/2 top-5 w-14 -translate-x-1/2">
+    <div class="absolute -translate-x-1/2 left-1/2 top-5 w-14">
       <NuxtImg
         src="/footer/bar.svg"
         alt="decorative bar"
@@ -67,7 +73,7 @@ import { contactInfos } from '@/constants'
       :class="info.trapezoidClass"
       class="trapezoid"
     >
-      <div class="hidden h-full items-center justify-center lg:flex">
+      <div class="items-center justify-center hidden h-full lg:flex">
         <NuxtLink
           :to="info.href"
           target="_blank"

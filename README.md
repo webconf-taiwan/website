@@ -1,9 +1,7 @@
 # WebConf Taiwan 2024
 
-![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/nuxt/main?color=00dc82)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/tailwindcss/main?color=0ea5e9)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/pinia/main?color=ffd859)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/%40vueuse%2Fnuxt/main?color=41b883)　![GitHub package.json dependency version (dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/%40headlessui%2Fvue/main)　![GitHub package.json dependency version (dev dep on branch)](https://img.shields.io/github/package-json/dependency-version/webconf-taiwan/website/dev/eslint/main?color=4B32C3)
-
-Website : https://webconf.tw<br>
-Facebook : https://www.facebook.com/WebConfTaiwan
+- Website : https://webconf.tw
+- Facebook : https://www.facebook.com/WebConfTaiwan
 
 ## Features
 
@@ -23,13 +21,6 @@ Facebook : https://www.facebook.com/WebConfTaiwan
 
 - Node.js >= v20.0.0
 - pnpm >= v9.11.0
-- [VS Code](https://code.visualstudio.com/)
-
-### VS Code Extensions
-
-- [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
-- [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-- [Tailwind CSS IntelliSense](https://marketplace.visualstudio.com/items?itemName=bradlc.vscode-tailwindcss)
 
 ## ESLint Configuration
 

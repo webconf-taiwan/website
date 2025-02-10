@@ -19,7 +19,11 @@ export const agendaTags: AgendaTag[] = [
 
 export const agendaOtherLinksMap: AgendaOtherLinksMap[] = [
   { type: 'note', icon: 'i-heroicons:document-text', text: '共筆文件' },
-  { type: 'slide', icon: 'i-heroicons:presentation-chart-line', text: '投影片' },
+  {
+    type: 'slide',
+    icon: 'i-heroicons:presentation-chart-line',
+    text: '投影片',
+  },
 ]
 
 export const agendaData: DaySchedule = {
@@ -55,6 +59,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F7dO26WhtRjua8ufeYu90Bw',
             },
+            {
+              type: 'slide',
+              href: 'https://docs.google.com/presentation/d/1OkdFs2CjQHN5M_UJjqfd38BSuZNtCkhnOQFFgzdjJYs/edit#slide=id.g317e56981db_6_188',
+            },
           ],
         },
         M: {
@@ -67,6 +75,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FZ5mdWoHoTKuYqapQTeR2Gw',
+            },
+            {
+              type: 'slide',
+              href: 'https://docs.google.com/presentation/d/1Kx6PW46jWHGu29caEXbopMWTGXnJjFzsTyiUOFAgVCg/edit?usp=sharing',
             },
           ],
         },
@@ -102,6 +114,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FBwR0nuGERCSfrCtY6BKbFw',
             },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1XdMag4FkHCRfR71rx9oD-xC7C7vRIkyB',
+            },
           ],
         },
         M: {
@@ -115,6 +131,11 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F0EiYKrCQQFKpuErgA1zIvQ',
             },
+
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/file/d/1lQqRUUjGMx2O18kX46rAUsXh7wZR6JFm/view',
+            },
           ],
         },
         A: {
@@ -127,6 +148,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FQA7D_pp3TOC41AjJWuxOCg',
+            },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1BFfiM2J0bU0JoQPldut9nNNgsTYprk5U',
             },
           ],
         },
@@ -149,6 +174,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FTz9q-XSwQK-9SvmycxtXPA',
             },
+            {
+              type: 'slide',
+              href: 'https://slides.com/finchen/code',
+            },
           ],
         },
         M: {
@@ -162,11 +191,16 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FmIdCScKdTgSQuwjNcyrXTg',
             },
+            {
+              type: 'slide',
+              href: 'https://www.cythilya.tw/assets/frontend-testing-guide-strategies-and-practices/webconf2024/2024-12-27-webconf2024-ui-causes-testing-to-fail.pdf',
+            },
           ],
         },
         A: {
           id: 'day1-3-a',
-          title: '結合品牌策略與用戶需求，翻轉品牌印象，打造更具競爭力的產品體驗',
+          title:
+            '結合品牌策略與用戶需求，翻轉品牌印象，打造更具競爭力的產品體驗',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['iris'],
@@ -174,6 +208,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FpHWTQ5SnSsGcJ0-xEWiROg',
+            },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1VwjMB123yHPW0fR4l-CeGRIKkaMZozmr',
             },
           ],
         },
@@ -208,6 +246,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FXotjX_3RSNeKD5o-FXpyhg',
+            },
+            {
+              type: 'slide',
+              href: 'https://docs.google.com/presentation/d/1zjH6iRPiT9wsvn3cVy6da3_W-rez17XQYw1kYD4TYpA/edit#slide=id.g320eaeda041_2_62',
             },
           ],
         },
@@ -250,6 +292,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FIrITxP3rRpKxab5nDlkw6w',
             },
+            {
+              type: 'slide',
+              href: 'https://slides.com/tz5514/react-webconf2024',
+            },
           ],
         },
         M: {
@@ -262,6 +308,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fs9voMrBsQ2qH3yKFzAEzAQ',
+            },
+            {
+              type: 'slide',
+              href: 'https://ihower.tw/blog/archives/12586',
             },
           ],
         },
@@ -323,6 +373,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FZ0_clry4SeSj0GcZx5m2zg',
             },
+            {
+              type: 'slide',
+              href: 'https://www.canva.com/design/DAGaTCdC-BI/Yd3jDHs70apGXK-IeXp2Hw/view',
+            },
           ],
         },
       },
@@ -344,6 +398,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FXuOekBPwQg6rSV1_-7mgDg',
             },
+            {
+              type: 'slide',
+              href: 'https://www.dropbox.com/scl/fi/ko5p74opkvhr3cthmd2ii/AI-Data-Web.pdf?rlkey=9s72gw9mgjdr46f1ujyqfebo9&e=1&dl=0',
+            },
           ],
         },
         M: {
@@ -357,13 +415,23 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FZNxp16PySUCoKhzf8wRX7w',
             },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1FsSFUPh7KFx9vU_-fQELWoDGwkRgkHLV',
+            },
           ],
         },
         A: {
           id: 'day1-7-a',
           title: '從商業策略出發的產品、服務體驗設計：以 USPACE 產品為例',
           isWorkshop: false,
-          tags: ['frontend', 'agile', 'uiux', 'product-design', 'team-management'],
+          tags: [
+            'frontend',
+            'agile',
+            'uiux',
+            'product-design',
+            'team-management',
+          ],
           speakerCodes: ['doppler'],
           otherLinks: [
             {
@@ -391,6 +459,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FLe2Yc5gySPWxBZE1EWYGAA',
             },
+            {
+              type: 'slide',
+              href: 'https://cdn.zeabur.com/webconf.pdf',
+            },
           ],
         },
         M: {
@@ -403,6 +475,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FKkTRz5AqQ5WtksSdtm-dIA',
+            },
+            {
+              type: 'slide',
+              href: 'https://gipi.tw/webconf-2024-ai-and-business-thinking/',
             },
           ],
         },
@@ -467,11 +543,16 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FNZLRM8oCRvi2voyfL68tIg',
             },
+            {
+              type: 'slide',
+              href: 'https://speakerdeck.com/mosky/ai-shi-dai-ruan-ti-gong-cheng-shi-de-chi-xu-sheng-ji',
+            },
           ],
         },
         A: {
           id: 'day2-1-a',
-          title: '談組織內部的產品創業：由技術選型、優劣勢分析、階段性目標再到團隊設計',
+          title:
+            '談組織內部的產品創業：由技術選型、優劣勢分析、階段性目標再到團隊設計',
           isWorkshop: false,
           tags: ['uiux', 'product-design', 'team-management'],
           speakerCodes: ['samuel'],
@@ -508,6 +589,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FENkeFDshRMWYiV_gSyzAhw',
+            },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/file/d/1J7_IyvNGOjP9-inh8PBf0uHE5uUdiCde/view',
             },
           ],
         },
@@ -554,6 +639,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FuUCLipjyTyCrzGDCRHV9BA',
+            },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1FsSFUPh7KFx9vU_-fQELWoDGwkRgkHLV',
             },
           ],
         },
@@ -619,6 +708,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fiyk7w2K9TLqX_VLlce1pPA',
             },
+            {
+              type: 'slide',
+              href: 'https://www.figma.com/community/file/1454509755368502198',
+            },
           ],
         },
       },
@@ -647,6 +740,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fv0_Ufs51S7GvfC01w8kmAg',
             },
+            {
+              type: 'slide',
+              href: 'https://www.dropbox.com/scl/fi/zbi5us0mo6ncdtti86tib/20241228-WebConf-2024-AI-Apple-Watch-App.pdf?rlkey=gro2q2iss49gkfdiypztrjn9q&e=2',
+            },
           ],
         },
         M: {
@@ -673,6 +770,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2F4SbzPuObTpC4fp8ytpLARg',
             },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1skmaa5XQR4VmpGAu0Y5hWgCU_jbDC-H_',
+            },
           ],
         },
       },
@@ -694,6 +795,10 @@ export const agendaData: DaySchedule = {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FoUduGHHmT66C7EUcyt_7Pw',
             },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1XPeF1rCAOh0Iv1XQKZ1usnKeXUas2kGY',
+            },
           ],
         },
         M: {
@@ -706,6 +811,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2Fa07Z0KkRR5eJC_D1pEckcQ',
+            },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/drive/u/0/folders/1M3VOwlI42uPFKtxz7McMbdEKWQFX7P7j',
             },
           ],
         },
@@ -732,7 +841,8 @@ export const agendaData: DaySchedule = {
       agendas: {
         F: {
           id: 'day2-7-f',
-          title: '接案失敗學：前端後端設計端，我還要具備什麼端才能出來江湖闖盪？談小白鼠闖入黑森林被XXX的淒慘故事',
+          title:
+            '接案失敗學：前端後端設計端，我還要具備什麼端才能出來江湖闖盪？談小白鼠闖入黑森林被XXX的淒慘故事',
           isWorkshop: false,
           tags: ['frontend', 'backend', 'product-design'],
           speakerCodes: ['taiming'],
@@ -740,6 +850,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FLaGp4Hb0SLSlkZRex_nhAw',
+            },
+            {
+              type: 'slide',
+              href: 'https://drive.google.com/file/d/1dlvC1OdQFfLC_SO2SJjI4Xy04yGJ2HxC/view',
             },
           ],
         },
@@ -795,6 +909,10 @@ export const agendaData: DaySchedule = {
             {
               type: 'note',
               href: 'https://hackmd.io/@webconf/BJ2N6ksMke/%2FT1FfJOxEQ3mLD-6lSltHgA',
+            },
+            {
+              type: 'slide',
+              href: 'https://docs.google.com/presentation/d/17AAYNZsoolbbRX7fdLkuyl0qykdI1yMl/edit#slide=id.p1',
             },
           ],
         },
