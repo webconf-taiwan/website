@@ -42,5 +42,6 @@ useIntersectionObserver(
     <HomeSpeakersSection ref="speakerSectionRef" />
     <HomeInformation />
     <HomeNews />
+    <ComingSoonBar />
   </main>
 </template>
