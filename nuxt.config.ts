@@ -14,8 +14,22 @@ export default defineNuxtConfig({
     '@nuxt/scripts',
     'nuxt-typed-router',
     'shadcn-nuxt',
+    '@vueuse/nuxt',
   ],
   css: ['@/assets/css/main.css'],
+
+  // Google Fonts 設定
+  fonts: {
+    families: [
+      {
+        name: 'Noto Sans TC',
+        provider: 'google',
+        weights: [400, 600],
+        styles: ['normal'],
+        subsets: ['latin', 'latin-ext'],
+      },
+    ],
+  },
 
   // 全域設定
   // 頁面切換動畫採用舊動畫先移除之後，再進來新動畫

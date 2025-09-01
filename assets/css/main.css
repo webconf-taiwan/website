@@ -84,6 +84,11 @@
 @layer base {
   * {
     @apply border-border;
+    cursor: none !important;
+  }
+
+  html {
+    font-family: "Noto Sans TC", sans-serif;
   }
 
   body {

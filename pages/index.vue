@@ -1,23 +1,28 @@
-<script setup>
-useHead({
-  title: 'Home - Nuxt App',
-  meta: [
-    {
-      name: 'description',
-      content: 'Welcome to our modern Nuxt 3 application',
-    },
-  ],
-})
-</script>
-
 <template>
-  <div
-    class="flex min-h-screen items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600"
-  >
-    <div class="text-center text-white">
-      <h1 class="mb-4 text-4xl font-bold">
-        Welcome to Nuxt App
-      </h1>
+  <ShareBgBorder>
+    <HomeNavbar />
+    <div class="relative z-10 w-full">
+      <img
+        class="mt-[-4%] w-full"
+        src="/images/heroBg.png"
+        alt="hero 背景圖片"
+      />
+      <div class="relative"></div>
     </div>
-  </div>
+    <div class="relative z-0 min-h-screen w-full"></div>
+    <div class="relative z-0 min-h-screen w-full"></div>
+    <HomeSiteFooter />
+    <HomeCopyRight />
+  </ShareBgBorder>
 </template>
+
+<style>
+.bg {
+  background-image: url("/images/heroBg.png");
+  background-repeat: no-repeat;
+  background-position: right bottom;
+  background-size: 100% auto;
+  width: 100%;
+  height: calc(100vh - 2.5rem);
+}
+</style>
