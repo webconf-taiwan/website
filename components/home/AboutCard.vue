@@ -1,6 +1,30 @@
+<script setup lang="ts">
+const gsap = useGsap()
+const aboutCardRef = ref<any>(null)
+
+onMounted(() => {
+  nextTick()
+
+  if (aboutCardRef.value) {
+    const element = aboutCardRef.value.$el
+    gsap.to(element, {
+      scrollTrigger: {
+        trigger: '#about-section',
+        start: 'top',
+        end: 'center',
+        pin: element,
+        pinSpacing: false,
+        markers: true,
+      },
+    })
+  }
+})
+</script>
+
 <template>
   <ShareGradientDotsCard
-    class="fixed left-1/2 top-1/2 z-[100] w-[640px] -translate-x-1/2 -translate-y-1/2 text-center text-white"
+    ref="aboutCardRef"
+    class="absolute left-1/2 top-60 z-[100] mt-60 w-[640px] -translate-x-1/2 -translate-y-1/2 text-center text-white"
   >
     <div class="mx-auto inline-block py-[6px]">
       <h2 class="mx-10 flex text-h3-40">

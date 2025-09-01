@@ -9,7 +9,10 @@
       />
       <div class="relative"></div>
     </div>
-    <div class="relative z-0 min-h-screen w-full">
+    <div
+      id="about-section"
+      class="relative z-0 min-h-screen w-full"
+    >
       <HomeAbout />
     </div>
     <div class="relative z-0 min-h-screen w-full"></div>

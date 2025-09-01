@@ -1,4 +1,6 @@
 <template>
+  <HomeAboutCard />
+
   <section class="flex">
     <div class="flex w-1/2 flex-col items-start">
       <NuxtImg
@@ -17,7 +19,6 @@
         class="relative left-10 mt-[250px]"
       />
     </div>
-    <HomeAboutCard />
     <div class="flex w-1/2 flex-col items-end">
       <NuxtImg
         src="/images/aboutPhotoR1.webp"
