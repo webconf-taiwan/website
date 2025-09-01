@@ -9,6 +9,31 @@ export default {
   ],
   theme: {
     extend: {
+      container: {
+        center: true,
+        screens: {
+          '2xl': '1440px',
+        },
+      },
+      maxWidth: {
+        'container-sm': '640px',
+        'container-md': '768px',
+        'container-lg': '1024px',
+        'container-xl': '1280px',
+        'container-2xl': '1400px',
+      },
+      fontFamily: {
+        sans: ['Noto Sans TC', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+      },
+      fontSize: {
+        'btn-14': ['14px', { lineHeight: '1', letterSpacing: '0.02em', fontWeight: '400' }],
+        'btn-16': ['16px', { lineHeight: '1', letterSpacing: '0.02em', fontWeight: '400' }],
+        'body-16': ['16px', { lineHeight: '1.8', letterSpacing: '0.02em', fontWeight: '400' }],
+        'body-18': ['18px', { lineHeight: '1.8', letterSpacing: '0.02em', fontWeight: '400' }],
+        'h3-40': ['40px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '400' }],
+        'h4-24': ['24px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '400' }],
+        'h4-60': ['60px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '400' }],
+      },
       clipPath: {
         mypolygon: 'polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 1rem))',
         fancycut: 'polygon(32px 0%, 100% 0%, 100% 100%, 0% 100%)',
@@ -59,6 +84,19 @@ export default {
           4: 'hsl(var(--chart-4))',
           5: 'hsl(var(--chart-5))',
         },
+        webconf: {
+          gray: '#E6E6E6',
+          blue: '#002EFF',
+        },
+      },
+      keyframes: {
+        'arrow-run': {
+          '0%': { left: '0' },
+          '100%': { left: '100%' },
+        },
+      },
+      animation: {
+        'arrow-run': 'arrow-run 13s ease-in-out infinite normal',
       },
     },
   },

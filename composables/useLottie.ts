@@ -19,7 +19,6 @@ export function useLottie() {
     try {
       // 如果有 src，先載入 JSON 檔案
       let animationData = options.animationData
-
       if (!animationData && options.src) {
         const response = await fetch(options.src)
         animationData = await response.json()

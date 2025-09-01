@@ -71,6 +71,7 @@ export default antfu(
       tw: tailwindcss,
     },
     rules: {
+      /* Add custom rules */
       'tw/classnames-order': 'error',
       'tw/enforces-negative-arbitrary-values': 'error',
       'tw/enforces-shorthand': 'error',
@@ -79,7 +80,7 @@ export default antfu(
       'tw/no-custom-classname': [
         'error',
         {
-          whitelist: ['main-body'],
+          whitelist: ['main-body', 'pic', 'main-footer'], // 允許自定義的 CSS 類名
         },
       ],
       'tw/no-contradicting-classname': 'error',

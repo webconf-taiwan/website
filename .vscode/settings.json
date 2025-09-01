@@ -3,12 +3,10 @@
   "eslint.useFlatConfig": true,
   // Disable the default formatter, use eslint instead
   "prettier.enable": false,
-  // Disable auto fix but keep error display
+  // Enable auto fix on save
   "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "never",
-    "source.fixAll.eslint": "never",
-    "source.organizeImports": "never"
+    "source.fixAll.eslint": "always"
   },
 
   // CSS specific settings
