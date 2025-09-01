@@ -9,7 +9,9 @@
       />
       <div class="relative"></div>
     </div>
-    <div class="relative z-0 min-h-screen w-full"></div>
+    <div class="relative z-0 min-h-screen w-full">
+      <HomeAbout />
+    </div>
     <div class="relative z-0 min-h-screen w-full"></div>
     <HomeSiteFooter />
     <HomeCopyRight />
