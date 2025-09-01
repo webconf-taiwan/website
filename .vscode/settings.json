@@ -1,0 +1,81 @@
+{
+  // Enable the ESLint flat config support
+  "eslint.useFlatConfig": true,
+  // Disable the default formatter, use eslint instead
+  "prettier.enable": false,
+  // Disable auto fix but keep error display
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "never",
+    "source.organizeImports": "never"
+  },
+
+  // CSS specific settings
+  "css.validate": false,
+  "scss.validate": false,
+  "less.validate": false,
+
+  // Show ESLint errors as red squiggles
+  "eslint.rules.customizations": [
+    {
+      "rule": "style/*",
+      "severity": "error"
+    },
+    {
+      "rule": "format/*",
+      "severity": "error"
+    },
+    {
+      "rule": "*-indent",
+      "severity": "error"
+    },
+    {
+      "rule": "*-spacing",
+      "severity": "error"
+    },
+    {
+      "rule": "*-spaces",
+      "severity": "error"
+    },
+    {
+      "rule": "*-order",
+      "severity": "error"
+    },
+    {
+      "rule": "*-dangle",
+      "severity": "error"
+    },
+    {
+      "rule": "*-newline",
+      "severity": "error"
+    },
+    {
+      "rule": "*quotes",
+      "severity": "error"
+    },
+    {
+      "rule": "*semi",
+      "severity": "error"
+    }
+  ],
+  // Enable eslint for all supported languages
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "yaml"
+  ],
+  // Other settings
+  "files.associations": {
+    "*.css": "css"
+  },
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": ["Nuxt"]
+}
