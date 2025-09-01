@@ -9,9 +9,10 @@ onMounted(() => {
     const element = aboutCardRef.value.$el
     gsap.to(element, {
       scrollTrigger: {
-        trigger: '#about-section',
-        start: 'top',
-        end: 'center',
+        trigger: element,
+        start: 'center center',
+        endTrigger: '#about-section',
+        end: 'bottom bottom',
         pin: element,
         pinSpacing: false,
         markers: true,
@@ -37,7 +38,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <p class="mt-8 text-body-16">
+    <p class="mt-8 text-left text-body-16">
       WebConf
       是一年一度聚集網頁技術專家與愛好者的盛會。今年以「連結」為主題，聚焦在人與人、人與
       AI，以及人與網路之間的互動。我們將回顧網頁技術的關鍵演進，並探討 AI
@@ -47,7 +48,7 @@ onMounted(() => {
 
     <NuxtLink
       to="/"
-      class="mt-[60px] inline-block w-[200px] bg-white py-4 text-btn-14 text-black"
+      class="mt-[60px] inline-block w-[200px] bg-white py-4 text-btn-16 text-black"
     >
       議程資訊
     </NuxtLink>
