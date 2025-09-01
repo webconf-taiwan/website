@@ -17,14 +17,13 @@
         class="relative left-10 mt-[250px]"
       />
     </div>
-
+    <HomeAboutCard />
     <div class="flex w-1/2 flex-col items-end">
       <NuxtImg
         src="/images/aboutPhotoR1.webp"
         alt="about"
         class="relative right-20 mt-[590px]"
       />
-
       <NuxtImg
         src="/images/aboutPhotoR2.webp"
         alt="about"
