@@ -1,7 +1,7 @@
 <template>
   <HomeAboutCard />
 
-  <section class="flex">
+  <section class="about-img-wrapper flex">
     <div class="flex w-1/2 flex-col items-start">
       <NuxtImg
         src="/images/aboutPhotoL1.webp"
@@ -10,6 +10,7 @@
         height="240"
         class="relative left-[120px] mt-[900px]"
       />
+
       <NuxtImg
         src="/images/aboutPhotoL2.webp"
         alt="about"
@@ -50,3 +51,14 @@
     </div>
   </section>
 </template>
+
+<style scoped>
+.about-img-wrapper img {
+  filter: grayscale(100%) brightness(60%);
+  transition: filter 0.3s ease;
+}
+
+.about-img-wrapper img:hover {
+  filter: grayscale(0%) brightness(100%);
+}
+</style>
