@@ -15,7 +15,6 @@ onMounted(() => {
         end: 'bottom bottom',
         pin: element,
         pinSpacing: false,
-        markers: true,
       },
     })
   }
@@ -25,7 +24,7 @@ onMounted(() => {
 <template>
   <ShareGradientDotsCard
     ref="aboutCardRef"
-    class="absolute left-1/2 top-60 z-[100] mt-60 w-[640px] -translate-x-1/2 -translate-y-1/2 text-center text-white"
+    class="absolute left-1/2 top-60 z-10 mt-60 w-[640px] -translate-x-1/2 -translate-y-1/2 text-center text-white"
   >
     <div class="mx-auto inline-block py-[6px]">
       <h2 class="mx-10 flex text-h3-40">

@@ -102,7 +102,7 @@
     transition: filter 0.3s ease;
   }
 
-  .about-img-filter:hover {
+  .about-img-filter.is-hovered {
     filter: grayscale(0%) brightness(100%);
   }
 }
