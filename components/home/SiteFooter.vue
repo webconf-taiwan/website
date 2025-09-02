@@ -13,18 +13,18 @@ const SOCIAL_ITEMS = [
 <template>
   <ClientOnly>
     <footer
-      class="main-footer relative border-t border-t-webconf-gray bg-black before:animate-arrow-run"
+      class="main-footer arrow-single relative border-t border-t-webconf-gray bg-black"
     >
       <div
         class="container flex items-center justify-between px-20 pb-[60px] pt-[100px] text-white"
       >
         <div
           v-cursor="{ scale: 0.4, duration: 0.5 }"
-          class="pic"
+          class="pic group flex flex-col gap-1"
         >
           <NuxtLink
             to="#"
-            class="group relative inline-block h-[105.61px] w-[280px]"
+            class="relative inline-block h-[105.61px] w-[280px]"
           >
             <!-- default logo -->
             <NuxtImg
@@ -41,6 +41,9 @@ const SOCIAL_ITEMS = [
               class="absolute inset-0 size-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             />
           </NuxtLink>
+          <span
+            class="text-left text-sm leading-[1.8] tracking-[0.02em] transition-colors duration-500 group-hover:text-webconf-blue"
+          >WebConf Taiwan 2025 All Rights Reserved.</span>
         </div>
 
         <ul class="flex gap-12">
@@ -74,15 +77,5 @@ const SOCIAL_ITEMS = [
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 100% auto;
-}
-
-.main-footer::before {
-  content: "";
-  position: absolute;
-  top: -6px;
-  left: 10px;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  border-left: 16px solid white;
 }
 </style>

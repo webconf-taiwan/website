@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 第三方套件初始樣式 */
 @layer base {
   /* lenis 設定 */
   html.lenis,
@@ -25,6 +26,7 @@
     pointer-events: none;
   }
 
+  /* shadcn 預設樣式 */
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -81,17 +83,49 @@
   }
 }
 
+/* 全域樣式 */
 @layer base {
   * {
     @apply border-border;
-    cursor: none !important;
+  }
+
+  a {
+    cursor: none;
   }
 
   html {
     font-family: "Noto Sans TC", sans-serif;
   }
 
+  /* shadcn 設定 */
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* 組件樣式 */
+@layer components {
+  /* 單個箭頭預設樣式及動畫 */
+  .arrow-single {
+    @apply relative;
+  }
+
+  .arrow-single::before {
+    content: "";
+    @apply absolute;
+    top: -6px;
+    left: 10px;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 16px solid white;
+    @apply animate-arrow-run;
+  }
+
+  .tag-md {
+    @apply px-5 py-2;
+  }
+
+  .tag-lg {
+    @apply px-10 py-2;
   }
 }

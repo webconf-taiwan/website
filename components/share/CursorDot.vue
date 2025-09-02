@@ -1,4 +1,14 @@
 <script setup lang="ts">
+interface Props {
+  speed?: number
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  speed: 0.045,
+})
+
+const speed = computed(() => props.speed ?? 0.045)
+
 const gsap = useGsap()
 const { x: mouseX, y: mouseY } = useMouse({ type: 'client' })
 
@@ -20,8 +30,8 @@ onMounted(() => {
   ) => void
 
   const ticker = () => {
-    cursorPosition.x += (mouseX.value - cursorPosition.x) * 0.045
-    cursorPosition.y += (mouseY.value - cursorPosition.y) * 0.045
+    cursorPosition.x += (mouseX.value - cursorPosition.x) * speed.value
+    cursorPosition.y += (mouseY.value - cursorPosition.y) * speed.value
 
     setX(cursorPosition.x)
     setY(cursorPosition.y)

@@ -68,7 +68,15 @@ export default defineNuxtConfig({
 
   postcss: {
     plugins: {
-      tailwindcss: {},
+      tailwindcss: {
+        config: {
+          safelist: [
+            // 保留特定的 before: 動畫 class(搭配 storybook 使用)
+            'before:animate-arrow-run',
+            'before:animate-arrow-run-storybook',
+          ],
+        },
+      },
       autoprefixer: {},
       ...(process.env.NODE_ENV === 'production' && {
         cssnano: {

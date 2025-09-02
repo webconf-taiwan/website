@@ -97,6 +97,7 @@ export default {
       },
       animation: {
         'arrow-run': 'arrow-run 13s ease-in-out infinite normal',
+        'arrow-run-storybook': 'arrow-run 3s ease-in-out infinite normal',
       },
     },
   },

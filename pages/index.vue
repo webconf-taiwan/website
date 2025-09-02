@@ -12,7 +12,7 @@
     <div class="relative z-0 min-h-screen w-full"></div>
     <div class="relative z-0 min-h-screen w-full"></div>
     <HomeSiteFooter />
-    <HomeCopyRight />
+    <!-- <HomeCopyRight /> -->
   </ShareBgBorder>
 </template>
 
