@@ -26,6 +26,7 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
 
 <template>
   <HomeAboutCard />
+
   <section class="about-img-wrapper flex">
     <div class="flex w-1/2 flex-col items-start">
       <NuxtImg
@@ -56,6 +57,7 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
         :class="{ 'is-hovered': hoveredImageIndex === 3 }"
       />
     </div>
+
     <div class="flex w-1/2 flex-col items-end">
       <NuxtImg
         ref="aboutPhotoR1Ref"

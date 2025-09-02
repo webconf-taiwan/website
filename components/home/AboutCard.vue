@@ -11,7 +11,7 @@ onMounted(() => {
       scrollTrigger: {
         trigger: element,
         start: 'center center',
-        endTrigger: '#about-section',
+        endTrigger: '#about-section', // 指定 pages/index.vue 的 #about-section 元素
         end: 'bottom bottom',
         pin: element,
         pinSpacing: false,

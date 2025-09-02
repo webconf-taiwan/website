@@ -23,11 +23,11 @@
 
 <style>
 .bg {
+  width: 100%;
+  height: calc(100vh - 2.5rem);
   background-image: url("/images/heroBg.png");
   background-repeat: no-repeat;
   background-position: right bottom;
   background-size: 100% auto;
-  width: 100%;
-  height: calc(100vh - 2.5rem);
 }
 </style>
