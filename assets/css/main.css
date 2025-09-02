@@ -105,27 +105,81 @@
 
 /* 組件樣式 */
 @layer components {
-  /* 單個箭頭預設樣式及動畫 */
-  .arrow-single {
+  /* ArrowDirective 樣式 */
+  .arrow-directive {
     @apply relative;
+    --arrow-direction: 1;
+    --arrow-color: white;
+    --arrow-speed-1: 2s;
+    --arrow-speed-2: 2s;
+    --arrow-delay: 0s;
   }
 
-  .arrow-single::before {
+  .arrow-directive::before,
+  .arrow-directive::after {
     content: "";
     @apply absolute;
     top: -6px;
-    left: 10px;
+    display: block;
+    width: 100%;
     border-top: 6px solid transparent;
     border-bottom: 6px solid transparent;
-    border-left: 16px solid white;
-    @apply animate-arrow-run;
   }
 
-  .tag-md {
-    @apply px-5 py-2;
+  .arrow-directive[style*="--arrow-direction: 1"]::before,
+  .arrow-directive[style*="--arrow-direction: 1"]::after {
+    left: 0px;
+    border-left: 16px solid var(--arrow-color);
+    border-right: none;
   }
 
-  .tag-lg {
-    @apply px-10 py-2;
+  .arrow-directive[style*="--arrow-direction: -1"]::before,
+  .arrow-directive[style*="--arrow-direction: -1"]::after {
+    right: 0px;
+    border-right: 16px solid var(--arrow-color);
+    border-left: none;
+  }
+
+  .arrow-directive::before {
+    animation: arrow-run-right var(--arrow-speed-1) ease-in-out infinite;
+  }
+
+  .arrow-directive::after {
+    animation: arrow-run-right var(--arrow-speed-2) ease-in-out infinite;
+    animation-delay: var(--arrow-delay);
+    opacity: 0;
+  }
+
+  .arrow-directive[style*="--arrow-direction: -1"]::before {
+    animation: arrow-run-left var(--arrow-speed-1) ease-in-out infinite;
+  }
+
+  .arrow-directive[style*="--arrow-direction: -1"]::after {
+    animation: arrow-run-left var(--arrow-speed-2) ease-in-out infinite;
+    animation-delay: var(--arrow-delay);
+  }
+
+  .arrow-directive[style*="--arrow-count: 2"]::after {
+    opacity: 1;
+  }
+
+  /* 向右動畫 */
+  @keyframes arrow-run-right {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* 向左動畫 */
+  @keyframes arrow-run-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
   }
 }

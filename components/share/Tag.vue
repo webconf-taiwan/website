@@ -20,3 +20,13 @@ const tagClass = computed(() => {
     <slot></slot>
   </span>
 </template>
+
+<style>
+.tag-md {
+  @apply px-5 py-2;
+}
+
+.tag-lg {
+  @apply px-10 py-2;
+}
+</style>

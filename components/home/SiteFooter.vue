@@ -13,7 +13,8 @@ const SOCIAL_ITEMS = [
 <template>
   <ClientOnly>
     <footer
-      class="main-footer arrow-single relative border-t border-t-webconf-gray bg-black"
+      v-arrow="{ speed1: '10s', color: 'white' }"
+      class="main-footer relative border-t border-t-webconf-gray bg-black"
     >
       <div
         class="container flex items-center justify-between px-20 pb-[60px] pt-[100px] text-white"

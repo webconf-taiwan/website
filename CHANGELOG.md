@@ -1,3 +1,9 @@
+# (2025-09-02)
+
+### Features
+
+- 完成網站頁首頁尾佈局實作 ([6df2576](https://github.com/webconf-taiwan/website/commit/6df257602370c00296bb218fac81f09ef53edec8))
+
 # (2025-09-01)
 
 ### Bug Fixes
