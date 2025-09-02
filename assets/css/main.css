@@ -95,3 +95,20 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer components {
+  .about-img-filter {
+    filter: grayscale(100%) brightness(60%);
+    transition: filter 0.3s ease;
+  }
+
+  .about-img-filter:hover {
+    filter: grayscale(0%) brightness(100%);
+  }
+}
+
+@layer utilities {
+  .blue-shadow {
+    @apply shadow-[0px_6px_40px_8px_rgba(0,46,255,0.4)];
+  }
+}

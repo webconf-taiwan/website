@@ -8,22 +8,21 @@
         alt="about"
         width="360"
         height="240"
-        class="relative left-[120px] mt-[900px]"
+        class="blue-shadow about-img-filter relative left-[120px] mt-[900px]"
       />
-
       <NuxtImg
         src="/images/aboutPhotoL2.webp"
         alt="about"
         width="360"
         height="240"
-        class="relative -left-10 mt-[160px]"
+        class="blue-shadow about-img-filter relative -left-10 mt-[160px]"
       />
       <NuxtImg
         src="/images/aboutPhotoL3.webp"
         alt="about"
         width="439"
         height="293"
-        class="relative left-10 mb-[72px] mt-[250px]"
+        class="blue-shadow about-img-filter relative left-10 mb-[72px] mt-[250px]"
       />
     </div>
     <div class="flex w-1/2 flex-col items-end">
@@ -32,33 +31,22 @@
         alt="about"
         width="420"
         height="280"
-        class="relative right-20 mt-[590px]"
+        class="blue-shadow about-img-filter relative right-20 z-10 mt-[590px]"
       />
       <NuxtImg
         src="/images/aboutPhotoR2.webp"
         alt="about"
         width="480"
         height="320"
-        class="relative right-0 mt-[160px]"
+        class="blue-shadow about-img-filter relative right-0 mt-[160px]"
       />
       <NuxtImg
         src="/images/aboutPhotoR3.webp"
         alt="about"
         width="240"
         height="160"
-        class="relative right-[120px] mt-[280px]"
+        class="blue-shadow about-img-filter relative right-[120px] mt-[280px]"
       />
     </div>
   </section>
 </template>
-
-<style scoped>
-.about-img-wrapper img {
-  filter: grayscale(100%) brightness(60%);
-  transition: filter 0.3s ease;
-}
-
-.about-img-wrapper img:hover {
-  filter: grayscale(0%) brightness(100%);
-}
-</style>
