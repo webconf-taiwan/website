@@ -7,39 +7,66 @@ const aboutCardRef = ref<any>(null)
 onMounted(() => {
   nextTick()
 
-  if (aboutCardRef.value) {
-    const element = aboutCardRef.value.$el
-    gsap.to(element, {
-      scrollTrigger: {
-        trigger: element,
-        start: 'center center',
-        endTrigger: '#about-section', // 指定 pages/index.vue 的 #about-section 元素
-        end: 'bottom bottom',
-        pin: element,
-        pinSpacing: false,
-      },
-    })
-  }
+  const element = aboutCardRef.value.$el
 
-  gsap.utils.toArray('.floating-tag').forEach((tag: any) => {
-    const floatTag = (element: any) => {
-      gsap.to(element, {
-        x: Math.random() * 40 - 20, // -20 to 20
-        y: Math.random() * 40 - 20, // -20 to 20
-        duration: Math.random() * 3 + 2, // 2 to 5 seconds
-        ease: 'power1.inOut',
-        onComplete: () => floatTag(element), // Recursively call to continue floating
-      })
-    }
-    floatTag(tag) // Start the floating animation
+  if (!element)
+    return
+
+  gsap.to(element, {
+    scrollTrigger: {
+      trigger: element,
+      start: 'center center',
+      endTrigger: '#about-section', // 指定 pages/index.vue 的 #about-section 元素
+      end: 'bottom bottom',
+      pin: element,
+      pinSpacing: false,
+    },
   })
 })
+
+const floatingTags = [
+  {
+    text: 'FRONTEND',
+    position: {
+      top: '20%',
+      left: '-47%',
+    },
+  },
+  {
+    text: 'BACKEND',
+    position: {
+      bottom: '-3%',
+      left: '-27%',
+    },
+  },
+  {
+    text: 'DEVOPS',
+    position: {
+      bottom: '-20%',
+      right: '20%',
+    },
+  },
+  {
+    text: 'UI / UX',
+    position: {
+      right: '-10%',
+      top: '-5%',
+    },
+  },
+  {
+    text: 'AGILE',
+    position: {
+      right: '-60%',
+      top: '50%',
+    },
+  },
+]
 </script>
 
 <template>
   <ShareGradientDotsCard
     ref="aboutCardRef"
-    class="absolute left-1/2 top-60 z-10 mt-60 w-[640px] -translate-x-1/2 -translate-y-1/2 text-center text-white"
+    class="absolute left-1/2 top-60 z-10 mt-60 -translate-x-1/2 -translate-y-1/2 text-center text-white sm:max-w-[440px] lg:max-w-[640px]"
   >
     <div class="mx-auto inline-block py-[6px]">
       <h2 class="mx-10 flex text-h3-40">
@@ -68,35 +95,13 @@ onMounted(() => {
     </ShareLinkButton>
 
     <div>
-      <span
-        class="floating-tag absolute left-[-47%] top-[20%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
-      >
-        FRONTEND
-      </span>
-
-      <span
-        class="floating-tag absolute bottom-[-3%] left-[-27%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
-      >
-        BACKEND
-      </span>
-
-      <span
-        class="floating-tag absolute bottom-[-20%] right-[20%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
-      >
-        DEVOPS
-      </span>
-
-      <span
-        class="floating-tag absolute right-[-10%] top-[-5%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
-      >
-        UI / UX
-      </span>
-
-      <span
-        class="floating-tag absolute right-[-60%] top-[50%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
-      >
-        AGILE
-      </span>
+      <HomeAboutFloatingTag
+        v-for="tag in floatingTags"
+        :key="tag.text"
+        :text="tag.text"
+        :position="tag.position"
+        class="floating-tag absolute"
+      />
     </div>
   </ShareGradientDotsCard>
 </template>
