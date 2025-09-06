@@ -80,7 +80,14 @@ export default antfu(
       'tw/no-custom-classname': [
         'error',
         {
-          whitelist: ['main-body', 'pic', 'main-footer', 'gradient-dots-card', 'about-img-wrapper'], // 允許自定義的 CSS 類名
+          whitelist: [
+            'main-body',
+            'pic',
+            'main-footer',
+            'gradient-dots-card',
+            'about-img-wrapper',
+            'floating-tag',
+          ], // 允許自定義的 CSS 類名
         },
       ],
       'tw/no-contradicting-classname': 'error',

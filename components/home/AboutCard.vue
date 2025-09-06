@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { nextTick, onMounted, ref } from 'vue'
+
 const gsap = useGsap()
 const aboutCardRef = ref<any>(null)
 
@@ -18,6 +20,19 @@ onMounted(() => {
       },
     })
   }
+
+  gsap.utils.toArray('.floating-tag').forEach((tag: any) => {
+    const floatTag = (element: any) => {
+      gsap.to(element, {
+        x: Math.random() * 40 - 20, // -20 to 20
+        y: Math.random() * 40 - 20, // -20 to 20
+        duration: Math.random() * 3 + 2, // 2 to 5 seconds
+        ease: 'power1.inOut',
+        onComplete: () => floatTag(element), // Recursively call to continue floating
+      })
+    }
+    floatTag(tag) // Start the floating animation
+  })
 })
 </script>
 
@@ -51,5 +66,37 @@ onMounted(() => {
     >
       議程資訊
     </ShareLinkButton>
+
+    <div>
+      <span
+        class="floating-tag absolute left-[-47%] top-[20%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
+      >
+        FRONTEND
+      </span>
+
+      <span
+        class="floating-tag absolute bottom-[-3%] left-[-27%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
+      >
+        BACKEND
+      </span>
+
+      <span
+        class="floating-tag absolute bottom-[-20%] right-[20%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
+      >
+        DEVOPS
+      </span>
+
+      <span
+        class="floating-tag absolute right-[-10%] top-[-5%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
+      >
+        UI / UX
+      </span>
+
+      <span
+        class="floating-tag absolute right-[-60%] top-[50%] bg-webconf-blue px-8 py-2 text-btn-14 text-white"
+      >
+        AGILE
+      </span>
+    </div>
   </ShareGradientDotsCard>
 </template>
