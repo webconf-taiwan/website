@@ -97,6 +97,9 @@ devDependencies:
   nuxt:
     specifier: ^3.18.1
     version: 3.18.1(@types/node@24.2.1)(@vue/compiler-sfc@3.5.18)(eslint@9.33.0)(typescript@5.9.2)(vite@6.3.5)
+  nuxt-marquee:
+    specifier: 1.0.4
+    version: 1.0.4(vue@3.5.18)
   nuxt-typed-router:
     specifier: 4.0.1
     version: 4.0.1(prettier@3.6.2)
@@ -9983,6 +9986,16 @@ packages:
       - vue
     dev: true
 
+  /nuxt-marquee@1.0.4(vue@3.5.18):
+    resolution: {integrity: sha512-FJ7uLhiLt7LQtmlcsJXq76aN+L1kHVLcJQPcUm0o4rW0bIda7LL4kZc4VB2t/VHiqzN7MRSq3lwXqUFV5zJ+wA==}
+    dependencies:
+      '@nuxt/kit': 3.18.1(magicast@0.3.5)
+      vue-fast-marquee: 1.0.6(vue@3.5.18)
+    transitivePeerDependencies:
+      - magicast
+      - vue
+    dev: true
+
   /nuxt-og-image@5.1.9(@unhead/vue@2.0.14)(unstorage@1.16.1)(vite@6.3.5)(vue@3.5.18):
     resolution: {integrity: sha512-VsGpaV/Q9mhr6YhTTXsxiPbE5rucrW0dNmfssxaWEF4rKhnpKBh8U2C1QK8iddo7Gg2lqD2L9zcBe4GsHl8X8w==}
     engines: {node: '>=18.0.0'}
@@ -13537,6 +13550,14 @@ packages:
       semver: 7.7.2
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /vue-fast-marquee@1.0.6(vue@3.5.18):
+    resolution: {integrity: sha512-VMqaeuBSS3L55Q84EuLJPHZ4Zv4UVBDXmh+2hb1IBTLKt/FmurJnWVXv8BNnbQSupA4kHbPlWDLwp+kvEMOF7A==}
+    peerDependencies:
+      vue: '>=3.2.0'
+    dependencies:
+      vue: 3.5.18(typescript@5.9.2)
     dev: true
 
   /vue-inbrowser-compiler-independent-utils@4.71.1(vue@3.5.18):

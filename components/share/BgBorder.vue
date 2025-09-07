@@ -17,9 +17,10 @@ interface DVDBox {
 const gridContainer = ref<HTMLElement | null>(null)
 const boxContainer = ref<HTMLElement | null>(null)
 const contentContainer = ref<HTMLElement | null>(null)
+const gridSizeRef = ref<number>(0)
 
 let dvdDots: DVDBox[] = [] // DVD 方框狀態
-const desiredColumns = 18 // 指定要幾個格子（橫向）
+const FIXED_GRID_SIZE = 80 // 網格的大小(固定值)
 let gridSize: number // 網格大小（動態計算）
 const ease = 0.25 // 平滑滑鼠追蹤係數
 
@@ -47,20 +48,37 @@ const headerOffset = 58 // 對應 h-[58px] 的高度偏移
 // p5 網格背景程式
 function gridSketch(p: p5) {
   p.setup = () => {
-    const contentHeight
-      = contentContainer.value?.scrollHeight || p.windowHeight
-    const canvasHeight = Math.max(p.windowHeight, contentHeight)
-
-    const canvas = p.createCanvas(p.windowWidth, canvasHeight)
+    const canvas = p.createCanvas(p.windowWidth, p.windowHeight)
     canvas.id('gridCanvas')
     canvas.parent(gridContainer.value!)
     p.pixelDensity(1)
 
     // 根據指定的格子數量計算 gridSize
-    gridSize = Math.floor(p.width / desiredColumns)
+    gridSize = FIXED_GRID_SIZE
+    gridSizeRef.value = gridSize
 
-    // 初始化 flashlight 參數(預設是畫面短邊的 1/9 大小)
-    r = Math.min(p.width, p.height) * 0.15
+    const diff = ((p.windowWidth - 1440) / 100) * 0.8
+    const diff2 = ((p.windowWidth - 1440) / 100) * 0.2
+    const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
+    const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
+
+    document.documentElement.style.setProperty('--grid-size', `${gridSize}px`)
+    document.documentElement.style.setProperty('--grid-diff', diff.toString())
+    document.documentElement.style.setProperty(
+      '--grid-diff-2',
+      diff2.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-3',
+      diff3.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-4',
+      diff4.toString(),
+    )
+
+    // 初始化 flashlight 參數
+    r = Math.min(p.width, p.height) * 0.25
     mx = tx = p.width / 2
     my = ty = p.height / 2
 
@@ -100,13 +118,30 @@ function gridSketch(p: p5) {
   }
 
   p.windowResized = () => {
-    const contentHeight
-      = contentContainer.value?.scrollHeight || p.windowHeight
-    const canvasHeight = Math.max(p.windowHeight, contentHeight)
-
-    p.resizeCanvas(p.windowWidth, canvasHeight)
+    p.resizeCanvas(p.windowWidth, p.windowHeight)
     // 重新計算 gridSize
-    gridSize = Math.floor(p.width / desiredColumns)
+    gridSize = FIXED_GRID_SIZE
+    const diff = ((p.windowWidth - 1440) / 100) * 0.82
+    const diff2 = ((p.windowWidth - 1440) / 100) * 0.18
+    const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
+    const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
+
+    gridSizeRef.value = gridSize
+
+    document.documentElement.style.setProperty('--grid-size', `${gridSize}px`)
+    document.documentElement.style.setProperty('--grid-diff', diff.toString())
+    document.documentElement.style.setProperty(
+      '--grid-diff-2',
+      diff2.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-3',
+      diff3.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-4',
+      diff4.toString(),
+    )
     // 重新初始化畫布和網格
     initializeLayers(p)
   }
@@ -249,10 +284,10 @@ function drawGrid(
   pg.stroke(r, g, b, alpha * 255)
   pg.strokeWeight(2)
 
-  for (let x = 0; x <= pg.width; x += gridSize) {
+  for (let x = 0; x < pg.width; x += gridSize) {
     pg.line(x, 0, x, pg.height)
   }
-  for (let y = 0; y <= pg.height; y += gridSize) {
+  for (let y = 0; y < pg.height; y += gridSize) {
     pg.line(0, y, pg.width, y)
   }
 }
@@ -383,23 +418,25 @@ onUnmounted(() => {
   if (scrollTimeout) {
     clearTimeout(scrollTimeout)
   }
+
+  document.documentElement.style.removeProperty('--grid-size')
   gridP5Sketch.destroySketch()
   boxP5Sketch.destroySketch()
 })
 </script>
 
 <template>
-  <div class="relative size-full overflow-x-hidden">
+  <div class="relative size-full">
     <!-- 網格層 (最底層) -->
     <div
       ref="gridContainer"
-      class="absolute inset-0 z-[1] size-full"
+      class="fixed inset-0 z-[1] size-full"
     ></div>
 
     <!-- 內容層 (圖片等) -->
     <div
       ref="contentContainer"
-      class="relative z-[20] size-full"
+      class="relative z-[20] size-full overflow-x-clip"
     >
       <slot></slot>
     </div>
@@ -407,7 +444,7 @@ onUnmounted(() => {
     <!-- 方框層 (最上層) -->
     <div
       ref="boxContainer"
-      class="pointer-events-none absolute inset-0 z-[50] size-full"
+      class="pointer-events-none absolute inset-0 z-[50] size-full overflow-hidden"
     ></div>
   </div>
 </template>

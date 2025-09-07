@@ -13,37 +13,46 @@ const SOCIAL_ITEMS = [
 <template>
   <ClientOnly>
     <footer
-      class="main-footer relative border-t border-t-webconf-gray bg-black before:animate-arrow-run"
+      v-arrow="{ speed1: '10s', color: 'white' }"
+      class="main-footer relative border-t-[0.5px] border-webconf-gray/50 bg-black"
     >
       <div
-        class="container flex items-center justify-between px-20 pb-[60px] pt-[100px] text-white"
+        class="container relative flex items-end justify-between px-16 pb-[60px] pt-[100px] text-white sm:px-12 lg:px-20"
       >
+        <ShareScrollToTopButton class="right-20 top-[100px]" />
         <div
           v-cursor="{ scale: 0.4, duration: 0.5 }"
-          class="pic"
+          class="pic group flex flex-col gap-1"
         >
           <NuxtLink
             to="#"
-            class="group relative inline-block h-[105.61px] w-[280px]"
+            class="relative inline-block"
           >
             <!-- default logo -->
             <NuxtImg
               src="/images/footerLogo.png"
               alt="2025 WebConf"
               format="webp"
-              class="absolute inset-0 size-full opacity-100 transition-opacity duration-500 group-hover:opacity-0"
+              :width="280"
+              :height="106"
+              class="opacity-100 transition-opacity duration-500 group-hover:opacity-0"
             />
             <!-- hover logo -->
             <NuxtImg
               src="/images/footerLogoHover.png"
               alt="2025 WebConf"
               format="webp"
-              class="absolute inset-0 size-full opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              :width="280"
+              :height="106"
+              class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             />
           </NuxtLink>
+          <span
+            class="text-left text-sm leading-[1.8] tracking-[0.02em] transition-colors duration-500 group-hover:text-webconf-blue"
+          >WebConf Taiwan 2025 All Rights Reserved.</span>
         </div>
 
-        <ul class="flex gap-12">
+        <ul class="flex min-w-0 flex-1 justify-end gap-12 text-h3-40">
           <li
             v-for="socialitem in SOCIAL_ITEMS"
             :key="socialitem.name"
@@ -55,7 +64,7 @@ const SOCIAL_ITEMS = [
                 backgroundColor: 'rgba(0, 46, 255, 0.9)',
                 text: 'FOLLOW',
               }"
-              class="inline-block text-h3-40 transition-colors duration-500 hover:text-webconf-blue"
+              class="inline-block transition-colors duration-500 hover:text-webconf-blue"
               target="_blank"
               :to="socialitem.href"
             >
@@ -74,15 +83,5 @@ const SOCIAL_ITEMS = [
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: 100% auto;
-}
-
-.main-footer::before {
-  content: "";
-  position: absolute;
-  top: -6px;
-  left: 10px;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  border-left: 16px solid white;
 }
 </style>
