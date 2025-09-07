@@ -87,6 +87,13 @@ export default antfu(
             'gradient-dots-card',
             'about-img-wrapper',
             'floating-tag',
+            'arrow-border',
+            'arrow-border-1',
+            'arrow-border-2',
+            'arrow-border-3',
+            'arrow-border-4',
+            'hero-section',
+            'cta-section',
           ], // 允許自定義的 CSS 類名
         },
       ],
