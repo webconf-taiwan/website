@@ -11,9 +11,9 @@ export default {
     extend: {
       container: {
         center: true,
-        screens: {
-          '2xl': '1440px',
-        },
+      },
+      screens: {
+        '2xl': '1440px',
       },
       maxWidth: {
         'container-sm': '640px',
