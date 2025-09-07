@@ -18,7 +18,7 @@
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "changelog:first": "conventional-changelog -p angular -i CHANGELOG.md -s -r 0",
     "version": "pnpm run changelog && git add CHANGELOG.md",
-    "release": "pnpm run changelog && git add CHANGELOG.md && git commit -m 'docs: update changelog' && git push",
+    "release": "pnpm run changelog && git add CHANGELOG.md && git commit -m 'docs: 更新變更紀錄' && git push",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
@@ -55,6 +55,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.5",
     "nuxt": "^3.18.1",
+    "nuxt-marquee": "1.0.4",
     "nuxt-typed-router": "4.0.1",
     "prettier": "^3.6.2",
     "shadcn-nuxt": "^2.2.0",
