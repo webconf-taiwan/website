@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     'nuxt-typed-router',
     'shadcn-nuxt',
     '@vueuse/nuxt',
+    'nuxt-marquee',
   ],
   css: ['@/assets/css/main.css'],
 
@@ -26,7 +27,9 @@ export default defineNuxtConfig({
         provider: 'google',
         weights: [400, 600],
         styles: ['normal'],
-        subsets: ['latin', 'latin-ext'],
+        subsets: ['chinese-traditional', 'latin'],
+        display: 'swap',
+        preload: true,
       },
     ],
   },
