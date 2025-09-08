@@ -18,6 +18,7 @@ const SPEAKERS = [
 <template>
   <section class="bg-black text-white">
     <div
+      v-arrow="{ speed1: '12s', color: 'white' }"
       class="flex items-center justify-between border-y-[0.5px] border-webconf-gray px-20 py-10"
     >
       <div class="flex items-start gap-4">
@@ -35,7 +36,10 @@ const SPEAKERS = [
       </ShareLinkButton>
     </div>
 
-    <div class="grid grid-cols-4">
+    <div
+      v-arrow="{ speed1: '10s', color: 'white' }"
+      class="grid grid-cols-4"
+    >
       <div
         v-for="(speaker, index) in SPEAKERS"
         :key="speaker.name"
