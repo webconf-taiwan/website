@@ -25,7 +25,10 @@ const SPEAKERS = [
         <h2 class="text-center text-h4-60 font-bold">
           Featured Speakers
         </h2>
-        <ShareBlueTag text="講者" />
+        <ShareBlueTag
+          text="講者"
+          class="!px-5"
+        />
       </div>
 
       <ShareLinkButton
