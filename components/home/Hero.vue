@@ -37,7 +37,7 @@
             format="webp"
             :width="570"
             :height="215"
-            class="pr-[86px]"
+            class="mr-[86px] lg:w-[570px]"
           />
           <NuxtImg
             src="/images/heroTitle.png"
@@ -45,6 +45,7 @@
             format="webp"
             :width="527"
             :height="27"
+            class="lg:w-[527px]"
           />
           <ShareLinkButton
             to="#"
