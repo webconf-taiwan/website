@@ -43,8 +43,8 @@ onMounted(() => {
               <NuxtImg
                 src="/images/CTATitleLogo.png"
                 alt="2025 webconf CTA"
-                :width="409"
-                :height="60"
+                width="409"
+                height="60"
               />
             </div>
             <p class="pb-[60px] text-left text-body-16 text-white">

@@ -33,8 +33,8 @@ const SOCIAL_ITEMS = [
               src="/images/footerLogo.png"
               alt="2025 WebConf"
               format="webp"
-              :width="280"
-              :height="106"
+              width="280"
+              height="106"
               class="opacity-100 transition-opacity duration-500 group-hover:opacity-0"
             />
             <!-- hover logo -->
@@ -42,8 +42,8 @@ const SOCIAL_ITEMS = [
               src="/images/footerLogoHover.png"
               alt="2025 WebConf"
               format="webp"
-              :width="280"
-              :height="106"
+              width="280"
+              height="106"
               class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             />
           </NuxtLink>

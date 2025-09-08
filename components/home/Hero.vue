@@ -35,16 +35,16 @@
             src="/images/heroLogo.png"
             alt="2025 WebConf Logo"
             format="webp"
-            :width="570"
-            :height="215"
+            width="570"
+            height="215"
             class="mr-[86px] lg:w-[570px]"
           />
           <NuxtImg
             src="/images/heroTitle.png"
             alt="Connecting the Web to a Sustainable Future"
             format="webp"
-            :width="527"
-            :height="27"
+            width="527"
+            height="27"
             class="lg:w-[527px]"
           />
           <ShareLinkButton

@@ -30,8 +30,8 @@ const ORGANIZERS = [
         :src="organizer.logo"
         :alt="organizer.name"
         format="webp"
-        :width="150"
-        :height="120"
+        width="150"
+        height="120"
       />
     </div>
   </NuxtMarquee>
