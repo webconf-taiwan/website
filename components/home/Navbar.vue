@@ -27,8 +27,8 @@ const NAV_ITEMS = [
             src="/images/headerLogo.png"
             alt="2025 WebConf"
             format="webp"
-            :width="191"
-            :height="28"
+            width="191"
+            height="28"
             class="opacity-100 transition-opacity duration-500 group-hover:opacity-0"
           />
           <!-- hover logo -->
@@ -36,8 +36,8 @@ const NAV_ITEMS = [
             src="/images/headerLogoHover.png"
             alt="2025 WebConf"
             format="webp"
-            :width="191"
-            :height="28"
+            width="191"
+            height="28"
             class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 2xl:w-[191px]"
           />
         </NuxtLink>
