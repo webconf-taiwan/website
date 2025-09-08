@@ -76,6 +76,8 @@ function gridSketch(p: p5) {
     const diff2 = ((p.windowWidth - 1440) / 100) * 0.2
     const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
     const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
+    const diff6 = ((p.windowWidth - 1440) / 100) * 0.6
+    const diff7 = ((p.windowWidth - 1440) / 100) * 0.7
 
     document.documentElement.style.setProperty('--grid-size', `${gridSize}px`)
     document.documentElement.style.setProperty('--grid-diff', diff.toString())
@@ -90,6 +92,14 @@ function gridSketch(p: p5) {
     document.documentElement.style.setProperty(
       '--grid-diff-4',
       diff4.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-6',
+      diff6.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-7',
+      diff7.toString(),
     )
 
     // 初始化 flashlight 參數
@@ -140,6 +150,8 @@ function gridSketch(p: p5) {
     const diff2 = ((p.windowWidth - 1440) / 100) * 0.18
     const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
     const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
+    const diff6 = ((p.windowWidth - 1440) / 100) * 0.6
+    const diff7 = ((p.windowWidth - 1440) / 100) * 0.7
 
     gridSizeRef.value = gridSize
 
@@ -156,6 +168,14 @@ function gridSketch(p: p5) {
     document.documentElement.style.setProperty(
       '--grid-diff-4',
       diff4.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-6',
+      diff6.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-7',
+      diff7.toString(),
     )
     // 重新初始化畫布和網格
     initializeLayers(p)

@@ -92,9 +92,13 @@ export default antfu(
             'arrow-border-2',
             'arrow-border-3',
             'arrow-border-4',
+            'arrow-border-5',
+            'arrow-border-6',
+            'arrow-border-7',
             'hero-section',
             'cta-section',
             'float-blocks',
+            'blue-overlay',
           ], // 允許自定義的 CSS 類名
         },
       ],

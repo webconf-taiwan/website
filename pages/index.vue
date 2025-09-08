@@ -8,6 +8,7 @@
     >
       <HomeAbout />
     </div>
+    <HomeVenue />
     <HomeOrganizersMarquee />
     <HomeCTA />
     <HomeCocNotice />
