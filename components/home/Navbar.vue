@@ -13,9 +13,7 @@ const NAV_ITEMS = [
   <header
     class="sticky top-0 z-50 w-full border-b border-b-webconf-gray bg-black"
   >
-    <div
-      class="container flex items-center justify-between px-16 sm:px-12 lg:px-20"
-    >
+    <div class="container flex items-center justify-between sm:px-12 lg:px-20">
       <h1 v-cursor="{ scale: 0.4, duration: 0.5 }">
         <span class="sr-only">2025 WebConf</span>
         <NuxtLink

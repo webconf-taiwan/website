@@ -17,7 +17,7 @@ const SOCIAL_ITEMS = [
       class="main-footer relative border-t-[0.5px] border-webconf-gray/50 bg-black"
     >
       <div
-        class="container relative flex items-end justify-between px-16 pb-[60px] pt-[100px] text-white sm:px-12 lg:px-20"
+        class="container relative flex items-end justify-between pb-[60px] pt-[100px] text-white sm:px-12 lg:px-20"
       >
         <ShareScrollToTopButton class="right-20 top-[100px]" />
         <div
