@@ -8,9 +8,7 @@ const COC_STATEMENT
     v-arrow="{ speed1: '12s', color: 'white' }"
     class="relative border-t-[0.5px] border-webconf-gray bg-black py-[60px]"
   >
-    <div
-      class="container flex items-start gap-8 px-[172px] sm:px-[88px] lg:px-[120px]"
-    >
+    <div class="container flex items-start gap-8 sm:px-[88px] lg:px-[172px]">
       <ShareTag
         size="md"
         class="my-2"
