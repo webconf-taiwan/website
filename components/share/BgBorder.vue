@@ -414,6 +414,9 @@ onUnmounted(() => {
       class="fixed inset-0 z-[1] size-full"
     ></div>
 
+    <!-- 浮動方塊特效 -->
+    <ShareFloatingBlocks />
+
     <!-- 內容層 (圖片等) -->
     <div
       ref="contentContainer"
