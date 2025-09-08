@@ -94,6 +94,7 @@ export default antfu(
             'arrow-border-4',
             'hero-section',
             'cta-section',
+            'float-blocks',
           ], // 允許自定義的 CSS 類名
         },
       ],
