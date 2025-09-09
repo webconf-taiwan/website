@@ -2,12 +2,7 @@
   <ShareBgBorder>
     <HomeNavbar />
     <HomeHero />
-    <div
-      id="about-section"
-      class="relative z-0 min-h-screen w-full"
-    >
-      <HomeAbout />
-    </div>
+    <HomeAbout />
     <HomeFeaturedSpeakers />
     <HomeVenue />
     <HomeOrganizersMarquee />
