@@ -21,6 +21,19 @@ const SPEAKERS = [
 ]
 
 const isHovered = ref(false)
+const speakerCards = ref<any[]>([])
+
+function handleNext() {
+  speakerCards.value.forEach((card) => {
+    card.slideToNext()
+  })
+}
+
+function handlePrev() {
+  speakerCards.value.forEach((card) => {
+    card.slideToPrev()
+  })
+}
 </script>
 
 <template>
@@ -49,38 +62,54 @@ const isHovered = ref(false)
     </div>
 
     <!-- 講者輪播 -->
-    <div
-      class="relative mx-auto grid max-w-[1440px] grid-cols-4"
-      @mouseover="isHovered = true"
-      @mouseleave="isHovered = false"
-    >
-      <!-- 窗框 -->
+    <div class="relative">
       <div
-        v-arrow="{ speed1: '10s', color: 'white' }"
-        class="absolute inset-0 flex w-full"
+        class="relative mx-auto grid max-w-[1440px] grid-cols-4"
+        @mouseover="isHovered = true"
+        @mouseleave="isHovered = false"
       >
+        <!-- 窗框 -->
         <div
-          v-for="i in 4"
-          :key="i"
-          class="flex-1 border-x-[48px] border-y-[40px] border-black/50"
-        ></div>
+          v-arrow="{ speed1: '10s', color: 'white' }"
+          class="absolute inset-0 flex w-full"
+        >
+          <div
+            v-for="i in 4"
+            :key="i"
+            class="flex-1 border-x-[48px] border-y-[40px] border-black/50"
+          ></div>
+        </div>
+
+        <!-- 講者卡片 -->
+        <div
+          v-for="(speaker, index) in SPEAKERS"
+          :key="speaker.name"
+          :class="{
+            'border-l-[0.5px]': index !== 0,
+          }"
+          class="col-span-1 flex flex-col items-center justify-center px-12 py-10"
+        >
+          <HomeSpeakerCard
+            :ref="(el) => (speakerCards[index] = el)"
+            :speakers="SPEAKERS"
+            :original-index="index"
+            :is-parent-hovered="isHovered"
+          />
+        </div>
       </div>
 
-      <!-- 講者卡片 -->
-      <div
-        v-for="(speaker, index) in SPEAKERS"
-        :key="speaker.name"
-        :class="{
-          'border-l-[0.5px]': index !== 0,
-        }"
-        class="col-span-1 flex flex-col items-center justify-center px-12 py-10"
-      >
-        <HomeSpeakerCard
-          :speakers="SPEAKERS"
-          :original-index="index"
-          :is-parent-hovered="isHovered"
-        />
-      </div>
+      <!-- 輪播按鈕 -->
+      <button
+        type="button"
+        class="absolute left-0 top-0 h-full w-20"
+        @click="handleNext"
+      ></button>
+
+      <button
+        type="button"
+        class="absolute right-0 top-0 h-full w-20"
+        @click="handlePrev"
+      ></button>
     </div>
   </section>
 </template>
