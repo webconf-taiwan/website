@@ -31,7 +31,7 @@
         class="relative w-[65%] border border-webconf-gray/50 bg-black pb-[24px] pl-[40px] pr-[47px] 2xl:w-[68.75%]"
       >
         <NuxtImg
-          src="/images/venue.png"
+          src="/images/venueBg.png"
           width="793"
           height="536"
           class="w-full translate-y-[-10px] object-cover"
