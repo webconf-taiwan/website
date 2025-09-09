@@ -28,7 +28,7 @@ const isHovered = ref(false)
     <!-- 區塊標題 -->
     <div
       v-arrow="{ speed1: '12s', color: 'white' }"
-      class="flex items-center justify-between border-y-[0.5px] border-webconf-gray px-20 py-10"
+      class="flex items-center justify-between border-y-[0.5px] border-webconf-gray px-20 py-10 pb-[60px]"
     >
       <div class="flex items-start gap-4">
         <h2 class="text-center text-h4-60 font-bold">

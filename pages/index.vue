@@ -8,8 +8,8 @@
     >
       <HomeAbout />
     </div>
-    <HomeVenue />
     <HomeFeaturedSpeakers />
+    <HomeVenue />
     <HomeOrganizersMarquee />
     <HomeCTA />
     <HomeCocNotice />
