@@ -9,6 +9,7 @@
       <HomeAbout />
     </div>
     <HomeVenue />
+    <HomeFeaturedSpeakers />
     <HomeOrganizersMarquee />
     <HomeCTA />
     <HomeCocNotice />
