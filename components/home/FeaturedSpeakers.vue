@@ -24,11 +24,11 @@ const isHovered = ref(false)
 </script>
 
 <template>
-  <section class="bg-black text-white">
+  <section class="border-y-[0.5px] border-webconf-gray/50 bg-black text-white">
     <!-- 區塊標題 -->
     <div
       v-arrow="{ speed1: '12s', color: 'white' }"
-      class="flex items-center justify-between border-y-[0.5px] border-webconf-gray px-20 py-10"
+      class="flex items-center justify-between border-y-[0.5px] border-webconf-gray/50 px-20 py-10"
     >
       <div class="flex items-start gap-4">
         <h2 class="text-center text-h4-60 font-bold">
@@ -65,15 +65,15 @@ const isHovered = ref(false)
           class="flex-1 border-x-[48px] border-y-[40px] border-black/50"
         ></div>
       </div>
+
+      <!-- 講者卡片 -->
       <div
         v-for="(speaker, index) in SPEAKERS"
         :key="speaker.name"
         :class="{
           'border-l-[0.5px]': index !== 0,
-          'border-r-[0.5px]':
-            index !== SPEAKERS.length - 1 && (index + 1) % 4 !== 0,
         }"
-        class="col-span-1 flex flex-col items-center justify-center border-y-[0.5px] border-webconf-gray px-12 py-10"
+        class="col-span-1 flex flex-col items-center justify-center px-12 py-10"
       >
         <HomeSpeakerCard
           :speakers="SPEAKERS"
