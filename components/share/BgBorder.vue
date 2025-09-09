@@ -1,7 +1,12 @@
 <script setup lang="ts">
 import type p5 from 'p5'
-import { nextTick, onMounted, onUnmounted, ref } from 'vue'
+import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useP5Sketch } from '~/composables/useP5'
+
+interface Props {
+  dvdDotSpeed?: number
+  dvdDotColors?: [string, string, string]
+}
 
 // 定義 DVD 方框屬性
 interface DVDBox {
@@ -13,6 +18,11 @@ interface DVDBox {
   color: string // 顏色
   colorIndex: number // 顏色索引
 }
+
+const props = withDefaults(defineProps<Props>(), {
+  dvdDotSpeed: 4,
+  dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'] as const,
+})
 
 const gridContainer = ref<HTMLElement | null>(null)
 const boxContainer = ref<HTMLElement | null>(null)
@@ -29,10 +39,6 @@ let bottomLayer: p5.Graphics // 下層藍網格緩衝
 let tempLayer: p5.Graphics // 臨時圖層（用於遮罩效果）
 let mx: number, my: number, tx: number, ty: number // 鼠標位置
 let r: number // flashlight 半徑
-let scrollY: number = 0 // 滾動偏移量
-let lastScrollY: number = 0 // 上次滾動位置
-let _isScrolling: boolean = false // 是否正在滾動
-let scrollTimeout: NodeJS.Timeout | null = null // 滾動結束偵測
 
 const defaultColors = {
   primary: '#4a90ff', // 方框預設顏色
@@ -40,10 +46,19 @@ const defaultColors = {
   bottomGrid: '#002EFF', // 下層藍網格顏色
 }
 
-const dvdDotColors = ['#2F2ADB', '#919191', '#E6E6E6']
 const dvdDotSize = 20
-const dvdDotSpeed = 4
 const headerOffset = 58 // 對應 h-[58px] 的高度偏移
+
+watch(
+  () => props.dvdDotSpeed,
+  (newSpped) => {
+    dvdDots.forEach((dot) => {
+      const speed = newSpped || 4
+      dot.vx = dot.vx < 0 ? -Math.abs(speed) : Math.abs(speed)
+      dot.vy = dot.vy < 0 ? -Math.abs(speed) : Math.abs(speed)
+    })
+  },
+)
 
 // p5 網格背景程式
 function gridSketch(p: p5) {
@@ -61,6 +76,8 @@ function gridSketch(p: p5) {
     const diff2 = ((p.windowWidth - 1440) / 100) * 0.2
     const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
     const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
+    const diff6 = ((p.windowWidth - 1440) / 100) * 0.6
+    const diff7 = ((p.windowWidth - 1440) / 100) * 0.7
 
     document.documentElement.style.setProperty('--grid-size', `${gridSize}px`)
     document.documentElement.style.setProperty('--grid-diff', diff.toString())
@@ -75,6 +92,14 @@ function gridSketch(p: p5) {
     document.documentElement.style.setProperty(
       '--grid-diff-4',
       diff4.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-6',
+      diff6.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-7',
+      diff7.toString(),
     )
 
     // 初始化 flashlight 參數
@@ -125,6 +150,8 @@ function gridSketch(p: p5) {
     const diff2 = ((p.windowWidth - 1440) / 100) * 0.18
     const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
     const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
+    const diff6 = ((p.windowWidth - 1440) / 100) * 0.6
+    const diff7 = ((p.windowWidth - 1440) / 100) * 0.7
 
     gridSizeRef.value = gridSize
 
@@ -141,6 +168,14 @@ function gridSketch(p: p5) {
     document.documentElement.style.setProperty(
       '--grid-diff-4',
       diff4.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-6',
+      diff6.toString(),
+    )
+    document.documentElement.style.setProperty(
+      '--grid-diff-7',
+      diff7.toString(),
     )
     // 重新初始化畫布和網格
     initializeLayers(p)
@@ -170,11 +205,7 @@ function gridSketch(p: p5) {
 // p5 方框動畫程式
 function boxSketch(p: p5) {
   p.setup = () => {
-    const contentHeight
-      = contentContainer.value?.scrollHeight || p.windowHeight
-    const canvasHeight = Math.max(p.windowHeight, contentHeight)
-
-    const canvas = p.createCanvas(p.windowWidth, canvasHeight)
+    const canvas = p.createCanvas(p.windowWidth, p.windowHeight)
     canvas.parent(boxContainer.value!)
     p.pixelDensity(1)
     canvas.id('dvdDotCanvas')
@@ -185,36 +216,11 @@ function boxSketch(p: p5) {
 
   p.draw = () => {
     p.clear()
-
-    // 更新滾動位置和檢測滾動狀態
-    scrollY = window.scrollY || 0
-
-    // 檢測是否正在滾動
-    if (scrollY !== lastScrollY) {
-      _isScrolling = true
-      lastScrollY = scrollY
-
-      // 清除之前的定時器
-      if (scrollTimeout) {
-        clearTimeout(scrollTimeout)
-      }
-
-      // 設定滾動結束檢測（100ms 沒有滾動就認為停止）
-      scrollTimeout = setTimeout(() => {
-        _isScrolling = false
-      }, 100)
-    }
-
-    // 不管是否滾動都繼續繪製方框
     updateAndDrawDVDDots(p)
   }
 
   p.windowResized = () => {
-    const contentHeight
-      = contentContainer.value?.scrollHeight || p.windowHeight
-    const canvasHeight = Math.max(p.windowHeight, contentHeight)
-
-    p.resizeCanvas(p.windowWidth, canvasHeight)
+    p.resizeCanvas(p.windowWidth, p.windowHeight)
   }
 }
 
@@ -254,14 +260,14 @@ function createDVDDots(p: p5) {
   const buffer = 20
   const minX = dvdDotSize / 2 + buffer
   const maxX = p.width - dvdDotSize / 2 - buffer
-  const minY = headerOffset + dvdDotSize / 2 + buffer // 避開 h-[58px] 區域
+  const minY = headerOffset + dvdDotSize / 2 + buffer
   const maxY = p.windowHeight - dvdDotSize / 2 - buffer
 
   dvdDots.push({
     x: p.random(minX, maxX),
     y: p.random(minY, maxY),
-    vx: dvdDotSpeed,
-    vy: dvdDotSpeed,
+    vx: props.dvdDotSpeed,
+    vy: props.dvdDotSpeed,
     size: dvdDotSize,
     color: defaultColors.primary,
     colorIndex: 0,
@@ -295,7 +301,6 @@ function drawGrid(
 // 更新和繪製 DVD 點
 function updateAndDrawDVDDots(p: p5) {
   const buffer = 20
-  const currentScrollY = window.scrollY || 0
 
   dvdDots.forEach((dot) => {
     // 先更新位置
@@ -305,33 +310,32 @@ function updateAndDrawDVDDots(p: p5) {
     // 邊界檢測，使用當前視窗的可見區域
     const minX = dot.size / 2 + buffer
     const maxX = p.width - dot.size / 2 - buffer
-    const topBoundary = currentScrollY + headerOffset + dot.size / 2 + buffer
-    const bottomBoundary
-      = currentScrollY + p.windowHeight - dot.size / 2 - buffer
+    const topBoundary = headerOffset + dot.size / 2 + buffer
+    const bottomBoundary = p.windowHeight - dot.size / 2 - buffer
 
     if (dot.x <= minX) {
       dot.x = minX
       dot.vx = Math.abs(dot.vx)
-      dot.colorIndex = (dot.colorIndex + 1) % dvdDotColors.length
-      dot.color = dvdDotColors[dot.colorIndex]
+      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
+      dot.color = props.dvdDotColors[dot.colorIndex]
     }
     if (dot.x >= maxX) {
       dot.x = maxX
       dot.vx = -Math.abs(dot.vx)
-      dot.colorIndex = (dot.colorIndex + 1) % dvdDotColors.length
-      dot.color = dvdDotColors[dot.colorIndex]
+      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
+      dot.color = props.dvdDotColors[dot.colorIndex]
     }
     if (dot.y <= topBoundary) {
       dot.y = topBoundary
       dot.vy = Math.abs(dot.vy)
-      dot.colorIndex = (dot.colorIndex + 1) % dvdDotColors.length
-      dot.color = dvdDotColors[dot.colorIndex]
+      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
+      dot.color = props.dvdDotColors[dot.colorIndex]
     }
     if (dot.y >= bottomBoundary) {
       dot.y = bottomBoundary
       dot.vy = -Math.abs(dot.vy)
-      dot.colorIndex = (dot.colorIndex + 1) % dvdDotColors.length
-      dot.color = dvdDotColors[dot.colorIndex]
+      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
+      dot.color = props.dvdDotColors[dot.colorIndex]
     }
 
     drawGlowingBox(p, dot.x, dot.y, dot.size, dot.color)
@@ -415,9 +419,6 @@ onUnmounted(() => {
   if (resizeTimeout) {
     clearTimeout(resizeTimeout)
   }
-  if (scrollTimeout) {
-    clearTimeout(scrollTimeout)
-  }
 
   document.documentElement.style.removeProperty('--grid-size')
   gridP5Sketch.destroySketch()
@@ -433,6 +434,9 @@ onUnmounted(() => {
       class="fixed inset-0 z-[1] size-full"
     ></div>
 
+    <!-- 浮動方塊特效 -->
+    <ShareFloatingBlocks />
+
     <!-- 內容層 (圖片等) -->
     <div
       ref="contentContainer"
@@ -444,7 +448,7 @@ onUnmounted(() => {
     <!-- 方框層 (最上層) -->
     <div
       ref="boxContainer"
-      class="pointer-events-none absolute inset-0 z-[50] size-full overflow-hidden"
+      class="pointer-events-none fixed inset-0 z-[50] size-full"
     ></div>
   </div>
 </template>

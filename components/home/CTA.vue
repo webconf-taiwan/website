@@ -35,14 +35,16 @@ onMounted(() => {
       class="cta-section grid aspect-[2/1] place-content-center overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black"
     >
       <div ref="ctaCard">
-        <ShareGradientDotsCard class="w-[45vw]">
-          <div class="text-center">
+        <ShareGradientDotsCard
+          class="text-center sm:max-w-[447px] lg:max-w-[647px]"
+        >
+          <div class="flex flex-col items-center">
             <div class="pic px-[59.42px] pb-10">
               <NuxtImg
                 src="/images/CTATitleLogo.png"
                 alt="2025 webconf CTA"
-                :width="409"
-                :height="60"
+                width="409"
+                height="60"
               />
             </div>
             <p class="pb-[60px] text-left text-body-16 text-white">

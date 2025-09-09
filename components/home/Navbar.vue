@@ -13,9 +13,7 @@ const NAV_ITEMS = [
   <header
     class="sticky top-0 z-50 w-full border-b border-b-webconf-gray bg-black"
   >
-    <div
-      class="container flex items-center justify-between px-16 sm:px-12 lg:px-20"
-    >
+    <div class="container flex items-center justify-between sm:px-12 lg:px-20">
       <h1 v-cursor="{ scale: 0.4, duration: 0.5 }">
         <span class="sr-only">2025 WebConf</span>
         <NuxtLink
@@ -27,8 +25,8 @@ const NAV_ITEMS = [
             src="/images/headerLogo.png"
             alt="2025 WebConf"
             format="webp"
-            :width="191"
-            :height="28"
+            width="191"
+            height="28"
             class="opacity-100 transition-opacity duration-500 group-hover:opacity-0"
           />
           <!-- hover logo -->
@@ -36,8 +34,8 @@ const NAV_ITEMS = [
             src="/images/headerLogoHover.png"
             alt="2025 WebConf"
             format="webp"
-            :width="191"
-            :height="28"
+            width="191"
+            height="28"
             class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 2xl:w-[191px]"
           />
         </NuxtLink>

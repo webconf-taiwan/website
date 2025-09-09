@@ -17,7 +17,7 @@ const SOCIAL_ITEMS = [
       class="main-footer relative border-t-[0.5px] border-webconf-gray/50 bg-black"
     >
       <div
-        class="container relative flex items-end justify-between px-16 pb-[60px] pt-[100px] text-white sm:px-12 lg:px-20"
+        class="container relative flex items-end justify-between pb-[60px] pt-[100px] text-white sm:px-12 lg:px-20"
       >
         <ShareScrollToTopButton class="right-20 top-[100px]" />
         <div
@@ -33,8 +33,8 @@ const SOCIAL_ITEMS = [
               src="/images/footerLogo.png"
               alt="2025 WebConf"
               format="webp"
-              :width="280"
-              :height="106"
+              width="280"
+              height="106"
               class="opacity-100 transition-opacity duration-500 group-hover:opacity-0"
             />
             <!-- hover logo -->
@@ -42,8 +42,8 @@ const SOCIAL_ITEMS = [
               src="/images/footerLogoHover.png"
               alt="2025 WebConf"
               format="webp"
-              :width="280"
-              :height="106"
+              width="280"
+              height="106"
               class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
             />
           </NuxtLink>
