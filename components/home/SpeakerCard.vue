@@ -153,7 +153,15 @@ watch(
 </script>
 
 <template>
-  <div class="relative w-full max-w-full overflow-hidden">
+  <div
+    v-cursor="{
+      scale: 5,
+      duration: 0.5,
+      backgroundColor: 'rgba(0, 46, 255, 0.9)',
+      text: 'VIEW',
+    }"
+    class="relative w-full max-w-full overflow-hidden"
+  >
     <div
       ref="cardContainer"
       class="flex w-[200%]"

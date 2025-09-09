@@ -100,12 +100,24 @@ function handlePrev() {
 
       <!-- 輪播按鈕 -->
       <button
+        v-cursor="{
+          scale: 2,
+          duration: 0.5,
+          backgroundColor: 'rgba(0, 46, 255, 0.9)',
+          text: '⭠',
+        }"
         type="button"
         class="absolute left-0 top-0 h-full w-20"
         @click="handleNext"
       ></button>
 
       <button
+        v-cursor="{
+          scale: 2,
+          duration: 0.5,
+          backgroundColor: 'rgba(0, 46, 255, 0.9)',
+          text: '⭢',
+        }"
         type="button"
         class="absolute right-0 top-0 h-full w-20"
         @click="handlePrev"
