@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useGsap } from '~/composables/useGsap'
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
 const gsap = useGsap()
 
 // 當前顯示的講者索引
@@ -44,16 +45,12 @@ function slideToNext() {
   // 創建時間軸動畫
   const timeline = gsap.timeline({
     onComplete: () => {
-      // 動畫完成後更新索引
       currentIndex.value = getNextIndex()
-      // 等待 Vue 響應式更新完成後再重置位置
-      nextTick(() => {
-        if (cardContainer.value) {
-          gsap.set(cardContainer.value, { x: 0 })
-        }
-        isAnimating.value = false // 動畫結束
-        startSliding() // 動畫結束後重新啟動定時器
-      })
+      if (cardContainer.value) {
+        gsap.set(cardContainer.value, { x: 0 })
+      }
+      isAnimating.value = false // 動畫結束
+      startSliding() // 動畫結束後重新啟動定時器
     },
   })
 
@@ -62,8 +59,8 @@ function slideToNext() {
     x: '-50%',
     duration: 1,
     ease: 'power2.inOut',
-    force3D: true, // 強制使用 GPU 加速
-    willChange: 'transform', // 提示瀏覽器優化
+    force3D: true,
+    willChange: 'transform',
   })
 }
 
@@ -110,7 +107,7 @@ watch(
 </script>
 
 <template>
-  <div class="relative overflow-hidden">
+  <div class="relative w-full max-w-full overflow-hidden">
     <div
       ref="cardContainer"
       class="flex w-[200%]"
