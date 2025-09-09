@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useGsap } from '~/composables/useGsap'
 
 interface Props {
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const props = defineProps<Props>()
+
 const gsap = useGsap()
 
 // 當前顯示的講者索引
@@ -41,19 +42,18 @@ function slideToNext() {
 
   isAnimating.value = true // 動畫開始
 
+  // 停止自動輪播
+  stopSliding()
+
   // 創建時間軸動畫
   const timeline = gsap.timeline({
     onComplete: () => {
-      // 動畫完成後更新索引
       currentIndex.value = getNextIndex()
-      // 等待 Vue 響應式更新完成後再重置位置
-      nextTick(() => {
-        if (cardContainer.value) {
-          gsap.set(cardContainer.value, { x: 0 })
-        }
-        isAnimating.value = false // 動畫結束
-        startSliding() // 動畫結束後重新啟動定時器
-      })
+      if (cardContainer.value) {
+        gsap.set(cardContainer.value, { x: 0 })
+      }
+      isAnimating.value = false // 動畫結束
+      startSliding() // 動畫結束後重新啟動定時器
     },
   })
 
@@ -62,8 +62,45 @@ function slideToNext() {
     x: '-50%',
     duration: 1,
     ease: 'power2.inOut',
-    force3D: true, // 強制使用 GPU 加速
-    willChange: 'transform', // 提示瀏覽器優化
+    force3D: true,
+    willChange: 'transform',
+  })
+}
+
+// 執行滑動切換動畫 (向前)
+function slideToPrev() {
+  if (!cardContainer.value || isAnimating.value) {
+    return // 如果正在動畫中，則不觸發新的動畫
+  }
+
+  isAnimating.value = true // 動畫開始
+
+  // 停止自動輪播
+  stopSliding()
+
+  // 設定卡片容器的初始位置為 -50%，以顯示前一張卡片
+  gsap.set(cardContainer.value, { x: '-50%' })
+  currentIndex.value
+    = (currentIndex.value - 1 + props.speakers.length) % props.speakers.length
+
+  // 創建時間軸動畫
+  const timeline = gsap.timeline({
+    onComplete: () => {
+      if (cardContainer.value) {
+        gsap.set(cardContainer.value, { x: 0 })
+      }
+      isAnimating.value = false // 動畫結束
+      startSliding() // 動畫結束後重新啟動定時器
+    },
+  })
+
+  // 向右滑動到當前卡片位置
+  timeline.to(cardContainer.value, {
+    x: 0,
+    duration: 1,
+    ease: 'power2.inOut',
+    force3D: true,
+    willChange: 'transform',
   })
 }
 
@@ -95,6 +132,12 @@ onUnmounted(() => {
   stopSliding()
 })
 
+// 暴露函式給父元件
+defineExpose({
+  slideToNext,
+  slideToPrev,
+})
+
 // 監聽 isParentHovered 變化
 watch(
   () => props.isParentHovered,
@@ -110,7 +153,15 @@ watch(
 </script>
 
 <template>
-  <div class="relative overflow-hidden">
+  <div
+    v-cursor="{
+      scale: 5,
+      duration: 0.5,
+      backgroundColor: 'rgba(0, 46, 255, 0.9)',
+      text: 'VIEW',
+    }"
+    class="relative w-full max-w-full overflow-hidden"
+  >
     <div
       ref="cardContainer"
       class="flex w-[200%]"
