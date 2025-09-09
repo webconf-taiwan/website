@@ -13,35 +13,37 @@ const gsap = useGsap()
 // 當前顯示的講者索引
 const currentIndex = ref(props.originalIndex)
 
-// 容器和滑動元素的 ref
+// 卡片容器的 ref
 const cardContainer = ref<HTMLDivElement>()
-const cardSlider = ref<HTMLDivElement>()
 
 // 計算下一個索引
 function getNextIndex() {
   return (currentIndex.value + 1) % props.speakers.length
 }
 
-// 計算當前講者
+// 當前講者和下一位講者
 const currentSpeaker = computed(() => props.speakers[currentIndex.value])
 const nextSpeaker = computed(() => props.speakers[getNextIndex()])
 
-// 執行滑動動畫
+// 執行滑動切換動畫
 function slideToNext() {
-  if (!cardSlider.value) {
+  if (!cardContainer.value) {
     return
   }
 
+  // 創建時間軸動畫
   const timeline = gsap.timeline({
     onComplete: () => {
       // 動畫完成後更新索引並重置位置
       currentIndex.value = getNextIndex()
-      gsap.set(cardSlider.value, { x: 0 })
+      if (cardContainer.value) {
+        gsap.set(cardContainer.value, { x: 0 })
+      }
     },
   })
 
-  // 滑動動畫：向左滑動一個卡片的寬度
-  timeline.to(cardSlider.value, {
+  // 向左滑動到下一張卡片位置
+  timeline.to(cardContainer.value, {
     x: '-50%',
     duration: 1,
     ease: 'power2.inOut',
@@ -52,7 +54,7 @@ function slideToNext() {
 let intervalId: NodeJS.Timeout | null = null
 
 onMounted(() => {
-  // 每 3 秒自動滑動到下一張
+  // 每 3 秒自動切換到下一張
   intervalId = setInterval(slideToNext, 3000)
 })
 
@@ -64,12 +66,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div
-    ref="cardContainer"
-    class="relative overflow-hidden"
-  >
+  <div class="relative overflow-hidden">
     <div
-      ref="cardSlider"
+      ref="cardContainer"
       class="flex w-[200%]"
     >
       <!-- 當前講者卡片 -->
@@ -117,7 +116,7 @@ onUnmounted(() => {
         </h3>
       </div>
 
-      <!-- 下一張講者卡片（用於動畫） -->
+      <!-- 下一張講者卡片 -->
       <div class="w-1/2 shrink-0">
         <div class="group relative">
           <NuxtImg

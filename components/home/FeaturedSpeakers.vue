@@ -45,16 +45,16 @@ const SPEAKERS = [
     </div>
 
     <!-- 講者輪播 -->
-    <div
-      v-arrow="{ speed1: '10s', color: 'white' }"
-      class="relative mx-auto grid max-w-[1440px] grid-cols-4"
-    >
+    <div class="relative mx-auto grid max-w-[1440px] grid-cols-4">
       <!-- 窗框 -->
-      <div class="absolute inset-0 flex w-full">
+      <div
+        v-arrow="{ speed1: '10s', color: 'white' }"
+        class="absolute inset-0 flex w-full"
+      >
         <div
           v-for="i in 4"
           :key="i"
-          class="flex-1 border-x-[48px] border-y-[40px]"
+          class="flex-1 border-x-[48px] border-y-[40px] border-black/50"
         ></div>
       </div>
       <div
@@ -65,7 +65,7 @@ const SPEAKERS = [
           'border-r-[0.5px]':
             index !== SPEAKERS.length - 1 && (index + 1) % 4 !== 0,
         }"
-        class="col-span-1 flex flex-col items-center justify-center border-y-[0.5px] border-webconf-gray/50 px-12 py-10"
+        class="col-span-1 flex flex-col items-center justify-center border-y-[0.5px] border-webconf-gray px-12 py-10"
       >
         <HomeSpeakerCard
           :speakers="SPEAKERS"
