@@ -1,10 +1,14 @@
 <script setup lang="ts">
+import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { useGsap } from '~/composables/useGsap'
+
 interface Props {
   originalIndex: number
   speakers: {
     name: string
     src: string
   }[]
+  isParentHovered?: boolean // 新增 prop
 }
 
 const props = defineProps<Props>()
@@ -15,6 +19,10 @@ const currentIndex = ref(props.originalIndex)
 
 // 卡片容器的 ref
 const cardContainer = ref<HTMLDivElement>()
+
+// 追蹤動畫狀態
+const isAnimating = ref(false)
+let slideInterval: NodeJS.Timeout | null = null
 
 // 計算下一個索引
 function getNextIndex() {
@@ -27,18 +35,25 @@ const nextSpeaker = computed(() => props.speakers[getNextIndex()])
 
 // 執行滑動切換動畫
 function slideToNext() {
-  if (!cardContainer.value) {
-    return
+  if (!cardContainer.value || isAnimating.value) {
+    return // 如果正在動畫中，則不觸發新的動畫
   }
+
+  isAnimating.value = true // 動畫開始
 
   // 創建時間軸動畫
   const timeline = gsap.timeline({
     onComplete: () => {
-      // 動畫完成後更新索引並重置位置
+      // 動畫完成後更新索引
       currentIndex.value = getNextIndex()
-      if (cardContainer.value) {
-        gsap.set(cardContainer.value, { x: 0 })
-      }
+      // 等待 Vue 響應式更新完成後再重置位置
+      nextTick(() => {
+        if (cardContainer.value) {
+          gsap.set(cardContainer.value, { x: 0 })
+        }
+        isAnimating.value = false // 動畫結束
+        startSliding() // 動畫結束後重新啟動定時器
+      })
     },
   })
 
@@ -47,22 +62,51 @@ function slideToNext() {
     x: '-50%',
     duration: 1,
     ease: 'power2.inOut',
+    force3D: true, // 強制使用 GPU 加速
+    willChange: 'transform', // 提示瀏覽器優化
   })
 }
 
-// 設置定時器
-let intervalId: NodeJS.Timeout | null = null
+// 控制自動滑動的函數
+function startSliding() {
+  if (slideInterval) {
+    clearInterval(slideInterval)
+  }
+  slideInterval = setInterval(() => {
+    // 只有在父元件沒有 hover 且沒有動畫時才觸發
+    if (!props.isParentHovered && !isAnimating.value) {
+      slideToNext()
+    }
+  }, 3000)
+}
+
+function stopSliding() {
+  if (slideInterval) {
+    clearInterval(slideInterval)
+    slideInterval = null
+  }
+}
 
 onMounted(() => {
-  // 每 3 秒自動切換到下一張
-  intervalId = setInterval(slideToNext, 3000)
+  startSliding()
 })
 
 onUnmounted(() => {
-  if (intervalId) {
-    clearInterval(intervalId)
-  }
+  stopSliding()
 })
+
+// 監聽 isParentHovered 變化
+watch(
+  () => props.isParentHovered,
+  (newVal) => {
+    if (newVal) {
+      stopSliding()
+    }
+    else {
+      startSliding()
+    }
+  },
+)
 </script>
 
 <template>
@@ -70,6 +114,7 @@ onUnmounted(() => {
     <div
       ref="cardContainer"
       class="flex w-[200%]"
+      style="will-change: transform; transform: translateZ(0)"
     >
       <!-- 當前講者卡片 -->
       <div class="w-1/2 shrink-0">

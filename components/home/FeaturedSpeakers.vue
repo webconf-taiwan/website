@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const SPEAKERS = [
   {
     name: '李建杭 AMOS',
@@ -17,6 +19,8 @@ const SPEAKERS = [
     src: '/images/featuredSpeaker_Milk.png',
   },
 ]
+
+const isHovered = ref(false)
 </script>
 
 <template>
@@ -45,7 +49,11 @@ const SPEAKERS = [
     </div>
 
     <!-- 講者輪播 -->
-    <div class="relative mx-auto grid max-w-[1440px] grid-cols-4">
+    <div
+      class="relative mx-auto grid max-w-[1440px] grid-cols-4"
+      @mouseover="isHovered = true"
+      @mouseleave="isHovered = false"
+    >
       <!-- 窗框 -->
       <div
         v-arrow="{ speed1: '10s', color: 'white' }"
@@ -70,6 +78,7 @@ const SPEAKERS = [
         <HomeSpeakerCard
           :speakers="SPEAKERS"
           :original-index="index"
+          :is-parent-hovered="isHovered"
         />
       </div>
     </div>
