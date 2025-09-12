@@ -12,7 +12,7 @@ const CursorDemo = {
   template: `
     <div class="h-screen w-full bg-red-400 cursor-none p-8">
       <CursorDot />
-      <div class="grid grid-cols-3 gap-4">
+      <div class="grid grid-cols-4 gap-4">
         <!-- 無文字效果 -->
         <div
           v-cursor="{ scale: 0.4, duration: 0.5, backgroundColor: 'rgba(0, 46, 255, 0.9)' }"
@@ -27,6 +27,14 @@ const CursorDemo = {
           class="bg-green-500 text-white px-6 py-3 rounded-lg text-center"
         >
           Hover me (With Text)
+        </div>
+
+        <!-- 箭頭特化效果 -->
+        <div
+          v-cursor="{ scale: 5, duration: 0.5, backgroundColor: 'rgba(0, 46, 255, 0.9)', text: 'arrow-right' }"
+          class="bg-purple-500 text-white px-6 py-3 rounded-lg text-center"
+        >
+          Hover me (With arrow)
         </div>
 
          <!-- 自由調整參數區域 -->
