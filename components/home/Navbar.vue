@@ -22,7 +22,7 @@ const NAV_ITEMS = [
         >
           <!-- default logo -->
           <NuxtImg
-            src="/images/headerLogo.png"
+            src="/images/headerLogo.webp"
             alt="2025 WebConf"
             format="webp"
             width="191"
@@ -31,7 +31,7 @@ const NAV_ITEMS = [
           />
           <!-- hover logo -->
           <NuxtImg
-            src="/images/headerLogoHover.png"
+            src="/images/headerLogoHover.webp"
             alt="2025 WebConf"
             format="webp"
             width="191"

@@ -2,15 +2,15 @@
 const ORGANIZERS = [
   {
     name: '五倍學院',
-    logo: '/images/5xcampus.png',
+    logo: '/images/5xcampus.webp',
   },
   {
     name: '六角學院',
-    logo: '/images/hexschool.png',
+    logo: '/images/hexschool.webp',
   },
   {
     name: '悠識學院',
-    logo: '/images/userxper.png',
+    logo: '/images/userxper.webp',
   },
 ]
 </script>

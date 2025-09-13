@@ -32,7 +32,7 @@
       <div class="absolute right-[60px] top-[54%] -translate-y-1/2 text-right">
         <div class="flex flex-col items-end gap-[52px] px-[52px]">
           <NuxtImg
-            src="/images/heroLogo.png"
+            src="/images/heroLogo.webp"
             alt="2025 WebConf Logo"
             format="webp"
             width="570"
@@ -40,7 +40,7 @@
             class="mr-[86px] lg:w-[570px]"
           />
           <NuxtImg
-            src="/images/heroTitle.png"
+            src="/images/heroTitle.webp"
             alt="Connecting the Web to a Sustainable Future"
             format="webp"
             width="527"
@@ -61,7 +61,7 @@
 
 <style>
 .hero-section {
-  background: url("/images/heroBg.png");
+  background: url("/images/heroBg.webp");
   background-repeat: no-repeat;
   background-position: center -60px;
   background-size: cover;
