@@ -34,6 +34,7 @@
           src="/images/venueBg.png"
           width="793"
           height="536"
+          format="webp"
           class="w-full translate-y-[-10px] object-cover"
         />
         <div class="absolute left-10 top-8 w-fit">
@@ -51,6 +52,7 @@
         </p>
         <NuxtImg
           src="/images/venueCompass.png"
+          format="webp"
           width="161"
           height="117"
           class="absolute right-0 top-12"
@@ -62,14 +64,18 @@
       >
         <div class="flex flex-col items-start">
           <div class="mb-8 flex items-start gap-8 text-white">
-            <ShareTag>搭乘捷運</ShareTag>
+            <ShareTag class="my-2">
+              搭乘捷運
+            </ShareTag>
             <p class="flex-1 text-body-18">
               捷運南港站 1A
               出口，步行至連通道至台鐵/高鐵北門出站，經市民大道向西步行約 5 分鐘
             </p>
           </div>
           <div class="mb-[60px] flex items-start gap-8 text-white">
-            <ShareTag>搭乘火車</ShareTag>
+            <ShareTag class="my-2">
+              搭乘火車
+            </ShareTag>
             <p class="flex-1 text-body-18">
               搭乘至南港火車站的北門出站，經市民大道向西步行約 5 分鐘
             </p>

@@ -59,11 +59,5 @@ onMounted(() => {
       data-cursor-text
       class="relative z-10 text-btn-14 text-white"
     ></div>
-    <!-- <Icon
-      data-cursor-icon
-      name="heroicons:arrow-long-right"
-      size="50"
-      class="scale-0 bg-black"
-    /> -->
   </div>
 </template>

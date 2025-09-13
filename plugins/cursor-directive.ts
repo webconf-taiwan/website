@@ -1,8 +1,11 @@
+type IconPosition = 'arrow-left' | 'arrow-right'
+
 interface CursorOptions {
   scale?: number
   duration?: number
   backgroundColor?: string
   text?: string | null
+  icon?: IconPosition | null
 }
 
 interface CursorBinding {
@@ -24,9 +27,81 @@ const DEFAULT_OPTIONS = {
   duration: 0.3,
   backgroundColor: '#E6E6E6',
   text: null,
+  icon: null,
 } as const
 
-export default defineNuxtPlugin((nuxtApp) => {
+// SVG 快取
+const svgCache = new Map<IconPosition, string>()
+
+// 異步載入 SVG 檔案
+async function loadSvg(iconName: IconPosition): Promise<string> {
+  if (svgCache.has(iconName)) {
+    return svgCache.get(iconName)!
+  }
+
+  try {
+    const response = await fetch(`/images/icon/${iconName}.svg`)
+    if (!response.ok) {
+      throw new Error(`Failed to load SVG: ${iconName}`)
+    }
+
+    let svgContent = await response.text()
+
+    svgContent = svgContent
+      .replace('<svg', '<svg class="size-6 text-white"')
+
+    svgCache.set(iconName, svgContent)
+    return svgContent
+  }
+  catch (error) {
+    console.warn(`Failed to load icon ${iconName}:`, error)
+    return getFallbackIcon(iconName)
+  }
+}
+
+function getFallbackIcon(iconName: IconPosition): string {
+  const fallbacks = {
+    'arrow-left': '<span class="inline-block text-white">←</span>',
+    'arrow-right': '<span class="inline-block text-white">→</span>',
+  }
+  return fallbacks[iconName]
+}
+
+// 掛載 Icon
+async function mountIcon(target: Element, iconName: IconPosition) {
+  if (!target)
+    return
+
+  // 清空現有內容
+  target.innerHTML = ''
+
+  try {
+    const svgContent = await loadSvg(iconName)
+    if (svgContent) {
+      target.innerHTML = svgContent
+    }
+  }
+  catch (error) {
+    console.warn('Error mounting icon:', error)
+    target.innerHTML = getFallbackIcon(iconName)
+  }
+}
+
+// 卸載 Icon
+function unmountIcon(target: Element) {
+  if (target) {
+    target.innerHTML = ''
+  }
+}
+
+export default defineNuxtPlugin(async (nuxtApp) => {
+  if (import.meta.client) {
+    const commonIcons: IconPosition[] = ['arrow-left', 'arrow-right']
+    await Promise.allSettled(
+      commonIcons.map(icon => loadSvg(icon)),
+    )
+  }
+
   // 快取 DOM 元素和 GSAP 實例
   let cachedElements: {
     cursor?: Element | null
@@ -57,18 +132,21 @@ export default defineNuxtPlugin((nuxtApp) => {
   }
 
   // 動畫控制函數
-  function animateCursor(
+  async function animateCursor(
     scale: number,
     backgroundColor: string,
     duration: number,
-    textOpacity: number = 0,
+    showContent: boolean = false,
     text?: string | null,
+    icon?: IconPosition | null,
   ) {
     const elements = getCachedElements()
     const gsap = getGsapInstance()
 
-    if (!elements.inner || !gsap)
+    if (!elements.inner || !gsap || !elements.text)
       return
+
+    gsap.killTweensOf([elements.inner, elements.text])
 
     // 游標內部動畫
     gsap.to(elements.inner, {
@@ -78,26 +156,43 @@ export default defineNuxtPlugin((nuxtApp) => {
       ease: 'power2.out',
     })
 
-    // 文字動畫
-    if (text && elements.text) {
-      if (textOpacity > 0) {
+    if (showContent && (text || icon)) {
+      if (icon) {
+        await mountIcon(elements.text, icon)
+      }
+      else if (text) {
+        unmountIcon(elements.text)
         elements.text.textContent = text
       }
 
+      // 顯示內容動畫
       gsap.to(elements.text, {
-        opacity: textOpacity,
+        opacity: 1,
         duration,
         ease: 'power2.out',
+      })
+    }
+    else {
+      // 隱藏動畫
+      gsap.to(elements.text, {
+        opacity: 0,
+        duration,
+        ease: 'power2.out',
+        onComplete: () => {
+          // 動畫完成後清空內容
+          unmountIcon(elements.text!)
+          elements.text!.textContent = ''
+        },
       })
     }
   }
 
   function setupCursorEvents(el: CursorElement, binding: CursorBinding) {
     const options = { ...DEFAULT_OPTIONS, ...binding.value }
-    const { scale, duration, backgroundColor, text } = options
+    const { scale, duration, backgroundColor, text, icon } = options
 
     const handleMouseEnter = () => {
-      animateCursor(scale, backgroundColor, duration, text ? 1 : 0, text)
+      animateCursor(scale, backgroundColor, duration, true, text, icon)
     }
 
     const handleMouseLeave = () => {
@@ -105,8 +200,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         DEFAULT_OPTIONS.scale,
         DEFAULT_OPTIONS.backgroundColor,
         duration,
-        0,
+        false,
         text,
+        icon,
       )
     }
 
