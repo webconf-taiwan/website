@@ -8,6 +8,7 @@ const CursorDemo = {
     duration: { type: Number, default: 0.5 },
     backgroundColor: { type: String, default: 'white' },
     text: { type: String, default: null },
+    icon: { type: String, default: null },
   },
   template: `
     <div class="h-screen w-full bg-red-400 cursor-none p-8">
@@ -31,7 +32,7 @@ const CursorDemo = {
 
         <!-- 箭頭特化效果 -->
         <div
-          v-cursor="{ scale: 5, duration: 0.5, backgroundColor: 'rgba(0, 46, 255, 0.9)', text: 'arrow-right' }"
+          v-cursor="{ scale: 3, duration: 0.5, backgroundColor: 'rgba(0, 46, 255, 0.9)', icon: 'arrow-right' }"
           class="bg-purple-500 text-white px-6 py-3 rounded-lg text-center"
         >
           Hover me (With arrow)
@@ -39,7 +40,7 @@ const CursorDemo = {
 
          <!-- 自由調整參數區域 -->
         <div
-          v-cursor="{ scale: scale, duration: duration, backgroundColor: backgroundColor, text: text }"
+          v-cursor="{ scale, duration, backgroundColor, text, icon }"
           class="bg-yellow-500 text-white px-6 py-3 rounded-lg text-center"
         >
           Hover me (可根據參數改動)
@@ -65,6 +66,10 @@ export default {
     text: {
       control: { type: 'text' },
     },
+    icon: {
+      control: { type: 'select' },
+      options: ['arrow-left', 'arrow-right', null],
+    },
   },
 }
 
@@ -74,5 +79,6 @@ export const Playground = {
     duration: 0.3,
     backgroundColor: '#ccc',
     text: 'Hover',
+    icon: null,
   },
 }

@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { NuxtImg, ShareGradientDotsCard, ShareLinkButton } from '#components'
-
 const ctaCard = ref(null)
 const ctaContainer = ref(null)
 const gsap = useGsap()
@@ -41,8 +39,9 @@ onMounted(() => {
           <div class="flex flex-col items-center">
             <div class="pic px-[59.42px] pb-10">
               <NuxtImg
-                src="/images/CTATitleLogo.png"
+                src="/images/CTATitleLogo.webp"
                 alt="2025 webconf CTA"
+                format="webp"
                 width="409"
                 height="60"
               />
@@ -63,7 +62,7 @@ onMounted(() => {
 
 <style>
 .cta-section {
-  background-image: url("/images/CTABg.png");
+  background-image: url("/images/CTABg.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
