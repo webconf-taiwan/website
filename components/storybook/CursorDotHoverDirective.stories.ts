@@ -32,7 +32,7 @@ const CursorDemo = {
 
         <!-- 箭頭特化效果 -->
         <div
-          v-cursor="{ scale: 3, duration: 0.5, backgroundColor: 'rgba(0, 46, 255, 0.9)', icon: 'arrow-left' }"
+          v-cursor="{ scale: 3, duration: 0.5, backgroundColor: 'rgba(0, 46, 255, 0.9)', icon: 'arrow-right' }"
           class="bg-purple-500 text-white px-6 py-3 rounded-lg text-center"
         >
           Hover me (With arrow)

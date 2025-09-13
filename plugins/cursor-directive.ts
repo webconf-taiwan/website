@@ -233,7 +233,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     updated(el: CursorElement, binding: CursorBinding) {
       // 清理舊的事件監聽器
       el._cursorCleanup?.()
-
       // 重新設置事件
       setupCursorEvents(el, binding)
     },
