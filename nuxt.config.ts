@@ -1,3 +1,4 @@
+import { visualizer } from 'rollup-plugin-visualizer'
 import { ogImage, site } from './config/seo.config'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
@@ -18,6 +19,10 @@ export default defineNuxtConfig({
     'nuxt-marquee',
   ],
   css: ['@/assets/css/main.css'],
+
+  features: {
+    inlineStyles: false,
+  },
 
   // Google Fonts 設定
   fonts: {
@@ -59,14 +64,28 @@ export default defineNuxtConfig({
         output: {
           manualChunks: {
             'gsap': ['gsap'],
-            'lottie': ['lottie-web'],
             'lenis': ['lenis'],
+            'p5-vendor': ['p5'],
             'vue-vendor': ['vue', 'vue-router'],
           },
         },
       },
       chunkSizeWarningLimit: 1000,
     },
+    optimizeDeps: {
+      exclude: ['lottie-web'],
+    },
+    plugins: process.env.NODE_ENV === 'production'
+      ? [
+          visualizer({
+            filename: 'stats/client.html',
+            template: 'treemap',
+            gzipSize: true,
+            brotliSize: true,
+            open: true,
+          }) as any,
+        ]
+      : [],
   },
 
   postcss: {
@@ -78,6 +97,13 @@ export default defineNuxtConfig({
           preset: 'default',
         },
       }),
+    },
+  },
+
+  nitro: {
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true,
     },
   },
 

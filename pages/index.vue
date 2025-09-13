@@ -3,7 +3,7 @@
     <HomeNavbar />
     <HomeHero />
     <HomeAbout />
-    <HomeFeaturedSpeakers />
+    <!-- <HomeFeaturedSpeakers /> -->
     <HomeVenue />
     <HomeOrganizersMarquee />
     <HomeCTA />
