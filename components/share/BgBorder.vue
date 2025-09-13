@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import type p5 from 'p5'
-import { nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useP5Sketch } from '~/composables/useP5'
 
 interface Props {
   dvdDotSpeed?: number
@@ -60,6 +58,84 @@ watch(
   },
 )
 
+function setCSSVariables(p: p5) {
+  const diff = ((p.windowWidth - 1440) / 100) * 0.8
+  const diff2 = ((p.windowWidth - 1440) / 100) * 0.2
+  const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
+  const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
+  const diff6 = ((p.windowWidth - 1440) / 100) * 0.6
+  const diff7 = ((p.windowWidth - 1440) / 100) * 0.7
+
+  const cssUpdates = [
+    ['--grid-size', `${gridSize}px`],
+    ['--grid-diff', diff.toString()],
+    ['--grid-diff-2', diff2.toString()],
+    ['--grid-diff-3', diff3.toString()],
+    ['--grid-diff-4', diff4.toString()],
+    ['--grid-diff-6', diff6.toString()],
+    ['--grid-diff-7', diff7.toString()],
+  ] as const
+
+  requestAnimationFrame(() => {
+    cssUpdates.forEach(([property, value]) => {
+      document.documentElement.style.setProperty(property, value)
+    })
+  })
+}
+
+function drawGrid(
+  p: p5,
+  pg: p5.Graphics,
+  lineCol: p5.Color,
+  alpha: number = 1.0,
+) {
+  pg.background(0)
+
+  const r = p.red(lineCol)
+  const g = p.green(lineCol)
+  const b = p.blue(lineCol)
+  pg.stroke(r, g, b, alpha * 255)
+  pg.strokeWeight(2)
+
+  // 繪製垂直線
+  for (let x = 0; x < pg.width; x += gridSize) {
+    pg.line(x, 0, x, pg.height)
+  }
+
+  // 繪製水平線
+  for (let y = 0; y < pg.height; y += gridSize) {
+    pg.line(0, y, pg.width, y)
+  }
+}
+
+// 圖層初始化函數
+function initializeLayersSync(p: p5) {
+  // 清理舊的 Graphics 對象
+  if (topLayer)
+    topLayer.remove()
+  if (bottomLayer)
+    bottomLayer.remove()
+  if (tempLayer)
+    tempLayer.remove()
+
+  // 建立三層畫布
+  topLayer = p.createGraphics(p.width, p.height)
+  bottomLayer = p.createGraphics(p.width, p.height)
+  tempLayer = p.createGraphics(p.width, p.height)
+
+  topLayer.pixelDensity(1)
+  bottomLayer.pixelDensity(1)
+  tempLayer.pixelDensity(1)
+
+  const { topGrid, bottomGrid } = defaultColors
+
+  // 繪製底層藍色網格（完全不透明）
+  drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0)
+
+  // 繪製上層灰色網格（半透明）
+  drawGrid(p, topLayer, p.color(topGrid), 0.5)
+}
+
 // p5 網格背景程式
 function gridSketch(p: p5) {
   p.setup = () => {
@@ -68,47 +144,17 @@ function gridSketch(p: p5) {
     canvas.parent(gridContainer.value!)
     p.pixelDensity(1)
 
-    // 根據指定的格子數量計算 gridSize
+    // 計算 gridSize 和設置 CSS 變數
     gridSize = FIXED_GRID_SIZE
     gridSizeRef.value = gridSize
-
-    const diff = ((p.windowWidth - 1440) / 100) * 0.8
-    const diff2 = ((p.windowWidth - 1440) / 100) * 0.2
-    const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
-    const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
-    const diff6 = ((p.windowWidth - 1440) / 100) * 0.6
-    const diff7 = ((p.windowWidth - 1440) / 100) * 0.7
-
-    document.documentElement.style.setProperty('--grid-size', `${gridSize}px`)
-    document.documentElement.style.setProperty('--grid-diff', diff.toString())
-    document.documentElement.style.setProperty(
-      '--grid-diff-2',
-      diff2.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-3',
-      diff3.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-4',
-      diff4.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-6',
-      diff6.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-7',
-      diff7.toString(),
-    )
+    setCSSVariables(p)
 
     // 初始化 flashlight 參數
     r = Math.min(p.width, p.height) * 0.25
     mx = tx = p.width / 2
     my = ty = p.height / 2
 
-    // 初始化畫布和建立網格
-    initializeLayers(p)
+    initializeLayersSync(p)
   }
 
   p.draw = () => {
@@ -118,67 +164,40 @@ function gridSketch(p: p5) {
     mx = p.lerp(mx, tx, ease)
     my = p.lerp(my, ty, ease)
 
-    p.image(bottomLayer, 0, 0)
-
-    // 清空並重新繪製 tempLayer
-    tempLayer.clear()
-    tempLayer.image(topLayer, 0, 0)
-
-    const ctx = tempLayer.drawingContext as CanvasRenderingContext2D
-    if (ctx) {
-      ctx.save()
-      ctx.globalCompositeOperation = 'destination-out'
-      const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, r)
-      gradient.addColorStop(0.0, 'rgba(0,0,0,1)')
-      gradient.addColorStop(1.0, 'rgba(0,0,0,0)')
-      ctx.fillStyle = gradient
-
-      ctx.beginPath()
-      ctx.arc(mx, my, r, 0, Math.PI * 2)
-      ctx.closePath()
-      ctx.fill()
-      ctx.restore()
+    if (bottomLayer) {
+      p.image(bottomLayer, 0, 0)
     }
-    p.image(tempLayer, 0, 0)
+
+    if (topLayer && tempLayer) {
+      tempLayer.clear()
+      tempLayer.image(topLayer, 0, 0)
+
+      const ctx = tempLayer.drawingContext as CanvasRenderingContext2D
+      if (ctx) {
+        ctx.save()
+        ctx.globalCompositeOperation = 'destination-out'
+        const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, r)
+        gradient.addColorStop(0.0, 'rgba(0,0,0,1)')
+        gradient.addColorStop(1.0, 'rgba(0,0,0,0)')
+        ctx.fillStyle = gradient
+
+        ctx.beginPath()
+        ctx.arc(mx, my, r, 0, Math.PI * 2)
+        ctx.closePath()
+        ctx.fill()
+        ctx.restore()
+      }
+
+      p.image(tempLayer, 0, 0)
+    }
   }
 
   p.windowResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
-    // 重新計算 gridSize
     gridSize = FIXED_GRID_SIZE
-    const diff = ((p.windowWidth - 1440) / 100) * 0.82
-    const diff2 = ((p.windowWidth - 1440) / 100) * 0.18
-    const diff3 = ((p.windowWidth - 1440) / 100) * 0.1
-    const diff4 = ((p.windowWidth - 1440) / 100) * 0.4
-    const diff6 = ((p.windowWidth - 1440) / 100) * 0.6
-    const diff7 = ((p.windowWidth - 1440) / 100) * 0.7
-
     gridSizeRef.value = gridSize
-
-    document.documentElement.style.setProperty('--grid-size', `${gridSize}px`)
-    document.documentElement.style.setProperty('--grid-diff', diff.toString())
-    document.documentElement.style.setProperty(
-      '--grid-diff-2',
-      diff2.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-3',
-      diff3.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-4',
-      diff4.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-6',
-      diff6.toString(),
-    )
-    document.documentElement.style.setProperty(
-      '--grid-diff-7',
-      diff7.toString(),
-    )
-    // 重新初始化畫布和網格
-    initializeLayers(p)
+    setCSSVariables(p)
+    initializeLayersSync(p)
   }
 
   p.mouseMoved = () => {
@@ -224,34 +243,6 @@ function boxSketch(p: p5) {
   }
 }
 
-// 初始化圖層和網格的共用函數
-function initializeLayers(p: p5) {
-  // 清理舊的 Graphics 對象（如果存在）
-  if (topLayer) {
-    topLayer.remove()
-  }
-  if (bottomLayer) {
-    bottomLayer.remove()
-  }
-  if (tempLayer) {
-    tempLayer.remove()
-  }
-
-  // 建立三層畫布
-  topLayer = p.createGraphics(p.width, p.height)
-  bottomLayer = p.createGraphics(p.width, p.height)
-  tempLayer = p.createGraphics(p.width, p.height)
-
-  topLayer.pixelDensity(1)
-  bottomLayer.pixelDensity(1)
-  tempLayer.pixelDensity(1)
-
-  // 繪製網格
-  const { topGrid, bottomGrid } = defaultColors
-  drawGrid(p, topLayer, p.color(topGrid), 0.5) // topGrid 使用 0.5 透明度
-  drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0) // bottomGrid 使用完全不透明
-}
-
 // 創建 DVD 初始化設定
 function createDVDDots(p: p5) {
   dvdDots = []
@@ -272,30 +263,6 @@ function createDVDDots(p: p5) {
     color: defaultColors.primary,
     colorIndex: 0,
   })
-}
-
-// 繪製網格到緩衝畫布
-function drawGrid(
-  p: p5,
-  pg: p5.Graphics,
-  lineCol: p5.Color,
-  alpha: number = 1.0,
-) {
-  pg.background(0)
-
-  // 設定顏色並加上透明度
-  const r = p.red(lineCol)
-  const g = p.green(lineCol)
-  const b = p.blue(lineCol)
-  pg.stroke(r, g, b, alpha * 255)
-  pg.strokeWeight(2)
-
-  for (let x = 0; x < pg.width; x += gridSize) {
-    pg.line(x, 0, x, pg.height)
-  }
-  for (let y = 0; y < pg.height; y += gridSize) {
-    pg.line(0, y, pg.width, y)
-  }
 }
 
 // 更新和繪製 DVD 點
@@ -372,54 +339,12 @@ const boxP5Sketch = useP5Sketch({
   sketch: boxSketch,
 })
 
-// 監聽內容變化，更新 canvas 高度
-let resizeTimeout: NodeJS.Timeout | null = null
-
-function updateCanvasHeight() {
-  if (contentContainer.value) {
-    // 使用防抖避免頻繁調整
-    if (resizeTimeout) {
-      clearTimeout(resizeTimeout)
-    }
-
-    resizeTimeout = setTimeout(() => {
-      const contentHeight
-        = contentContainer.value?.scrollHeight || window.innerHeight
-      const canvasHeight = Math.max(window.innerHeight, contentHeight)
-
-      // 如果高度有變化，觸發 resize 事件
-      if (Math.abs(window.innerHeight - canvasHeight) > 10) {
-        window.dispatchEvent(new Event('resize'))
-      }
-    }, 100)
-  }
-}
-
 onMounted(async () => {
-  // 等待 DOM 渲染完成
-  await nextTick()
-
   gridP5Sketch.createSketch()
   boxP5Sketch.createSketch()
-
-  // 使用 ResizeObserver 監聽內容變化
-  if (contentContainer.value) {
-    const resizeObserver = new ResizeObserver(() => {
-      updateCanvasHeight()
-    })
-    resizeObserver.observe(contentContainer.value)
-
-    onUnmounted(() => {
-      resizeObserver.disconnect()
-    })
-  }
 })
 
 onUnmounted(() => {
-  if (resizeTimeout) {
-    clearTimeout(resizeTimeout)
-  }
-
   document.documentElement.style.removeProperty('--grid-size')
   gridP5Sketch.destroySketch()
   boxP5Sketch.destroySketch()
@@ -427,7 +352,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="relative size-full">
+  <div class="relative size-full bg-black">
     <!-- 網格層 (最底層) -->
     <div
       ref="gridContainer"
