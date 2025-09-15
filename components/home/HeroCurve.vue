@@ -1,22 +1,21 @@
 <script setup lang="ts">
 import type p5 from 'p5'
-import { onMounted, onUnmounted, ref } from 'vue'
 import { useP5Sketch } from '~/composables/useP5'
 
 // Canvas 尺寸
 const CANVAS_WIDTH = 1240
 const CANVAS_HEIGHT = 1021
 
-// 可調參數
-const ANCHOR_SIZE = 16 // 錨點方塊的尺寸（從 SVG 中提取，16.054px ≈ 16px）
-const DRAG_RADIUS = 12 // 可點擊拖曳的半徑
-const AMPLITUDE = 10 // 漂浮最大偏移量（±10px）
-const SPEED_MIN = 0.0005 // 時間步進（越小越慢）
-const SPEED_MAX = 0.001
+// 視覺參數
+const ANCHOR_POINT_SIZE = 16 // 錨點方塊的尺寸（從 SVG 中提取，16.054px ≈ 16px）
+const DRAG_HITBOX_RADIUS = 12 // 可點擊拖曳的半徑
+const FLOAT_AMPLITUDE = 10 // 漂浮最大偏移量（±10px）
+const FLOAT_SPEED_MIN = 0.0005 // 漂浮動畫速度最小值
+const FLOAT_SPEED_MAX = 0.001 // 漂浮動畫速度最大值
 
-// 可見點的索引（可自由調整）
-const CURVE1_VISIBLE_POINTS = [0, 3, 12] // 第一條曲線的可見點索引：起點、第二個錨點、終點
-const CURVE2_VISIBLE_POINTS = [0, 12, 18] // 第二條曲線的可見點索引：起點、第二段曲線控制點、終點
+// 可見錨點配置
+const CURVE1_ANCHOR_INDICES = [0, 3, 12] // 第一條曲線的可見錨點：起點、中間點、終點
+const CURVE2_ANCHOR_INDICES = [0, 12, 18] // 第二條曲線的可見錨點：起點、中間點、終點
 
 // 從 SVG 提取的關鍵錨點
 const curve1Points = [
@@ -70,8 +69,10 @@ class CurveFloatingController {
   constructor(p: p5) {
     this.tX = Number(p.random(1000)) || 0
     this.tY = Number(p.random(2000)) || 1000
-    this.speedX = Number(p.random(SPEED_MIN, SPEED_MAX)) || SPEED_MIN
-    this.speedY = Number(p.random(SPEED_MIN, SPEED_MAX)) || SPEED_MIN
+    this.speedX
+      = Number(p.random(FLOAT_SPEED_MIN, FLOAT_SPEED_MAX)) || FLOAT_SPEED_MIN
+    this.speedY
+      = Number(p.random(FLOAT_SPEED_MIN, FLOAT_SPEED_MAX)) || FLOAT_SPEED_MIN
     this.offset = p.createVector(0, 0)
   }
 
@@ -82,8 +83,8 @@ class CurveFloatingController {
     const angleX = (this.tX * Math.PI * 2) % (Math.PI * 2)
     const angleY = (this.tY * Math.PI * 2) % (Math.PI * 2)
 
-    const offX = Math.sin(angleX) * AMPLITUDE
-    const offY = Math.cos(angleY) * AMPLITUDE
+    const offX = Math.sin(angleX) * FLOAT_AMPLITUDE
+    const offY = Math.cos(angleY) * FLOAT_AMPLITUDE
 
     this.offset.set(offX, offY)
   }
@@ -93,73 +94,95 @@ class CurveFloatingController {
   }
 }
 
-// FloatingNode 類別
-class FloatingNode {
-  base: p5.Vector
-  dragging: boolean
-  grabDelta: p5.Vector
+// 曲線節點類別
+class CurveNode {
+  private basePosition: p5.Vector
+  private isDragging: boolean
+  private dragOffset: p5.Vector
 
   constructor(p: p5, x: number, y: number) {
-    this.base = p.createVector(x, y)
-    this.dragging = false
-    this.grabDelta = p.createVector(0, 0)
+    this.basePosition = p.createVector(x, y)
+    this.isDragging = false
+    this.dragOffset = p.createVector(0, 0)
   }
 
-  update(_p: p5) {
-    // 不再需要個別更新，移動由 CurveFloatingController 控制
-  }
-
-  getRenderPos(p: p5, curveController: CurveFloatingController): p5.Vector {
-    if (this.dragging) {
+  getCurrentPosition(
+    p: p5,
+    curveController: CurveFloatingController,
+  ): p5.Vector {
+    if (this.isDragging) {
       return p.constructor.Vector.sub(
         p.createVector(p.mouseX, p.mouseY),
-        this.grabDelta,
+        this.dragOffset,
       )
     }
-    return p.constructor.Vector.add(this.base, curveController.getOffset())
+    return p.constructor.Vector.add(
+      this.basePosition,
+      curveController.getOffset(),
+    )
   }
 
-  draw(p: p5, isActive: boolean, curveController: CurveFloatingController) {
-    const pos = this.getRenderPos(p, curveController)
+  drawAnchorPoint(
+    p: p5,
+    isActive: boolean,
+    curveController: CurveFloatingController,
+  ) {
+    const position = this.getCurrentPosition(p, curveController)
+    const activeColor = p.color(20, 120, 255)
+    const inactiveColor = '#E6E6E6'
 
-    // 繪製方形錨點
+    // 繪製主要錨點
     p.noStroke()
-    p.fill(isActive ? p.color(20, 120, 255) : '#E6E6E6') // 使用 SVG 中定義的顏色
+    p.fill(isActive ? activeColor : inactiveColor)
     p.rectMode(p.CENTER)
-    p.rect(pos.x, pos.y, ANCHOR_SIZE, ANCHOR_SIZE)
+    p.rect(position.x, position.y, ANCHOR_POINT_SIZE, ANCHOR_POINT_SIZE)
 
-    // 如果是活動狀態，添加邊框效果
+    // 繪製活動狀態的外框
     if (isActive) {
       p.noFill()
       p.stroke(20, 120, 255, 80)
       p.strokeWeight(2)
-      p.rect(pos.x, pos.y, ANCHOR_SIZE + 4, ANCHOR_SIZE + 4)
+      p.rect(
+        position.x,
+        position.y,
+        ANCHOR_POINT_SIZE + 4,
+        ANCHOR_POINT_SIZE + 4,
+      )
     }
   }
 
-  // 新增方法：繪製控制點（完全透明）
-  drawAsControlPoint(_p: p5) {
-    // 不繪製任何內容，保持完全透明
+  // 控制點不需要視覺呈現
+  drawControlPoint() {}
+
+  startDrag(
+    p: p5,
+    mouseVec: p5.Vector,
+    curveController: CurveFloatingController,
+  ) {
+    this.isDragging = true
+    const currentPos = this.getCurrentPosition(p, curveController)
+    this.dragOffset = p.constructor.Vector.sub(mouseVec, currentPos)
   }
 
-  beginDrag(p: p5, mouseVec: p5.Vector) {
-    this.dragging = true
-    const nowPos = this.getRenderPos(p)
-    this.grabDelta = p.constructor.Vector.sub(mouseVec, nowPos)
-  }
-
-  dragTo(p: p5, mouseVec: p5.Vector) {
-    const desiredPos = p.constructor.Vector.sub(mouseVec, this.grabDelta)
-    this.base = p.constructor.Vector.sub(desiredPos, this.offset)
+  updateDrag(
+    p: p5,
+    mouseVec: p5.Vector,
+    curveController: CurveFloatingController,
+  ) {
+    const targetPosition = p.constructor.Vector.sub(mouseVec, this.dragOffset)
+    this.basePosition = p.constructor.Vector.sub(
+      targetPosition,
+      curveController.getOffset(),
+    )
   }
 
   endDrag() {
-    this.dragging = false
+    this.isDragging = false
   }
 }
 
-let nodes1: FloatingNode[] = []
-let nodes2: FloatingNode[] = []
+let nodes1: CurveNode[] = []
+let nodes2: CurveNode[] = []
 let curve1Controller: CurveFloatingController
 let curve2Controller: CurveFloatingController
 let draggingIndex = -1
@@ -174,12 +197,35 @@ function sketch(p: p5) {
     curve2Controller = new CurveFloatingController(p)
 
     // 初始化第一條曲線的節點
-    nodes1 = curve1Points.map(point => new FloatingNode(p, point.x, point.y))
+    nodes1 = curve1Points.map(point => new CurveNode(p, point.x, point.y))
 
     // 初始化第二條曲線的節點
-    nodes2 = curve2Points.map(point => new FloatingNode(p, point.x, point.y))
+    nodes2 = curve2Points.map(point => new CurveNode(p, point.x, point.y))
 
     p.noFill()
+  }
+
+  // 繪製貝茲曲線段
+  function drawBezierSegments(
+    p: p5,
+    nodes: CurveNode[],
+    controller: CurveFloatingController,
+    segments: number[][],
+  ): void {
+    const points = nodes.map(node => node.getCurrentPosition(p, controller))
+
+    for (const [start, c1, c2, end] of segments) {
+      p.bezier(
+        points[start].x,
+        points[start].y,
+        points[c1].x,
+        points[c1].y,
+        points[c2].x,
+        points[c2].y,
+        points[end].x,
+        points[end].y,
+      )
+    }
   }
 
   p.draw = () => {
@@ -188,65 +234,35 @@ function sketch(p: p5) {
       return
     p.clear()
 
-    // 繪製第一條曲線
+    // 設置曲線樣式
     p.stroke('#E6E6E6')
     p.strokeWeight(2)
     p.noFill()
 
     // 繪製第一條曲線
     if (nodes1.length === curve1Points.length) {
-      // 從 SVG 路徑：M682.5 704C713.5 659.167 799.3 550.9 886.5 488.5C995.5 410.5 1033.38 411.126 1077.5 487.5C1124 568 1173.77 523.874 1202.5 403C1234 270.5 1209 98.5 1150 21.5
-      const p0 = nodes1[0].getRenderPos(p, curve1Controller) // 起點
-      const p1 = nodes1[1].getRenderPos(p, curve1Controller) // 控制點
-      const p2 = nodes1[2].getRenderPos(p, curve1Controller) // 控制點
-      const p3 = nodes1[3].getRenderPos(p, curve1Controller) // 錨點 1
-      const p4 = nodes1[4].getRenderPos(p, curve1Controller) // 控制點
-      const p5 = nodes1[5].getRenderPos(p, curve1Controller) // 控制點
-      const p6 = nodes1[6].getRenderPos(p, curve1Controller) // 錨點 2
-      const p7 = nodes1[7].getRenderPos(p, curve1Controller) // 控制點
-      const p8 = nodes1[8].getRenderPos(p, curve1Controller) // 控制點
-      const p9 = nodes1[9].getRenderPos(p, curve1Controller) // 錨點 3
-      const p10 = nodes1[10].getRenderPos(p, curve1Controller) // 控制點
-      const p11 = nodes1[11].getRenderPos(p, curve1Controller) // 控制點
-      const p12 = nodes1[12].getRenderPos(p, curve1Controller) // 終點
-
-      // 繪製四段貝茲曲線
-      p.bezier(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)
-      p.bezier(p3.x, p3.y, p4.x, p4.y, p5.x, p5.y, p6.x, p6.y)
-      p.bezier(p6.x, p6.y, p7.x, p7.y, p8.x, p8.y, p9.x, p9.y)
-      p.bezier(p9.x, p9.y, p10.x, p10.y, p11.x, p11.y, p12.x, p12.y)
+      // 定義第一條曲線的貝茲曲線段
+      const curve1Segments = [
+        [0, 1, 2, 3], // 起點到錨點 1
+        [3, 4, 5, 6], // 錨點 1 到錨點 2
+        [6, 7, 8, 9], // 錨點 2 到錨點 3
+        [9, 10, 11, 12], // 錨點 3 到終點
+      ]
+      drawBezierSegments(p, nodes1, curve1Controller, curve1Segments)
     }
 
     // 繪製第二條曲線
     if (nodes2.length === curve2Points.length) {
-      // 從 SVG 路徑：M288 461.999C330.5 414.165 419.5 322.499 551 253.499C682.5 184.499 772.5 152.016 847.5 196.499C922.5 240.982 891 362.999 831 423.999C771 484.999 661 573.999 432 688.499C203 802.999 17.3551 900.499 21 977.499C25 1062 413 954.999 629 755.999
-      const p0 = nodes2[0].getRenderPos(p, curve2Controller) // 起點
-      const p1 = nodes2[1].getRenderPos(p, curve2Controller) // 控制點
-      const p2 = nodes2[2].getRenderPos(p, curve2Controller) // 控制點
-      const p3 = nodes2[3].getRenderPos(p, curve2Controller) // 錨點 1
-      const p4 = nodes2[4].getRenderPos(p, curve2Controller) // 控制點
-      const p5 = nodes2[5].getRenderPos(p, curve2Controller) // 控制點
-      const p6 = nodes2[6].getRenderPos(p, curve2Controller) // 錨點 2
-      const p7 = nodes2[7].getRenderPos(p, curve2Controller) // 控制點
-      const p8 = nodes2[8].getRenderPos(p, curve2Controller) // 控制點
-      const p9 = nodes2[9].getRenderPos(p, curve2Controller) // 錨點 3
-      const p10 = nodes2[10].getRenderPos(p, curve2Controller) // 控制點
-      const p11 = nodes2[11].getRenderPos(p, curve2Controller) // 控制點
-      const p12 = nodes2[12].getRenderPos(p, curve2Controller) // 錨點 4
-      const p13 = nodes2[13].getRenderPos(p, curve2Controller) // 控制點
-      const p14 = nodes2[14].getRenderPos(p, curve2Controller) // 控制點
-      const p15 = nodes2[15].getRenderPos(p, curve2Controller) // 錨點 5
-      const p16 = nodes2[16].getRenderPos(p, curve2Controller) // 控制點
-      const p17 = nodes2[17].getRenderPos(p, curve2Controller) // 控制點
-      const p18 = nodes2[18].getRenderPos(p, curve2Controller) // 終點
-
-      // 繪製六段貝茲曲線
-      p.bezier(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y)
-      p.bezier(p3.x, p3.y, p4.x, p4.y, p5.x, p5.y, p6.x, p6.y)
-      p.bezier(p6.x, p6.y, p7.x, p7.y, p8.x, p8.y, p9.x, p9.y)
-      p.bezier(p9.x, p9.y, p10.x, p10.y, p11.x, p11.y, p12.x, p12.y)
-      p.bezier(p12.x, p12.y, p13.x, p13.y, p14.x, p14.y, p15.x, p15.y)
-      p.bezier(p15.x, p15.y, p16.x, p16.y, p17.x, p17.y, p18.x, p18.y)
+      // 定義第二條曲線的貝茲曲線段
+      const curve2Segments = [
+        [0, 1, 2, 3], // 起點到錨點 1
+        [3, 4, 5, 6], // 錨點 1 到錨點 2
+        [6, 7, 8, 9], // 錨點 2 到錨點 3
+        [9, 10, 11, 12], // 錨點 3 到錨點 4
+        [12, 13, 14, 15], // 錨點 4 到錨點 5
+        [15, 16, 17, 18], // 錨點 5 到終點
+      ]
+      drawBezierSegments(p, nodes2, curve2Controller, curve2Segments)
     }
 
     // 更新曲線控制器
@@ -256,29 +272,29 @@ function sketch(p: p5) {
     // 更新所有節點
     for (let i = 0; i < nodes1.length; i++) {
       // 控制點使用透明繪製，除了指定的可見點
-      if (!CURVE1_VISIBLE_POINTS.includes(i)) {
-        nodes1[i].drawAsControlPoint(p)
+      if (!CURVE1_ANCHOR_INDICES.includes(i)) {
+        nodes1[i].drawControlPoint()
       }
     }
     for (let i = 0; i < nodes2.length; i++) {
       // 控制點使用透明繪製，除了指定的可見點
-      if (!CURVE2_VISIBLE_POINTS.includes(i)) {
-        nodes2[i].drawAsControlPoint(p)
+      if (!CURVE2_ANCHOR_INDICES.includes(i)) {
+        nodes2[i].drawControlPoint()
       }
     }
 
-    // 繪製第一條曲線的可見點
-    for (const i of CURVE1_VISIBLE_POINTS) {
-      nodes1[i].draw(
+    // 繪製第一條曲線的錨點
+    for (const i of CURVE1_ANCHOR_INDICES) {
+      nodes1[i].drawAnchorPoint(
         p,
         draggingCurve === 0 && draggingIndex === i,
         curve1Controller,
       )
     }
 
-    // 繪製第二條曲線的可見點
-    for (const i of CURVE2_VISIBLE_POINTS) {
-      nodes2[i].draw(
+    // 繪製第二條曲線的錨點
+    for (const i of CURVE2_ANCHOR_INDICES) {
+      nodes2[i].drawAnchorPoint(
         p,
         draggingCurve === 1 && draggingIndex === i,
         curve2Controller,
@@ -286,86 +302,112 @@ function sketch(p: p5) {
     }
   }
 
-  p.mousePressed = () => {
-    // 確保滑鼠事件在 canvas 範圍內
-    if (
-      !p.canvas
-      || p.mouseX < 0
-      || p.mouseY < 0
-      || p.mouseX > p.width
-      || p.mouseY > p.height
-    ) {
-      return
+  // 檢查滑鼠是否在 canvas 範圍內
+  function isMouseInCanvas(p: p5): boolean {
+    return (
+      p.canvas
+      && p.mouseX >= 0
+      && p.mouseY >= 0
+      && p.mouseX <= p.width
+      && p.mouseY <= p.height
+    )
+  }
+
+  // 找到最近的可拖曳錨點
+  function findNearestDraggablePoint(
+    p: p5,
+  ): { index: number, curve: number } | null {
+    let bestDistance = Infinity
+    let bestIndex = -1
+    let bestCurve = -1
+
+    // 檢查兩條曲線的錨點
+    const curves = [
+      {
+        nodes: nodes1,
+        indices: CURVE1_ANCHOR_INDICES,
+        controller: curve1Controller,
+        id: 0,
+      },
+      {
+        nodes: nodes2,
+        indices: CURVE2_ANCHOR_INDICES,
+        controller: curve2Controller,
+        id: 1,
+      },
+    ]
+
+    for (const curve of curves) {
+      for (const i of curve.indices) {
+        const pos = curve.nodes[i].getCurrentPosition(p, curve.controller)
+        const distance = p.dist(p.mouseX, p.mouseY, pos.x, pos.y)
+
+        if (distance < DRAG_HITBOX_RADIUS * 1.4 && distance < bestDistance) {
+          bestDistance = distance
+          bestIndex = i
+          bestCurve = curve.id
+        }
+      }
     }
 
+    return bestIndex === -1 ? null : { index: bestIndex, curve: bestCurve }
+  }
+
+  // 取得當前拖曳的節點和控制器
+  function getDragTarget(): {
+    node: CurveNode
+    controller: CurveFloatingController
+  } | null {
+    if (draggingIndex === -1)
+      return null
+
+    return {
+      node: draggingCurve === 0 ? nodes1[draggingIndex] : nodes2[draggingIndex],
+      controller: draggingCurve === 0 ? curve1Controller : curve2Controller,
+    }
+  }
+
+  p.mousePressed = () => {
+    if (!isMouseInCanvas(p))
+      return
+
+    // 重置拖曳狀態
     draggingIndex = -1
     draggingCurve = -1
-    let best = Infinity
 
-    // 檢查第一條曲線的可見點
-    for (const i of CURVE1_VISIBLE_POINTS) {
-      const d = p.dist(
-        p.mouseX,
-        p.mouseY,
-        nodes1[i].getRenderPos(p, curve1Controller).x,
-        nodes1[i].getRenderPos(p, curve1Controller).y,
-      )
-      if (d < DRAG_RADIUS * 1.4 && d < best) {
-        best = d
-        draggingIndex = i
-        draggingCurve = 0
-      }
-    }
+    // 尋找最近的可拖曳點
+    const nearest = findNearestDraggablePoint(p)
+    if (!nearest)
+      return
 
-    // 檢查第二條曲線的可見點
-    for (const i of CURVE2_VISIBLE_POINTS) {
-      const d = p.dist(
-        p.mouseX,
-        p.mouseY,
-        nodes2[i].getRenderPos(p, curve2Controller).x,
-        nodes2[i].getRenderPos(p, curve2Controller).y,
-      )
-      if (d < DRAG_RADIUS * 1.4 && d < best) {
-        best = d
-        draggingIndex = i
-        draggingCurve = 1
-      }
-    }
-
-    if (draggingIndex !== -1) {
-      const mouseVec = p.createVector(p.mouseX, p.mouseY)
-      if (draggingCurve === 0) {
-        nodes1[draggingIndex].beginDrag(p, mouseVec)
-      }
-      else {
-        nodes2[draggingIndex].beginDrag(p, mouseVec)
-      }
-    }
+    // 開始拖曳
+    draggingIndex = nearest.index
+    draggingCurve = nearest.curve
+    const mouseVec = p.createVector(p.mouseX, p.mouseY)
+    const target = getDragTarget()
+    target?.node.startDrag(p, mouseVec, target.controller)
   }
 
   p.mouseDragged = () => {
-    if (draggingIndex !== -1 && p.canvas) {
-      const mouseVec = p.createVector(p.mouseX, p.mouseY)
-      if (draggingCurve === 0) {
-        nodes1[draggingIndex].dragTo(p, mouseVec)
-      }
-      else {
-        nodes2[draggingIndex].dragTo(p, mouseVec)
-      }
-    }
+    if (!isMouseInCanvas(p))
+      return
+
+    const target = getDragTarget()
+    if (!target)
+      return
+
+    const mouseVec = p.createVector(p.mouseX, p.mouseY)
+    target.node.updateDrag(p, mouseVec, target.controller)
   }
 
   p.mouseReleased = () => {
-    if (draggingIndex !== -1 && p.canvas) {
-      if (draggingCurve === 0) {
-        nodes1[draggingIndex].endDrag()
-      }
-      else {
-        nodes2[draggingIndex].endDrag()
-      }
-      draggingIndex = -1
-      draggingCurve = -1
-    }
+    const target = getDragTarget()
+    if (!target)
+      return
+
+    target.node.endDrag()
+    draggingIndex = -1
+    draggingCurve = -1
   }
 }
 
