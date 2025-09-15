@@ -56,6 +56,7 @@
         </div>
       </div>
     </div>
+    <HomeHeroCurve />
   </section>
 </template>
 
