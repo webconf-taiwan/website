@@ -28,7 +28,7 @@
     </div>
     <div class="container flex px-20 pb-60 pt-20">
       <div
-        class="relative w-[65%] border border-webconf-gray/50 bg-black pb-[24px] pl-[40px] pr-[47px] 2xl:w-[68.75%]"
+        class="group relative w-[65%] border border-webconf-gray/50 bg-black pb-[24px] pl-[40px] pr-[47px] 2xl:w-[68.75%]"
       >
         <NuxtImg
           src="/images/venueBg.webp"
@@ -57,7 +57,12 @@
           height="117"
           class="absolute right-0 top-12"
         />
-        <div class="blue-overlay"></div>
+        <div
+          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-100"
+        ></div>
+        <div
+          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-60"
+        ></div>
       </div>
       <ShareGradientDotsCard
         class="relative ml-[-12.5%] h-fit w-[47.5%] flex-1 translate-y-[48%] 2xl:w-[43.5%] 2xl:translate-y-[58%]"
@@ -93,22 +98,6 @@
 </template>
 
 <style>
-.blue-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  background-color: #002eff;
-  mix-blend-mode: multiply;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-.blue-overlay:hover {
-  opacity: 0.8;
-}
-
 .arrow-border-5 {
   --θ: 45deg;
   --column: 12;
