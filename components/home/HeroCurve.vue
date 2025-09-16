@@ -218,11 +218,6 @@ class CurveNode {
       unscaledPosition,
       curveController.getOffset(),
     )
-
-    // 輸出當前座標
-    console.log(
-      `座標: x: ${Math.round(this.basePosition.x * 100) / 100}, y: ${Math.round(this.basePosition.y * 100) / 100}`,
-    )
   }
 
   endDrag() {

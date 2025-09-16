@@ -223,7 +223,6 @@ function gridSketch(p: p5) {
 
 // p5 方框動畫程式
 function boxSketch(p: p5) {
-  console.log('boxSketch', p)
   p.setup = () => {
     const canvas = p.createCanvas(p.windowWidth, p.windowHeight)
     canvas.parent(boxContainer.value!)
