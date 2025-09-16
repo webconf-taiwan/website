@@ -85,8 +85,8 @@ function slideToPrev() {
 
   timeline.to(cardContainer.value, {
     x: 0,
-    duration: 1,
-    ease: 'power2.inOut',
+    duration: 0.8,
+    ease: 'none',
     force3D: true,
     willChange: 'transform',
   })
@@ -147,6 +147,18 @@ watch(
     }"
     class="relative w-full max-w-full overflow-hidden"
   >
+    <!-- 預載所有圖片 -->
+    <div class="hidden">
+      <NuxtImg
+        v-for="speaker in speakers"
+        :key="speaker.src"
+        :src="speaker.src"
+        width="264"
+        height="376"
+        loading="eager"
+      />
+    </div>
+
     <div
       ref="cardContainer"
       class="flex w-[200%]"
@@ -158,13 +170,13 @@ watch(
         class="w-1/2 shrink-0"
       >
         <div class="group relative">
-          <NuxtImg
-            :src="currentSpeaker.src"
-            alt="speaker"
-            width="264"
-            height="376"
-            class="grayscale duration-300 group-hover:grayscale-0"
-          />
+          <div
+            class="h-[376px] w-[264px] bg-cover bg-center grayscale group-hover:grayscale-0"
+            :style="{
+              backgroundImage: `url(${currentSpeaker.src})`,
+              transition: 'filter 0.3s',
+            }"
+          ></div>
 
           <ShareGradientMask class="group-hover:opacity-0" />
           <ShareNoiseMask class="group-hover:opacity-0" />
@@ -178,13 +190,13 @@ watch(
       <!-- 下一張講者卡片 -->
       <div class="w-1/2 shrink-0">
         <div class="group relative">
-          <NuxtImg
-            :src="nextSpeaker.src"
-            alt="speaker"
-            width="264"
-            height="376"
-            class="grayscale duration-300 group-hover:grayscale-0"
-          />
+          <div
+            class="h-[376px] w-[264px] bg-cover bg-center grayscale group-hover:grayscale-0"
+            :style="{
+              backgroundImage: `url(${nextSpeaker.src})`,
+              transition: 'filter 0.3s',
+            }"
+          ></div>
           <ShareGradientMask class="group-hover:opacity-0" />
           <ShareNoiseMask class="group-hover:opacity-0" />
         </div>
