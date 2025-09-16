@@ -107,7 +107,7 @@ function handlePrev() {
             scale: 2,
             duration: 0.5,
             backgroundColor: 'rgba(0, 46, 255, 0.9)',
-            text: '⭠',
+            icon: 'arrow-left',
           }"
           type="button"
           class="absolute left-0 top-0 h-full w-20"
@@ -119,7 +119,7 @@ function handlePrev() {
             scale: 2,
             duration: 0.5,
             backgroundColor: 'rgba(0, 46, 255, 0.9)',
-            text: '⭢',
+            icon: 'arrow-right',
           }"
           type="button"
           class="absolute right-0 top-0 h-full w-20"
