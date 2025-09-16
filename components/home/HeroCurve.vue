@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type p5 from 'p5'
 import { useWindowSize } from '@vueuse/core'
 import { useP5Sketch } from '~/composables/useP5'
 
@@ -12,12 +11,12 @@ const ORIGINAL_HEIGHT = 1021
 
 // 曲線位置偏移量
 const curve1Offset = reactive({
-  x: -400,
+  x: -370,
   y: -350,
 })
 
 const curve2Offset = reactive({
-  x: -400,
+  x: -370,
   y: -350,
 })
 
@@ -32,8 +31,8 @@ const FLOAT_SPEED_MIN = 0.0005 // 漂浮動畫速度最小值
 const FLOAT_SPEED_MAX = 0.001 // 漂浮動畫速度最大值
 
 // 可見錨點配置
-const CURVE1_ANCHOR_INDICES = [0, 3, 12] // 第一條曲線的可見錨點：起點、中間點、終點
-const CURVE2_ANCHOR_INDICES = [0, 12, 18] // 第二條曲線的可見錨點：起點、中間點、終點
+const CURVE1_ANCHOR_INDICES = [0, 5, 12] // 第一條曲線的可見錨點：起點、中間點、終點
+const CURVE2_ANCHOR_INDICES = [0, 11, 18] // 第二條曲線的可見錨點：起點、中間點、終點
 
 // 從 SVG 提取的關鍵錨點
 const curve1Points = [
@@ -42,12 +41,12 @@ const curve1Points = [
   { x: 799.3, y: 550.9 }, // 控制點 2
   { x: 886.5, y: 488.5 }, // 錨點 1
   { x: 995.5, y: 410.5 }, // 控制點 3
-  { x: 1033.38, y: 411.126 }, // 控制點 4
-  { x: 1077.5, y: 487.5 }, // 錨點 2
-  { x: 1124, y: 568 }, // 控制點 5
+  { x: 1047, y: 417 }, // 控制點 4
+  { x: 1118, y: 402 }, // 錨點 2
+  { x: 1137.5, y: 615.86 }, // 控制點 5
   { x: 1173.77, y: 523.874 }, // 控制點 6
-  { x: 1202.5, y: 403 }, // 錨點 3
-  { x: 1234, y: 270.5 }, // 控制點 7
+  { x: 1208.22, y: 418.12 }, // 錨點 3
+  { x: 1267.76, y: 225.36 }, // 控制點 7
   { x: 1209, y: 98.5 }, // 控制點 8
   { x: 1150, y: 21.5 }, // 終點
 ]
@@ -63,8 +62,8 @@ const curve2Points = [
   { x: 922.5, y: 240.982 }, // 控制點 5
   { x: 891, y: 362.999 }, // 控制點 6
   { x: 831, y: 423.999 }, // 錨點 3
-  { x: 771, y: 484.999 }, // 控制點 7
-  { x: 661, y: 573.999 }, // 控制點 8
+  { x: 746, y: 522.999 }, // 控制點 7
+  { x: 558, y: 627 }, // 控制點 8
   { x: 432, y: 688.499 }, // 錨點 4
   { x: 203, y: 802.999 }, // 控制點 9
   { x: 17.3551, y: 900.499 }, // 控制點 10
@@ -130,21 +129,31 @@ class CurveNode {
     offset: { x: number, y: number } = { x: 0, y: 0 },
   ): p5.Vector {
     const scale = getScale()
+
     if (this.isDragging) {
-      return p.constructor.Vector.sub(
-        p.createVector(p.mouseX, p.mouseY),
-        p.createVector(this.dragOffset.x * scale, this.dragOffset.y * scale),
+      const mousePos = p.createVector(p.mouseX, p.mouseY)
+      const scaledDragOffset = p.createVector(
+        this.dragOffset.x * scale,
+        this.dragOffset.y * scale,
       )
+      return p.constructor.Vector.sub(mousePos, scaledDragOffset)
     }
-    const scaledBase = p.createVector(
-      (this.basePosition.x + offset.x) * scale,
-      (this.basePosition.y + offset.y) * scale,
+
+    // 基礎位置加上偏移量
+    const baseWithOffset = p.createVector(
+      this.basePosition.x + offset.x,
+      this.basePosition.y + offset.y,
     )
-    const scaledOffset = p.createVector(
-      curveController.getOffset().x * scale,
-      curveController.getOffset().y * scale,
+
+    // 加上漂浮效果的偏移量
+    const floatingOffset = curveController.getOffset()
+    const finalPosition = p.constructor.Vector.add(
+      baseWithOffset,
+      floatingOffset,
     )
-    return p.constructor.Vector.add(scaledBase, scaledOffset)
+
+    // 最後套用縮放
+    return p.createVector(finalPosition.x * scale, finalPosition.y * scale)
   }
 
   drawAnchorPoint(
@@ -154,12 +163,9 @@ class CurveNode {
     offset: { x: number, y: number } = { x: 0, y: 0 },
   ) {
     const position = this.getCurrentPosition(p, curveController, offset)
-    const activeColor = p.color(20, 120, 255)
-    const inactiveColor = '#E6E6E6'
-
     // 繪製主要錨點
     p.noStroke()
-    p.fill(isActive ? activeColor : inactiveColor)
+    p.fill(isActive ? p.color(20, 120, 255) : '#E6E6E6')
     p.rectMode(p.CENTER)
     const scale = getScale()
     const scaledSize = ANCHOR_POINT_SIZE * scale
@@ -186,9 +192,10 @@ class CurveNode {
     p: p5,
     mouseVec: p5.Vector,
     curveController: CurveFloatingController,
+    offset: { x: number, y: number } = { x: 0, y: 0 },
   ) {
     this.isDragging = true
-    const currentPos = this.getCurrentPosition(p, curveController)
+    const currentPos = this.getCurrentPosition(p, curveController, offset)
     this.dragOffset = p.constructor.Vector.sub(mouseVec, currentPos)
   }
 
@@ -196,11 +203,25 @@ class CurveNode {
     p: p5,
     mouseVec: p5.Vector,
     curveController: CurveFloatingController,
+    offset: { x: number, y: number } = { x: 0, y: 0 },
   ) {
+    const scale = getScale()
     const targetPosition = p.constructor.Vector.sub(mouseVec, this.dragOffset)
+
+    // 移除縮放影響並考慮偏移量
+    const unscaledPosition = p.createVector(
+      targetPosition.x / scale - offset.x,
+      targetPosition.y / scale - offset.y,
+    )
+
     this.basePosition = p.constructor.Vector.sub(
-      targetPosition,
+      unscaledPosition,
       curveController.getOffset(),
+    )
+
+    // 輸出當前座標
+    console.log(
+      `座標: x: ${Math.round(this.basePosition.x * 100) / 100}, y: ${Math.round(this.basePosition.y * 100) / 100}`,
     )
   }
 
@@ -275,8 +296,8 @@ function sketch(p: p5) {
       // 定義第一條曲線的貝茲曲線段
       const curve1Segments = [
         [0, 1, 2, 3], // 起點到錨點 1
-        [3, 4, 5, 6], // 錨點 1 到錨點 2
-        [6, 7, 8, 9], // 錨點 2 到錨點 3
+        [3, 4, 5, 5], // 錨點 1 到錨點 2（點 5）
+        [5, 6, 7, 9], // 錨點 2 到錨點 3
         [9, 10, 11, 12], // 錨點 3 到終點
       ]
       drawBezierSegments(
@@ -295,8 +316,8 @@ function sketch(p: p5) {
         [0, 1, 2, 3], // 起點到錨點 1
         [3, 4, 5, 6], // 錨點 1 到錨點 2
         [6, 7, 8, 9], // 錨點 2 到錨點 3
-        [9, 10, 11, 12], // 錨點 3 到錨點 4
-        [12, 13, 14, 15], // 錨點 4 到錨點 5
+        [9, 10, 11, 11], // 錨點 3 到錨點 4（點 11）
+        [11, 13, 14, 15], // 錨點 4 到錨點 5
         [15, 16, 17, 18], // 錨點 5 到終點
       ]
       drawBezierSegments(
@@ -372,19 +393,25 @@ function sketch(p: p5) {
         nodes: nodes1,
         indices: CURVE1_ANCHOR_INDICES,
         controller: curve1Controller,
+        offset: curve1Offset,
         id: 0,
       },
       {
         nodes: nodes2,
         indices: CURVE2_ANCHOR_INDICES,
         controller: curve2Controller,
+        offset: curve2Offset,
         id: 1,
       },
     ]
 
     for (const curve of curves) {
       for (const i of curve.indices) {
-        const pos = curve.nodes[i].getCurrentPosition(p, curve.controller)
+        const pos = curve.nodes[i].getCurrentPosition(
+          p,
+          curve.controller,
+          curve.offset,
+        )
         const distance = p.dist(p.mouseX, p.mouseY, pos.x, pos.y)
 
         const scaledHitbox = DRAG_HITBOX_RADIUS * getScale() * 1.4
@@ -431,7 +458,10 @@ function sketch(p: p5) {
     draggingCurve = nearest.curve
     const mouseVec = p.createVector(p.mouseX, p.mouseY)
     const target = getDragTarget()
-    target?.node.startDrag(p, mouseVec, target.controller)
+    if (target) {
+      const offset = draggingCurve === 0 ? curve1Offset : curve2Offset
+      target.node.startDrag(p, mouseVec, target.controller, offset)
+    }
   }
 
   p.mouseDragged = () => {
@@ -443,7 +473,8 @@ function sketch(p: p5) {
       return
 
     const mouseVec = p.createVector(p.mouseX, p.mouseY)
-    target.node.updateDrag(p, mouseVec, target.controller)
+    const offset = draggingCurve === 0 ? curve1Offset : curve2Offset
+    target.node.updateDrag(p, mouseVec, target.controller, offset)
   }
 
   p.mouseReleased = () => {
