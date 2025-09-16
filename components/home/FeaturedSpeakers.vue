@@ -88,9 +88,9 @@ function handlePrev() {
             v-for="(speaker, index) in SPEAKERS"
             :key="speaker.name"
             :class="{
-              'border-l-[0.5px]': index !== 0,
+              'border-l-[0.5px]': index === 0,
             }"
-            class="col-span-1 flex flex-col items-center justify-center px-12 py-10"
+            class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] px-12 py-10"
           >
             <HomeSpeakerCard
               :ref="(el) => (speakerCards[index] = el)"
