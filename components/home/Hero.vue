@@ -1,5 +1,6 @@
 <template>
   <section class="hero-section relative aspect-[2/1] w-full">
+    <HomeHeroCurve />
     <div class="absolute inset-0">
       <div
         v-arrow="{
