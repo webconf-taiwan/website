@@ -88,9 +88,9 @@ function handlePrev() {
             v-for="(speaker, index) in SPEAKERS"
             :key="speaker.name"
             :class="{
-              'border-l-[0.5px]': index !== 0,
+              'border-l-[0.5px]': index === 0,
             }"
-            class="col-span-1 flex flex-col items-center justify-center px-12 py-10"
+            class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] px-12 py-10"
           >
             <HomeSpeakerCard
               :ref="(el) => (speakerCards[index] = el)"
@@ -107,7 +107,7 @@ function handlePrev() {
             scale: 2,
             duration: 0.5,
             backgroundColor: 'rgba(0, 46, 255, 0.9)',
-            text: '⭠',
+            icon: 'arrow-left',
           }"
           type="button"
           class="absolute left-0 top-0 h-full w-20"
@@ -119,7 +119,7 @@ function handlePrev() {
             scale: 2,
             duration: 0.5,
             backgroundColor: 'rgba(0, 46, 255, 0.9)',
-            text: '⭢',
+            icon: 'arrow-right',
           }"
           type="button"
           class="absolute right-0 top-0 h-full w-20"
