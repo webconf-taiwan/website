@@ -1,10 +1,28 @@
 <script setup lang="ts">
 import type p5 from 'p5'
+import { useWindowSize } from '@vueuse/core'
 import { useP5Sketch } from '~/composables/useP5'
 
-// Canvas 尺寸
-const CANVAS_WIDTH = 1240
-const CANVAS_HEIGHT = 1021
+// 取得視窗尺寸
+const { width: windowWidth } = useWindowSize()
+
+// 原始設計尺寸
+const ORIGINAL_WIDTH = 1440
+const ORIGINAL_HEIGHT = 1021
+
+// 曲線位置偏移量
+const curve1Offset = reactive({
+  x: -400,
+  y: -350,
+})
+
+const curve2Offset = reactive({
+  x: -400,
+  y: -350,
+})
+
+// 計算縮放比例
+const getScale = () => windowWidth.value / ORIGINAL_WIDTH
 
 // 視覺參數
 const ANCHOR_POINT_SIZE = 16 // 錨點方塊的尺寸（從 SVG 中提取，16.054px ≈ 16px）
@@ -109,25 +127,33 @@ class CurveNode {
   getCurrentPosition(
     p: p5,
     curveController: CurveFloatingController,
+    offset: { x: number, y: number } = { x: 0, y: 0 },
   ): p5.Vector {
+    const scale = getScale()
     if (this.isDragging) {
       return p.constructor.Vector.sub(
         p.createVector(p.mouseX, p.mouseY),
-        this.dragOffset,
+        p.createVector(this.dragOffset.x * scale, this.dragOffset.y * scale),
       )
     }
-    return p.constructor.Vector.add(
-      this.basePosition,
-      curveController.getOffset(),
+    const scaledBase = p.createVector(
+      (this.basePosition.x + offset.x) * scale,
+      (this.basePosition.y + offset.y) * scale,
     )
+    const scaledOffset = p.createVector(
+      curveController.getOffset().x * scale,
+      curveController.getOffset().y * scale,
+    )
+    return p.constructor.Vector.add(scaledBase, scaledOffset)
   }
 
   drawAnchorPoint(
     p: p5,
     isActive: boolean,
     curveController: CurveFloatingController,
+    offset: { x: number, y: number } = { x: 0, y: 0 },
   ) {
-    const position = this.getCurrentPosition(p, curveController)
+    const position = this.getCurrentPosition(p, curveController, offset)
     const activeColor = p.color(20, 120, 255)
     const inactiveColor = '#E6E6E6'
 
@@ -135,18 +161,20 @@ class CurveNode {
     p.noStroke()
     p.fill(isActive ? activeColor : inactiveColor)
     p.rectMode(p.CENTER)
-    p.rect(position.x, position.y, ANCHOR_POINT_SIZE, ANCHOR_POINT_SIZE)
+    const scale = getScale()
+    const scaledSize = ANCHOR_POINT_SIZE * scale
+    p.rect(position.x, position.y, scaledSize, scaledSize)
 
     // 繪製活動狀態的外框
     if (isActive) {
       p.noFill()
       p.stroke(20, 120, 255, 80)
-      p.strokeWeight(2)
+      p.strokeWeight(2 * scale)
       p.rect(
         position.x,
         position.y,
-        ANCHOR_POINT_SIZE + 4,
-        ANCHOR_POINT_SIZE + 4,
+        scaledSize + 4 * scale,
+        scaledSize + 4 * scale,
       )
     }
   }
@@ -190,7 +218,7 @@ let draggingCurve = -1
 
 function sketch(p: p5) {
   p.setup = () => {
-    p.createCanvas(CANVAS_WIDTH, CANVAS_HEIGHT)
+    p.createCanvas(windowWidth.value, ORIGINAL_HEIGHT)
 
     // 初始化曲線控制器
     curve1Controller = new CurveFloatingController(p)
@@ -211,8 +239,11 @@ function sketch(p: p5) {
     nodes: CurveNode[],
     controller: CurveFloatingController,
     segments: number[][],
+    offset: { x: number, y: number } = { x: 0, y: 0 },
   ): void {
-    const points = nodes.map(node => node.getCurrentPosition(p, controller))
+    const points = nodes.map(node =>
+      node.getCurrentPosition(p, controller, offset),
+    )
 
     for (const [start, c1, c2, end] of segments) {
       p.bezier(
@@ -236,7 +267,7 @@ function sketch(p: p5) {
 
     // 設置曲線樣式
     p.stroke('#E6E6E6')
-    p.strokeWeight(2)
+    p.strokeWeight(2 * getScale())
     p.noFill()
 
     // 繪製第一條曲線
@@ -248,7 +279,13 @@ function sketch(p: p5) {
         [6, 7, 8, 9], // 錨點 2 到錨點 3
         [9, 10, 11, 12], // 錨點 3 到終點
       ]
-      drawBezierSegments(p, nodes1, curve1Controller, curve1Segments)
+      drawBezierSegments(
+        p,
+        nodes1,
+        curve1Controller,
+        curve1Segments,
+        curve1Offset,
+      )
     }
 
     // 繪製第二條曲線
@@ -262,7 +299,13 @@ function sketch(p: p5) {
         [12, 13, 14, 15], // 錨點 4 到錨點 5
         [15, 16, 17, 18], // 錨點 5 到終點
       ]
-      drawBezierSegments(p, nodes2, curve2Controller, curve2Segments)
+      drawBezierSegments(
+        p,
+        nodes2,
+        curve2Controller,
+        curve2Segments,
+        curve2Offset,
+      )
     }
 
     // 更新曲線控制器
@@ -289,6 +332,7 @@ function sketch(p: p5) {
         p,
         draggingCurve === 0 && draggingIndex === i,
         curve1Controller,
+        curve1Offset,
       )
     }
 
@@ -298,6 +342,7 @@ function sketch(p: p5) {
         p,
         draggingCurve === 1 && draggingIndex === i,
         curve2Controller,
+        curve2Offset,
       )
     }
   }
@@ -342,7 +387,8 @@ function sketch(p: p5) {
         const pos = curve.nodes[i].getCurrentPosition(p, curve.controller)
         const distance = p.dist(p.mouseX, p.mouseY, pos.x, pos.y)
 
-        if (distance < DRAG_HITBOX_RADIUS * 1.4 && distance < bestDistance) {
+        const scaledHitbox = DRAG_HITBOX_RADIUS * getScale() * 1.4
+        if (distance < scaledHitbox && distance < bestDistance) {
           bestDistance = distance
           bestIndex = i
           bestCurve = curve.id
@@ -409,6 +455,11 @@ function sketch(p: p5) {
     draggingIndex = -1
     draggingCurve = -1
   }
+
+  // 處理視窗尺寸變化
+  p.windowResized = () => {
+    p.resizeCanvas(windowWidth.value, ORIGINAL_HEIGHT)
+  }
 }
 
 const { createSketch, destroySketch } = useP5Sketch({
@@ -429,7 +480,10 @@ onUnmounted(() => {
   <div
     id="hero-curve"
     ref="containerRef"
-    class="pointer-events-auto absolute left-0 top-0 h-[1021px] w-[1240px]"
+    class="pointer-events-auto absolute left-0 top-0 w-full"
+    :style="{
+      height: `${ORIGINAL_HEIGHT}px`,
+    }"
   ></div>
 </template>
 
