@@ -57,9 +57,9 @@
           height="117"
           class="absolute right-0 top-12"
         />
-        <div
+        <!-- <div
           class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-100"
-        ></div>
+        ></div> -->
         <div
           class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-60"
         ></div>

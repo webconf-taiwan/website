@@ -1,3 +1,6 @@
+import { useBreakpoints } from '@vueuse/core'
+import { watch } from 'vue'
+
 type IconPosition = 'arrow-left' | 'arrow-right'
 
 interface CursorOptions {
@@ -102,6 +105,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     )
   }
 
+  const breakpoints = useBreakpoints({
+    lg: 1024,
+  })
+  const isDesktop = breakpoints.greaterOrEqual('lg')
+
   // 快取 DOM 元素和 GSAP 實例
   let cachedElements: {
     cursor?: Element | null
@@ -188,6 +196,11 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   function setupCursorEvents(el: CursorElement, binding: CursorBinding) {
+    // 僅在桌機版本可以使用
+    if (!isDesktop.value) {
+      return
+    }
+
     const options = { ...DEFAULT_OPTIONS, ...binding.value }
     const { scale, duration, backgroundColor, text, icon } = options
 
@@ -211,10 +224,45 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     el.addEventListener('mouseenter', handleMouseEnter, eventOptions)
     el.addEventListener('mouseleave', handleMouseLeave, eventOptions)
 
+    let stopWatching: (() => void) | null = null
+    if (isDesktop) {
+      stopWatching = watch(isDesktop, (newValue) => {
+        const elements = getCachedElements()
+        const gsap = getGsapInstance()
+
+        // 停止所有正在進行的動畫
+        if (gsap && elements.inner && elements.text) {
+          gsap.killTweensOf([elements.inner, elements.text])
+        }
+        if (!newValue) {
+          el.removeEventListener('mouseenter', handleMouseEnter)
+          el.removeEventListener('mouseleave', handleMouseLeave)
+
+          if (gsap && elements.inner && elements.text) {
+            gsap.set(elements.inner, {
+              scale: DEFAULT_OPTIONS.scale,
+              backgroundColor: DEFAULT_OPTIONS.backgroundColor,
+            })
+            gsap.set(elements.text, {
+              opacity: 0,
+            })
+            // 清空內容
+            unmountIcon(elements.text)
+            elements.text.textContent = ''
+          }
+        }
+        else {
+          el.addEventListener('mouseenter', handleMouseEnter, eventOptions)
+          el.addEventListener('mouseleave', handleMouseLeave, eventOptions)
+        }
+      })
+    }
+
     // 清理函數
     el._cursorCleanup = () => {
       el.removeEventListener('mouseenter', handleMouseEnter)
       el.removeEventListener('mouseleave', handleMouseLeave)
+      stopWatching?.()
     }
   }
 

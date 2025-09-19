@@ -6,12 +6,14 @@ const COC_STATEMENT
 <template>
   <section
     v-arrow="{ speed1: '12s', color: 'white' }"
-    class="relative border-t-[0.5px] border-webconf-gray bg-black py-[60px]"
+    class="relative border-t-[0.5px] border-webconf-gray bg-black"
   >
-    <div class="container flex items-start gap-8 sm:px-[88px] lg:px-[172px]">
+    <div
+      class="container flex flex-col items-start gap-6 px-5 py-10 sm:flex-row sm:gap-8 sm:px-[60px] sm:py-12 lg:px-[172px] lg:py-[60px]"
+    >
       <ShareTag
         size="md"
-        class="my-2"
+        class="my-0 sm:my-2"
       >
         CoC 行為準則
       </ShareTag>

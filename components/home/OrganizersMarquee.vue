@@ -24,14 +24,14 @@ const ORGANIZERS = [
     <div
       v-for="(organizer, index) in ORGANIZERS"
       :key="index"
-      class="py-10 pl-12 pr-[42px]"
+      class="py-5 pl-6 pr-[21px] sm:py-6 sm:pl-[28.8px] sm:pr-[25.2px] lg:py-10 lg:pl-12 lg:pr-[42px]"
     >
       <NuxtImg
         :src="organizer.logo"
         :alt="organizer.name"
         format="webp"
         width="150"
-        height="120"
+        class="aspect-[5/4] w-[75px] sm:w-[90px] lg:w-[150px]"
       />
     </div>
   </NuxtMarquee>

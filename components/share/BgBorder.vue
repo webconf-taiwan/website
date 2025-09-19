@@ -88,6 +88,7 @@ function drawGrid(
   pg: p5.Graphics,
   lineCol: p5.Color,
   alpha: number = 1.0,
+  customStrokeWeight?: number,
 ) {
   pg.background(0)
 
@@ -95,7 +96,7 @@ function drawGrid(
   const g = p.green(lineCol)
   const b = p.blue(lineCol)
   pg.stroke(r, g, b, alpha * 255)
-  pg.strokeWeight(2)
+  pg.strokeWeight(customStrokeWeight || 0.5)
 
   // 繪製垂直線
   for (let x = 0; x < pg.width; x += gridSize) {
@@ -130,10 +131,10 @@ function initializeLayersSync(p: p5) {
   const { topGrid, bottomGrid } = defaultColors
 
   // 繪製底層藍色網格（完全不透明）
-  drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0)
+  drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
 
   // 繪製上層灰色網格（半透明）
-  drawGrid(p, topLayer, p.color(topGrid), 0.5)
+  drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
 }
 
 // p5 網格背景程式
