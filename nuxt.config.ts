@@ -28,11 +28,11 @@ export default defineNuxtConfig({
   fonts: {
     families: [
       {
-        name: 'Noto Sans TC',
+        name: 'Noto Sans Traditional Chinese',
         provider: 'google',
         weights: [400, 600],
         styles: ['normal'],
-        subsets: ['chinese-traditional', 'latin'],
+        subsets: ['chinese-traditional'],
         display: 'swap',
         preload: true,
       },
