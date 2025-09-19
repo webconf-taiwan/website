@@ -86,7 +86,7 @@ const SOCIAL_ITEMS = [
   </ClientOnly>
 </template>
 
-<style>
+<style scoped>
 .main-footer {
   background-image: url("/images/footerBg.webp");
   background-repeat: no-repeat;

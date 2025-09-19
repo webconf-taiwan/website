@@ -21,7 +21,7 @@ const tagClass = computed(() => {
   </span>
 </template>
 
-<style>
+<style scoped>
 .tag-md {
   @apply px-5 py-2;
 }
