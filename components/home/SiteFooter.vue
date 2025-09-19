@@ -14,19 +14,24 @@ const SOCIAL_ITEMS = [
   <ClientOnly>
     <footer
       v-arrow="{ speed1: '10s', color: 'white' }"
-      class="main-footer relative border-t-[0.5px] border-webconf-gray/50 bg-black"
+      class="main-footer relative border-t-[0.5px] border-webconf-frame bg-black"
     >
       <div
-        class="container relative flex items-end justify-between pb-[60px] pt-[100px] text-white sm:px-12 lg:px-20"
+        class="container relative flex flex-col items-start gap-[60px] px-5 pb-20 pt-10 text-white sm:px-8 sm:pb-[100px] sm:pt-[60px] lg:px-20 xl:flex-row xl:items-end"
       >
-        <ShareScrollToTopButton class="right-20 top-[100px]" />
+        <!-- go top 按鈕 -->
+        <ShareScrollToTopButton
+          class="right-5 top-10 sm:right-8 sm:top-[60px] lg:right-20"
+        />
+
+        <!-- logo -->
         <div
           v-cursor="{ scale: 0.4, duration: 0.5 }"
-          class="pic group flex flex-col gap-1"
+          class="pic group flex flex-col gap-1 pt-[52px] sm:pt-0"
         >
           <NuxtLink
             to="#"
-            class="relative inline-block"
+            class="relative inline-block h-[91px] w-[240px] sm:size-full"
           >
             <!-- default logo -->
             <NuxtImg
@@ -52,10 +57,14 @@ const SOCIAL_ITEMS = [
           >WebConf Taiwan 2025 All Rights Reserved.</span>
         </div>
 
-        <ul class="flex min-w-0 flex-1 justify-end gap-12 text-h3-40">
+        <!-- 社群連結 -->
+        <ul
+          class="flex w-full flex-1 flex-wrap justify-between gap-y-4 text-h3-40 sm:w-full sm:flex-nowrap sm:gap-0 lg:w-auto lg:justify-end lg:gap-12"
+        >
           <li
             v-for="socialitem in SOCIAL_ITEMS"
             :key="socialitem.name"
+            class="w-1/2 sm:w-auto"
           >
             <NuxtLink
               v-cursor="{
@@ -82,6 +91,12 @@ const SOCIAL_ITEMS = [
   background-image: url("/images/footerBg.webp");
   background-repeat: no-repeat;
   background-position: center bottom;
-  background-size: 100% auto;
+  background-size: auto 155px;
+}
+
+@media (min-width: 1440px) {
+  .main-footer {
+    background-size: 100% 155px;
+  }
 }
 </style>
