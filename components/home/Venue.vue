@@ -97,7 +97,7 @@
   </section>
 </template>
 
-<style>
+<style scoped>
 .arrow-border-5 {
   --θ: 45deg;
   --column: 12;

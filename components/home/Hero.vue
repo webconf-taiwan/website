@@ -60,7 +60,7 @@
   </section>
 </template>
 
-<style>
+<style scoped>
 .hero-section {
   background: url("/images/heroBg.webp");
   background-repeat: no-repeat;
