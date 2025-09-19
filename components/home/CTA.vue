@@ -68,7 +68,7 @@ onMounted(() => {
 }
 
 @media (min-width: 640px) {
-  .main-footer {
+  .cta-section {
     background-attachment: fixed;
   }
 }
