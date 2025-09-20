@@ -28,7 +28,7 @@ export default defineNuxtConfig({
   fonts: {
     families: [
       {
-        name: 'Noto Sans Traditional Chinese',
+        name: 'Noto Sans TC',
         provider: 'google',
         weights: [400, 600],
         styles: ['normal'],
