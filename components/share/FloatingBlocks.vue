@@ -23,34 +23,34 @@ onMounted(() => {
 <template>
   <div class="pointer-events-none fixed inset-0 z-[1] size-full">
     <div
-      class="float-blocks absolute right-[7.16%] top-[6.39%] size-[22.05px] bg-[#2F2ADB]"
+      class="float-blocks absolute right-[103.15px] top-[46px] hidden size-[22.05px] bg-[#2F2ADB] lg:block"
     ></div>
     <div
-      class="float-blocks absolute right-[2.02%] top-[10.57%] size-[22.05px] bg-webconf-gray"
+      class="float-blocks absolute right-[29.05px] top-[76.01px] hidden size-[22.05px] bg-webconf-gray lg:block"
     ></div>
     <div
-      class="float-blocks absolute right-[0.05px] top-[12.09%] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
+      class="float-blocks absolute right-[0.05px] top-[87px] hidden size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-[''] lg:block"
     ></div>
     <div
-      class="float-blocks absolute bottom-[1.48%] left-[0.7%] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
+      class="float-blocks absolute bottom-[10.05px] left-[10px] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
     ></div>
     <div
-      class="float-blocks absolute bottom-[7.53%] left-[3.76%] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
+      class="float-blocks absolute bottom-[54.17px] left-[54.11px] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
     ></div>
     <div
-      class="float-blocks absolute bottom-[1.68%] left-[4.88%] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
+      class="float-blocks absolute bottom-[12.06px] left-[70.16px] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
     ></div>
     <div
-      class="float-blocks absolute bottom-[5.71%] left-[5.29%] size-[22.05px] bg-[#2F2ADB]"
+      class="float-blocks absolute bottom-[41.11px] left-[76.16px] size-[22.05px] bg-[#2F2ADB]"
     ></div>
     <div
-      class="float-blocks absolute bottom-[2.1%] left-[8.36%] size-[22.05px] bg-[#2F2ADB]"
+      class="float-blocks absolute bottom-[15.06px] left-[120.27px] size-[22.05px] bg-[#2F2ADB]"
     ></div>
     <div
-      class="float-blocks absolute bottom-[1.54%] left-[12.67%] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
+      class="float-blocks absolute bottom-[11.06px] left-[182.44px] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
     ></div>
     <div
-      class="float-blocks absolute bottom-[3.63%] left-[26.25%] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
+      class="float-blocks absolute bottom-[26.11px] left-[393.97px] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
     ></div>
   </div>
 </template>

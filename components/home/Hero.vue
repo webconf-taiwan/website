@@ -1,8 +1,10 @@
 <template>
-  <section class="hero-section relative aspect-[2/1] w-full">
-    <HomeHeroCurve />
+  <section class="hero-section relative h-screen w-full">
+    貝茲曲線特效
+    <!-- <HomeHeroCurve /> -->
     <div class="absolute inset-0">
-      <div
+      <!-- 斜線特效 -->
+      <!-- <div
         v-arrow="{
           speed1: '6s',
           speed2: '4s',
@@ -29,16 +31,19 @@
       <div
         v-arrow="{ speed1: '8s', color: 'white' }"
         class="arrow-border-4 absolute bg-webconf-gray"
-      ></div>
-      <div class="absolute right-[60px] top-[54%] -translate-y-1/2 text-right">
-        <div class="flex flex-col items-end gap-[52px] px-[52px]">
+      ></div> -->
+      <!-- 標題區域 -->
+      <div class="absolute right-[4%] top-[63%] -translate-y-1/2 text-right">
+        <div
+          class="flex flex-col items-end gap-4 px-5 sm:gap-[52px] sm:px-[52px]"
+        >
           <NuxtImg
             src="/images/heroLogo.webp"
             alt="2025 WebConf Logo"
             format="webp"
             width="570"
             height="215"
-            class="mr-[86px] lg:w-[570px]"
+            class="mr-0 sm:mr-[86px] sm:w-[570px]"
           />
           <NuxtImg
             src="/images/heroTitle.webp"
@@ -46,7 +51,7 @@
             format="webp"
             width="527"
             height="27"
-            class="lg:w-[527px]"
+            class="pb-8 sm:w-[527px] sm:pb-0"
           />
           <ShareLinkButton
             to="#"
@@ -64,7 +69,7 @@
 .hero-section {
   background: url("/images/heroBg.webp");
   background-repeat: no-repeat;
-  background-position: center -60px;
+  background-position: 68% center;
   background-size: cover;
 }
 
