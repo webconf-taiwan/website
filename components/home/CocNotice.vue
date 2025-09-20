@@ -5,7 +5,7 @@ const COC_STATEMENT
 
 <template>
   <section
-    v-arrow="{ speed1: '12s', color: 'white' }"
+    v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
     class="relative border-t-[0.5px] border-webconf-gray bg-black"
   >
     <div

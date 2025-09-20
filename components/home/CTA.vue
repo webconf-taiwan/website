@@ -24,7 +24,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <section v-arrow="{ speed1: '10s', color: 'white' }">
+  <section v-arrow="{ speed1: '10s', color: '#E6E6E6' }">
     <div
       ref="ctaContainer"
       class="cta-section relative aspect-[3/2] overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black sm:aspect-auto sm:h-screen"

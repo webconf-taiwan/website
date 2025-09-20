@@ -144,7 +144,7 @@
   .arrow-directive {
     @apply relative;
     --arrow-direction: 1;
-    --arrow-color: white;
+    --arrow-color: #e6e6e6;
     --arrow-speed-1: 2s;
     --arrow-speed-2: 2s;
     --arrow-delay: 0s;
@@ -153,6 +153,7 @@
   .arrow-directive::before,
   .arrow-directive::after {
     content: "";
+    @apply z-10;
     @apply absolute;
     top: -6px;
     display: block;

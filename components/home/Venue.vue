@@ -26,49 +26,62 @@
         class="arrow-border-7 absolute bg-webconf-gray"
       ></div>
     </div>
-    <div class="container flex px-20 pb-60 pt-20">
+    <div
+      class="container flex flex-col p-0 sm:px-16 sm:py-20 lg:flex-row lg:px-20 lg:pb-60"
+    >
       <div
-        class="group relative w-[65%] border border-webconf-gray/50 bg-black pb-[24px] pl-[40px] pr-[47px] 2xl:w-[68.75%]"
+        v-cursor="{ scale: 0.4, duration: 0.5 }"
+        class="group relative aspect-[1/1] w-full border-[0.5px] border-webconf-frame bg-black px-5 pb-5 pt-[85px] sm:aspect-auto sm:pb-0 sm:pl-[29.14px] sm:pr-[34.24px] sm:pt-[29px] lg:w-[68.75%] lg:pb-[24px] lg:pl-[40px] lg:pr-[47px] lg:pt-0"
       >
-        <NuxtImg
-          src="/images/venueBg.webp"
-          width="793"
-          height="536"
-          format="webp"
-          class="w-full translate-y-[-10px] object-cover"
-        />
-        <div class="absolute left-10 top-8 w-fit">
-          <h2 class="flex px-10 text-h3-40 text-white">
+        <!-- 標題 -->
+        <div class="absolute left-5 top-5 w-fit sm:left-10 sm:top-8">
+          <h2 class="flex px-10 pb-3 text-h3-40 text-white sm:pb-4">
             Venue
           </h2>
-          <div class="mt-4 flex items-center">
+          <div class="flex items-center">
             <span class="size-3 bg-white"></span>
             <span class="h-[1px] flex-1 bg-white"></span>
             <span class="size-3 bg-white"></span>
           </div>
         </div>
-        <p class="absolute bottom-10 left-12 text-h4-24 text-white">
+
+        <!-- 場地圖 -->
+        <div class="pic h-full">
+          <NuxtImg
+            src="/images/venueBg.webp"
+            width="793"
+            height="536"
+            format="webp"
+            class="size-full translate-y-0 object-contain sm:translate-y-[10px] lg:translate-y-[-10px]"
+          />
+          <div
+            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-100"
+          ></div>
+          <div
+            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-60"
+          ></div>
+        </div>
+        <!-- 場地標題 -->
+        <p
+          class="absolute bottom-10 left-12 hidden text-h4-24 text-white lg:block"
+        >
           瓶蓋工廠台北製造所
         </p>
+        <!-- 指北針圖示 -->
         <NuxtImg
           src="/images/venueCompass.webp"
           format="webp"
           width="161"
           height="117"
-          class="absolute right-0 top-12"
+          class="absolute right-0 top-12 hidden sm:block"
         />
-        <!-- <div
-          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-100"
-        ></div> -->
-        <div
-          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-60"
-        ></div>
       </div>
       <ShareGradientDotsCard
-        class="relative ml-[-12.5%] h-fit w-[47.5%] flex-1 translate-y-[48%] 2xl:w-[43.5%] 2xl:translate-y-[58%]"
+        class="relative ml-0 h-fit w-full translate-y-0 sm:px-[60px] sm:pb-[84px] lg:ml-[-12.65%] lg:w-[43.9%] lg:translate-y-[57%] lg:pb-[52px]"
       >
-        <div class="flex flex-col items-start">
-          <div class="mb-8 flex items-start gap-8 text-white">
+        <div class="items-start">
+          <!-- 搭乘工具一 -->
+          <div class="flex items-start gap-6 pb-8 text-white sm:gap-8">
             <ShareTag class="my-2">
               搭乘捷運
             </ShareTag>
@@ -77,7 +90,10 @@
               出口，步行至連通道至台鐵/高鐵北門出站，經市民大道向西步行約 5 分鐘
             </p>
           </div>
-          <div class="mb-[60px] flex items-start gap-8 text-white">
+          <!-- 搭乘工具二 -->
+          <div
+            class="flex items-start gap-6 pb-10 text-white sm:gap-8 sm:pb-[60px]"
+          >
             <ShareTag class="my-2">
               搭乘火車
             </ShareTag>
@@ -87,7 +103,7 @@
           </div>
           <ShareLinkButton
             to="#"
-            class="m-auto text-center"
+            class="m-auto flex w-fit"
           >
             更多資訊
           </ShareLinkButton>

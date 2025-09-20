@@ -26,7 +26,7 @@ export default {
         'container-2xl': '1400px',
       },
       fontFamily: {
-        sans: ['Noto Sans Traditional Chinese', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        sans: ['Noto Sans TC', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
       fontSize: {
         'btn-14': ['14px', { lineHeight: '1', letterSpacing: '0.02em', fontWeight: '400' }],

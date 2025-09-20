@@ -12,7 +12,7 @@ const isSaleOpen = useGlobalState().isSaleOpen
 
 <template>
   <header
-    class="sticky top-0 z-50 w-full border-b border-b-webconf-gray bg-black"
+    class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black"
   >
     <div
       class="container flex items-center justify-between px-5 sm:px-8 lg:px-20"

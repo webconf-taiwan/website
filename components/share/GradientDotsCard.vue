@@ -13,4 +13,10 @@
   background-position: bottom;
   background-repeat: no-repeat;
 }
+
+@media (min-width: 640px) {
+  .gradient-dots-card {
+    background-size: 100% 215px;
+  }
+}
 </style>

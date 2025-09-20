@@ -17,7 +17,7 @@ const ORGANIZERS = [
 
 <template>
   <NuxtMarquee
-    v-arrow="{ speed1: '12s', color: 'white' }"
+    v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
     :auto-fill="true"
     class="!overflow-x-clip border-t-[0.5px] border-webconf-gray bg-black"
   >
