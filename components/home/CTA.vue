@@ -31,11 +31,9 @@ onMounted(() => {
     ></div>
     <div
       ref="ctaCard"
-      class="relative left-auto top-auto translate-x-0 translate-y-0 sm:absolute sm:left-1/2 sm:top-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2"
+      class="relative left-auto top-auto w-full translate-x-0 translate-y-0 sm:absolute sm:left-1/2 sm:top-1/2 sm:max-w-[524px] sm:-translate-x-1/2 sm:-translate-y-1/2 lg:max-w-[647px]"
     >
-      <ShareGradientDotsCard
-        class="max-w-none text-center sm:max-w-[524px] lg:max-w-[647px]"
-      >
+      <ShareGradientDotsCard class="max-w-none text-center">
         <div class="flex flex-col items-center">
           <div class="pic pb-6 sm:pb-10">
             <NuxtImg
@@ -67,7 +65,7 @@ onMounted(() => {
   background-repeat: no-repeat;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 1440px) {
   .cta-section {
     background-attachment: fixed;
   }
