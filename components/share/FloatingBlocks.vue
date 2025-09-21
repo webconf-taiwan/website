@@ -23,13 +23,13 @@ onMounted(() => {
 <template>
   <div class="pointer-events-none fixed inset-0 z-[1] size-full">
     <div
-      class="float-blocks absolute right-[103.15px] top-[46px] hidden size-[22.05px] bg-[#2F2ADB] lg:block"
+      class="float-blocks absolute right-[103.15px] top-[46px] block size-[22.05px] bg-[#2F2ADB] sm:hidden lg:block"
     ></div>
     <div
-      class="float-blocks absolute right-[29.05px] top-[76.01px] hidden size-[22.05px] bg-webconf-gray lg:block"
+      class="float-blocks absolute right-[29.05px] top-[76.01px] block size-[22.05px] bg-webconf-gray sm:hidden lg:block"
     ></div>
     <div
-      class="float-blocks absolute right-[0.05px] top-[87px] hidden size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-[''] lg:block"
+      class="float-blocks absolute right-[0.05px] top-[87px] block size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-[''] sm:hidden lg:block"
     ></div>
     <div
       class="float-blocks absolute bottom-[10.05px] left-[10px] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
