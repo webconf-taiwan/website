@@ -1,6 +1,6 @@
 <template>
   <section class="hero-section relative min-h-svh w-full lg:h-screen">
-    貝茲曲線特效
+    <!-- 貝茲曲線特效 -->
     <!-- <HomeHeroCurve /> -->
     <div class="absolute inset-0">
       <!-- 斜線特效 -->
