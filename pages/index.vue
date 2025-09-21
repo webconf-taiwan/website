@@ -1,6 +1,5 @@
 <template>
-  <ShareBgBorder>
-    <HomeNavbar />
+  <div>
     <HomeHero />
     <HomeAbout />
     <HomeFeaturedSpeakers />
@@ -8,6 +7,5 @@
     <HomeOrganizersMarquee />
     <HomeCTA />
     <HomeCocNotice />
-    <HomeSiteFooter />
-  </ShareBgBorder>
+  </div>
 </template>

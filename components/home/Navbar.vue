@@ -1,18 +1,78 @@
 <script setup lang="ts">
 const NAV_ITEMS = [
-  { name: '議程資訊', href: '#', isTablet: true, isDesktop: true },
-  { name: '講者介紹', href: '#', isTablet: false, isDesktop: true },
-  { name: '場域介紹', href: '#', isTablet: true, isDesktop: true },
-  { name: '贊助廠商', href: '#', isTablet: false, isDesktop: true },
-  { name: '主辦團隊', href: '#', isTablet: false, isDesktop: true },
-  { name: '歷屆回顧', href: '#', isTablet: false, isDesktop: true },
+  {
+    name: '議程資訊',
+    enName: 'Agenda',
+    href: '/coming-soon',
+    isTablet: true,
+    isDesktop: true,
+  },
+  {
+    name: '講者介紹',
+    enName: 'Speakers',
+    href: '/coming-soon',
+    isTablet: false,
+    isDesktop: true,
+  },
+  {
+    name: '場域介紹',
+    enName: 'Venue',
+    href: '/coming-soon',
+    isTablet: true,
+    isDesktop: true,
+  },
+  {
+    name: '贊助廠商',
+    enName: 'Staff',
+    href: '/coming-soon',
+    isTablet: false,
+    isDesktop: true,
+  },
+  {
+    name: '主辦團隊',
+    enName: 'Sponsors',
+    href: '/coming-soon',
+    isTablet: false,
+    isDesktop: true,
+  },
+  {
+    name: '歷屆回顧',
+    enName: 'History',
+    href: '/coming-soon',
+    isTablet: false,
+    isDesktop: true,
+  },
 ]
+
 const isSaleOpen = useGlobalState().isSaleOpen
+
+const isToggleMenu = ref(false)
+
+function onToggleMenu() {
+  isToggleMenu.value = !isToggleMenu.value
+
+  if (isToggleMenu.value) {
+    document.body.style.overflow = 'hidden'
+  }
+  else {
+    document.body.style.overflow = ''
+  }
+}
+
+function closeMenu() {
+  isToggleMenu.value = false
+  document.body.style.overflow = ''
+}
+
+onUnmounted(() => {
+  document.body.style.overflow = ''
+})
 </script>
 
 <template>
   <header
-    class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black"
+    class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black lg:bg-black"
+    :class="{ 'bg-webconf-blue': isToggleMenu }"
   >
     <div
       class="container flex items-center justify-between px-5 sm:px-8 lg:px-20"
@@ -21,7 +81,7 @@ const isSaleOpen = useGlobalState().isSaleOpen
       <h1 v-cursor="{ scale: 0.4, duration: 0.5 }">
         <span class="sr-only">2025 WebConf</span>
         <NuxtLink
-          to="#"
+          to="/"
           class="group relative inline-block"
         >
           <!-- default logo -->
@@ -31,7 +91,7 @@ const isSaleOpen = useGlobalState().isSaleOpen
             format="webp"
             width="191"
             height="28"
-            class="opacity-100 transition-opacity duration-500 group-hover:opacity-0"
+            class="h-5 w-[137px] opacity-100 transition-opacity duration-500 group-hover:opacity-0 sm:h-[28px] sm:w-[191px]"
           />
           <!-- hover logo -->
           <NuxtImg
@@ -40,22 +100,28 @@ const isSaleOpen = useGlobalState().isSaleOpen
             format="webp"
             width="191"
             height="28"
-            class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100 2xl:w-[191px]"
+            class="absolute inset-0 h-5 w-[137px] opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:h-[28px] sm:w-[191px]"
           />
         </NuxtLink>
       </h1>
 
       <!-- 導覽列 -->
-      <div class="flex items-center gap-4 py-3 text-btn-16 text-webconf-gray">
+      <div class="flex items-center py-3 text-btn-16 text-webconf-gray">
         <nav>
-          <ul class="flex py-[3px]">
+          <ul
+            class="flex py-[3px] pr-0 sm:pr-3 lg:pr-4"
+            :class="{ 'hidden lg:flex': isToggleMenu }"
+          >
             <li
               v-for="navItem in NAV_ITEMS"
               :key="navItem.name"
               class="hidden"
               :class="{
-                'sm:block': navItem.isTablet,
-                'lg:block': navItem.isDesktop,
+                'hidden sm:block lg:block':
+                  navItem.isTablet && navItem.isDesktop,
+                'hidden sm:hidden lg:block':
+                  !navItem.isTablet && navItem.isDesktop,
+                'hidden': !navItem.isTablet && !navItem.isDesktop,
               }"
             >
               <NuxtLink
@@ -69,15 +135,77 @@ const isSaleOpen = useGlobalState().isSaleOpen
           </ul>
         </nav>
 
+        <!-- 是否購票按鈕 -->
         <NuxtLink
+          v-if="!isSaleOpen && !isToggleMenu"
           to="#"
-          :class="{ hidden: isSaleOpen }"
+          class="pr-3 sm:pr-2"
         >
           <ShareTag size="lg">
             前往購票
           </ShareTag>
         </NuxtLink>
+
+        <!-- 手機選單按鈕 -->
+        <div class="block px-0 py-[3px] sm:px-3 sm:py-[4px] lg:hidden">
+          <NuxtImg
+            src="/images/icon/hamburgerMenu.svg"
+            width="24"
+            height="24"
+            :class="{ hidden: isToggleMenu }"
+            @click="onToggleMenu"
+          />
+          <NuxtImg
+            src="/images/icon/close.svg"
+            width="24"
+            height="24"
+            :class="{ hidden: !isToggleMenu }"
+            @click="onToggleMenu"
+          />
+        </div>
       </div>
+
+      <!-- 手機和平板使用選單 -->
+      <ul
+        :class="{
+          hidden: !isToggleMenu,
+        }"
+        class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex w-dvw flex-col gap-12 bg-black pb-[152px] pl-[60px] pr-8 pt-10 before:absolute before:left-[66px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pb-[408px] sm:pl-[108px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
+      >
+        <li
+          v-for="navItem in NAV_ITEMS"
+          :key="navItem.name"
+        >
+          <NuxtLink
+            v-cursor="{ scale: 0.4, duration: 0.5 }"
+            class="flex w-full items-center gap-4 before:block before:size-3 before:bg-webconf-gray before:content-[''] sm:gap-8"
+            :to="navItem.href"
+            @click="closeMenu"
+          >
+            <div class="flex w-full items-end justify-between">
+              <span class="text-h3-40 text-white">{{ navItem.enName }}</span>
+              <span class="text-btn-14 text-webconf-gray">{{
+                navItem.name
+              }}</span>
+            </div>
+          </NuxtLink>
+        </li>
+      </ul>
     </div>
   </header>
 </template>
+
+<style scoped>
+.mobile-menu {
+  background-image: url("/images/menuBg.webp");
+  background-size: auto 215px;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu {
+    background-size: 100% 320px;
+  }
+}
+</style>

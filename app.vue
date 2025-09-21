@@ -1,6 +1,7 @@
 <template>
   <Body class="main-body cursor-none">
-    <NuxtPage />
-    <ShareCursorDot />
+    <NuxtLayout>
+      <NuxtPage />
+    </NuxtLayout>
   </Body>
 </template>

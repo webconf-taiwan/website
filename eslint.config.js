@@ -99,6 +99,7 @@ export default antfu(
             'cta-section',
             'float-blocks',
             'blue-overlay',
+            'mobile-menu',
           ], // 允許自定義的 CSS 類名
         },
       ],

@@ -366,7 +366,7 @@ onUnmounted(() => {
     <!-- 內容層 (圖片等) -->
     <div
       ref="contentContainer"
-      class="relative z-[20] size-full overflow-x-clip"
+      class="relative z-[20] flex min-h-dvh flex-col overflow-x-clip"
     >
       <slot></slot>
     </div>

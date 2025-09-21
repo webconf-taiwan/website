@@ -27,7 +27,7 @@ onMounted(() => {
   <section v-arrow="{ speed1: '10s', color: '#E6E6E6' }">
     <div
       ref="ctaContainer"
-      class="cta-section relative aspect-[3/2] overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black sm:aspect-auto sm:h-screen"
+      class="cta-section relative aspect-[3/2] overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black sm:aspect-auto sm:min-h-dvh"
     ></div>
     <div
       ref="ctaCard"
