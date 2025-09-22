@@ -1,26 +1,23 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-
 const gsap = useGsap()
 const { width } = useWindowSize() // 引入 useWindowSize
 const aboutCardRef = ref<any>(null)
 
-onMounted(() => {
-  const element = aboutCardRef.value.$el
+watch(aboutCardRef, (newValue) => {
+  if (newValue && newValue.$el) {
+    const element = newValue.$el
 
-  if (!element)
-    return
-
-  gsap.to(element, {
-    scrollTrigger: {
-      trigger: element,
-      start: 'center center',
-      endTrigger: '#about-section', // 指定 pages/index.vue 的 #about-section 元素
-      end: 'bottom bottom',
-      pin: element,
-      pinSpacing: false,
-    },
-  })
+    gsap.to(element, {
+      scrollTrigger: {
+        trigger: element,
+        start: 'center center',
+        endTrigger: '#about-section', // 指定 pages/index.vue 的 #about-section 元素
+        end: 'bottom bottom',
+        pin: element,
+        pinSpacing: false,
+      },
+    })
+  }
 })
 
 const floatingTags = computed(() => [
@@ -29,7 +26,7 @@ const floatingTags = computed(() => [
     position: {
       default: { top: '-35%', left: '5%' },
       md: { top: '-22%', left: '-10%' },
-      xl: { top: '-27%', left: '-47%' },
+      xl: { top: '20%', left: '-42%' },
     },
   },
   {
@@ -37,7 +34,7 @@ const floatingTags = computed(() => [
     position: {
       default: { bottom: '-17.5%', left: '6.5%' },
       md: { bottom: '-15%', left: '10%' },
-      xl: { bottom: '-10%', left: '-27%' },
+      xl: { bottom: '-3%', left: '-27%' },
     },
   },
   {
@@ -45,7 +42,7 @@ const floatingTags = computed(() => [
     position: {
       default: { bottom: '-25%', right: '6.5%' },
       md: { bottom: '-20%', right: '10%' },
-      xl: { bottom: '-28%', right: '20%' },
+      xl: { bottom: '-18%', right: '20%' },
     },
   },
   {
@@ -53,7 +50,7 @@ const floatingTags = computed(() => [
     position: {
       default: { right: '35%', top: '-17.5%' },
       md: { right: '30%', top: '-12.5%' },
-      xl: { right: '-10%', top: '-5%' },
+      xl: { right: '-5%', top: '-5%' },
     },
   },
   {
@@ -61,7 +58,7 @@ const floatingTags = computed(() => [
     position: {
       default: { right: '5%', top: '-27.5%' },
       md: { right: '-15%', top: '-28%' },
-      xl: { right: '-50%', top: '50%' },
+      xl: { right: '-47%', top: '50%' },
     },
   },
 ])
