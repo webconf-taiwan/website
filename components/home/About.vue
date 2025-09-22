@@ -29,9 +29,11 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
     id="about-section"
     class="relative z-0 min-h-screen w-full"
   >
-    <HomeAboutCard />
+    <div class="container relative flex justify-center">
+      <HomeAboutCard />
+    </div>
 
-    <section class="about-img-wrapper flex">
+    <section class="about-img-wrapper container flex">
       <div class="flex w-1/2 flex-col items-start">
         <NuxtImg
           ref="aboutPhotoL1Ref"

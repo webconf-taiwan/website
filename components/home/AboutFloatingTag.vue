@@ -39,10 +39,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <ShareBlueTag
-    ref="tagRef"
-    :text="text"
-    :style="position"
-    class="floating-tag absolute"
-  />
+  <ClientOnly>
+    <ShareBlueTag
+      ref="tagRef"
+      :text="text"
+      :style="position"
+      class="floating-tag absolute"
+    />
+  </ClientOnly>
 </template>
