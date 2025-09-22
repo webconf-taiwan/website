@@ -33,15 +33,15 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
       <HomeAboutCard />
     </div>
 
-    <section class="about-img-wrapper container flex">
-      <div class="flex w-1/2 flex-col items-start">
+    <section class="container flex flex-col sm:flex-row">
+      <div class="flex flex-col items-start sm:w-1/2 xl:mb-[72px]">
         <NuxtImg
           ref="aboutPhotoL1Ref"
           src="/images/aboutPhotoL1.webp"
           alt="about"
           width="360"
           height="240"
-          class="blue-shadow about-img-filter relative left-[120px] mt-[900px]"
+          class="blue-shadow about-img-filter relative w-full sm:left-0 sm:mt-[300px] sm:max-w-[280px] xl:left-[120px] xl:mt-[900px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 1 }"
         />
         <NuxtImg
@@ -50,7 +50,7 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
           alt="about"
           width="360"
           height="240"
-          class="blue-shadow about-img-filter relative -left-10 mt-[160px]"
+          class="blue-shadow about-img-filter relative mt-[160px] w-full sm:left-10 sm:max-w-[280px] xl:-left-10 xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 2 }"
         />
         <NuxtImg
@@ -59,19 +59,19 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
           alt="about"
           width="439"
           height="293"
-          class="blue-shadow about-img-filter relative left-10 mb-[72px] mt-[250px]"
+          class="blue-shadow about-img-filter relative mt-[250px] w-full sm:left-0 sm:max-w-[360px] xl:left-10 xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 3 }"
         />
       </div>
 
-      <div class="flex w-1/2 flex-col items-end">
+      <div class="flex flex-col items-end sm:w-1/2">
         <NuxtImg
           ref="aboutPhotoR1Ref"
           src="/images/aboutPhotoR1.webp"
           alt="about"
           width="420"
           height="280"
-          class="blue-shadow about-img-filter relative right-20 mt-[590px]"
+          class="blue-shadow about-img-filter relative w-full sm:right-10 sm:mt-[150px] sm:max-w-[280px] xl:right-20 xl:mt-[590px] xl:max-w-[420px]"
           :class="{ 'is-hovered': hoveredImageIndex === 4 }"
         />
         <NuxtImg
@@ -80,7 +80,7 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
           alt="about"
           width="480"
           height="320"
-          class="blue-shadow about-img-filter relative right-0 mt-[160px]"
+          class="blue-shadow about-img-filter relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 5 }"
         />
         <NuxtImg
@@ -89,7 +89,7 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
           alt="about"
           width="240"
           height="160"
-          class="blue-shadow about-img-filter relative right-[120px] mt-[280px]"
+          class="blue-shadow about-img-filter relative w-full sm:right-10 sm:mt-[200px] sm:max-w-[240px] xl:right-[120px] xl:mt-[280px]"
           :class="{ 'is-hovered': hoveredImageIndex === 6 }"
         />
       </div>
