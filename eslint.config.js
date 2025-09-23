@@ -100,6 +100,8 @@ export default antfu(
             'float-blocks',
             'blue-overlay',
             'mobile-menu',
+            'line-group',
+            'svg-container',
           ], // 允許自定義的 CSS 類名
         },
       ],
