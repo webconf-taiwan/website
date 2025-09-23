@@ -40,7 +40,7 @@ const SOCIAL_ITEMS = [
               format="webp"
               width="280"
               height="106"
-              class="opacity-100 transition-opacity duration-500 group-hover:opacity-0"
+              class="opacity-100 transition-opacity duration-500 lg:group-hover:opacity-0"
             />
             <!-- hover logo -->
             <NuxtImg
@@ -49,11 +49,11 @@ const SOCIAL_ITEMS = [
               format="webp"
               width="280"
               height="106"
-              class="absolute inset-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+              class="absolute inset-0 opacity-0 transition-opacity duration-500 lg:group-hover:opacity-100"
             />
           </NuxtLink>
           <span
-            class="text-left text-sm leading-[1.8] tracking-[0.02em] transition-colors duration-500 group-hover:text-webconf-blue"
+            class="text-left text-sm leading-[1.8] tracking-[0.02em] transition-colors duration-500 lg:group-hover:text-webconf-blue"
           >WebConf Taiwan 2025 All Rights Reserved.</span>
         </div>
 
@@ -73,7 +73,7 @@ const SOCIAL_ITEMS = [
                 backgroundColor: 'rgba(0, 46, 255, 0.9)',
                 text: 'FOLLOW',
               }"
-              class="inline-block transition-colors duration-500 hover:text-webconf-blue"
+              class="inline-block transition-colors duration-500 lg:hover:text-webconf-blue"
               target="_blank"
               :to="socialitem.href"
             >

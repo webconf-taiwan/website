@@ -91,7 +91,7 @@ onUnmounted(() => {
             format="webp"
             width="191"
             height="28"
-            class="h-5 w-[137px] opacity-100 transition-opacity duration-500 group-hover:opacity-0 sm:h-[28px] sm:w-[191px]"
+            class="h-5 w-[137px] opacity-100 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-0"
           />
           <!-- hover logo -->
           <NuxtImg
@@ -100,13 +100,13 @@ onUnmounted(() => {
             format="webp"
             width="191"
             height="28"
-            class="absolute inset-0 h-5 w-[137px] opacity-0 transition-opacity duration-500 group-hover:opacity-100 sm:h-[28px] sm:w-[191px]"
+            class="absolute inset-0 h-5 w-[137px] opacity-0 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-100"
           />
         </NuxtLink>
       </h1>
 
       <!-- 導覽列 -->
-      <div class="flex items-center py-3 text-btn-16 text-webconf-gray">
+      <div class="flex items-center py-2 text-btn-16 text-webconf-gray xs:py-3">
         <nav>
           <ul
             class="flex py-[3px] pr-0 sm:pr-3 lg:pr-4"
@@ -126,7 +126,7 @@ onUnmounted(() => {
             >
               <NuxtLink
                 v-cursor="{ scale: 0.4, duration: 0.5 }"
-                class="inline-block px-3 py-1 transition-colors duration-500 hover:text-webconf-blue"
+                class="inline-block px-3 py-1 transition-colors duration-500 lg:hover:text-webconf-blue"
                 :to="navItem.href"
               >
                 {{ navItem.name }}
@@ -170,7 +170,7 @@ onUnmounted(() => {
         :class="{
           hidden: !isToggleMenu,
         }"
-        class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex h-svh w-dvw flex-col gap-12 bg-black pl-[60px] pr-8 pt-10 before:absolute before:left-[66px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[108px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
+        class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex h-dvh w-dvw flex-col gap-12 bg-black pl-[60px] pr-8 pt-10 before:absolute before:left-[66px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[108px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
       >
         <li
           v-for="navItem in NAV_ITEMS"
