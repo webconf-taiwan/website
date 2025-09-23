@@ -27,10 +27,10 @@ const SOCIAL_ITEMS = [
         <!-- logo -->
         <div
           v-cursor="{ scale: 0.4, duration: 0.5 }"
-          class="pic group flex flex-col gap-1 pt-[52px] sm:pt-0"
+          class="pic group mt-[52px] flex flex-col gap-1 sm:mt-0"
         >
           <NuxtLink
-            to="#"
+            to="/"
             class="relative inline-block h-[91px] w-[240px] sm:size-full"
           >
             <!-- default logo -->
