@@ -1,5 +1,15 @@
 <script setup lang="ts">
 import type p5 from 'p5'
+import { useBreakpoints, useThrottleFn } from '@vueuse/core'
+
+const props = withDefaults(defineProps<Props>(), {
+  dvdDotSpeed: 4,
+  dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'] as const,
+})
+const breakpoints = useBreakpoints({
+  lg: 1024,
+})
+const isDesktop = breakpoints.greaterOrEqual('lg')
 
 interface Props {
   dvdDotSpeed?: number
@@ -17,11 +27,6 @@ interface DVDBox {
   colorIndex: number // 顏色索引
 }
 
-const props = withDefaults(defineProps<Props>(), {
-  dvdDotSpeed: 4,
-  dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'] as const,
-})
-
 const gridContainer = ref<HTMLElement | null>(null)
 const boxContainer = ref<HTMLElement | null>(null)
 const contentContainer = ref<HTMLElement | null>(null)
@@ -32,9 +37,9 @@ const FIXED_GRID_SIZE = 80 // 網格的大小(固定值)
 let gridSize: number // 網格大小（動態計算）
 const ease = 0.25 // 平滑滑鼠追蹤係數
 
-let topLayer: p5.Graphics // 上層灰網格緩衝
-let bottomLayer: p5.Graphics // 下層藍網格緩衝
-let tempLayer: p5.Graphics // 臨時圖層（用於遮罩效果）
+let topLayer: p5.Graphics | null // 上層灰網格緩衝
+let bottomLayer: p5.Graphics | null // 下層藍網格緩衝
+let tempLayer: p5.Graphics | null // 臨時圖層（用於遮罩效果）
 let mx: number, my: number, tx: number, ty: number // 鼠標位置
 let r: number // flashlight 半徑
 
@@ -112,35 +117,43 @@ function drawGrid(
 // 圖層初始化函數
 function initializeLayersSync(p: p5) {
   // 清理舊的 Graphics 對象
-  if (topLayer)
+  if (topLayer) {
     topLayer.remove()
-  if (bottomLayer)
+    topLayer = null
+  }
+  if (bottomLayer) {
     bottomLayer.remove()
-  if (tempLayer)
+    bottomLayer = null
+  }
+  if (tempLayer) {
     tempLayer.remove()
+    tempLayer = null
+  }
 
-  // 建立三層畫布
-  topLayer = p.createGraphics(p.width, p.height)
-  bottomLayer = p.createGraphics(p.width, p.height)
-  tempLayer = p.createGraphics(p.width, p.height)
+  requestAnimationFrame(() => {
+    // 建立三層畫布
+    topLayer = p.createGraphics(p.width, p.height, 'p2d')
+    bottomLayer = p.createGraphics(p.width, p.height, 'p2d')
+    tempLayer = p.createGraphics(p.width, p.height, 'p2d')
 
-  topLayer.pixelDensity(1)
-  bottomLayer.pixelDensity(1)
-  tempLayer.pixelDensity(1)
+    topLayer.pixelDensity(1)
+    bottomLayer.pixelDensity(1)
+    tempLayer.pixelDensity(1)
 
-  const { topGrid, bottomGrid } = defaultColors
+    const { topGrid, bottomGrid } = defaultColors
 
-  // 繪製底層藍色網格（完全不透明）
-  drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
+    // 繪製底層藍色網格（完全不透明）
+    drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
 
-  // 繪製上層灰色網格（半透明）
-  drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
+    // 繪製上層灰色網格（半透明）
+    drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
+  })
 }
 
 // p5 網格背景程式
 function gridSketch(p: p5) {
   p.setup = () => {
-    const canvas = p.createCanvas(p.windowWidth, p.windowHeight)
+    const canvas = p.createCanvas(p.windowWidth, p.windowHeight, 'p2d')
     canvas.id('gridCanvas')
     canvas.parent(gridContainer.value!)
     p.pixelDensity(1)
@@ -151,9 +164,19 @@ function gridSketch(p: p5) {
     setCSSVariables(p)
 
     // 初始化 flashlight 參數
-    r = Math.min(p.width, p.height) * 0.25
+    r = isDesktop.value ? Math.min(p.width, p.height) * 0.25 : 0
     mx = tx = p.width / 2
     my = ty = p.height / 2
+
+    watch(
+      isDesktop,
+      (newVal) => {
+        if (!p)
+          return
+        r = newVal ? Math.min(p.width, p.height) * 0.25 : 0
+      },
+      { immediate: true },
+    )
 
     initializeLayersSync(p)
   }
@@ -193,12 +216,22 @@ function gridSketch(p: p5) {
     }
   }
 
-  p.windowResized = () => {
+  const handleResized = useThrottleFn(() => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
     gridSize = FIXED_GRID_SIZE
     gridSizeRef.value = gridSize
     setCSSVariables(p)
-    initializeLayersSync(p)
+
+    if (
+      topLayer
+      && (topLayer.width !== p.width || topLayer.height !== p.height)
+    ) {
+      initializeLayersSync(p)
+    }
+  }, 150)
+
+  p.windowResized = function () {
+    handleResized()
   }
 
   p.mouseMoved = () => {
@@ -210,22 +243,12 @@ function gridSketch(p: p5) {
     tx = p.constrain(p.mouseX, 0, p.width)
     ty = p.constrain(p.mouseY, 0, p.height)
   }
-
-  p.keyPressed = () => {
-    if (p.key === '+' || p.key === '=') {
-      r *= 1.1
-    }
-    if (p.key === '-' || p.key === '_') {
-      r *= 0.9
-    }
-    r = p.constrain(r, 8, Math.max(p.width, p.height))
-  }
 }
 
 // p5 方框動畫程式
 function boxSketch(p: p5) {
   p.setup = () => {
-    const canvas = p.createCanvas(p.windowWidth, p.windowHeight)
+    const canvas = p.createCanvas(p.windowWidth, p.windowHeight, 'p2d')
     canvas.parent(boxContainer.value!)
     p.pixelDensity(1)
     canvas.id('dvdDotCanvas')
@@ -239,8 +262,12 @@ function boxSketch(p: p5) {
     updateAndDrawDVDDots(p)
   }
 
-  p.windowResized = () => {
+  const handleResized = useThrottleFn(() => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
+  }, 150)
+
+  p.windowResized = function () {
+    handleResized()
   }
 }
 
@@ -347,6 +374,14 @@ onMounted(async () => {
 
 onUnmounted(() => {
   document.documentElement.style.removeProperty('--grid-size')
+
+  if (topLayer)
+    topLayer.remove()
+  if (bottomLayer)
+    bottomLayer.remove()
+  if (tempLayer)
+    tempLayer.remove()
+
   gridP5Sketch.destroySketch()
   boxP5Sketch.destroySketch()
 })

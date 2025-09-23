@@ -19,9 +19,6 @@ export default defineNuxtPlugin((nuxtApp) => {
           return lenis.animatedScroll || 0
         },
         scrollLeft() {
-          if (arguments.length) {
-            console.warn('Horizontal scrolling is not supported with Lenis')
-          }
           return 0
         },
         getBoundingClientRect() {

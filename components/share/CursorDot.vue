@@ -49,7 +49,7 @@ onMounted(() => {
   <div
     ref="cursorRef"
     data-cursor
-    class="pointer-events-none fixed left-0 top-0 z-[9999] grid size-5 -translate-x-1/2 -translate-y-1/2 place-content-center will-change-transform"
+    class="pointer-events-none fixed left-0 top-0 z-[9999] hidden size-5 -translate-x-1/2 -translate-y-1/2 place-content-center will-change-transform lg:grid"
   >
     <div
       data-cursor-inner

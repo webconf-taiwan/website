@@ -27,7 +27,7 @@ onMounted(() => {
   <section v-arrow="{ speed1: '10s', color: '#E6E6E6' }">
     <div
       ref="ctaContainer"
-      class="cta-section relative aspect-[3/2] overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black sm:aspect-auto sm:min-h-dvh"
+      class="cta-section relative aspect-[3/2] overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black sm:aspect-auto sm:min-h-svh"
     ></div>
     <div
       ref="ctaCard"
@@ -48,7 +48,7 @@ onMounted(() => {
             這裡不只是分享最新網頁技術趨勢的舞台，更是你與專家、愛好者交流的最佳機會。今年我們將聚焦
             AI、機器學習和優化使用者體驗設計，帶來滿滿的靈感與實用經驗。誠摯邀請你一起加入，和來自各地的技術人碰撞想法，共同探索網頁未來的無限可能！
           </p>
-          <ShareLinkButton to="#">
+          <ShareLinkButton to="/">
             前往購票
           </ShareLinkButton>
         </div>

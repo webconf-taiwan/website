@@ -9,18 +9,26 @@ export function useP5Sketch({ container, sketch }: P5SketchOptions) {
   const { $p5 } = useNuxtApp()
   let p5Instance: p5 | null = null
 
-  const createSketch = () => {
-    if (container.value && $p5) {
-      p5Instance = new $p5(sketch, container.value)
-    }
-  }
-
   const destroySketch = () => {
     if (p5Instance) {
       p5Instance.remove()
       p5Instance = null
     }
   }
+
+  const createSketch = () => {
+    if (p5Instance) {
+      destroySketch()
+    }
+
+    if (container.value && $p5) {
+      p5Instance = new $p5(sketch, container.value)
+    }
+  }
+
+  onUnmounted(() => {
+    destroySketch()
+  })
 
   return {
     createSketch,

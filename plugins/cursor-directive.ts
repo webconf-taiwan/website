@@ -105,6 +105,18 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     )
   }
 
+  // 換頁重置
+  function resetCursorVisuals(immediate = true) {
+    animateCursor(
+      DEFAULT_OPTIONS.scale,
+      DEFAULT_OPTIONS.backgroundColor,
+      immediate ? 0 : DEFAULT_OPTIONS.duration,
+      false, // 不顯示內容
+      null, // 無文字
+      null, // 無圖示
+    )
+  }
+
   const breakpoints = useBreakpoints({
     lg: 1024,
   })
@@ -196,11 +208,6 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   }
 
   function setupCursorEvents(el: CursorElement, binding: CursorBinding) {
-    // 僅在桌機版本可以使用
-    if (!isDesktop.value) {
-      return
-    }
-
     const options = { ...DEFAULT_OPTIONS, ...binding.value }
     const { scale, duration, backgroundColor, text, icon } = options
 
@@ -225,7 +232,7 @@ export default defineNuxtPlugin(async (nuxtApp) => {
     el.addEventListener('mouseleave', handleMouseLeave, eventOptions)
 
     let stopWatching: (() => void) | null = null
-    if (isDesktop) {
+    if (isDesktop.value) {
       stopWatching = watch(isDesktop, (newValue) => {
         const elements = getCachedElements()
         const gsap = getGsapInstance()
@@ -289,5 +296,13 @@ export default defineNuxtPlugin(async (nuxtApp) => {
       el._cursorCleanup?.()
       delete el._cursorCleanup
     },
+  })
+  // 頁面跳轉開始觸發
+  nuxtApp.hook('page:start', () => {
+    resetCursorVisuals(true)
+  })
+  // 頁面跳轉結束觸發
+  nuxtApp.hook('page:finish', () => {
+    resetCursorVisuals(false)
   })
 })
