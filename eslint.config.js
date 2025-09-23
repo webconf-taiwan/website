@@ -85,7 +85,6 @@ export default antfu(
             'pic',
             'main-footer',
             'gradient-dots-card',
-            'about-img-wrapper',
             'floating-tag',
             'arrow-border',
             'arrow-border-1',

@@ -1,3 +1,22 @@
+<script setup lang="ts">
+// 控制大螢幕線條顯示
+const showLargeScreenLine = ref(false)
+
+onMounted(() => {
+  // 檢測螢幕尺寸
+  const checkScreenSize = () => {
+    showLargeScreenLine.value = window.innerWidth >= 1536 // 2xl 斷點
+  }
+
+  checkScreenSize()
+  window.addEventListener('resize', checkScreenSize)
+
+  onUnmounted(() => {
+    window.removeEventListener('resize', checkScreenSize)
+  })
+})
+</script>
+
 <template>
   <section class="hero-section relative min-h-svh w-full lg:h-screen">
     <div class="absolute inset-0">
