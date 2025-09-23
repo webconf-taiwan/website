@@ -37,7 +37,7 @@ function handlePrev() {
 </script>
 
 <template>
-  <div class="py-20">
+  <div class="sm:py-20">
     <section
       class="border-y-[0.5px] border-webconf-gray/50 bg-black text-white"
     >

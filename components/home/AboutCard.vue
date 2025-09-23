@@ -4,7 +4,7 @@ const { width } = useWindowSize() // 引入 useWindowSize
 const aboutCardRef = ref<any>(null)
 
 watch(aboutCardRef, (newValue) => {
-  if (newValue && newValue.$el) {
+  if (newValue && newValue.$el && width.value >= 640) {
     const element = newValue.$el
 
     gsap.to(element, {
@@ -77,7 +77,7 @@ function getResponsivePosition(tagPosition: any) {
 <template>
   <ShareGradientDotsCard
     ref="aboutCardRef"
-    class="absolute top-60 z-10 mx-auto mt-60 text-center text-white sm:max-w-[440px] md:max-w-[524px] xl:max-w-[640px]"
+    class="top-60 z-10 mx-auto text-center text-white sm:absolute sm:mt-60 sm:max-w-[440px] md:max-w-[524px] xl:max-w-[640px]"
   >
     <div class="mx-auto inline-block py-[6px]">
       <h2 class="mx-10 flex text-h3-40">
