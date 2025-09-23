@@ -170,7 +170,7 @@ onUnmounted(() => {
         :class="{
           hidden: !isToggleMenu,
         }"
-        class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex w-dvw flex-col gap-12 bg-black pb-[152px] pl-[60px] pr-8 pt-10 before:absolute before:left-[66px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pb-[408px] sm:pl-[108px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
+        class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex h-svh w-dvw flex-col gap-12 bg-black pl-[60px] pr-8 pt-10 before:absolute before:left-[66px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[108px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
       >
         <li
           v-for="navItem in NAV_ITEMS"
@@ -203,7 +203,7 @@ onUnmounted(() => {
   background-position: center bottom;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 480px) {
   .mobile-menu {
     background-size: 100% 320px;
   }
