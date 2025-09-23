@@ -55,10 +55,10 @@
             class="size-full translate-y-0 object-contain sm:translate-y-[10px] lg:translate-y-[-10px]"
           />
           <div
-            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-100"
+            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-100"
           ></div>
           <div
-            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 group-hover:opacity-60"
+            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-60"
           ></div>
         </div>
         <!-- 場地標題 -->
