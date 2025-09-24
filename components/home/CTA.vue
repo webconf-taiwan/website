@@ -1,25 +1,89 @@
 <script setup lang="ts">
+import { useBreakpoints } from '@vueuse/core'
+
 const ctaCard = ref(null)
 const ctaContainer = ref(null)
-// const gsap = useGsap()
+const gsap = useGsap()
+
+const breakpoints = useBreakpoints({
+  sm: 640,
+})
+
+const isTablet = breakpoints.greaterOrEqual('sm')
+let scrollTrigger: any = null
+
+function initAnimation() {
+  if (!ctaCard.value || !ctaContainer.value)
+    return
+
+  // 初始設定：保持 CSS 定位，只控制 Y 軸移動
+  gsap.set(ctaCard.value, {
+    y: '100vh', // 從螢幕下方開始
+  })
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: ctaContainer.value,
+      start: 'top top',
+      end: 'top center',
+      invalidateOnRefresh: true,
+      scrub: 2,
+      onRefresh: () => {
+        // 存儲 ScrollTrigger 實例以便後續清理
+        scrollTrigger = tl.scrollTrigger
+      },
+    },
+  })
+
+  tl.to(ctaCard.value, {
+    y: 0, // 滑到原本的位置
+    ease: 'power2.out',
+  })
+
+  scrollTrigger = tl.scrollTrigger
+}
+
+function resetAnimation() {
+  if (!ctaCard.value)
+    return
+
+  // 清理 ScrollTrigger
+  if (scrollTrigger) {
+    scrollTrigger.kill()
+    scrollTrigger = null
+  }
+
+  // 清除所有動畫
+  gsap.killTweensOf(ctaCard.value)
+
+  // 回復初始狀態 - 清除所有 GSAP 屬性，讓 CSS 接管
+  gsap.set(ctaCard.value, {
+    clearProps: 'all',
+  })
+}
 
 onMounted(() => {
-  // if (!ctaCard.value || !ctaContainer.value)
-  //   return
-  // gsap.set(ctaCard.value, { y: '100vh' })
-  // const tl = gsap.timeline({
-  //   scrollTrigger: {
-  //     trigger: ctaContainer.value,
-  //     start: 'top 80%',
-  //     end: 'bottom 80%',
-  //     invalidateOnRefresh: true,
-  //     anticipatePin: 1,
-  //     scrub: 2,
-  //   },
-  // })
-  // tl.to(ctaCard.value, {
-  //   y: 0,
-  // })
+  if (!ctaCard.value || !ctaContainer.value)
+    return
+
+  if (isTablet.value) {
+    initAnimation()
+  }
+  else {
+    resetAnimation()
+  }
+})
+
+// 監聽 breakpoint 變化
+watch(isTablet, (newValue) => {
+  if (newValue) {
+    // 切換到平板模式，初始化動畫
+    initAnimation()
+  }
+  else {
+    // 切換到非平板模式，中斷動畫並回復初始狀態
+    resetAnimation()
+  }
 })
 </script>
 
@@ -27,7 +91,7 @@ onMounted(() => {
   <section v-arrow="{ speed1: '10s', color: '#E6E6E6' }">
     <div
       ref="ctaContainer"
-      class="cta-section relative aspect-[3/2] overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black sm:aspect-auto sm:min-h-svh"
+      class="cta-section relative aspect-[3/2] overflow-y-clip border-t-[0.5px] border-webconf-gray bg-black sm:aspect-auto sm:min-h-screen"
     ></div>
     <div
       ref="ctaCard"
@@ -68,6 +132,14 @@ onMounted(() => {
 @media (min-width: 1440px) {
   .cta-section {
     background-attachment: fixed;
+  }
+}
+
+@supports (height: 100svh) {
+  @media (min-width: 640px) {
+    .cta-section {
+      min-height: 100svh;
+    }
   }
 }
 </style>
