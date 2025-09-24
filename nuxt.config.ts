@@ -44,8 +44,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'icon', href: 'https://webconf.tw/favicon.ico', sizes: 'any' }, // 絕對路徑
-        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' }, // 絕對路徑，Apple 設備加入主畫面的圖片
+        { rel: 'icon', href: '/images/seo/favicon.ico' },
+        { rel: 'apple-touch-icon', href: '/images/seo/appleTouchIcon.png' },
       ],
     },
     pageTransition: {
