@@ -21,7 +21,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="pointer-events-none fixed inset-0 z-[1] size-full">
+  <div
+    class="pointer-events-none fixed inset-0 z-[1] size-full touch-none select-none"
+  >
     <div
       class="float-blocks absolute right-[103.15px] top-[46px] block size-[22.05px] bg-[#2F2ADB] sm:hidden lg:block"
     ></div>
