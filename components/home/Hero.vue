@@ -1,27 +1,8 @@
-<script setup lang="ts">
-// 控制大螢幕線條顯示
-const showLargeScreenLine = ref(false)
-
-onMounted(() => {
-  // 檢測螢幕尺寸
-  const checkScreenSize = () => {
-    showLargeScreenLine.value = window.innerWidth >= 1536 // 2xl 斷點
-  }
-
-  checkScreenSize()
-  window.addEventListener('resize', checkScreenSize)
-
-  onUnmounted(() => {
-    window.removeEventListener('resize', checkScreenSize)
-  })
-})
-</script>
-
 <template>
-  <section class="hero-section relative min-h-svh w-full lg:h-screen">
+  <section class="hero-section relative min-h-screen w-full">
     <div class="absolute inset-0">
       <!-- 貝茲曲線特效 -->
-      <!-- <HomeHeroCurve /> -->
+      <HomeHeroCurve />
 
       <!-- 桌機使用 -->
       <svg
@@ -65,8 +46,9 @@ onMounted(() => {
           </marker>
         </defs>
 
-        <!-- 右側線條 -->
+        <!-- 右側斜線 -->
         <g>
+          <!-- 靜態軌道 -->
           <line
             x1="945"
             y1="0"
@@ -75,7 +57,8 @@ onMounted(() => {
             stroke="#E6E6E6"
             stroke-width="1"
           />
-          <!-- 第一個移動的箭頭 -->
+
+          <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
           <line
             x1="945"
             y1="0"
@@ -87,20 +70,23 @@ onMounted(() => {
           >
             <animate
               attributeName="x2"
-              values="945;1440"
-              dur="6s"
+              from="945"
+              to="1440"
+              dur="8s"
               repeatCount="indefinite"
               calcMode="linear"
             />
             <animate
               attributeName="y2"
-              values="0;490"
-              dur="6s"
+              from="0"
+              to="490"
+              dur="8s"
               repeatCount="indefinite"
               calcMode="linear"
             />
           </line>
-          <!-- 第二個移動的箭頭 -->
+
+          <!-- 第二個斜線箭頭：速度較快，延後開始以形成錯位 -->
           <line
             x1="945"
             y1="0"
@@ -109,30 +95,25 @@ onMounted(() => {
             stroke="transparent"
             stroke-width="1"
             marker-end="url(#arrowRight)"
-            opacity="0"
           >
             <animate
               attributeName="x2"
-              values="945;1440"
-              dur="4s"
+              from="945"
+              to="1440"
+              dur="6s"
+              begin="3s"
               repeatCount="indefinite"
               calcMode="linear"
             />
             <animate
               attributeName="y2"
-              values="0;490"
-              dur="4s"
+              from="3"
+              to="490"
+              dur="6s"
+              begin="3s"
               repeatCount="indefinite"
               calcMode="linear"
-            />
-            <animate
-              attributeName="opacity"
-              values="0;1;0"
-              dur="4s"
-              begin="2s"
-              repeatCount="indefinite"
-              keyTimes="0;0.01;1"
-              calcMode="linear"
+              restart="always"
             />
           </line>
         </g>
@@ -663,10 +644,10 @@ onMounted(() => {
 
       <!-- 標題區域 -->
       <div
-        class="absolute right-0 top-[49%] w-full -translate-y-1/2 text-right xs:top-[43%] md:top-[63%] lg:right-[4%] lg:w-auto"
+        class="absolute right-0 top-[49%] w-full -translate-y-1/2 text-right md:top-[63%] lg:right-[4%] lg:w-auto"
       >
         <div
-          class="flex flex-col items-center gap-4 px-5 sm:items-end sm:gap-[52px] sm:px-[52px]"
+          class="flex flex-col items-center gap-4 px-5 xm:items-end md:gap-[52px] md:px-[52px]"
         >
           <NuxtImg
             src="/images/heroLogo.webp"
@@ -674,7 +655,7 @@ onMounted(() => {
             format="webp"
             width="570"
             height="215"
-            class="mr-0 sm:mr-[86px] sm:w-[570px]"
+            class="mr-0 md:mr-[86px] md:w-[570px]"
           />
           <NuxtImg
             src="/images/heroTitle.webp"
@@ -682,7 +663,7 @@ onMounted(() => {
             format="webp"
             width="527"
             height="27"
-            class="pb-8 sm:w-[527px] sm:pb-0"
+            class="pb-8 md:w-[527px] md:pb-0"
           />
           <ShareLinkButton
             to="/"
@@ -713,6 +694,12 @@ onMounted(() => {
 @media (min-width: 768px) {
   .hero-section {
     background-image: url("/images/heroBg.webp");
+  }
+}
+
+@supports (min-height: 100svh) {
+  .hero-section {
+    min-height: 100svh;
   }
 }
 </style>

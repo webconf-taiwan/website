@@ -175,7 +175,7 @@ class CurveNode {
     if (isActive) {
       p.noFill()
       p.stroke(20, 120, 255, 80)
-      p.strokeWeight(2 * scale)
+      p.strokeWeight(1 * scale)
       p.rect(
         position.x,
         position.y,
@@ -283,7 +283,7 @@ function sketch(p: p5) {
 
     // 設置曲線樣式
     p.stroke('#E6E6E6')
-    p.strokeWeight(2 * getScale())
+    p.strokeWeight(1 * getScale())
     p.noFill()
 
     // 繪製第一條曲線
