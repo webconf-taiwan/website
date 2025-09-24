@@ -6,7 +6,7 @@
 
       <!-- 桌機使用 -->
       <svg
-        class="pointer-events-none absolute inset-0 hidden size-full md:block"
+        class="absolute inset-0 hidden size-full md:block"
         viewBox="0 0 1440 720"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -272,7 +272,7 @@
 
       <!-- 平板使用 -->
       <svg
-        class="pointer-events-none absolute inset-0 hidden size-full xs:block md:hidden"
+        class="absolute inset-0 hidden size-full xs:block md:hidden"
         viewBox="0 0 768 720"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -458,7 +458,7 @@
 
       <!-- 手機使用 -->
       <svg
-        class="pointer-events-none absolute inset-0 block size-full xs:hidden"
+        class="absolute inset-0 block size-full xs:hidden"
         viewBox="0 0 360 640"
         preserveAspectRatio="xMidYMid slice"
       >
