@@ -706,7 +706,7 @@ onMounted(() => {
 
 @media (min-width: 360px) {
   .hero-section {
-    background-image: url("/images/heroFlatBg.webp");
+    background-image: url("/images/heroTabletBg.webp");
   }
 }
 
