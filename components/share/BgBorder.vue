@@ -401,7 +401,7 @@ onUnmounted(() => {
     <!-- 內容層 (圖片等) -->
     <div
       ref="contentContainer"
-      class="relative z-[20] flex min-h-dvh flex-col overflow-x-clip"
+      class="contentContainer relative z-[20] flex min-h-screen flex-col overflow-x-clip"
     >
       <slot></slot>
     </div>
@@ -413,3 +413,11 @@ onUnmounted(() => {
     ></div>
   </div>
 </template>
+
+<style scoped>
+@supports (min-height: 100dvh) {
+  .hero-contentContainer {
+    min-height: 100dvh;
+  }
+}
+</style>
