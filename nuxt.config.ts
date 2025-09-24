@@ -1,5 +1,5 @@
 import { visualizer } from 'rollup-plugin-visualizer'
-import { ogImage, site } from './config/seo.config'
+import { site } from './config/seo.config'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -44,8 +44,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'icon', href: '/images/seo/favicon.ico' },
-        { rel: 'apple-touch-icon', href: '/images/seo/appleTouchIcon.png' },
+        { rel: 'icon', href: 'https://2025.webconf.tw/images/seo/favicon.ico' },
+        { rel: 'apple-touch-icon', href: 'https://2025.webconf.tw/images/seo/appleTouchIcon.png' },
       ],
     },
     pageTransition: {
@@ -108,5 +108,4 @@ export default defineNuxtConfig({
   },
 
   site,
-  ogImage,
 })
