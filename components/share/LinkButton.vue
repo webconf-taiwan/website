@@ -2,7 +2,7 @@
   <NuxtLink
     v-cursor="{ scale: 0.4, duration: 0.5 }"
     to="/"
-    class="group relative inline-block bg-white px-[67.5px] py-4 text-btn-16 text-webconf-black duration-300 lg:hover:bg-webconf-blue lg:hover:text-white"
+    class="group relative inline-block bg-white px-[67.5px] py-4 text-btn-16 font-semibold text-webconf-black duration-300 lg:hover:bg-webconf-blue lg:hover:text-white"
   >
     <slot></slot>
 

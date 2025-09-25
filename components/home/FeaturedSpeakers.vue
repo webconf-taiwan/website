@@ -18,10 +18,9 @@ const SPEAKERS = [
   },
 ]
 
+const { width } = useWindowSize()
 const isHovered = ref(false)
 const speakerCards = ref<any[]>([])
-
-const { width } = useWindowSize()
 
 const displayCardLengthArr = computed(() => {
   if (width.value >= 1280) {
@@ -46,7 +45,9 @@ function handlePrev() {
 
 <template>
   <div class="sm:py-20">
-    <section class="z-10 border-b-[0.5px] border-white bg-black text-white">
+    <section
+      class="relative z-10 border-b-[0.5px] border-white bg-black text-white"
+    >
       <!-- 區塊標題 -->
       <div
         v-arrow="{ speed1: '12s', color: 'white' }"
@@ -138,10 +139,7 @@ function handlePrev() {
       />
 
       <div class="justify-self-center">
-        <ShareLinkButton
-          to="#"
-          class="font-semibold"
-        >
+        <ShareLinkButton to="#">
           更多講者
         </ShareLinkButton>
       </div>

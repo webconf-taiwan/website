@@ -5,6 +5,8 @@ defineOgImage({
   height: 630,
   alt: 'WebConf Taiwan 2025',
 })
+
+useEasterEgg()
 </script>
 
 <template>

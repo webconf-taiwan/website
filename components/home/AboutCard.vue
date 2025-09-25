@@ -1,22 +1,30 @@
 <script setup lang="ts">
 const gsap = useGsap()
-const { width } = useWindowSize() // 引入 useWindowSize
+const { width } = useWindowSize()
 const aboutCardRef = ref<any>(null)
+const scrollTriggerInstance = ref<any>(null)
 
-watch(aboutCardRef, (newValue) => {
-  if (newValue && newValue.$el && width.value >= 640) {
-    const element = newValue.$el
+watch([aboutCardRef, width], ([newRef, newWidth]) => {
+  if (scrollTriggerInstance.value) {
+    scrollTriggerInstance.value.kill()
+    scrollTriggerInstance.value = null
+  }
 
-    gsap.to(element, {
+  if (newRef && newRef.$el && newWidth >= 640) {
+    const element = newRef.$el
+
+    scrollTriggerInstance.value = gsap.to(newRef.$el, {
       scrollTrigger: {
         trigger: element,
         start: 'center center',
-        endTrigger: '#about-section', // 指定 pages/index.vue 的 #about-section 元素
+        endTrigger: '#about-section',
         end: 'bottom bottom',
         pin: element,
         pinSpacing: false,
+        scrub: 2,
+        anticipatePin: 1,
       },
-    })
+    }).scrollTrigger
   }
 })
 
@@ -77,7 +85,7 @@ function getResponsivePosition(tagPosition: any) {
 <template>
   <ShareGradientDotsCard
     ref="aboutCardRef"
-    class="top-60 z-10 mx-auto text-center text-white sm:absolute sm:mt-60 sm:max-w-[440px] md:max-w-[524px] xl:max-w-[640px]"
+    class="relative z-10 mx-auto text-center text-white sm:absolute sm:top-60 sm:mt-60 sm:max-w-[440px] md:max-w-[524px] xl:max-w-[640px]"
   >
     <div class="mx-auto inline-block py-[6px]">
       <h2 class="mx-10 flex text-h3-40">
@@ -105,14 +113,12 @@ function getResponsivePosition(tagPosition: any) {
       議程資訊
     </ShareLinkButton>
 
-    <div>
-      <HomeAboutFloatingTag
-        v-for="tag in floatingTags"
-        :key="tag.text"
-        :text="tag.text"
-        :position="getResponsivePosition(tag.position)"
-        class="floating-tag absolute"
-      />
-    </div>
+    <HomeAboutFloatingTag
+      v-for="tag in floatingTags"
+      :key="tag.text"
+      :text="tag.text"
+      :position="getResponsivePosition(tag.position)"
+      class="floating-tag absolute"
+    />
   </ShareGradientDotsCard>
 </template>
