@@ -128,7 +128,7 @@ function handlePrev() {
       </div>
     </section>
 
-    <!-- 輪播控制 -->
+    <!-- 動作按鈕 -->
     <div
       class="grid grid-cols-1 gap-6 pb-[132px] pt-6 md:grid-cols-3 md:px-8 md:pb-20 md:pt-10 xl:hidden"
     >
@@ -136,6 +136,7 @@ function handlePrev() {
         @next="handleNext"
         @prev="handlePrev"
       />
+
       <div class="justify-self-center">
         <ShareLinkButton
           to="#"

@@ -86,7 +86,7 @@ function slideToPrev() {
   timeline.to(cardContainer.value, {
     x: 0,
     duration: 0.8,
-    ease: 'none',
+    ease: 'power2.inOut',
     force3D: true,
     willChange: 'transform',
   })
