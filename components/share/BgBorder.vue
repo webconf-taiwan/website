@@ -182,6 +182,14 @@ function gridSketch(p: p5) {
   }
 
   p.draw = () => {
+    if (
+      !p
+      || typeof p.width === 'undefined'
+      || typeof p.height === 'undefined'
+    ) {
+      return
+    }
+
     p.clear()
 
     // 平滑追蹤游標
@@ -235,11 +243,25 @@ function gridSketch(p: p5) {
   }
 
   p.mouseMoved = () => {
+    if (
+      !p
+      || typeof p.width === 'undefined'
+      || typeof p.height === 'undefined'
+    ) {
+      return
+    }
     tx = p.constrain(p.mouseX, 0, p.width)
     ty = p.constrain(p.mouseY, 0, p.height)
   }
 
   p.mouseDragged = () => {
+    if (
+      !p
+      || typeof p.width === 'undefined'
+      || typeof p.height === 'undefined'
+    ) {
+      return
+    }
     tx = p.constrain(p.mouseX, 0, p.width)
     ty = p.constrain(p.mouseY, 0, p.height)
   }
@@ -258,6 +280,14 @@ function boxSketch(p: p5) {
   }
 
   p.draw = () => {
+    if (
+      !p
+      || typeof p.width === 'undefined'
+      || typeof p.height === 'undefined'
+    ) {
+      return
+    }
+
     p.clear()
     updateAndDrawDVDDots(p)
   }
@@ -295,6 +325,10 @@ function createDVDDots(p: p5) {
 
 // 更新和繪製 DVD 點
 function updateAndDrawDVDDots(p: p5) {
+  if (!p || typeof p.width === 'undefined' || typeof p.height === 'undefined') {
+    return
+  }
+
   const buffer = 20
 
   dvdDots.forEach((dot) => {
