@@ -1,22 +1,28 @@
 <script setup lang="ts">
 const gsap = useGsap()
-const { width } = useWindowSize() // 引入 useWindowSize
+const { width } = useWindowSize()
 const aboutCardRef = ref<any>(null)
+const scrollTriggerInstance = ref<any>(null)
 
-watch(aboutCardRef, (newValue) => {
-  if (newValue && newValue.$el && width.value >= 640) {
-    const element = newValue.$el
+watch([aboutCardRef, width], ([newRef, newWidth]) => {
+  if (scrollTriggerInstance.value) {
+    scrollTriggerInstance.value.kill()
+    scrollTriggerInstance.value = null
+  }
 
-    gsap.to(element, {
+  if (newRef && newRef.$el && newWidth >= 640) {
+    const element = newRef.$el
+
+    scrollTriggerInstance.value = gsap.to(newRef.$el, {
       scrollTrigger: {
         trigger: element,
         start: 'center center',
-        endTrigger: '#about-section', // 指定 pages/index.vue 的 #about-section 元素
+        endTrigger: '#about-section',
         end: 'bottom bottom',
         pin: element,
         pinSpacing: false,
       },
-    })
+    }).scrollTrigger
   }
 })
 
