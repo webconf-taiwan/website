@@ -21,6 +21,8 @@ watch([aboutCardRef, width], ([newRef, newWidth]) => {
         end: 'bottom bottom',
         pin: element,
         pinSpacing: false,
+        scrub: true,
+        anticipatePin: 1,
       },
     }).scrollTrigger
   }

@@ -45,7 +45,9 @@ function handlePrev() {
 
 <template>
   <div class="sm:py-20">
-    <section class="z-10 border-b-[0.5px] border-white bg-black text-white">
+    <section
+      class="relative z-10 border-b-[0.5px] border-white bg-black text-white"
+    >
       <!-- 區塊標題 -->
       <div
         v-arrow="{ speed1: '12s', color: 'white' }"
