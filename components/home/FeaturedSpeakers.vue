@@ -18,10 +18,9 @@ const SPEAKERS = [
   },
 ]
 
+const { width } = useWindowSize()
 const isHovered = ref(false)
 const speakerCards = ref<any[]>([])
-
-const { width } = useWindowSize()
 
 const displayCardLengthArr = computed(() => {
   if (width.value >= 1280) {
@@ -138,10 +137,7 @@ function handlePrev() {
       />
 
       <div class="justify-self-center">
-        <ShareLinkButton
-          to="#"
-          class="font-semibold"
-        >
+        <ShareLinkButton to="#">
           更多講者
         </ShareLinkButton>
       </div>
