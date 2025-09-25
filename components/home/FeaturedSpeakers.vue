@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-
 const SPEAKERS = [
   {
     name: '李建杭 AMOS',
@@ -44,21 +42,21 @@ function handlePrev() {
       <!-- 區塊標題 -->
       <div
         v-arrow="{ speed1: '12s', color: 'white' }"
-        class="flex items-center justify-between border-y-[0.5px] border-webconf-gray/50 px-20 py-10"
+        class="flex items-center justify-between border-y-[0.5px] border-webconf-gray/50 px-5 py-10 sm:px-8 xl:px-20"
       >
-        <div class="flex items-start gap-4">
-          <h2 class="text-center text-h4-60 font-bold">
+        <div class="flex items-start gap-2 md:gap-4">
+          <h2 class="text-center text-h4-60">
             Featured Speakers
           </h2>
           <ShareBlueTag
             text="講者"
-            class="!px-5"
+            class="!px-3 !py-1 md:!px-5 md:!py-2"
           />
         </div>
 
         <ShareLinkButton
           to="#"
-          class="text-center"
+          class="hidden text-center xl:block"
         >
           更多講者
         </ShareLinkButton>
