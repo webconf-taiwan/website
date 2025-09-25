@@ -27,12 +27,12 @@ const aboutPhotoR3Ref = useImageHoverEffect(6)
 // 設定滾動視差效果
 onMounted(() => {
   const images = [
-    { ref: aboutPhotoL1Ref, y: 400 }, // 左側第一張：向下移動
-    { ref: aboutPhotoL2Ref, y: 200 }, // 左側第二張：向上移動
-    { ref: aboutPhotoL3Ref, y: 300 }, // 左側第三張：向下移動較大
-    { ref: aboutPhotoR1Ref, y: 200 }, // 右側第一張：向上移動較大
-    { ref: aboutPhotoR2Ref, y: 100 }, // 右側第二張：向下移動
-    { ref: aboutPhotoR3Ref, y: 300 }, // 右側第三張：向上移動最大
+    { ref: aboutPhotoL1Ref, y: 300 },
+    { ref: aboutPhotoL2Ref, y: 200 },
+    { ref: aboutPhotoL3Ref, y: 150 },
+    { ref: aboutPhotoR1Ref, y: 200 },
+    { ref: aboutPhotoR2Ref, y: 100 },
+    { ref: aboutPhotoR3Ref, y: 250 },
   ]
 
   images.forEach(({ ref, y }) => {
@@ -64,7 +64,7 @@ onMounted(() => {
     class="relative z-0 min-h-screen w-full"
   >
     <section class="container flex flex-col justify-center sm:flex-row">
-      <div class="flex flex-col items-start sm:w-1/2 xl:mb-[72px]">
+      <div class="flex flex-col items-start sm:w-1/2 md:mb-[72px]">
         <NuxtImg
           ref="aboutPhotoL1Ref"
           src="/images/aboutPhotoL1.webp"
@@ -80,7 +80,7 @@ onMounted(() => {
           alt="about"
           width="360"
           height="240"
-          class="blue-shadow about-img-filter relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[360px] xl:max-w-[360px]"
+          class="blue-shadow about-img-filter relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 2 }"
         />
         <NuxtImg
