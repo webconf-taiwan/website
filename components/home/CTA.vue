@@ -25,7 +25,9 @@ function initAnimation() {
     scrollTrigger: {
       trigger: ctaContainer.value,
       start: 'top top',
-      end: 'top center',
+      end: 'bottom center',
+      pin: true,
+      pinSpacing: true,
       invalidateOnRefresh: true,
       scrub: 2,
       onRefresh: () => {
