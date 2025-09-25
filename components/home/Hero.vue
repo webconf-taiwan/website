@@ -6,7 +6,7 @@
 
       <!-- 桌機使用 -->
       <svg
-        class="absolute inset-0 hidden size-full md:block"
+        class="absolute inset-0 hidden size-full lg:block"
         viewBox="0 0 1440 720"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -272,7 +272,7 @@
 
       <!-- 平板使用 -->
       <svg
-        class="absolute inset-0 hidden size-full xs:block md:hidden"
+        class="absolute inset-0 hidden size-full xm:block lg:hidden"
         viewBox="0 0 768 720"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -458,7 +458,7 @@
 
       <!-- 手機使用 -->
       <svg
-        class="absolute inset-0 block size-full xs:hidden"
+        class="absolute inset-0 block size-full xm:hidden"
         viewBox="0 0 360 640"
         preserveAspectRatio="xMidYMid slice"
       >
@@ -580,7 +580,7 @@
             y2="640"
             stroke="transparent"
             stroke-width="1"
-            marker-end="url(#arrowLeft-xs)"
+            marker-end="url(#arrowRight-xs)"
           >
             <animate
               attributeName="x2"
@@ -640,6 +640,46 @@
             />
           </line>
         </g>
+
+        <!-- 水平線 - 橫跨整個寬度 -->
+        <g>
+          <line
+            x1="0"
+            y1="170"
+            x2="360"
+            y2="170"
+            stroke="#E6E6E6"
+            stroke-width="1"
+          />
+          <!-- 水平線箭頭 -->
+          <line
+            x1="0"
+            y1="170"
+            x2="0"
+            y2="170"
+            stroke="transparent"
+            stroke-width="1"
+            marker-end="url(#arrowRight-xs)"
+            color="#E6E6E6"
+          >
+            <animate
+              attributeName="x2"
+              from="0"
+              to="360"
+              dur="8s"
+              repeatCount="indefinite"
+              calcMode="linear"
+            />
+            <animate
+              attributeName="y2"
+              from="170"
+              to="170"
+              dur="8s"
+              repeatCount="indefinite"
+              calcMode="linear"
+            />
+          </line>
+        </g>
       </svg>
 
       <!-- 標題區域 -->
@@ -685,13 +725,13 @@
   background-size: cover;
 }
 
-@media (min-width: 360px) {
+@media (min-width: 480px) {
   .hero-section {
     background-image: url("/images/heroTabletBg.webp");
   }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
   .hero-section {
     background-image: url("/images/heroBg.webp");
   }
