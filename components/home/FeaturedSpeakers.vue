@@ -127,5 +127,23 @@ function handlePrev() {
         ></button>
       </div>
     </section>
+
+    <!-- 輪播控制 -->
+    <div
+      class="grid grid-cols-1 gap-6 pb-[132px] pt-6 md:grid-cols-3 md:px-8 md:pb-20 md:pt-10 xl:hidden"
+    >
+      <ShareSlideController
+        @next="handleNext"
+        @prev="handlePrev"
+      />
+      <div class="justify-self-center">
+        <ShareLinkButton
+          to="#"
+          class="font-semibold"
+        >
+          更多講者
+        </ShareLinkButton>
+      </div>
+    </div>
   </div>
 </template>
