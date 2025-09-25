@@ -21,6 +21,16 @@ const SPEAKERS = [
 const isHovered = ref(false)
 const speakerCards = ref<any[]>([])
 
+const { width } = useWindowSize()
+
+const displayCardLengthArr = computed(() => {
+  if (width.value >= 1280) {
+    return Array.from({ length: 4 }, (_, index) => index)
+  }
+
+  return Array.from({ length: 3 }, (_, index) => index)
+})
+
 function handleNext() {
   speakerCards.value.forEach((card) => {
     card.slideToNext()
@@ -36,13 +46,11 @@ function handlePrev() {
 
 <template>
   <div class="sm:py-20">
-    <section
-      class="border-y-[0.5px] border-webconf-gray/50 bg-black text-white"
-    >
+    <section class="z-10 border-b-[0.5px] border-white bg-black text-white">
       <!-- 區塊標題 -->
       <div
         v-arrow="{ speed1: '12s', color: 'white' }"
-        class="flex items-center justify-between border-y-[0.5px] border-webconf-gray/50 px-5 py-10 sm:px-8 xl:px-20"
+        class="relative flex items-center justify-between border-y-[0.5px] border-white px-5 py-10 sm:px-8 xl:px-20"
       >
         <div class="flex items-start gap-2 md:gap-4">
           <h2 class="text-center text-h4-60">
@@ -60,35 +68,29 @@ function handlePrev() {
         >
           更多講者
         </ShareLinkButton>
+
+        <!-- 窗框 -->
+        <div
+          v-arrow="{ speed1: '10s', color: 'white' }"
+          class="absolute bottom-0 left-0 w-screen"
+        ></div>
       </div>
 
       <!-- 講者輪播 -->
       <div class="relative">
         <div
-          class="relative mx-auto grid max-w-[1440px] grid-cols-4"
+          class="relative left-1/2 grid w-[768px] -translate-x-1/2 grid-cols-3 xl:left-0 xl:mx-auto xl:w-full xl:max-w-[1440px] xl:translate-x-0 xl:grid-cols-4"
           @mouseover="isHovered = true"
           @mouseleave="isHovered = false"
         >
-          <!-- 窗框 -->
-          <div
-            v-arrow="{ speed1: '10s', color: 'white' }"
-            class="absolute inset-0 flex w-full"
-          >
-            <div
-              v-for="i in 4"
-              :key="i"
-              class="flex-1 border-x-[48px] border-y-[40px] border-black/50"
-            ></div>
-          </div>
-
           <!-- 講者卡片 -->
           <div
-            v-for="(speaker, index) in SPEAKERS"
-            :key="speaker.name"
+            v-for="index in displayCardLengthArr"
+            :key="index"
             :class="{
               'border-l-[0.5px]': index === 0,
             }"
-            class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] px-12 py-10"
+            class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] border-webconf-gray/50 px-8 py-10 xl:px-12 xl:py-10"
           >
             <HomeSpeakerCard
               :ref="(el) => (speakerCards[index] = el)"
@@ -108,7 +110,7 @@ function handlePrev() {
             icon: 'arrow-left',
           }"
           type="button"
-          class="absolute left-0 top-0 h-full w-20"
+          class="absolute left-0 top-0 hidden h-full w-20 xl:block"
           @click="handleNext"
         ></button>
 
@@ -120,7 +122,7 @@ function handlePrev() {
             icon: 'arrow-right',
           }"
           type="button"
-          class="absolute right-0 top-0 h-full w-20"
+          class="absolute right-0 top-0 hidden h-full w-20 xl:block"
           @click="handlePrev"
         ></button>
       </div>

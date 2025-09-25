@@ -171,7 +171,7 @@ watch(
       >
         <div class="group relative">
           <div
-            class="h-[376px] w-[264px] bg-cover bg-center grayscale group-hover:grayscale-0"
+            class="h-[273px] w-[192px] bg-cover bg-center grayscale group-hover:grayscale-0 xl:h-[376px] xl:w-[264px]"
             :style="{
               backgroundImage: `url(${currentSpeaker.src})`,
               transition: 'filter 0.3s',
@@ -191,7 +191,7 @@ watch(
       <div class="w-1/2 shrink-0">
         <div class="group relative">
           <div
-            class="h-[376px] w-[264px] bg-cover bg-center grayscale group-hover:grayscale-0"
+            class="h-[273px] w-[192px] bg-cover bg-center grayscale group-hover:grayscale-0 xl:h-[376px] xl:w-[264px]"
             :style="{
               backgroundImage: `url(${nextSpeaker.src})`,
               transition: 'filter 0.3s',
