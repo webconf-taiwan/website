@@ -247,6 +247,9 @@ function gridSketch(p: p5) {
   p.mouseMoved = () => {
     if (
       !p
+      || !topLayer
+      || !bottomLayer
+      || !tempLayer
       || typeof p.width === 'undefined'
       || typeof p.height === 'undefined'
     ) {
@@ -259,6 +262,9 @@ function gridSketch(p: p5) {
   p.mouseDragged = () => {
     if (
       !p
+      || !topLayer
+      || !bottomLayer
+      || !tempLayer
       || typeof p.width === 'undefined'
       || typeof p.height === 'undefined'
     ) {
