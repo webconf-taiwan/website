@@ -11,6 +11,23 @@ export function useP5Sketch({ container, sketch }: P5SketchOptions) {
 
   const destroySketch = () => {
     if (p5Instance) {
+      // 移除所有事件監聽器
+      if (p5Instance.mouseMoved) {
+        p5Instance.mouseMoved = () => {}
+      }
+      if (p5Instance.mouseDragged) {
+        p5Instance.mouseDragged = () => {}
+      }
+      if (p5Instance.mousePressed) {
+        p5Instance.mousePressed = () => {}
+      }
+      if (p5Instance.mouseReleased) {
+        p5Instance.mouseReleased = () => {}
+      }
+      if (p5Instance.draw) {
+        p5Instance.draw = () => {}
+      }
+
       p5Instance.remove()
       p5Instance = null
     }
