@@ -34,11 +34,17 @@ export function useP5Sketch({ container, sketch }: P5SketchOptions) {
   }
 
   const createSketch = () => {
+    if (!process.client)
+      return
+
+    if (!$p5)
+      return
+
     if (p5Instance) {
       destroySketch()
     }
 
-    if (container.value && $p5) {
+    if (container.value) {
       p5Instance = new $p5(sketch, container.value)
     }
   }
