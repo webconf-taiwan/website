@@ -4,7 +4,8 @@ import { useBreakpoints, useThrottleFn } from '@vueuse/core'
 
 const props = withDefaults(defineProps<Props>(), {
   dvdDotSpeed: 4,
-  dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'] as const,
+  dvdDotColors: () =>
+    ['#2F2ADB', '#919191', '#E6E6E6'] as [string, string, string],
 })
 const breakpoints = useBreakpoints({
   lg: 1024,
@@ -95,27 +96,42 @@ function drawGrid(
   alpha: number = 1.0,
   customStrokeWeight?: number,
 ) {
-  pg.background(0)
-
-  const r = p.red(lineCol)
-  const g = p.green(lineCol)
-  const b = p.blue(lineCol)
-  pg.stroke(r, g, b, alpha * 255)
-  pg.strokeWeight(customStrokeWeight || 0.5)
-
-  // 繪製垂直線
-  for (let x = 0; x < pg.width; x += gridSize) {
-    pg.line(x, 0, x, pg.height)
+  if (!pg || !pg.width || !pg.height || !p) {
+    console.warn('Invalid graphics context or dimensions')
+    return
   }
 
-  // 繪製水平線
-  for (let y = 0; y < pg.height; y += gridSize) {
-    pg.line(0, y, pg.width, y)
+  try {
+    pg.background(0)
+    const r = p.red(lineCol)
+    const g = p.green(lineCol)
+    const b = p.blue(lineCol)
+    pg.stroke(r, g, b, alpha * 255)
+    pg.strokeWeight(customStrokeWeight || 0.5)
+
+    // 繪製垂直線
+    for (let x = 0; x < pg.width; x += gridSize) {
+      pg.line(x, 0, x, pg.height)
+    }
+
+    // 繪製水平線
+    for (let y = 0; y < pg.height; y += gridSize) {
+      pg.line(0, y, pg.width, y)
+    }
+  }
+  catch (error) {
+    console.error('Error drawing grid:', error)
   }
 }
 
 // 圖層初始化函數
 function initializeLayersSync(p: p5) {
+  // 確保 p.width 和 p.height 已定義
+  if (!p.width || !p.height) {
+    console.warn('Canvas dimensions not ready')
+    return
+  }
+
   // 清理舊的 Graphics 對象
   if (topLayer) {
     topLayer.remove()
@@ -130,23 +146,35 @@ function initializeLayersSync(p: p5) {
     tempLayer = null
   }
 
+  // 使用 requestAnimationFrame 確保 DOM 已更新
   requestAnimationFrame(() => {
-    // 建立三層畫布
-    topLayer = p.createGraphics(p.width, p.height, 'p2d')
-    bottomLayer = p.createGraphics(p.width, p.height, 'p2d')
-    tempLayer = p.createGraphics(p.width, p.height, 'p2d')
+    try {
+      // 建立三層畫布
+      topLayer = p.createGraphics(p.width, p.height, 'p2d')
+      bottomLayer = p.createGraphics(p.width, p.height, 'p2d')
+      tempLayer = p.createGraphics(p.width, p.height, 'p2d')
 
-    topLayer.pixelDensity(1)
-    bottomLayer.pixelDensity(1)
-    tempLayer.pixelDensity(1)
+      if (!topLayer || !bottomLayer || !tempLayer) {
+        console.warn('Failed to create graphics layers')
+        return
+      }
 
-    const { topGrid, bottomGrid } = defaultColors
+      // 設置像素密度
+      topLayer.pixelDensity(1)
+      bottomLayer.pixelDensity(1)
+      tempLayer.pixelDensity(1)
 
-    // 繪製底層藍色網格（完全不透明）
-    drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
+      const { topGrid, bottomGrid } = defaultColors
 
-    // 繪製上層灰色網格（半透明）
-    drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
+      // 繪製底層藍色網格（完全不透明）
+      drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
+
+      // 繪製上層灰色網格（半透明）
+      drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
+    }
+    catch (error) {
+      console.error('Error initializing graphics layers:', error)
+    }
   })
 }
 
@@ -182,37 +210,66 @@ function gridSketch(p: p5) {
   }
 
   p.draw = () => {
-    p.clear()
-
-    // 平滑追蹤游標
-    mx = p.lerp(mx, tx, ease)
-    my = p.lerp(my, ty, ease)
-
-    if (bottomLayer) {
-      p.image(bottomLayer, 0, 0)
-    }
-
-    if (topLayer && tempLayer) {
-      tempLayer.clear()
-      tempLayer.image(topLayer, 0, 0)
-
-      const ctx = tempLayer.drawingContext as CanvasRenderingContext2D
-      if (ctx) {
-        ctx.save()
-        ctx.globalCompositeOperation = 'destination-out'
-        const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, r)
-        gradient.addColorStop(0.0, 'rgba(0,0,0,1)')
-        gradient.addColorStop(1.0, 'rgba(0,0,0,0)')
-        ctx.fillStyle = gradient
-
-        ctx.beginPath()
-        ctx.arc(mx, my, r, 0, Math.PI * 2)
-        ctx.closePath()
-        ctx.fill()
-        ctx.restore()
+    try {
+      if (!p || !p.width || !p.height) {
+        console.warn('Invalid p5 instance or dimensions')
+        return
       }
 
-      p.image(tempLayer, 0, 0)
+      p.clear()
+
+      // 平滑追蹤游標
+      mx = p.lerp(mx, tx, ease)
+      my = p.lerp(my, ty, ease)
+
+      // 檢查並繪製底層
+      if (bottomLayer && bottomLayer.width && bottomLayer.height) {
+        try {
+          p.image(bottomLayer, 0, 0)
+        }
+        catch (error) {
+          console.error('Error drawing bottom layer:', error)
+        }
+      }
+
+      // 檢查並繪製上層和遮罩效果
+      if (
+        topLayer
+        && tempLayer
+        && topLayer.width
+        && topLayer.height
+        && tempLayer.width
+        && tempLayer.height
+      ) {
+        try {
+          tempLayer.clear()
+          tempLayer.image(topLayer, 0, 0)
+
+          const ctx = tempLayer.drawingContext as CanvasRenderingContext2D
+          if (ctx) {
+            ctx.save()
+            ctx.globalCompositeOperation = 'destination-out'
+            const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, r)
+            gradient.addColorStop(0.0, 'rgba(0,0,0,1)')
+            gradient.addColorStop(1.0, 'rgba(0,0,0,0)')
+            ctx.fillStyle = gradient
+
+            ctx.beginPath()
+            ctx.arc(mx, my, r, 0, Math.PI * 2)
+            ctx.closePath()
+            ctx.fill()
+            ctx.restore()
+          }
+
+          p.image(tempLayer, 0, 0)
+        }
+        catch (error) {
+          console.error('Error drawing top layer or mask:', error)
+        }
+      }
+    }
+    catch (error) {
+      console.error('Error in draw function:', error)
     }
   }
 
@@ -235,11 +292,15 @@ function gridSketch(p: p5) {
   }
 
   p.mouseMoved = () => {
+    if (!p.width || !p.height)
+      return
     tx = p.constrain(p.mouseX, 0, p.width)
     ty = p.constrain(p.mouseY, 0, p.height)
   }
 
   p.mouseDragged = () => {
+    if (!p.width || !p.height)
+      return
     tx = p.constrain(p.mouseX, 0, p.width)
     ty = p.constrain(p.mouseY, 0, p.height)
   }
@@ -258,6 +319,9 @@ function boxSketch(p: p5) {
   }
 
   p.draw = () => {
+    if (!p.width || !p.height)
+      return
+
     p.clear()
     updateAndDrawDVDDots(p)
   }
@@ -367,9 +431,11 @@ const boxP5Sketch = useP5Sketch({
   sketch: boxSketch,
 })
 
-onMounted(async () => {
-  gridP5Sketch.createSketch()
-  boxP5Sketch.createSketch()
+onMounted(() => {
+  requestAnimationFrame(() => {
+    gridP5Sketch.createSketch()
+    boxP5Sketch.createSketch()
+  })
 })
 
 onUnmounted(() => {
