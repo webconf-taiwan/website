@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type p5 from 'p5'
+
 import { useWindowSize } from '@vueuse/core'
 import { useP5Sketch } from '~/composables/useP5'
 
@@ -494,7 +496,9 @@ const { createSketch, destroySketch } = useP5Sketch({
 })
 
 onMounted(() => {
-  createSketch()
+  requestAnimationFrame(() => {
+    createSketch()
+  })
 })
 
 onUnmounted(() => {
