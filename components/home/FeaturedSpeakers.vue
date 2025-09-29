@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const $img = useImage()
+
 const SPEAKERS = [
   {
     name: 'Happy',
@@ -41,6 +43,13 @@ const SPEAKERS = [
     src: '/images/speakers/carousel-10_tinya.webp',
   },
 ]
+
+const speakerAssets = computed(() =>
+  SPEAKERS.map(speaker => ({
+    ...speaker,
+    src: $img(speaker.src, { width: 282, height: 448 }),
+  })),
+)
 
 const { width } = useWindowSize()
 const isHovered = ref(false)
@@ -115,9 +124,9 @@ function handlePrev() {
           <!-- 講者卡片 -->
           <HomeSpeakerCard
             v-for="index in displayCardLengthArr"
-            :key="SPEAKERS[index].name"
+            :key="speakerAssets[index].name"
             :ref="(el) => (speakerCards[index] = el)"
-            :speakers="SPEAKERS"
+            :speakers="speakerAssets"
             :original-index="index"
             :is-parent-hovered="isHovered"
           />

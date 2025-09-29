@@ -58,6 +58,13 @@ export default defineNuxtConfig({
     transpile: ['gsap'],
   },
 
+  image: {
+    provider: 'ipx',
+    ipx: {
+      maxAge: 60 * 60 * 24 * 30,
+    },
+  },
+
   vite: {
     build: {
       rollupOptions: {
