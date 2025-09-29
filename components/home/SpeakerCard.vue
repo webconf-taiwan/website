@@ -139,7 +139,6 @@ watch(
 
 <template>
   <div
-    :key="index"
     :class="{
       'border-l-[0.5px]': originalIndex === 0,
     }"
@@ -186,8 +185,6 @@ watch(
             ></div>
 
             <ShareGradientMask class="group-hover:opacity-0" />
-
-            <!-- TODO: 濾鏡要換掉 -->
             <ShareNoiseMask class="group-hover:opacity-0" />
           </div>
 

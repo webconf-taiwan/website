@@ -98,7 +98,7 @@ function handlePrev() {
           更多講者
         </ShareLinkButton>
 
-        <!-- 窗框 -->
+        <!-- 箭頭軌道 -->
         <div
           v-arrow="{ speed1: '10s', color: 'white' }"
           class="absolute bottom-0 left-0 w-screen"
@@ -113,7 +113,6 @@ function handlePrev() {
           @mouseleave="isHovered = false"
         >
           <!-- 講者卡片 -->
-
           <HomeSpeakerCard
             v-for="index in displayCardLengthArr"
             :key="SPEAKERS[index].name"
