@@ -145,9 +145,9 @@ watch(
       backgroundColor: 'rgba(0, 46, 255, 0.9)',
       text: 'VIEW',
     }"
-    class="relative w-full max-w-full overflow-hidden"
+    class="relative w-full overflow-hidden"
   >
-    <!-- 預載所有圖片 -->
+    <!-- TODO: 這個預載入是沒用的 -->
     <div class="hidden">
       <NuxtImg
         v-for="speaker in speakers"
@@ -171,7 +171,7 @@ watch(
       >
         <div class="group relative">
           <div
-            class="h-[273px] w-[192px] bg-cover bg-center grayscale group-hover:grayscale-0 xl:h-[376px] xl:w-[264px]"
+            class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
             :style="{
               backgroundImage: `url(${currentSpeaker.src})`,
               transition: 'filter 0.3s',
@@ -179,9 +179,12 @@ watch(
           ></div>
 
           <ShareGradientMask class="group-hover:opacity-0" />
+
+          <!-- TODO: 濾鏡要換掉 -->
           <ShareNoiseMask class="group-hover:opacity-0" />
         </div>
 
+        <!-- TODO: 名字的小寫會被截斷 -->
         <h3 class="mt-4 text-h4-24">
           {{ currentSpeaker.name }}
         </h3>
@@ -191,7 +194,7 @@ watch(
       <div class="w-1/2 shrink-0">
         <div class="group relative">
           <div
-            class="h-[273px] w-[192px] bg-cover bg-center grayscale group-hover:grayscale-0 xl:h-[376px] xl:w-[264px]"
+            class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
             :style="{
               backgroundImage: `url(${nextSpeaker.src})`,
               transition: 'filter 0.3s',

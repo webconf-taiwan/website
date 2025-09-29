@@ -51,7 +51,7 @@ const displayCardLengthArr = computed(() => {
     return Array.from({ length: 5 }, (_, index) => index)
   }
 
-  if (width.value >= 1280) {
+  if (width.value >= 1024) {
     return Array.from({ length: 4 }, (_, index) => index)
   }
 
@@ -108,7 +108,7 @@ function handlePrev() {
       <!-- 講者輪播 -->
       <div class="relative">
         <div
-          class="relative left-1/2 grid w-[768px] -translate-x-1/2 grid-cols-3 xl:left-0 xl:mx-auto xl:w-full xl:translate-x-0 xl:grid-cols-4 3xl:grid-cols-5"
+          class="relative left-1/2 grid w-[768px] -translate-x-1/2 grid-cols-3 lg:left-0 lg:mx-auto lg:w-full lg:translate-x-0 lg:grid-cols-4 3xl:grid-cols-5"
           @mouseover="isHovered = true"
           @mouseleave="isHovered = false"
         >

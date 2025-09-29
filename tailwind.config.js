@@ -105,6 +105,9 @@ export default {
       animation: {
         'arrow-run': 'arrow-run 13s ease-in-out infinite normal',
       },
+      aspectRatio: {
+        'speaker-img': '282 / 448',
+      },
     },
   },
   plugins: [require('tailwind-scrollbar'), require('tailwind-clip-path'), require('tailwindcss-animate')],
