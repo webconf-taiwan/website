@@ -113,21 +113,15 @@ function handlePrev() {
           @mouseleave="isHovered = false"
         >
           <!-- 講者卡片 -->
-          <div
+
+          <HomeSpeakerCard
             v-for="index in displayCardLengthArr"
-            :key="index"
-            :class="{
-              'border-l-[0.5px]': index === 0,
-            }"
-            class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] border-webconf-gray/50 px-8 py-10 xl:px-12 xl:py-10"
-          >
-            <HomeSpeakerCard
-              :ref="(el) => (speakerCards[index] = el)"
-              :speakers="SPEAKERS"
-              :original-index="index"
-              :is-parent-hovered="isHovered"
-            />
-          </div>
+            :key="SPEAKERS[index].name"
+            :ref="(el) => (speakerCards[index] = el)"
+            :speakers="SPEAKERS"
+            :original-index="index"
+            :is-parent-hovered="isHovered"
+          />
         </div>
 
         <!-- 輪播按鈕 -->
