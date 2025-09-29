@@ -24,6 +24,7 @@ export default {
         'xs': '360px',
         'xm': '480px',
         '2xl': '1440px',
+        '3xl': '1600px',
       },
       maxWidth: {
         'container-sm': '640px',
@@ -109,6 +110,9 @@ export default {
       },
       animation: {
         'arrow-run': 'arrow-run 13s ease-in-out infinite normal',
+      },
+      aspectRatio: {
+        'speaker-img': '282 / 448',
       },
     },
   },

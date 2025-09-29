@@ -139,71 +139,66 @@ watch(
 
 <template>
   <div
-    v-cursor="{
-      scale: 5,
-      duration: 0.5,
-      backgroundColor: 'rgba(0, 46, 255, 0.9)',
-      text: 'VIEW',
+    :class="{
+      'border-l-[0.5px]': originalIndex === 0,
     }"
-    class="relative w-full max-w-full overflow-hidden"
+    class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] border-webconf-gray/50 px-8 pb-7 pt-10 xl:px-12"
   >
-    <!-- 預載所有圖片 -->
-    <div class="hidden">
-      <NuxtImg
-        v-for="speaker in speakers"
-        :key="speaker.src"
-        :src="speaker.src"
-        width="264"
-        height="376"
-        loading="eager"
-      />
-    </div>
-
     <div
-      ref="cardContainer"
-      class="flex w-[200%]"
-      style="will-change: transform; transform: translateZ(0)"
+      v-cursor="{
+        scale: 5,
+        duration: 0.5,
+        backgroundColor: 'rgba(0, 46, 255, 0.9)',
+        text: 'VIEW',
+      }"
+      class="relative w-full overflow-hidden"
     >
-      <!-- 當前講者卡片 -->
-      <NuxtLink
-        to="#"
-        class="w-1/2 shrink-0"
+      <div
+        ref="cardContainer"
+        class="flex w-[200%]"
+        style="will-change: transform; transform: translateZ(0)"
       >
-        <div class="group relative">
-          <div
-            class="h-[273px] w-[192px] bg-cover bg-center grayscale group-hover:grayscale-0 xl:h-[376px] xl:w-[264px]"
-            :style="{
-              backgroundImage: `url(${currentSpeaker.src})`,
-              transition: 'filter 0.3s',
-            }"
-          ></div>
+        <!-- 當前講者卡片 -->
+        <NuxtLink
+          to="/"
+          class="w-1/2 shrink-0"
+        >
+          <div class="group relative">
+            <div
+              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
+              :style="{
+                backgroundImage: `url(${currentSpeaker.src})`,
+                transition: 'filter 0.3s',
+              }"
+            ></div>
 
-          <ShareGradientMask class="group-hover:opacity-0" />
-          <ShareNoiseMask class="group-hover:opacity-0" />
+            <ShareGradientMask class="group-hover:opacity-0" />
+            <ShareNoiseMask class="group-hover:opacity-0" />
+          </div>
+
+          <h3 class="mt-4 pb-3 text-h4-24">
+            {{ currentSpeaker.name }}
+          </h3>
+        </NuxtLink>
+
+        <!-- 下一張講者卡片 -->
+        <div class="w-1/2 shrink-0">
+          <div class="group relative">
+            <div
+              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
+              :style="{
+                backgroundImage: `url(${nextSpeaker.src})`,
+                transition: 'filter 0.3s',
+              }"
+            ></div>
+            <ShareGradientMask class="group-hover:opacity-0" />
+            <ShareNoiseMask class="group-hover:opacity-0" />
+          </div>
+
+          <h3 class="mt-4 text-h4-24">
+            {{ nextSpeaker.name }}
+          </h3>
         </div>
-
-        <h3 class="mt-4 text-h4-24">
-          {{ currentSpeaker.name }}
-        </h3>
-      </NuxtLink>
-
-      <!-- 下一張講者卡片 -->
-      <div class="w-1/2 shrink-0">
-        <div class="group relative">
-          <div
-            class="h-[273px] w-[192px] bg-cover bg-center grayscale group-hover:grayscale-0 xl:h-[376px] xl:w-[264px]"
-            :style="{
-              backgroundImage: `url(${nextSpeaker.src})`,
-              transition: 'filter 0.3s',
-            }"
-          ></div>
-          <ShareGradientMask class="group-hover:opacity-0" />
-          <ShareNoiseMask class="group-hover:opacity-0" />
-        </div>
-
-        <h3 class="mt-4 text-h4-24">
-          {{ nextSpeaker.name }}
-        </h3>
       </div>
     </div>
   </div>
