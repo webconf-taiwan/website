@@ -23,9 +23,6 @@ function getNextIndex() {
   return (currentIndex.value + 1) % props.speakers.length
 }
 
-const currentSpeaker = computed(() => props.speakers[currentIndex.value])
-const nextSpeaker = computed(() => props.speakers[getNextIndex()])
-
 // 向左滑動
 function slideToNext() {
   if (!cardContainer.value || isAnimating.value) {
@@ -89,6 +86,9 @@ function slideToPrev() {
     ease: 'power2.inOut',
     force3D: true,
     willChange: 'transform',
+    transformOrigin: 'center center',
+    backfaceVisibility: 'hidden',
+    perspective: '1000px',
   })
 }
 
@@ -179,7 +179,7 @@ watch(
             <div
               class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
               :style="{
-                backgroundImage: `url(${currentSpeaker.src})`,
+                backgroundImage: `url(${speakers[currentIndex].src})`,
                 transition: 'filter 0.3s',
               }"
             ></div>
@@ -189,7 +189,7 @@ watch(
           </div>
 
           <h3 class="mt-4 pb-3 text-h4-24">
-            {{ currentSpeaker.name }}
+            {{ speakers[currentIndex].name }}
           </h3>
         </NuxtLink>
 
@@ -199,7 +199,7 @@ watch(
             <div
               class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
               :style="{
-                backgroundImage: `url(${nextSpeaker.src})`,
+                backgroundImage: `url(${speakers[getNextIndex()].src})`,
                 transition: 'filter 0.3s',
               }"
             ></div>
@@ -208,7 +208,7 @@ watch(
           </div>
 
           <h3 class="mt-4 text-h4-24">
-            {{ nextSpeaker.name }}
+            {{ speakers[getNextIndex()].name }}
           </h3>
         </div>
       </div>
