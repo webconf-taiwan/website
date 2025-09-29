@@ -4,7 +4,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  speed: 0.25,
+  speed: 1,
 })
 
 const speed = computed(() => props.speed ?? 0.045)
