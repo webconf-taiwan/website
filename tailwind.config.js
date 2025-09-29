@@ -18,6 +18,7 @@ export default {
         'xs': '360px',
         'xm': '480px',
         '2xl': '1440px',
+        '3xl': '1600px',
       },
       maxWidth: {
         'container-sm': '640px',

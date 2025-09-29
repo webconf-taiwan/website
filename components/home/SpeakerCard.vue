@@ -153,8 +153,8 @@ watch(
         v-for="speaker in speakers"
         :key="speaker.src"
         :src="speaker.src"
-        width="264"
-        height="376"
+        width="282"
+        height="448"
         loading="eager"
       />
     </div>
@@ -166,7 +166,7 @@ watch(
     >
       <!-- 當前講者卡片 -->
       <NuxtLink
-        to="#"
+        to="/"
         class="w-1/2 shrink-0"
       >
         <div class="group relative">

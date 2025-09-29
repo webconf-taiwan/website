@@ -26,8 +26,3 @@ coverage/
 *.sqlite
 *.db
 *.zip
-
-# 可選的資料夾
-public/
-data/
- https://vocus.cc/article/689456e5fd897800015a36a6

@@ -1,20 +1,44 @@
 <script setup lang="ts">
 const SPEAKERS = [
   {
-    name: '李建杭 AMOS',
-    src: '/images/featuredSpeaker_Amos.png',
+    name: 'Happy',
+    src: '/images/speakers/carousel-01_happy.webp',
   },
   {
-    name: '游舒帆 GIPI',
-    src: '/images/featuredSpeaker_Gipi.png',
+    name: 'Gipi',
+    src: '/images/speakers/carousel-02_gipi.webp',
   },
   {
-    name: 'KURO HSU',
-    src: '/images/featuredSpeaker_Kuro.png',
+    name: 'Will 保哥',
+    src: '/images/speakers/carousel-03_will.webp',
   },
   {
-    name: '奶綠茶',
-    src: '/images/featuredSpeaker_Milk.png',
+    name: '胡立',
+    src: '/images/speakers/carousel-04_huli.webp',
+  },
+  {
+    name: 'Hannah',
+    src: '/images/speakers/carousel-05_hannah.webp',
+  },
+  {
+    name: '乃綠茶',
+    src: '/images/speakers/carousel-06_milkmidi.webp',
+  },
+  {
+    name: 'KURO',
+    src: '/images/speakers/carousel-07_kuro.webp',
+  },
+  {
+    name: 'Peter',
+    src: '/images/speakers/carousel-08_peter.webp',
+  },
+  {
+    name: 'Chris',
+    src: '/images/speakers/carousel-09_chris.webp',
+  },
+  {
+    name: 'Tinya',
+    src: '/images/speakers/carousel-10_tinya.webp',
   },
 ]
 
@@ -23,6 +47,10 @@ const isHovered = ref(false)
 const speakerCards = ref<any[]>([])
 
 const displayCardLengthArr = computed(() => {
+  if (width.value >= 1600) {
+    return Array.from({ length: 5 }, (_, index) => index)
+  }
+
   if (width.value >= 1280) {
     return Array.from({ length: 4 }, (_, index) => index)
   }
@@ -80,7 +108,7 @@ function handlePrev() {
       <!-- 講者輪播 -->
       <div class="relative">
         <div
-          class="relative left-1/2 grid w-[768px] -translate-x-1/2 grid-cols-3 xl:left-0 xl:mx-auto xl:w-full xl:max-w-[1440px] xl:translate-x-0 xl:grid-cols-4"
+          class="relative left-1/2 grid w-[768px] -translate-x-1/2 grid-cols-3 xl:left-0 xl:mx-auto xl:w-full xl:translate-x-0 xl:grid-cols-4 3xl:grid-cols-5"
           @mouseover="isHovered = true"
           @mouseleave="isHovered = false"
         >
