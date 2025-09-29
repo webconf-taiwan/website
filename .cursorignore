@@ -1,0 +1,33 @@
+# 相依與環境資料夾
+node_modules/
+.venv/
+.env/
+__pycache__/
+
+# Build / 輸出檔
+dist/
+build/
+out/
+.nuxt/
+
+# Python 中介檔
+*.pyc
+
+# 測試快照 / coverage
+coverage/
+*.snap
+.nyc_output/
+
+# 大型靜態資料
+*.csv
+*.tsv
+*.log
+*.json
+*.sqlite
+*.db
+*.zip
+
+# 可選的資料夾
+public/
+data/
+ https://vocus.cc/article/689456e5fd897800015a36a6
