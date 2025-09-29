@@ -8,6 +8,12 @@ export default {
   ],
   theme: {
     extend: {
+      transitionDuration: {
+        1500: '1500ms',
+      },
+      transitionDelay: {
+        1500: '1500ms',
+      },
       container: {
         center: true,
         screens: {
