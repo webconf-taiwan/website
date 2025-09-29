@@ -3,6 +3,7 @@ const { isFirstLoad } = useGlobalState()
 </script>
 
 <template>
+  <!-- 首次加載動畫 -->
   <ShareLoadingDots
     class="fixed inset-0 z-50 overflow-hidden transition-opacity duration-1500"
     :class="[isFirstLoad ? 'pointer-events-none opacity-0' : 'opacity-100']"
