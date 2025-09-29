@@ -33,7 +33,7 @@ const contentContainer = ref<HTMLElement | null>(null)
 const gridSizeRef = ref<number>(0)
 
 let dvdDots: DVDBox[] = [] // DVD 方框狀態
-const FIXED_GRID_SIZE = 80 // 網格的大小(固定值)
+const FIXED_GRID_SIZE = computed(() => (isDesktop.value ? 80 : 64)) // 網格的大小(固定值)
 let gridSize: number // 網格大小（動態計算）
 const ease = 0.25 // 平滑滑鼠追蹤係數
 
@@ -133,28 +133,25 @@ function initializeLayersSync(p: p5) {
     tempLayer = null
   }
 
-  // 注意這裡的初始化
-  requestAnimationFrame(() => {
-    if (typeof p.width === 'undefined' || typeof p.height === 'undefined')
-      return
+  if (typeof p.width === 'undefined' || typeof p.height === 'undefined')
+    return
 
-    // 建立三層畫布
-    topLayer = p.createGraphics(p.width, p.height, 'p2d')
-    bottomLayer = p.createGraphics(p.width, p.height, 'p2d')
-    tempLayer = p.createGraphics(p.width, p.height, 'p2d')
+  // 建立三層畫布
+  topLayer = p.createGraphics(p.width, p.height, 'p2d')
+  bottomLayer = p.createGraphics(p.width, p.height, 'p2d')
+  tempLayer = p.createGraphics(p.width, p.height, 'p2d')
 
-    topLayer.pixelDensity(1)
-    bottomLayer.pixelDensity(1)
-    tempLayer.pixelDensity(1)
+  topLayer.pixelDensity(1)
+  bottomLayer.pixelDensity(1)
+  tempLayer.pixelDensity(1)
 
-    const { topGrid, bottomGrid } = defaultColors
+  const { topGrid, bottomGrid } = defaultColors
 
-    // 繪製底層藍色網格（完全不透明）
-    drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
+  // 繪製底層藍色網格（完全不透明）
+  drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
 
-    // 繪製上層灰色網格（半透明）
-    drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
-  })
+  // 繪製上層灰色網格（半透明）
+  drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
 }
 
 // p5 網格背景程式
@@ -166,7 +163,7 @@ function gridSketch(p: p5) {
     p.pixelDensity(1)
 
     // 計算 gridSize 和設置 CSS 變數
-    gridSize = FIXED_GRID_SIZE
+    gridSize = FIXED_GRID_SIZE.value
     gridSizeRef.value = gridSize
     setCSSVariables(p)
 
@@ -228,7 +225,7 @@ function gridSketch(p: p5) {
 
   const handleResized = useThrottleFn(() => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
-    gridSize = FIXED_GRID_SIZE
+    gridSize = FIXED_GRID_SIZE.value
     gridSizeRef.value = gridSize
     setCSSVariables(p)
 
