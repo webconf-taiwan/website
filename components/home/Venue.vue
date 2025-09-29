@@ -1,40 +1,454 @@
 <template>
   <section class="relative">
-    <div class="absolute inset-0 overflow-hidden">
-      <!-- <div
-        v-arrow="{
-          speed1: '6s',
-          speed2: '4s',
-          delay: '0s',
-          color: 'white',
-          count: 2,
-        }"
-        class="arrow-border-5 absolute bg-webconf-gray"
-      ></div> -->
-      <div
-        v-arrow="{ speed1: '8s', color: 'white', direction: -1 }"
-        class="arrow-border-6 absolute bg-webconf-gray"
-      ></div>
-      <div
-        v-arrow="{
-          speed1: '8s',
-          speed2: '6s',
-          delay: '0s',
-          color: 'white',
-          count: 2,
-        }"
-        class="arrow-border-7 absolute bg-webconf-gray"
-      ></div>
-    </div>
+    <!-- 桌機使用 -->
+    <svg
+      class="absolute inset-0 hidden size-full lg:block"
+      viewBox="0 0 1440 880"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <!-- 左邊箭頭 -->
+      <defs>
+        <marker
+          id="arrowLeft-venue"
+          markerWidth="10"
+          markerHeight="10"
+          refX="1"
+          refY="5"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path
+            d="M10,0 L10,10 L0,5 z"
+            fill="#E6E6E6"
+          />
+        </marker>
+      </defs>
+
+      <!-- 右邊箭頭 -->
+      <defs>
+        <marker
+          id="arrowRight-venue"
+          markerWidth="10"
+          markerHeight="10"
+          refX="9"
+          refY="5"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path
+            d="M0,0 L0,10 L10,5 z"
+            fill="#E6E6E6"
+          />
+        </marker>
+      </defs>
+
+      <!-- 右側斜線 -->
+      <g>
+        <!-- 靜態軌道 -->
+        <line
+          x1="1040"
+          y1="0"
+          x2="1440"
+          y2="405"
+          stroke="#E6E6E6"
+          stroke-width="1"
+        />
+
+        <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
+        <line
+          x1="1040"
+          y1="0"
+          x2="1040"
+          y2="0"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowRight-venue)"
+        >
+          <animate
+            attributeName="x2"
+            from="1040"
+            to="1440"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="0"
+            to="405"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+
+        <!-- 第二個斜線箭頭：速度較快，延後開始以形成錯位 -->
+        <line
+          x1="1040"
+          y1="0"
+          x2="1040"
+          y2="0"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowRight-venue)"
+        >
+          <animate
+            attributeName="x2"
+            from="1040"
+            to="1440"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="0"
+            to="405"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+      </g>
+
+      <!-- 中間線條 -->
+      <g>
+        <!-- 靜態軌道 -->
+        <line
+          x1="0"
+          y1="105"
+          x2="820"
+          y2="880"
+          stroke="#E6E6E6"
+          stroke-width="1"
+        />
+
+        <!-- 第一個箭頭 -->
+        <line
+          x1="0"
+          y1="105"
+          x2="0"
+          y2="105"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowLeft-venue)"
+        >
+          <animate
+            attributeName="x2"
+            from="820"
+            to="0"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="880"
+            to="105"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+
+        <!-- 第二個箭頭：速度較快，延後開始 -->
+        <line
+          x1="0"
+          y1="105"
+          x2="0"
+          y2="105"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowLeft-venue)"
+        >
+          <animate
+            attributeName="x2"
+            from="820"
+            to="0"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="880"
+            to="105"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+      </g>
+
+      <!-- 左側斜線 -->
+      <g>
+        <!-- 靜態軌道 -->
+        <line
+          x1="0"
+          y1="425"
+          x2="455"
+          y2="880"
+          stroke="#E6E6E6"
+          stroke-width="1"
+        />
+
+        <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
+        <line
+          x1="0"
+          y1="425"
+          x2="0"
+          y2="425"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowRight-venue)"
+        >
+          <animate
+            attributeName="x2"
+            from="0"
+            to="455"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="425"
+            to="880"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+
+        <!-- 第二個斜線箭頭：速度較快，延後開始以形成錯位 -->
+        <line
+          x1="0"
+          y1="425"
+          x2="0"
+          y2="425"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowRight-venue)"
+        >
+          <animate
+            attributeName="x2"
+            from="0"
+            to="455"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="425"
+            to="880"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+      </g>
+    </svg>
+
+    <!-- 平板使用 -->
+    <svg
+      class="absolute inset-0 hidden size-full md:block lg:hidden"
+      viewBox="0 0 768 1014"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <!-- 左邊箭頭 -->
+      <defs>
+        <marker
+          id="arrowLeft-venue-md"
+          markerWidth="10"
+          markerHeight="10"
+          refX="1"
+          refY="5"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path
+            d="M10,0 L10,10 L0,5 z"
+            fill="#E6E6E6"
+          />
+        </marker>
+      </defs>
+
+      <!-- 右邊箭頭 -->
+      <defs>
+        <marker
+          id="arrowRight-venue-md"
+          markerWidth="10"
+          markerHeight="10"
+          refX="9"
+          refY="5"
+          orient="auto"
+          markerUnits="strokeWidth"
+        >
+          <path
+            d="M0,0 L0,10 L10,5 z"
+            fill="#E6E6E6"
+          />
+        </marker>
+      </defs>
+
+      <!-- 中間線條 -->
+      <g>
+        <!-- 靜態軌道 -->
+        <line
+          x1="0"
+          y1="205"
+          x2="685"
+          y2="1014"
+          stroke="#E6E6E6"
+          stroke-width="1"
+        />
+
+        <!-- 第一個箭頭 -->
+        <line
+          x1="0"
+          y1="205"
+          x2="0"
+          y2="205"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowLeft-venue-md)"
+        >
+          <animate
+            attributeName="x2"
+            from="685"
+            to="0"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="1014"
+            to="205"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+
+        <!-- 第二個箭頭：速度較快，延後開始 -->
+        <line
+          x1="0"
+          y1="205"
+          x2="0"
+          y2="205"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowLeft-venue-md)"
+        >
+          <animate
+            attributeName="x2"
+            from="685"
+            to="0"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="1014"
+            to="205"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+      </g>
+
+      <!-- 左側斜線 -->
+      <g>
+        <!-- 靜態軌道 -->
+        <line
+          x1="0"
+          y1="630"
+          x2="325"
+          y2="1014"
+          stroke="#E6E6E6"
+          stroke-width="1"
+        />
+
+        <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
+        <line
+          x1="0"
+          y1="630"
+          x2="0"
+          y2="630"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowRight-venue-md)"
+        >
+          <animate
+            attributeName="x2"
+            from="0"
+            to="325"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="630"
+            to="1014"
+            dur="8s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+
+        <!-- 第二個斜線箭頭：速度較快，延後開始以形成錯位 -->
+        <line
+          x1="0"
+          y1="630"
+          x2="0"
+          y2="630"
+          stroke="transparent"
+          stroke-width="1"
+          marker-end="url(#arrowRight-venue-md)"
+        >
+          <animate
+            attributeName="x2"
+            from="0"
+            to="325"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+          <animate
+            attributeName="y2"
+            from="630"
+            to="1014"
+            dur="6s"
+            begin="3s"
+            repeatCount="indefinite"
+            calcMode="linear"
+          />
+        </line>
+      </g>
+    </svg>
     <div
       class="container flex flex-col p-0 sm:px-16 sm:py-20 lg:flex-row lg:px-20 lg:pb-60"
     >
       <div
         v-cursor="{ scale: 0.4, duration: 0.5 }"
-        class="group relative aspect-[1/1] w-full border-[0.5px] border-webconf-frame bg-black px-5 pb-5 pt-[85px] sm:aspect-auto sm:pb-0 sm:pl-[29.14px] sm:pr-[34.24px] sm:pt-[29px] lg:w-[68.75%] lg:pb-[24px] lg:pl-[40px] lg:pr-[47px] lg:pt-0"
+        class="group relative aspect-[1/1] w-full border-[0.5px] border-webconf-frame bg-black px-5 pb-5 pt-[85px] text-webconf-gray sm:aspect-auto sm:pb-0 sm:pl-[29.14px] sm:pr-[34.24px] sm:pt-[29px] lg:w-[68.75%] lg:pb-[24px] lg:pl-[40px] lg:pr-[47px] lg:pt-0"
       >
         <!-- 標題 -->
-        <div class="absolute left-5 top-5 w-fit sm:left-10 sm:top-8">
+        <div class="absolute left-5 top-5 z-10 w-fit sm:left-10 sm:top-8">
           <h2 class="flex px-10 pb-3 text-h3-40 text-white sm:pb-4">
             Venue
           </h2>
@@ -48,11 +462,12 @@
         <!-- 場地圖 -->
         <div class="pic h-full">
           <NuxtImg
-            src="/images/venueBg.webp"
+            src="/images/venueBg_Official.webp"
             width="793"
             height="536"
             format="webp"
-            class="size-full translate-y-0 object-contain sm:translate-y-[10px] lg:translate-y-[-10px]"
+            fit="contain"
+            class="size-full translate-y-0 object-contain"
           />
           <div
             class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-100"
@@ -77,7 +492,7 @@
         />
       </div>
       <ShareGradientDotsCard
-        class="relative ml-0 h-fit w-full translate-y-0 sm:px-[60px] sm:pb-[84px] lg:ml-[-12.65%] lg:w-[43.9%] lg:translate-y-[57%] lg:pb-[52px]"
+        class="relative ml-0 h-fit w-full translate-y-0 sm:px-[60px] sm:pb-[84px] lg:ml-[-12.65%] lg:w-[43.9%] lg:translate-y-[60%] lg:pb-[52px]"
       >
         <div class="items-start">
           <!-- 搭乘工具一 -->

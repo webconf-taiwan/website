@@ -43,8 +43,7 @@ const NAV_ITEMS = [
     isDesktop: true,
   },
 ]
-
-const isSaleOpen = useGlobalState().isSaleOpen
+const { isSaleOpen, isFirstLoad } = useGlobalState()
 
 const isToggleMenu = ref(false)
 
@@ -71,8 +70,12 @@ onUnmounted(() => {
 
 <template>
   <header
-    class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black lg:bg-black"
-    :class="{ 'bg-webconf-blue': isToggleMenu }"
+    class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black transition-all delay-500 duration-1500 ease-out lg:bg-black"
+    :class="{
+      'bg-webconf-blue': isToggleMenu,
+      '-translate-y-4 opacity-0': !isFirstLoad,
+      'translate-y-0 opacity-100': isFirstLoad,
+    }"
   >
     <div
       class="container flex items-center justify-between px-5 sm:px-8 lg:px-20"
@@ -166,31 +169,38 @@ onUnmounted(() => {
       </div>
 
       <!-- 手機和平板使用選單 -->
-      <ul
-        :class="{
-          hidden: !isToggleMenu,
-        }"
-        class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex min-h-screen w-dvw flex-col gap-12 bg-black pl-[60px] pr-8 pt-10 before:absolute before:left-[66px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[108px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
+      <Transition
+        enter-active-class="transition-all duration-500 ease-out"
+        leave-active-class="transition-all duration-300 ease-in"
+        enter-from-class="max-h-0 opacity-0"
+        enter-to-class="max-h-screen opacity-100"
+        leave-from-class="max-h-screen opacity-100"
+        leave-to-class="max-h-0 opacity-0"
       >
-        <li
-          v-for="navItem in NAV_ITEMS"
-          :key="navItem.name"
+        <ul
+          v-show="isToggleMenu"
+          class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex w-dvw flex-col gap-12 overflow-hidden bg-black pl-[60px] pr-8 pt-10 before:absolute before:left-[66px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[108px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
         >
-          <NuxtLink
-            v-cursor="{ scale: 0.4, duration: 0.5 }"
-            class="flex w-full items-center gap-4 before:block before:size-3 before:bg-webconf-gray before:content-[''] sm:gap-8"
-            :to="navItem.href"
-            @click="closeMenu"
+          <li
+            v-for="navItem in NAV_ITEMS"
+            :key="navItem.name"
           >
-            <div class="flex w-full items-end justify-between">
-              <span class="text-h3-40 text-white">{{ navItem.enName }}</span>
-              <span class="text-btn-14 text-webconf-gray">{{
-                navItem.name
-              }}</span>
-            </div>
-          </NuxtLink>
-        </li>
-      </ul>
+            <NuxtLink
+              v-cursor="{ scale: 0.4, duration: 0.5 }"
+              class="flex w-full items-center gap-4 before:block before:size-3 before:bg-webconf-gray before:content-[''] sm:gap-8"
+              :to="navItem.href"
+              @click="closeMenu"
+            >
+              <div class="flex w-full items-end justify-between">
+                <span class="text-h3-40 text-white">{{ navItem.enName }}</span>
+                <span class="text-btn-14 text-webconf-gray">{{
+                  navItem.name
+                }}</span>
+              </div>
+            </NuxtLink>
+          </li>
+        </ul>
+      </Transition>
     </div>
   </header>
 </template>

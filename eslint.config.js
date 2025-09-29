@@ -95,6 +95,8 @@ export default antfu(
             'blue-overlay',
             'mobile-menu',
             'contentContainer',
+            'dot',
+            'horizontalLine',
           ], // 允許自定義的 CSS 類名
         },
       ],
