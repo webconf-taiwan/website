@@ -73,8 +73,8 @@ onUnmounted(() => {
     class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black transition-all delay-500 duration-1500 ease-out lg:bg-black"
     :class="{
       'bg-webconf-blue': isToggleMenu,
-      '-translate-y-4 opacity-0': !isFirstLoad,
-      'translate-y-0 opacity-100': isFirstLoad,
+      '-translate-y-4 opacity-0 duration-500': !isFirstLoad,
+      'translate-y-0 opacity-100 duration-2500': isFirstLoad,
     }"
   >
     <div
