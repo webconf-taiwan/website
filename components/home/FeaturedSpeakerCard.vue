@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useResizeObserver } from '@vueuse/core'
 import { useGsap } from '~/composables/useGsap'
 
 interface Props {
@@ -18,6 +19,12 @@ const cardContainer = ref<HTMLDivElement>()
 const currentIndex = ref(props.originalIndex)
 const isAnimating = ref(false)
 let slideInterval: NodeJS.Timeout | null = null
+const currentCardWidth = ref(0)
+
+useResizeObserver(cardContainer, (entries) => {
+  const entry = entries[0]
+  currentCardWidth.value = Math.ceil(entry.contentRect.width)
+})
 
 function getNextIndex() {
   return (currentIndex.value + 1) % props.speakers.length
@@ -36,9 +43,11 @@ function slideToNext() {
   const timeline = gsap.timeline({
     onComplete: () => {
       currentIndex.value = getNextIndex()
+
       if (cardContainer.value) {
         gsap.set(cardContainer.value, { x: 0 })
       }
+
       isAnimating.value = false
       startSliding() // 動畫結束後重新啟動定時器
     },
@@ -46,7 +55,7 @@ function slideToNext() {
 
   // 向左滑動到下一張卡片位置
   timeline.to(cardContainer.value, {
-    x: '-50%',
+    x: '-100%',
     duration: 0.8,
     ease: 'power2.inOut',
     force3D: true,
@@ -65,7 +74,7 @@ function slideToPrev() {
   stopSliding()
 
   // 設定卡片容器的初始位置為 -50%，以顯示前一張卡片
-  gsap.set(cardContainer.value, { x: '-50%' })
+  gsap.set(cardContainer.value, { x: '-100%' })
   currentIndex.value
     = (currentIndex.value - 1 + props.speakers.length) % props.speakers.length
 
@@ -155,13 +164,14 @@ watch(
     >
       <div
         ref="cardContainer"
-        class="flex w-[200%]"
+        class="flex"
         style="will-change: transform; transform: translateZ(0)"
       >
         <!-- 當前講者卡片 -->
         <NuxtLink
           to="/"
-          class="w-1/2 shrink-0"
+          class="shrink-0"
+          :style="{ width: `${currentCardWidth}px` }"
         >
           <div class="group relative">
             <div
@@ -182,7 +192,10 @@ watch(
         </NuxtLink>
 
         <!-- 下一張講者卡片 -->
-        <div class="w-1/2 shrink-0">
+        <div
+          class="shrink-0"
+          :style="{ width: `${currentCardWidth}px` }"
+        >
           <div class="group relative">
             <div
               class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0 lg:aspect-speaker-img-full 3xl:aspect-speaker-img"
