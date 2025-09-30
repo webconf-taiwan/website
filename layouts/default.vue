@@ -1,5 +1,10 @@
 <script setup lang="ts">
+const lenis = useLenis()
 const { isFirstLoad } = useGlobalState()
+
+onMounted(() => {
+  lenis.scrollTo(0, { immediate: true })
+})
 </script>
 
 <template>
