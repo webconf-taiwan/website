@@ -446,10 +446,12 @@ onUnmounted(() => {
     </div>
 
     <!-- 方框層 (最上層) -->
-    <div
-      ref="boxContainer"
-      class="pointer-events-none fixed inset-0 z-[50] size-full"
-    ></div>
+    <Teleport to="body">
+      <div
+        ref="boxContainer"
+        class="pointer-events-none fixed inset-0 z-[50] size-full"
+      ></div>
+    </Teleport>
   </div>
 </template>
 
