@@ -10,6 +10,8 @@ export default {
     extend: {
       transitionDuration: {
         1500: '1500ms',
+        2000: '2000ms',
+        2500: '2500ms',
       },
       transitionDelay: {
         1500: '1500ms',
@@ -33,6 +35,10 @@ export default {
         'container-xl': '1280px',
         'container-2xl': '1400px',
       },
+      height: {
+        400: '400px',
+        1200: '1200px',
+      },
       fontFamily: {
         sans: ['Noto Sans TC', 'ui-sans-serif', 'system-ui', 'sans-serif'],
       },
@@ -44,6 +50,7 @@ export default {
         'h3-40': ['clamp(28px, 4.167vw, 40px)', { lineHeight: '1', letterSpacing: '0em', fontWeight: '600' }],
         'h4-24': ['20px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '600' }],
         'h4-60': ['28px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '600' }],
+        'h1-96': ['clamp(3rem, 2rem + 4.4444vw, 6rem)', { lineHeight: '1', letterSpacing: '-0.02em', fontWeight: '700' }],
       },
       clipPath: {
         mypolygon: 'polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 1rem))',
