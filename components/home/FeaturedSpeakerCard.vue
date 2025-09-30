@@ -47,7 +47,7 @@ function slideToNext() {
   // 向左滑動到下一張卡片位置
   timeline.to(cardContainer.value, {
     x: '-50%',
-    duration: 1,
+    duration: 0.8,
     ease: 'power2.inOut',
     force3D: true,
     willChange: 'transform',
