@@ -131,12 +131,6 @@ watch(isTablet, (newValue) => {
   background-repeat: no-repeat;
 }
 
-@media (min-width: 1440px) {
-  .cta-section {
-    background-attachment: fixed;
-  }
-}
-
 @supports (height: 100svh) {
   @media (min-width: 640px) {
     .cta-section {
