@@ -16,33 +16,44 @@ function initAnimation() {
   if (!ctaCard.value || !ctaContainer.value)
     return
 
-  // 初始設定：保持 CSS 定位，只控制 Y 軸移動
-  gsap.set(ctaCard.value, {
-    y: '100vh', // 從螢幕下方開始
-  })
+  if (scrollTrigger) {
+    scrollTrigger.kill()
+  }
+  gsap.killTweensOf(ctaCard.value)
 
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: ctaContainer.value,
-      start: 'top top',
-      end: 'bottom center',
-      pin: true,
-      pinSpacing: true,
-      invalidateOnRefresh: true,
-      scrub: 2,
-      onRefresh: () => {
-        // 存儲 ScrollTrigger 實例以便後續清理
-        scrollTrigger = tl.scrollTrigger
-      },
-    },
-  })
+  nextTick(() => {
+    requestAnimationFrame(() => {
+      // 初始設定：保持 CSS 定位，只控制 Y 軸移動
+      gsap.set(ctaCard.value, {
+        y: '100vh', // 從螢幕下方開始
+      })
 
-  tl.to(ctaCard.value, {
-    y: 0, // 滑到原本的位置
-    ease: 'power2.out',
-  })
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: ctaContainer.value,
+          start: 'top top',
+          end: 'bottom center',
+          pin: true,
+          pinSpacing: true,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+          preventOverlaps: true,
+          scrub: 2,
+          onRefresh: () => {
+            // 存儲 ScrollTrigger 實例以便後續清理
+            scrollTrigger = tl.scrollTrigger
+          },
+        },
+      })
 
-  scrollTrigger = tl.scrollTrigger
+      tl.to(ctaCard.value, {
+        ease: 'power2.out',
+        y: 0, // 滑到原本的位置
+      })
+
+      scrollTrigger = tl.scrollTrigger
+    })
+  })
 }
 
 function resetAnimation() {
