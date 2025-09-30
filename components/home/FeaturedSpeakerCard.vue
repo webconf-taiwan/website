@@ -47,7 +47,7 @@ function slideToNext() {
   // 向左滑動到下一張卡片位置
   timeline.to(cardContainer.value, {
     x: '-50%',
-    duration: 1,
+    duration: 0.8,
     ease: 'power2.inOut',
     force3D: true,
     willChange: 'transform',
@@ -153,18 +153,6 @@ watch(
       }"
       class="relative w-full overflow-hidden"
     >
-      <!-- 預載入所有圖片 -->
-      <div class="hidden">
-        <NuxtImg
-          v-for="speaker in speakers"
-          :key="speaker.src"
-          :src="speaker.src"
-          width="282"
-          height="448"
-          loading="eager"
-        />
-      </div>
-
       <div
         ref="cardContainer"
         class="flex w-[200%]"
@@ -177,7 +165,7 @@ watch(
         >
           <div class="group relative">
             <div
-              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
+              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0 lg:aspect-speaker-img-full 3xl:aspect-speaker-img"
               :style="{
                 backgroundImage: `url(${speakers[currentIndex].src})`,
                 transition: 'filter 0.3s',
@@ -197,7 +185,7 @@ watch(
         <div class="w-1/2 shrink-0">
           <div class="group relative">
             <div
-              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
+              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0 lg:aspect-speaker-img-full 3xl:aspect-speaker-img"
               :style="{
                 backgroundImage: `url(${speakers[getNextIndex()].src})`,
                 transition: 'filter 0.3s',
