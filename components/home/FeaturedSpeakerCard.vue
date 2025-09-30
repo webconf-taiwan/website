@@ -165,7 +165,7 @@ watch(
         >
           <div class="group relative">
             <div
-              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
+              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0 lg:aspect-speaker-img-full 3xl:aspect-speaker-img"
               :style="{
                 backgroundImage: `url(${speakers[currentIndex].src})`,
                 transition: 'filter 0.3s',
@@ -185,7 +185,7 @@ watch(
         <div class="w-1/2 shrink-0">
           <div class="group relative">
             <div
-              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0"
+              class="aspect-speaker-img w-full bg-cover bg-center grayscale group-hover:grayscale-0 lg:aspect-speaker-img-full 3xl:aspect-speaker-img"
               :style="{
                 backgroundImage: `url(${speakers[getNextIndex()].src})`,
                 transition: 'filter 0.3s',

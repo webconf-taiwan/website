@@ -113,6 +113,7 @@ export default {
       },
       aspectRatio: {
         'speaker-img': '282 / 448',
+        'speaker-img-full': '264 / 376',
       },
     },
   },
