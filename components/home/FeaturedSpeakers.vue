@@ -122,7 +122,7 @@ function handlePrev() {
           @mouseleave="isHovered = false"
         >
           <!-- 講者卡片 -->
-          <HomeSpeakerCard
+          <HomeFeaturedSpeakerCard
             v-for="index in displayCardLengthArr"
             :key="speakerAssets[index].name"
             :ref="(el) => (speakerCards[index] = el)"

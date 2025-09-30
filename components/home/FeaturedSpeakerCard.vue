@@ -153,18 +153,6 @@ watch(
       }"
       class="relative w-full overflow-hidden"
     >
-      <!-- 預載入所有圖片 -->
-      <div class="hidden">
-        <NuxtImg
-          v-for="speaker in speakers"
-          :key="speaker.src"
-          :src="speaker.src"
-          width="282"
-          height="448"
-          loading="eager"
-        />
-      </div>
-
       <div
         ref="cardContainer"
         class="flex w-[200%]"
