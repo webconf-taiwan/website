@@ -527,38 +527,3 @@
     </div>
   </section>
 </template>
-
-<style scoped>
-.arrow-border-5 {
-  --θ: 45deg;
-  --column: 12;
-  left: calc(var(--grid-size) * var(--column));
-  top: 0;
-  width: calc((100% - (var(--grid-size) * var(--column))) / cos(var(--θ)));
-  height: 1px;
-  transform: rotate(var(--θ));
-  transform-origin: left center;
-}
-
-.arrow-border-6 {
-  --θ: 45deg;
-  --column: calc(7 - (var(--grid-diff-6)));
-  left: 0;
-  top: calc(var(--grid-size) * var(--column));
-  width: calc((100% - (var(--grid-size) * var(--column))) / cos(var(--θ)));
-  height: 1px;
-  transform: rotate(var(--θ));
-  transform-origin: left center;
-}
-
-.arrow-border-7 {
-  --θ: 45deg;
-  --column: 2.6;
-  left: 0;
-  top: calc(var(--grid-size) * (var(--column) - var(--grid-diff-7)));
-  width: calc((100% - (var(--grid-size) * var(--column))) / cos(var(--θ)));
-  height: 1px;
-  transform: rotate(var(--θ));
-  transform-origin: left center;
-}
-</style>
