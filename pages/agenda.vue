@@ -75,6 +75,48 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['AI', '設計實務', '產品思維'],
   },
 ]
+
+// SEO Schema
+const agendaStructuredData = AGENDA_LIST.map(item => ({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  'name': item.topic,
+  'description': item.topic,
+  'startDate': '2025-12-12T09:00',
+  'endDate': '2025-12-13T18:00',
+  'eventStatus': 'https://schema.org/EventScheduled',
+  'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+  'location': {
+    '@type': 'Place',
+    'name': '瓶蓋工廠台北製造所',
+    'address': {
+      '@type': 'PostalAddress',
+      'streetAddress': '115台北市南港區南港路二段13號',
+      'addressLocality': '台北市',
+      'addressRegion': '南港區',
+      'postalCode': '115',
+      'addressCountry': '台灣',
+    },
+  },
+  'performer': item.speakerInfo.map(speaker => ({
+    '@type': 'Person',
+    'name': speaker.name,
+    'jobTitle': speaker.title.replace(/<br \/>/g, ' '),
+  })),
+}))
+
+useSeoMeta({
+  title: '議程表 - 網站名稱',
+  ogTitle: '議程表 - 網站名稱',
+  description: '查看所有精彩議程，涵蓋 AI、產品思維、前端、資安等主題。',
+  ogDescription: '查看所有精彩議程，涵蓋 AI、產品思維、前端、資安等主題。',
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify(agendaStructuredData),
+    },
+  ],
+})
 </script>
 
 <template>
