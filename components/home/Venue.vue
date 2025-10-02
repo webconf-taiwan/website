@@ -1,5 +1,5 @@
 <template>
-  <section class="relative">
+  <section class="relative pt-20">
     <!-- 桌機使用 -->
     <svg
       class="absolute inset-0 hidden size-full lg:block"
@@ -462,7 +462,7 @@
         <!-- 場地圖 -->
         <div class="pic h-full">
           <NuxtImg
-            src="/images/venueBg_Official.webp"
+            src="/images/map.webp"
             width="793"
             height="536"
             format="webp"

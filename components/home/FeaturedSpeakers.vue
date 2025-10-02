@@ -81,7 +81,7 @@ function handlePrev() {
 </script>
 
 <template>
-  <div class="sm:py-20">
+  <div class="sm:pt-20">
     <section
       class="relative z-10 border-b-[0.5px] border-white bg-black text-white"
     >
