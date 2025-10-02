@@ -97,6 +97,8 @@ export default antfu(
             'contentContainer',
             'dot',
             'horizontalLine',
+            'sponsors-section',
+            'agenda-section',
           ], // 允許自定義的 CSS 類名
         },
       ],
