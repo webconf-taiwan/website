@@ -10,7 +10,7 @@ const NAV_ITEMS = [
     isDesktop: true,
   },
   {
-    name: '講者介紹',
+    name: '講者陣容',
     enName: 'Speakers',
     href: '/coming-soon',
     isTablet: false,
@@ -25,14 +25,14 @@ const NAV_ITEMS = [
   },
   {
     name: '贊助廠商',
-    enName: 'Staff',
+    enName: 'Sponsors',
     href: '/sponsors',
     isTablet: false,
     isDesktop: true,
   },
   {
     name: '主辦團隊',
-    enName: 'Sponsors',
+    enName: 'Staff',
     href: '/coming-soon',
     isTablet: false,
     isDesktop: true,
