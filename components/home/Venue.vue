@@ -517,7 +517,7 @@
             </p>
           </div>
           <ShareLinkButton
-            to="#"
+            to="/coming-soon"
             class="m-auto flex w-fit"
           >
             更多資訊

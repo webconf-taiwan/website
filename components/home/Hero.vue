@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { EXTERNAL_LINKS } from '~/constants/external-links'
+</script>
+
 <template>
   <section class="hero-section relative min-h-screen w-full">
     <div class="absolute inset-0">
@@ -706,7 +710,9 @@
             class="pb-8 md:w-[527px] md:pb-0"
           />
           <ShareLinkButton
-            to="/"
+            :to="EXTERNAL_LINKS.CONF_TICKET_URL"
+            target="_blank"
+            rel="noopener noreferrer"
             class="text-center"
           >
             前往購票

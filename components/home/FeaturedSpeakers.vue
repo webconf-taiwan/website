@@ -101,7 +101,7 @@ function handlePrev() {
         </div>
 
         <ShareLinkButton
-          to="#"
+          to="/coming-soon"
           class="hidden text-center xl:block"
         >
           更多講者
@@ -169,7 +169,7 @@ function handlePrev() {
       />
 
       <div class="justify-self-center">
-        <ShareLinkButton to="#">
+        <ShareLinkButton to="/coming-soon">
           更多講者
         </ShareLinkButton>
       </div>

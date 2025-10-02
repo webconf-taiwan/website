@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { EXTERNAL_LINKS } from '~/constants/external-links'
+
 const NAV_ITEMS = [
   {
     name: '議程資訊',
     enName: 'Agenda',
-    href: '/coming-soon',
+    href: '/agenda',
     isTablet: true,
     isDesktop: true,
   },
@@ -70,7 +72,7 @@ onUnmounted(() => {
 
 <template>
   <header
-    class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black transition-all delay-500 duration-1500 ease-out lg:bg-black"
+    class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black transition-all ease-out lg:bg-black"
     :class="{
       'bg-webconf-blue': isToggleMenu,
       '-translate-y-4 opacity-0 duration-500': !isFirstLoad,
@@ -139,15 +141,15 @@ onUnmounted(() => {
         </nav>
 
         <!-- 是否購票按鈕 -->
-        <NuxtLink
+        <a
           v-if="!isSaleOpen && !isToggleMenu"
-          to="#"
+          :href="EXTERNAL_LINKS.CONF_TICKET_URL"
           class="pr-3 sm:pr-2"
+          target="_blank"
+          rel="noopener noreferrer"
         >
-          <ShareTag size="lg">
-            前往購票
-          </ShareTag>
-        </NuxtLink>
+          <ShareTag size="lg"> 前往購票 </ShareTag>
+        </a>
 
         <!-- 手機選單按鈕 -->
         <div class="block px-0 py-[3px] sm:px-3 sm:py-[4px] lg:hidden">
