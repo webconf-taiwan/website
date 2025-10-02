@@ -169,7 +169,7 @@ watch(
       >
         <!-- 當前講者卡片 -->
         <NuxtLink
-          to="/"
+          to="/coming-soon"
           class="shrink-0"
           :style="{ width: `${currentCardWidth}px` }"
         >

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
+import { EXTERNAL_LINKS } from '~/constants/external-links'
 
 const ctaCard = ref(null)
 const ctaContainer = ref(null)
@@ -114,7 +115,11 @@ watch(isTablet, (newValue) => {
             這裡不只是分享最新網頁技術趨勢的舞台，更是你與專家、愛好者交流的最佳機會。今年我們將聚焦
             AI、機器學習和優化使用者體驗設計，帶來滿滿的靈感與實用經驗。誠摯邀請你一起加入，和來自各地的技術人碰撞想法，共同探索網頁未來的無限可能！
           </p>
-          <ShareLinkButton to="/">
+          <ShareLinkButton
+            :to="EXTERNAL_LINKS.CONF_TICKET_URL"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             前往購票
           </ShareLinkButton>
         </div>
