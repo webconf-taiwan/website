@@ -3,7 +3,7 @@ import type p5 from 'p5'
 import { useBreakpoints, useThrottleFn } from '@vueuse/core'
 
 const props = withDefaults(defineProps<Props>(), {
-  dvdDotSpeed: 4,
+  dvdDotSpeed: 1,
   dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'] as const,
 })
 const breakpoints = useBreakpoints({
