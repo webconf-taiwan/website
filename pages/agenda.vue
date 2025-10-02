@@ -217,7 +217,7 @@ useSeoMeta({
         >
           <!-- 議程主題 -->
           <div>
-            <h2 class="text-h3-40">
+            <h2 class="text-h3-40 leading-[1.1]">
               {{ item.topic }}
             </h2>
             <div class="mt-4 flex gap-3 sm:mt-5">
