@@ -8,6 +8,7 @@ function scrollToTop() {
 
 <template>
   <button
+    v-cursor="{ scale: 0.4, duration: 0.5 }"
     type="button"
     class="group absolute grid aspect-square w-10 cursor-none place-content-center bg-webconf-gray/90 transition-colors duration-500 lg:hover:bg-webconf-blue/90"
     @click="scrollToTop"
