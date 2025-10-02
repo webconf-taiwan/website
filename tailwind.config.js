@@ -45,6 +45,7 @@ export default {
         'h3-40': ['clamp(28px, 4.167vw, 40px)', { lineHeight: '1', letterSpacing: '0em', fontWeight: '600' }],
         'h4-24': ['20px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '600' }],
         'h4-60': ['28px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '600' }],
+        'h5-20': ['18px', { lineHeight: '1', letterSpacing: '0em', fontWeight: '600' }],
       },
       clipPath: {
         mypolygon: 'polygon(0 0, 100% 0, 100% 100%, 0 calc(100% - 1rem))',

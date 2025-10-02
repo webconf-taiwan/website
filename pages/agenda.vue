@@ -136,4 +136,9 @@ const AGENDA_LIST: AgendaItem[] = [
   </main>
 
   <!-- 提示 -->
+  <section class="py-[120px] text-center text-webconf-gray">
+    <p class="text-h5-20">
+      \ 更多精彩議程即將釋出 /
+    </p>
+  </section>
 </template>
