@@ -1,3 +1,9 @@
+<script setup lang="ts">
+useSeoMeta({
+  title: '即將上線',
+})
+</script>
+
 <template>
   <div
     class="grid flex-1 place-content-stretch pb-0 pt-[129px] sm:place-content-center sm:pb-[131px] sm:pt-[147px]"

@@ -1,6 +1,16 @@
 <script setup lang="ts">
 const lenis = useLenis()
-const { isFirstLoad } = useGlobalState()
+const { isFirstLoad, setFirstLoad } = useGlobalState()
+
+const route = useRoute()
+const shouldShowLoading = computed(() => {
+  return route.name !== 'all'
+})
+
+// 404 頁面就不顯示首次加載動畫
+if (!shouldShowLoading.value) {
+  setFirstLoad(true)
+}
 
 onMounted(() => {
   lenis.scrollTo(0, { immediate: true })
