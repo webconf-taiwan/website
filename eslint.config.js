@@ -95,6 +95,7 @@ export default antfu(
             'dot',
             'horizontalLine',
             'sponsors-section',
+            'sponsors-img-filter',
           ], // 允許自定義的 CSS 類名
         },
       ],

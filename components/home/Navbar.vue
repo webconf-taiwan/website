@@ -24,7 +24,7 @@ const NAV_ITEMS = [
   {
     name: '贊助廠商',
     enName: 'Staff',
-    href: '/coming-soon',
+    href: '/sponsors',
     isTablet: false,
     isDesktop: true,
   },
