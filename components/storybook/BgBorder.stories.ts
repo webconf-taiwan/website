@@ -5,7 +5,7 @@ export default {
   component: BgBorder,
   argTypes: {
     dvdDotSpeed: {
-      control: { type: 'range', min: 1, max: 10, step: 1 },
+      control: { type: 'range', min: 1, max: 10, step: 0.1 },
     },
     dvdDotColors: {
       control: { type: 'array' },
