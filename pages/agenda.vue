@@ -197,10 +197,10 @@ useSeoMeta({
 
   <main class="text-webconf-gray">
     <!-- 活動日期 -->
-    <section>
+    <section class="relative border-b border-webconf-gray">
       <div
         v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-        class="relative border-b border-webconf-gray px-5 py-4 text-h4-24 md:px-20 md:py-6"
+        class="container px-5 py-4 text-h4-24 sm:px-8 sm:py-5 lg:px-20 lg:py-6"
       >
         Dec. 12-13
       </div>
@@ -208,46 +208,48 @@ useSeoMeta({
     </section>
 
     <!-- 議程列表 -->
-    <ul class="container border-x-[0.5px] border-x-webconf-gray/50">
-      <li
-        v-for="item in AGENDA_LIST"
-        :key="item.topic"
-        class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 md:flex-row md:justify-between md:px-10 md:pb-[68px] md:pt-8"
-      >
-        <!-- 議程主題 -->
-        <div>
-          <h2 class="text-h3-40">
-            {{ item.topic }}
-          </h2>
-          <div class="mt-4 flex gap-3 md:mt-5">
-            <span
-              v-for="tag in item.tags"
-              :key="tag + item.topic"
-              class="gap-3 bg-webconf-blue px-4 py-[6px] text-xs font-semibold text-webconf-gray"
-            >
-              {{ tag }}
-            </span>
+    <section class="container sm:px-8 lg:px-20">
+      <ul class="border-x-[0.5px] border-x-webconf-gray/50">
+        <li
+          v-for="item in AGENDA_LIST"
+          :key="item.topic"
+          class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 sm:flex-row sm:justify-between sm:px-10 sm:pb-[68px] sm:pt-8"
+        >
+          <!-- 議程主題 -->
+          <div>
+            <h2 class="text-h3-40">
+              {{ item.topic }}
+            </h2>
+            <div class="mt-4 flex gap-3 sm:mt-5">
+              <span
+                v-for="tag in item.tags"
+                :key="tag + item.topic"
+                class="gap-3 bg-webconf-blue px-4 py-[6px] text-xs font-semibold text-webconf-gray"
+              >
+                {{ tag }}
+              </span>
+            </div>
           </div>
-        </div>
 
-        <!-- 講者資訊 -->
-        <ul class="flex gap-6 md:w-[200px] md:flex-col md:self-end">
-          <li
-            v-for="speaker in item.speakerInfo"
-            :key="speaker.name"
-            class="w-full"
-          >
-            <h3 class="text-h4-24">
-              {{ speaker.name }}
-            </h3>
-            <p
-              class="mt-2 text-xs"
-              v-html="speaker.title"
-            ></p>
-          </li>
-        </ul>
-      </li>
-    </ul>
+          <!-- 講者資訊 -->
+          <ul class="flex gap-6 sm:w-[200px] sm:flex-col sm:self-end">
+            <li
+              v-for="speaker in item.speakerInfo"
+              :key="speaker.name"
+              class="w-full"
+            >
+              <h3 class="text-h4-24">
+                {{ speaker.name }}
+              </h3>
+              <p
+                class="mt-2 text-xs"
+                v-html="speaker.title"
+              ></p>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </section>
   </main>
 
   <!-- 提示 -->
