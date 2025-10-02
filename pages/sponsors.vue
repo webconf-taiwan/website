@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+useSeoMeta({
+  title: '贊助廠商',
+})
+</script>
+
 <template>
   <section class="flex-1">
     <!-- Banner 區塊 -->

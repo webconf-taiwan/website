@@ -1,4 +1,8 @@
 <script setup lang="ts">
+useSeoMeta({
+  title: '課程資訊',
+})
+
 type AgendaTag
   = | 'AI'
     | '產品思維'
@@ -99,7 +103,7 @@ const AGENDA_LIST: AgendaItem[] = [
               x2="1410"
               y2="400"
               stroke="#E6E6E6"
-              stroke-width="1"
+              stroke-width="0.5"
             />
           </g>
 
@@ -112,7 +116,7 @@ const AGENDA_LIST: AgendaItem[] = [
               x2="345"
               y2="400"
               stroke="#E6E6E6"
-              stroke-width="1"
+              stroke-width="0.5"
             />
           </g>
         </svg>
@@ -131,7 +135,7 @@ const AGENDA_LIST: AgendaItem[] = [
               x2="525"
               y2="320"
               stroke="#E6E6E6"
-              stroke-width="1"
+              stroke-width="0.5"
             />
           </g>
         </svg>
