@@ -120,7 +120,6 @@ useSeoMeta({
 </script>
 
 <template>
-  <!-- banner -->
   <section class="flex-1">
     <div
       class="agenda-section relative h-80 border-b border-webconf-gray text-webconf-gray lg:h-400"
@@ -197,7 +196,7 @@ useSeoMeta({
   </section>
 
   <main class="text-webconf-gray">
-    <!-- 活動日期 + 箭頭動畫 -->
+    <!-- 活動日期 -->
     <section>
       <div
         v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
@@ -208,9 +207,8 @@ useSeoMeta({
       <div v-arrow="{ speed1: '8s', color: '#E6E6E6' }"></div>
     </section>
 
-    <!-- 列表 -->
+    <!-- 議程列表 -->
     <ul class="container border-x-[0.5px] border-x-webconf-gray/50">
-      <!-- 議程項目 -->
       <li
         v-for="item in AGENDA_LIST"
         :key="item.topic"
@@ -231,6 +229,7 @@ useSeoMeta({
             </span>
           </div>
         </div>
+
         <!-- 講者資訊 -->
         <ul class="flex gap-6 md:w-[200px] md:flex-col md:self-end">
           <li
