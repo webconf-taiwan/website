@@ -1,7 +1,15 @@
 <script setup lang="ts">
 const gsap = useGsap()
+const route = useRoute()
+const hiddenPaths = ['/agenda', '/sponsors']
+const shouldHide = computed(() => {
+  return hiddenPaths.some(path => route.path.startsWith(path))
+})
 
 onMounted(() => {
+  if (shouldHide.value)
+    return
+
   const els = gsap.utils.toArray('.float-blocks') as HTMLElement[]
 
   if (!els)
@@ -22,6 +30,7 @@ onMounted(() => {
 
 <template>
   <div
+    v-if="!shouldHide"
     class="pointer-events-none fixed inset-0 z-[1] size-full touch-none select-none"
   >
     <div
