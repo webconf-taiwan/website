@@ -86,9 +86,6 @@ export default antfu(
             'main-footer',
             'gradient-dots-card',
             'floating-tag',
-            'arrow-border-5',
-            'arrow-border-6',
-            'arrow-border-7',
             'hero-section',
             'cta-section',
             'float-blocks',
@@ -99,6 +96,7 @@ export default antfu(
             'horizontalLine',
             'sponsors-section',
             'agenda-section',
+            'sponsors-img-filter',
           ], // 允許自定義的 CSS 類名
         },
       ],

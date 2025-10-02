@@ -5,7 +5,7 @@ export default {
   component: BgBorder,
   argTypes: {
     dvdDotSpeed: {
-      control: { type: 'range', min: 1, max: 10, step: 1 },
+      control: { type: 'range', min: 1, max: 10, step: 0.1 },
     },
     dvdDotColors: {
       control: { type: 'array' },
@@ -15,7 +15,7 @@ export default {
 
 export const Playground = {
   args: {
-    dvdDotSpeed: 3,
+    dvdDotSpeed: 4,
     dvdDotColors: ['#2F2ADB', '#919191', '#E6E6E6'],
     default: '網格 + DVD Dot 效果背景',
   },

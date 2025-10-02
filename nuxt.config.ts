@@ -30,7 +30,7 @@ export default defineNuxtConfig({
       {
         name: 'Noto Sans TC',
         provider: 'google',
-        weights: [400, 600],
+        weights: [400, 600, 700],
         styles: ['normal'],
         subsets: ['chinese-traditional'],
         display: 'swap',

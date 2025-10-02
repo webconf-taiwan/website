@@ -26,7 +26,7 @@ const NAV_ITEMS = [
   {
     name: '贊助廠商',
     enName: 'Staff',
-    href: '/coming-soon',
+    href: '/sponsors',
     isTablet: false,
     isDesktop: true,
   },
@@ -76,7 +76,7 @@ onUnmounted(() => {
     :class="{
       'bg-webconf-blue': isToggleMenu,
       '-translate-y-4 opacity-0 duration-500': !isFirstLoad,
-      'translate-y-0 opacity-100 duration-1500': isFirstLoad,
+      'translate-y-0 opacity-100 duration-2500': isFirstLoad,
     }"
   >
     <div

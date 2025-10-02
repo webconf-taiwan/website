@@ -104,11 +104,13 @@
 }
 
 @layer components {
+  .sponsors-img-filter,
   .about-img-filter {
     filter: grayscale(100%) brightness(60%);
     transition: filter 0.3s ease;
   }
 
+  .sponsors-img-filter:hover,
   .about-img-filter.is-hovered {
     filter: grayscale(0%) brightness(100%);
   }
