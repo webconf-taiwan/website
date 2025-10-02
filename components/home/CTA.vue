@@ -146,12 +146,4 @@ watch(isTablet, (newValue) => {
   background-position: center;
   background-repeat: no-repeat;
 }
-
-@supports (height: 100svh) {
-  @media (min-width: 640px) {
-    .cta-section {
-      min-height: 100svh;
-    }
-  }
-}
 </style>
