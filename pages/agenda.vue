@@ -359,7 +359,9 @@ const AGENDA_LIST: AgendaItem[] = [
 
       <!-- 議程列表 -->
       <section class="container sm:px-8 lg:px-20">
-        <ul class="border-x-[0.5px] border-x-webconf-gray/50 bg-black">
+        <ul
+          class="border-x-0 border-x-webconf-gray/50 bg-black sm:border-x-[0.5px]"
+        >
           <li
             v-for="item in AGENDA_LIST"
             :key="item.topic"
