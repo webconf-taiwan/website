@@ -340,7 +340,7 @@ const AGENDA_LIST: AgendaItem[] = [
       <!-- 活動日期 -->
       <section
         v-arrow="{ speed1: '8s', color: '#E6E6E6' }"
-        class="sticky top-[57px] z-[999] border-b border-webconf-gray bg-black"
+        class="sticky top-[55px] z-[999] border-b border-webconf-gray bg-black"
       >
         <div
           class="container px-5 py-4 text-h4-24 sm:px-8 sm:py-5 lg:px-20 lg:py-6"
