@@ -368,7 +368,7 @@ const AGENDA_LIST: AgendaItem[] = [
             class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 sm:flex-row sm:justify-between sm:px-10 sm:pb-[68px] sm:pt-8"
           >
             <!-- 議程主題 -->
-            <div class="sm:flex-[5]">
+            <div class="sm:flex-[3] lg:flex-[5]">
               <h2 class="text-h3-40 leading-[1.1]">
                 {{ item.topic }}
               </h2>
