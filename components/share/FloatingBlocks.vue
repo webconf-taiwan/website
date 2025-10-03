@@ -30,7 +30,7 @@ onMounted(() => {
 
 <template>
   <div
-    v-if="!shouldHide"
+    v-show="!shouldHide"
     class="pointer-events-none fixed inset-0 z-[1] size-full touch-none select-none"
   >
     <div

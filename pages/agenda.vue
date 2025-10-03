@@ -262,9 +262,9 @@ const AGENDA_LIST: AgendaItem[] = [
 <template>
   <div>
     <section class="flex-1">
-      <div
-        class="agenda-section relative h-80 border-b border-webconf-gray text-webconf-gray lg:h-400"
-      >
+      <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
+        <!-- 浮動方框 -->
+        <ShareLayoutBlocks />
         <!-- 桌機使用 -->
         <svg
           class="absolute inset-0 hidden size-full sm:block"
@@ -333,14 +333,17 @@ const AGENDA_LIST: AgendaItem[] = [
             </div>
           </div>
         </div>
+        <div
+          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+          class="absolute bottom-0 left-0 z-20 h-[1px] w-full bg-webconf-gray"
+        ></div>
       </div>
     </section>
 
     <main class="text-webconf-gray">
       <!-- 活動日期 -->
       <section
-        v-arrow="{ speed1: '8s', color: '#E6E6E6' }"
-        class="sticky top-[55px] z-[999] border-b border-webconf-gray bg-black"
+        class="sticky top-[55px] z-10 border-b border-webconf-gray bg-black"
       >
         <div
           class="container px-5 py-4 text-h4-24 sm:px-8 sm:py-5 lg:px-20 lg:py-6"
@@ -348,7 +351,10 @@ const AGENDA_LIST: AgendaItem[] = [
           Dec. 12-13
         </div>
 
-        <div v-arrow="{ speed1: '12s', color: '#E6E6E6' }"></div>
+        <div
+          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+          class="relative z-[100]"
+        ></div>
       </section>
 
       <!-- 議程列表 -->

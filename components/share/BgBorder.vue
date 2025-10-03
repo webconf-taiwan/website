@@ -100,21 +100,39 @@ function drawGrid(
 
   pg.background(0)
 
+  const ctx = pg.drawingContext as CanvasRenderingContext2D
+  if (!ctx)
+    return
+
   const r = p.red(lineCol)
   const g = p.green(lineCol)
   const b = p.blue(lineCol)
-  pg.stroke(r, g, b, alpha * 255)
-  pg.strokeWeight(customStrokeWeight || 0.5)
 
-  // 繪製垂直線
-  for (let x = 0; x < pg.width; x += gridSize) {
-    pg.line(x, 0, x, pg.height)
+  ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`
+  ctx.lineWidth = customStrokeWeight || 0.5
+  ctx.lineCap = 'butt'
+  ctx.lineJoin = 'miter' // 確保連接點是尖角
+
+  // 確保線條對齊到像素邊界，避免模糊
+  const halfPixel = (customStrokeWeight || 0.5) % 2 === 0 ? 0 : 0.5
+
+  ctx.beginPath()
+
+  // 繪製垂直線 - 從第一條開始，避免邊界重疊
+  for (let x = gridSize; x < pg.width; x += gridSize) {
+    const adjustedX = Math.floor(x) + halfPixel
+    ctx.moveTo(adjustedX, 0)
+    ctx.lineTo(adjustedX, pg.height)
   }
 
-  // 繪製水平線
-  for (let y = 0; y < pg.height; y += gridSize) {
-    pg.line(0, y, pg.width, y)
+  // 繪製水平線 - 從第一條開始，避免邊界重疊
+  for (let y = gridSize; y < pg.height; y += gridSize) {
+    const adjustedY = Math.floor(y) + halfPixel
+    ctx.moveTo(0, adjustedY)
+    ctx.lineTo(pg.width, adjustedY)
   }
+
+  ctx.stroke()
 }
 
 // 圖層初始化函數

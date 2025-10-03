@@ -4,30 +4,35 @@ const ORGANIZERS = [
     name: '五倍學院',
     link: 'https://5xcampus.com/',
     logo: '/images/5xcampus.webp',
+    hoverLogo: '/images/5xcampus-hover.webp',
     consecutiveText: '',
   },
   {
     name: '六角學院',
     link: 'https://www.hexschool.com/',
     logo: '/images/hexschool.webp',
+    hoverLogo: '/images/hexschool-hover.webp',
     consecutiveText: '',
   },
   {
     name: '悠識學院',
     link: 'https://edu.userxper.com/',
     logo: '/images/userxper.webp',
+    hoverLogo: '/images/userxper-hover.webp',
     consecutiveText: '',
   },
   {
     name: '昇新科技',
     link: '',
     logo: '/images/ascentisTech.webp',
+    hoverLogo: '/images/ascentisTech-hover.webp',
     consecutiveText: '',
   },
   {
     name: '鈦坦科技',
     link: '',
     logo: '/images/titansoft.webp',
+    hoverLogo: '/images/titansoft.webp',
     consecutiveText: '連續 3 年贊助',
   },
 ]
@@ -37,6 +42,8 @@ const ORGANIZERS = [
   <NuxtMarquee
     v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
     :auto-fill="true"
+    :pause-on-hover="true"
+    :pause-on-click="true"
     class="!overflow-x-clip border-t-[0.5px] border-webconf-gray bg-black"
   >
     <NuxtLink
@@ -52,7 +59,14 @@ const ORGANIZERS = [
           :alt="organizer.name"
           format="webp"
           width="150"
-          class="aspect-[5/4] w-[96px] sm:w-[120px] lg:w-[150px]"
+          class="aspect-[5/4] w-[96px] transition-opacity duration-300 sm:w-[120px] lg:w-[150px] lg:group-hover:opacity-0"
+        />
+        <NuxtImg
+          :src="organizer.hoverLogo"
+          :alt="organizer.name"
+          format="webp"
+          width="150"
+          class="absolute inset-0 aspect-[5/4] w-[96px] opacity-0 transition-opacity duration-300 sm:w-[120px] lg:w-[150px] lg:group-hover:opacity-100"
         />
         <span
           v-if="organizer.consecutiveText !== ''"

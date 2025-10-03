@@ -7,9 +7,10 @@ useSeoMeta({
 <template>
   <section class="flex-1">
     <!-- Banner 區塊 -->
-    <div
-      class="sponsors-section relative h-80 border-b border-webconf-gray text-webconf-gray lg:h-400"
-    >
+    <div class="sponsors-section relative h-80 text-webconf-gray lg:h-400">
+      <!-- 浮動方框 -->
+      <ShareLayoutBlocks />
+
       <!-- 桌機使用 -->
       <svg
         class="absolute inset-0 hidden size-full sm:block"
@@ -78,6 +79,11 @@ useSeoMeta({
           </div>
         </div>
       </div>
+
+      <div
+        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+        class="absolute bottom-0 left-0 h-[1px] w-full bg-webconf-gray"
+      ></div>
     </div>
 
     <!-- 贊助招募內容 -->
