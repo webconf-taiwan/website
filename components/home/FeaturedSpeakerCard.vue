@@ -149,7 +149,8 @@ watch(
 <template>
   <div
     :class="{
-      'border-l-[0.5px]': originalIndex === 0,
+      'border-l-[0.5px] lg:border-l-0': originalIndex === 0,
+      'border-r-[0.5px] lg:border-r-0': originalIndex === speakers.length - 1,
     }"
     class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] border-webconf-gray/50 px-8 pb-7 pt-10 xl:px-12"
   >
