@@ -144,11 +144,16 @@ onUnmounted(() => {
         <a
           v-if="!isSaleOpen && !isToggleMenu"
           :href="EXTERNAL_LINKS.CONF_TICKET_URL"
-          class="pr-3 sm:pr-2"
+          class="inline-block pr-3 sm:pr-2"
           target="_blank"
           rel="noopener noreferrer"
         >
-          <ShareTag size="lg"> 前往購票 </ShareTag>
+          <ShareTag
+            size="lg"
+            class="transition-colors duration-500 hover:bg-transparent"
+          >
+            前往購票
+          </ShareTag>
         </a>
 
         <!-- 手機選單按鈕 -->
