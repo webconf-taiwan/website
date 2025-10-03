@@ -2,7 +2,7 @@
 const { isFirstLoad } = useGlobalState()
 
 defineOgImage({
-  url: 'https://2025.webconf.tw/images/seo/ogImage.png',
+  url: 'https://webconf.tw/images/seo/ogImage.png',
   width: 1200,
   height: 630,
   alt: 'WebConf Taiwan 2025',

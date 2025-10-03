@@ -44,8 +44,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'icon', href: 'https://2025.webconf.tw/images/seo/favicon.ico' },
-        { rel: 'apple-touch-icon', href: 'https://2025.webconf.tw/images/seo/appleTouchIcon.png' },
+        { rel: 'icon', href: 'https://webconf.tw/images/seo/favicon.ico' },
+        { rel: 'apple-touch-icon', href: 'https://webconf.tw/images/seo/appleTouchIcon.png' },
       ],
     },
     pageTransition: {
