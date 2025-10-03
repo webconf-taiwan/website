@@ -4,6 +4,7 @@ import { useGsap } from '~/composables/useGsap'
 
 interface Props {
   originalIndex: number
+  initialIndex: number
   speakers: {
     name: string
     src: string
@@ -16,7 +17,7 @@ const props = defineProps<Props>()
 const gsap = useGsap()
 
 const cardContainer = ref<HTMLDivElement>()
-const currentIndex = ref(props.originalIndex)
+const currentIndex = ref(props.initialIndex)
 const isAnimating = ref(false)
 let slideInterval: NodeJS.Timeout | null = null
 const currentCardWidth = ref(0)
@@ -120,6 +121,10 @@ function stopSliding() {
   }
 }
 
+function resetIndex() {
+  currentIndex.value = props.initialIndex
+}
+
 onMounted(() => {
   startSliding()
 })
@@ -131,6 +136,7 @@ onUnmounted(() => {
 defineExpose({
   slideToNext,
   slideToPrev,
+  resetIndex,
 })
 
 watch(
@@ -142,6 +148,13 @@ watch(
     else {
       startSliding()
     }
+  },
+)
+
+watch(
+  () => props.initialIndex,
+  (newIndex) => {
+    currentIndex.value = newIndex
   },
 )
 </script>

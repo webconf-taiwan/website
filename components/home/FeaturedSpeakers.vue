@@ -54,7 +54,7 @@ const speakerAssets = computed(() =>
 const { width } = useWindowSize()
 const isHovered = ref(false)
 const speakerCards = ref<any[]>([])
-
+const forceRerenderKey = ref(0)
 const displayCardLengthArr = computed(() => {
   if (width.value >= 1600) {
     return Array.from({ length: 5 }, (_, index) => index)
@@ -65,6 +65,16 @@ const displayCardLengthArr = computed(() => {
   }
 
   return Array.from({ length: 3 }, (_, index) => index)
+})
+
+watch(displayCardLengthArr, () => {
+  forceRerenderKey.value++
+  // 重置所有卡片的內部索引
+  speakerCards.value.forEach((card) => {
+    if (card && typeof card.resetIndex === 'function') {
+      card.resetIndex()
+    }
+  })
 })
 
 function handleNext() {
@@ -124,10 +134,11 @@ function handlePrev() {
           <!-- 講者卡片 -->
           <HomeFeaturedSpeakerCard
             v-for="index in displayCardLengthArr"
-            :key="speakerAssets[index].name"
+            :key="`${speakerAssets[index].name}-${forceRerenderKey}`"
             :ref="(el) => (speakerCards[index] = el)"
             :speakers="speakerAssets"
             :original-index="index"
+            :initial-index="index"
             :is-parent-hovered="isHovered"
           />
         </div>
