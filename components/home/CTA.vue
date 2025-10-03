@@ -112,7 +112,7 @@ watch(isTablet, (newValue) => {
       class="relative left-auto top-auto w-full translate-x-0 translate-y-0 sm:absolute sm:left-1/2 sm:top-1/2 sm:max-w-[524px] sm:-translate-x-1/2 sm:-translate-y-1/2 lg:max-w-[647px]"
     >
       <ShareGradientDotsCard class="max-w-none text-center">
-        <div class="flex flex-col items-center">
+        <div class="flex flex-col items-center pb-10 pt-4 sm:py-0">
           <div class="pic pb-6 sm:pb-10">
             <NuxtImg
               src="/images/CTATitleLogo.webp"

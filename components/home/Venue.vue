@@ -51,7 +51,7 @@
           x2="1440"
           y2="405"
           stroke="#E6E6E6"
-          stroke-width="1"
+          stroke-width="0.67"
         />
 
         <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
@@ -122,7 +122,7 @@
           x2="820"
           y2="880"
           stroke="#E6E6E6"
-          stroke-width="1"
+          stroke-width="0.67"
         />
 
         <!-- 第一個箭頭 -->
@@ -193,7 +193,7 @@
           x2="455"
           y2="880"
           stroke="#E6E6E6"
-          stroke-width="1"
+          stroke-width="0.67"
         />
 
         <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
@@ -307,7 +307,7 @@
           x2="685"
           y2="1014"
           stroke="#E6E6E6"
-          stroke-width="1"
+          stroke-width="0.67"
         />
 
         <!-- 第一個箭頭 -->
@@ -378,7 +378,7 @@
           x2="325"
           y2="1014"
           stroke="#E6E6E6"
-          stroke-width="1"
+          stroke-width="0.67"
         />
 
         <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
@@ -440,15 +440,18 @@
         </line>
       </g>
     </svg>
+
     <div
       class="container flex flex-col p-0 sm:px-16 sm:py-20 lg:flex-row lg:px-20 lg:pb-60"
     >
       <div
         v-cursor="{ scale: 0.4, duration: 0.5 }"
-        class="group relative aspect-[1/1] w-full border-[0.5px] border-webconf-frame bg-black px-5 pb-5 pt-[85px] text-webconf-gray sm:aspect-auto sm:pb-0 sm:pl-[29.14px] sm:pr-[34.24px] sm:pt-[29px] lg:w-[68.75%] lg:pb-[24px] lg:pl-[40px] lg:pr-[47px] lg:pt-0"
+        class="group relative w-full border-x-0 border-y-[0.5px] border-webconf-frame bg-black px-5 pb-5 pt-[85px] text-webconf-gray sm:aspect-auto sm:border-x-[0.5px] sm:pb-0 sm:pl-[29.14px] sm:pr-[34.24px] sm:pt-[29px] lg:w-[68.75%] lg:pb-[24px] lg:pl-[40px] lg:pr-[47px] lg:pt-0"
       >
         <!-- 標題 -->
-        <div class="absolute left-5 top-5 z-10 w-fit sm:left-10 sm:top-8">
+        <div
+          class="absolute left-1/2 top-5 z-10 w-fit -translate-x-1/2 sm:left-10 sm:top-8 sm:translate-x-0"
+        >
           <h2 class="flex px-10 pb-3 text-h3-40 text-white sm:pb-4">
             Venue
           </h2>
@@ -460,7 +463,7 @@
         </div>
 
         <!-- 場地圖 -->
-        <div class="pic h-full">
+        <div class="pic h-full translate-y-0 sm:translate-y-[10px]">
           <NuxtImg
             src="/images/map.webp"
             width="793"
