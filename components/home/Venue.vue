@@ -1,5 +1,5 @@
 <template>
-  <section class="relative pt-20">
+  <section class="relative pt-0 sm:pt-20">
     <!-- 桌機使用 -->
     <svg
       class="absolute inset-0 hidden size-full lg:block"
