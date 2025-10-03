@@ -1,6 +1,6 @@
 <script setup lang="ts">
 useSeoMeta({
-  title: '課程資訊',
+  title: '議程資訊',
 })
 
 type AgendaTag
@@ -161,19 +161,22 @@ const AGENDA_LIST: AgendaItem[] = [
 
     <main class="text-webconf-gray">
       <!-- 活動日期 -->
-      <section class="relative border-b border-webconf-gray">
+      <section
+        v-arrow="{ speed1: '8s', color: '#E6E6E6' }"
+        class="sticky top-[57px] z-[999] border-b border-webconf-gray bg-black"
+      >
         <div
-          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
           class="container px-5 py-4 text-h4-24 sm:px-8 sm:py-5 lg:px-20 lg:py-6"
         >
           Dec. 12-13
         </div>
-        <div v-arrow="{ speed1: '8s', color: '#E6E6E6' }"></div>
+
+        <div v-arrow="{ speed1: '12s', color: '#E6E6E6' }"></div>
       </section>
 
       <!-- 議程列表 -->
       <section class="container sm:px-8 lg:px-20">
-        <ul class="border-x-[0.5px] border-x-webconf-gray/50">
+        <ul class="border-x-[0.5px] border-x-webconf-gray/50 bg-black">
           <li
             v-for="item in AGENDA_LIST"
             :key="item.topic"
@@ -184,7 +187,7 @@ const AGENDA_LIST: AgendaItem[] = [
               <h2 class="text-h3-40 leading-[1.1]">
                 {{ item.topic }}
               </h2>
-              <div class="mt-4 flex gap-3 sm:mt-5">
+              <div class="mt-4 flex flex-wrap gap-3 sm:mt-5">
                 <span
                   v-for="tag in item.tags"
                   :key="tag + item.topic"
@@ -196,7 +199,9 @@ const AGENDA_LIST: AgendaItem[] = [
             </div>
 
             <!-- 講者資訊 -->
-            <ul class="flex gap-6 sm:w-[200px] sm:flex-col sm:self-end">
+            <ul
+              class="flex gap-6 sm:min-w-[160px] sm:flex-col sm:self-end lg:min-w-[200px]"
+            >
               <li
                 v-for="speaker in item.speakerInfo"
                 :key="speaker.name"
