@@ -4,7 +4,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
 
 <template>
   <section class="hero-section relative min-h-screen w-full">
-    <div class="absolute inset-0">
+    <div class="absolute inset-0 border-b-[1px] border-webconf-gray">
       <!-- 貝茲曲線特效 -->
       <HomeHeroCurve />
 
@@ -59,7 +59,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="1440"
             y2="490"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
 
           <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
@@ -131,7 +131,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="930"
             y2="720"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
 
           <!-- 單一箭頭 -->
@@ -172,7 +172,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="598"
             y2="720"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
           <!-- 第一個斜線箭頭：速度較慢，持續顯示 -->
           <line
@@ -241,7 +241,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="1440"
             y2="479"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
           <!-- 水平線箭頭 -->
           <line
@@ -324,7 +324,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="767"
             y2="555"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
           <!-- 第一個移動的箭頭 -->
           <line
@@ -387,7 +387,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="476"
             y2="720"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
 
           <!-- 單一箭頭 -->
@@ -427,7 +427,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="768"
             y2="479"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
           <!-- 水平線箭頭 -->
           <line
@@ -510,7 +510,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="483"
             y2="320"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
           <!-- 第一個移動的箭頭 -->
           <line
@@ -573,7 +573,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="225"
             y2="640"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
 
           <!-- 單一箭頭 -->
@@ -613,7 +613,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="360"
             y2="465"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
           <!-- 水平線箭頭 -->
           <line
@@ -653,7 +653,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             x2="360"
             y2="170"
             stroke="#E6E6E6"
-            stroke-width="1"
+            stroke-width="0.5"
           />
           <!-- 水平線箭頭 -->
           <line
