@@ -186,7 +186,7 @@ onUnmounted(() => {
       >
         <ul
           v-show="isToggleMenu"
-          class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex w-dvw flex-col gap-12 overflow-hidden bg-black p-8 pt-10 before:absolute before:left-[38px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[60px] sm:pr-20 sm:pt-20 before:sm:left-[114px] lg:hidden"
+          class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex w-dvw flex-col gap-12 overflow-hidden bg-black p-8 pt-10 before:absolute before:left-[38px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[60px] sm:pr-20 sm:pt-20 before:sm:left-[66px] lg:hidden"
         >
           <li
             v-for="navItem in NAV_ITEMS"
