@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const _ = defineEmits<{
-  next: () => void
-  prev: () => void
+const emit = defineEmits<{
+  (_: 'next'): void
+  (_: 'prev'): void
 }>()
 </script>
 
@@ -11,8 +11,8 @@ const _ = defineEmits<{
   >
     <button
       type="button"
-      class="flex size-10 items-center justify-center border border-white text-center text-white duration-300 hover:border-webconf-blue hover:bg-webconf-blue"
-      @click="$emit('next')"
+      class="flex size-10 items-center justify-center border border-white bg-black text-center text-white duration-300 hover:border-webconf-blue hover:bg-webconf-blue"
+      @click="emit('next')"
     >
       <svg
         width="24"
@@ -32,8 +32,8 @@ const _ = defineEmits<{
     </button>
     <button
       type="button"
-      class="flex size-10 items-center justify-center border border-white text-center text-white duration-300 hover:border-webconf-blue hover:bg-webconf-blue"
-      @click="$emit('prev')"
+      class="flex size-10 items-center justify-center border border-white bg-black text-center text-white duration-300 hover:border-webconf-blue hover:bg-webconf-blue"
+      @click="emit('prev')"
     >
       <svg
         width="24"
