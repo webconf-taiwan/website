@@ -472,12 +472,6 @@
             fit="contain"
             class="size-full translate-y-0 object-contain"
           />
-          <div
-            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-100"
-          ></div>
-          <div
-            class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-60"
-          ></div>
         </div>
         <!-- 場地標題 -->
         <p
@@ -493,6 +487,12 @@
           height="117"
           class="absolute right-0 top-12 hidden sm:block"
         />
+        <div
+          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-100"
+        ></div>
+        <div
+          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-60"
+        ></div>
       </div>
       <ShareGradientDotsCard
         class="relative ml-0 h-fit w-full translate-y-0 sm:px-[60px] sm:pb-[84px] lg:ml-[-12.65%] lg:w-[43.9%] lg:translate-y-[60%] lg:pb-[52px]"
