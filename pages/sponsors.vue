@@ -94,28 +94,28 @@ useSeoMeta({
         width="254"
         height="169"
         alt="WebConf Taiwan 活動照片"
-        class="blue-shadow sponsors-img-filter absolute left-[-94px] top-[392px] hidden sm:block"
+        class="blue-shadow sponsors-img-filter absolute left-[-94px] top-[392px] hidden xl:block"
       />
       <NuxtImg
         src="/images/sponsors-1.webp"
         width="361"
         height="241"
         alt="WebConf Taiwan 活動照片"
-        class="blue-shadow sponsors-img-filter absolute right-[-40px] top-[80px] hidden sm:block"
+        class="blue-shadow sponsors-img-filter absolute right-[-40px] top-[80px] hidden xl:block"
       />
       <NuxtImg
         src="/images/sponsors-3.webp"
         width="348"
         height="232"
         alt="WebConf Taiwan 活動照片"
-        class="blue-shadow sponsors-img-filter absolute bottom-[80px] left-[-28px] hidden sm:block"
+        class="blue-shadow sponsors-img-filter absolute bottom-[80px] left-[-28px] hidden xl:block"
       />
       <NuxtImg
         src="/images/sponsors-4.webp"
         width="240"
         height="160"
         alt="WebConf Taiwan 活動照片"
-        class="blue-shadow sponsors-img-filter absolute bottom-[383px] right-[-28px] hidden sm:block"
+        class="blue-shadow sponsors-img-filter absolute bottom-[383px] right-[-28px] hidden xl:block"
       />
       <ShareGradientDotsCard
         class="relative m-auto my-0 max-w-[960px] pt-12 text-webconf-gray"
