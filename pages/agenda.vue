@@ -5,13 +5,15 @@ useSeoMeta({
 
 type AgendaTag
   = | 'AI'
+    | 'Agile'
+    | 'Frontend'
+    | 'Security'
+    | '軟體設計'
+    | '產品應用'
     | '產品思維'
     | '團隊管理'
     | '產業應用'
-    | 'Agile'
     | '設計實務'
-    | 'Frontend'
-    | 'Security'
 
 interface SpeakerInfo {
   name: string
@@ -46,11 +48,21 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['Frontend', 'Security'],
   },
   {
-    topic: '大 AI 時代，工程師的成長之路 - 從 Junior 到 Staff',
+    topic: '程式碼與尿布：媽媽工程師的生存指南',
+    speakerInfo: [
+      {
+        name: 'Hannah',
+        title: 'Remote / Frontend ',
+      },
+    ],
+    tags: ['Frontend'],
+  },
+  {
+    topic: '大 AI 時代，工程師的成長之路 / 從 Junior 到 Staff',
     speakerInfo: [
       {
         name: '乃綠茶',
-        title: 'PositiveGrid staff frontend engineer',
+        title: 'PositiveGrid Staff Frontend Engineer',
       },
     ],
     tags: ['Frontend'],
@@ -66,7 +78,7 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['AI', '產品思維', '團隊管理', 'Agile'],
   },
   {
-    topic: 'AI 時代下， Product sense 就是你的秘密武器',
+    topic: 'AI 時代下， Product Sense 就是你的秘密武器',
     speakerInfo: [
       {
         name: 'Chris',
@@ -78,6 +90,171 @@ const AGENDA_LIST: AgendaItem[] = [
       },
     ],
     tags: ['AI', '設計實務', '產品思維'],
+  },
+  {
+    topic: '軟體開發邪教的救贖：AI 時代更應掌握的 TDD 技能',
+    speakerInfo: [
+      {
+        name: 'Kuma Syu',
+        title: '緯雲有限公司 / R&D Manager',
+      },
+    ],
+    tags: ['AI', '軟體設計', '產品思維'],
+  },
+  {
+    topic: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
+    speakerInfo: [
+      {
+        name: 'Max Chen',
+        title: '對稱資訊股份有限公司 / 面試趣 CEO',
+      },
+    ],
+    tags: ['產品應用', '產品思維'],
+  },
+  {
+    topic: '產品 OKR 的訂立與 Roadmap 展開',
+    speakerInfo: [
+      {
+        name: '曾友志',
+        title: '下午先生有限公司 / 資深產品顧問',
+      },
+    ],
+    tags: ['產品思維', '團隊管理'],
+  },
+  {
+    topic: 'React 優化實戰分析 / 掌握 React 進階技術 x 底層思維',
+    speakerInfo: [
+      {
+        name: 'ThisWeb (Kun)',
+        title: 'ThisWeb / 前端工程師',
+      },
+    ],
+    tags: ['Frontend'],
+  },
+  {
+    topic: '願 Web API 原力與你同在',
+    speakerInfo: [
+      {
+        name: 'MUKI',
+        title: 'MUKI space* / 前端工程師',
+      },
+    ],
+    tags: ['Frontend', 'AI'],
+  },
+  {
+    topic: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
+    speakerInfo: [
+      {
+        name: 'Joey',
+        title: '引鹿創新體驗研究室  / UX 總監',
+      },
+    ],
+    tags: ['設計實務', '團隊管理'],
+  },
+  {
+    topic: '以打詐為例，服務設計如何讓公共數位服務有感',
+    speakerInfo: [
+      {
+        name: '卓致遠',
+        title: '致遠體驗設計 / 體驗總監',
+      },
+    ],
+    tags: ['設計實務', '產品思維'],
+  },
+  {
+    topic: '服務設計師的傳說：90% 的時間在讓設計發生',
+    speakerInfo: [
+      {
+        name: '郭心喻',
+        title:
+          'Government of Nova Scotia 加拿大新斯科舍省政府 <br /> / Senior Service Designer 資深服務設計師',
+      },
+    ],
+    tags: ['軟體設計', '設計實務', '產品思維', '產業應用'],
+  },
+  {
+    topic: '從設計到共識：悠識如何在每一次新專案裡，用溝通建立信任關係',
+    speakerInfo: [
+      {
+        name: '林星妤',
+        title: '悠識數位 / Senior Experience Designer',
+      },
+      {
+        name: '黃明硯',
+        title: '悠識數位 /  Experience Designer',
+      },
+    ],
+    tags: ['設計實務', '產品思維'],
+  },
+  {
+    topic: '從研究到上線：全流程設計與 AI 協作專案實戰',
+    speakerInfo: [
+      {
+        name: 'Niki Liu',
+        title: '新加坡商鈦坦科技 / Senior Product Designer',
+      },
+    ],
+    tags: ['AI', '設計實務', '產品思維'],
+  },
+  {
+    topic: '從使用者到工程師：AI 在企業怎麼落地？',
+    speakerInfo: [
+      {
+        name: 'Shirney Huang 黃琇琳',
+        title: 'Aiworks / CEO',
+      },
+    ],
+    tags: ['AI'],
+  },
+  {
+    topic: 'GenAI 時代下的測試三板斧',
+    speakerInfo: [
+      {
+        name: '柯仁傑',
+        title: 'Odd-e / Technical Coach',
+      },
+    ],
+    tags: ['軟體設計'],
+  },
+  {
+    topic: '培養十倍速 PM：從工具到習慣',
+    speakerInfo: [
+      {
+        name: '趙柏強',
+        title: 'Stable Progress / Growth Companion',
+      },
+    ],
+    tags: ['AI', '產品思維', '團隊管理', 'Agile'],
+  },
+  {
+    topic: '對微前端的美好想像',
+    speakerInfo: [
+      {
+        name: 'Eric Lee',
+        title: '前端輕鬆聊 / Senior Software Engineer',
+      },
+    ],
+    tags: ['Frontend', '軟體設計'],
+  },
+  {
+    topic: 'AI 時代下， 如何運用數據幫助產品發揮影響力',
+    speakerInfo: [
+      {
+        name: '姜乃文',
+        title: '天下雜誌集團 / 主任分析師',
+      },
+    ],
+    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
+  },
+  {
+    topic: '走在同業前面：國泰的雲端轉型洞察與啟示',
+    speakerInfo: [
+      {
+        name: '顏勝豪 Otto',
+        title: '國泰金控  / 協理',
+      },
+    ],
+    tags: ['AI', '產業應用'],
   },
 ]
 </script>
@@ -183,7 +360,7 @@ const AGENDA_LIST: AgendaItem[] = [
             class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 sm:flex-row sm:justify-between sm:px-10 sm:pb-[68px] sm:pt-8"
           >
             <!-- 議程主題 -->
-            <div>
+            <div class="sm:flex-[5]">
               <h2 class="text-h3-40 leading-[1.1]">
                 {{ item.topic }}
               </h2>
@@ -200,14 +377,14 @@ const AGENDA_LIST: AgendaItem[] = [
 
             <!-- 講者資訊 -->
             <ul
-              class="flex gap-6 sm:min-w-[160px] sm:flex-col sm:self-end lg:min-w-[200px]"
+              class="flex w-full gap-6 sm:flex-1 sm:flex-col sm:self-end lg:min-w-[200px]"
             >
               <li
                 v-for="speaker in item.speakerInfo"
                 :key="speaker.name"
                 class="w-full"
               >
-                <h3 class="text-h4-24">
+                <h3 class="text-h4-24 leading-[1.1]">
                   {{ speaker.name }}
                 </h3>
                 <p
