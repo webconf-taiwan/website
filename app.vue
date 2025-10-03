@@ -1,16 +1,6 @@
 <script setup lang="ts">
 const { isFirstLoad } = useGlobalState()
 
-useHead({
-  script: [
-    {
-      'defer': true,
-      'src': 'https://a.5xcamp.us/script.js',
-      'data-website-id': '41664933-5ac4-4e59-ad44-2b69cc1dbbf4',
-    },
-  ],
-})
-
 defineOgImage({
   url: 'https://webconf.tw/images/seo/ogImage.png',
   width: 1200,
@@ -26,9 +16,6 @@ if (isProduction) {
     'defer': true,
     'data-website-id': '41664933-5ac4-4e59-ad44-2b69cc1dbbf4',
   })
-}
-else {
-  console.log(' 測試環境，不載入 JSConfetti。')
 }
 
 useEasterEgg()
