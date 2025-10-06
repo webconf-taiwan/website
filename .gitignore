@@ -28,6 +28,8 @@ storybook-static
 
 .cursorignore
 
+stats
+
 # Storybook example assets
 components/assets/*.png
 components/assets/*.svg
