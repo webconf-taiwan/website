@@ -23,7 +23,7 @@ const SPEAKERS = [
     src: '/images/speakers/carousel-05_hannah.webp',
   },
   {
-    name: '乃綠茶',
+    name: '奶綠茶',
     src: '/images/speakers/carousel-06_milkmidi.webp',
   },
   {
