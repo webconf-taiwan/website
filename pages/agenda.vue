@@ -7,6 +7,7 @@ type AgendaTag
   = | 'AI'
     | 'Agile'
     | 'Frontend'
+    | 'Backend'
     | 'Security'
     | '軟體設計'
     | '產品應用'
@@ -38,14 +39,14 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
   },
   {
-    topic: '從冷知識到漏洞：你不懂的 JavaScript，駭客懂',
+    topic: '從冷知識到漏洞：你不懂的 Web，駭客懂',
     speakerInfo: [
       {
         name: '胡立',
         title: `技術部落格 Huli's blog / 站長`,
       },
     ],
-    tags: ['Frontend', 'Security'],
+    tags: ['Frontend', 'Security', 'Backend'],
   },
   {
     topic: '程式碼與尿布：媽媽工程師的生存指南',
@@ -61,7 +62,7 @@ const AGENDA_LIST: AgendaItem[] = [
     topic: '大 AI 時代，工程師的成長之路 / 從 Junior 到 Staff',
     speakerInfo: [
       {
-        name: '乃綠茶',
+        name: '奶綠茶',
         title: 'PositiveGrid Staff Frontend Engineer',
       },
     ],
