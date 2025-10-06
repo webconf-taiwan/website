@@ -5,16 +5,15 @@ useSeoMeta({
 
 type AgendaTag
   = | 'AI'
-    | 'Agile'
     | 'Frontend'
     | 'Backend'
     | 'Security'
     | '軟體設計'
-    | '產品應用'
-    | '產品思維'
-    | '團隊管理'
-    | '產業應用'
     | '設計實務'
+    | '產品思維'
+    | '產業應用'
+    | '團隊管理'
+    | 'Agile'
 
 interface SpeakerInfo {
   name: string
@@ -46,7 +45,7 @@ const AGENDA_LIST: AgendaItem[] = [
         title: `技術部落格 Huli's blog / 站長`,
       },
     ],
-    tags: ['Frontend', 'Security', 'Backend'],
+    tags: ['Frontend', 'Backend', 'Security'],
   },
   {
     topic: '程式碼與尿布：媽媽工程師的生存指南',
@@ -110,7 +109,7 @@ const AGENDA_LIST: AgendaItem[] = [
         title: '對稱資訊股份有限公司 / 面試趣 CEO',
       },
     ],
-    tags: ['產品應用', '產品思維'],
+    tags: ['產品思維', '產業應用'],
   },
   {
     topic: '產品 OKR 的訂立與 Roadmap 展開',
@@ -140,7 +139,7 @@ const AGENDA_LIST: AgendaItem[] = [
         title: 'MUKI space* / 前端工程師',
       },
     ],
-    tags: ['Frontend', 'AI'],
+    tags: ['AI', 'Frontend'],
   },
   {
     topic: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
