@@ -50,6 +50,7 @@ const ORGANIZERS = [
       v-for="(organizer, index) in ORGANIZERS"
       :key="index"
       :to="organizer.link"
+      :aria-label="organizer.name"
       target="_blank"
       class="group inline-block p-3 lg:py-10 lg:pl-12 lg:pr-[42px]"
     >

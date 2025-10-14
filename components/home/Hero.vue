@@ -701,14 +701,9 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             height="215"
             class="mr-0 md:mr-[86px] md:w-[570px]"
           />
-          <NuxtImg
-            src="/images/heroTitle.webp"
-            alt="Connecting the Web to a Sustainable Future"
-            format="webp"
-            width="527"
-            height="27"
-            class="pb-8 md:w-[527px] md:pb-0"
-          />
+          <p class="pb-8 text-h4-24 text-white md:pb-0">
+            DEC. 12 - 13｜瓶蓋工廠台北製造所
+          </p>
           <ShareLinkButton
             :to="EXTERNAL_LINKS.CONF_TICKET_URL"
             target="_blank"

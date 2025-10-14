@@ -87,6 +87,7 @@ onUnmounted(() => {
         <span class="sr-only">2025 WebConf</span>
         <NuxtLink
           to="/"
+          aria-label="回到首頁"
           class="group relative inline-block"
         >
           <!-- default logo -->
@@ -132,6 +133,7 @@ onUnmounted(() => {
               <NuxtLink
                 v-cursor="{ scale: 0.4, duration: 0.5 }"
                 class="inline-block px-3 py-1 transition-colors duration-500 lg:hover:text-webconf-blue"
+                :aria-label="navItem.name"
                 :to="navItem.href"
               >
                 {{ navItem.name }}
@@ -196,6 +198,7 @@ onUnmounted(() => {
               v-cursor="{ scale: 0.4, duration: 0.5 }"
               class="flex w-full items-center gap-4 before:block before:size-3 before:shrink-0 before:bg-webconf-gray before:content-[''] sm:gap-8"
               :to="navItem.href"
+              :aria-label="navItem.enName"
               @click="closeMenu"
             >
               <div class="flex w-full items-end justify-between">

@@ -184,6 +184,7 @@ watch(
         <!-- 當前講者卡片 -->
         <NuxtLink
           to="/coming-soon"
+          :aria-label="speakers[currentIndex].name"
           class="shrink-0"
           :style="{ width: `${currentCardWidth}px` }"
         >
