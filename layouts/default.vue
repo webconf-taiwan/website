@@ -1,5 +1,4 @@
 <script setup lang="ts">
-const lenis = useLenis()
 const { isFirstLoad, setFirstLoad } = useGlobalState()
 
 const route = useRoute()
@@ -11,10 +10,6 @@ const shouldShowLoading = computed(() => {
 if (!shouldShowLoading.value) {
   setFirstLoad(true)
 }
-
-onMounted(() => {
-  lenis.scrollTo(0, { immediate: true })
-})
 </script>
 
 <template>

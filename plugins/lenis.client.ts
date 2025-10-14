@@ -20,6 +20,11 @@ export default defineNuxtPlugin({
       lenis.scrollTo(0, { immediate: false })
     })
 
+    // 處理初始載入和重新載入
+    nuxtApp.hook('app:mounted', () => {
+      lenis.scrollTo(0, { immediate: true })
+    })
+
     return {
       provide: {
         lenis,
