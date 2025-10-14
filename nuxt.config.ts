@@ -5,6 +5,7 @@ import { site } from './config/seo.config'
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
+
   modules: [
     '@nuxtjs/storybook',
     '@nuxtjs/tailwindcss',
@@ -108,6 +109,15 @@ export default defineNuxtConfig({
   },
 
   nitro: {
+    // 啟用頁面預渲染
+    prerender: {
+      routes: [
+        '/',
+        '/agenda',
+        '/sponsors',
+        '/coming-soon',
+      ],
+    },
     compressPublicAssets: {
       gzip: true,
       brotli: true,
