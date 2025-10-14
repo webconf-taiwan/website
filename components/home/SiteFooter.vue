@@ -30,6 +30,7 @@ const SOCIAL_ITEMS = [
           class="pic group mt-[52px] flex flex-col gap-1 sm:mt-0"
         >
           <NuxtLink
+            aria-label="回到首頁"
             to="/"
             class="relative inline-block h-[91px] w-[240px] sm:size-full"
           >
@@ -75,6 +76,7 @@ const SOCIAL_ITEMS = [
               }"
               class="inline-block transition-colors duration-500 lg:hover:text-webconf-blue"
               target="_blank"
+              :aria-label="socialitem.name"
               :to="socialitem.href"
             >
               {{ socialitem.name }}
