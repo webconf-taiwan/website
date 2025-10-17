@@ -83,33 +83,30 @@ onUnmounted(() => {
       class="container flex items-center justify-between px-5 sm:px-8 lg:px-20"
     >
       <!-- logo -->
-      <h1 v-cursor="{ scale: 0.4, duration: 0.5 }">
-        <span class="sr-only">2025 WebConf</span>
-        <NuxtLink
-          to="/"
-          aria-label="回到首頁"
-          class="group relative inline-block"
-        >
-          <!-- default logo -->
-          <NuxtImg
-            src="/images/headerLogo.webp"
-            alt="2025 WebConf"
-            format="webp"
-            width="191"
-            height="28"
-            class="h-5 w-[137px] opacity-100 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-0"
-          />
-          <!-- hover logo -->
-          <NuxtImg
-            src="/images/headerLogoHover.webp"
-            alt="2025 WebConf"
-            format="webp"
-            width="191"
-            height="28"
-            class="absolute inset-0 h-5 w-[137px] opacity-0 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-100"
-          />
-        </NuxtLink>
-      </h1>
+      <NuxtLink
+        v-cursor="{ scale: 0.4, duration: 0.5 }"
+        to="/"
+        aria-label="回到首頁"
+        class="group relative inline-block"
+        @click="closeMenu"
+      >
+        <!-- default logo -->
+        <NuxtImg
+          src="/images/headerLogo.webp"
+          alt="2025 WebConf"
+          width="191"
+          height="28"
+          class="h-5 w-[137px] opacity-100 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-0"
+        />
+        <!-- hover logo -->
+        <NuxtImg
+          src="/images/headerLogoHover.webp"
+          alt="2025 WebConf"
+          width="191"
+          height="28"
+          class="absolute inset-0 h-5 w-[137px] opacity-0 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-100"
+        />
+      </NuxtLink>
 
       <!-- 導覽列 -->
       <div class="flex items-center py-2 text-btn-16 text-webconf-gray xs:py-3">

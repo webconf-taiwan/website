@@ -118,6 +118,17 @@ export default defineNuxtConfig({
         '/coming-soon',
       ],
     },
+    routeRules: {
+      // 原始圖片路徑快取(背景圖片使用)
+      '/images/**': {
+        headers: { 'Cache-Control': 'public, max-age=2592000, s-maxage=2592000' },
+      },
+
+      // IPX 處理的圖片路徑
+      '/_ipx/**': {
+        headers: { 'Cache-Control': 'public, max-age=2592000, s-maxage=2592000' },
+      },
+    },
     compressPublicAssets: {
       gzip: true,
       brotli: true,

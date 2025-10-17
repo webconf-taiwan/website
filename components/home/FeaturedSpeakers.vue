@@ -153,6 +153,7 @@ function handlePrev() {
           }"
           type="button"
           class="absolute left-0 top-0 hidden h-full w-20 xl:block"
+          aria-label="下一位講者"
           @click="handleNext"
         ></button>
 
@@ -165,6 +166,7 @@ function handlePrev() {
           }"
           type="button"
           class="absolute right-0 top-0 hidden h-full w-20 xl:block"
+          aria-label="上一位講者"
           @click="handlePrev"
         ></button>
       </div>

@@ -466,9 +466,9 @@
         <div class="pic h-full translate-y-0 sm:translate-y-[10px]">
           <NuxtImg
             src="/images/map.webp"
+            alt="WebConf 2025 場地地圖"
             width="793"
             height="536"
-            format="webp"
             fit="contain"
             class="size-full translate-y-0 object-contain"
           />
@@ -482,7 +482,7 @@
         <!-- 指北針圖示 -->
         <NuxtImg
           src="/images/venueCompass.webp"
-          format="webp"
+          alt="指北針圖示"
           width="161"
           height="117"
           class="absolute right-0 top-12 hidden sm:block"
