@@ -38,16 +38,15 @@ const SOCIAL_ITEMS = [
             <NuxtImg
               src="/images/footerLogo.webp"
               alt="2025 WebConf"
-              format="webp"
               width="280"
               height="106"
+              format="webp"
               class="opacity-100 transition-opacity duration-500 lg:group-hover:opacity-0"
             />
             <!-- hover logo -->
             <NuxtImg
               src="/images/footerLogoHover.webp"
               alt="2025 WebConf"
-              format="webp"
               width="280"
               height="106"
               class="absolute inset-0 opacity-0 transition-opacity duration-500 lg:group-hover:opacity-100"

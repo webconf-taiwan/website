@@ -1,5 +1,31 @@
 <script setup lang="ts">
 import { EXTERNAL_LINKS } from '~/constants/external-links'
+
+useHead({
+  link: [
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/heroMobileBg.webp',
+      fetchpriority: 'high',
+      type: 'image/webp',
+    },
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/heroTabletBg.webp',
+      fetchpriority: 'high',
+      type: 'image/webp',
+    },
+    {
+      rel: 'preload',
+      as: 'image',
+      href: '/images/heroBg.webp',
+      fetchpriority: 'high',
+      type: 'image/webp',
+    },
+  ],
+})
 </script>
 
 <template>
@@ -204,9 +230,9 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
           <!-- 第二個斜線箭頭：速度較快，延後開始以形成錯位 -->
           <line
             x1="0"
-            y1="122"
+            y1="125"
             x2="0"
-            y2="122"
+            y2="125"
             stroke="transparent"
             stroke-width="1"
             marker-end="url(#arrowRight)"
@@ -223,7 +249,7 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
             />
             <animate
               attributeName="y2"
-              from="122"
+              from="125"
               to="720"
               dur="6s"
               begin="3s"
@@ -693,14 +719,16 @@ import { EXTERNAL_LINKS } from '~/constants/external-links'
         <div
           class="flex flex-col items-center gap-4 px-5 xm:items-end md:gap-[52px] md:px-[52px]"
         >
-          <NuxtImg
-            src="/images/heroLogo.webp"
-            alt="2025 WebConf Logo"
-            format="webp"
-            width="570"
-            height="215"
-            class="mr-0 md:mr-[86px] md:w-[570px]"
-          />
+          <h1>
+            <span class="sr-only">2025 WebConf</span>
+            <NuxtImg
+              src="/images/heroLogo.webp"
+              alt="2025 WebConf Logo"
+              width="570"
+              height="215"
+              class="mr-0 md:mr-[86px] md:w-[570px]"
+            />
+          </h1>
           <p class="pb-8 text-h4-24 text-white md:pb-0">
             DEC. 12 - 13｜瓶蓋工廠台北製造所
           </p>

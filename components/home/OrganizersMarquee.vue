@@ -58,14 +58,12 @@ const ORGANIZERS = [
         <NuxtImg
           :src="organizer.logo"
           :alt="organizer.name"
-          format="webp"
           width="150"
           class="aspect-[5/4] w-[96px] transition-opacity duration-300 sm:w-[120px] lg:w-[150px] lg:group-hover:opacity-0"
         />
         <NuxtImg
           :src="organizer.hoverLogo"
           :alt="organizer.name"
-          format="webp"
           width="150"
           class="absolute inset-0 aspect-[5/4] w-[96px] opacity-0 transition-opacity duration-300 sm:w-[120px] lg:w-[150px] lg:group-hover:opacity-100"
         />

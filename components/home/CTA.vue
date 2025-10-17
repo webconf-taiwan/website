@@ -117,7 +117,6 @@ watch(isTablet, (newValue) => {
             <NuxtImg
               src="/images/CTATitleLogo.webp"
               alt="2025 webconf CTA"
-              format="webp"
               width="409"
               height="60"
             />
