@@ -257,162 +257,184 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['AI', '產業應用'],
   },
 ]
+
+const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 </script>
 
 <template>
-  <div>
-    <section class="flex-1">
-      <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
-        <!-- 浮動方框 -->
-        <ShareLayoutBlocks />
-        <!-- 桌機使用 -->
-        <svg
-          class="absolute inset-0 hidden size-full sm:block"
-          viewBox="0 0 1440 400"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <!-- 右側斜線 -->
-          <g>
-            <!-- 靜態軌道 -->
-            <line
-              x1="995"
-              y1="0"
-              x2="1410"
-              y2="400"
-              stroke="#E6E6E6"
-              stroke-width="0.5"
-            />
-          </g>
+  <section class="flex-1">
+    <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
+      <!-- 浮動方框 -->
+      <ShareLayoutBlocks />
+      <!-- 桌機使用 -->
+      <svg
+        class="absolute inset-0 hidden size-full sm:block"
+        viewBox="0 0 1440 400"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <!-- 右側斜線 -->
+        <g>
+          <!-- 靜態軌道 -->
+          <line
+            x1="995"
+            y1="0"
+            x2="1410"
+            y2="400"
+            stroke="#E6E6E6"
+            stroke-width="0.5"
+          />
+        </g>
 
-          <!-- 左側斜線 -->
-          <g>
-            <!-- 靜態軌道 -->
-            <line
-              x1="0"
-              y1="55"
-              x2="345"
-              y2="400"
-              stroke="#E6E6E6"
-              stroke-width="0.5"
-            />
-          </g>
-        </svg>
-        <!-- 平板以下使用 -->
-        <svg
-          class="absolute inset-0 block size-full sm:hidden"
-          viewBox="0 0 360 320"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <!-- 右側斜線 -->
-          <g>
-            <!-- 靜態軌道 -->
-            <line
-              x1="185"
-              y1="0"
-              x2="525"
-              y2="320"
-              stroke="#E6E6E6"
-              stroke-width="0.5"
-            />
-          </g>
-        </svg>
-        <div
-          class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
-        >
-          <h1 class="text-h1-96 text-white">
-            AGENDA
-          </h1>
-          <div class="flex w-full flex-col gap-3 lg:w-fit">
-            <span
-              class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
-            >議程頁</span>
-            <div class="order-[-1] flex items-center lg:order-1">
-              <span class="size-3 bg-white"></span>
-              <span class="h-[1px] flex-1 bg-white"></span>
-              <span class="size-3 bg-white"></span>
-            </div>
+        <!-- 左側斜線 -->
+        <g>
+          <!-- 靜態軌道 -->
+          <line
+            x1="0"
+            y1="55"
+            x2="345"
+            y2="400"
+            stroke="#E6E6E6"
+            stroke-width="0.5"
+          />
+        </g>
+      </svg>
+      <!-- 平板以下使用 -->
+      <svg
+        class="absolute inset-0 block size-full sm:hidden"
+        viewBox="0 0 360 320"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <!-- 右側斜線 -->
+        <g>
+          <!-- 靜態軌道 -->
+          <line
+            x1="185"
+            y1="0"
+            x2="525"
+            y2="320"
+            stroke="#E6E6E6"
+            stroke-width="0.5"
+          />
+        </g>
+      </svg>
+      <div
+        class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
+      >
+        <h1 class="text-h1-96 text-white">
+          AGENDA
+        </h1>
+        <div class="flex w-full flex-col gap-3 lg:w-fit">
+          <span
+            class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
+          >議程頁</span>
+          <div class="order-[-1] flex items-center lg:order-1">
+            <span class="size-3 bg-white"></span>
+            <span class="h-[1px] flex-1 bg-white"></span>
+            <span class="size-3 bg-white"></span>
           </div>
         </div>
-        <div
-          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-          class="absolute bottom-0 left-0 z-20 h-[1px] w-full bg-webconf-gray"
-        ></div>
       </div>
-    </section>
+      <div
+        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+        class="absolute bottom-0 left-0 z-20 h-[1px] w-full bg-webconf-gray"
+      ></div>
+    </div>
+  </section>
 
-    <main class="text-webconf-gray">
-      <!-- 活動日期 -->
-      <section
-        class="sticky top-[55px] z-10 border-b border-webconf-gray bg-black"
-      >
-        <div
-          class="container px-5 py-4 text-h4-24 sm:px-8 sm:py-5 lg:px-20 lg:py-6"
-        >
-          Dec. 12-13
+  <!-- 活動日期、廳號、篩選器 -->
+  <main class="text-webconf-gray">
+    <section
+      class="sticky top-[54px] z-10 border-b border-webconf-gray bg-black"
+    >
+      <div class="flex-center py-[6px] text-h4-24 lg:py-3">
+        <!-- 活動日期篩選 -->
+        <div class="flex items-center justify-end gap-2 lg:w-[260px]">
+          <span>DEC. </span>
+
+          <div
+            v-cursor="{
+              scale: 0.5,
+              duration: 0.5,
+              backgroundColor: 'rgba(0, 46, 255, 0.9)',
+            }"
+            class="flex h-10 w-[213px] border border-webconf-blue lg:h-[46px] lg:w-[150px]"
+          >
+            <button
+              type="button"
+              class="flex-center w-full duration-300"
+              :class="
+                selectedDate === '12'
+                  ? 'bg-webconf-blue text-white'
+                  : 'text-webconf-gray'
+              "
+              aria-label="篩選 12 月 12 日的議程"
+              @click="selectedDate = '12'"
+            >
+              12
+            </button>
+            <button
+              type="button"
+              class="flex-center w-full duration-300"
+              :class="
+                selectedDate === '13'
+                  ? 'bg-webconf-blue text-white'
+                  : 'text-webconf-gray'
+              "
+              aria-label="篩選 12 月 13 日的議程"
+              @click="selectedDate = '13'"
+            >
+              13
+            </button>
+          </div>
         </div>
 
-        <div
-          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-          class="relative z-[100]"
-        ></div>
-      </section>
-
-      <!-- 議程列表 -->
-      <section class="container sm:px-8 lg:px-20">
-        <ul
-          class="border-x-0 border-x-webconf-gray/50 bg-black sm:border-x-[0.5px]"
+        <button
+          type="button"
+          class="flex-center ml-3 size-10 border border-webconf-blue duration-300 hover:bg-webconf-blue lg:hidden"
+          aria-label="開啟議程類型篩選選單"
         >
-          <li
-            v-for="item in AGENDA_LIST"
-            :key="item.topic"
-            class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 sm:flex-row sm:justify-between sm:px-10 sm:pb-[68px] sm:pt-8"
-          >
-            <!-- 議程主題 -->
-            <div class="sm:flex-[3] lg:flex-[5]">
-              <h2 class="text-h3-40 leading-[1.1]">
-                {{ item.topic }}
-              </h2>
-              <div class="mt-4 flex flex-wrap gap-3 sm:mt-5">
-                <span
-                  v-for="tag in item.tags"
-                  :key="tag + item.topic"
-                  class="gap-3 bg-webconf-blue px-4 py-[6px] text-xs font-semibold text-webconf-gray"
-                >
-                  {{ tag }}
-                </span>
-              </div>
-            </div>
+          <img
+            src="/images/icon/filter.svg"
+            alt="議程類型篩選"
+          />
+        </button>
+      </div>
 
-            <!-- 講者資訊 -->
-            <ul
-              class="flex w-full gap-6 sm:flex-1 sm:flex-col sm:self-end lg:min-w-[200px]"
-            >
-              <li
-                v-for="speaker in item.speakerInfo"
-                :key="speaker.name"
-                class="w-full"
-              >
-                <h3 class="text-h4-24 leading-[1.1]">
-                  {{ speaker.name }}
-                </h3>
-                <p
-                  class="mt-2 text-xs"
-                  v-html="speaker.title"
-                ></p>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </section>
-    </main>
-
-    <!-- 提示 -->
-    <section class="py-[120px] text-center text-webconf-gray">
-      <p class="text-h5-20">
-        \ 更多精彩議程即將釋出 /
-      </p>
+      <div
+        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+        class="relative z-[100]"
+      ></div>
     </section>
-  </div>
+
+    <!-- 議程列表 -->
+    <section class="container sm:px-8 lg:px-20">
+      <ul
+        class="border-x-0 border-x-webconf-gray/50 bg-black sm:border-x-[0.5px]"
+      >
+        <li
+          v-for="item in AGENDA_LIST"
+          :key="item.topic"
+          class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 sm:flex-row sm:justify-between sm:px-10 sm:pb-[68px] sm:pt-8"
+        >
+          <!-- 議程主題 -->
+          <div class="sm:flex-[3] lg:flex-[5]">
+            <h2 class="text-h3-40 leading-[1.1]">
+              {{ item.topic }}
+            </h2>
+            <div class="mt-4 flex flex-wrap gap-3 sm:mt-5">
+              <span
+                v-for="tag in item.tags"
+                :key="tag + item.topic"
+                class="gap-3 bg-webconf-blue px-4 py-[6px] text-xs font-semibold text-webconf-gray"
+              >
+                {{ tag }}
+              </span>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </section>
+  </main>
 </template>
 
 <style scoped>

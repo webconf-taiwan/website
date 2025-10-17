@@ -101,6 +101,7 @@ export default antfu(
             'agenda-section',
             'sponsors-img-filter',
             'speaker-detail-header',
+            'flex-center',
           ], // 允許自定義的 CSS 類名
         },
       ],
