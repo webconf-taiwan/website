@@ -83,6 +83,9 @@ export default antfu(
           whitelist: [
             'main-body',
             'pic',
+            'txt',
+            'info',
+            'agentda',
             'main-footer',
             'gradient-dots-card',
             'floating-tag',
@@ -97,6 +100,7 @@ export default antfu(
             'sponsors-section',
             'agenda-section',
             'sponsors-img-filter',
+            'speaker-detail-header',
           ], // 允許自定義的 CSS 類名
         },
       ],
