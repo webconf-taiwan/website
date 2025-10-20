@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const router = useRouter()
+const route = useRoute()
+
 useSeoMeta({
   title: '議程資訊',
 })
@@ -257,6 +260,27 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['AI', '產業應用'],
   },
 ]
+
+const isShowPopover = ref(false)
+const { isPublishFeature } = useGlobalState()
+
+function handlePopoverShow(topic: string) {
+  isShowPopover.value = true
+
+  router.push({
+    query: { ...route.query, speakerId: topic },
+  })
+}
+
+watch(
+  () => route.query.speakerId,
+  (newVal) => {
+    if (newVal && typeof newVal === 'string' && isPublishFeature.value) {
+      handlePopoverShow(newVal)
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -366,6 +390,7 @@ const AGENDA_LIST: AgendaItem[] = [
             v-for="item in AGENDA_LIST"
             :key="item.topic"
             class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 sm:flex-row sm:justify-between sm:px-10 sm:pb-[68px] sm:pt-8"
+            @click="handlePopoverShow(item.topic)"
           >
             <!-- 議程主題 -->
             <div class="sm:flex-[3] lg:flex-[5]">
@@ -412,6 +437,12 @@ const AGENDA_LIST: AgendaItem[] = [
         \ 更多精彩議程即將釋出 /
       </p>
     </section>
+
+    <!-- 講者資訊彈跳視窗 -->
+    <!-- <AgentdaSpeakersPopver
+      v-if="isShowPopover"
+      @close="isShowPopover = false"
+    /> -->
   </div>
 </template>
 

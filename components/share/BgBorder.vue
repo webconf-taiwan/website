@@ -166,10 +166,10 @@ function initializeLayersSync(p: p5) {
   const { topGrid, bottomGrid } = defaultColors
 
   // 繪製底層藍色網格（完全不透明）
-  drawGrid(p, bottomLayer, p.color(bottomGrid), 1.0, 1.5)
+  drawGrid(p, bottomLayer, p.color(bottomGrid), 1, 1)
 
   // 繪製上層灰色網格（半透明）
-  drawGrid(p, topLayer, p.color(topGrid), 0.5, 0.5)
+  drawGrid(p, topLayer, p.color(topGrid), 0.3, 1)
 }
 
 // p5 網格背景程式
@@ -449,7 +449,7 @@ onUnmounted(() => {
     <!-- 網格層 (最底層) -->
     <div
       ref="gridContainer"
-      class="fixed inset-0 z-[1] size-full"
+      class="fixed inset-0 z-10 size-full"
     ></div>
 
     <!-- 浮動方塊特效 -->
@@ -458,7 +458,7 @@ onUnmounted(() => {
     <!-- 內容層 (圖片等) -->
     <div
       ref="contentContainer"
-      class="contentContainer relative z-[20] flex min-h-screen flex-col overflow-x-clip"
+      class="contentContainer relative z-20 flex min-h-screen flex-col overflow-x-clip"
     >
       <slot></slot>
     </div>
@@ -467,7 +467,7 @@ onUnmounted(() => {
     <Teleport to="body">
       <div
         ref="boxContainer"
-        class="pointer-events-none fixed inset-0 z-[50] size-full"
+        class="pointer-events-none fixed inset-0 z-50 size-full"
       ></div>
     </Teleport>
   </div>
