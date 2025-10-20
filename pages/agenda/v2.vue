@@ -341,57 +341,32 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
     </div>
   </section>
 
-  <!-- 活動日期、廳號、篩選器 -->
   <main class="text-webconf-gray">
     <section
       class="sticky top-[54px] z-10 border-b border-webconf-gray bg-black"
     >
       <div class="flex-center py-[6px] text-h4-24 lg:py-3">
-        <!-- 活動日期篩選 -->
-        <div class="flex items-center justify-end gap-2 lg:w-[260px]">
-          <span>DEC. </span>
+        <!-- 日期篩選 -->
+        <AgendaDateToggler v-model="selectedDate" />
 
-          <div
-            v-cursor="{
-              scale: 0.5,
-              duration: 0.5,
-              backgroundColor: 'rgba(0, 46, 255, 0.9)',
-            }"
-            class="flex h-10 w-[213px] border border-webconf-blue lg:h-[46px] lg:w-[150px]"
-          >
-            <button
-              type="button"
-              class="flex-center w-full duration-300"
-              :class="
-                selectedDate === '12'
-                  ? 'bg-webconf-blue text-white'
-                  : 'text-webconf-gray'
-              "
-              aria-label="篩選 12 月 12 日的議程"
-              @click="selectedDate = '12'"
-            >
-              12
-            </button>
-            <button
-              type="button"
-              class="flex-center w-full duration-300"
-              :class="
-                selectedDate === '13'
-                  ? 'bg-webconf-blue text-white'
-                  : 'text-webconf-gray'
-              "
-              aria-label="篩選 12 月 13 日的議程"
-              @click="selectedDate = '13'"
-            >
-              13
-            </button>
-          </div>
-        </div>
-
+        <!-- 議程類型篩選 -->
         <AgendaTopicFilter
           size="sm"
           class="ml-3 lg:hidden"
         />
+
+        <!-- 廳號 -->
+        <div class="hidden grow text-center text-h4-24 lg:flex">
+          <div class="grow">
+            M 棟
+          </div>
+          <div class="grow">
+            F 棟
+          </div>
+          <div class="grow">
+            A2 棟
+          </div>
+        </div>
       </div>
 
       <div
