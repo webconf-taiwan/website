@@ -388,16 +388,10 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
           </div>
         </div>
 
-        <button
-          type="button"
-          class="flex-center ml-3 size-10 border border-webconf-blue duration-300 hover:bg-webconf-blue lg:hidden"
-          aria-label="開啟議程類型篩選選單"
-        >
-          <img
-            src="/images/icon/filter.svg"
-            alt="議程類型篩選"
-          />
-        </button>
+        <AgendaTopicFilter
+          size="sm"
+          class="ml-3 lg:hidden"
+        />
       </div>
 
       <div
