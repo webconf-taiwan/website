@@ -20,24 +20,32 @@ const scaleY = computed(() => height.value / 28)
 <template>
   <NuxtLink
     ref="cardRef"
-    class="group relative col-span-1 overflow-hidden bg-black transition-colors duration-300 xl:h-[285px] xl:px-10 xl:py-8"
+    class="group relative col-span-1 overflow-hidden border-b border-webconf-gray bg-black transition-colors duration-300 xl:h-[285px] xl:px-10 xl:py-8"
     to="/agenda/v2"
   >
     <!-- 縮放特效方塊 -->
     <div
-      class="absolute left-0 top-0 size-7 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))]"
+      v-if="data.title !== '同步聯播'"
+      class="absolute left-0 top-0 z-0 size-7 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))]"
       :style="{
         '--scale-x': scaleX,
         '--scale-y': scaleY,
       }"
     ></div>
 
+    <h2
+      v-if="data.title === '同步聯播'"
+      class="flex-center h-full text-h4-24"
+    >
+      {{ data.title }}
+    </h2>
+
     <!-- 議程簡介 -->
     <div
       v-if="data.title !== '同步聯播'"
-      class="flex h-full flex-col gap-4"
+      class="relative z-10 flex h-full flex-col gap-4"
     >
-      <h2 class="relative z-10 text-h4-24">
+      <h2 class="text-h4-24">
         {{ data.title }}
       </h2>
 

@@ -18,9 +18,10 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
     day: '12',
     startTime: '09:00',
+    endTime: '09:50',
   },
   {
-    title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
+    title: '從冷知識到漏洞：你不懂的 Web,駭客懂',
     speakerInfo: [
       {
         name: '胡立',
@@ -29,7 +30,8 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['Frontend', 'Backend', 'Security'],
     day: '12',
-    startTime: '10:00',
+    startTime: '09:00',
+    endTime: '09:50',
   },
   {
     title: '程式碼與尿布：媽媽工程師的生存指南',
@@ -41,11 +43,12 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['Frontend'],
     day: '12',
-    startTime: '11:00',
+    startTime: '09:00',
+    endTime: '09:50',
   },
-  // 12/12 10:05
+  // 12/12 10:00
   {
-    title: '大 AI 時代，工程師的成長之路 / 從 Junior 到 Staff',
+    title: '大 AI 時代,工程師的成長之路 / 從 Junior 到 Staff',
     speakerInfo: [
       {
         name: '奶綠茶',
@@ -54,7 +57,8 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['Frontend'],
     day: '12',
-    startTime: '10:05',
+    startTime: '10:00',
+    endTime: '10:50',
   },
   {
     title: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
@@ -66,7 +70,8 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['AI', '產品思維', '團隊管理', 'Agile'],
     day: '12',
-    startTime: '10:10',
+    startTime: '10:00',
+    endTime: '10:50',
   },
   {
     title: 'AI 時代下， Product Sense 就是你的秘密武器',
@@ -82,7 +87,8 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['AI', '設計實務', '產品思維'],
     day: '12',
-    startTime: '10:15',
+    startTime: '10:00',
+    endTime: '10:50',
   },
   // 12/12 11:00
   {
@@ -96,6 +102,7 @@ const AGENDA_LIST: AgendaItem[] = [
     tags: ['AI', '軟體設計', '產品思維'],
     day: '12',
     startTime: '11:00',
+    endTime: '11:50',
   },
   {
     title: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
@@ -107,7 +114,8 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['產品思維', '產業應用'],
     day: '12',
-    startTime: '11:05',
+    startTime: '11:00',
+    endTime: '11:50',
   },
   {
     title: '產品 OKR 的訂立與 Roadmap 展開',
@@ -119,9 +127,10 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['產品思維', '團隊管理'],
     day: '12',
-    startTime: '11:10',
+    startTime: '11:00',
+    endTime: '11:50',
   },
-  // 12/12 13:30
+  // 12/12 13:00
   {
     title: 'React 優化實戰分析 / 掌握 React 進階技術 x 底層思維',
     speakerInfo: [
@@ -132,7 +141,8 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['Frontend'],
     day: '12',
-    startTime: '13:30',
+    startTime: '13:00',
+    endTime: '13:50',
   },
   {
     title: '願 Web API 原力與你同在',
@@ -144,7 +154,8 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['AI', 'Frontend'],
     day: '12',
-    startTime: '13:30',
+    startTime: '13:00',
+    endTime: '13:50',
   },
   {
     title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
@@ -156,9 +167,10 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['設計實務', '團隊管理'],
     day: '12',
-    startTime: '13:30',
+    startTime: '13:00',
+    endTime: '13:50',
   },
-  // 12/12 14:25
+  // 12/12 14:00
   {
     title: '以打詐為例，服務設計如何讓公共數位服務有感',
     speakerInfo: [
@@ -169,30 +181,50 @@ const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['設計實務', '產品思維'],
     day: '12',
-    startTime: '14:25',
+    startTime: '14:00',
+    endTime: '14:50',
   },
   {
     title: '同步聯播',
     day: '12',
-    startTime: '14:25',
+    startTime: '14:00',
+    endTime: '14:50',
   },
   {
     title: '同步聯播',
     day: '12',
-    startTime: '14:25',
+    startTime: '14:00',
+    endTime: '14:50',
   },
 ]
 
+// 將議程按時間分組
+function groupAgendasByTime(agendas: AgendaItem[]) {
+  return agendas.reduce(
+    (acc, agenda) => {
+      const time = agenda.startTime
+      if (!acc[time]) {
+        acc[time] = []
+      }
+      acc[time].push(agenda)
+      return acc
+    },
+    {} as Record<string, AgendaItem[]>,
+  )
+}
+
 const agendasAtDec12Morning = computed(() => {
-  return AGENDA_LIST.filter(
+  const morningAgendas = AGENDA_LIST.filter(
     item => item.day === '12' && item.startTime < '12:00',
   )
+  return groupAgendasByTime(morningAgendas)
 })
 
 const agendasAtDec12Afternoon = computed(() => {
-  return AGENDA_LIST.filter(
+  const afternoonAgendas = AGENDA_LIST.filter(
     item => item.day === '12' && item.startTime >= '12:00',
   )
+  return groupAgendasByTime(afternoonAgendas)
 })
 
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
@@ -334,23 +366,37 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
         class="grid grow grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
       >
         <!-- 上午議程 -->
-        <AgendaCard
-          v-for="(agenda, index) in agendasAtDec12Morning"
-          :key="`${agenda.startTime}-${index}`"
-          :data="agenda"
-        />
+        <div
+          v-for="(agendas, time) in agendasAtDec12Morning"
+          :key="time"
+          class="col-span-3 grid grid-cols-3 gap-[0.5px]"
+        >
+          <AgendaCard
+            v-for="(agenda, index) in agendas"
+            :key="`${time}-${index}`"
+            :data="agenda"
+          />
+        </div>
 
         <!-- 中午休息 -->
-        <div class="col-span-3 bg-black py-14 text-center text-h4-24">
+        <div
+          class="col-span-3 border-b border-webconf-gray bg-black py-14 text-center text-h4-24"
+        >
           午休
         </div>
 
         <!-- 下午議程 -->
-        <AgendaCard
-          v-for="(agenda, index) in agendasAtDec12Afternoon"
-          :key="`${agenda.startTime}-${index}`"
-          :data="agenda"
-        />
+        <div
+          v-for="(agendas, time) in agendasAtDec12Afternoon"
+          :key="time"
+          class="col-span-3 grid grid-cols-3 gap-[0.5px]"
+        >
+          <AgendaCard
+            v-for="(agenda, index) in agendas"
+            :key="`${time}-${index}`"
+            :data="agenda"
+          />
+        </div>
       </div>
     </section>
   </main>
