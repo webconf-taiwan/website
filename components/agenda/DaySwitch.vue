@@ -12,7 +12,6 @@ const selectedDate = defineModel<string>({ required: true })
       v-cursor="{
         scale: 0.5,
         duration: 0.5,
-        backgroundColor: 'rgba(0, 46, 255, 0.9)',
       }"
       class="flex h-10 w-[213px] border border-webconf-blue lg:h-[46px] lg:w-[150px]"
     >
