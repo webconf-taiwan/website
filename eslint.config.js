@@ -102,6 +102,7 @@ export default antfu(
             'sponsors-img-filter',
             'speaker-detail-header',
             'flex-center',
+            'topic-filter-title',
           ], // 允許自定義的 CSS 類名
         },
       ],

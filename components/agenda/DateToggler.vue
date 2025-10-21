@@ -3,7 +3,9 @@ const selectedDate = defineModel<string>({ required: true })
 </script>
 
 <template>
-  <div class="flex items-center justify-end gap-2 lg:ml-4 2xl:w-[260px]">
+  <div
+    class="flex items-center justify-end gap-2 lg:w-[228px] lg:pl-4 2xl:w-[260px] 2xl:pl-12"
+  >
     <span>DEC. </span>
 
     <div
