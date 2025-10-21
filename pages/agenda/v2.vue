@@ -3,260 +3,260 @@ useSeoMeta({
   title: '議程資訊',
 })
 
-type AgendaTag
-  = | 'AI'
-    | 'Frontend'
-    | 'Backend'
-    | 'Security'
-    | '軟體設計'
-    | '設計實務'
-    | '產品思維'
-    | '產業應用'
-    | '團隊管理'
-    | 'Agile'
+// type AgendaTag
+//   = | 'AI'
+//     | 'Frontend'
+//     | 'Backend'
+//     | 'Security'
+//     | '軟體設計'
+//     | '設計實務'
+//     | '產品思維'
+//     | '產業應用'
+//     | '團隊管理'
+//     | 'Agile'
 
-interface SpeakerInfo {
-  name: string
-  title: string
-}
+// interface SpeakerInfo {
+//   name: string
+//   title: string
+// }
 
-interface AgendaItem {
-  topic: string
-  speakerInfo: SpeakerInfo[]
-  tags: AgendaTag[]
-}
+// interface AgendaItem {
+//   topic: string
+//   speakerInfo: SpeakerInfo[]
+//   tags: AgendaTag[]
+// }
 
-const AGENDA_LIST: AgendaItem[] = [
-  {
-    topic: 'B2B 服務的 AI Agent 產品設計原則',
-    speakerInfo: [
-      {
-        name: 'Happy',
-        title: '91APP / 產品長',
-      },
-    ],
-    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
-  },
-  {
-    topic: '從冷知識到漏洞：你不懂的 Web，駭客懂',
-    speakerInfo: [
-      {
-        name: '胡立',
-        title: `技術部落格 Huli's blog / 站長`,
-      },
-    ],
-    tags: ['Frontend', 'Backend', 'Security'],
-  },
-  {
-    topic: '程式碼與尿布：媽媽工程師的生存指南',
-    speakerInfo: [
-      {
-        name: 'Hannah',
-        title: 'Remote / Frontend ',
-      },
-    ],
-    tags: ['Frontend'],
-  },
-  {
-    topic: '大 AI 時代，工程師的成長之路 / 從 Junior 到 Staff',
-    speakerInfo: [
-      {
-        name: '奶綠茶',
-        title: 'PositiveGrid Staff Frontend Engineer',
-      },
-    ],
-    tags: ['Frontend'],
-  },
-  {
-    topic: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
-    speakerInfo: [
-      {
-        name: 'Peter',
-        title: '漸強實驗室 / Product Lead',
-      },
-    ],
-    tags: ['AI', '產品思維', '團隊管理', 'Agile'],
-  },
-  {
-    topic: 'AI 時代下， Product Sense 就是你的秘密武器',
-    speakerInfo: [
-      {
-        name: 'Chris',
-        title: 'PicCollage 拼貼趣 <br /> / 資深產品設計經理',
-      },
-      {
-        name: 'Tiyna',
-        title: 'PicCollage 拼貼趣 <br /> / 資深產品設計師',
-      },
-    ],
-    tags: ['AI', '設計實務', '產品思維'],
-  },
-  {
-    topic: '軟體開發邪教的救贖：AI 時代更應掌握的 TDD 技能',
-    speakerInfo: [
-      {
-        name: 'Kuma Syu',
-        title: '緯雲有限公司 / R&D Manager',
-      },
-    ],
-    tags: ['AI', '軟體設計', '產品思維'],
-  },
-  {
-    topic: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
-    speakerInfo: [
-      {
-        name: 'Max Chen',
-        title: '對稱資訊股份有限公司 / 面試趣 CEO',
-      },
-    ],
-    tags: ['產品思維', '產業應用'],
-  },
-  {
-    topic: '產品 OKR 的訂立與 Roadmap 展開',
-    speakerInfo: [
-      {
-        name: '曾友志',
-        title: '下午先生有限公司 / 資深產品顧問',
-      },
-    ],
-    tags: ['產品思維', '團隊管理'],
-  },
-  {
-    topic: 'React 優化實戰分析 / 掌握 React 進階技術 x 底層思維',
-    speakerInfo: [
-      {
-        name: 'ThisWeb (Kun)',
-        title: 'ThisWeb / 前端工程師',
-      },
-    ],
-    tags: ['Frontend'],
-  },
-  {
-    topic: '願 Web API 原力與你同在',
-    speakerInfo: [
-      {
-        name: 'MUKI',
-        title: 'MUKI space* / 前端工程師',
-      },
-    ],
-    tags: ['AI', 'Frontend'],
-  },
-  {
-    topic: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
-    speakerInfo: [
-      {
-        name: 'Joey',
-        title: '引鹿創新體驗研究室  / UX 總監',
-      },
-    ],
-    tags: ['設計實務', '團隊管理'],
-  },
-  {
-    topic: '以打詐為例，服務設計如何讓公共數位服務有感',
-    speakerInfo: [
-      {
-        name: '卓致遠',
-        title: '致遠體驗設計 / 體驗總監',
-      },
-    ],
-    tags: ['設計實務', '產品思維'],
-  },
-  {
-    topic: '服務設計師的傳說：90% 的時間在讓設計發生',
-    speakerInfo: [
-      {
-        name: '郭心喻',
-        title:
-          'Government of Nova Scotia 加拿大新斯科舍省政府 <br /> / Senior Service Designer 資深服務設計師',
-      },
-    ],
-    tags: ['軟體設計', '設計實務', '產品思維', '產業應用'],
-  },
-  {
-    topic: '從設計到共識：悠識如何在每一次新專案裡，用溝通建立信任關係',
-    speakerInfo: [
-      {
-        name: '林星妤',
-        title: '悠識數位 / Senior Experience Designer',
-      },
-      {
-        name: '黃明硯',
-        title: '悠識數位 /  Experience Designer',
-      },
-    ],
-    tags: ['設計實務', '產品思維'],
-  },
-  {
-    topic: '從研究到上線：全流程設計與 AI 協作專案實戰',
-    speakerInfo: [
-      {
-        name: 'Niki Liu',
-        title: '新加坡商鈦坦科技 / Senior Product Designer',
-      },
-    ],
-    tags: ['AI', '設計實務', '產品思維'],
-  },
-  {
-    topic: '從使用者到工程師：AI 在企業怎麼落地？',
-    speakerInfo: [
-      {
-        name: 'Shirney Huang 黃琇琳',
-        title: 'Aiworks / CEO',
-      },
-    ],
-    tags: ['AI'],
-  },
-  {
-    topic: 'GenAI 時代下的測試三板斧',
-    speakerInfo: [
-      {
-        name: '柯仁傑',
-        title: 'Odd-e / Technical Coach',
-      },
-    ],
-    tags: ['軟體設計'],
-  },
-  {
-    topic: '培養十倍速 PM：從工具到習慣',
-    speakerInfo: [
-      {
-        name: '趙柏強',
-        title: 'Stable Progress / Growth Companion',
-      },
-    ],
-    tags: ['AI', '產品思維', '團隊管理', 'Agile'],
-  },
-  {
-    topic: '對微前端的美好想像',
-    speakerInfo: [
-      {
-        name: 'Eric Lee',
-        title: '前端輕鬆聊 / Senior Software Engineer',
-      },
-    ],
-    tags: ['Frontend', '軟體設計'],
-  },
-  {
-    topic: 'AI 時代下， 如何運用數據幫助產品發揮影響力',
-    speakerInfo: [
-      {
-        name: '姜乃文',
-        title: '天下雜誌集團 / 主任分析師',
-      },
-    ],
-    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
-  },
-  {
-    topic: '走在同業前面：國泰的雲端轉型洞察與啟示',
-    speakerInfo: [
-      {
-        name: '顏勝豪 Otto',
-        title: '國泰金控  / 協理',
-      },
-    ],
-    tags: ['AI', '產業應用'],
-  },
-]
+// const AGENDA_LIST: AgendaItem[] = [
+//   {
+//     topic: 'B2B 服務的 AI Agent 產品設計原則',
+//     speakerInfo: [
+//       {
+//         name: 'Happy',
+//         title: '91APP / 產品長',
+//       },
+//     ],
+//     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
+//   },
+//   {
+//     topic: '從冷知識到漏洞：你不懂的 Web，駭客懂',
+//     speakerInfo: [
+//       {
+//         name: '胡立',
+//         title: `技術部落格 Huli's blog / 站長`,
+//       },
+//     ],
+//     tags: ['Frontend', 'Backend', 'Security'],
+//   },
+//   {
+//     topic: '程式碼與尿布：媽媽工程師的生存指南',
+//     speakerInfo: [
+//       {
+//         name: 'Hannah',
+//         title: 'Remote / Frontend ',
+//       },
+//     ],
+//     tags: ['Frontend'],
+//   },
+//   {
+//     topic: '大 AI 時代，工程師的成長之路 / 從 Junior 到 Staff',
+//     speakerInfo: [
+//       {
+//         name: '奶綠茶',
+//         title: 'PositiveGrid Staff Frontend Engineer',
+//       },
+//     ],
+//     tags: ['Frontend'],
+//   },
+//   {
+//     topic: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
+//     speakerInfo: [
+//       {
+//         name: 'Peter',
+//         title: '漸強實驗室 / Product Lead',
+//       },
+//     ],
+//     tags: ['AI', '產品思維', '團隊管理', 'Agile'],
+//   },
+//   {
+//     topic: 'AI 時代下， Product Sense 就是你的秘密武器',
+//     speakerInfo: [
+//       {
+//         name: 'Chris',
+//         title: 'PicCollage 拼貼趣 <br /> / 資深產品設計經理',
+//       },
+//       {
+//         name: 'Tiyna',
+//         title: 'PicCollage 拼貼趣 <br /> / 資深產品設計師',
+//       },
+//     ],
+//     tags: ['AI', '設計實務', '產品思維'],
+//   },
+//   {
+//     topic: '軟體開發邪教的救贖：AI 時代更應掌握的 TDD 技能',
+//     speakerInfo: [
+//       {
+//         name: 'Kuma Syu',
+//         title: '緯雲有限公司 / R&D Manager',
+//       },
+//     ],
+//     tags: ['AI', '軟體設計', '產品思維'],
+//   },
+//   {
+//     topic: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
+//     speakerInfo: [
+//       {
+//         name: 'Max Chen',
+//         title: '對稱資訊股份有限公司 / 面試趣 CEO',
+//       },
+//     ],
+//     tags: ['產品思維', '產業應用'],
+//   },
+//   {
+//     topic: '產品 OKR 的訂立與 Roadmap 展開',
+//     speakerInfo: [
+//       {
+//         name: '曾友志',
+//         title: '下午先生有限公司 / 資深產品顧問',
+//       },
+//     ],
+//     tags: ['產品思維', '團隊管理'],
+//   },
+//   {
+//     topic: 'React 優化實戰分析 / 掌握 React 進階技術 x 底層思維',
+//     speakerInfo: [
+//       {
+//         name: 'ThisWeb (Kun)',
+//         title: 'ThisWeb / 前端工程師',
+//       },
+//     ],
+//     tags: ['Frontend'],
+//   },
+//   {
+//     topic: '願 Web API 原力與你同在',
+//     speakerInfo: [
+//       {
+//         name: 'MUKI',
+//         title: 'MUKI space* / 前端工程師',
+//       },
+//     ],
+//     tags: ['AI', 'Frontend'],
+//   },
+//   {
+//     topic: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
+//     speakerInfo: [
+//       {
+//         name: 'Joey',
+//         title: '引鹿創新體驗研究室  / UX 總監',
+//       },
+//     ],
+//     tags: ['設計實務', '團隊管理'],
+//   },
+//   {
+//     topic: '以打詐為例，服務設計如何讓公共數位服務有感',
+//     speakerInfo: [
+//       {
+//         name: '卓致遠',
+//         title: '致遠體驗設計 / 體驗總監',
+//       },
+//     ],
+//     tags: ['設計實務', '產品思維'],
+//   },
+//   {
+//     topic: '服務設計師的傳說：90% 的時間在讓設計發生',
+//     speakerInfo: [
+//       {
+//         name: '郭心喻',
+//         title:
+//           'Government of Nova Scotia 加拿大新斯科舍省政府 <br /> / Senior Service Designer 資深服務設計師',
+//       },
+//     ],
+//     tags: ['軟體設計', '設計實務', '產品思維', '產業應用'],
+//   },
+//   {
+//     topic: '從設計到共識：悠識如何在每一次新專案裡，用溝通建立信任關係',
+//     speakerInfo: [
+//       {
+//         name: '林星妤',
+//         title: '悠識數位 / Senior Experience Designer',
+//       },
+//       {
+//         name: '黃明硯',
+//         title: '悠識數位 /  Experience Designer',
+//       },
+//     ],
+//     tags: ['設計實務', '產品思維'],
+//   },
+//   {
+//     topic: '從研究到上線：全流程設計與 AI 協作專案實戰',
+//     speakerInfo: [
+//       {
+//         name: 'Niki Liu',
+//         title: '新加坡商鈦坦科技 / Senior Product Designer',
+//       },
+//     ],
+//     tags: ['AI', '設計實務', '產品思維'],
+//   },
+//   {
+//     topic: '從使用者到工程師：AI 在企業怎麼落地？',
+//     speakerInfo: [
+//       {
+//         name: 'Shirney Huang 黃琇琳',
+//         title: 'Aiworks / CEO',
+//       },
+//     ],
+//     tags: ['AI'],
+//   },
+//   {
+//     topic: 'GenAI 時代下的測試三板斧',
+//     speakerInfo: [
+//       {
+//         name: '柯仁傑',
+//         title: 'Odd-e / Technical Coach',
+//       },
+//     ],
+//     tags: ['軟體設計'],
+//   },
+//   {
+//     topic: '培養十倍速 PM：從工具到習慣',
+//     speakerInfo: [
+//       {
+//         name: '趙柏強',
+//         title: 'Stable Progress / Growth Companion',
+//       },
+//     ],
+//     tags: ['AI', '產品思維', '團隊管理', 'Agile'],
+//   },
+//   {
+//     topic: '對微前端的美好想像',
+//     speakerInfo: [
+//       {
+//         name: 'Eric Lee',
+//         title: '前端輕鬆聊 / Senior Software Engineer',
+//       },
+//     ],
+//     tags: ['Frontend', '軟體設計'],
+//   },
+//   {
+//     topic: 'AI 時代下， 如何運用數據幫助產品發揮影響力',
+//     speakerInfo: [
+//       {
+//         name: '姜乃文',
+//         title: '天下雜誌集團 / 主任分析師',
+//       },
+//     ],
+//     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
+//   },
+//   {
+//     topic: '走在同業前面：國泰的雲端轉型洞察與啟示',
+//     speakerInfo: [
+//       {
+//         name: '顏勝豪 Otto',
+//         title: '國泰金控  / 協理',
+//       },
+//     ],
+//     tags: ['AI', '產業應用'],
+//   },
+// ]
 
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 </script>
@@ -376,32 +376,30 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
     </section>
 
     <!-- 議程列表 -->
-    <section class="container sm:px-8 lg:px-20">
-      <ul
-        class="border-x-0 border-x-webconf-gray/50 bg-black sm:border-x-[0.5px]"
+    <section class="flex">
+      <!-- 議程類型篩選清單 -->
+      <aside
+        class="hidden flex-col items-start gap-2 border-r border-webconf-gray bg-black p-4 lg:flex lg:w-[228px] lg:pl-4 2xl:w-[260px] 2xl:pl-12"
       >
-        <li
-          v-for="item in AGENDA_LIST"
-          :key="item.topic"
-          class="flex flex-col gap-10 border-b-[0.5px] border-b-webconf-gray px-5 pb-10 pt-6 sm:flex-row sm:justify-between sm:px-10 sm:pb-[68px] sm:pt-8"
+        <AgendaTopicFilter size="lg" />
+        <span
+          class="topic-filter-title inline-block text-left text-h4-60 text-webconf-blue"
         >
-          <!-- 議程主題 -->
-          <div class="sm:flex-[3] lg:flex-[5]">
-            <h2 class="text-h3-40 leading-[1.1]">
-              {{ item.topic }}
-            </h2>
-            <div class="mt-4 flex flex-wrap gap-3 sm:mt-5">
-              <span
-                v-for="tag in item.tags"
-                :key="tag + item.topic"
-                class="gap-3 bg-webconf-blue px-4 py-[6px] text-xs font-semibold text-webconf-gray"
-              >
-                {{ tag }}
-              </span>
-            </div>
-          </div>
-        </li>
-      </ul>
+          FILTER
+        </span>
+      </aside>
+
+      <div class="flex grow bg-black">
+        <div class="flex-1 lg:w-[228px]">
+          議程1
+        </div>
+        <div class="flex-1 lg:w-[228px]">
+          議程2
+        </div>
+        <div class="flex-1 lg:w-[228px]">
+          議程3
+        </div>
+      </div>
     </section>
   </main>
 </template>
@@ -418,5 +416,10 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
     background-position: center;
     background-size: cover;
   }
+}
+
+.topic-filter-title {
+  writing-mode: vertical-lr;
+  transform: translateX(-4px);
 }
 </style>
