@@ -24,4 +24,5 @@ export interface AgendaItem {
   tags?: AgendaTag[]
   day: '12' | '13'
   startTime: string
+  endTime?: string
 }
