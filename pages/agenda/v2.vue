@@ -231,175 +231,201 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 </script>
 
 <template>
-  <section class="flex-1">
-    <div class="agenda-section relative h-80 text-webconf-gray xl:h-400">
-      <!-- 浮動方框 -->
-      <ShareLayoutBlocks />
-      <!-- 桌機使用 -->
-      <svg
-        class="absolute inset-0 hidden size-full sm:block"
-        viewBox="0 0 1440 400"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <!-- 右側斜線 -->
-        <g>
-          <!-- 靜態軌道 -->
-          <line
-            x1="995"
-            y1="0"
-            x2="1410"
-            y2="400"
-            stroke="#E6E6E6"
-            stroke-width="0.5"
-          />
-        </g>
+  <div>
+    <section class="flex-1">
+      <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
+        <!-- 浮動方框 -->
+        <ShareLayoutBlocks />
+        <!-- 桌機使用 -->
+        <svg
+          class="absolute inset-0 hidden size-full sm:block"
+          viewBox="0 0 1440 400"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <!-- 右側斜線 -->
+          <g>
+            <!-- 靜態軌道 -->
+            <line
+              x1="995"
+              y1="0"
+              x2="1410"
+              y2="400"
+              stroke="#E6E6E6"
+              stroke-width="0.5"
+            />
+          </g>
 
-        <!-- 左側斜線 -->
-        <g>
-          <!-- 靜態軌道 -->
-          <line
-            x1="0"
-            y1="55"
-            x2="345"
-            y2="400"
-            stroke="#E6E6E6"
-            stroke-width="0.5"
-          />
-        </g>
-      </svg>
-      <!-- 平板以下使用 -->
-      <svg
-        class="absolute inset-0 block size-full sm:hidden"
-        viewBox="0 0 360 320"
-        preserveAspectRatio="xMidYMid slice"
+          <!-- 左側斜線 -->
+          <g>
+            <!-- 靜態軌道 -->
+            <line
+              x1="0"
+              y1="55"
+              x2="345"
+              y2="400"
+              stroke="#E6E6E6"
+              stroke-width="0.5"
+            />
+          </g>
+        </svg>
+        <!-- 平板以下使用 -->
+        <svg
+          class="absolute inset-0 block size-full sm:hidden"
+          viewBox="0 0 360 320"
+          preserveAspectRatio="xMidYMid slice"
+        >
+          <!-- 右側斜線 -->
+          <g>
+            <!-- 靜態軌道 -->
+            <line
+              x1="185"
+              y1="0"
+              x2="525"
+              y2="320"
+              stroke="#E6E6E6"
+              stroke-width="0.5"
+            />
+          </g>
+        </svg>
+        <div
+          class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
+        >
+          <h1 class="text-h1-96 text-white">
+            AGENDA
+          </h1>
+          <div class="flex w-full flex-col gap-3 lg:w-fit">
+            <span
+              class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
+            >議程頁</span>
+            <div class="order-[-1] flex items-center lg:order-1">
+              <span class="size-3 bg-white"></span>
+              <span class="h-[1px] flex-1 bg-white"></span>
+              <span class="size-3 bg-white"></span>
+            </div>
+          </div>
+        </div>
+        <div
+          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+          class="absolute bottom-0 left-0 z-30 h-[1px] w-full bg-webconf-gray"
+        ></div>
+      </div>
+    </section>
+
+    <main class="text-webconf-gray">
+      <section
+        class="sticky top-[54px] z-10 border-b border-webconf-gray bg-black"
       >
-        <!-- 右側斜線 -->
-        <g>
-          <!-- 靜態軌道 -->
-          <line
-            x1="185"
-            y1="0"
-            x2="525"
-            y2="320"
-            stroke="#E6E6E6"
-            stroke-width="0.5"
+        <div class="flex-center py-[6px] text-h4-24 xl:py-3">
+          <!-- 日期篩選 -->
+          <AgendaDaySwitch v-model="selectedDate" />
+
+          <!-- 議程類型篩選 -->
+          <AgendaTagFilter
+            size="sm"
+            class="ml-3 xl:hidden"
           />
-        </g>
-      </svg>
-      <div
-        class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] xl:top-[50%] xl:w-full xl:flex-row xl:items-end"
-      >
-        <h1 class="text-h1-96 text-white">
-          AGENDA
-        </h1>
-        <div class="flex w-full flex-col gap-3 xl:w-fit">
+
+          <!-- 廳號 -->
+          <div
+            class="hidden grow text-center text-h4-24 xl:grid xl:grid-cols-3"
+          >
+            <div class="col-span-1">
+              M 棟
+            </div>
+            <div class="col-span-1">
+              F 棟
+            </div>
+            <div class="col-span-1">
+              A2 棟
+            </div>
+          </div>
+        </div>
+
+        <div
+          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+          class="relative z-30"
+        ></div>
+      </section>
+
+      <!-- 議程列表 -->
+      <section class="flex">
+        <!-- 議程類型篩選清單 -->
+        <aside
+          class="hidden shrink-0 flex-col items-start gap-2 border-r border-webconf-gray bg-black p-4 xl:flex xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
+        >
+          <AgendaTagFilter size="lg" />
           <span
-            class="inline-block px-0 text-center text-h4-24 xl:pl-[150px] xl:pr-10"
-          >議程頁</span>
-          <div class="order-[-1] flex items-center xl:order-1">
-            <span class="size-3 bg-white"></span>
-            <span class="h-[1px] flex-1 bg-white"></span>
-            <span class="size-3 bg-white"></span>
-          </div>
-        </div>
-      </div>
-      <div
-        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-        class="absolute bottom-0 left-0 z-20 h-[1px] w-full bg-webconf-gray"
-      ></div>
-    </div>
-  </section>
+            class="topic-filter-title inline-block text-left text-h4-60 text-webconf-blue"
+          >
+            FILTER
+          </span>
+        </aside>
 
-  <main class="text-webconf-gray">
-    <section
-      class="sticky top-[54px] z-10 border-b border-webconf-gray bg-black"
-    >
-      <div class="flex-center py-[6px] text-h4-24 xl:py-3">
-        <!-- 日期篩選 -->
-        <AgendaDaySwitch v-model="selectedDate" />
-
-        <!-- 議程類型篩選 -->
-        <AgendaTagFilter
-          size="sm"
-          class="ml-3 xl:hidden"
-        />
-
-        <!-- 廳號 -->
-        <div class="hidden grow text-center text-h4-24 xl:grid xl:grid-cols-3">
-          <div class="col-span-1">
-            M 棟
-          </div>
-          <div class="col-span-1">
-            F 棟
-          </div>
-          <div class="col-span-1">
-            A2 棟
-          </div>
-        </div>
-      </div>
-
-      <div
-        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-        class="relative z-[100]"
-      ></div>
-    </section>
-
-    <!-- 議程列表 -->
-    <section class="flex">
-      <!-- 議程類型篩選清單 -->
-      <aside
-        class="hidden shrink-0 flex-col items-start gap-2 border-r border-webconf-gray bg-black p-4 xl:flex xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
-      >
-        <AgendaTagFilter size="lg" />
-        <span
-          class="topic-filter-title inline-block text-left text-h4-60 text-webconf-blue"
-        >
-          FILTER
-        </span>
-      </aside>
-
-      <div
-        v-cursor="{
-          scale: 0.5,
-          duration: 0.5,
-        }"
-        class="grid grow grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
-      >
-        <!-- 上午議程 -->
         <div
-          v-for="(agendas, time) in agendasAtDec12Morning"
-          :key="time"
-          class="col-span-3 grid grid-cols-3 gap-[0.5px]"
+          v-cursor="{
+            scale: 0.5,
+            duration: 0.5,
+          }"
+          class="grid grow grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
         >
-          <AgendaCard
-            v-for="(agenda, index) in agendas"
-            :key="`${time}-${index}`"
-            :data="agenda"
-          />
-        </div>
+          <!-- 上午議程 -->
+          <div
+            v-for="(agendas, time) in agendasAtDec12Morning"
+            :key="time"
+            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] xl:grid-cols-3"
+          >
+            <!-- 時間標記 (行動版) -->
+            <div
+              class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
+            >
+              {{ time }}
+              <span>{{ ` - ${agendas[0].endTime}` }}</span>
+            </div>
 
-        <!-- 中午休息 -->
-        <div
-          class="col-span-3 border-b border-webconf-gray bg-black py-14 text-center text-h4-24"
-        >
-          午休
-        </div>
+            <AgendaCard
+              v-for="(agenda, index) in agendas"
+              :key="`${time}-${index}`"
+              :data="agenda"
+              :index="index"
+              :time="time"
+              :show-time="index === 0"
+            />
+          </div>
 
-        <!-- 下午議程 -->
-        <div
-          v-for="(agendas, time) in agendasAtDec12Afternoon"
-          :key="time"
-          class="col-span-3 grid grid-cols-3 gap-[0.5px]"
-        >
-          <AgendaCard
-            v-for="(agenda, index) in agendas"
-            :key="`${time}-${index}`"
-            :data="agenda"
-          />
+          <!-- 中午休息 -->
+          <div
+            class="col-span-3 border-b border-webconf-gray bg-black py-14 text-center text-h4-24"
+          >
+            午休
+          </div>
+
+          <!-- 下午議程 -->
+          <div
+            v-for="(agendas, time) in agendasAtDec12Afternoon"
+            :key="time"
+            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] xl:grid-cols-3"
+          >
+            <!-- 時間標記 (行動版) -->
+            <div
+              class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
+            >
+              {{ time }}
+              <span>{{ ` - ${agendas[0].endTime}` }}</span>
+            </div>
+
+            <AgendaCard
+              v-for="(agenda, index) in agendas"
+              :key="`${time}-${index}`"
+              :data="agenda"
+              :index="index"
+              :time="time"
+              :show-time="index === 0"
+            />
+          </div>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
+    </main>
+  </div>
 </template>
 
 <style scoped>
