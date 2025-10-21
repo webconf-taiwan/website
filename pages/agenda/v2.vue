@@ -1,41 +1,14 @@
 <script setup lang="ts">
+import type { AgendaItem } from '~/types'
+
 useSeoMeta({
   title: '議程資訊',
 })
 
-type AgendaTag
-  = | 'AI'
-    | 'Frontend'
-    | 'Backend'
-    | 'Security'
-    | '軟體設計'
-    | '設計實務'
-    | '產品思維'
-    | '產業應用'
-    | '團隊管理'
-    | 'Agile'
-
-interface SpeakerInfo {
-  name: string
-  avatarUrl: string
-}
-
-interface AgendaItem {
-  topic: string
-  speakerInfo: SpeakerInfo[]
-  tags: AgendaTag[]
-  day: '12' | '13'
-  startTime: string
-}
-
-interface AgendaCoStream extends Pick<AgendaItem, 'day' | 'startTime'> {
-  label: '同步聯播'
-}
-
-const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
+const AGENDA_LIST: AgendaItem[] = [
   // 12/12 09:00
   {
-    topic: 'B2B 服務的 AI Agent 產品設計原則',
+    title: 'B2B 服務的 AI Agent 產品設計原則',
     speakerInfo: [
       {
         name: 'Happy',
@@ -47,7 +20,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '09:00',
   },
   {
-    topic: '從冷知識到漏洞：你不懂的 Web，駭客懂',
+    title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
     speakerInfo: [
       {
         name: '胡立',
@@ -59,7 +32,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '10:00',
   },
   {
-    topic: '程式碼與尿布：媽媽工程師的生存指南',
+    title: '程式碼與尿布：媽媽工程師的生存指南',
     speakerInfo: [
       {
         name: 'Hannah',
@@ -72,7 +45,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
   },
   // 12/12 10:05
   {
-    topic: '大 AI 時代，工程師的成長之路 / 從 Junior 到 Staff',
+    title: '大 AI 時代，工程師的成長之路 / 從 Junior 到 Staff',
     speakerInfo: [
       {
         name: '奶綠茶',
@@ -84,7 +57,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '10:05',
   },
   {
-    topic: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
+    title: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
     speakerInfo: [
       {
         name: 'Peter',
@@ -96,7 +69,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '10:10',
   },
   {
-    topic: 'AI 時代下， Product Sense 就是你的秘密武器',
+    title: 'AI 時代下， Product Sense 就是你的秘密武器',
     speakerInfo: [
       {
         name: 'Chris',
@@ -113,7 +86,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
   },
   // 12/12 11:00
   {
-    topic: '軟體開發邪教的救贖：AI 時代更應掌握的 TDD 技能',
+    title: '軟體開發邪教的救贖：AI 時代更應掌握的 TDD 技能',
     speakerInfo: [
       {
         name: 'Kuma Syu',
@@ -125,7 +98,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '11:00',
   },
   {
-    topic: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
+    title: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
     speakerInfo: [
       {
         name: 'Max Chen',
@@ -137,7 +110,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '11:05',
   },
   {
-    topic: '產品 OKR 的訂立與 Roadmap 展開',
+    title: '產品 OKR 的訂立與 Roadmap 展開',
     speakerInfo: [
       {
         name: '曾友志',
@@ -150,7 +123,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
   },
   // 12/12 13:30
   {
-    topic: 'React 優化實戰分析 / 掌握 React 進階技術 x 底層思維',
+    title: 'React 優化實戰分析 / 掌握 React 進階技術 x 底層思維',
     speakerInfo: [
       {
         name: 'ThisWeb (Kun)',
@@ -162,7 +135,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '13:30',
   },
   {
-    topic: '願 Web API 原力與你同在',
+    title: '願 Web API 原力與你同在',
     speakerInfo: [
       {
         name: 'MUKI',
@@ -174,7 +147,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '13:30',
   },
   {
-    topic: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
+    title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
     speakerInfo: [
       {
         name: 'Joey',
@@ -187,7 +160,7 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
   },
   // 12/12 14:25
   {
-    topic: '以打詐為例，服務設計如何讓公共數位服務有感',
+    title: '以打詐為例，服務設計如何讓公共數位服務有感',
     speakerInfo: [
       {
         name: '卓致遠',
@@ -199,12 +172,12 @@ const AGENDA_LIST: (AgendaItem | AgendaCoStream)[] = [
     startTime: '14:25',
   },
   {
-    label: '同步聯播',
+    title: '同步聯播',
     day: '12',
     startTime: '14:25',
   },
   {
-    label: '同步聯播',
+    title: '同步聯播',
     day: '12',
     startTime: '14:25',
   },
@@ -227,7 +200,7 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 
 <template>
   <section class="flex-1">
-    <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
+    <div class="agenda-section relative h-80 text-webconf-gray xl:h-400">
       <!-- 浮動方框 -->
       <ShareLayoutBlocks />
       <!-- 桌機使用 -->
@@ -282,16 +255,16 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
         </g>
       </svg>
       <div
-        class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
+        class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] xl:top-[50%] xl:w-full xl:flex-row xl:items-end"
       >
         <h1 class="text-h1-96 text-white">
           AGENDA
         </h1>
-        <div class="flex w-full flex-col gap-3 lg:w-fit">
+        <div class="flex w-full flex-col gap-3 xl:w-fit">
           <span
-            class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
+            class="inline-block px-0 text-center text-h4-24 xl:pl-[150px] xl:pr-10"
           >議程頁</span>
-          <div class="order-[-1] flex items-center lg:order-1">
+          <div class="order-[-1] flex items-center xl:order-1">
             <span class="size-3 bg-white"></span>
             <span class="h-[1px] flex-1 bg-white"></span>
             <span class="size-3 bg-white"></span>
@@ -309,25 +282,25 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
     <section
       class="sticky top-[54px] z-10 border-b border-webconf-gray bg-black"
     >
-      <div class="flex-center py-[6px] text-h4-24 lg:py-3">
+      <div class="flex-center py-[6px] text-h4-24 xl:py-3">
         <!-- 日期篩選 -->
         <AgendaDaySwitch v-model="selectedDate" />
 
         <!-- 議程類型篩選 -->
-        <AgendaTopicFilter
+        <AgendaTagFilter
           size="sm"
-          class="ml-3 lg:hidden"
+          class="ml-3 xl:hidden"
         />
 
         <!-- 廳號 -->
-        <div class="hidden grow text-center text-h4-24 lg:flex">
-          <div class="grow">
+        <div class="hidden grow text-center text-h4-24 xl:grid xl:grid-cols-3">
+          <div class="col-span-1">
             M 棟
           </div>
-          <div class="grow">
+          <div class="col-span-1">
             F 棟
           </div>
-          <div class="grow">
+          <div class="col-span-1">
             A2 棟
           </div>
         </div>
@@ -343,7 +316,7 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
     <section class="flex">
       <!-- 議程類型篩選清單 -->
       <aside
-        class="hidden shrink-0 flex-col items-start gap-2 border-r border-webconf-gray bg-black p-4 lg:flex lg:w-[228px] lg:pl-4 2xl:w-[260px] 2xl:pl-12"
+        class="hidden shrink-0 flex-col items-start gap-2 border-r border-webconf-gray bg-black p-4 xl:flex xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
       >
         <AgendaTagFilter size="lg" />
         <span
@@ -358,32 +331,26 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
           scale: 0.5,
           duration: 0.5,
         }"
-        class="grid grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
+        class="grid grow grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
       >
         <!-- 上午議程 -->
-        <NuxtLink
+        <AgendaCard
           v-for="(agenda, index) in agendasAtDec12Morning"
           :key="`${agenda.startTime}-${index}`"
-          class="col-span-1 bg-black hover:bg-webconf-blue lg:h-[228px]"
-          to="/agenda/v2"
-        >
-          {{ agenda.topic || agenda.label }}
-        </NuxtLink>
+          :data="agenda"
+        />
 
         <!-- 中午休息 -->
-        <div class="col-span-3 px-14 text-center text-h4-24">
+        <div class="col-span-3 bg-black py-14 text-center text-h4-24">
           午休
         </div>
 
         <!-- 下午議程 -->
-        <NuxtLink
+        <AgendaCard
           v-for="(agenda, index) in agendasAtDec12Afternoon"
           :key="`${agenda.startTime}-${index}`"
-          to="/agenda/v2"
-          class="col-span-1 lg:h-[228px]"
-        >
-          {{ agenda.topic || agenda.label }}
-        </NuxtLink>
+          :data="agenda"
+        />
       </div>
     </section>
   </main>

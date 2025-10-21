@@ -4,8 +4,6 @@ export function useEasterEgg() {
   // 🎉 Console 彩蛋訊息
   onMounted(() => {
     setTimeout(() => {
-      console.clear()
-
       console.log(
         '%c我就知道你這個小壞蛋，今年又忍不住來偷看這裡了🐽',
         'color: #ec4899; font-size: 16px; font-weight: bold;',
