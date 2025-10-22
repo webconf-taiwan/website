@@ -1,5 +1,5 @@
 import { visualizer } from 'rollup-plugin-visualizer'
-import { site } from './config/seo.config'
+import { site, sitemap } from './config/seo.config'
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -136,4 +136,5 @@ export default defineNuxtConfig({
   },
 
   site,
+  sitemap,
 })
