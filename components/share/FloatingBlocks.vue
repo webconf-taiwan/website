@@ -31,7 +31,7 @@ onMounted(() => {
 <template>
   <div
     v-show="!shouldHide"
-    class="pointer-events-none fixed inset-0 z-[1] size-full touch-none select-none"
+    class="pointer-events-none fixed inset-0 size-full touch-none select-none"
   >
     <div
       class="float-blocks absolute right-[19.33px] top-[79.65px] block size-[18.29px] bg-[#2F2ADB] md:hidden md:size-[22.05px]"

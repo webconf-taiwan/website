@@ -453,7 +453,7 @@ onUnmounted(() => {
     ></div>
 
     <!-- 浮動方塊特效 -->
-    <ShareFloatingBlocks />
+    <ShareFloatingBlocks class="z-[1]" />
 
     <!-- 內容層 (圖片等) -->
     <div
