@@ -341,15 +341,15 @@ watch(
           </g>
         </svg>
         <div
-          class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
+          class="absolute left-[50%] top-[45%] flex w-full -translate-x-1/2 flex-col items-center justify-center gap-6 px-5 sm:top-[38%] sm:px-6 lg:top-[50%] lg:flex-row lg:items-end"
         >
           <h1 class="text-h1-96 text-white">
             AGENDA
           </h1>
           <div class="flex w-full flex-col gap-3 lg:w-fit">
             <span
-              class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
-            >議程頁</span>
+              class="inline-block px-0 text-center text-h4-24 lg:pl-[285px] lg:pr-10"
+            >議程資訊</span>
             <div class="order-[-1] flex items-center lg:order-1">
               <span class="size-3 bg-white"></span>
               <span class="h-[1px] flex-1 bg-white"></span>
