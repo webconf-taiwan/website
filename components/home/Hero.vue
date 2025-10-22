@@ -1,31 +1,5 @@
 <script setup lang="ts">
 import { EXTERNAL_LINKS } from '~/constants/external-links'
-
-useHead({
-  link: [
-    {
-      rel: 'preload',
-      as: 'image',
-      href: '/images/heroMobileBg.webp',
-      fetchpriority: 'high',
-      type: 'image/webp',
-    },
-    {
-      rel: 'preload',
-      as: 'image',
-      href: '/images/heroTabletBg.webp',
-      fetchpriority: 'high',
-      type: 'image/webp',
-    },
-    {
-      rel: 'preload',
-      as: 'image',
-      href: '/images/heroBg.webp',
-      fetchpriority: 'high',
-      type: 'image/webp',
-    },
-  ],
-})
 </script>
 
 <template>
