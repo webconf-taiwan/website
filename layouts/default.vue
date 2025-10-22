@@ -18,7 +18,7 @@ if (!shouldShowLoading.value) {
     <ShareCursorDot />
     <!-- 首次加載動畫 -->
     <ShareLoadingDots
-      class="fixed inset-0 z-[100] overflow-hidden transition-opacity duration-1500"
+      class="fixed inset-0 z-[200] cursor-none overflow-hidden transition-opacity duration-1500"
       :class="[isFirstLoad ? 'pointer-events-none opacity-0' : 'opacity-100']"
     />
   </Teleport>
