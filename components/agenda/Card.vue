@@ -15,9 +15,12 @@ const { width, height } = useElementSize(cardRef, undefined, {
   box: 'border-box',
 })
 
+// 根據螢幕尺寸決定初始方塊大小 (行動版 20px, 桌面版 28px)
+const initialSize = computed(() => (width.value >= 1280 ? 28 : 20))
+
 // 計算 X 和 Y 軸各自需要的縮放比例，讓兩個方向同時到達邊界
-const scaleX = computed(() => width.value / 28)
-const scaleY = computed(() => height.value / 28)
+const scaleX = computed(() => width.value / initialSize.value)
+const scaleY = computed(() => height.value / initialSize.value)
 </script>
 
 <template>
