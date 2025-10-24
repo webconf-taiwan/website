@@ -313,7 +313,7 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 
     <main class="text-webconf-gray">
       <section
-        class="sticky top-[54px] z-10 border-b border-webconf-gray bg-black"
+        class="sticky top-[54px] z-20 border-b border-webconf-gray bg-black"
       >
         <div class="flex-center py-[6px] text-h4-24 xl:py-3">
           <!-- 日期篩選 -->
@@ -376,7 +376,7 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
           >
             <!-- 時間標記 (行動版) -->
             <div
-              class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
+              class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
             >
               {{ time }}
               <span>{{ ` - ${agendas[0].endTime}` }}</span>
@@ -407,7 +407,7 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
           >
             <!-- 時間標記 (行動版) -->
             <div
-              class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
+              class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
             >
               {{ time }}
               <span>{{ ` - ${agendas[0].endTime}` }}</span>
