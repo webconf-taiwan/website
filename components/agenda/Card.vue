@@ -33,6 +33,7 @@ const scaleY = computed(() => height.value / initialSize.value)
       {{ time }}
     </div>
 
+    <!-- 議程卡片 -->
     <NuxtLink
       ref="cardRef"
       class="group relative block overflow-hidden border-b border-webconf-gray bg-black transition-colors duration-300"
@@ -50,13 +51,6 @@ const scaleY = computed(() => height.value / initialSize.value)
       ></div>
 
       <div class="px-5 py-8 xl:h-[285px] xl:px-10">
-        <h2
-          v-if="data.title === '同步聯播'"
-          class="flex-center h-full text-h4-24"
-        >
-          {{ data.title }}
-        </h2>
-
         <!-- 議程簡介 -->
         <div
           v-if="data.title !== '同步聯播'"
@@ -79,22 +73,54 @@ const scaleY = computed(() => height.value / initialSize.value)
             </li>
           </ul>
 
-          <div class="flex items-end gap-3">
-            <div class="relative">
-              <NuxtImg
-                src="/images/speakers/carousel-01_happy.webp"
-                :alt="data.title"
-                width="43"
-                height="60"
-                class="grayscale"
-              />
-              <ShareGradientMask />
-              <ShareNoiseMask />
+          <div class="flex items-end justify-between">
+            <div class="flex items-end gap-3">
+              <div class="relative">
+                <NuxtImg
+                  src="/images/speakers/carousel-01_happy.webp"
+                  :alt="data.speakerInfo![0].name"
+                  width="43"
+                  height="60"
+                  class="grayscale"
+                />
+                <ShareGradientMask />
+                <ShareNoiseMask />
+              </div>
+
+              <h3 class="text-body-16">
+                {{ data.speakerInfo![0].name }}
+              </h3>
             </div>
 
-            <div class="text-body-16">
-              {{ data.speakerInfo![0].name }}
+            <div class="flex items-center gap-1 text-body-18 xl:hidden">
+              <NuxtImg
+                src="/images/icon/location.svg"
+                alt="location"
+                width="20"
+                height="20"
+              />
+              {{ data.location }}
             </div>
+          </div>
+        </div>
+
+        <!-- 議程簡介 -->
+        <div
+          v-else
+          class="flex h-full items-center justify-between"
+        >
+          <h2 class="grow text-h4-24 xl:text-center">
+            {{ data.title }}
+          </h2>
+
+          <div class="flex items-center gap-1 text-body-18 xl:hidden">
+            <NuxtImg
+              src="/images/icon/location.svg"
+              alt="location"
+              width="20"
+              height="20"
+            />
+            {{ data.location }}
           </div>
         </div>
       </div>
