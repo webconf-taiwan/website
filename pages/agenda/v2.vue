@@ -344,15 +344,15 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
           <div
             class="hidden grow text-center text-h4-24 xl:grid xl:grid-cols-3"
           >
-            <div class="col-span-1">
+            <h3 class="col-span-1">
               M 棟
-            </div>
-            <div class="col-span-1">
+            </h3>
+            <h3 class="col-span-1">
               F 棟
-            </div>
-            <div class="col-span-1">
+            </h3>
+            <h3 class="col-span-1">
               A2 棟
-            </div>
+            </h3>
           </div>
         </div>
 
@@ -393,8 +393,13 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
             <div
               class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
             >
-              {{ time }}
-              <span>{{ ` - ${agendas[0].endTime}` }}</span>
+              <time :datetime="time">
+                {{ time }}
+              </time>
+              <span>{{ ` - ` }}</span>
+              <time :datetime="agendas[0].endTime">
+                {{ agendas[0].endTime }}
+              </time>
             </div>
 
             <AgendaCard
@@ -408,11 +413,11 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
           </div>
 
           <!-- 中午休息 -->
-          <div
+          <h2
             class="col-span-3 border-b border-webconf-gray bg-black py-14 text-center text-h4-24"
           >
             午休
-          </div>
+          </h2>
 
           <!-- 下午議程 -->
           <div
@@ -424,8 +429,13 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
             <div
               class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
             >
-              {{ time }}
-              <span>{{ ` - ${agendas[0].endTime}` }}</span>
+              <time :datetime="time">
+                {{ time }}
+              </time>
+              <span>{{ ` - ` }}</span>
+              <time :datetime="agendas[0].endTime">
+                {{ agendas[0].endTime }}
+              </time>
             </div>
 
             <AgendaCard

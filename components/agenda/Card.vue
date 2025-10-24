@@ -87,9 +87,9 @@ const scaleY = computed(() => height.value / initialSize.value)
                 <ShareNoiseMask />
               </div>
 
-              <h3 class="text-body-16">
+              <p class="text-body-16">
                 {{ data.speakerInfo![0].name }}
-              </h3>
+              </p>
             </div>
 
             <div class="flex items-center gap-1 text-body-18 xl:hidden">
