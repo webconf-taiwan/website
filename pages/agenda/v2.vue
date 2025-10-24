@@ -19,6 +19,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '09:00',
     endTime: '09:50',
+    location: 'M 棟',
   },
   {
     title: '從冷知識到漏洞：你不懂的 Web,駭客懂',
@@ -32,6 +33,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '09:00',
     endTime: '09:50',
+    location: 'F 棟',
   },
   {
     title: '程式碼與尿布：媽媽工程師的生存指南',
@@ -45,6 +47,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '09:00',
     endTime: '09:50',
+    location: 'A2 棟',
   },
   // 12/12 10:00
   {
@@ -59,6 +62,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '10:00',
     endTime: '10:50',
+    location: 'M 棟',
   },
   {
     title: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
@@ -72,6 +76,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '10:00',
     endTime: '10:50',
+    location: 'F 棟',
   },
   {
     title: 'AI 時代下， Product Sense 就是你的秘密武器',
@@ -89,6 +94,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '10:00',
     endTime: '10:50',
+    location: 'A2 棟',
   },
   // 12/12 11:00
   {
@@ -99,6 +105,7 @@ const AGENDA_LIST: AgendaItem[] = [
         avatarUrl: '緯雲有限公司 / R&D Manager',
       },
     ],
+    location: 'M 棟',
     tags: ['AI', '軟體設計', '產品思維'],
     day: '12',
     startTime: '11:00',
@@ -116,6 +123,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '11:00',
     endTime: '11:50',
+    location: 'F 棟',
   },
   {
     title: '產品 OKR 的訂立與 Roadmap 展開',
@@ -129,6 +137,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '11:00',
     endTime: '11:50',
+    location: 'A2 棟',
   },
   // 12/12 13:00
   {
@@ -143,6 +152,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '13:00',
     endTime: '13:50',
+    location: 'M 棟',
   },
   {
     title: '願 Web API 原力與你同在',
@@ -156,6 +166,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '13:00',
     endTime: '13:50',
+    location: 'F 棟',
   },
   {
     title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
@@ -169,6 +180,7 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '13:00',
     endTime: '13:50',
+    location: 'A2 棟',
   },
   // 12/12 14:00
   {
@@ -183,18 +195,21 @@ const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '14:00',
     endTime: '14:50',
+    location: 'M 棟',
   },
   {
     title: '同步聯播',
     day: '12',
     startTime: '14:00',
     endTime: '14:50',
+    location: 'F 棟',
   },
   {
     title: '同步聯播',
     day: '12',
     startTime: '14:00',
     endTime: '14:50',
+    location: 'A2 棟',
   },
 ]
 

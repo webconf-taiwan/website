@@ -25,4 +25,5 @@ export interface AgendaItem {
   day: '12' | '13'
   startTime: string
   endTime?: string
+  location?: string
 }
