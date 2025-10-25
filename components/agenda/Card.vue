@@ -75,21 +75,40 @@ const scaleY = computed(() => height.value / initialSize.value)
 
           <div class="flex items-end justify-between">
             <div class="flex items-end gap-3">
-              <div class="relative">
-                <NuxtImg
-                  src="/images/speakers/carousel-01_happy.webp"
-                  :alt="data.speakerInfo![0].name"
-                  width="43"
-                  height="60"
-                  class="grayscale"
-                />
-                <ShareGradientMask />
-                <ShareNoiseMask />
+              <div class="flex gap-2">
+                <div
+                  v-for="speaker in data.speakerInfo"
+                  :key="speaker.name"
+                  class="relative"
+                >
+                  <NuxtImg
+                    src="/images/speakers/carousel-01_happy.webp"
+                    :alt="speaker.name"
+                    width="43"
+                    height="60"
+                    class="grayscale"
+                  />
+                  <ShareGradientMask />
+                  <ShareNoiseMask />
+                </div>
               </div>
 
-              <p class="text-body-16">
-                {{ data.speakerInfo![0].name }}
-              </p>
+              <div class="flex flex-wrap items-center gap-2">
+                <template
+                  v-for="(speaker, idx) in data.speakerInfo"
+                  :key="speaker.name"
+                >
+                  <p class="text-body-16">
+                    {{ speaker.name }}
+                  </p>
+                  <p
+                    v-if="data.speakerInfo && idx < data.speakerInfo.length - 1"
+                    class="text-[#999]"
+                  >
+                    |
+                  </p>
+                </template>
+              </div>
             </div>
 
             <div class="flex items-center gap-1 text-body-18 xl:hidden">
@@ -104,7 +123,7 @@ const scaleY = computed(() => height.value / initialSize.value)
           </div>
         </div>
 
-        <!-- 議程簡介 -->
+        <!-- 同步聯播 -->
         <div
           v-else
           class="flex h-full items-center justify-between"
