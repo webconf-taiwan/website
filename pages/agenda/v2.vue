@@ -365,16 +365,7 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
       <!-- 議程列表 -->
       <section class="flex">
         <!-- 議程類型篩選清單 -->
-        <aside
-          class="hidden shrink-0 flex-col items-start gap-2 border-r border-webconf-gray bg-black p-4 xl:flex xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
-        >
-          <AgendaTagFilter size="lg" />
-          <span
-            class="topic-filter-title inline-block text-left text-h4-60 text-webconf-blue"
-          >
-            FILTER
-          </span>
-        </aside>
+        <AgendaTagFilterSidebar />
 
         <div
           v-cursor="{
@@ -465,10 +456,5 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
     background-position: center;
     background-size: cover;
   }
-}
-
-.topic-filter-title {
-  writing-mode: vertical-lr;
-  transform: translateX(-4px);
 }
 </style>
