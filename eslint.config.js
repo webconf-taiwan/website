@@ -103,6 +103,7 @@ export default antfu(
             'speaker-detail-header',
             'flex-center',
             'tag-filter-title',
+            'tag-filter-menu',
           ], // 允許自定義的 CSS 類名
         },
       ],
