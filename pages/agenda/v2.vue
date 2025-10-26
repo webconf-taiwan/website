@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AgendaItem } from '~/types'
+import type { AgendaItem, AgendaTag } from '~/types'
 
 useSeoMeta({
   title: '議程資訊',
@@ -245,6 +245,12 @@ const agendasAtDec12Afternoon = computed(() => {
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 
 const isMenuOpen = ref(false)
+
+const selectedTags = ref<AgendaTag[]>([])
+
+watch(selectedTags, () => {
+  console.log(selectedTags.value)
+})
 </script>
 
 <template>
@@ -385,7 +391,10 @@ const isMenuOpen = ref(false)
           </label>
 
           <!-- 篩選清單 -->
-          <AgendaTagFilterMenu v-model:is-open="isMenuOpen" />
+          <AgendaTagFilterMenu
+            v-model:is-open="isMenuOpen"
+            v-model:selected-tags="selectedTags"
+          />
         </aside>
 
         <div
