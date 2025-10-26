@@ -243,6 +243,8 @@ const agendasAtDec12Afternoon = computed(() => {
 })
 
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
+
+const isMenuOpen = ref(false)
 </script>
 
 <template>
@@ -363,9 +365,28 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
       </section>
 
       <!-- 議程列表 -->
-      <section class="flex">
+      <section class="relative flex">
         <!-- 議程類型篩選清單 -->
-        <AgendaTagFilterSidebar />
+        <aside
+          :class="{ 'z-50': isMenuOpen }"
+          class="sticky top-[106px] hidden h-[calc(100dvh-106px)] shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 xl:top-[124px] xl:flex xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
+        >
+          <!-- 篩選按鈕 -->
+          <label v-show="!isMenuOpen">
+            <AgendaTagFilterBtn
+              size="lg"
+              @click="isMenuOpen = true"
+            />
+            <span
+              class="tag-filter-title mt-2 inline-block text-left text-h4-60 text-webconf-blue"
+            >
+              FILTER
+            </span>
+          </label>
+
+          <!-- 篩選清單 -->
+          <AgendaTagFilterMenu v-model:is-open="isMenuOpen" />
+        </aside>
 
         <div
           v-cursor="{
@@ -451,10 +472,16 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
   background-position: center top;
   background-size: auto 400px;
 }
+
 @media (min-width: 640px) {
   .agenda-section {
     background-position: center;
     background-size: cover;
   }
+}
+
+.tag-filter-title {
+  writing-mode: vertical-lr;
+  transform: translateX(-4px);
 }
 </style>
