@@ -247,10 +247,6 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 const isMenuOpen = ref(false)
 
 const selectedTags = ref<AgendaTag[]>([])
-
-watch(selectedTags, () => {
-  console.log(selectedTags.value)
-})
 </script>
 
 <template>
@@ -374,7 +370,7 @@ watch(selectedTags, () => {
       <section class="relative flex">
         <!-- 議程類型篩選清單 -->
         <aside
-          :class="{ 'z-50': isMenuOpen }"
+          :class="{ 'z-10': isMenuOpen }"
           class="sticky top-[106px] hidden h-[calc(100dvh-106px)] shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 xl:top-[124px] xl:flex xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
@@ -430,6 +426,10 @@ watch(selectedTags, () => {
               :index="index"
               :time="time"
               :show-time="index === 0"
+              :is-selected="
+                agenda.tags?.some((tag) => selectedTags.includes(tag))
+                  || selectedTags.length === 0
+              "
             />
           </div>
 
@@ -466,6 +466,10 @@ watch(selectedTags, () => {
               :index="index"
               :time="time"
               :show-time="index === 0"
+              :is-selected="
+                agenda.tags?.some((tag) => selectedTags.includes(tag))
+                  || selectedTags.length === 0
+              "
             />
           </div>
         </div>

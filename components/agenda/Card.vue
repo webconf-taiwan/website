@@ -1,14 +1,13 @@
 <script setup lang="ts">
 import type { AgendaItem } from '~/types'
 
-interface Props {
+defineProps<{
   data: AgendaItem
   index: number
   time?: string
   showTime?: boolean
-}
-
-defineProps<Props>()
+  isSelected: boolean
+}>()
 
 const cardRef = ref<HTMLElement>()
 const { width, height } = useElementSize(cardRef, undefined, {
@@ -143,6 +142,12 @@ const scaleY = computed(() => height.value / initialSize.value)
           </div>
         </div>
       </div>
+
+      <!-- 半透明遮罩 -->
+      <div
+        class="absolute inset-0 size-full bg-black opacity-0 duration-300"
+        :class="{ 'opacity-70': !isSelected }"
+      ></div>
     </NuxtLink>
   </div>
 </template>
