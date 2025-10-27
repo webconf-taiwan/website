@@ -334,20 +334,20 @@ const selectedTags = ref<AgendaTag[]>([])
       <section
         class="sticky top-14 z-20 translate-y-[-1px] border-b border-webconf-gray bg-black"
       >
-        <div class="flex-center py-[6px] text-h4-24 xl:py-3">
+        <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
           <AgendaEventDaySwitch v-model="selectedDate" />
 
           <!-- 議程類型篩選 -->
           <AgendaTagFilterBtn
             size="sm"
-            class="ml-3 xl:hidden"
+            class="ml-3 lg:hidden"
             @click="isMenuOpen = true"
           />
 
           <!-- 廳號 -->
           <div
-            class="hidden grow text-center text-h4-24 xl:grid xl:grid-cols-3"
+            class="hidden grow text-center text-h4-24 lg:grid lg:grid-cols-3"
           >
             <h3 class="col-span-1">
               M 棟
@@ -372,12 +372,12 @@ const selectedTags = ref<AgendaTag[]>([])
         <!-- 議程類型篩選清單 -->
         <aside
           :class="{ 'z-10': isMenuOpen, 'hidden': !isMenuOpen }"
-          class="sticky top-[106px] h-[calc(100dvh-106px)] w-full shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 xl:top-[124px] xl:flex xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
+          class="2lg:w-[260px] 2lg:pl-12 sticky top-[106px] h-[calc(100dvh-106px)] w-full shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 lg:top-[124px] lg:flex lg:w-[228px] lg:pl-4"
         >
           <!-- 篩選按鈕 -->
           <label
             v-show="!isMenuOpen"
-            class="hidden xl:block"
+            class="hidden lg:block"
           >
             <AgendaTagFilterBtn
               size="lg"
@@ -408,11 +408,11 @@ const selectedTags = ref<AgendaTag[]>([])
           <div
             v-for="(agendas, time) in agendasAtDec12Morning"
             :key="time"
-            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] xl:grid-cols-3"
+            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] lg:grid-cols-3"
           >
             <!-- 時間標記 (行動版) -->
             <div
-              class="sticky top-[108px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
+              class="sticky top-[108px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
             >
               <time :datetime="time">
                 {{ time }}
@@ -439,7 +439,7 @@ const selectedTags = ref<AgendaTag[]>([])
 
           <!-- 中午休息 -->
           <h2
-            class="col-span-3 border-b border-webconf-gray bg-black py-14 text-center text-h4-24"
+            class="col-span-3 border-b border-webconf-gray bg-black text-center text-h4-24 lg:py-10 xl:py-14"
           >
             午休
           </h2>
@@ -448,11 +448,11 @@ const selectedTags = ref<AgendaTag[]>([])
           <div
             v-for="(agendas, time) in agendasAtDec12Afternoon"
             :key="time"
-            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] xl:grid-cols-3"
+            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] lg:grid-cols-3"
           >
             <!-- 時間標記 (行動版) -->
             <div
-              class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xl:hidden"
+              class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
             >
               <time :datetime="time">
                 {{ time }}
