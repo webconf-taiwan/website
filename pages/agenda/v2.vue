@@ -340,7 +340,9 @@ const selectedTags = ref<AgendaTag[]>([])
 
           <!-- 議程類型篩選 -->
           <AgendaTagFilterBtn
+            :is-menu-open="isMenuOpen"
             size="sm"
+            :selected-tags-count="selectedTags.length"
             class="ml-3 lg:hidden"
             @click="isMenuOpen = true"
           />
@@ -372,29 +374,35 @@ const selectedTags = ref<AgendaTag[]>([])
         <!-- 議程類型篩選清單 -->
         <aside
           :class="{ 'z-10': isMenuOpen, 'hidden': !isMenuOpen }"
-          class="2lg:w-[260px] 2lg:pl-12 sticky top-[106px] h-[calc(100dvh-106px)] w-full shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 lg:top-[124px] lg:flex lg:w-[228px] lg:pl-4"
+          class="sticky top-[106px] h-[calc(100dvh-106px)] w-full shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 lg:top-[124px] lg:flex lg:w-[228px] lg:pl-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
-          <label
-            v-show="!isMenuOpen"
-            class="hidden lg:block"
-          >
-            <AgendaTagFilterBtn
-              size="lg"
-              @click="isMenuOpen = true"
-            />
-            <span
-              class="tag-filter-title mt-2 inline-block text-left text-h4-60 text-webconf-blue"
-            >
-              FILTER
-            </span>
-          </label>
+          <AgendaTagFilterBtn
+            :is-menu-open="isMenuOpen"
+            size="lg"
+            :selected-tags-count="selectedTags.length"
+            @click="isMenuOpen = true"
+          />
 
           <!-- 篩選清單 -->
           <AgendaTagFilterMenu
             v-model:is-open="isMenuOpen"
             v-model:selected-tags="selectedTags"
           />
+
+          <transition
+            enter-active-class="transition-opacity duration-300"
+            leave-active-class="transition-opacity duration-200"
+            enter-from-class="opacity-0"
+            enter-to-class="opacity-100"
+            leave-from-class="opacity-100"
+            leave-to-class="opacity-0"
+          >
+            <div
+              v-if="isMenuOpen"
+              class="absolute inset-0 h-full w-[100dvw] bg-black/80"
+            ></div>
+          </transition>
         </aside>
 
         <div
@@ -495,10 +503,5 @@ const selectedTags = ref<AgendaTag[]>([])
     background-position: center;
     background-size: cover;
   }
-}
-
-.tag-filter-title {
-  writing-mode: vertical-lr;
-  transform: translateX(-4px);
 }
 </style>
