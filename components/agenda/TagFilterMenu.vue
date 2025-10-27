@@ -21,11 +21,18 @@ const tags = [
 </script>
 
 <template>
-  <transition name="slide">
+  <transition
+    enter-active-class="transition-transform duration-300 ease-out"
+    enter-from-class="-translate-x-full"
+    enter-to-class="translate-x-0"
+    leave-active-class="transition-transform duration-200 ease-in"
+    leave-from-class="translate-x-0"
+    leave-to-class="-translate-x-full"
+  >
     <section
       v-if="isOpen"
       key="tag-filter-menu"
-      class="tag-filter-menu absolute left-0 top-0 z-50 size-full border-webconf-gray bg-black px-12 py-6 lg:w-[228px] lg:border-r lg:pl-4 2xl:w-[260px] 2xl:pl-12"
+      class="tag-filter-menu absolute left-0 top-0 z-50 h-full w-screen border-webconf-gray bg-black px-12 py-6 lg:size-full lg:w-[228px] lg:border-r lg:pl-4 2xl:w-[260px] 2xl:pl-12"
     >
       <button
         class="flex-center group size-10 bg-white duration-300 hover:bg-webconf-blue lg:size-[44px]"
@@ -101,22 +108,5 @@ const tags = [
   background-image: url("/images/tag-filter-menu-bg.webp");
   background-position: top right;
   background-repeat: repeat-y;
-}
-
-/* 滑動過渡效果 */
-.slide-enter-active {
-  transition: transform 0.3s ease-out;
-}
-
-.slide-leave-active {
-  transition: transform 0.2s ease-in;
-}
-
-.slide-enter-from {
-  transform: translateX(-100%);
-}
-
-.slide-leave-to {
-  transform: translateX(-100%);
 }
 </style>

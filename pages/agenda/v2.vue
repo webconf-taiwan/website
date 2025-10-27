@@ -344,8 +344,10 @@ watch(isMenuOpen, (newValue) => {
       </div>
     </section>
 
-    <main class="translate-y-[-2px] text-webconf-gray">
-      <section class="sticky top-14 z-20 border-b border-webconf-gray bg-black">
+    <main class="text-webconf-gray">
+      <section
+        class="sticky top-14 z-20 translate-y-[-2px] border-b border-webconf-gray bg-black"
+      >
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
           <AgendaEventDaySwitch v-model="selectedDate" />
@@ -382,14 +384,14 @@ watch(isMenuOpen, (newValue) => {
       </section>
 
       <!-- 議程列表 -->
-      <section class="relative flex">
+      <section class="relative flex translate-y-[-1px]">
         <!-- 議程類型篩選清單 -->
         <aside
           :class="{
             'z-10 flex': isMenuOpen || showAside,
             'hidden lg:flex': !isMenuOpen && !showAside,
           }"
-          class="sticky top-[106px] h-[calc(100dvh-106px)] w-full shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 lg:top-[124px] lg:w-[228px] lg:pl-4 2xl:w-[260px] 2xl:pl-12"
+          class="sticky top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:top-[124px] lg:w-[228px] lg:border-b lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
@@ -427,7 +429,7 @@ watch(isMenuOpen, (newValue) => {
             scale: 0.5,
             duration: 0.5,
           }"
-          class="grid grow grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
+          class="grid grow translate-y-[-1px] grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
         >
           <!-- 上午議程 -->
           <div
@@ -437,7 +439,7 @@ watch(isMenuOpen, (newValue) => {
           >
             <!-- 時間標記 (行動版) -->
             <div
-              class="sticky top-[108px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
+              class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
             >
               <time :datetime="time">
                 {{ time }}
