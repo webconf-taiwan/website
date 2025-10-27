@@ -245,8 +245,22 @@ const agendasAtDec12Afternoon = computed(() => {
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 
 const isMenuOpen = ref(false)
+const showAside = ref(false)
 
 const selectedTags = ref<AgendaTag[]>([])
+
+// 延遲隱藏 aside 以確保過渡完成
+watch(isMenuOpen, (newValue) => {
+  if (newValue) {
+    showAside.value = true
+  }
+  else {
+    // 等待 leave transition 完成後再隱藏
+    setTimeout(() => {
+      showAside.value = false
+    }, 200)
+  }
+})
 </script>
 
 <template>
@@ -330,10 +344,8 @@ const selectedTags = ref<AgendaTag[]>([])
       </div>
     </section>
 
-    <main class="text-webconf-gray">
-      <section
-        class="sticky top-14 z-20 translate-y-[-1px] border-b border-webconf-gray bg-black"
-      >
+    <main class="translate-y-[-2px] text-webconf-gray">
+      <section class="sticky top-14 z-20 border-b border-webconf-gray bg-black">
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
           <AgendaEventDaySwitch v-model="selectedDate" />
@@ -370,11 +382,14 @@ const selectedTags = ref<AgendaTag[]>([])
       </section>
 
       <!-- 議程列表 -->
-      <section class="relative flex translate-y-[-1px]">
+      <section class="relative flex">
         <!-- 議程類型篩選清單 -->
         <aside
-          :class="{ 'z-10': isMenuOpen, 'hidden': !isMenuOpen }"
-          class="sticky top-[106px] h-[calc(100dvh-106px)] w-full shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 lg:top-[124px] lg:flex lg:w-[228px] lg:pl-4 2xl:w-[260px] 2xl:pl-12"
+          :class="{
+            'z-10 flex': isMenuOpen || showAside,
+            'hidden lg:flex': !isMenuOpen && !showAside,
+          }"
+          class="sticky top-[106px] h-[calc(100dvh-106px)] w-full shrink-0 flex-col items-start self-start border-b border-r border-webconf-gray bg-black p-4 lg:top-[124px] lg:w-[228px] lg:pl-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
@@ -390,6 +405,7 @@ const selectedTags = ref<AgendaTag[]>([])
             v-model:selected-tags="selectedTags"
           />
 
+          <!-- 半透明遮罩 -->
           <transition
             enter-active-class="transition-opacity duration-300"
             leave-active-class="transition-opacity duration-200"
@@ -401,6 +417,7 @@ const selectedTags = ref<AgendaTag[]>([])
             <div
               v-if="isMenuOpen"
               class="absolute inset-0 h-full w-[100dvw] bg-black/80"
+              @click="isMenuOpen = false"
             ></div>
           </transition>
         </aside>
