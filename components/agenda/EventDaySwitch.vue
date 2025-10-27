@@ -4,7 +4,7 @@ const selectedDate = defineModel<string>({ required: true })
 
 <template>
   <div
-    class="flex items-center justify-end gap-2 xl:w-[228px] xl:pl-4 2xl:w-[260px] 2xl:pl-12"
+    class="2lg:w-[260px] 2lg:pl-12 flex items-center justify-end gap-2 lg:w-[228px] lg:pl-4"
   >
     <span>DEC. </span>
 
@@ -13,7 +13,7 @@ const selectedDate = defineModel<string>({ required: true })
         scale: 0.5,
         duration: 0.5,
       }"
-      class="relative flex h-10 w-[213px] overflow-hidden border border-webconf-blue xl:h-[46px] xl:w-[150px]"
+      class="relative flex h-10 w-[213px] overflow-hidden border border-webconf-blue lg:h-[46px] lg:w-[150px]"
     >
       <!-- 滑動的藍色背景 -->
       <div

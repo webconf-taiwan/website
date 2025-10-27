@@ -31,10 +31,10 @@ const tags = [
   >
     <section
       v-if="isOpen"
-      class="tag-filter-menu absolute left-0 top-0 z-50 size-full border-webconf-gray bg-black px-12 py-6 xl:w-[228px] xl:border-r xl:pl-4 2xl:w-[260px] 2xl:pl-12"
+      class="tag-filter-menu 2lg:w-[260px] 2lg:pl-12 absolute left-0 top-0 z-50 size-full border-webconf-gray bg-black px-12 py-6 lg:w-[228px] lg:border-r lg:pl-4"
     >
       <button
-        class="flex-center group size-10 bg-white xl:size-[44px]"
+        class="flex-center group size-10 bg-white lg:size-[44px]"
         aria-label="關閉議程類型篩選選單"
         @click="isOpen = false"
       >
@@ -51,7 +51,7 @@ const tags = [
         </svg>
       </button>
 
-      <ul class="mt-7 xl:mt-6">
+      <ul class="mt-7 lg:mt-6">
         <li>
           <label
             class="flex items-center gap-[10px] text-body-18"

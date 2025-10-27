@@ -23,11 +23,11 @@ const scaleY = computed(() => height.value / initialSize.value)
 </script>
 
 <template>
-  <div class="relative">
+  <div class="relative grow">
     <!-- 時間標記 (桌面版) -->
     <div
       v-if="showTime"
-      class="sticky top-[124px] z-[5] ml-[-86px] hidden h-7 w-[86px] items-center justify-center bg-webconf-gray text-btn-16 text-webconf-blue xl:flex"
+      class="sticky top-[124px] z-[5] ml-[-86px] hidden h-7 w-[86px] items-center justify-center bg-webconf-gray text-btn-16 text-webconf-blue lg:flex"
     >
       {{ time }}
     </div>
@@ -35,21 +35,21 @@ const scaleY = computed(() => height.value / initialSize.value)
     <!-- 議程卡片 -->
     <NuxtLink
       ref="cardRef"
-      class="group relative block overflow-hidden border-b border-webconf-gray bg-black transition-colors duration-300"
-      :class="{ 'xl:-mt-7': showTime }"
+      class="group relative block h-full overflow-hidden border-b border-webconf-gray bg-black transition-colors duration-300"
+      :class="{ 'lg:-mt-7': showTime }"
       to="/agenda/v2"
     >
       <!-- 縮放特效方塊 -->
       <div
         v-if="data.title !== '同步聯播'"
-        class="absolute left-0 top-0 z-0 size-5 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))] xl:block xl:size-7"
+        class="absolute left-0 top-0 z-0 size-5 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))] lg:block lg:size-7"
         :style="{
           '--scale-x': scaleX,
           '--scale-y': scaleY,
         }"
       ></div>
 
-      <div class="px-5 py-8 xl:h-[285px] xl:px-10">
+      <div class="h-full px-5 py-8 lg:px-10 xl:h-[285px]">
         <!-- 議程簡介 -->
         <div
           v-if="data.title !== '同步聯播'"
@@ -110,7 +110,7 @@ const scaleY = computed(() => height.value / initialSize.value)
               </div>
             </div>
 
-            <div class="flex items-center gap-1 text-body-18 xl:hidden">
+            <div class="flex items-center gap-1 text-body-18 lg:hidden">
               <NuxtImg
                 src="/images/icon/location.svg"
                 alt="location"
@@ -127,11 +127,11 @@ const scaleY = computed(() => height.value / initialSize.value)
           v-else
           class="flex h-full items-center justify-between"
         >
-          <h2 class="grow text-h4-24 xl:text-center">
+          <h2 class="grow text-h4-24 lg:text-center">
             {{ data.title }}
           </h2>
 
-          <div class="flex items-center gap-1 text-body-18 xl:hidden">
+          <div class="flex items-center gap-1 text-body-18 lg:hidden">
             <NuxtImg
               src="/images/icon/location.svg"
               alt="location"
