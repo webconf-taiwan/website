@@ -21,14 +21,7 @@ const tags = [
 </script>
 
 <template>
-  <transition
-    enter-active-class="transition-transform duration-300 ease-out"
-    enter-from-class="-translate-x-full"
-    enter-to-class="translate-x-0"
-    leave-active-class="transition-transform duration-200 ease-in"
-    leave-from-class="translate-x-0"
-    leave-to-class="-translate-x-full"
-  >
+  <transition name="slide">
     <section
       v-if="isOpen"
       key="tag-filter-menu"
@@ -108,5 +101,22 @@ const tags = [
   background-image: url("/images/tag-filter-menu-bg.webp");
   background-position: top right;
   background-repeat: repeat-y;
+}
+
+/* 滑動過渡效果 */
+.slide-enter-active {
+  transition: transform 0.3s ease-out;
+}
+
+.slide-leave-active {
+  transition: transform 0.2s ease-in;
+}
+
+.slide-enter-from {
+  transform: translateX(-100%);
+}
+
+.slide-leave-to {
+  transform: translateX(-100%);
 }
 </style>
