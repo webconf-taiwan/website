@@ -31,11 +31,12 @@ const tags = [
   >
     <section
       v-if="isOpen"
-      class="tag-filter-menu 2lg:w-[260px] 2lg:pl-12 absolute left-0 top-0 z-50 size-full border-webconf-gray bg-black px-12 py-6 lg:w-[228px] lg:border-r lg:pl-4"
+      key="tag-filter-menu"
+      class="tag-filter-menu absolute left-0 top-0 z-50 size-full border-webconf-gray bg-black px-12 py-6 lg:w-[228px] lg:border-r lg:pl-4 2xl:w-[260px] 2xl:pl-12"
     >
       <button
-        class="flex-center group size-10 bg-white lg:size-[44px]"
-        aria-label="關閉議程類型篩選選單"
+        class="flex-center group size-10 bg-white duration-300 hover:bg-webconf-blue lg:size-[44px]"
+        aria-label="關閉篩選選單"
         @click="isOpen = false"
       >
         <svg
@@ -46,7 +47,7 @@ const tags = [
         >
           <path
             d="M17.9614 4.96985C18.2542 4.67687 18.73 4.67705 19.0229 4.96985C19.3156 5.26265 19.3156 5.73751 19.0229 6.0304L13.0601 11.9952L19.0308 17.9698C19.3235 18.2628 19.3236 18.7376 19.0308 19.0304C18.7379 19.323 18.263 19.3231 17.9702 19.0304L12.0005 13.0568L6.03076 19.0304C5.73796 19.3231 5.26312 19.3231 4.97021 19.0304C4.67742 18.7376 4.67755 18.2628 4.97021 17.9698L10.9399 11.9952L4.97803 6.0304C4.68536 5.73755 4.68545 5.26268 4.97803 4.96985C5.27101 4.67705 5.74675 4.67687 6.03955 4.96985L12.0005 10.9347L17.9614 4.96985Z"
-            class="fill-webconf-blue"
+            class="fill-webconf-black duration-300 group-hover:fill-white"
           />
         </svg>
       </button>
