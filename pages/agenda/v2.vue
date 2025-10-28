@@ -219,7 +219,7 @@ watch(isMenuOpen, (newValue) => {
             'z-10 flex': isMenuOpen || showAside,
             'hidden lg:flex': !isMenuOpen && !showAside,
           }"
-          class="fixed top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
+          class="sticky top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
@@ -307,6 +307,7 @@ watch(isMenuOpen, (newValue) => {
             appear
           >
             <h2
+              key="lunch-break"
               class="col-span-3 border-b-[0.5px] border-webconf-gray/50 bg-black px-5 py-7 text-h4-24 lg:py-10 lg:text-center xl:py-14"
             >
               午休時間
