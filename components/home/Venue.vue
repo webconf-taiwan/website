@@ -1,5 +1,5 @@
 <template>
-  <section class="relative pt-0 sm:pt-20">
+  <section class="relative pt-0 lg:pt-20">
     <!-- 桌機使用 -->
     <svg
       class="absolute inset-0 hidden size-full lg:block"
@@ -495,7 +495,7 @@
         ></div>
       </div>
       <ShareGradientDotsCard
-        class="relative ml-0 h-fit w-full translate-y-0 sm:px-[60px] sm:pb-[84px] lg:ml-[-12.65%] lg:w-[43.9%] lg:translate-y-[60%] lg:pb-[52px]"
+        class="relative ml-0 h-fit w-full translate-y-0 sm:px-[60px] sm:pb-[84px] lg:ml-[-12.65%] lg:w-[73.9%] lg:translate-y-[50%] lg:pb-[52px] xl:w-[43.9%] xl:translate-y-[60%]"
       >
         <div class="items-start">
           <!-- 搭乘工具一 -->
