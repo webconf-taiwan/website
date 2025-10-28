@@ -6,9 +6,10 @@ const selectedTags = defineModel<AgendaTag[]>('selectedTags', {
   required: true,
 })
 
-const tags = [
+const tags: AgendaTag[] = [
   'Frontend',
   'Backend',
+  'DevOps',
   'Security',
   'Agile',
   'AI',

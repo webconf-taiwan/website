@@ -1,4 +1,4 @@
-import { EXTERNAL_LINKS } from '~/constants/external-links'
+import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 export function useEasterEgg() {
   // 🎉 Console 彩蛋訊息

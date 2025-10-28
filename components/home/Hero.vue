@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { EXTERNAL_LINKS } from '~/constants/external-links'
+import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 </script>
 
 <template>

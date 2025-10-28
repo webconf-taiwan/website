@@ -23,7 +23,10 @@ const scaleY = computed(() => height.value / initialSize.value)
 </script>
 
 <template>
-  <div class="relative grow">
+  <div
+    :class="{ 'lg:border-r-[0.5px]': index !== 2 }"
+    class="relative grow border-b-[0.5px] border-webconf-gray/50"
+  >
     <!-- 時間標記 (桌面版) -->
     <div
       v-if="showTime"
@@ -35,13 +38,15 @@ const scaleY = computed(() => height.value / initialSize.value)
     <!-- 議程卡片 -->
     <NuxtLink
       ref="cardRef"
-      class="group relative block h-full overflow-hidden border-b border-webconf-gray bg-black transition-colors duration-300"
-      :class="{ 'lg:-mt-7': showTime }"
+      class="group relative block h-full overflow-hidden bg-black transition-colors duration-300"
+      :class="{
+        'lg:-mt-7': showTime,
+      }"
       to="/agenda/v2"
     >
       <!-- 縮放特效方塊 -->
       <div
-        v-if="data.title !== '同步聯播'"
+        v-if="data.title !== '同步聯播' && data.title !== 'TBD'"
         class="absolute left-0 top-0 z-0 size-5 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))] lg:block lg:size-7"
         :style="{
           '--scale-x': scaleX,
@@ -52,7 +57,7 @@ const scaleY = computed(() => height.value / initialSize.value)
       <div class="h-full px-5 py-8 lg:px-10 xl:h-[285px]">
         <!-- 議程簡介 -->
         <div
-          v-if="data.title !== '同步聯播'"
+          v-if="data.title !== '同步聯播' && data.title !== 'TBD'"
           class="relative flex h-full flex-col gap-4"
         >
           <h2 class="text-h4-24">

@@ -1,14 +1,15 @@
 export type AgendaTag
-  = | 'AI'
-    | 'Frontend'
+  = | 'Frontend'
     | 'Backend'
+    | 'DevOps'
     | 'Security'
-    | '軟體設計'
-    | '設計實務'
+    | 'Agile'
+    | 'AI'
     | '產品思維'
     | '產業應用'
     | '團隊管理'
-    | 'Agile'
+    | '軟體設計'
+    | '設計實務'
 
 export interface SpeakerInfo {
   name: string
@@ -16,7 +17,7 @@ export interface SpeakerInfo {
 }
 
 export interface AgendaItem {
-  title: string
+  title: string | '同步聯播'
   speakerInfo?: {
     name: string
     avatarUrl: string
@@ -24,6 +25,6 @@ export interface AgendaItem {
   tags?: AgendaTag[]
   day: '12' | '13'
   startTime: string
-  endTime?: string
-  location?: string
+  endTime: string
+  location: string
 }

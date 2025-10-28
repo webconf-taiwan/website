@@ -1,217 +1,10 @@
 <script setup lang="ts">
 import type { AgendaItem, AgendaTag } from '~/types'
+import { AGENDA_LIST } from '~/constants/agendas'
 
 useSeoMeta({
   title: '議程資訊',
 })
-
-const AGENDA_LIST: AgendaItem[] = [
-  // 12/12 09:00
-  {
-    title: 'B2B 服務的 AI Agent 產品設計原則',
-    speakerInfo: [
-      {
-        name: 'Happy',
-        avatarUrl: '91APP / 產品長',
-      },
-    ],
-    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
-    day: '12',
-    startTime: '09:00',
-    endTime: '09:50',
-    location: 'M 棟',
-  },
-  {
-    title: '從冷知識到漏洞：你不懂的 Web,駭客懂',
-    speakerInfo: [
-      {
-        name: '胡立',
-        avatarUrl: `技術部落格 Huli's blog / 站長`,
-      },
-    ],
-    tags: ['Frontend', 'Backend', 'Security'],
-    day: '12',
-    startTime: '09:00',
-    endTime: '09:50',
-    location: 'F 棟',
-  },
-  {
-    title: '程式碼與尿布：媽媽工程師的生存指南',
-    speakerInfo: [
-      {
-        name: 'Hannah',
-        avatarUrl: 'Remote / Frontend ',
-      },
-    ],
-    tags: ['Frontend'],
-    day: '12',
-    startTime: '09:00',
-    endTime: '09:50',
-    location: 'A2 棟',
-  },
-  // 12/12 10:00
-  {
-    title: '大 AI 時代,工程師的成長之路 / 從 Junior 到 Staff',
-    speakerInfo: [
-      {
-        name: '奶綠茶',
-        avatarUrl: 'PositiveGrid Staff Frontend Engineer',
-      },
-    ],
-    tags: ['Frontend'],
-    day: '12',
-    startTime: '10:00',
-    endTime: '10:50',
-    location: 'M 棟',
-  },
-  {
-    title: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
-    speakerInfo: [
-      {
-        name: 'Peter',
-        avatarUrl: '漸強實驗室 / Product Lead',
-      },
-    ],
-    tags: ['AI', '產品思維', '團隊管理', 'Agile'],
-    day: '12',
-    startTime: '10:00',
-    endTime: '10:50',
-    location: 'F 棟',
-  },
-  {
-    title: 'AI 時代下， Product Sense 就是你的秘密武器',
-    speakerInfo: [
-      {
-        name: 'Chris',
-        avatarUrl: 'PicCollage 拼貼趣 <br /> / 資深產品設計經理',
-      },
-      {
-        name: 'Tiyna',
-        avatarUrl: 'PicCollage 拼貼趣 <br /> / 資深產品設計師',
-      },
-    ],
-    tags: ['AI', '設計實務', '產品思維'],
-    day: '12',
-    startTime: '10:00',
-    endTime: '10:50',
-    location: 'A2 棟',
-  },
-  // 12/12 11:00
-  {
-    title: '軟體開發邪教的救贖：AI 時代更應掌握的 TDD 技能',
-    speakerInfo: [
-      {
-        name: 'Kuma Syu',
-        avatarUrl: '緯雲有限公司 / R&D Manager',
-      },
-    ],
-    location: 'M 棟',
-    tags: ['AI', '軟體設計', '產品思維'],
-    day: '12',
-    startTime: '11:00',
-    endTime: '11:50',
-  },
-  {
-    title: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
-    speakerInfo: [
-      {
-        name: 'Max Chen',
-        avatarUrl: '對稱資訊股份有限公司 / 面試趣 CEO',
-      },
-    ],
-    tags: ['產品思維', '產業應用'],
-    day: '12',
-    startTime: '11:00',
-    endTime: '11:50',
-    location: 'F 棟',
-  },
-  {
-    title: '產品 OKR 的訂立與 Roadmap 展開',
-    speakerInfo: [
-      {
-        name: '曾友志',
-        avatarUrl: '下午先生有限公司 / 資深產品顧問',
-      },
-    ],
-    tags: ['產品思維', '團隊管理'],
-    day: '12',
-    startTime: '11:00',
-    endTime: '11:50',
-    location: 'A2 棟',
-  },
-  // 12/12 13:00
-  {
-    title: 'React 優化實戰分析 / 掌握 React 進階技術 x 底層思維',
-    speakerInfo: [
-      {
-        name: 'ThisWeb (Kun)',
-        avatarUrl: 'ThisWeb / 前端工程師',
-      },
-    ],
-    tags: ['Frontend'],
-    day: '12',
-    startTime: '13:00',
-    endTime: '13:50',
-    location: 'M 棟',
-  },
-  {
-    title: '願 Web API 原力與你同在',
-    speakerInfo: [
-      {
-        name: 'MUKI',
-        avatarUrl: 'MUKI space* / 前端工程師',
-      },
-    ],
-    tags: ['AI', 'Frontend'],
-    day: '12',
-    startTime: '13:00',
-    endTime: '13:50',
-    location: 'F 棟',
-  },
-  {
-    title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
-    speakerInfo: [
-      {
-        name: 'Joey',
-        avatarUrl: '引鹿創新體驗研究室  / UX 總監',
-      },
-    ],
-    tags: ['設計實務', '團隊管理'],
-    day: '12',
-    startTime: '13:00',
-    endTime: '13:50',
-    location: 'A2 棟',
-  },
-  // 12/12 14:00
-  {
-    title: '以打詐為例，服務設計如何讓公共數位服務有感',
-    speakerInfo: [
-      {
-        name: '卓致遠',
-        avatarUrl: '致遠體驗設計 / 體驗總監',
-      },
-    ],
-    tags: ['設計實務', '產品思維'],
-    day: '12',
-    startTime: '14:00',
-    endTime: '14:50',
-    location: 'M 棟',
-  },
-  {
-    title: '同步聯播',
-    day: '12',
-    startTime: '14:00',
-    endTime: '14:50',
-    location: 'F 棟',
-  },
-  {
-    title: '同步聯播',
-    day: '12',
-    startTime: '14:00',
-    endTime: '14:50',
-    location: 'A2 棟',
-  },
-]
 
 // 將議程按時間分組
 function groupAgendasByTime(agendas: AgendaItem[]) {
@@ -242,7 +35,34 @@ const agendasAtDec12Afternoon = computed(() => {
   return groupAgendasByTime(afternoonAgendas)
 })
 
+const agendasAtDec13Morning = computed(() => {
+  const morningAgendas = AGENDA_LIST.filter(
+    item => item.day === '13' && item.startTime < '12:00',
+  )
+  return groupAgendasByTime(morningAgendas)
+})
+
+const agendasAtDec13Afternoon = computed(() => {
+  const afternoonAgendas = AGENDA_LIST.filter(
+    item => item.day === '13' && item.startTime >= '12:00',
+  )
+  return groupAgendasByTime(afternoonAgendas)
+})
+
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
+
+// 根據選定日期動態獲取議程
+const currentMorningAgendas = computed(() =>
+  selectedDate.value === '12'
+    ? agendasAtDec12Morning.value
+    : agendasAtDec13Morning.value,
+)
+
+const currentAfternoonAgendas = computed(() =>
+  selectedDate.value === '12'
+    ? agendasAtDec12Afternoon.value
+    : agendasAtDec13Afternoon.value,
+)
 
 const isMenuOpen = ref(false)
 const showAside = ref(false)
@@ -346,7 +166,7 @@ watch(isMenuOpen, (newValue) => {
 
     <main class="text-webconf-gray">
       <section
-        class="sticky top-14 z-20 translate-y-[-2px] border-b border-webconf-gray bg-black"
+        class="sticky top-[55px] z-20 border-b border-webconf-gray bg-black"
       >
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
@@ -384,14 +204,14 @@ watch(isMenuOpen, (newValue) => {
       </section>
 
       <!-- 議程列表 -->
-      <section class="relative flex translate-y-[-1px]">
+      <section class="relative flex">
         <!-- 議程類型篩選清單 -->
         <aside
           :class="{
             'z-10 flex': isMenuOpen || showAside,
             'hidden lg:flex': !isMenuOpen && !showAside,
           }"
-          class="sticky top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:top-[124px] lg:w-[228px] lg:border-b lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
+          class="fixed top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124px] lg:w-[228px] lg:border-b lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
@@ -429,13 +249,13 @@ watch(isMenuOpen, (newValue) => {
             scale: 0.5,
             duration: 0.5,
           }"
-          class="grid grow translate-y-[-1px] grid-cols-3 gap-[0.5px] bg-webconf-gray/50"
+          class="grid grow grid-cols-3 bg-webconf-gray/50"
         >
           <!-- 上午議程 -->
           <div
-            v-for="(agendas, time) in agendasAtDec12Morning"
+            v-for="(agendas, time) in currentMorningAgendas"
             :key="time"
-            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] lg:grid-cols-3"
+            class="relative col-span-3 grid grid-cols-1 lg:grid-cols-3"
           >
             <!-- 時間標記 (行動版) -->
             <div
@@ -473,9 +293,9 @@ watch(isMenuOpen, (newValue) => {
 
           <!-- 下午議程 -->
           <div
-            v-for="(agendas, time) in agendasAtDec12Afternoon"
+            v-for="(agendas, time) in currentAfternoonAgendas"
             :key="time"
-            class="relative col-span-3 grid grid-cols-1 gap-[0.5px] lg:grid-cols-3"
+            class="relative col-span-3 grid grid-cols-1 lg:grid-cols-3"
           >
             <!-- 時間標記 (行動版) -->
             <div

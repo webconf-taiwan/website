@@ -15,12 +15,6 @@ const selectedDate = defineModel<string>({ required: true })
       }"
       class="relative flex h-10 w-[213px] overflow-hidden border border-webconf-blue lg:h-[46px] lg:w-[150px]"
     >
-      <!-- 滑動的藍色背景 -->
-      <div
-        class="absolute inset-y-0 w-1/2 bg-webconf-blue transition-transform duration-300 ease-in-out"
-        :class="selectedDate === '13' ? 'translate-x-full' : 'translate-x-0'"
-      ></div>
-
       <button
         type="button"
         class="flex-center relative z-10 w-full transition-colors duration-300"
@@ -39,6 +33,12 @@ const selectedDate = defineModel<string>({ required: true })
       >
         13
       </button>
+
+      <!-- 滑動的藍色背景 -->
+      <div
+        class="absolute inset-0 w-1/2 bg-webconf-blue transition-transform duration-300 ease-in-out"
+        :class="selectedDate === '13' ? 'translate-x-full' : 'translate-x-0'"
+      ></div>
     </div>
   </div>
 </template>
