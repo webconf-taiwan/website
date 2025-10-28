@@ -117,10 +117,6 @@
 }
 
 @layer utilities {
-  .blue-shadow {
-    @apply shadow-[0px_6px_40px_8px_rgba(0,46,255,0.4)];
-  }
-
   @media (min-width: 640px) {
     .text-body-16 {
       font-size: 16px;
@@ -140,6 +136,14 @@
     .text-h5-20 {
       font-size: 20px;
     }
+  }
+
+  .blue-shadow {
+    @apply shadow-[0px_6px_40px_8px_rgba(0,46,255,0.4)];
+  }
+
+  .flex-center {
+    @apply flex items-center justify-center;
   }
 }
 

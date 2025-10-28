@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useBreakpoints } from '@vueuse/core'
-import { EXTERNAL_LINKS } from '~/constants/external-links'
+import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 const ctaCard = ref(null)
 const ctaContainer = ref(null)
