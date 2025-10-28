@@ -51,6 +51,14 @@ const agendasAtDec13Afternoon = computed(() => {
 
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 
+// 監聽 selectedDate 變化，切換時滾動到頂部
+watch(selectedDate, () => {
+  const lenis = useLenis()
+  if (lenis) {
+    lenis.scrollTo(0)
+  }
+})
+
 // 根據選定日期動態獲取議程
 const currentMorningAgendas = computed(() =>
   selectedDate.value === '12'
@@ -164,7 +172,7 @@ watch(isMenuOpen, (newValue) => {
       </div>
     </section>
 
-    <main class="text-webconf-gray">
+    <main class="border-b border-webconf-gray text-webconf-gray">
       <section
         class="sticky top-[55px] z-20 border-b border-webconf-gray bg-black"
       >
@@ -211,7 +219,7 @@ watch(isMenuOpen, (newValue) => {
             'z-10 flex': isMenuOpen || showAside,
             'hidden lg:flex': !isMenuOpen && !showAside,
           }"
-          class="fixed top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124px] lg:w-[228px] lg:border-b lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
+          class="fixed top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
@@ -249,80 +257,101 @@ watch(isMenuOpen, (newValue) => {
             scale: 0.5,
             duration: 0.5,
           }"
-          class="grid grow grid-cols-3 bg-webconf-gray/50"
+          class="grid grow grid-cols-3 bg-black"
         >
           <!-- 上午議程 -->
-          <div
-            v-for="(agendas, time) in currentMorningAgendas"
-            :key="time"
-            class="relative col-span-3 grid grid-cols-1 lg:grid-cols-3"
+          <transition-group
+            name="agenda-fade"
+            tag="div"
+            class="col-span-3"
+            appear
           >
-            <!-- 時間標記 (行動版) -->
             <div
-              class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
+              v-for="(agendas, time) in currentMorningAgendas"
+              :key="`morning-${selectedDate}-${time}`"
+              class="relative grid grid-cols-1 lg:grid-cols-3"
             >
-              <time :datetime="time">
-                {{ time }}
-              </time>
-              <span>{{ ` - ` }}</span>
-              <time :datetime="agendas[0].endTime">
-                {{ agendas[0].endTime }}
-              </time>
-            </div>
+              <!-- 時間標記 (行動版) -->
+              <div
+                class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
+              >
+                <time :datetime="time">
+                  {{ time }}
+                </time>
+                <span>{{ ` - ` }}</span>
+                <time :datetime="agendas[0].endTime">
+                  {{ agendas[0].endTime }}
+                </time>
+              </div>
 
-            <AgendaCard
-              v-for="(agenda, index) in agendas"
-              :key="`${time}-${index}`"
-              :data="agenda"
-              :index="index"
-              :time="time"
-              :show-time="index === 0"
-              :is-selected="
-                agenda.tags?.some((tag) => selectedTags.includes(tag))
-                  || selectedTags.length === 0
-              "
-            />
-          </div>
+              <AgendaCard
+                v-for="(agenda, index) in agendas"
+                :key="`${time}-${index}`"
+                :data="agenda"
+                :index="index"
+                :time="time"
+                :show-time="index === 0"
+                :is-selected="
+                  agenda.tags?.some((tag) => selectedTags.includes(tag))
+                    || selectedTags.length === 0
+                "
+              />
+            </div>
+          </transition-group>
 
           <!-- 中午休息 -->
-          <h2
-            class="col-span-3 border-b border-webconf-gray bg-black text-center text-h4-24 lg:py-10 xl:py-14"
+          <transition-group
+            name="agenda-fade"
+            tag="div"
+            class="col-span-3"
+            appear
           >
-            午休
-          </h2>
+            <h2
+              class="col-span-3 border-b-[0.5px] border-webconf-gray/50 bg-black text-center text-h4-24 lg:py-10 xl:py-14"
+            >
+              午休
+            </h2>
+          </transition-group>
 
           <!-- 下午議程 -->
-          <div
-            v-for="(agendas, time) in currentAfternoonAgendas"
-            :key="time"
-            class="relative col-span-3 grid grid-cols-1 lg:grid-cols-3"
+          <transition-group
+            name="agenda-fade"
+            tag="div"
+            class="col-span-3"
+            appear
           >
-            <!-- 時間標記 (行動版) -->
             <div
-              class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
+              v-for="(agendas, time) in currentAfternoonAgendas"
+              :key="`afternoon-${selectedDate}-${time}`"
+              class="relative grid grid-cols-1 lg:grid-cols-3"
             >
-              <time :datetime="time">
-                {{ time }}
-              </time>
-              <span>{{ ` - ` }}</span>
-              <time :datetime="agendas[0].endTime">
-                {{ agendas[0].endTime }}
-              </time>
-            </div>
+              <!-- 時間標記 (行動版) -->
+              <div
+                class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
+              >
+                <time :datetime="time">
+                  {{ time }}
+                </time>
+                <span>{{ ` - ` }}</span>
+                <time :datetime="agendas[0].endTime">
+                  {{ agendas[0].endTime }}
+                </time>
+              </div>
 
-            <AgendaCard
-              v-for="(agenda, index) in agendas"
-              :key="`${time}-${index}`"
-              :data="agenda"
-              :index="index"
-              :time="time"
-              :show-time="index === 0"
-              :is-selected="
-                agenda.tags?.some((tag) => selectedTags.includes(tag))
-                  || selectedTags.length === 0
-              "
-            />
-          </div>
+              <AgendaCard
+                v-for="(agenda, index) in agendas"
+                :key="`${time}-${index}`"
+                :data="agenda"
+                :index="index"
+                :time="time"
+                :show-time="index === 0"
+                :is-selected="
+                  agenda.tags?.some((tag) => selectedTags.includes(tag))
+                    || selectedTags.length === 0
+                "
+              />
+            </div>
+          </transition-group>
         </div>
       </section>
     </main>
@@ -342,5 +371,25 @@ watch(isMenuOpen, (newValue) => {
     background-position: center;
     background-size: cover;
   }
+}
+
+/* 議程淡入淡出效果 */
+.agenda-fade-enter-active,
+.agenda-fade-leave-active {
+  transition: all 0.3s ease-in-out;
+}
+
+.agenda-fade-enter-from,
+.agenda-fade-leave-to {
+  opacity: 0;
+}
+
+.agenda-fade-enter-to,
+.agenda-fade-leave-from {
+  opacity: 1;
+}
+
+.agenda-fade-move {
+  transition: opacity 0.3s ease-in-out;
 }
 </style>
