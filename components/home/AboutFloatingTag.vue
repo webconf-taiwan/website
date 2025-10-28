@@ -11,7 +11,7 @@ interface Props {
 
 const _ = defineProps<Props>()
 
-const gsap = useGsap()
+const { gsap } = useGsap()
 const tagRef = ref<any>(null)
 
 watch(tagRef, (newValue) => {

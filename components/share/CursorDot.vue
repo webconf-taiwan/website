@@ -9,7 +9,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const speed = computed(() => props.speed ?? 0.045)
 
-const gsap = useGsap()
+const { gsap } = useGsap()
 const { x: mouseX, y: mouseY } = useMouse({ type: 'client' })
 
 const cursorPosition = { x: 0, y: 0 }

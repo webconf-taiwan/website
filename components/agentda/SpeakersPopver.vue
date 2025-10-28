@@ -2,7 +2,7 @@
 const emit = defineEmits(['close'])
 const route = useRoute()
 const router = useRouter()
-const gsap = useGsap()
+const { gsap } = useGsap()
 const popoverRef = ref(null)
 
 function handleClose() {

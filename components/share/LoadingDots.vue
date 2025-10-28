@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const gsap = useGsap()
+const { gsap } = useGsap()
 
 const { setFirstLoad } = useGlobalState()
 onMounted(() => {

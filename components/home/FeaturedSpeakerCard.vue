@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useResizeObserver } from '@vueuse/core'
-import { useGsap } from '~/composables/useGsap'
 
 interface Props {
   originalIndex: number
@@ -14,7 +13,7 @@ interface Props {
 
 const props = defineProps<Props>()
 
-const gsap = useGsap()
+const { gsap } = useGsap()
 
 const cardContainer = ref<HTMLDivElement>()
 const currentIndex = ref(props.initialIndex)

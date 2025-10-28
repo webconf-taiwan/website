@@ -1,103 +1,57 @@
 <script setup lang="ts">
-import { useBreakpoints } from '@vueuse/core'
 import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 const ctaCard = ref(null)
 const ctaContainer = ref(null)
-const gsap = useGsap()
-
-const breakpoints = useBreakpoints({
-  sm: 640,
-})
-
-const isTablet = breakpoints.greaterOrEqual('sm')
-let scrollTrigger: any = null
-
-function initAnimation() {
-  if (!ctaCard.value || !ctaContainer.value)
-    return
-
-  if (scrollTrigger) {
-    scrollTrigger.kill()
-  }
-  gsap.killTweensOf(ctaCard.value)
-
-  nextTick(() => {
-    requestAnimationFrame(() => {
-      // 初始設定：保持 CSS 定位，只控制 Y 軸移動
-      gsap.set(ctaCard.value, {
-        y: '100vh', // 從螢幕下方開始
-      })
-
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: ctaContainer.value,
-          start: 'top top',
-          end: 'bottom center',
-          pin: true,
-          pinSpacing: true,
-          invalidateOnRefresh: true,
-          anticipatePin: 1,
-          preventOverlaps: true,
-          scrub: 2,
-          onRefresh: () => {
-            // 存儲 ScrollTrigger 實例以便後續清理
-            scrollTrigger = tl.scrollTrigger
-          },
-        },
-      })
-
-      tl.to(ctaCard.value, {
-        ease: 'power2.out',
-        y: 0, // 滑到原本的位置
-      })
-
-      scrollTrigger = tl.scrollTrigger
-    })
-  })
-}
-
-function resetAnimation() {
-  if (!ctaCard.value)
-    return
-
-  // 清理 ScrollTrigger
-  if (scrollTrigger) {
-    scrollTrigger.kill()
-    scrollTrigger = null
-  }
-
-  // 清除所有動畫
-  gsap.killTweensOf(ctaCard.value)
-
-  // 回復初始狀態 - 清除所有 GSAP 屬性，讓 CSS 接管
-  gsap.set(ctaCard.value, {
-    clearProps: 'all',
-  })
-}
+const { gsap } = useGsap()
+let mm: any = null
 
 onMounted(() => {
-  if (!ctaCard.value || !ctaContainer.value)
-    return
+  nextTick(() => {
+    requestAnimationFrame(() => {
+      if (!ctaCard.value || !ctaContainer.value)
+        return
 
-  if (isTablet.value) {
-    initAnimation()
-  }
-  else {
-    resetAnimation()
-  }
+      mm = gsap.matchMedia()
+
+      mm.add('(min-width: 768px)', () => {
+        const resetForMeasure = () => {
+          gsap.set(ctaCard.value, { yPercent: 100 })
+        }
+
+        resetForMeasure()
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: ctaContainer.value,
+            start: 'top top',
+            end: 'bottom center',
+            pin: true,
+            pinSpacing: true,
+            scrub: 2,
+            anticipatePin: 1,
+            invalidateOnRefresh: true,
+            preventOverlaps: true,
+            onRefreshInit: resetForMeasure,
+          },
+        })
+
+        tl.to(ctaCard.value, {
+          yPercent: 0,
+          ease: 'power2.out',
+        })
+        return () => {
+          tl.scrollTrigger?.kill()
+          tl.kill()
+          gsap.set(ctaCard.value, { clearProps: 'all' })
+        }
+      })
+    })
+  })
 })
 
-// 監聽 breakpoint 變化
-watch(isTablet, (newValue) => {
-  if (newValue) {
-    // 切換到平板模式，初始化動畫
-    initAnimation()
-  }
-  else {
-    // 切換到非平板模式，中斷動畫並回復初始狀態
-    resetAnimation()
-  }
+onBeforeUnmount(() => {
+  mm?.revert()
 })
 </script>
 
