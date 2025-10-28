@@ -174,7 +174,7 @@ watch(isMenuOpen, (newValue) => {
 
     <main class="border-b border-webconf-gray text-webconf-gray">
       <section
-        class="sticky top-[55px] z-20 border-b border-webconf-gray bg-black"
+        class="sticky top-[54.5px] z-20 border-b border-webconf-gray bg-black"
       >
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
