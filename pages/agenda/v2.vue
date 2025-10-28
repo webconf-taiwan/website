@@ -307,6 +307,7 @@ watch(isMenuOpen, (newValue) => {
             appear
           >
             <h2
+              key="lunch-break"
               class="col-span-3 border-b-[0.5px] border-webconf-gray/50 bg-black px-5 py-7 text-h4-24 lg:py-10 lg:text-center xl:py-14"
             >
               午休時間

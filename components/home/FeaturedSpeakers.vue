@@ -55,16 +55,28 @@ const { width } = useWindowSize()
 const isHovered = ref(false)
 const speakerCards = ref<any[]>([])
 const forceRerenderKey = ref(0)
-const displayCardLengthArr = computed(() => {
-  if (width.value >= 1600) {
-    return Array.from({ length: 5 }, (_, index) => index)
+
+// 都固定為 3 防止 hydration mismatch
+const displayCardLengthArr = ref(
+  Array.from({ length: 3 }, (_, index) => index),
+)
+
+onMounted(() => {
+  const updateCardLength = () => {
+    let length = 3
+
+    if (width.value >= 1600) {
+      length = 5
+    }
+    else if (width.value >= 1024) {
+      length = 4
+    }
+
+    displayCardLengthArr.value = Array.from({ length }, (_, index) => index)
   }
 
-  if (width.value >= 1024) {
-    return Array.from({ length: 4 }, (_, index) => index)
-  }
-
-  return Array.from({ length: 3 }, (_, index) => index)
+  updateCardLength()
+  watch(width, updateCardLength)
 })
 
 watch(displayCardLengthArr, () => {
