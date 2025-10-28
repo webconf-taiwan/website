@@ -94,7 +94,7 @@ export default antfu(
             'float-blocks',
             'blue-overlay',
             'mobile-menu',
-            'contentContainer',
+            'content-container',
             'dot',
             'horizontalLine',
             'sponsors-section',
