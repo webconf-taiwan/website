@@ -54,13 +54,13 @@ const scaleY = computed(() => height.value / initialSize.value)
         }"
       ></div>
 
-      <div class="h-full px-5 py-8 lg:px-10 xl:h-[285px]">
+      <div class="h-full px-5 py-8 lg:px-10 xl:min-h-[285px]">
         <!-- 議程簡介 -->
         <div
           v-if="data.title !== '同步聯播' && data.title !== 'TBD'"
           class="relative flex h-full flex-col gap-4"
         >
-          <h2 class="text-h4-24">
+          <h2 class="text-h4-24 leading-[1.4]">
             {{ data.title }}
           </h2>
 
@@ -97,7 +97,9 @@ const scaleY = computed(() => height.value / initialSize.value)
                 </div>
               </div>
 
-              <div class="flex flex-wrap items-center gap-2">
+              <div
+                class="flex flex-col flex-wrap items-center gap-1 lg:flex-row lg:gap-2"
+              >
                 <template
                   v-for="(speaker, idx) in data.speakerInfo"
                   :key="speaker.name"
@@ -105,9 +107,10 @@ const scaleY = computed(() => height.value / initialSize.value)
                   <p class="text-body-16">
                     {{ speaker.name }}
                   </p>
+
                   <p
                     v-if="data.speakerInfo && idx < data.speakerInfo.length - 1"
-                    class="text-[#999]"
+                    class="hidden text-[#999] lg:block"
                   >
                     |
                   </p>
@@ -150,8 +153,8 @@ const scaleY = computed(() => height.value / initialSize.value)
 
       <!-- 半透明遮罩 -->
       <div
-        class="absolute inset-0 size-full bg-black opacity-0 duration-300"
-        :class="{ 'opacity-70': !isSelected }"
+        class="absolute inset-0 hidden size-full bg-black opacity-0 duration-300"
+        :class="{ 'block opacity-70': !isSelected }"
       ></div>
     </NuxtLink>
   </div>

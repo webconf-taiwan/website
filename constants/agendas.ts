@@ -61,7 +61,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    title: 'AI 時代下， Product sense 就是你的秘密武器',
+    title: 'AI 時代下， Product Sense 就是你的秘密武器',
     speakerInfo: [
       {
         name: 'Chris',
