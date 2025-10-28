@@ -153,8 +153,11 @@ const scaleY = computed(() => height.value / initialSize.value)
 
       <!-- 半透明遮罩 -->
       <div
-        class="absolute inset-0 hidden size-full bg-black opacity-0 duration-300"
-        :class="{ 'block opacity-70': !isSelected }"
+        class="absolute inset-0 size-full bg-black opacity-0 duration-300"
+        :class="{
+          'block opacity-70': !isSelected,
+          'hidden': isSelected,
+        }"
       ></div>
     </NuxtLink>
   </div>
