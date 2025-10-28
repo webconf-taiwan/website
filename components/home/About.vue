@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const hoveredImageIndex = ref(-1)
-const gsap = useGsap()
+const { gsap } = useGsap()
 
 function useImageHoverEffect(index: number) {
   const imageRef = ref<HTMLElement | null>(null)

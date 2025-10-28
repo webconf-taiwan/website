@@ -146,7 +146,8 @@ export default defineNuxtPlugin(async (nuxtApp) => {
   // 獲取 GSAP 實例
   function getGsapInstance() {
     if (!gsapInstance) {
-      gsapInstance = useGsap()
+      const { gsap } = useGsap()
+      gsapInstance = gsap
     }
     return gsapInstance
   }

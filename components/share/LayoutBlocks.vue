@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const gsap = useGsap()
+const { gsap } = useGsap()
 
 onMounted(() => {
   const els = gsap.utils.toArray('.float-blocks') as HTMLElement[]

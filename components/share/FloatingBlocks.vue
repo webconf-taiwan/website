@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const gsap = useGsap()
+const { gsap } = useGsap()
 const route = useRoute()
 const hiddenPaths = ['/agenda', '/sponsors']
 const shouldHide = computed(() => {

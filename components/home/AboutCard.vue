@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const gsap = useGsap()
+const { gsap } = useGsap()
 const { width } = useWindowSize()
 const aboutCardRef = ref<any>(null)
 const scrollTriggerInstance = ref<any>(null)
