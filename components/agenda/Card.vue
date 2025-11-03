@@ -42,7 +42,7 @@ const scaleY = computed(() => height.value / initialSize.value)
       :class="{
         'lg:-mt-7': showTime,
       }"
-      to="/agenda/v2"
+      :to="`/agenda?speakerId=${data.speakerId}`"
     >
       <!-- 縮放特效方塊 -->
       <div

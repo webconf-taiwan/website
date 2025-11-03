@@ -18,12 +18,27 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@vueuse/nuxt',
     'nuxt-marquee',
+    '@nuxt/content',
   ],
   css: ['@/assets/css/main.css'],
 
   features: {
     inlineStyles: false,
   },
+
+  // content 相關生成設定
+  // content: {
+  //   build: {
+  //     markdown: {
+  //       rehypePlugins: {
+  //         'rehype-external-links': {
+  //           target: '_blank',
+  //           rel: ['noopener', 'noreferrer'],
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 
   // Google Fonts 設定
   fonts: {
@@ -68,6 +83,7 @@ export default defineNuxtConfig({
 
   vite: {
     build: {
+      sourcemap: true,
       rollupOptions: {
         output: {
           manualChunks: {
@@ -116,6 +132,7 @@ export default defineNuxtConfig({
         '/agenda',
         '/sponsors',
         '/coming-soon',
+        ...Array.from({ length: 32 }, (_, i) => `/agenda?speakerId=${i + 1}`),
       ],
     },
     routeRules: {

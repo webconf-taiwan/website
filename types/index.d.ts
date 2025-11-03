@@ -17,6 +17,7 @@ export interface SpeakerInfo {
 }
 
 export interface AgendaItem {
+  speakerId: string
   title: string | '同步聯播'
   speakerInfo?: {
     name: string
