@@ -100,6 +100,7 @@ export default antfu(
             'horizontalLine',
             'sponsors-section',
             'agenda-section',
+            'speakers-section',
             'sponsors-img-filter',
             'speaker-detail-header',
             'flex-center',

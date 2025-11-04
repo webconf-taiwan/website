@@ -33,7 +33,7 @@ const scaleY = computed(() => {
 
 <template>
   <div
-    class="relative border-b-[0.5px] border-webconf-gray/50 lg:border-l-[0.5px]"
+    class="relative border-b-[0.5px] border-webconf-gray/50 lg:border-r-[0.5px]"
   >
     <NuxtLink
       ref="cardRef"
@@ -60,7 +60,7 @@ const scaleY = computed(() => {
 
       <!-- 半透明遮罩 -->
       <div
-        class="absolute inset-0 size-full bg-black opacity-0 duration-300"
+        class="absolute inset-0 z-10 size-full bg-black opacity-0 duration-300"
         :class="{
           'block opacity-70': !isSelected,
           'hidden': isSelected,

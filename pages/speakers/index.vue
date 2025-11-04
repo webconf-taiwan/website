@@ -38,7 +38,7 @@ watch(isMenuOpen, (newValue) => {
 <template>
   <div>
     <section class="flex-1">
-      <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
+      <div class="speakers-section relative h-80 text-webconf-gray lg:h-400">
         <!-- 浮動方框 -->
         <ShareLayoutBlocks />
         <!-- 桌機使用 -->
@@ -96,12 +96,13 @@ watch(isMenuOpen, (newValue) => {
           class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
         >
           <h1 class="text-h1-96 text-white">
-            AGENDA
+            SPEAKERS
           </h1>
           <div class="flex w-full flex-col gap-3 lg:w-fit">
             <span
               class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
-            >議程頁</span>
+            >講者陣容
+            </span>
             <div class="order-[-1] flex items-center lg:order-1">
               <span class="size-3 bg-white"></span>
               <span class="h-[1px] flex-1 bg-white"></span>
@@ -117,36 +118,26 @@ watch(isMenuOpen, (newValue) => {
     </section>
 
     <main class="border-b border-webconf-gray text-webconf-gray">
+      <!-- 類型篩選 -->
+
       <section
-        class="sticky top-[54.5px] z-20 border-b border-webconf-gray bg-black"
+        class="sticky top-[54.5px] z-20 border-b border-webconf-gray bg-black lg:hidden"
       >
-        <div class="flex-center py-[6px] text-h4-24 lg:py-3">
-          <!-- 日期篩選 -->
-          <AgendaEventDaySwitch v-model="selectedDate" />
+        <div class="group flex justify-end p-4">
+          <label class="flex items-center gap-3">
+            <span
+              class="text-[28px] font-semibold leading-none text-webconf-blue duration-300 group-hover:text-white"
+            >
+              FILTER
+            </span>
 
-          <!-- 議程類型篩選 -->
-          <AgendaTagFilterBtn
-            :is-menu-open="isMenuOpen"
-            size="sm"
-            :selected-tags-count="selectedTags.length"
-            class="ml-3 lg:hidden"
-            @click="isMenuOpen = true"
-          />
-
-          <!-- 廳號 -->
-          <div
-            class="hidden grow text-center text-h4-24 lg:grid lg:grid-cols-3"
-          >
-            <h3 class="col-span-1">
-              M 棟
-            </h3>
-            <h3 class="col-span-1">
-              F 棟
-            </h3>
-            <h3 class="col-span-1">
-              A2 棟
-            </h3>
-          </div>
+            <AgendaTagFilterBtn
+              :is-menu-open="isMenuOpen"
+              size="sm"
+              :selected-tags-count="selectedTags.length"
+              @click="isMenuOpen = true"
+            />
+          </label>
         </div>
 
         <div
@@ -155,15 +146,15 @@ watch(isMenuOpen, (newValue) => {
         ></div>
       </section>
 
-      <!-- 議程列表 -->
+      <!-- 講者列表 -->
       <section class="relative flex">
-        <!-- 議程類型篩選清單 -->
+        <!-- 類型篩選清單 -->
         <aside
           :class="{
             'z-10 flex': isMenuOpen || showAside,
             'hidden lg:flex': !isMenuOpen && !showAside,
           }"
-          class="sticky top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
+          class="sticky top-[126px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[54px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
@@ -196,6 +187,7 @@ watch(isMenuOpen, (newValue) => {
           </transition>
         </aside>
 
+        <!-- 講者卡片 -->
         <div
           v-cursor="{
             scale: 0.5,
@@ -216,13 +208,13 @@ watch(isMenuOpen, (newValue) => {
             :show-initial-scale-square="false"
           >
             <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
-              <div class="relative">
+              <div class="relative shrink-0">
                 <NuxtImg
-                  src="/images/speakers/carousel-01_happy.webp"
+                  :src="speaker.avatarUrl"
                   :alt="speaker.name"
                   width="220"
                   height="314"
-                  class="aspect-speaker-img-full h-[143px] w-[100px] object-cover grayscale duration-300 group-hover:grayscale-0 lg:size-full"
+                  class="aspect-speaker-img-full h-[144px] w-[100px] object-cover grayscale duration-300 group-hover:grayscale-0 lg:size-full"
                 />
 
                 <ShareGradientMask class="group-hover:opacity-0" />
@@ -258,7 +250,7 @@ watch(isMenuOpen, (newValue) => {
 </template>
 
 <style scoped>
-.agenda-section {
+.speakers-section {
   background-image: url("/images/sponsorsBanner.webp");
   background-repeat: no-repeat;
   background-position: center top;
@@ -266,29 +258,29 @@ watch(isMenuOpen, (newValue) => {
 }
 
 @media (min-width: 640px) {
-  .agenda-section {
+  .speakers-section {
     background-position: center;
     background-size: cover;
   }
 }
 
-/* 議程淡入淡出效果 */
-.agenda-fade-enter-active,
-.agenda-fade-leave-active {
+/* 淡入淡出效果 */
+.speakers-fade-enter-active,
+.speakers-fade-leave-active {
   transition: all 0.3s ease-in-out;
 }
 
-.agenda-fade-enter-from,
-.agenda-fade-leave-to {
+.speakers-fade-enter-from,
+.speakers-fade-leave-to {
   opacity: 0;
 }
 
-.agenda-fade-enter-to,
-.agenda-fade-leave-from {
+.speakers-fade-enter-to,
+.speakers-fade-leave-from {
   opacity: 1;
 }
 
-.agenda-fade-move {
+.speakers-fade-move {
   transition: opacity 0.3s ease-in-out;
 }
 </style>
