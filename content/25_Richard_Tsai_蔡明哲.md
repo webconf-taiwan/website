@@ -38,14 +38,16 @@ room: A2 棟
 - 認識微軟 Clarity 操作-設定、追蹤、檢視
 - 從點擊熱圖數據，推敲用戶行為與意圖
   適合初階經驗的UX工作者，以及不曾嘗試點擊熱圖的同學
-  ::
+
+::
 
 ::speaker-audience
 #targetAudience
 
 1. 適合初階經驗的UX工作者
 2. 想要體驗點擊熱圖的同學
-   ::
+
+::
 
 ::speaker-earnings
 #expectedEarnings
