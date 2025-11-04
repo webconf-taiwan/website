@@ -14,9 +14,11 @@ const currentSpeaker = computed(() => {
   if (!speakerId.value || !allSpeakers.value)
     return null
 
-  return allSpeakers.value.find(
+  const speaker = allSpeakers.value.find(
     speaker => speaker.meta.speakerId === speakerId.value,
   )
+
+  return speaker ? [speaker] : null
 })
 
 function handleClose() {
@@ -25,8 +27,8 @@ function handleClose() {
 </script>
 
 <template>
-  <AgentdaSpeakersPopver
-    v-if="currentSpeaker"
+  <AgendaSpeakersPopver
+    v-if="currentSpeaker && currentSpeaker.length > 0"
     :speaker="currentSpeaker"
     @close="handleClose"
   />

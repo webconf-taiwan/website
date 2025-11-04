@@ -99,6 +99,7 @@ const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
   queryCollection('content').all())
 
 const currentSpeaker = computed(() => {
+  console.log('allSpeakers', allSpeakers.value)
   const speakerIds
     = typeof route.query.speakerId === 'string'
       ? [route.query.speakerId]
@@ -398,10 +399,11 @@ watch(
 
     <!-- 講者資訊彈跳視窗 -->
     <AgendaSpeakersPopver
-      v-if="isShowPopover && currentSpeaker"
+      v-if="isShowPopover && currentSpeaker && currentSpeaker.length > 0"
       :speaker="currentSpeaker"
       @close="isShowPopover = false"
     />
+    <!-- <NuxtPage /> -->
   </div>
 </template>
 

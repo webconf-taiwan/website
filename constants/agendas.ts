@@ -67,7 +67,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '3',
+    speakerId: '3&speakerId=4',
     title: 'AI 時代下， Product Sense 就是你的秘密武器',
     speakerInfo: [
       {
@@ -283,7 +283,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: 'x',
+    speakerId: '33&speakerId=34',
     title: '從設計到共識：悠識如何在每一次新專案裡，用溝通建立信任關係',
     speakerInfo: [
       {
@@ -708,3 +708,8 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
 ]
+
+export const BACK_LINKS = {
+  agendas: { title: '返回議程列表', link: '/agenda' },
+  speakers: { title: '返回講者列表', link: '/speakers' },
+} as const
