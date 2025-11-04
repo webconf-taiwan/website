@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   {
     name: '講者陣容',
     enName: 'Speakers',
-    href: '/coming-soon',
+    href: '/speakers',
     isTablet: false,
     isDesktop: true,
   },
