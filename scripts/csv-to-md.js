@@ -130,7 +130,7 @@ Papa.parse(csv, {
         ...(scheduleInfo?.image && { image: scheduleInfo.image }),
         ...(formateFacebook && { formateFacebook }),
         ...(x && { x }),
-        ...(formateIg && { formateIg }),
+        ...(formateIg && { ig: formateIg }),
         ...(formateOtherLink && { other_link: formateOtherLink }),
         ...(scheduleInfo && { day: scheduleInfo.day }),
         ...(scheduleInfo && { date: scheduleInfo.date }),

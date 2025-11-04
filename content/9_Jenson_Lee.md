@@ -11,7 +11,7 @@ description: "在實施敏捷開發的團隊裡，產品經理必須在快速迭
 email: realhere@gmail.com
 image: /images/speakers_v2/9_Jenson_Lee.webp
 formateFacebook: https://www.facebook.com/realhere
-formateIg: https://www.instagram.com/realhere
+ig: https://www.instagram.com/realhere
 day: day1
 date: 2025-12-12
 time: 16:15~17:00

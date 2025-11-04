@@ -11,7 +11,7 @@ description: "微前端帶來很多自主性和靈活性，也帶來很多一開
 email: fetalk.podcast@gmail.com
 image: /images/speakers_v2/12_Eric_Lee.webp
 x: https://x.com/fetalkpodcast
-formateIg: https://www.threads.com/@fetalkpodcast
+ig: https://www.threads.com/@fetalkpodcast
 other_link: https://www.instagram.com/fetalkpodcast/
 day: day1
 date: 2025-12-12
