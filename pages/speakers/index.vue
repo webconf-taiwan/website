@@ -201,7 +201,7 @@ watch(isMenuOpen, (newValue) => {
             scale: 0.5,
             duration: 0.5,
           }"
-          class="relative grid w-full grid-cols-1 lg:grid-cols-4 3xl:grid-cols-5"
+          class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
           <ShareGridCard
             v-for="(speaker, index) in SPEAKERS"
@@ -215,14 +215,40 @@ watch(isMenuOpen, (newValue) => {
             link="/speakers"
             :show-initial-scale-square="false"
           >
-            <div class="p-5 lg:p-9">
-              <NuxtImg
-                src="/images/speakers/carousel-01_happy.webp"
-                :alt="speaker.name"
-                width="220"
-                height="314"
-                class="aspect-speaker-img-full size-full object-cover"
-              />
+            <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
+              <div class="relative">
+                <NuxtImg
+                  src="/images/speakers/carousel-01_happy.webp"
+                  :alt="speaker.name"
+                  width="220"
+                  height="314"
+                  class="aspect-speaker-img-full h-[143px] w-[100px] object-cover grayscale duration-300 group-hover:grayscale-0 lg:size-full"
+                />
+
+                <ShareGradientMask class="group-hover:opacity-0" />
+                <ShareNoiseMask class="group-hover:opacity-0" />
+              </div>
+
+              <div>
+                <h3 class="text-h4-24 leading-[1.4]">
+                  {{ speaker.name }}
+                </h3>
+                <p
+                  class="text-xs leading-[1.4] text-gray-500 group-hover:text-white"
+                >
+                  {{ speaker.JobTitle }}
+                </p>
+
+                <ul class="relative mt-3 flex grow flex-wrap items-start gap-2">
+                  <li
+                    v-for="tag in speaker.tags"
+                    :key="`${speaker.name}-${tag}`"
+                    class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
+                  >
+                    {{ tag }}
+                  </li>
+                </ul>
+              </div>
             </div>
           </ShareGridCard>
         </div>
