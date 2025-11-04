@@ -30,7 +30,7 @@ AI 讓人人都能快速做出產品，但你的角色會被取代嗎？但真�
 ::speaker-audience
 #targetAudience
 
-- 「AI 時代中迷失」 的產品開發者 - 產品設計師 - 工程師 - 產品經理
+- 「AI 時代中迷失」 的產品開發者-產品設計師-工程師-產品經理
   ::
 
 ::speaker-earnings
