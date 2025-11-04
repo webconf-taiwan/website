@@ -22,6 +22,7 @@ export default antfu(
     },
     typescript: true,
     ignores: [
+      'scripts/**',
       'node_modules/',
       'dist/',
       '.output/',
