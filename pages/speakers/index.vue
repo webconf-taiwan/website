@@ -117,9 +117,7 @@ watch(isMenuOpen, (newValue) => {
       </div>
     </section>
 
-    <main class="border-b border-webconf-gray text-webconf-gray">
-      <!-- 類型篩選 -->
-
+    <main class="border-b border-webconf-gray bg-black text-webconf-gray">
       <section
         class="sticky top-[54.5px] z-20 border-b border-webconf-gray bg-black lg:hidden"
       >
@@ -146,9 +144,7 @@ watch(isMenuOpen, (newValue) => {
         ></div>
       </section>
 
-      <!-- 講者列表 -->
-      <section class="relative flex">
-        <!-- 類型篩選清單 -->
+      <section class="relative z-10 flex">
         <aside
           :class="{
             'z-10 flex': isMenuOpen || showAside,
@@ -164,7 +160,7 @@ watch(isMenuOpen, (newValue) => {
             @click="isMenuOpen = true"
           />
 
-          <!-- 篩選清單 -->
+          <!-- 篩選標籤選單 -->
           <AgendaTagFilterMenu
             v-model:is-open="isMenuOpen"
             v-model:selected-tags="selectedTags"
@@ -205,7 +201,7 @@ watch(isMenuOpen, (newValue) => {
                 || selectedTags.length === 0
             "
             link="/speakers"
-            :show-initial-scale-square="false"
+            :show-square="false"
           >
             <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
               <div class="relative shrink-0">

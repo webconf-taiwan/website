@@ -8,7 +8,7 @@ const props = defineProps<{
   isSelected: boolean
   index: number
   link: string
-  showInitialScaleSquare: boolean
+  showSquare: boolean
 }>()
 
 const cardRef = ref<HTMLElement>()
@@ -20,13 +20,14 @@ const { width, height } = useElementSize(cardRef, undefined, {
 const initialSize = computed(() => (width.value >= 1280 ? 28 : 20))
 
 // 計算 X 和 Y 軸各自需要的縮放比例，讓兩個方向同時到達邊界
-// 當 showInitialScaleSquare 為 false 時，從 1px 開始計算縮放比例以確保 hover 效果能正常觸發
+// 當 showSquare 為 false 時，使用較小但穩定的基礎大小以確保跨平台相容性
 const scaleX = computed(() => {
-  const baseSize = props.showInitialScaleSquare ? initialSize.value : 1
+  const baseSize = props.showSquare ? initialSize.value : 1
   return width.value / baseSize
 })
+
 const scaleY = computed(() => {
-  const baseSize = props.showInitialScaleSquare ? initialSize.value : 1
+  const baseSize = props.showSquare ? initialSize.value : 1
   return height.value / baseSize
 })
 </script>
@@ -42,14 +43,14 @@ const scaleY = computed(() => {
     >
       <!-- 縮放特效方塊 -->
       <div
-        :class="{
-          'size-5 lg:size-7': showInitialScaleSquare,
-          'size-px': !showInitialScaleSquare,
-        }"
         class="absolute left-0 top-0 z-0 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))] lg:block"
         :style="{
           '--scale-x': scaleX,
           '--scale-y': scaleY,
+        }"
+        :class="{
+          'size-5 lg:size-7': showSquare,
+          'size-px': !showSquare,
         }"
       ></div>
 
