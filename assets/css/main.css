@@ -126,6 +126,14 @@
       font-size: 18px;
     }
 
+    .text-h2-60 {
+      font-size: 60px;
+    }
+
+    .text-h3-40 {
+      line-height: 1.2;
+    }
+
     .text-h4-24 {
       font-size: 24px;
     }

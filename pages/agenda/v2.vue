@@ -2,6 +2,8 @@
 import type { AgendaItem, AgendaTag } from '~/types'
 import { AGENDA_LIST } from '~/constants/agendas'
 
+const route = useRoute()
+
 useSeoMeta({
   title: '議程資訊',
 })
@@ -89,6 +91,37 @@ watch(isMenuOpen, (newValue) => {
     }, 200)
   }
 })
+
+// 講者彈跳視窗相關
+const isShowPopover = ref(false)
+
+const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
+  queryCollection('content').all())
+
+const currentSpeaker = computed(() => {
+  const speakerIds
+    = typeof route.query.speakerId === 'string'
+      ? [route.query.speakerId]
+      : route.query.speakerId
+  if (!speakerIds || !allSpeakers.value)
+    return null
+
+  const findSpeakerInfos = allSpeakers.value.filter(speaker =>
+    speakerIds?.includes(speaker.meta.speakerId as string),
+  )
+
+  return findSpeakerInfos
+})
+
+watch(
+  () => route.query.speakerId,
+  (newVal) => {
+    if (!newVal || !allSpeakers.value)
+      return
+    isShowPopover.value = true
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -97,6 +130,7 @@ watch(isMenuOpen, (newValue) => {
       <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
         <!-- 浮動方框 -->
         <ShareLayoutBlocks />
+
         <!-- 桌機使用 -->
         <svg
           class="absolute inset-0 hidden size-full sm:block"
@@ -129,45 +163,48 @@ watch(isMenuOpen, (newValue) => {
             />
           </g>
         </svg>
+
         <!-- 平板以下使用 -->
         <svg
           class="absolute inset-0 block size-full sm:hidden"
-          viewBox="0 0 360 320"
+          viewBox="0 0 640 320"
           preserveAspectRatio="xMidYMid slice"
         >
           <!-- 右側斜線 -->
           <g>
             <!-- 靜態軌道 -->
             <line
-              x1="185"
+              x1="330"
               y1="0"
-              x2="525"
+              x2="650"
               y2="320"
               stroke="#E6E6E6"
               stroke-width="0.5"
             />
           </g>
         </svg>
+
         <div
-          class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
+          class="absolute left-[50%] top-[45%] flex w-full -translate-x-1/2 flex-col items-center justify-center gap-6 px-5 sm:top-[38%] sm:px-6 lg:top-[50%] lg:flex-row lg:items-end"
         >
           <h1 class="text-h1-96 text-white">
-            AGENDA
+            Agenda
           </h1>
           <div class="flex w-full flex-col gap-3 lg:w-fit">
             <span
-              class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
-            >議程頁</span>
+              class="inline-block px-0 text-center text-h4-24 lg:pl-[285px] lg:pr-10"
+            >議程資訊</span>
             <div class="order-[-1] flex items-center lg:order-1">
-              <span class="size-3 bg-white"></span>
-              <span class="h-[1px] flex-1 bg-white"></span>
-              <span class="size-3 bg-white"></span>
+              <span class="size-3 bg-webconf-gray"></span>
+              <span class="h-[1px] flex-1 bg-webconf-gray"></span>
+              <span class="size-3 bg-webconf-gray"></span>
             </div>
           </div>
         </div>
+
         <div
           v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-          class="absolute bottom-0 left-0 z-30 h-[1px] w-full bg-webconf-gray"
+          class="absolute bottom-0 left-0 h-[1px] w-full bg-webconf-gray"
         ></div>
       </div>
     </section>
@@ -356,6 +393,14 @@ watch(isMenuOpen, (newValue) => {
         </div>
       </section>
     </main>
+
+    <!-- 講者資訊彈跳視窗 -->
+    <AgendaSpeakersPopver
+      v-if="isShowPopover && currentSpeaker && currentSpeaker.length > 0"
+      :speaker="currentSpeaker"
+      @close="isShowPopover = false"
+    />
+    <!-- <NuxtPage /> -->
   </div>
 </template>
 
@@ -364,13 +409,12 @@ watch(isMenuOpen, (newValue) => {
   background-image: url("/images/sponsorsBanner.webp");
   background-repeat: no-repeat;
   background-position: center top;
-  background-size: auto 400px;
+  background-size: cover;
 }
 
 @media (min-width: 640px) {
   .agenda-section {
     background-position: center;
-    background-size: cover;
   }
 }
 

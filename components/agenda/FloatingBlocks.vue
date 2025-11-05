@@ -4,25 +4,33 @@ const { gsap } = useGsap()
 onMounted(() => {
   const els = gsap.utils.toArray('.float-blocks') as HTMLElement[]
 
-  if (!els)
+  if (!els.length)
     return
 
-  els.forEach((el) => {
-    return gsap.to(el, {
-      x: () => gsap.utils.random(-10, 10),
-      y: () => gsap.utils.random(-10, 10),
-      duration: gsap.utils.random(1, 1.5),
-      ease: 'none',
-      repeat: -1,
-      repeatRefresh: true,
-    })
+  const mm = gsap.matchMedia()
+
+  mm.add('(min-width: 1024px)', () => {
+    for (const el of els) {
+      gsap.to(el, {
+        x: () => gsap.utils.random(-10, 10),
+        y: () => gsap.utils.random(-10, 10),
+        duration: gsap.utils.random(1, 1.5),
+        ease: 'none',
+        repeat: -1,
+        repeatRefresh: true,
+      })
+    }
+  })
+
+  onUnmounted(() => {
+    mm.revert()
   })
 })
 </script>
 
 <template>
   <div
-    class="pointer-events-none fixed inset-0 z-[1] size-full touch-none select-none"
+    class="pointer-events-none fixed inset-0 z-[1] hidden size-full touch-none select-none lg:block"
   >
     <div
       class="float-blocks absolute bottom-[10.06px] left-[10px] size-[22.05px] bg-[#909090] before:absolute before:inset-1/2 before:block before:size-2 before:-translate-x-1/2 before:-translate-y-1/2 before:bg-black before:content-['']"
