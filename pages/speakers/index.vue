@@ -1,52 +1,9 @@
 <script setup lang="ts">
-import type { AgendaItem, AgendaTag } from '~/types'
-import { AGENDA_LIST } from '~/constants/agendas'
+import type { AgendaTag } from '~/types'
+import { SPEAKERS } from '~/constants/agendas'
 
 useSeoMeta({
   title: '講者陣容',
-})
-
-// 將議程按時間分組
-function groupAgendasByTime(agendas: AgendaItem[]) {
-  return agendas.reduce(
-    (acc, agenda) => {
-      const time = agenda.startTime
-      if (!acc[time]) {
-        acc[time] = []
-      }
-      acc[time].push(agenda)
-      return acc
-    },
-    {} as Record<string, AgendaItem[]>,
-  )
-}
-
-const agendasAtDec12Morning = computed(() => {
-  const morningAgendas = AGENDA_LIST.filter(
-    item => item.day === '12' && item.startTime < '12:00',
-  )
-  return groupAgendasByTime(morningAgendas)
-})
-
-const agendasAtDec12Afternoon = computed(() => {
-  const afternoonAgendas = AGENDA_LIST.filter(
-    item => item.day === '12' && item.startTime >= '12:00',
-  )
-  return groupAgendasByTime(afternoonAgendas)
-})
-
-const agendasAtDec13Morning = computed(() => {
-  const morningAgendas = AGENDA_LIST.filter(
-    item => item.day === '13' && item.startTime < '12:00',
-  )
-  return groupAgendasByTime(morningAgendas)
-})
-
-const agendasAtDec13Afternoon = computed(() => {
-  const afternoonAgendas = AGENDA_LIST.filter(
-    item => item.day === '13' && item.startTime >= '12:00',
-  )
-  return groupAgendasByTime(afternoonAgendas)
 })
 
 const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
@@ -58,19 +15,6 @@ watch(selectedDate, () => {
     lenis.scrollTo(0)
   }
 })
-
-// 根據選定日期動態獲取議程
-const currentMorningAgendas = computed(() =>
-  selectedDate.value === '12'
-    ? agendasAtDec12Morning.value
-    : agendasAtDec13Morning.value,
-)
-
-const currentAfternoonAgendas = computed(() =>
-  selectedDate.value === '12'
-    ? agendasAtDec12Afternoon.value
-    : agendasAtDec13Afternoon.value,
-)
 
 const isMenuOpen = ref(false)
 const showAside = ref(false)
@@ -257,102 +201,30 @@ watch(isMenuOpen, (newValue) => {
             scale: 0.5,
             duration: 0.5,
           }"
-          class="grid grow grid-cols-3 bg-black"
+          class="relative grid w-full grid-cols-1 lg:grid-cols-4 3xl:grid-cols-5"
         >
-          <!-- 上午議程 -->
-          <transition-group
-            name="agenda-fade"
-            tag="div"
-            class="col-span-3"
-            appear
+          <ShareGridCard
+            v-for="(speaker, index) in SPEAKERS"
+            :key="`${speaker.name}-${index}`"
+            :data="speaker"
+            :index="index"
+            :is-selected="
+              speaker.tags?.some((tag) => selectedTags.includes(tag))
+                || selectedTags.length === 0
+            "
+            link="/speakers"
+            :show-initial-scale-square="false"
           >
-            <div
-              v-for="(agendas, time) in currentMorningAgendas"
-              :key="`morning-${selectedDate}-${time}`"
-              class="relative grid grid-cols-1 lg:grid-cols-3"
-            >
-              <!-- 時間標記 (行動版) -->
-              <div
-                class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
-              >
-                <time :datetime="time">
-                  {{ time }}
-                </time>
-                <span>{{ ` - ` }}</span>
-                <time :datetime="agendas[0].endTime">
-                  {{ agendas[0].endTime }}
-                </time>
-              </div>
-
-              <AgendaCard
-                v-for="(agenda, index) in agendas"
-                :key="`${time}-${index}`"
-                :data="agenda"
-                :index="index"
-                :time="time"
-                :show-time="index === 0"
-                :is-selected="
-                  agenda.tags?.some((tag) => selectedTags.includes(tag))
-                    || selectedTags.length === 0
-                "
+            <div class="p-5 lg:p-9">
+              <NuxtImg
+                src="/images/speakers/carousel-01_happy.webp"
+                :alt="speaker.name"
+                width="220"
+                height="314"
+                class="aspect-speaker-img-full size-full object-cover"
               />
             </div>
-          </transition-group>
-
-          <!-- 中午休息 -->
-          <transition-group
-            name="agenda-fade"
-            tag="div"
-            class="col-span-3"
-            appear
-          >
-            <h2
-              key="lunch-break"
-              class="col-span-3 border-b-[0.5px] border-webconf-gray/50 bg-black px-5 py-7 text-h4-24 lg:py-10 lg:text-center xl:py-14"
-            >
-              午休時間
-            </h2>
-          </transition-group>
-
-          <!-- 下午議程 -->
-          <transition-group
-            name="agenda-fade"
-            tag="div"
-            class="col-span-3"
-            appear
-          >
-            <div
-              v-for="(agendas, time) in currentAfternoonAgendas"
-              :key="`afternoon-${selectedDate}-${time}`"
-              class="relative grid grid-cols-1 lg:grid-cols-3"
-            >
-              <!-- 時間標記 (行動版) -->
-              <div
-                class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
-              >
-                <time :datetime="time">
-                  {{ time }}
-                </time>
-                <span>{{ ` - ` }}</span>
-                <time :datetime="agendas[0].endTime">
-                  {{ agendas[0].endTime }}
-                </time>
-              </div>
-
-              <AgendaCard
-                v-for="(agenda, index) in agendas"
-                :key="`${time}-${index}`"
-                :data="agenda"
-                :index="index"
-                :time="time"
-                :show-time="index === 0"
-                :is-selected="
-                  agenda.tags?.some((tag) => selectedTags.includes(tag))
-                    || selectedTags.length === 0
-                "
-              />
-            </div>
-          </transition-group>
+          </ShareGridCard>
         </div>
       </section>
     </main>

@@ -14,6 +14,7 @@ export type AgendaTag
 export interface SpeakerInfo {
   name: string
   avatarUrl: string
+  JobTitle: string
 }
 
 export interface AgendaItem {
@@ -22,6 +23,7 @@ export interface AgendaItem {
   speakerInfo?: {
     name: string
     avatarUrl: string
+    JobTitle: string
   }[]
   tags?: AgendaTag[]
   day: '12' | '13'
