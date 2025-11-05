@@ -2,6 +2,8 @@
 import type { AgendaTag } from '~/types'
 import { SPEAKERS } from '~/constants/agendas'
 
+const route = useRoute()
+
 useSeoMeta({
   title: '講者陣容',
 })
@@ -33,6 +35,38 @@ watch(isMenuOpen, (newValue) => {
     }, 200)
   }
 })
+
+// 講者彈跳視窗相關
+const isShowPopover = ref(false)
+
+const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
+  queryCollection('content').all())
+
+const currentSpeaker = computed(() => {
+  const speakerIds
+    = typeof route.query.speakerId === 'string'
+      ? [route.query.speakerId]
+      : route.query.speakerId
+
+  if (!speakerIds || !allSpeakers.value)
+    return null
+
+  const findSpeakerInfos = allSpeakers.value.filter((speaker: any) =>
+    speakerIds?.includes(speaker.meta.speakerId as string),
+  )
+
+  return findSpeakerInfos
+})
+
+watch(
+  () => route.query.speakerId,
+  (newVal) => {
+    if (!newVal || !allSpeakers.value)
+      return
+    isShowPopover.value = true
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -200,7 +234,7 @@ watch(isMenuOpen, (newValue) => {
               speaker.tags?.some((tag) => selectedTags.includes(tag))
                 || selectedTags.length === 0
             "
-            link="/speaker"
+            :link="`/speakers?speakerId=${speaker.speakerId}`"
             :show-square="false"
           >
             <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
@@ -242,6 +276,14 @@ watch(isMenuOpen, (newValue) => {
         </div>
       </section>
     </main>
+
+    <!-- 講者資訊彈跳視窗 -->
+    <AgendaSpeakersPopver
+      v-if="isShowPopover && currentSpeaker && currentSpeaker.length > 0"
+      :speaker="currentSpeaker"
+      type="speakers"
+      @close="isShowPopover = false"
+    />
   </div>
 </template>
 
