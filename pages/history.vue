@@ -23,10 +23,23 @@ const HISTORY_LIST = [
     img: '/images/history-2013.webp',
   },
 ]
+
+const hoveredYear = ref<number | null>(null)
 </script>
 
 <template>
   <div>
+    <NuxtImg
+      v-for="item in HISTORY_LIST"
+      :key="item.year"
+      :src="item.img"
+      :class="{
+        'opacity-60': hoveredYear === item.year,
+        'opacity-0': hoveredYear !== item.year,
+      }"
+      class="pointer-events-none fixed left-0 top-0 h-[100dvh] w-screen object-cover blur-[8px] duration-500 ease-in-out"
+    />
+
     <section class="flex-1">
       <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
         <!-- 浮動方框 -->
@@ -116,10 +129,12 @@ const HISTORY_LIST = [
             'lg:self-end': index % 2 === 1,
           }"
           class="hover:blue-shadow group relative bg-black text-white duration-300 lg:w-[calc(100dvw/2)]"
+          @mouseenter="hoveredYear = item.year"
+          @mouseleave="hoveredYear = null"
         >
           <NuxtImg
             :src="item.img"
-            :alt="item.year"
+            :alt="`${item.year} 網站示意圖`"
             class="size-full object-cover"
           />
           <div
@@ -166,5 +181,10 @@ const HISTORY_LIST = [
   background-repeat: no-repeat;
   background-position: center top;
   background-size: cover;
+}
+@media (min-width: 640px) {
+  .agenda-section {
+    background-position: center;
+  }
 }
 </style>
