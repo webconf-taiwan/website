@@ -3,13 +3,13 @@ import type { AgendaItem, AgendaTag, SpeakerInfo } from '~/types'
 export const AGENDA_LIST: AgendaItem[] = [
   // 12/12 09:10 - 09:55
   {
-    speakerId: '1',
     title: 'B2B 服務的 AI Agent 產品設計原則',
     speakerInfo: [
       {
         name: 'Happy',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '91APP / 產品長',
+        speakerId: '1',
       },
     ],
     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
@@ -19,7 +19,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '1',
     title: '同步聯播',
     day: '12',
     startTime: '09:10',
@@ -27,7 +26,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '1',
     title: '同步聯播',
     day: '12',
     startTime: '09:10',
@@ -36,16 +34,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 10:05 - 10:50
   {
-    speakerId: 'x',
-    // title: 'DevOps 91App',
-    // speakerInfo: [
-    //   {
-    //     name: '安得魯',
-    //     avatarUrl: '91App',
-    //   },
-    // ],
-    // tags: [],
-
     title: 'TBD',
     day: '12',
     startTime: '10:05',
@@ -53,13 +41,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '13',
     title: '走在同業前面：國泰的雲端轉型洞察與啟示',
     speakerInfo: [
       {
         name: '顏勝豪 Otto',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '國泰金控 / 協理',
+        speakerId: '13',
       },
     ],
     tags: ['AI', '產業應用'],
@@ -69,18 +57,19 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '3&speakerId=4',
     title: 'AI 時代下， Product Sense 就是你的秘密武器',
     speakerInfo: [
       {
         name: 'Chris',
         avatarUrl: '/images/speakers/carousel-09_chris.webp',
         JobTitle: 'PicCollage 拼貼趣 / 資深產品設計經理',
+        speakerId: '3',
       },
       {
         name: 'Tinya',
         avatarUrl: '/images/speakers/carousel-10_tinya.webp',
         JobTitle: 'PicCollage 拼貼趣 / 資深產品設計師',
+        speakerId: '4',
       },
     ],
     tags: ['AI', '產品思維', '設計實務'],
@@ -91,15 +80,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 11:00 - 11:45
   {
-    speakerId: 'x',
-    // title: 'KURO',
-    // speakerInfo: [
-    //   {
-    //     name: 'KURO',
-    //     avatarUrl: 'Vue.js Taiwan',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '12',
     startTime: '11:00',
@@ -107,15 +87,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: 'x',
-    // title: '蘇泰安',
-    // speakerInfo: [
-    //   {
-    //     name: '蘇泰安',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '12',
     startTime: '11:00',
@@ -123,13 +94,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '5',
     title: 'AI時代下， 如何運用數據幫助產品發揮影響力',
     speakerInfo: [
       {
         name: '姜乃文',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '天下雜誌集團 / 主任分析師',
+        speakerId: '5',
       },
     ],
     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
@@ -140,13 +111,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 11:55 - 12:40
   {
-    speakerId: '10',
     title: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
     speakerInfo: [
       {
         name: 'Max Chen',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '對稱資訊股份有限公司、面試趣 / CEO',
+        speakerId: '10',
       },
     ],
     tags: ['產品思維', '產業應用'],
@@ -156,15 +127,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: 'x',
-    // title: 'Mouson',
-    // speakerInfo: [
-    //   {
-    //     name: 'Mouson',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '12',
     startTime: '11:55',
@@ -172,13 +134,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '6',
     title: '產品 OKR 的訂立與 Roadmap 展開',
     speakerInfo: [
       {
         name: '曾友志',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '下午先生有限公司 / 資深產品顧問',
+        speakerId: '6',
       },
     ],
     tags: ['產品思維', '團隊管理'],
@@ -189,7 +151,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 13:30 - 14:15
   {
-    speakerId: 'x',
     title: 'TBD',
     day: '12',
     startTime: '13:30',
@@ -197,7 +158,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: 'x',
     title: 'TBD',
     day: '12',
     startTime: '13:30',
@@ -205,13 +165,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '7',
     title: '當 Product Mindset 走出產品設計：跨界的設計影響力',
     speakerInfo: [
       {
         name: '周明璇（小紫）',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '財團法人均一平台教育基金會 / 影響力評估設計師',
+        speakerId: '7',
       },
     ],
     tags: ['AI', '產品思維', '團隊管理'],
@@ -222,7 +182,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 14:25 - 15:10
   {
-    speakerId: 'x',
     title: 'TBD',
     day: '12',
     startTime: '14:25',
@@ -230,13 +189,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '14',
     title: '工程師和 AI 小隊，是合作、競爭、混亂？',
     speakerInfo: [
       {
         name: '蕭晊莛',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'Titansoft / Technical Manager',
+        speakerId: '14',
       },
     ],
     tags: ['Backend', 'DevOps', 'AI'],
@@ -246,13 +205,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '8',
     title: '從研究到上線：全流程設計與 AI 協作專案實戰',
     speakerInfo: [
       {
         name: 'Niki Liu',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '新加坡商鈦坦科技 / Senior Product Designer',
+        speakerId: '8',
       },
     ],
     tags: ['AI', '產品思維', '設計實務'],
@@ -263,13 +222,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 15:20 - 16:05
   {
-    speakerId: '11',
     title: '從使用者到工程師：AI 在企業怎麼落地？',
     speakerInfo: [
       {
         name: 'Shirney Huang 黃琇琳',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'Aiworks / CEO',
+        speakerId: '11',
       },
     ],
     tags: ['AI'],
@@ -279,13 +238,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '15',
     title: '軟體開發邪教的救贖：AI 時代更應掌握的 TDD 技能',
     speakerInfo: [
       {
         name: 'Kuma Syu',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '緯雲有限公司 / R&D Manager',
+        speakerId: '15',
       },
     ],
     tags: ['AI', '產品思維', '軟體設計'],
@@ -295,18 +254,19 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '33&speakerId=34',
     title: '從設計到共識：悠識如何在每一次新專案裡，用溝通建立信任關係',
     speakerInfo: [
       {
         name: '林星妤',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '悠識數位 / Senior Experience Designer',
+        speakerId: '33',
       },
       {
         name: '黃明硯',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '悠識數位 / Experience Designer',
+        speakerId: '34',
       },
     ],
     tags: ['產品思維', '設計實務'],
@@ -317,13 +277,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 16:15 - 17:00
   {
-    speakerId: '12',
     title: '對微前端的美好想像',
     speakerInfo: [
       {
         name: 'Eric Lee',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '前端輕鬆聊 / Senior Software Engineer',
+        speakerId: '12',
       },
     ],
     tags: ['Frontend', '軟體設計'],
@@ -333,13 +293,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '16',
     title: '寫了幾年 Code，然後呢？軟體工程師必須重新認識的 DevOps',
     speakerInfo: [
       {
         name: '陳正瑋（艦長）',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'Athemaster 炬識科技 / Technical consultant',
+        speakerId: '16',
       },
     ],
     tags: ['DevOps', 'Agile', '產品思維', '軟體設計'],
@@ -349,13 +309,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '9',
     title: '敏捷環境中的產品經理生存之道：以產品思維實現價值與成果',
     speakerInfo: [
       {
         name: 'Jenson Lee',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '台灣敏捷協會 / 理事長',
+        speakerId: '9',
       },
     ],
     tags: ['Agile', '產品思維'],
@@ -366,13 +326,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 09:00 - 09:45
   {
-    speakerId: '17',
     title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
     speakerInfo: [
       {
         name: 'Huli 胡立',
         avatarUrl: '/images/speakers/carousel-04_huli.webp',
         JobTitle: '技術部落格 Huli\'s blog / 站長',
+        speakerId: '17',
       },
     ],
     tags: ['Frontend', 'Backend', 'Security'],
@@ -382,7 +342,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '17',
     title: '同步聯播',
     day: '13',
     startTime: '09:00',
@@ -390,13 +349,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '19',
     title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
     speakerInfo: [
       {
         name: 'Joey 蕭喬伊',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '引鹿創新體驗研究室 / UX總監',
+        speakerId: '19',
       },
     ],
     tags: ['團隊管理', '設計實務'],
@@ -407,15 +366,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 10:00 - 10:45
   {
-    // title: '',
-    // speakerInfo: [
-    //   {
-    //     name: 'AMOS',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: ['Frontend', 'AI'],
-    speakerId: 'x',
     title: 'TBD',
     day: '13',
     startTime: '10:00',
@@ -423,13 +373,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '30',
     title: '如何做到真正有效的技術領導：實用技巧篇',
     speakerInfo: [
       {
         name: 'Jocelin Ho',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'PicCollage 拼貼趣 / Engineering Manager',
+        speakerId: '30',
       },
     ],
     tags: ['Agile', '團隊管理'],
@@ -439,13 +389,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '20',
     title: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
     speakerInfo: [
       {
         name: 'Peter Su',
         avatarUrl: '/images/speakers/carousel-08_peter.webp',
         JobTitle: '漸強實驗室 / Product Lead',
+        speakerId: '20',
       },
     ],
     tags: ['Agile', 'AI', '產品思維', '團隊管理'],
@@ -456,13 +406,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 10:55 - 11:40
   {
-    speakerId: '26',
     title: '鍵盤救國：解決社會性問題的工程師',
     speakerInfo: [
       {
         name: '吳展瑋 Howard',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '好想工作室 / 創辦人',
+        speakerId: '26',
       },
     ],
     tags: ['產品思維', '產業應用', '軟體設計'],
@@ -472,13 +422,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '31',
     title: '願 Web API 原力與你同在',
     speakerInfo: [
       {
         name: 'MUKI',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'MUKI space* / 前端工程師',
+        speakerId: '31',
       },
     ],
     tags: ['Frontend', 'AI'],
@@ -488,13 +438,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '21',
     title: '以打詐為例，服務設計如何讓公共數位服務有感',
     speakerInfo: [
       {
         name: '卓致遠',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '致遠體驗設計 / 體驗總監',
+        speakerId: '21',
       },
     ],
     tags: ['產品思維', '設計實務'],
@@ -505,13 +455,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 11:50 - 12:35
   {
-    speakerId: '27',
     title: 'GenAI 時代下的測試三板斧',
     speakerInfo: [
       {
         name: '柯仁傑',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'Odd-e / Technical Coach',
+        speakerId: '27',
       },
     ],
     tags: ['軟體設計'],
@@ -521,13 +471,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '32',
     title: 'React 優化實戰分析 - 掌握 React 進階技術 x 底層思維',
     speakerInfo: [
       {
         name: 'ThisWeb (Kun)',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'ThisWeb / 前端工程師',
+        speakerId: '32',
       },
     ],
     tags: ['Frontend'],
@@ -537,13 +487,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '22',
     title: '服務設計師的傳說：90% 的時間在讓設計發生',
     speakerInfo: [
       {
         name: '郭心喻',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'Government of Nova Scotia 加拿大新斯科舍省政府 / Senior Service Designer',
+        speakerId: '22',
       },
     ],
     tags: ['產品思維', '產業應用', '軟體設計', '設計實務'],
@@ -554,13 +504,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 13:30 - 14:15
   {
-    speakerId: '2',
     title: '深入淺出 Playwright Agent 代理人模式',
     speakerInfo: [
       {
         name: 'Will 保哥',
         avatarUrl: '/images/speakers/carousel-03_will.webp',
         JobTitle: '多奇數位創意 / 技術總監',
+        speakerId: '2',
       },
     ],
     tags: ['Frontend', 'AI'],
@@ -570,15 +520,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: '深入淺出 Playwright Agent 代理人模式',
-    // speakerInfo: [
-    //   {
-    //     name: 'Will 保哥',
-    //     avatarUrl: '多奇數位創意 / 技術總監',
-    //   },
-    // ],
-    // tags: ['Frontend', 'AI'],
-    speakerId: 'x',
     title: 'TBD',
     day: '13',
     startTime: '13:30',
@@ -586,13 +527,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '23',
     title: '培養十倍速 PM：從工具到習慣',
     speakerInfo: [
       {
         name: '趙柏強',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: 'Stable Progress / Growth Companion',
+        speakerId: '23',
       },
     ],
     tags: ['Agile', 'AI', '產品思維', '團隊管理'],
@@ -603,13 +544,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 14:25 - 15:10
   {
-    speakerId: '28',
     title: '程式碼與尿布：媽媽工程師的生存指南',
     speakerInfo: [
       {
         name: 'Hannah',
         avatarUrl: '/images/speakers/carousel-05_hannah.webp',
         JobTitle: 'Remote / Frontend',
+        speakerId: '28',
       },
     ],
     tags: ['Frontend'],
@@ -619,15 +560,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: 'Mike Hsu',
-    // speakerInfo: [
-    //   {
-    //     name: 'Mike Hsu',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: [],
-    speakerId: 'x',
     title: 'TBD',
     day: '13',
     startTime: '14:25',
@@ -635,13 +567,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '24',
     title: '轉職PM之後，我獨自升級：為產品開發世界獻上美好洞察',
     speakerInfo: [
       {
         name: 'Kaba Su',
         avatarUrl: '/images/speakers/carousel-01_happy.webp',
         JobTitle: '台灣互動設計協會 IxDA Taiwan / 前理事',
+        speakerId: '24',
       },
     ],
     tags: ['AI', '產品思維', '團隊管理', '設計實務'],
@@ -652,13 +584,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 15:20 - 16:05
   {
-    speakerId: '29',
     title: '大 AI 時代，工程師的成長之路 - 從 Junior 到 Staff',
     speakerInfo: [
       {
         name: '奶綠茶',
         avatarUrl: '/images/speakers/carousel-06_milkmidi.webp',
         JobTitle: 'PositiveGrid / Staff Frontend Engineer',
+        speakerId: '29',
       },
     ],
     tags: ['Frontend'],
@@ -668,15 +600,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: '薩泰爾 馮元詰',
-    // speakerInfo: [
-    //   {
-    //     name: '馮元詰',
-    //     avatarUrl: '薩泰爾',
-    //   },
-    // ],
-    // tags: [],
-    speakerId: 'x',
     title: 'TBD',
     day: '13',
     startTime: '15:20',
@@ -684,23 +607,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    // title: '轉職 PM 之後，我獨自升級：為產品開發世界獻上美好洞察',
-    // speakerInfo: [
-    //   {
-    //     name: 'Kaba Su',
-    //     avatarUrl: '台灣互動設計協會 IxDA Taiwan / 前理事',
-    //   },
-    //   {
-    //     name: 'Richard Tsai 蔡明哲',
-    //     avatarUrl: '悠識數位 / UX Coach 暨創辦人',
-    //   },
-    //   {
-    //     name: 'Bob',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: ['AI', '設計實務', '產品思維', '團隊管理'],
-    speakerId: 'x',
     title: 'TBD',
     day: '13',
     startTime: '15:20',
@@ -709,13 +615,13 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 16:15 - 17:00
   {
-    speakerId: '18',
     title: '活在科技工作者最好的年代，用商業思維優化你的人生選擇',
     speakerInfo: [
       {
         name: 'Gipi',
         avatarUrl: '/images/speakers/carousel-02_gipi.webp',
         JobTitle: '商業思維學院 / 院長',
+        speakerId: '18',
       },
     ],
     tags: ['AI', '產品思維', '軟體設計'],
@@ -725,7 +631,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    speakerId: '18',
     title: '同步聯播',
     day: '13',
     startTime: '16:15',
@@ -733,7 +638,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    speakerId: '18',
     title: '同步聯播',
     day: '13',
     startTime: '16:15',
@@ -746,6 +650,7 @@ export const BACK_LINKS = {
   agendas: { title: '返回議程列表', link: '/agenda' },
   speakers: { title: '返回講者列表', link: '/speakers' },
 } as const
+
 export const SPEAKERS = AGENDA_LIST.reduce<Array<
   SpeakerInfo & {
     tags: AgendaTag[]
@@ -759,6 +664,7 @@ export const SPEAKERS = AGENDA_LIST.reduce<Array<
         name: speaker.name,
         avatarUrl: speaker.avatarUrl,
         JobTitle: speaker.JobTitle,
+        speakerId: speaker.speakerId,
         tags,
       })
     })

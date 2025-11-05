@@ -15,16 +15,12 @@ export interface SpeakerInfo {
   name: string
   avatarUrl: string
   JobTitle: string
+  speakerId: string
 }
 
 export interface AgendaItem {
-  speakerId: string
   title: string | '同步聯播'
-  speakerInfo?: {
-    name: string
-    avatarUrl: string
-    JobTitle: string
-  }[]
+  speakerInfo?: SpeakerInfo[]
   tags?: AgendaTag[]
   day: '12' | '13'
   startTime: string

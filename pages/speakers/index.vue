@@ -200,7 +200,7 @@ watch(isMenuOpen, (newValue) => {
               speaker.tags?.some((tag) => selectedTags.includes(tag))
                 || selectedTags.length === 0
             "
-            link="/speakers"
+            link="/speaker"
             :show-square="false"
           >
             <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
