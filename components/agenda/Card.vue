@@ -44,8 +44,8 @@ const scaleY = computed(() => height.value / initialSize.value)
       }"
       :to="
         data.speakerInfo && data.speakerInfo.length > 0
-          ? `/agenda?${data.speakerInfo.map((s) => `speakerId=${s.speakerId}`).join('&')}`
-          : '/agenda'
+          ? `/agenda/v2?${data.speakerInfo.map((s) => `speakerId=${s.speakerId}`).join('&')}`
+          : '/agenda/v2'
       "
     >
       <!-- 縮放特效方塊 -->

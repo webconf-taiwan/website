@@ -10,9 +10,9 @@ speakerInfo: "面試趣、比薪水創辦人"
 description: "分享面試趣、比薪水的創立過程，以及我們踩過哪些坑"
 email: max@3.1416.tw
 image: /images/speakers_v2/10_Max_Chen.webp
-formateFacebook: https://www.facebook.com/maxch3n
+fb: https://www.facebook.com/maxch3n
 ig: https://www.instagram.com/frugal_ptt/
-other_link: https://www.threads.com/@frugal_ptt
+threads: https://www.threads.com/@frugal_ptt
 day: day1
 date: 2025-12-12
 time: 11:55~12:40

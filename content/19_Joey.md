@@ -11,7 +11,7 @@ description: "你曾在走出辦公室、面對真實場域的受訪者時感到
 email: joeyhsiao.uxr@gmail.com
 image: /images/speakers_v2/19_Joey.webp
 ig: https://www.instagram.com/joeyhsiao.uxr/
-other_link: https://www.threads.com/@joeyhsiao.uxr
+threads: https://www.threads.com/@joeyhsiao.uxr
 day: day2
 date: 2025-12-13
 time: 09:00~09:45

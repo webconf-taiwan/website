@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="$slots.speechAbstract"
-    class="custom-ul-style mb-0 text-body-16 text-webconf-gray lg:mb-10"
+    class="custom-ul-style mb-0 flex flex-col gap-4 text-body-16 text-webconf-gray lg:mb-10"
   >
     <slot name="speechAbstract"></slot>
   </div>
@@ -9,12 +9,12 @@
 
 <style scoped>
 .custom-ul-style :deep(ul) {
-  list-style-type: disc;
+  list-style-type: square;
   margin-left: 1.5rem;
 }
 
 .custom-ul-style :deep(ol) {
-  list-style-type: auto;
+  list-style-type: square;
   margin-left: 1.5rem;
 }
 </style>

@@ -10,7 +10,8 @@ speakerInfo: "Hi, 我是Jocelin，目前擁有 10+ 年軟體產業經驗的 Tech
 description: "技術領導百百種，成為資深工程師後就一定會走上技術領導之路。但是，怎麼樣才是真正有效的技術領導？在學校或是在公司時似乎也都沒人教過，前公司的Tech Lead其實根本就不懂團隊在想什麼，我到底該怎麼做才能成為讓大家服氣的技術領導？ 此次演講主要針對技術領導，如主管和Tech Lead，或是希望能成為技術領導的聽眾所設計。不講高大上的廢話，也不吹捧技術領導有多神話，專注於提供最實用的技巧，讓你按部就班就能成為團隊最有效，也讓人服氣的Lead。我們將會分成在技術面（硬實力）與團隊面（軟實力）兩個面向，深入探究領導的核心。"
 email: jocelinho1108@gmail.com
 image: /images/speakers_v2/30_Jocelin_Ho.webp
-other_link: https://www.linkedin.com/in/jocelinho/
+other_link: https://medium.com/@jocelin
+linkedin: https://www.linkedin.com/in/jocelinho/
 day: day2
 date: 2025-12-13
 time: 10:00~10:45

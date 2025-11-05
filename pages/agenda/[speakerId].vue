@@ -2,6 +2,10 @@
 const route = useRoute('agenda-speakerId')
 const router = useRouter()
 
+useSeoMeta({
+  robots: 'noindex, nofollow',
+})
+
 const speakerId = computed(() => {
   const param = route.params.speakerId
   return Array.isArray(param) ? param[0] : param

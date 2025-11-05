@@ -10,7 +10,7 @@ speakerInfo: "》經歷過技術人、行銷人，最後成為 UX 人及創業�
 description: "兩小時工作坊，請自備筆電與網路，內容包括: - 網站用戶行為的數據工具概覽 - 網頁點擊熱圖的用途 - 認識微軟 Clarity 操作-設定、追蹤、檢視 - 從點擊熱圖數據，推敲用戶行為與意圖 適合初階經驗的UX工作者，以及不曾嘗試點擊熱圖的同學"
 email: richard@userxper.com
 image: /images/speakers_v2/24_Kaba_Su.webp
-formateFacebook: https://facebook.com/uxrichard
+fb: https://facebook.com/uxrichard
 other_link: https://edu.userxper.com/@richard-tsai
 day: day2
 date: 2025-12-13

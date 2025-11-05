@@ -45,11 +45,11 @@ defineExpose({
     <ContentRenderer :value="renderableIntroSection" />
     <ul class="flex gap-3">
       <li
-        v-if="meta.facebook"
+        v-if="meta.fb"
         class="border border-webconf-blue/90"
       >
         <a
-          :href="typeof meta.facebook === 'string' ? meta.facebook : '#'"
+          :href="typeof meta.fb === 'string' ? meta.fb : '#'"
           class="block p-[10px]"
           target="_blank"
         >
@@ -109,6 +109,57 @@ defineExpose({
             width="24"
             height="24"
             alt="ig"
+          />
+        </a>
+      </li>
+      <li
+        v-if="meta.threads"
+        class="border border-webconf-blue/90"
+      >
+        <a
+          :href="typeof meta.threads === 'string' ? meta.threads : '#'"
+          class="block p-[10px]"
+          target="_blank"
+        >
+          <NuxtImg
+            src="/images/icon/threads.svg"
+            width="24"
+            height="24"
+            alt="threads"
+          />
+        </a>
+      </li>
+      <li
+        v-if="meta.youtube"
+        class="border border-webconf-blue/90"
+      >
+        <a
+          :href="typeof meta.youtube === 'string' ? meta.youtube : '#'"
+          class="block p-[10px]"
+          target="_blank"
+        >
+          <NuxtImg
+            src="/images/icon/youtube.svg"
+            width="24"
+            height="24"
+            alt="youtube"
+          />
+        </a>
+      </li>
+      <li
+        v-if="meta.linkedin"
+        class="border border-webconf-blue/90"
+      >
+        <a
+          :href="typeof meta.linkedin === 'string' ? meta.linkedin : '#'"
+          class="block p-[10px]"
+          target="_blank"
+        >
+          <NuxtImg
+            src="/images/icon/linkedin.svg"
+            width="24"
+            height="24"
+            alt="linkedin"
           />
         </a>
       </li>

@@ -10,8 +10,8 @@ speakerInfo: "Java 出身的軟體開發者，討厭在無意義的重複工作�
 description: "聽人說過 TDD 是「軟體開發的邪教」嗎？有些人會為 TDD 貼上「開發者的信仰」、「寫測試比寫程式還多」的標籤。所以這些人是怎麼樣？以為我們每天一早打開電腦，不是先寫程式，而是先焚香沐浴祭拜測試嗎？🙃 事實上，在現今這個 AI 能幫你秒生程式碼的時代，TDD 不但不是邪教，反而可能是我們最後的救贖。 不少人已經發現了，AI 幫你寫的程式很容易跑得起來，卻不代表它能長久維護。需求一改，整個系統就像疊疊樂一樣搖搖欲墜。重點是你當初因為信任（或只是懶），根本就沒認真看過它寫了什麼、怎麼寫的。這時候，如果沒有自動化測試保護，你很快就會掉進「AI 產生 → 看不懂亂修 → 其它地方又壞掉」的無間道。 大家以為測試的重點是抓錯誤，非也。測試的本質在於「理解」。TDD 不是要你當測試奴隸，而是讓你用測試來描述功能，用正確被理解（而且能上線）的功能來驅動設計，確保程式架構乾淨、可演進，改壞了也能立刻知道。因此，TDD 正是幫你把 AI 從「玩票工具」升級成「可靠隊友」的關鍵。 這場演講，我會帶你破除旁人對 TDD 的誤解，看看它如何在 AI 時代反而更有價值。或許最後你會發現：你以為的「邪教」才是開發者最實在的保命符。"
 email: bearhsu2@gmail.com
 image: /images/speakers_v2/15_Kuma_Syu.webp
-formateFacebook: https://www.facebook.com/kukumamaya
-other_link: https://www.youtube.com/@kukumamaya
+fb: https://www.facebook.com/kukumamaya
+youtube: https://www.youtube.com/@kukumamaya
 day: day1
 date: 2025-12-12
 time: 15:20~16:05

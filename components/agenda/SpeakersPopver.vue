@@ -233,7 +233,6 @@ function animateImageTransitionReverse() {
 
 /* 開始自動播放 */
 function startAutoPlay() {
-  console.log('startAutoPlay', props.speaker)
   if (!props.speaker || props.speaker.length <= 1)
     return
 

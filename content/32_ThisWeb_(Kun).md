@@ -11,6 +11,7 @@ description: "現在 AI 的輔助開發工具越來越強大，但你有沒有�
 email: thisweb.tech@gmail.com
 image: /images/speakers_v2/32_ThisWeb (Kun).webp
 ig: https://www.instagram.com/this.web
+threads: https://www.threads.com/@this.web
 other_link: https://thisweb.dev/
 day: day2
 date: 2025-12-13

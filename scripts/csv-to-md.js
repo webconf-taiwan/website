@@ -128,7 +128,7 @@ Papa.parse(csv, {
         ...(description && { description }),
         ...(email && { email }),
         ...(scheduleInfo?.image && { image: scheduleInfo.image }),
-        ...(formateFacebook && { formateFacebook }),
+        ...(formateFacebook && { fb:formateFacebook }),
         ...(x && { x }),
         ...(formateIg && { ig: formateIg }),
         ...(formateOtherLink && { other_link: formateOtherLink }),

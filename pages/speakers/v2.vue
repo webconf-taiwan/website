@@ -234,7 +234,7 @@ watch(
               speaker.tags?.some((tag) => selectedTags.includes(tag))
                 || selectedTags.length === 0
             "
-            :link="`/speakers?speakerId=${speaker.speakerId}`"
+            :link="`/speakers/v2?speakerId=${speaker.speakerId}`"
             :show-square="false"
           >
             <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">

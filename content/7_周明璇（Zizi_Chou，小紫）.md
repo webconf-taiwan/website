@@ -10,8 +10,8 @@ speakerInfo: "擔任教育科技非營利組織「影響力評估設計師」，
 description: "以「設計部門如何推動專業影響力」為核心，回顧從建立設計基礎、跨職能整合到設計賦能的三個發展階段。內容涵蓋 產品思維（Product Mindset） 在不同情境下的應用、設計與跨部門協作的實務經驗，以及 AI 如何加速設計與研究工作的轉化。講者將透過實際案例，帶出設計師如何在團隊運作、產品策略與組織文化中發揮影響力，並分享在這個過程中淬鍊出的心法與工作觀點。 （＊不確定分享時常，所以還需要討論是否三個篇章都要分享，或專注挑一個🙏🏻） 三個篇章都能連回 Product Mindset（產品思維）。每個篇章對應到 Product Mindset 的應用面向不同： 篇章一：在敏捷流程（Sprint運作、會議節奏）裡的運用，確保設計能穩定「跑起來」。 篇章二：在跨職能協作（Data + Sales + Design）裡的應用，解決研究與教育現場的需求落差。 篇章三：在設計賦能與 AI（AIGC 設計規範、工具化）的應用，做到設計文化的放大與延展。"
 email: shigure0912@gmail.com
 image: /images/speakers_v2/7_周明璇(Zizi Chou，小紫).webp
-formateFacebook: https://www.facebook.com/shigure0912
-other_link: https://www.linkedin.com/in/zizichou/
+fb: https://www.facebook.com/shigure0912
+linkedin: https://www.linkedin.com/in/zizichou/
 day: day1
 date: 2025-12-12
 time: 13:30~14:15

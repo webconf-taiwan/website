@@ -1,2 +1,3 @@
 User-Agent: *
-Disallow:
+Disallow: /speakers/v2
+Disallow: /agenda/v2
