@@ -42,6 +42,14 @@ export default defineNuxtConfig({
     },
   },
 
+  // Nuxt-icon 自定義圖標設定
+  icon: {
+    customCollections: [{
+      prefix: 'custom-icon',
+      dir: './public/images/icon',
+    }],
+  },
+
   // Google Fonts 設定
   fonts: {
     families: [

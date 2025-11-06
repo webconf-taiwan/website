@@ -15,7 +15,7 @@ function scrollToTop() {
     @click="scrollToTop"
   >
     <Icon
-      name="heroicons:arrow-up"
+      name="custom-icon:arrow-up"
       class="size-6 text-black lg:group-hover:text-white"
     />
   </button>

@@ -90,11 +90,15 @@ defineExpose({
       >{{ meta.company }} / {{ meta.job_title }}</span>
     </div>
     <ContentRenderer :value="renderableIntroSection" />
-    <ul class="flex gap-3">
+    <ul class="flex flex-wrap gap-3">
       <li
         v-for="link in socialLinks"
         :key="link.key"
-        class="border border-webconf-blue/90"
+        v-cursor="{
+          scale: 0.5,
+          duration: 0.5,
+        }"
+        class="border border-webconf-blue/90 transition-colors duration-500 hover:bg-webconf-blue"
       >
         <a
           :href="typeof link.url === 'string' ? link.url : '#'"
