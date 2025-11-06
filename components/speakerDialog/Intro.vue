@@ -3,7 +3,7 @@ import type { ContentCollectionItem } from '@nuxt/content'
 
 type SpeakerSectionsReturn = ReturnType<typeof useSpeakerSections>
 
-defineProps<{
+const props = defineProps<{
   speaker: ContentCollectionItem[]
   meta: ContentCollectionItem['meta']
   renderableIntroSection: SpeakerSectionsReturn['renderableIntroSection']['value']
@@ -11,6 +11,53 @@ defineProps<{
 }>()
 
 const contentRef = ref<HTMLElement | null>(null)
+
+const socialLinks = computed(() =>
+  [
+    {
+      key: 'fb',
+      icon: '/images/icon/fb.svg',
+      alt: 'Facebook',
+      url: props.meta.fb,
+    },
+    {
+      key: 'x',
+      icon: '/images/icon/twitter.svg',
+      alt: 'X (Twitter)',
+      url: props.meta.x,
+    },
+    {
+      key: 'other_link',
+      icon: '/images/icon/web.svg',
+      alt: 'Website',
+      url: props.meta.other_link,
+    },
+    {
+      key: 'ig',
+      icon: '/images/icon/ig.svg',
+      alt: 'Instagram',
+      url: props.meta.ig,
+    },
+    {
+      key: 'threads',
+      icon: '/images/icon/threads.svg',
+      alt: 'Threads',
+      url: props.meta.threads,
+    },
+    {
+      key: 'youtube',
+      icon: '/images/icon/youtube.svg',
+      alt: 'YouTube',
+      url: props.meta.youtube,
+    },
+    {
+      key: 'linkedin',
+      icon: '/images/icon/linkedin.svg',
+      alt: 'LinkedIn',
+      url: props.meta.linkedin,
+    },
+  ].filter(link => link.url),
+)
 
 defineExpose({
   contentRef,
@@ -45,121 +92,21 @@ defineExpose({
     <ContentRenderer :value="renderableIntroSection" />
     <ul class="flex gap-3">
       <li
-        v-if="meta.fb"
+        v-for="link in socialLinks"
+        :key="link.key"
         class="border border-webconf-blue/90"
       >
         <a
-          :href="typeof meta.fb === 'string' ? meta.fb : '#'"
+          :href="typeof link.url === 'string' ? link.url : '#'"
           class="block p-[10px]"
           target="_blank"
+          rel="noopener noreferrer"
         >
           <NuxtImg
-            src="/images/icon/fb.svg"
+            :src="link.icon"
             width="24"
             height="24"
-            alt="fb"
-          />
-        </a>
-      </li>
-      <li
-        v-if="meta.x"
-        class="border border-webconf-blue/90"
-      >
-        <a
-          :href="typeof meta.x === 'string' ? meta.x : '#'"
-          class="block p-[10px]"
-          target="_blank"
-        >
-          <NuxtImg
-            src="/images/icon/twitter.svg"
-            width="24"
-            height="24"
-            alt="twitter"
-          />
-        </a>
-      </li>
-      <li
-        v-if="meta.other_link"
-        class="border border-webconf-blue/90"
-      >
-        <a
-          :href="typeof meta.other_link === 'string' ? meta.other_link : '#'"
-          class="block p-[10px]"
-          target="_blank"
-        >
-          <NuxtImg
-            src="/images/icon/web.svg"
-            width="24"
-            height="24"
-            alt="web"
-          />
-        </a>
-      </li>
-      <li
-        v-if="meta.ig"
-        class="border border-webconf-blue/90"
-      >
-        <a
-          :href="typeof meta.ig === 'string' ? meta.ig : '#'"
-          class="block p-[10px]"
-          target="_blank"
-        >
-          <NuxtImg
-            src="/images/icon/ig.svg"
-            width="24"
-            height="24"
-            alt="ig"
-          />
-        </a>
-      </li>
-      <li
-        v-if="meta.threads"
-        class="border border-webconf-blue/90"
-      >
-        <a
-          :href="typeof meta.threads === 'string' ? meta.threads : '#'"
-          class="block p-[10px]"
-          target="_blank"
-        >
-          <NuxtImg
-            src="/images/icon/threads.svg"
-            width="24"
-            height="24"
-            alt="threads"
-          />
-        </a>
-      </li>
-      <li
-        v-if="meta.youtube"
-        class="border border-webconf-blue/90"
-      >
-        <a
-          :href="typeof meta.youtube === 'string' ? meta.youtube : '#'"
-          class="block p-[10px]"
-          target="_blank"
-        >
-          <NuxtImg
-            src="/images/icon/youtube.svg"
-            width="24"
-            height="24"
-            alt="youtube"
-          />
-        </a>
-      </li>
-      <li
-        v-if="meta.linkedin"
-        class="border border-webconf-blue/90"
-      >
-        <a
-          :href="typeof meta.linkedin === 'string' ? meta.linkedin : '#'"
-          class="block p-[10px]"
-          target="_blank"
-        >
-          <NuxtImg
-            src="/images/icon/linkedin.svg"
-            width="24"
-            height="24"
-            alt="linkedin"
+            :alt="link.alt"
           />
         </a>
       </li>
