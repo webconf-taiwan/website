@@ -26,19 +26,21 @@ export default defineNuxtConfig({
     inlineStyles: false,
   },
 
-  // content 相關生成設定
-  // content: {
-  //   build: {
-  //     markdown: {
-  //       rehypePlugins: {
-  //         'rehype-external-links': {
-  //           target: '_blank',
-  //           rel: ['noopener', 'noreferrer'],
-  //         },
-  //       },
-  //     },
-  //   },
-  // },
+  // content 相關生成設定(a 標籤外部連結自動開啟新分頁)
+  content: {
+    build: {
+      markdown: {
+        rehypePlugins: {
+          'rehype-external-links': {
+            options: {
+              target: '_blank',
+              rel: ['noopener', 'noreferrer'],
+            },
+          },
+        },
+      },
+    },
+  },
 
   // Google Fonts 設定
   fonts: {
