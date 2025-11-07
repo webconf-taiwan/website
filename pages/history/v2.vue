@@ -84,6 +84,7 @@ const hoveredYear = ref<number | null>(null)
             />
           </g>
         </svg>
+
         <div
           class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
         >
@@ -102,6 +103,7 @@ const hoveredYear = ref<number | null>(null)
             </div>
           </div>
         </div>
+
         <div
           v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
           class="absolute bottom-0 left-0 z-30 h-[1px] w-full bg-webconf-gray"
@@ -145,17 +147,18 @@ const hoveredYear = ref<number | null>(null)
               前往頁面
             </NuxtLink>
 
-            <NuxtLink
+            <a
               v-cursor="{
                 scale: 5,
                 duration: 0.5,
                 backgroundColor: 'rgba(0, 46, 255, 0.9)',
                 text: 'VIEW',
               }"
-              :to="item.link"
+              :href="item.link"
               target="_blank"
-              class="absolute left-0 top-0 mt-6 hidden size-full bg-webconf-blue px-6 py-2 lg:m-0 lg:block lg:bg-transparent"
-            />
+              class="absolute left-0 top-0 mt-6 hidden size-full bg-webconf-blue px-6 py-2 lg:block lg:bg-transparent"
+            >
+            </a>
           </div>
 
           <NuxtImg
