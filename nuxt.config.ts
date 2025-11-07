@@ -19,6 +19,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'nuxt-marquee',
     '@nuxt/content',
+    'nuxt-toast',
   ],
   css: ['@/assets/css/main.css'],
 

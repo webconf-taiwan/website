@@ -8,6 +8,15 @@ defineProps<{
   formattedDate: string
   speakerInfo: SpeakerSectionsReturn['speakerInfo']['value']
 }>()
+
+const toast = useToast()
+
+function handleShareClick() {
+  toast.success({
+    title: 'Success!',
+    message: 'Your action was completed successfully.',
+  })
+}
 </script>
 
 <template>
@@ -107,6 +116,7 @@ defineProps<{
       }"
       type="button"
       class="group fixed bottom-3 right-3 bg-webconf-blue p-2 text-webconf-gray transition-colors duration-500 hover:bg-webconf-gray hover:text-webconf-black lg:absolute lg:bottom-5 lg:right-0 lg:pb-3"
+      @click="handleShareClick"
     >
       <Icon
         name="custom-icon:share"

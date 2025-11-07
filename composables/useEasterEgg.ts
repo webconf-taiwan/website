@@ -1,9 +1,24 @@
+import figlet from 'figlet'
+import small from 'figlet/importable-fonts/Small.js'
 import { EXTERNAL_LINKS } from '~/constants/externalLinks'
+
+figlet.parseFont('Small', small)
 
 export function useEasterEgg() {
   // 🎉 Console 彩蛋訊息
   onMounted(() => {
     setTimeout(() => {
+      figlet.text('WebConf Taiwan', {
+        font: 'Small',
+      }, (err, data) => {
+        if (!err) {
+          console.log(
+            `%c${data}`,
+            'color: #3b82f6; font-family: monospace; font-size: 13px; line-height: 1.1; font-weight: bold;',
+          )
+        }
+      })
+
       console.log(
         '%c我就知道你這個小壞蛋，今年又忍不住來偷看這裡了🐽',
         'color: #ec4899; font-size: 16px; font-weight: bold;',
@@ -51,6 +66,24 @@ export function useEasterEgg() {
           `,
             'color: #8b5cf6; font-family: monospace; font-size: 12px; line-height: 1.2; font-weight: bold;',
           )
+
+          figlet.text('DEV MODE ON', { font: 'Small' }, (err, data) => {
+            if (!err && data) {
+              console.log(
+                `%c${data}`,
+                'color:#3b82f6;font-family:monospace;font-size:12px;line-height:1.1;font-weight:bold;',
+              )
+
+              console.log(
+                '%c> console.log("See you at WebConf 2025 👋")',
+                'color:#38bdf8;font-family:monospace;font-size:12px;',
+              )
+              console.log(
+                '%c✨ Crafted with love by the WebConf Taiwan Team ❤️',
+                'color:#8b5cf6;font-size:12px;font-style:italic;',
+              )
+            }
+          })
         }
       }
     }, 300)
