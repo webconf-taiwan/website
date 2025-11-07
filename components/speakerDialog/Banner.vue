@@ -12,21 +12,23 @@ const emit = defineEmits<(_event: 'close') => void>()
   <div
     class="speaker-detail-header sticky inset-0 z-20 h-[72px] border-b border-webconf-gray lg:relative lg:h-[76px]"
   >
-    <div
-      class="absolute right-5 top-[14px] flex items-center justify-center bg-webconf-gray pl-4 pr-3 lg:right-6 lg:top-4"
+    <button
+      v-cursor="{
+        scale: 0.5,
+        duration: 0.5,
+      }"
+      type="button"
+      class="absolute right-5 top-[14px] flex items-center justify-center bg-webconf-gray pl-4 pr-3 transition-colors duration-500 hover:bg-webconf-blue hover:text-white lg:right-6 lg:top-4"
       @click="emit('close')"
     >
       <span class="inline-block py-[14px] text-btn-16">{{
         BACK_LINKS[type].title
       }}</span>
-      <NuxtImg
-        class="ml-3"
-        src="/images/icon/arrow-right.svg"
-        width="24"
-        height="24"
-        alt="close"
+      <Icon
+        name="custom-icon:arrow-right"
+        class="ml-3 size-6"
       />
-    </div>
+    </button>
   </div>
 </template>
 

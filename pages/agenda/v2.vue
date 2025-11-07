@@ -204,14 +204,14 @@ watch(
 
         <div
           v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-          class="absolute bottom-0 left-0 h-[1px] w-full bg-webconf-gray"
+          class="absolute bottom-0 left-0 z-30 h-[1px] w-full bg-webconf-gray"
         ></div>
       </div>
     </section>
 
     <main class="border-b border-webconf-gray text-webconf-gray">
       <section
-        class="sticky top-[54.5px] z-20 border-b border-webconf-gray bg-black"
+        class="sticky top-[47px] z-20 border-b border-webconf-gray bg-black xs:top-[55px] sm:top-[57px] lg:top-[55px]"
       >
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
@@ -243,8 +243,8 @@ watch(
         </div>
 
         <div
-          v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
-          class="relative z-30"
+          v-arrow="{ speed1: '10s', color: '#E6E6E6' }"
+          class="relative z-30 hidden lg:block"
         ></div>
       </section>
 
@@ -310,7 +310,7 @@ watch(
             >
               <!-- 時間標記 (行動版) -->
               <div
-                class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
+                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xs:top-[107px] sm:top-[109px] lg:top-[107px] lg:hidden"
               >
                 <time :datetime="time">
                   {{ time }}
@@ -365,7 +365,7 @@ watch(
             >
               <!-- 時間標記 (行動版) -->
               <div
-                class="sticky top-[106px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:hidden"
+                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xs:top-[107px] sm:top-[109px] lg:top-[107px] lg:hidden"
               >
                 <time :datetime="time">
                   {{ time }}

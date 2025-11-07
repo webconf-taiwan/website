@@ -8,6 +8,15 @@ defineProps<{
   formattedDate: string
   speakerInfo: SpeakerSectionsReturn['speakerInfo']['value']
 }>()
+
+const toast = useToast()
+
+function handleShareClick() {
+  toast.success({
+    title: 'Success!',
+    message: 'Your action was completed successfully.',
+  })
+}
 </script>
 
 <template>
@@ -99,5 +108,23 @@ defineProps<{
         </div>
       </div>
     </div>
+    <!-- 分享按鈕 -->
+    <button
+      v-cursor="{
+        scale: 0.5,
+        duration: 0.5,
+      }"
+      type="button"
+      class="group fixed bottom-3 right-3 bg-webconf-blue p-2 text-webconf-gray transition-colors duration-500 hover:bg-webconf-gray hover:text-webconf-black lg:absolute lg:bottom-5 lg:right-0 lg:pb-3"
+      @click="handleShareClick"
+    >
+      <Icon
+        name="custom-icon:share"
+        class="block size-6 lg:mb-[5px]"
+      />
+      <span
+        class="hidden text-[16px] font-semibold leading-[1.2] tracking-[0.02em] [writing-mode:vertical-rl] lg:inline-block"
+      >分享資訊</span>
+    </button>
   </div>
 </template>

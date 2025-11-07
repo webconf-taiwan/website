@@ -23,7 +23,7 @@ const ORGANIZERS = [
   },
   {
     name: '昇新科技',
-    link: '',
+    link: 'https://www.instagram.com/ascentistech/',
     logo: '/images/ascentisTech.webp',
     hoverLogo: '/images/ascentisTech-hover.webp',
     consecutiveText: '',
@@ -31,8 +31,8 @@ const ORGANIZERS = [
   {
     name: '鈦坦科技',
     link: 'https://titansoft.com/tw',
-    logo: '/images/titansoft.webp',
-    hoverLogo: '/images/titansoft-hover.webp',
+    logo: '/images/titansoft_v2.webp',
+    hoverLogo: '/images/titansoft-hover_v2.webp',
     consecutiveText: '連續 3 年贊助',
   },
 ]

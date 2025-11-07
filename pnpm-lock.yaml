@@ -11,6 +11,9 @@ dependencies:
   better-sqlite3:
     specifier: ^12.4.1
     version: 12.4.1
+  figlet:
+    specifier: ^1.9.3
+    version: 1.9.3
   gsap:
     specifier: ^3.13.0
     version: 3.13.0
@@ -100,6 +103,9 @@ devDependencies:
   husky:
     specifier: ^9.1.7
     version: 9.1.7
+  izitoast:
+    specifier: ^1.4.0
+    version: 1.4.0
   lint-staged:
     specifier: ^16.1.5
     version: 16.1.5
@@ -109,6 +115,9 @@ devDependencies:
   nuxt-marquee:
     specifier: 1.0.4
     version: 1.0.4(vue@3.5.18)
+  nuxt-toast:
+    specifier: 1.4.0
+    version: 1.4.0(izitoast@1.4.0)
   nuxt-typed-router:
     specifier: 4.0.1
     version: 4.0.1(prettier@3.6.2)
@@ -6056,7 +6065,6 @@ packages:
   /commander@14.0.0:
     resolution: {integrity: sha512-2uM9rYjPvyq39NwLRqaiLtWHyDC1FvryJDa2ATTVims5YAS4PupsEQsDvP14FqhFr0P49CYDugi59xaxJlTXRA==}
     engines: {node: '>=20'}
-    dev: true
 
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
@@ -8045,6 +8053,14 @@ packages:
     resolution: {integrity: sha512-5u2V/CDW15QM1XbbgS+0DfPxVB+jUKhWEKuuFuHncbk3tEEqzmoXL+2KyOFuKGqOnmdIy0/davWF1CkuwtibCw==}
     dev: true
 
+  /figlet@1.9.3:
+    resolution: {integrity: sha512-majPgOpVtrZN1iyNGbsUP6bOtZ6eaJgg5HHh0vFvm5DJhh8dc+FJpOC4GABvMZ/A7XHAJUuJujhgUY/2jPWgMA==}
+    engines: {node: '>= 17.0.0'}
+    hasBin: true
+    dependencies:
+      commander: 14.0.0
+    dev: false
+
   /figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
     engines: {node: '>=8'}
@@ -9372,6 +9388,10 @@ packages:
   /isexe@3.1.1:
     resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
     engines: {node: '>=16'}
+    dev: true
+
+  /izitoast@1.4.0:
+    resolution: {integrity: sha512-Oc1X2wiQtPp39i5VpIjf3GJf5sfCtHKXZ5szx7RareyEeFLUlcEW0FSfBni28+Ul6KNKZRKzhVuWzSP4Xngh0w==}
     dev: true
 
   /jackspeak@3.4.3:
@@ -11140,6 +11160,17 @@ packages:
     transitivePeerDependencies:
       - magicast
       - vue
+    dev: true
+
+  /nuxt-toast@1.4.0(izitoast@1.4.0):
+    resolution: {integrity: sha512-LGqzlRlLj4ildwAPL8w0MEQWN++DNLYhYPLT+ONkanofTI0yY/5HcUa4x+Y0vozII/Z1e51O3v1hDyCzEWFcHQ==}
+    peerDependencies:
+      izitoast: ^1.4.0
+    dependencies:
+      '@nuxt/kit': 4.2.0
+      izitoast: 1.4.0
+    transitivePeerDependencies:
+      - magicast
     dev: true
 
   /nuxt-typed-router@4.0.1(prettier@3.6.2):
