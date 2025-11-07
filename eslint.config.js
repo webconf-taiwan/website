@@ -110,6 +110,7 @@ export default antfu(
             'tag-filter-menu',
             'speakerInfo',
             'custom-ul-style',
+            'sponsors-section',
           ], // 允許自定義的 CSS 類名
         },
       ],
