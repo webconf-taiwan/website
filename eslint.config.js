@@ -22,6 +22,7 @@ export default antfu(
     },
     typescript: true,
     ignores: [
+      'scripts/**',
       'node_modules/',
       'dist/',
       '.output/',
@@ -99,11 +100,14 @@ export default antfu(
             'horizontalLine',
             'sponsors-section',
             'agenda-section',
+            'speakers-section',
             'sponsors-img-filter',
             'speaker-detail-header',
             'flex-center',
             'tag-filter-title',
             'tag-filter-menu',
+            'speakerInfo',
+            'custom-ul-style',
           ], // 允許自定義的 CSS 類名
         },
       ],

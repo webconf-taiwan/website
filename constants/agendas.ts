@@ -1,4 +1,4 @@
-import type { AgendaItem } from '~/types'
+import type { AgendaItem, AgendaTag, SpeakerInfo } from '~/types'
 
 export const AGENDA_LIST: AgendaItem[] = [
   // 12/12 09:10 - 09:55
@@ -7,7 +7,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Happy',
-        avatarUrl: '91APP / 產品長',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '91APP / 產品長',
+        speakerId: '1',
       },
     ],
     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
@@ -32,14 +34,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 10:05 - 10:50
   {
-    // title: 'DevOps 91App',
-    // speakerInfo: [
-    //   {
-    //     name: '安得魯',
-    //     avatarUrl: '91App',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '12',
     startTime: '10:05',
@@ -51,7 +45,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '顏勝豪 Otto',
-        avatarUrl: '國泰金控 / 協理',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '國泰金控 / 協理',
+        speakerId: '13',
       },
     ],
     tags: ['AI', '產業應用'],
@@ -65,11 +61,15 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Chris',
-        avatarUrl: 'PicCollage 拼貼趣 / 資深產品設計經理',
+        avatarUrl: '/images/speakers/carousel-09_chris.webp',
+        JobTitle: 'PicCollage 拼貼趣 / 資深產品設計經理',
+        speakerId: '3',
       },
       {
         name: 'Tinya',
-        avatarUrl: 'PicCollage 拼貼趣 / 資深產品設計師',
+        avatarUrl: '/images/speakers/carousel-10_tinya.webp',
+        JobTitle: 'PicCollage 拼貼趣 / 資深產品設計師',
+        speakerId: '4',
       },
     ],
     tags: ['AI', '產品思維', '設計實務'],
@@ -80,14 +80,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 11:00 - 11:45
   {
-    // title: 'KURO',
-    // speakerInfo: [
-    //   {
-    //     name: 'KURO',
-    //     avatarUrl: 'Vue.js Taiwan',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '12',
     startTime: '11:00',
@@ -95,14 +87,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: '蘇泰安',
-    // speakerInfo: [
-    //   {
-    //     name: '蘇泰安',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '12',
     startTime: '11:00',
@@ -114,7 +98,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '姜乃文',
-        avatarUrl: '天下雜誌集團 / 主任分析師',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '天下雜誌集團 / 主任分析師',
+        speakerId: '5',
       },
     ],
     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
@@ -129,7 +115,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Max Chen',
-        avatarUrl: '對稱資訊股份有限公司、面試趣 / CEO',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '對稱資訊股份有限公司、面試趣 / CEO',
+        speakerId: '10',
       },
     ],
     tags: ['產品思維', '產業應用'],
@@ -139,14 +127,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: 'Mouson',
-    // speakerInfo: [
-    //   {
-    //     name: 'Mouson',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '12',
     startTime: '11:55',
@@ -158,7 +138,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '曾友志',
-        avatarUrl: '下午先生有限公司 / 資深產品顧問',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '下午先生有限公司 / 資深產品顧問',
+        speakerId: '6',
       },
     ],
     tags: ['產品思維', '團隊管理'],
@@ -187,7 +169,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '周明璇（小紫）',
-        avatarUrl: '財團法人均一平台教育基金會 / 影響力評估設計師',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '財團法人均一平台教育基金會 / 影響力評估設計師',
+        speakerId: '7',
       },
     ],
     tags: ['AI', '產品思維', '團隊管理'],
@@ -209,7 +193,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '蕭晊莛',
-        avatarUrl: 'Titansoft / Technical Manager',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'Titansoft / Technical Manager',
+        speakerId: '14',
       },
     ],
     tags: ['Backend', 'DevOps', 'AI'],
@@ -223,7 +209,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Niki Liu',
-        avatarUrl: '新加坡商鈦坦科技 / Senior Product Designer',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '新加坡商鈦坦科技 / Senior Product Designer',
+        speakerId: '8',
       },
     ],
     tags: ['AI', '產品思維', '設計實務'],
@@ -238,7 +226,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Shirney Huang 黃琇琳',
-        avatarUrl: 'Aiworks / CEO',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'Aiworks / CEO',
+        speakerId: '11',
       },
     ],
     tags: ['AI'],
@@ -252,7 +242,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Kuma Syu',
-        avatarUrl: '緯雲有限公司 / R&D Manager',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '緯雲有限公司 / R&D Manager',
+        speakerId: '15',
       },
     ],
     tags: ['AI', '產品思維', '軟體設計'],
@@ -266,11 +258,15 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '林星妤',
-        avatarUrl: '悠識數位 / Senior Experience Designer',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '悠識數位 / Senior Experience Designer',
+        speakerId: '33',
       },
       {
         name: '黃明硯',
-        avatarUrl: '悠識數位 / Experience Designer',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '悠識數位 / Experience Designer',
+        speakerId: '34',
       },
     ],
     tags: ['產品思維', '設計實務'],
@@ -285,7 +281,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Eric Lee',
-        avatarUrl: '前端輕鬆聊 / Senior Software Engineer',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '前端輕鬆聊 / Senior Software Engineer',
+        speakerId: '12',
       },
     ],
     tags: ['Frontend', '軟體設計'],
@@ -299,7 +297,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '陳正瑋（艦長）',
-        avatarUrl: 'Athemaster 炬識科技 / Technical consultant',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'Athemaster 炬識科技 / Technical consultant',
+        speakerId: '16',
       },
     ],
     tags: ['DevOps', 'Agile', '產品思維', '軟體設計'],
@@ -313,7 +313,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Jenson Lee',
-        avatarUrl: '台灣敏捷協會 / 理事長',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '台灣敏捷協會 / 理事長',
+        speakerId: '9',
       },
     ],
     tags: ['Agile', '產品思維'],
@@ -328,7 +330,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Huli 胡立',
-        avatarUrl: '技術部落格 Huli\'s blog / 站長',
+        avatarUrl: '/images/speakers/carousel-04_huli.webp',
+        JobTitle: '技術部落格 Huli\'s blog / 站長',
+        speakerId: '17',
       },
     ],
     tags: ['Frontend', 'Backend', 'Security'],
@@ -349,7 +353,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Joey 蕭喬伊',
-        avatarUrl: '引鹿創新體驗研究室 / UX總監',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '引鹿創新體驗研究室 / UX總監',
+        speakerId: '19',
       },
     ],
     tags: ['團隊管理', '設計實務'],
@@ -360,14 +366,6 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 10:00 - 10:45
   {
-    // title: '',
-    // speakerInfo: [
-    //   {
-    //     name: 'AMOS',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: ['Frontend', 'AI'],
     title: 'TBD',
     day: '13',
     startTime: '10:00',
@@ -379,7 +377,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Jocelin Ho',
-        avatarUrl: 'PicCollage 拼貼趣 / Engineering Manager',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'PicCollage 拼貼趣 / Engineering Manager',
+        speakerId: '30',
       },
     ],
     tags: ['Agile', '團隊管理'],
@@ -393,7 +393,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Peter Su',
-        avatarUrl: '漸強實驗室 / Product Lead',
+        avatarUrl: '/images/speakers/carousel-08_peter.webp',
+        JobTitle: '漸強實驗室 / Product Lead',
+        speakerId: '20',
       },
     ],
     tags: ['Agile', 'AI', '產品思維', '團隊管理'],
@@ -408,7 +410,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '吳展瑋 Howard',
-        avatarUrl: '好想工作室 / 創辦人',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '好想工作室 / 創辦人',
+        speakerId: '26',
       },
     ],
     tags: ['產品思維', '產業應用', '軟體設計'],
@@ -422,7 +426,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'MUKI',
-        avatarUrl: 'MUKI space* / 前端工程師',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'MUKI space* / 前端工程師',
+        speakerId: '31',
       },
     ],
     tags: ['Frontend', 'AI'],
@@ -436,7 +442,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '卓致遠',
-        avatarUrl: '致遠體驗設計 / 體驗總監',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '致遠體驗設計 / 體驗總監',
+        speakerId: '21',
       },
     ],
     tags: ['產品思維', '設計實務'],
@@ -451,7 +459,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '柯仁傑',
-        avatarUrl: 'Odd-e / Technical Coach',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'Odd-e / Technical Coach',
+        speakerId: '27',
       },
     ],
     tags: ['軟體設計'],
@@ -465,7 +475,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'ThisWeb (Kun)',
-        avatarUrl: 'ThisWeb / 前端工程師',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'ThisWeb / 前端工程師',
+        speakerId: '32',
       },
     ],
     tags: ['Frontend'],
@@ -479,7 +491,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '郭心喻',
-        avatarUrl: 'Government of Nova Scotia 加拿大新斯科舍省政府 / Senior Service Designer',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'Government of Nova Scotia 加拿大新斯科舍省政府 / Senior Service Designer',
+        speakerId: '22',
       },
     ],
     tags: ['產品思維', '產業應用', '軟體設計', '設計實務'],
@@ -494,7 +508,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Will 保哥',
-        avatarUrl: '多奇數位創意 / 技術總監',
+        avatarUrl: '/images/speakers/carousel-03_will.webp',
+        JobTitle: '多奇數位創意 / 技術總監',
+        speakerId: '2',
       },
     ],
     tags: ['Frontend', 'AI'],
@@ -504,14 +520,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: '深入淺出 Playwright Agent 代理人模式',
-    // speakerInfo: [
-    //   {
-    //     name: 'Will 保哥',
-    //     avatarUrl: '多奇數位創意 / 技術總監',
-    //   },
-    // ],
-    // tags: ['Frontend', 'AI'],
     title: 'TBD',
     day: '13',
     startTime: '13:30',
@@ -523,7 +531,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '趙柏強',
-        avatarUrl: 'Stable Progress / Growth Companion',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: 'Stable Progress / Growth Companion',
+        speakerId: '23',
       },
     ],
     tags: ['Agile', 'AI', '產品思維', '團隊管理'],
@@ -538,7 +548,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Hannah',
-        avatarUrl: 'Remote / Frontend',
+        avatarUrl: '/images/speakers/carousel-05_hannah.webp',
+        JobTitle: 'Remote / Frontend',
+        speakerId: '28',
       },
     ],
     tags: ['Frontend'],
@@ -548,14 +560,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: 'Mike Hsu',
-    // speakerInfo: [
-    //   {
-    //     name: 'Mike Hsu',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '13',
     startTime: '14:25',
@@ -567,7 +571,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Kaba Su',
-        avatarUrl: '台灣互動設計協會 IxDA Taiwan / 前理事',
+        avatarUrl: '/images/speakers/carousel-01_happy.webp',
+        JobTitle: '台灣互動設計協會 IxDA Taiwan / 前理事',
+        speakerId: '24',
       },
     ],
     tags: ['AI', '產品思維', '團隊管理', '設計實務'],
@@ -582,7 +588,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: '奶綠茶',
-        avatarUrl: 'PositiveGrid / Staff Frontend Engineer',
+        avatarUrl: '/images/speakers/carousel-06_milkmidi.webp',
+        JobTitle: 'PositiveGrid / Staff Frontend Engineer',
+        speakerId: '29',
       },
     ],
     tags: ['Frontend'],
@@ -592,14 +600,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    // title: '薩泰爾 馮元詰',
-    // speakerInfo: [
-    //   {
-    //     name: '馮元詰',
-    //     avatarUrl: '薩泰爾',
-    //   },
-    // ],
-    // tags: [],
     title: 'TBD',
     day: '13',
     startTime: '15:20',
@@ -607,22 +607,6 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'F 棟',
   },
   {
-    // title: '轉職 PM 之後，我獨自升級：為產品開發世界獻上美好洞察',
-    // speakerInfo: [
-    //   {
-    //     name: 'Kaba Su',
-    //     avatarUrl: '台灣互動設計協會 IxDA Taiwan / 前理事',
-    //   },
-    //   {
-    //     name: 'Richard Tsai 蔡明哲',
-    //     avatarUrl: '悠識數位 / UX Coach 暨創辦人',
-    //   },
-    //   {
-    //     name: 'Bob',
-    //     avatarUrl: '',
-    //   },
-    // ],
-    // tags: ['AI', '設計實務', '產品思維', '團隊管理'],
     title: 'TBD',
     day: '13',
     startTime: '15:20',
@@ -635,7 +619,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Gipi',
-        avatarUrl: '商業思維學院 / 院長',
+        avatarUrl: '/images/speakers/carousel-02_gipi.webp',
+        JobTitle: '商業思維學院 / 院長',
+        speakerId: '18',
       },
     ],
     tags: ['AI', '產品思維', '軟體設計'],
@@ -659,3 +645,30 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
 ]
+
+export const BACK_LINKS = {
+  agendas: { title: '返回議程列表', link: '/agenda/v2' },
+  speakers: { title: '返回講者列表', link: '/speakers/v2' },
+} as const
+
+export const SPEAKERS = AGENDA_LIST.reduce<Array<
+  SpeakerInfo & {
+    tags: AgendaTag[]
+  }
+>>((acc, agenda) => {
+  if (agenda.speakerInfo && agenda.speakerInfo.length > 0) {
+    const tags = agenda.tags || []
+
+    agenda.speakerInfo.forEach((speaker) => {
+      acc.push({
+        name: speaker.name,
+        avatarUrl: speaker.avatarUrl,
+        JobTitle: speaker.JobTitle,
+        speakerId: speaker.speakerId,
+        tags,
+      })
+    })
+  }
+
+  return acc
+}, [])

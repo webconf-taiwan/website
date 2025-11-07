@@ -18,12 +18,27 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@vueuse/nuxt',
     'nuxt-marquee',
+    '@nuxt/content',
   ],
   css: ['@/assets/css/main.css'],
 
   features: {
     inlineStyles: false,
   },
+
+  // content 相關生成設定
+  // content: {
+  //   build: {
+  //     markdown: {
+  //       rehypePlugins: {
+  //         'rehype-external-links': {
+  //           target: '_blank',
+  //           rel: ['noopener', 'noreferrer'],
+  //         },
+  //       },
+  //     },
+  //   },
+  // },
 
   // Google Fonts 設定
   fonts: {

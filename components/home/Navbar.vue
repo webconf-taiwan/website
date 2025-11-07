@@ -12,7 +12,7 @@ const NAV_ITEMS = [
   {
     name: '講者陣容',
     enName: 'Speakers',
-    href: '/coming-soon',
+    href: '/speakers',
     isTablet: false,
     isDesktop: true,
   },
@@ -87,7 +87,7 @@ onUnmounted(() => {
         v-cursor="{ scale: 0.4, duration: 0.5 }"
         to="/"
         aria-label="回到首頁"
-        class="group relative inline-block"
+        class="group relative inline-block shrink-0"
         @click="closeMenu"
       >
         <!-- default logo -->
@@ -109,7 +109,9 @@ onUnmounted(() => {
       </NuxtLink>
 
       <!-- 導覽列 -->
-      <div class="flex items-center py-2 text-btn-16 text-webconf-gray xs:py-3">
+      <div
+        class="flex shrink-0 items-center py-2 text-btn-16 text-webconf-gray xs:py-3"
+      >
         <nav>
           <ul
             class="flex py-[3px] pr-0 sm:pr-3 lg:pr-4"
