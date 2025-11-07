@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { EXTERNAL_LINKS } from '~/constants/externalLinks'
+
 useSeoMeta({
   title: '歷屆回顧',
 })
@@ -33,6 +35,7 @@ const hoveredYear = ref<number | null>(null)
       <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
         <!-- 浮動方框 -->
         <ShareLayoutBlocks />
+
         <!-- 桌機使用 -->
         <svg
           class="absolute inset-0 hidden size-full sm:block"
@@ -65,19 +68,20 @@ const hoveredYear = ref<number | null>(null)
             />
           </g>
         </svg>
+
         <!-- 平板以下使用 -->
         <svg
           class="absolute inset-0 block size-full sm:hidden"
-          viewBox="0 0 360 320"
+          viewBox="0 0 640 320"
           preserveAspectRatio="xMidYMid slice"
         >
           <!-- 右側斜線 -->
           <g>
             <!-- 靜態軌道 -->
             <line
-              x1="185"
+              x1="330"
               y1="0"
-              x2="525"
+              x2="650"
               y2="320"
               stroke="#E6E6E6"
               stroke-width="0.5"
@@ -86,20 +90,19 @@ const hoveredYear = ref<number | null>(null)
         </svg>
 
         <div
-          class="absolute left-[50%] top-[45%] flex w-fit -translate-x-1/2 flex-col items-center justify-center gap-6 px-6 sm:top-[38%] lg:top-[50%] lg:w-full lg:flex-row lg:items-end"
+          class="absolute left-[50%] top-[45%] flex w-full -translate-x-1/2 flex-col items-center justify-center gap-6 px-5 sm:top-[38%] sm:px-6 lg:top-[50%] lg:flex-row lg:items-end"
         >
           <h1 class="text-h1-96 text-white">
-            HISTORY
+            HiSTORY
           </h1>
           <div class="flex w-full flex-col gap-3 lg:w-fit">
             <span
-              class="inline-block px-0 text-center text-h4-24 lg:pl-[150px] lg:pr-10"
-            >歷屆回顧
-            </span>
+              class="inline-block px-0 text-center text-h4-24 lg:pl-[285px] lg:pr-10"
+            >歷史回顧</span>
             <div class="order-[-1] flex items-center lg:order-1">
-              <span class="size-3 bg-white"></span>
-              <span class="h-[1px] flex-1 bg-white"></span>
-              <span class="size-3 bg-white"></span>
+              <span class="size-3 bg-webconf-gray"></span>
+              <span class="h-[1px] flex-1 bg-webconf-gray"></span>
+              <span class="size-3 bg-webconf-gray"></span>
             </div>
           </div>
         </div>
@@ -177,7 +180,9 @@ const hoveredYear = ref<number | null>(null)
         歷屆活動花絮
       </h3>
       <ShareLinkButton
-        to="/history"
+        :to="EXTERNAL_LINKS.WEBCONF_GALLERY_URL"
+        target="_blank"
+        rel="noopener noreferrer"
         class="mt-10"
       >
         前往回顧
