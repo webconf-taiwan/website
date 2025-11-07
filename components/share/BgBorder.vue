@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type p5 from 'p5'
-import { useBreakpoints, useThrottleFn } from '@vueuse/core'
+import { useBreakpoints } from '@vueuse/core'
 
 const props = withDefaults(defineProps<Props>(), {
   borderColor: '#E6E6E6',
@@ -234,7 +234,7 @@ function gridSketch(p: p5) {
     }
   }
 
-  const handleResized = useThrottleFn(() => {
+  const handleResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
     gridSize = FIXED_GRID_SIZE.value
     gridSizeRef.value = gridSize
@@ -245,7 +245,7 @@ function gridSketch(p: p5) {
     ) {
       initializeLayersSync(p)
     }
-  }, 150)
+  }
 
   p.windowResized = function () {
     handleResized()
@@ -303,9 +303,9 @@ function boxSketch(p: p5) {
     updateAndDrawDVDDots(p)
   }
 
-  const handleResized = useThrottleFn(() => {
+  const handleResized = () => {
     p.resizeCanvas(p.windowWidth, p.windowHeight)
-  }, 150)
+  }
 
   p.windowResized = function () {
     handleResized()

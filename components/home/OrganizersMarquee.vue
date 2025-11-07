@@ -31,8 +31,8 @@ const ORGANIZERS = [
   {
     name: '鈦坦科技',
     link: 'https://titansoft.com/tw',
-    logo: '/images/titansoft-v2.webp',
-    hoverLogo: '/images/titansoft-hover-v2.webp',
+    logo: '/images/titansoft_v2.webp',
+    hoverLogo: '/images/titansoft-hover_v2.webp',
     consecutiveText: '連續 3 年贊助',
   },
 ]
