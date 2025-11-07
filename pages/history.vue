@@ -29,17 +29,6 @@ const hoveredYear = ref<number | null>(null)
 
 <template>
   <div>
-    <NuxtImg
-      v-for="item in HISTORY_LIST"
-      :key="item.year"
-      :src="item.img"
-      :class="{
-        'opacity-60': hoveredYear === item.year,
-        'opacity-0': hoveredYear !== item.year,
-      }"
-      class="pointer-events-none fixed left-0 top-0 h-[100dvh] w-screen object-cover blur-[8px] duration-500 ease-in-out"
-    />
-
     <section class="flex-1">
       <div class="agenda-section relative h-80 text-webconf-gray lg:h-400">
         <!-- 浮動方框 -->
@@ -128,7 +117,7 @@ const hoveredYear = ref<number | null>(null)
           :class="{
             'lg:self-end': index % 2 === 1,
           }"
-          class="hover:blue-shadow group relative bg-black text-white duration-300 lg:w-[calc(100dvw/2)]"
+          class="hover:blue-shadow group relative border-b border-webconf-gray/50 bg-black text-white duration-300 lg:w-[calc(100dvw/2)]"
           @mouseenter="hoveredYear = item.year"
           @mouseleave="hoveredYear = null"
         >
@@ -138,7 +127,7 @@ const hoveredYear = ref<number | null>(null)
             class="size-full object-cover"
           />
           <div
-            class="gap-5 p-5 duration-300 group-hover:bg-webconf-blue lg:flex 2xl:gap-[68px] 2xl:p-6"
+            class="gap-5 px-5 pb-12 pt-5 duration-300 group-hover:bg-webconf-blue lg:flex 2xl:gap-[68px] 2xl:px-6 2xl:pb-10 2xl:pt-6"
           >
             <h2 class="text-h4-60">
               {{ item.year }}
@@ -148,30 +137,49 @@ const hoveredYear = ref<number | null>(null)
               {{ item.desc }}
             </p>
 
-            <a
-              :href="item.link"
+            <NuxtLink
+              :to="item.link"
               target="_blank"
               class="mt-6 inline-block bg-webconf-blue px-6 py-2 lg:hidden"
             >
               前往頁面
-            </a>
+            </NuxtLink>
 
-            <a
+            <NuxtLink
               v-cursor="{
                 scale: 5,
                 duration: 0.5,
                 backgroundColor: 'rgba(0, 46, 255, 0.9)',
                 text: 'VIEW',
               }"
-              :href="item.link"
+              :to="item.link"
               target="_blank"
-              class="absolute left-0 top-0 mt-6 hidden size-full bg-webconf-blue px-6 py-2 lg:block lg:bg-transparent"
-            >
-            </a>
+              class="absolute left-0 top-0 mt-6 hidden size-full bg-webconf-blue px-6 py-2 lg:m-0 lg:block lg:bg-transparent"
+            />
           </div>
+
+          <NuxtImg
+            :key="item.year"
+            :src="item.img"
+            class="pointer-events-none fixed left-0 top-0 z-[-1] hidden h-[100dvh] w-screen object-cover opacity-0 blur-[8px] duration-500 ease-in-out group-hover:opacity-60 lg:block"
+          />
         </li>
       </ul>
     </main>
+
+    <section
+      class="z-10 flex h-[500px] flex-col items-center justify-center border-y border-webconf-gray bg-[url('/images/CTABg.webp')] bg-cover bg-center bg-no-repeat"
+    >
+      <h3 class="text-h4-60 text-webconf-gray">
+        歷屆活動花絮
+      </h3>
+      <ShareLinkButton
+        to="/history"
+        class="mt-10"
+      >
+        前往回顧
+      </ShareLinkButton>
+    </section>
   </div>
 </template>
 
