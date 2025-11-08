@@ -1,90 +1,9 @@
 <script setup lang="ts">
-import type { Staff } from '~/types'
+import { STAFF } from '~/constants/staff'
 
 useSeoMeta({
   title: '主辦團隊',
 })
-
-const STAFF: Staff[] = [
-  {
-    name: '高見龍',
-    title: '掃地兼敲鐘',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/gaokai.long'],
-  },
-  {
-    name: '廖洧杰',
-    title: '專業推坑王',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/liao.wei.jie.1'],
-  },
-  {
-    name: '理查哥',
-    title: 'UX 土地公',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/richard.li.12914'],
-  },
-  {
-    name: 'Sabrina',
-    title: '萬年工頭',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/sabrina.huang.12914'],
-  },
-  {
-    name: 'Melissa',
-    title: '錢錢擔當',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/melissa.huang.12914'],
-  },
-  {
-    name: '薛羽婷',
-    title: '設計軌講者獵人',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/xueyu.teng.12914'],
-  },
-  {
-    name: '陳彥宇',
-    title: '設計小夥伴',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/chen.yu.12914'],
-  },
-  {
-    name: 'EG',
-    title: '設計小夥伴',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/eg.huang.12914'],
-  },
-  {
-    name: '豪萱',
-    title: '設計小夥伴',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/hao.huang.12914'],
-  },
-  {
-    name: 'Nina',
-    title: '設計小夥伴',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/nina.huang.12914'],
-  },
-  {
-    name: '楊正弘',
-    title: '設計小夥伴',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/yang.huang.12914'],
-  },
-  {
-    name: 'Antonio',
-    title: '開發小農夫',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/antonio.huang.12914'],
-  },
-  {
-    name: 'Shin',
-    title: '開發小農夫',
-    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
-    links: ['https://www.facebook.com/shin.huang.12914'],
-  },
-]
 </script>
 
 <template>
@@ -203,7 +122,7 @@ const STAFF: Staff[] = [
           <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
             <div class="relative shrink-0">
               <NuxtImg
-                src="/images/speakers_v2/1_李昆謀.webp"
+                :src="staff.avatarUrl"
                 :alt="staff.name"
                 width="220"
                 height="314"
