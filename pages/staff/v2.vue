@@ -1,9 +1,90 @@
 <script setup lang="ts">
-import { SPEAKERS } from '~/constants/agendas'
+import type { Staff } from '~/types'
 
 useSeoMeta({
   title: '主辦團隊',
 })
+
+const STAFF: Staff[] = [
+  {
+    name: '高見龍',
+    title: '掃地兼敲鐘',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/gaokai.long'],
+  },
+  {
+    name: '廖洧杰',
+    title: '專業推坑王',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/liao.wei.jie.1'],
+  },
+  {
+    name: '理查哥',
+    title: 'UX 土地公',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/richard.li.12914'],
+  },
+  {
+    name: 'Sabrina',
+    title: '萬年工頭',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/sabrina.huang.12914'],
+  },
+  {
+    name: 'Melissa',
+    title: '錢錢擔當',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/melissa.huang.12914'],
+  },
+  {
+    name: '薛羽婷',
+    title: '設計軌講者獵人',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/xueyu.teng.12914'],
+  },
+  {
+    name: '陳彥宇',
+    title: '設計小夥伴',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/chen.yu.12914'],
+  },
+  {
+    name: 'EG',
+    title: '設計小夥伴',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/eg.huang.12914'],
+  },
+  {
+    name: '豪萱',
+    title: '設計小夥伴',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/hao.huang.12914'],
+  },
+  {
+    name: 'Nina',
+    title: '設計小夥伴',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/nina.huang.12914'],
+  },
+  {
+    name: '楊正弘',
+    title: '設計小夥伴',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/yang.huang.12914'],
+  },
+  {
+    name: 'Antonio',
+    title: '開發小農夫',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/antonio.huang.12914'],
+  },
+  {
+    name: 'Shin',
+    title: '開發小農夫',
+    avatarUrl: '/images/speakers_v2/1_李昆謀.webp',
+    links: ['https://www.facebook.com/shin.huang.12914'],
+  },
+]
 </script>
 
 <template>
@@ -92,7 +173,7 @@ useSeoMeta({
       class="flex flex-col border-b border-webconf-gray bg-black text-webconf-gray lg:flex-row"
     >
       <aside
-        class="sticky top-[54px] z-10 w-full shrink-0 flex-col items-start self-start border-b border-webconf-gray bg-black lg:h-[calc(100dvh-54px)] lg:w-[px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
+        class="sticky top-[54px] z-10 w-full shrink-0 flex-col items-start self-start border-b border-webconf-gray bg-black lg:h-[calc(100dvh-54px)] lg:w-[228px] lg:border-b-0 lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
       >
         <h2
           class="-translate-x-1 px-5 py-6 text-left text-h4-60 text-webconf-blue duration-300 group-hover:text-white lg:mt-2 lg:block lg:[writing-mode:vertical-lr]"
@@ -111,25 +192,19 @@ useSeoMeta({
           scale: 0.5,
           duration: 0.5,
         }"
-        class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
+        class="relative z-0 grid w-full grid-cols-1 gap-[0.5px] lg:grid-cols-3 xl:grid-cols-4"
       >
         <ShareGridCard
-          v-for="(speaker, index) in SPEAKERS"
-          :key="`${speaker.name}-${index}`"
-          :data="speaker"
-          :index="index"
-          :is-selected="
-            speaker.tags?.some((tag) => selectedTags.includes(tag))
-              || selectedTags.length === 0
-          "
-          :link="`/speakers/v2?speakerId=${speaker.speakerId}`"
+          v-for="(staff, index) in STAFF"
+          :key="`${staff.name}-${index}`"
+          link="/staff/v2"
           :show-square="false"
         >
           <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
             <div class="relative shrink-0">
               <NuxtImg
-                :src="speaker.avatarUrl"
-                :alt="speaker.name"
+                src="/images/speakers_v2/1_李昆謀.webp"
+                :alt="staff.name"
                 width="220"
                 height="314"
                 class="aspect-speaker-img-full h-[144px] w-[100px] object-cover grayscale duration-300 group-hover:grayscale-0 lg:size-full"
@@ -139,23 +214,37 @@ useSeoMeta({
               <ShareNoiseMask class="group-hover:opacity-0" />
             </div>
 
-            <div>
-              <h3 class="text-h4-24 leading-[1.4]">
-                {{ speaker.name }}
-              </h3>
-              <p
-                class="text-xs leading-[1.4] text-gray-500 group-hover:text-white"
-              >
-                {{ speaker.JobTitle }}
-              </p>
-
-              <ul class="relative mt-3 flex grow flex-wrap items-start gap-2">
-                <li
-                  v-for="tag in speaker.tags"
-                  :key="`${speaker.name}-${tag}`"
-                  class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
+            <div class="flex flex-col">
+              <div class="grow">
+                <h3 class="text-h4-24 leading-[1.4]">
+                  {{ staff.name }}
+                </h3>
+                <p
+                  class="text-xs leading-[1.4] text-gray-500 group-hover:text-white"
                 >
-                  {{ tag }}
+                  {{ staff.title }}
+                </p>
+              </div>
+
+              <ul class="mt-3 flex flex-wrap gap-3">
+                <li
+                  v-for="link in staff.links"
+                  :key="link"
+                  class="border border-webconf-blue/90 transition-colors duration-500 hover:bg-webconf-blue"
+                >
+                  <a
+                    :href="link"
+                    class="block p-[10px]"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <NuxtImg
+                      src="/images/icon/ig.svg"
+                      width="24"
+                      height="24"
+                      :alt="`${staff.name} ${link}`"
+                    />
+                  </a>
                 </li>
               </ul>
             </div>

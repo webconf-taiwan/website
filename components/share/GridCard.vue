@@ -1,12 +1,6 @@
 <script setup lang="ts">
-import type { AgendaTag, SpeakerInfo } from '~/types'
-
 const props = defineProps<{
-  data: SpeakerInfo & {
-    tags: AgendaTag[]
-  }
-  isSelected: boolean
-  index: number
+  isSelected?: boolean
   link: string
   showSquare: boolean
 }>()
@@ -33,9 +27,7 @@ const scaleY = computed(() => {
 </script>
 
 <template>
-  <div
-    class="relative border-b-[0.5px] border-webconf-gray/50 lg:border-r-[0.5px]"
-  >
+  <div class="relative shadow-[0_0_0_0.5px_rgb(230,230,230)]">
     <NuxtLink
       ref="cardRef"
       class="group relative block h-full overflow-hidden bg-black transition-colors duration-300"
@@ -63,8 +55,8 @@ const scaleY = computed(() => {
       <div
         class="absolute inset-0 z-10 size-full bg-black opacity-0 duration-300"
         :class="{
-          'block opacity-70': !isSelected,
-          'hidden': isSelected,
+          'block opacity-70': !!isSelected,
+          'hidden': isSelected || isSelected === undefined,
         }"
       ></div>
     </NuxtLink>
