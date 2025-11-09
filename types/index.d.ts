@@ -27,3 +27,10 @@ export interface AgendaItem {
   endTime: string
   location: string
 }
+
+export interface Staff {
+  name: string
+  title: string
+  avatarUrl: string
+  links: string[]
+}
