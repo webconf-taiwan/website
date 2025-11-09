@@ -2,6 +2,7 @@
 const props = defineProps<{
   isSelected?: boolean
   link: string
+  disabledSquareEffect: boolean
   showSquare: boolean
 }>()
 
@@ -14,7 +15,6 @@ const { width, height } = useElementSize(cardRef, undefined, {
 const initialSize = computed(() => (width.value >= 1280 ? 28 : 20))
 
 // 計算 X 和 Y 軸各自需要的縮放比例，讓兩個方向同時到達邊界
-// 當 showSquare 為 false 時，使用較小但穩定的基礎大小以確保跨平台相容性
 const scaleX = computed(() => {
   const baseSize = props.showSquare ? initialSize.value : 1
   return width.value / baseSize
@@ -35,6 +35,7 @@ const scaleY = computed(() => {
     >
       <!-- 縮放特效方塊 -->
       <div
+        v-if="!disabledSquareEffect"
         class="absolute left-0 top-0 z-0 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))] lg:block"
         :style="{
           '--scale-x': scaleX,

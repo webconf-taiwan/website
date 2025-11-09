@@ -117,7 +117,8 @@ useSeoMeta({
           v-for="(staff, index) in STAFF"
           :key="`${staff.name}-${index}`"
           link="/staff/v2"
-          :show-square="false"
+          :show-square="true"
+          :disabled-square-effect="true"
         >
           <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
             <div class="relative shrink-0">
@@ -138,9 +139,7 @@ useSeoMeta({
                 <h3 class="text-h4-24 leading-[1.4]">
                   {{ staff.name }}
                 </h3>
-                <p
-                  class="text-xs leading-[1.4] text-gray-500 group-hover:text-white"
-                >
+                <p class="text-xs leading-[1.4] text-webconf-gray-500">
                   {{ staff.title }}
                 </p>
               </div>
@@ -148,22 +147,12 @@ useSeoMeta({
               <ul class="mt-3 flex flex-wrap gap-3">
                 <li
                   v-for="link in staff.links"
-                  :key="link"
-                  class="border border-webconf-blue/90 transition-colors duration-500 hover:bg-webconf-blue"
+                  :key="`${staff.name}-${link}`"
                 >
-                  <a
-                    :href="link"
-                    class="block p-[10px]"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <NuxtImg
-                      src="/images/icon/ig.svg"
-                      width="24"
-                      height="24"
-                      :alt="`${staff.name} ${link}`"
-                    />
-                  </a>
+                  <ShareSnsLink
+                    :name="staff.name"
+                    :link="link"
+                  />
                 </li>
               </ul>
             </div>
