@@ -56,7 +56,7 @@ const isHovered = ref(false)
 const speakerCards = ref<any[]>([])
 const forceRerenderKey = ref(0)
 
-// 都固定為 3 防止 hydration mismatch
+// 固定為 3 防止 hydration mismatch
 const displayCardLengthArr = ref(
   Array.from({ length: 3 }, (_, index) => index),
 )
@@ -89,15 +89,15 @@ watch(displayCardLengthArr, () => {
   })
 })
 
-function handleNext() {
+function handleSlideToPrev() {
   speakerCards.value.forEach((card) => {
-    card.slideToNext()
+    card.slideToLeft()
   })
 }
 
-function handlePrev() {
+function handleSlideToNext() {
   speakerCards.value.forEach((card) => {
-    card.slideToPrev()
+    card.slideToRight()
   })
 }
 </script>
@@ -166,7 +166,7 @@ function handlePrev() {
           type="button"
           class="absolute left-0 top-0 hidden h-full w-20 xl:block"
           aria-label="下一位講者"
-          @click="handleNext"
+          @click="handleSlideToNext"
         ></button>
 
         <button
@@ -179,7 +179,7 @@ function handlePrev() {
           type="button"
           class="absolute right-0 top-0 hidden h-full w-20 xl:block"
           aria-label="上一位講者"
-          @click="handlePrev"
+          @click="handleSlideToPrev"
         ></button>
       </div>
     </section>
@@ -189,8 +189,8 @@ function handlePrev() {
       class="grid grid-cols-1 gap-6 pb-[132px] pt-6 md:grid-cols-3 md:px-8 md:pb-20 md:pt-10 xl:hidden"
     >
       <ShareSlideController
-        @next="handleNext"
-        @prev="handlePrev"
+        @next="handleSlideToNext"
+        @prev="handleSlideToPrev"
       />
 
       <div class="justify-self-center">

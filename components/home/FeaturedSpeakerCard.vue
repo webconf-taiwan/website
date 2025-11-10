@@ -31,7 +31,7 @@ function getNextIndex() {
 }
 
 // 向左滑動
-function slideToNext() {
+function slideToLeft() {
   if (!cardContainer.value || isAnimating.value) {
     return
   }
@@ -64,7 +64,7 @@ function slideToNext() {
 }
 
 // 向右滑動
-function slideToPrev() {
+function slideToRight() {
   if (!cardContainer.value || isAnimating.value) {
     return
   }
@@ -108,7 +108,7 @@ function startSliding() {
 
   slideInterval = setInterval(() => {
     if (!props.isParentHovered && !isAnimating.value) {
-      slideToNext()
+      slideToLeft()
     }
   }, 3000)
 }
@@ -133,8 +133,8 @@ onUnmounted(() => {
 })
 
 defineExpose({
-  slideToNext,
-  slideToPrev,
+  slideToLeft,
+  slideToRight,
   resetIndex,
 })
 
