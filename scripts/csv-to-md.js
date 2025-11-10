@@ -28,56 +28,56 @@ const scheduleMap = {
   // Day 1~2025-12-12
 
   // Keynote Speaker
-  '李昆謀': { id: '1', day: 'day1', date: '2025-12-12', time: '09:10~09:55', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers_v3/1_李昆謀.webp' },
-  'Will 保哥': { id: '2', day: 'day1', date: '2025-12-12', time: '13:30~14:15', room: 'M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers_v3/2_Will_保哥.webp' },
+  '李昆謀': { id: '1', day: 'day1', date: '2025-12-12', time: '09:10~09:55', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/1_李昆謀.webp' },
+  'Will 保哥': { id: '2', day: 'day1', date: '2025-12-12', time: '13:30~14:15', room: 'M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/2_Will_保哥.webp' },
 
   // A2 棟
-  '陳偉仁 Chris Chen': { id: '3', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/3_陳偉仁_Chris_Chen.webp' },
-  '黃庭亞': { id: '4', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/4_黃庭亞-Yaya.webp' },
-  '姜乃文': { id: '5', day: 'day1', date: '2025-12-12', time: '11:00~11:45', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/5_姜乃文.webp' },
-  '曾友志': { id: '6', day: 'day1', date: '2025-12-12', time: '11:55~12:40', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/6_曾友志.webp' },
-  '周明璇（Zizi Chou，小紫）': { id: '7', day: 'day1', date: '2025-12-12', time: '13:30~14:15', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/7_周明璇(Zizi Chou，小紫).webp' },
-  'Niki Liu': { id: '8', day: 'day1', date: '2025-12-12', time: '14:25~15:10', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/8_Niki_Liu.webp' },
-  'Jenson Lee': { id: '9', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/9_Jenson_Lee.webp' },
-  '林星妤': { id: '33', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/33_林星妤.webp' },
-  '黃明硯': { id: '34', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/34_黃明硯.webp' },
+  '陳偉仁 Chris Chen': { id: '3', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/3_陳偉仁_Chris_Chen.webp' },
+  '黃庭亞': { id: '4', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/4_黃庭亞-Yaya.webp' },
+  '姜乃文': { id: '5', day: 'day1', date: '2025-12-12', time: '11:00~11:45', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/5_姜乃文.webp' },
+  '曾友志': { id: '6', day: 'day1', date: '2025-12-12', time: '11:55~12:40', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/6_曾友志.webp' },
+  '周明璇（Zizi Chou，小紫）': { id: '7', day: 'day1', date: '2025-12-12', time: '13:30~14:15', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/7_周明璇(Zizi Chou，小紫).webp' },
+  'Niki Liu': { id: '8', day: 'day1', date: '2025-12-12', time: '14:25~15:10', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/8_Niki_Liu.webp' },
+  'Jenson Lee': { id: '9', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/9_Jenson_Lee.webp' },
+  '林星妤': { id: '33', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/33_林星妤.webp' },
+  '黃明硯': { id: '34', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/34_黃明硯.webp' },
 
   // M 棟
-  'Max Chen': { id: '10', day: 'day1', date: '2025-12-12', time: '11:55~12:40', room: 'M 棟', doc: '', slides: '', image: '/images/speakers_v3/10_Max_Chen.webp' },
-  'Shirney Huang 黃琇琳': { id: '11', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'M 棟', doc: '', slides: '', image: '/images/speakers_v3/11_Shirney_Huang 黃琇琳.webp' },
-  'Eric Lee': { id: '12', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'M 棟', doc: '', slides: '', image: '/images/speakers_v3/12_Eric_Lee.webp' },
+  'Max Chen': { id: '10', day: 'day1', date: '2025-12-12', time: '11:55~12:40', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/10_Max_Chen.webp' },
+  'Shirney Huang 黃琇琳': { id: '11', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/11_Shirney_Huang 黃琇琳.webp' },
+  'Eric Lee': { id: '12', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/12_Eric_Lee.webp' },
 
   // F 棟
-  '顏勝豪 Otto': { id: '13', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'F 棟', doc: '', slides: '', image: '/images/speakers_v3/13_顏勝豪_Otto.webp' },
-  '蕭晊莛': { id: '14', day: 'day1', date: '2025-12-12', time: '14:25~15:10', room: 'F 棟', doc: '', slides: '', image: '/images/speakers_v3/14_蕭晊莛.webp' },
-  'Kuma Syu': { id: '15', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'F 棟', doc: '', slides: '', image: '/images/speakers_v3/15_Kuma_Syu.webp' },
-  '陳正瑋（艦長）': { id: '16', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'F 棟', doc: '', slides: '', image: '/images/speakers_v3/16_陳正瑋(艦長).webp' },
+  '顏勝豪 Otto': { id: '13', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/13_顏勝豪_Otto.webp' },
+  '蕭晊莛': { id: '14', day: 'day1', date: '2025-12-12', time: '14:25~15:10', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/14_蕭晊莛.webp' },
+  'Kuma Syu': { id: '15', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/15_Kuma_Syu.webp' },
+  '陳正瑋（艦長）': { id: '16', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/16_陳正瑋(艦長).webp' },
 
   // Day 2~2025-12-13
 
   // Keynote Speaker
-  'Huli': { id: '17', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers_v3/17_huli.webp' },
-  '游舒帆': { id: '18', day: 'day2', date: '2025-12-13', time: '16:15~17:00', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers_v3/18_游舒帆_Gipi.webp' },
+  'Huli': { id: '17', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/17_huli.webp' },
+  '游舒帆': { id: '18', day: 'day2', date: '2025-12-13', time: '16:15~17:00', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/18_游舒帆_Gipi.webp' },
 
   // A2 棟
-  'Joey': { id: '19', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/19_Joey.webp' },
-  'Peter Su': { id: '20', day: 'day2', date: '2025-12-13', time: '10:00~10:45', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/20_Peter_Su.webp' },
-  '卓致遠': { id: '21', day: 'day2', date: '2025-12-13', time: '10:55~11:40', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/21_卓致遠.webp' },
-  '郭心喻': { id: '22', day: 'day2', date: '2025-12-13', time: '11:50~12:35', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/22_郭心喻.webp' },
-  '趙柏強': { id: '23', day: 'day2', date: '2025-12-13', time: '13:30~14:15', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/23_趙柏強.webp' },
-  'Kaba Su': { id: '24', day: 'day2', date: '2025-12-13', time: '14:25~15:10', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/24_Kaba_Su.webp' },
-  'Richard Tsai 蔡明哲': { id: '25', day: 'day2', date: '2025-12-13', time: '14:25~15:10', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers_v3/24_Kaba_Su.webp' },
+  'Joey': { id: '19', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/19_Joey.webp' },
+  'Peter Su': { id: '20', day: 'day2', date: '2025-12-13', time: '10:00~10:45', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/20_Peter_Su.webp' },
+  '卓致遠': { id: '21', day: 'day2', date: '2025-12-13', time: '10:55~11:40', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/21_卓致遠.webp' },
+  '郭心喻': { id: '22', day: 'day2', date: '2025-12-13', time: '11:50~12:35', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/22_郭心喻.webp' },
+  '趙柏強': { id: '23', day: 'day2', date: '2025-12-13', time: '13:30~14:15', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/23_趙柏強.webp' },
+  'Kaba Su': { id: '24', day: 'day2', date: '2025-12-13', time: '14:25~15:10', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/24_Kaba_Su.webp' },
+  'Richard Tsai 蔡明哲': { id: '25', day: 'day2', date: '2025-12-13', time: '14:25~15:10', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/24_Kaba_Su.webp' },
 
   // M 棟
-  '吳展瑋': { id: '26', day: 'day2', date: '2025-12-13', time: '10:55~11:40', room: 'M 棟', doc: '', slides: '', image: '/images/speakers_v3/26_吳展瑋 Howard.webp' },
-  '柯仁傑': { id: '27', day: 'day2', date: '2025-12-13', time: '11:50~12:35', room: 'M 棟', doc: '', slides: '', image: '/images/speakers_v3/27_柯仁傑.webp' },
-  'Hannah Lin': { id: '28', day: 'day2', date: '2025-12-13', time: '14:25~15:10', room: 'M 棟', doc: '', slides: '', image: '/images/speakers_v3/28_hannah.webp' },
-  '奶綠茶': { id: '29', day: 'day2', date: '2025-12-13', time: '15:20~16:05', room: 'M 棟', doc: '', slides: '', image: '/images/speakers_v3/29_奶綠.webp' },
+  '吳展瑋': { id: '26', day: 'day2', date: '2025-12-13', time: '10:55~11:40', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/26_吳展瑋 Howard.webp' },
+  '柯仁傑': { id: '27', day: 'day2', date: '2025-12-13', time: '11:50~12:35', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/27_柯仁傑.webp' },
+  'Hannah Lin': { id: '28', day: 'day2', date: '2025-12-13', time: '14:25~15:10', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/28_hannah.webp' },
+  '奶綠茶': { id: '29', day: 'day2', date: '2025-12-13', time: '15:20~16:05', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/29_奶綠.webp' },
 
   // F 棟
-  'Jocelin Ho': { id: '30', day: 'day2', date: '2025-12-13', time: '10:00~10:45', room: 'F 棟', doc: '', slides: '', image: '/images/speakers_v3/30_Jocelin_Ho.webp' },
-  'MUKI': { id: '31', day: 'day2', date: '2025-12-13', time: '10:55~11:40', room: 'F 棟', doc: '', slides: '', image: '/images/speakers_v3/31_MUKI.webp' },
-  'ThisWeb (Kun)': { id: '32', day: 'day2', date: '2025-12-13', time: '11:50~12:35', room: 'F 棟', doc: '', slides: '', image: '/images/speakers_v3/32_ThisWeb (Kun).webp' },
+  'Jocelin Ho': { id: '30', day: 'day2', date: '2025-12-13', time: '10:00~10:45', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/30_Jocelin_Ho.webp' },
+  'MUKI': { id: '31', day: 'day2', date: '2025-12-13', time: '10:55~11:40', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/31_MUKI.webp' },
+  'ThisWeb (Kun)': { id: '32', day: 'day2', date: '2025-12-13', time: '11:50~12:35', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/32_ThisWeb (Kun).webp' },
 }
 
 // 解析 CSV

@@ -9,7 +9,7 @@ tags: ["產品思維", "Agile"]
 speakerInfo: "Jenson 擁有二十年以上的跨產業從業經驗，涉足網路、數位、新創、電商、行動應用服務、AIoT 安控及人資雲端 SaaS 等領域，專長涵蓋團隊領導、產品管理、專案管理、軟體開發、行銷及使用者經驗研究與設計。 他長期投身並推動產品、技術、引導及創業等社群活動，秉持著持續學習與回饋的精神，視其為促進自我成長與產業進步的重要力量。Jenson 在教學、演講與企業合作方面經驗豐富，現於多家企業提供產品經理與敏捷開發相關的教育訓練、工作坊與顧問服務，同時擔任產品經理職涯教練，協助專業人才在產品領域持續精進與發展。"
 description: "在實施敏捷開發的團隊裡，產品經理必須在快速迭代的節奏中，持續推動團隊交付真正有價值的成果。本場演講將分享產品經理如何運用產品思維 —— 包含使用者中心思考、假設驅動、成果導向與目標對齊 —— 作為在敏捷環境中的「生存之道」。透過實務經驗與案例，探討產品經理如何在迭代週期中發揮效益，並在 AI 帶來的產品管理流程典範轉移下，持續展現專業及影響力。"
 email: realhere@gmail.com
-image: /images/speakers_v3/9_Jenson_Lee.webp
+image: /images/speakers/9_Jenson_Lee.webp
 fb: https://www.facebook.com/realhere
 ig: https://www.instagram.com/realhere
 day: day1

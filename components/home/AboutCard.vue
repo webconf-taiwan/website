@@ -106,6 +106,7 @@ function getResponsivePosition(tagPosition: any) {
       不僅是專業知識的分享平台，更是交流與靈感激盪的舞台，邀你一同探索網頁未來的無限可能。
     </p>
 
+    <!-- TODO: 連結到議程頁面 -->
     <ShareLinkButton
       to="/agenda"
       class="mt-[60px]"

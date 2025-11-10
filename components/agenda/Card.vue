@@ -92,7 +92,7 @@ const scaleY = computed(() => height.value / initialSize.value)
                   class="relative"
                 >
                   <NuxtImg
-                    src="/images/speakers/carousel-01_happy.webp"
+                    :src="speaker.avatarUrl"
                     :alt="speaker.name"
                     width="43"
                     height="60"
