@@ -7,7 +7,7 @@ interface Props {
 }
 
 const {
-  isSelected = false,
+  isSelected,
   link,
   disabledSquareEffect = false,
   showSquare = true,
@@ -34,7 +34,7 @@ const scaleY = computed(() => {
 </script>
 
 <template>
-  <div class="relative shadow-[0_0_0_0.5px_rgb(230,230,230)]">
+  <div class="relative border-[0.25px] border-webconf-gray">
     <NuxtLink
       ref="cardRef"
       class="group relative block h-full overflow-hidden bg-black transition-colors duration-300"
@@ -61,9 +61,9 @@ const scaleY = computed(() => {
 
       <!-- 半透明遮罩 -->
       <div
-        class="absolute inset-0 z-10 size-full bg-black opacity-0 duration-300"
+        class="absolute inset-0 z-10 size-full bg-black duration-300"
         :class="{
-          'block opacity-70': !!isSelected,
+          'block opacity-70': !isSelected,
           'hidden': isSelected || isSelected === undefined,
         }"
       ></div>

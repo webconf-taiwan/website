@@ -72,7 +72,7 @@ onMounted(() => {
 <template>
   <div
     ref="blockRef"
-    class="pointer-events-none absolute z-10 size-[18.29px] md:size-[22.05px]"
+    class="pointer-events-none absolute z-20 size-[18.29px] md:size-[22.05px]"
     :class="[
       currentPosition,
       {
