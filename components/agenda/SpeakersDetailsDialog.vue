@@ -256,6 +256,18 @@ function pauseAutoPlay() {
   }
 }
 
+/* 處理滑鼠進入內容區 */
+function handleMouseEnterContent() {
+  pauseAutoPlay()
+}
+
+/* 處理滑鼠離開內容區 */
+function handleMouseLeaveContent() {
+  if (props.speaker && props.speaker.length > 1) {
+    startAutoPlay()
+  }
+}
+
 useSeoMeta({
   title:
     meta.value.name && meta.value.topic
@@ -318,7 +330,7 @@ onUnmounted(() => {
   <div
     ref="popoverRef"
     data-lenis-prevent
-    class="fixed inset-0 z-40 flex h-svh flex-col overflow-y-auto bg-black/80 pt-[47px] xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
+    class="fixed inset-0 z-40 flex h-svh flex-col overflow-y-auto bg-black/80 pt-[47px] scrollbar-none xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
   >
     <AgendaFloatingBlocks />
 
@@ -346,6 +358,8 @@ onUnmounted(() => {
       <!-- 主要內容區塊 -->
       <div
         class="flex h-[calc(100%-72px)] flex-col lg:h-[calc(100%-76px)] lg:flex-row"
+        @mouseenter="handleMouseEnterContent"
+        @mouseleave="handleMouseLeaveContent"
       >
         <!-- 講者圖片區塊(手機版) -->
         <SpeakerDialogImageMobile
