@@ -9,10 +9,17 @@ const props = withDefaults(defineProps<Props>(), {
   dvdDotSpeed: 1,
   dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'] as const,
 })
+const route = useRoute()
 const breakpoints = useBreakpoints({
   lg: 1024,
 })
 const isDesktop = breakpoints.greaterOrEqual('lg')
+
+const isInSpeakerDetailPage = computed(() => {
+  return route.path.startsWith('/agenda/') && route.path !== '/agenda'
+})
+
+const { isMenuOpen } = useGlobalState()
 
 interface Props {
   borderColor?: string
@@ -455,6 +462,11 @@ onUnmounted(() => {
     <Teleport to="body">
       <div
         ref="boxContainer"
+        :class="
+          (isMenuOpen && !isDesktop) || isInSpeakerDetailPage
+            ? 'invisible'
+            : 'visible'
+        "
         class="pointer-events-none fixed inset-0 z-50 size-full"
       ></div>
     </Teleport>

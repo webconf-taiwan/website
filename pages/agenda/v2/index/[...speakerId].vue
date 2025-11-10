@@ -1,39 +1,37 @@
 <script setup lang="ts">
-const route = useRoute('agenda-speakerId')
+const route = useRoute('agenda-v2-speakerId')
 const router = useRouter()
 
 useSeoMeta({
   robots: 'noindex, nofollow',
 })
 
-const speakerId = computed(() => {
-  const param = route.params.speakerId
-  return Array.isArray(param) ? param[0] : param
-})
-
 const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
   queryCollection('content').all())
 
 const currentSpeaker = computed(() => {
-  if (!speakerId.value || !allSpeakers.value)
+  const speakerIds = route.params.speakerId
+
+  if (!speakerIds || !allSpeakers.value)
     return null
 
-  const speaker = allSpeakers.value.find(
-    speaker => speaker.meta.speakerId === speakerId.value,
+  const findSpeakerInfos = allSpeakers.value.filter(speaker =>
+    speakerIds?.includes(speaker.meta.speakerId as string),
   )
 
-  return speaker ? [speaker] : null
+  return findSpeakerInfos
 })
 
 function handleClose() {
-  router.push('/agenda')
+  router.push('/agenda/v2')
 }
 </script>
 
 <template>
-  <AgendaSpeakersPopver
+  <AgendaSpeakersDetailsDialog
     v-if="currentSpeaker && currentSpeaker.length > 0"
     :speaker="currentSpeaker"
+    :is-animation="true"
     @close="handleClose"
   />
 </template>
