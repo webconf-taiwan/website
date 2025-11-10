@@ -141,7 +141,9 @@ watch(
       </div>
     </section>
 
-    <main class="border-b border-webconf-gray bg-black text-webconf-gray">
+    <main
+      class="mr-[-0.5px] border-b border-webconf-gray bg-black text-webconf-gray"
+    >
       <section
         class="sticky top-[54.5px] z-20 border-b border-webconf-gray bg-black lg:hidden"
       >
@@ -215,60 +217,63 @@ watch(
           }"
           class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
-          <ShareGridCard
+          <NuxtLink
             v-for="(speaker, index) in SPEAKERS"
             :key="`${speaker.name}-${index}`"
-            :data="speaker"
-            :index="index"
-            :is-selected="
-              speaker.tags?.some((tag) => selectedTags.includes(tag))
-                || selectedTags.length === 0
-            "
-            :link="`/speakers/v2?speakerId=${speaker.speakerId}`"
-            :show-square="false"
+            :to="`/speakers/v2?speakerId=${speaker.speakerId}`"
           >
-            <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
-              <div class="relative shrink-0">
-                <NuxtImg
-                  :src="speaker.avatarUrl"
-                  :alt="speaker.name"
-                  width="220"
-                  height="314"
-                  class="aspect-speaker-img-full h-[144px] w-[100px] object-cover grayscale duration-300 group-hover:grayscale-0 lg:size-full"
-                />
+            <ShareGridCard
+              :is-selected="
+                speaker.tags?.some((tag) => selectedTags.includes(tag))
+                  || selectedTags.length === 0
+              "
+              :show-square="false"
+            >
+              <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
+                <div class="relative shrink-0">
+                  <NuxtImg
+                    :src="speaker.avatarUrl"
+                    :alt="speaker.name"
+                    width="220"
+                    height="314"
+                    class="aspect-speaker-img-full h-[144px] w-[100px] object-cover grayscale duration-300 group-hover:grayscale-0 lg:size-full"
+                  />
 
-                <ShareGradientMask class="group-hover:opacity-0" />
-                <ShareNoiseMask class="group-hover:opacity-0" />
-              </div>
+                  <ShareGradientMask class="group-hover:opacity-0" />
+                  <ShareNoiseMask class="group-hover:opacity-0" />
+                </div>
 
-              <div>
-                <h3 class="text-h4-24 leading-[1.4]">
-                  {{ speaker.name }}
-                </h3>
-                <p
-                  class="text-xs leading-[1.4] text-gray-500 group-hover:text-white"
-                >
-                  {{ speaker.JobTitle }}
-                </p>
-
-                <ul class="relative mt-3 flex grow flex-wrap items-start gap-2">
-                  <li
-                    v-for="tag in speaker.tags"
-                    :key="`${speaker.name}-${tag}`"
-                    class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
+                <div>
+                  <h3 class="text-h4-24 leading-[1.4]">
+                    {{ speaker.name }}
+                  </h3>
+                  <p
+                    class="text-xs leading-[1.4] text-gray-500 group-hover:text-white"
                   >
-                    {{ tag }}
-                  </li>
-                </ul>
-              </div>
-            </div>
+                    {{ speaker.JobTitle }}
+                  </p>
 
-            <template #floating-block>
-              <ClientOnly>
-                <ShareFloatingBlock />
-              </ClientOnly>
-            </template>
-          </ShareGridCard>
+                  <ul
+                    class="relative mt-3 flex grow flex-wrap items-start gap-2"
+                  >
+                    <li
+                      v-for="tag in speaker.tags"
+                      :key="`${speaker.name}-${tag}`"
+                      class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
+                    >
+                      {{ tag }}
+                    </li>
+                  </ul>
+                </div>
+              </div>
+
+              <template #floating-block>
+                <ClientOnly>
+                  <ShareFloatingBlock />
+                </ClientOnly>
+              </template>
+            </ShareGridCard>
+          </NuxtLink>
         </div>
       </section>
     </main>

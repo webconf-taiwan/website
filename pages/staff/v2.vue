@@ -89,7 +89,7 @@ useSeoMeta({
     </section>
 
     <main
-      class="flex flex-col border-b border-webconf-gray bg-black text-webconf-gray lg:flex-row"
+      class="mr-[-0.5px] flex flex-col border-b border-webconf-gray bg-black text-webconf-gray lg:flex-row"
     >
       <aside
         class="sticky top-[54px] z-10 w-full shrink-0 flex-col items-start self-start border-b border-webconf-gray bg-black lg:h-[calc(100dvh-54px)] lg:w-[228px] lg:border-b-0 lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
@@ -111,7 +111,7 @@ useSeoMeta({
           scale: 0.5,
           duration: 0.5,
         }"
-        class="relative z-0 grid w-full grid-cols-1 gap-[0.5px] lg:grid-cols-3 xl:grid-cols-4"
+        class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
       >
         <ShareGridCard
           v-for="(staff, index) in STAFF"
