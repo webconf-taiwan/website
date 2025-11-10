@@ -166,6 +166,7 @@ watch(
     }"
     class="col-span-1 flex flex-col items-center justify-center border-r-[0.5px] border-webconf-gray/50 px-8 pb-7 pt-10 xl:px-12"
   >
+    <!-- TODO: 連結到講者頁面 -->
     <div
       v-cursor="{
         scale: 5,

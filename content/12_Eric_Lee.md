@@ -9,7 +9,7 @@ tags: ["Frontend", "軟體設計"]
 speakerInfo: "一個專注於前端又對 AI 的發展很感興趣的軟體工程師，喜歡探討前端效能優化和討論不同做事的方式，在工作之餘也會在社群分享最新的前端和 AI 新知。"
 description: "微前端帶來很多自主性和靈活性，也帶來很多一開始可能看不到的隱形成本，這邊講講我自己的經驗聊一開始用微前端的契機、困難、最後採取了什麼替代方案。"
 email: fetalk.podcast@gmail.com
-image: /images/speakers_v3/12_Eric_Lee.webp
+image: /images/speakers/12_Eric_Lee.webp
 x: https://x.com/fetalkpodcast
 threads: https://www.threads.com/@fetalkpodcast
 ig: https://www.instagram.com/fetalkpodcast/

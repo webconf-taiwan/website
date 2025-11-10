@@ -1,51 +1,51 @@
 <script setup lang="ts">
 const $img = useImage()
 
-const SPEAKERS = [
+const speakers = [
   {
     name: 'Happy',
-    src: '/images/speakers/carousel-01_happy.webp',
+    src: '/images/speakers/1_李昆謀.webp',
   },
   {
     name: 'Gipi',
-    src: '/images/speakers/carousel-02_gipi.webp',
+    src: '/images/speakers/18_游舒帆_Gipi.webp',
   },
   {
     name: 'Will 保哥',
-    src: '/images/speakers/carousel-03_will.webp',
+    src: '/images/speakers/2_Will_保哥.webp',
   },
   {
-    name: '胡立',
-    src: '/images/speakers/carousel-04_huli.webp',
+    name: 'Huli 胡立',
+    src: '/images/speakers/17_Huli.webp',
   },
   {
     name: 'Hannah',
-    src: '/images/speakers/carousel-05_hannah.webp',
+    src: '/images/speakers/28_hannah.webp',
   },
   {
     name: '奶綠茶',
-    src: '/images/speakers/carousel-06_milkmidi.webp',
+    src: '/images/speakers/29_奶綠.webp',
   },
   {
     name: 'KURO',
-    src: '/images/speakers/carousel-07_kuro.webp',
+    src: '/images/speakers/000_KURO.webp',
   },
   {
     name: 'Peter',
-    src: '/images/speakers/carousel-08_peter.webp',
+    src: '/images/speakers/20_Peter_Su.webp',
   },
   {
     name: 'Chris',
-    src: '/images/speakers/carousel-09_chris.webp',
+    src: '/images/speakers/3_陳偉仁_Chris_Chen.webp',
   },
   {
     name: 'Tinya',
-    src: '/images/speakers/carousel-10_tinya.webp',
+    src: '/images/speakers/4_黃庭亞-Yaya.webp',
   },
 ]
 
 const speakerAssets = computed(() =>
-  SPEAKERS.map(speaker => ({
+  speakers.map(speaker => ({
     ...speaker,
     src: $img(speaker.src, { width: 282, height: 448 }),
   })),
@@ -122,6 +122,7 @@ function handleSlideToNext() {
           />
         </div>
 
+        <!-- TODO: 連結到講者頁面 -->
         <ShareLinkButton
           to="/coming-soon"
           class="hidden text-center xl:block"
@@ -194,6 +195,7 @@ function handleSlideToNext() {
       />
 
       <div class="justify-self-center">
+        <!-- TODO: 連結到講者頁面 -->
         <ShareLinkButton to="/coming-soon">
           更多講者
         </ShareLinkButton>

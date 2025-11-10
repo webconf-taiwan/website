@@ -9,7 +9,7 @@ tags: ["設計實務", "團隊管理"]
 speakerInfo: "蕭喬尹 (Joey) 是專精於共融設計的 UX 研究顧問。擅長深入理解不同族群的真實需求，曾與低收入戶、新住民等多元群體，以及社創組織密切合作。他於美國密西根大學取得博士學位後，曾於美國業界參與生產力工具以及AI相關產品研發。回到台灣後創立引鹿創新，致力於協助企業組織打造更具共融性的產品，創造商業價值與社會影響並重的服務。"
 description: "你曾在走出辦公室、面對真實場域的受訪者時感到緊張，甚至讓團隊陷入一片混亂嗎？本次分享將帶您直擊田野研究前線。我將從資深UX研究員的角度解析如何克服真實場域中的不確定性，快速與受訪者及協作夥伴建立信任的技巧，以及將第一手觀察轉化為有價值的洞察的經驗。這場分享將不僅涵蓋研究方法，更著重於團隊協作與跨角色溝通的實戰經驗，為您的下一個專案做好準備。"
 email: joeyhsiao.uxr@gmail.com
-image: /images/speakers_v3/19_Joey.webp
+image: /images/speakers/19_Joey.webp
 ig: https://www.instagram.com/joeyhsiao.uxr/
 threads: https://www.threads.com/@joeyhsiao.uxr
 day: day2
