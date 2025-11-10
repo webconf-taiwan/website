@@ -248,7 +248,7 @@ watch(
                     {{ speaker.name }}
                   </h3>
                   <p
-                    class="text-xs leading-[1.4] text-gray-500 group-hover:text-white"
+                    class="text-xs leading-[1.4] text-webconf-gray-500 group-hover:text-white"
                   >
                     {{ speaker.JobTitle }}
                   </p>

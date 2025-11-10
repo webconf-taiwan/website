@@ -1,6 +1,4 @@
-import type { Staff } from '~/types'
-
-export const STAFF: Staff[] = [
+export const STAFF = [
   {
     name: '高見龍',
     title: '掃地兼敲鐘',
@@ -93,4 +91,4 @@ export const STAFF: Staff[] = [
       'https://penspulse326.github.io/',
     ],
   },
-]
+] as const
