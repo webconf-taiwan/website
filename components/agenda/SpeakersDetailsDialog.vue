@@ -6,7 +6,7 @@ import type {
 } from '#components'
 import type { ContentCollectionItem } from '@nuxt/content'
 import { site } from '~/config/seo.config'
-import { BACK_LINKS } from '~/constants/agendas'
+import { BACK_LINKS } from '~/constants/agenda'
 
 const props = withDefaults(
   defineProps<{
