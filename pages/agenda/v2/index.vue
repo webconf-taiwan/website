@@ -2,8 +2,6 @@
 import type { AgendaItem, AgendaTag } from '~/types'
 import { AGENDA_LIST } from '~/constants/agendas'
 
-const route = useRoute()
-
 useSeoMeta({
   title: '議程資訊',
 })
@@ -91,37 +89,6 @@ watch(isMenuOpen, (newValue) => {
     }, 200)
   }
 })
-
-// 講者彈跳視窗相關
-const isShowPopover = ref(false)
-
-const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
-  queryCollection('content').all())
-
-const currentSpeaker = computed(() => {
-  const speakerIds
-    = typeof route.query.speakerId === 'string'
-      ? [route.query.speakerId]
-      : route.query.speakerId
-  if (!speakerIds || !allSpeakers.value)
-    return null
-
-  const findSpeakerInfos = allSpeakers.value.filter(speaker =>
-    speakerIds?.includes(speaker.meta.speakerId as string),
-  )
-
-  return findSpeakerInfos
-})
-
-watch(
-  () => route.query.speakerId,
-  (newVal) => {
-    if (!newVal || !allSpeakers.value)
-      return
-    isShowPopover.value = true
-  },
-  { immediate: true },
-)
 </script>
 
 <template>
@@ -395,12 +362,7 @@ watch(
     </main>
 
     <!-- 講者資訊彈跳視窗 -->
-    <AgendaSpeakersPopver
-      v-if="isShowPopover && currentSpeaker && currentSpeaker.length > 0"
-      :speaker="currentSpeaker"
-      @close="isShowPopover = false"
-    />
-    <!-- <NuxtPage /> -->
+    <NuxtPage />
   </div>
 </template>
 

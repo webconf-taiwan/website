@@ -262,7 +262,6 @@ const AGENDA_LIST: AgendaItem[] = [
 ]
 
 const isShowPopover = ref(false)
-const { isPublishFeature } = useGlobalState()
 
 function handlePopoverShow(topic: string) {
   isShowPopover.value = true
@@ -275,7 +274,7 @@ function handlePopoverShow(topic: string) {
 watch(
   () => route.query.speakerId,
   (newVal) => {
-    if (newVal && typeof newVal === 'string' && isPublishFeature.value) {
+    if (newVal && typeof newVal === 'string') {
       handlePopoverShow(newVal)
     }
   },

@@ -22,6 +22,7 @@ const emit = defineEmits(['close'])
 
 const router = useRouter()
 const { gsap } = useGsap()
+const { isModalOpen, setToggleModal } = useGlobalState()
 
 const desktopImageComponentRef = ref<InstanceType<
   typeof SpeakerDialogImageDesktop
@@ -56,6 +57,7 @@ let autoPlayTween: gsap.core.Tween | null = null
 /* 處理關閉彈出視窗 */
 function handleClose() {
   // 淡出動畫
+  setToggleModal(false)
   gsap.to(popoverRef.value, {
     opacity: 0,
     duration: 0.3,
@@ -276,27 +278,30 @@ useSeoMeta({
 
 onMounted(() => {
   const lenis = useLenis()
+
   if (lenis) {
     lenis.stop()
   }
 
   // 淡入動畫
-  gsap.fromTo(
-    popoverRef.value,
-    {
-      opacity: 0,
-    },
-    {
-      opacity: 1,
-      duration: 0.5,
-      ease: 'power2.out',
-      onComplete: () => {
-        if (props.speaker && props.speaker.length > 1) {
-          startAutoPlay()
-        }
+  if (isModalOpen.value) {
+    gsap.fromTo(
+      popoverRef.value,
+      {
+        opacity: 0,
       },
-    },
-  )
+      {
+        opacity: 1,
+        duration: 0.5,
+        ease: 'power2.out',
+        onComplete: () => {
+          if (props.speaker && props.speaker.length > 1) {
+            startAutoPlay()
+          }
+        },
+      },
+    )
+  }
 })
 
 onUnmounted(() => {

@@ -45,28 +45,28 @@ const NAV_ITEMS = [
     isDesktop: true,
   },
 ]
-const { isSaleOpen, isFirstLoad } = useGlobalState()
+const { isSaleOpen, isFirstLoad, isMenuOpen, setToggleMenu } = useGlobalState()
 
-const isToggleMenu = ref(false)
+const lenis = useLenis()
 
 function onToggleMenu() {
-  isToggleMenu.value = !isToggleMenu.value
+  setToggleMenu(!isMenuOpen.value)
 
-  if (isToggleMenu.value) {
-    document.body.style.overflow = 'hidden'
+  if (isMenuOpen.value) {
+    lenis.stop()
   }
   else {
-    document.body.style.overflow = ''
+    lenis.start()
   }
 }
 
 function closeMenu() {
-  isToggleMenu.value = false
-  document.body.style.overflow = ''
+  setToggleMenu(false)
+  lenis.start()
 }
 
 onUnmounted(() => {
-  document.body.style.overflow = ''
+  lenis.start()
 })
 </script>
 
@@ -74,7 +74,7 @@ onUnmounted(() => {
   <header
     class="fixed top-0 z-50 w-full border-b border-b-webconf-gray bg-black transition-all ease-out lg:bg-black"
     :class="{
-      'bg-webconf-blue': isToggleMenu,
+      'bg-webconf-blue': isMenuOpen,
       '-translate-y-4 opacity-0 duration-500': !isFirstLoad,
       'translate-y-0 opacity-100 duration-2500': isFirstLoad,
     }"
@@ -115,7 +115,7 @@ onUnmounted(() => {
         <nav>
           <ul
             class="flex py-[3px] pr-0 sm:pr-3 lg:pr-4"
-            :class="{ 'hidden lg:flex': isToggleMenu }"
+            :class="{ 'hidden lg:flex': isMenuOpen }"
           >
             <li
               v-for="navItem in NAV_ITEMS"
@@ -143,7 +143,7 @@ onUnmounted(() => {
 
         <!-- 是否購票按鈕 -->
         <a
-          v-if="!isSaleOpen && !isToggleMenu"
+          v-if="!isSaleOpen && !isMenuOpen"
           :href="EXTERNAL_LINKS.CONF_TICKET_URL"
           class="inline-block pr-3 sm:pr-2"
           target="_blank"
@@ -158,22 +158,25 @@ onUnmounted(() => {
         </a>
 
         <!-- 手機選單按鈕 -->
-        <div class="block px-0 py-[3px] sm:px-3 sm:py-[4px] lg:hidden">
+        <button
+          type="button"
+          class="block px-0 py-[3px] sm:px-3 sm:py-[4px] lg:hidden"
+        >
           <NuxtImg
             src="/images/icon/hamburgerMenu.svg"
             width="24"
             height="24"
-            :class="{ hidden: isToggleMenu }"
+            :class="{ hidden: isMenuOpen }"
             @click="onToggleMenu"
           />
           <NuxtImg
             src="/images/icon/close.svg"
             width="24"
             height="24"
-            :class="{ hidden: !isToggleMenu }"
+            :class="{ hidden: !isMenuOpen }"
             @click="onToggleMenu"
           />
-        </div>
+        </button>
       </div>
 
       <!-- 手機和平板使用選單 -->
@@ -186,7 +189,7 @@ onUnmounted(() => {
         leave-to-class="max-h-0 opacity-0"
       >
         <ul
-          v-show="isToggleMenu"
+          v-show="isMenuOpen"
           class="mobile-menu absolute left-0 top-[calc(100%+1px)] flex w-dvw flex-col gap-12 overflow-hidden bg-black p-8 pt-10 before:absolute before:left-[38px] before:top-0 before:h-full before:w-[0.5px] before:bg-webconf-gray before:content-[''] sm:pl-[60px] sm:pr-20 sm:pt-20 before:sm:left-[66px] lg:hidden"
         >
           <li
