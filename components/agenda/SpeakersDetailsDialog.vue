@@ -318,7 +318,7 @@ onUnmounted(() => {
   <div
     ref="popoverRef"
     data-lenis-prevent
-    class="fixed inset-0 z-40 flex h-svh flex-col overflow-y-auto bg-black/80 pt-[47px] xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
+    class="fixed inset-0 z-40 flex h-svh flex-col overflow-y-auto bg-black/80 pt-[47px] scrollbar-none xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
   >
     <AgendaFloatingBlocks />
 

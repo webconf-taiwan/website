@@ -23,7 +23,7 @@ function handleShareClick() {
   <!-- 議程介紹區塊 -->
   <div
     data-lenis-prevent
-    class="w-full overflow-y-auto border-l-0 border-t border-webconf-gray px-12 text-white lg:w-1/2 lg:border-l lg:border-t-0"
+    class="w-full overflow-y-auto border-l-0 border-t border-webconf-gray px-12 text-white scrollbar-none lg:w-1/2 lg:border-l lg:border-t-0"
   >
     <!-- 議程簡介 -->
     <div class="-mx-12 border-b-[0.5px] border-webconf-frame">
