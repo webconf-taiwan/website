@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AgendaTag } from '~/types'
-import { SPEAKERS } from '~/constants/agendas'
+import { SPEAKERS } from '~/constants/agenda'
 
 useSeoMeta({
   title: '講者陣容',
