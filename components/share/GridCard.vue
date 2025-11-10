@@ -1,10 +1,17 @@
 <script setup lang="ts">
-const props = defineProps<{
+interface Props {
   isSelected?: boolean
   link: string
-  disabledSquareEffect: boolean
-  showSquare: boolean
-}>()
+  disabledSquareEffect?: boolean
+  showSquare?: boolean
+}
+
+const {
+  isSelected = false,
+  link,
+  disabledSquareEffect = false,
+  showSquare = true,
+} = defineProps<Props>()
 
 const cardRef = ref<HTMLElement>()
 const { width, height } = useElementSize(cardRef, undefined, {
@@ -16,12 +23,12 @@ const initialSize = computed(() => (width.value >= 1280 ? 28 : 20))
 
 // 計算 X 和 Y 軸各自需要的縮放比例，讓兩個方向同時到達邊界
 const scaleX = computed(() => {
-  const baseSize = props.showSquare ? initialSize.value : 1
+  const baseSize = showSquare ? initialSize.value : 1
   return width.value / baseSize
 })
 
 const scaleY = computed(() => {
-  const baseSize = props.showSquare ? initialSize.value : 1
+  const baseSize = showSquare ? initialSize.value : 1
   return height.value / baseSize
 })
 </script>
@@ -48,7 +55,7 @@ const scaleY = computed(() => {
       ></div>
 
       <!-- 卡片內容 -->
-      <div class="relative z-10">
+      <div class="relative">
         <slot></slot>
       </div>
 
@@ -61,5 +68,7 @@ const scaleY = computed(() => {
         }"
       ></div>
     </NuxtLink>
+
+    <slot name="floating-block"></slot>
   </div>
 </template>
