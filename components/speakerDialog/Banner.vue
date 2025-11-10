@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { BACK_LINKS } from '~/constants/agendas'
+import { BACK_LINKS } from '~/constants/agenda'
 
 defineProps<{
   type: 'agendas' | 'speakers'

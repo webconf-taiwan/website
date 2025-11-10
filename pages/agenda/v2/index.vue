@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AgendaItem, AgendaTag } from '~/types'
-import { AGENDA_LIST } from '~/constants/agendas'
+import { AGENDA_LIST } from '~/constants/agenda'
 
 useSeoMeta({
   title: '議程資訊',
@@ -178,7 +178,7 @@ watch(isMenuOpen, (newValue) => {
 
     <main class="border-b border-webconf-gray text-webconf-gray">
       <section
-        class="sticky top-[47px] z-20 border-b border-webconf-gray bg-black xs:top-[55px] sm:top-[57px] lg:top-[55px]"
+        class="sticky top-[47px] z-20 border-b border-webconf-gray bg-black xs:top-[55px] sm:top-[57px] lg:top-[54.5px]"
       >
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
@@ -198,13 +198,13 @@ watch(isMenuOpen, (newValue) => {
             class="hidden grow text-center text-h4-24 lg:grid lg:grid-cols-3"
           >
             <h3 class="col-span-1">
+              A2 棟
+            </h3>
+            <h3 class="col-span-1">
               M 棟
             </h3>
             <h3 class="col-span-1">
               F 棟
-            </h3>
-            <h3 class="col-span-1">
-              A2 棟
             </h3>
           </div>
         </div>
