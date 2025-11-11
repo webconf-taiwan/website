@@ -35,6 +35,20 @@ const ORGANIZERS = [
     hoverLogo: '/images/titansoft-hover_v2.webp',
     consecutiveText: '連續 3 年贊助',
   },
+  {
+    name: '版塊設計',
+    link: 'https://blockstudio.tw/',
+    logo: '/images/BlockStudio.webp',
+    hoverLogo: '/images/BlockStudio-hover.webp',
+    consecutiveText: '',
+  },
+  {
+    name: 'WebCRACK 數位設計共享平台',
+    link: 'https://webcrack.tw/',
+    logo: '/images/WebCRACK.webp',
+    hoverLogo: '/images/WebCRACK-hover.webp',
+    consecutiveText: '',
+  },
 ]
 </script>
 

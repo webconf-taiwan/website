@@ -15,14 +15,19 @@ const SPONSORSINFO = [
       '新加坡商鈦坦科技是一間軟體開發公司,致力於線上軟體平台客製開發與維護,以及代理 Atlassian 旗下產品,以自身實際使用經驗提供一站式導入服務。',
     socialLinks: [
       {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://titansoft.com/tw',
+      },
+      {
         name: 'fb',
         icon: '/images/icon/fb.svg',
         url: 'https://www.facebook.com/TitansoftTW',
       },
       {
-        name: 'web',
-        icon: '/images/icon/web.svg',
-        url: 'https://titansoft.com/tw',
+        name: 'youtube',
+        icon: '/images/icon/youtube.svg',
+        url: 'https://www.youtube.com/channel/UC_530TqXXizuzA5Ut8wFp4w',
       },
       {
         name: 'ig',
@@ -59,19 +64,25 @@ const ORGANIZERS = [
     name: '五倍學院',
     logo: '/images/sponsors/5xcampus.webp',
     description: [
-      '五倍學院由資深軟體開發者高見龍創立，以深厚的技術底蘊與實務經驗為核心，長期為企業與專業人才提供高品質的技術解決方案與培訓服務。',
-      '我們擅長協助企業執行各類軟體開發專案，從系統規劃、技術架構、前後端開發到客製化需求落地，皆以專案管理流程與工程標準確保交付品質與時效。',
+      '五倍學院十餘年來深耕程式教育，陪伴無數學員從零起步，成為引領時代的軟體工程師與 AI 開發人才。',
+      '我們以實戰為核心，打造最貼近產業需求的課程，內容涵蓋前後端網頁技術、AI 工具應用與自動化實作，幫助學員在瞬息萬變的科技浪潮中不斷成長，用技術實現自我價值。',
+      '同時，我們也為企業提供專業的技術顧問與教育訓練服務，協助優化開發流程、強化團隊戰力，讓技術成為驅動組織創新與成長的關鍵力量，提升效率、創造更高價值。',
     ],
     socialLinks: [
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://5xcampus.com/',
+      },
       {
         name: 'fb',
         icon: '/images/icon/fb.svg',
         url: 'https://www.facebook.com/5xruby',
       },
       {
-        name: 'web',
-        icon: '/images/icon/web.svg',
-        url: 'https://5xcampus.com/',
+        name: 'youtube',
+        icon: '/images/icon/youtube.svg',
+        url: 'https://www.youtube.com/c/5xruby-edu',
       },
       {
         name: 'ig',
@@ -85,18 +96,24 @@ const ORGANIZERS = [
     name: '六角學院',
     logo: '/images/sponsors/hexschool.webp',
     description: [
-      '六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。',
+      '六角學院是一所專注培養軟體工程師與數位人才的職能學校，目前已累積超過 30,000 名學員。我們的核心使命，是讓更多人透過程式學習，為自己的職涯創造更多選擇與可能性。',
+      '課程橫跨前端、後端到全端開發，強調實戰專題、系統化學習規劃與職涯陪跑機制，不只教會寫程式，更著重溝通力、解決問題能力與自學能力等「工程師思維」，協助學員在 AI 時代持續成長與轉職發展。',
     ],
     socialLinks: [
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://www.hexschool.com/',
+      },
       {
         name: 'fb',
         icon: '/images/icon/fb.svg',
         url: 'https://www.facebook.com/hexschool',
       },
       {
-        name: 'web',
-        icon: '/images/icon/web.svg',
-        url: 'https://www.hexschool.com/',
+        name: 'youtube',
+        icon: '/images/icon/youtube.svg',
+        url: 'https://www.youtube.com/@hexschool',
       },
       {
         name: 'ig',
@@ -110,18 +127,24 @@ const ORGANIZERS = [
     name: '悠識學院',
     logo: '/images/sponsors/userxper.webp',
     description: [
-      '悠識學院提供實戰型 UX 學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業 UX 方法，講座及實務研討關注 AI/UX、DesignOps 設計營運、數位職涯發展。我們也營運 IG、Threads、Podcasat「UX有差嗎？」等社群平台，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
+      '悠識學院致力於推動實戰型的 UX（使用者體驗）學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業方法，幫助學員從真實案例中培養洞察與分析能力。我們長期關注設計與科技的交會，定期舉辦以 AI/UX、DesignOps 設計營運與數位職涯發展為主題的講座與實務研討，協助設計師與產品團隊掌握產業趨勢、拓展跨領域視野。',
+      '此外，悠識學院也經營多元社群平台——包含 Circle 社群、IG、Threads，以及 Podcast《UX 有差嗎？》，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
     ],
     socialLinks: [
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://blog.userxper.com/writer/userxper-edu/',
+      },
       {
         name: 'fb',
         icon: '/images/icon/fb.svg',
         url: 'https://www.facebook.com/userxper.tw',
       },
       {
-        name: 'web',
-        icon: '/images/icon/web.svg',
-        url: 'https://blog.userxper.com/writer/userxper-edu/',
+        name: 'youtube',
+        icon: '/images/icon/youtube.svg',
+        url: 'https://www.youtube.com/@UserXper',
       },
       {
         name: 'ig',
@@ -195,6 +218,41 @@ const SUPPORTSTARGET = [
     title: '共創永續價值',
     image: '/images/sponsors-sustainability.webp',
     description: '與我們一同推廣「科技 x 永續」的願景，展現企業責任與影響力',
+  },
+]
+
+const CO_ORGANIZERS = [
+  {
+    id: 1,
+    name: 'BlockStudio 版塊設計',
+    logo: '/images/sponsors/BlockStudio.webp',
+    description: [
+      '版塊是網站立體化數位體驗的探險者，從數位策略規劃到品牌視覺識別再到動態特效網站 ，全方位視覺數位形象設計公司。以動態特效為核心、網站設計為起點，為客戶提供全面的數位形象策略解。',
+    ],
+    socialLinks: [
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://blockstudio.tw',
+      },
+    ],
+  },
+  {
+    id: 2,
+    name: 'WebCRACK 數位共享平台',
+    logo: '/images/sponsors/WebCRACK.webp',
+    description: [
+      'WebCRACK 是一個專屬於數位設計的線上共享平台，匯聚國內數位設計的能量，創造資源媒合、知識傳遞及作品認證的創意樞紐，構建完整的數位設計生態圈。',
+      '從知識系統建構開始，WebCRACK 聚集設計資源與智慧，為設計師提供實用的設計資訊；透過作品展示認證，讓設計作品被看見並實現價值；更以培育數位人才為目標，透過交流與知識分享，助力未來設計力量的成長。',
+      '我們相信，透過共享交流機制，WebCRACK 不僅促進設計產業升級，更提升整體產業品質，為數位設計注入無限可能。',
+    ],
+    socialLinks: [
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://webcrack.tw/',
+      },
+    ],
   },
 ]
 </script>
@@ -395,7 +453,7 @@ const SUPPORTSTARGET = [
           />
         </div>
 
-        <div class="px-5 py-8 lg:px-10 lg:pb-[60px] lg:pt-10">
+        <div class="px-5 py-8 lg:px-10 lg:pb-12 lg:pt-10">
           <h3 class="mb-3 text-h3-40 text-white lg:mb-6">
             {{ organizer.name }}
           </h3>
@@ -430,7 +488,7 @@ const SUPPORTSTARGET = [
             <span
               v-for="(paragraph, index) in organizer.description"
               :key="index"
-              class="inline-block"
+              class="organizer-description-paragraph inline-block"
             >
               {{ paragraph }}
             </span>
@@ -439,13 +497,104 @@ const SUPPORTSTARGET = [
       </div>
 
       <NuxtImg
-        class="absolute right-[1%] top-[-67%] -z-10 hidden lg:block"
+        class="absolute right-[14.3906px] top-[-409.219px] -z-10 hidden lg:block"
         src="/images/sponsors/sponsors-line.svg"
         width="908"
         height="749"
       />
       <NuxtImg
-        class="absolute right-[-10%] top-[-12%] -z-10 block lg:hidden"
+        class="absolute right-[-36px] top-[-186.375px] -z-10 block lg:hidden"
+        src="/images/sponsors/sponsors-line-mobile.svg"
+        width="394"
+        height="326"
+      />
+    </div>
+
+    <!-- 協辦單位區塊 -->
+    <div
+      class="relative mt-[95px] flex flex-col border-y border-webconf-gray bg-black text-white lg:mt-[141px] lg:flex-row"
+    >
+      <div
+        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+        class="absolute z-30 w-full"
+      ></div>
+      <div
+        class="sponsors-title-section sticky top-[47px] z-20 border-b py-3 pl-5 xs:top-[55px] sm:top-[57px] lg:top-[55px] lg:border-b-0 lg:pl-12 lg:pr-[152px] lg:pt-10"
+      >
+        <h2
+          class="inline-block text-h4-24 text-webconf-gray lg:text-[60px] lg:leading-[1.2] lg:tracking-[0em] lg:[writing-mode:vertical-rl]"
+        >
+          協辦單位
+        </h2>
+      </div>
+
+      <div
+        v-for="organizer in CO_ORGANIZERS"
+        :key="organizer.id"
+        class="sponsors-content flex-1 lg:border-l"
+      >
+        <div
+          class="relative grid place-content-center border-b-[0.5px] border-webconf-frame px-[67.5px] before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:px-[182.5px] lg:before:size-7"
+        >
+          <NuxtImg
+            :src="organizer.logo"
+            width="225"
+            height="180"
+            :alt="`主辦單位${organizer.name}標誌`"
+          />
+        </div>
+
+        <div class="px-5 py-8 lg:px-10 lg:pb-12 lg:pt-10">
+          <h3 class="mb-3 text-h3-40 text-white lg:mb-6">
+            {{ organizer.name }}
+          </h3>
+
+          <ul class="mb-6 flex gap-3 lg:mb-8">
+            <li
+              v-for="(link, index) in organizer.socialLinks"
+              :key="index"
+              v-cursor="{
+                scale: 0.5,
+                duration: 0.5,
+              }"
+              class="border border-webconf-blue/90 transition-colors duration-500 hover:bg-webconf-blue"
+            >
+              <a
+                :href="link.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="block p-[10px]"
+              >
+                <NuxtImg
+                  :src="link.icon"
+                  width="24"
+                  height="24"
+                  :alt="link.name"
+                />
+              </a>
+            </li>
+          </ul>
+
+          <p class="text-body-16 text-webconf-gray">
+            <span
+              v-for="(paragraph, index) in organizer.description"
+              :key="index"
+              class="organizer-description-paragraph inline-block"
+            >
+              {{ paragraph }}
+            </span>
+          </p>
+        </div>
+      </div>
+
+      <NuxtImg
+        class="absolute left-[-331.188px] top-[-423.328px] -z-10 hidden lg:block"
+        src="/images/sponsors/sponsors-line.svg"
+        width="908"
+        height="749"
+      />
+      <NuxtImg
+        class="absolute left-[-169.188px] top-[-166.266px] -z-10 block lg:hidden"
         src="/images/sponsors/sponsors-line-mobile.svg"
         width="394"
         height="326"
@@ -573,5 +722,8 @@ const SUPPORTSTARGET = [
 
 .sponsors-content + .sponsors-content {
   border-top: 1px solid #e6e6e6;
+}
+.organizer-description-paragraph + .organizer-description-paragraph {
+  padding-top: 1rem;
 }
 </style>

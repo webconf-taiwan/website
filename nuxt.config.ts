@@ -27,7 +27,7 @@ export default defineNuxtConfig({
     inlineStyles: false,
   },
 
-  // content 相關生成設定(a 標籤外部連結自動開啟新分頁)
+  // nuxt-content 相關生成設定(a 標籤外部連結自動開啟新分頁)
   content: {
     build: {
       markdown: {
@@ -43,7 +43,7 @@ export default defineNuxtConfig({
     },
   },
 
-  // Nuxt-icon 自定義圖標設定
+  // nuxt-icon 自定義圖標設定
   icon: {
     customCollections: [{
       prefix: 'custom-icon',
@@ -71,8 +71,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'icon', href: 'https://webconf.tw/images/seo/favicon.ico' },
-        { rel: 'apple-touch-icon', href: 'https://webconf.tw/images/seo/appleTouchIcon.png' },
+        { rel: 'icon', href: 'https://webconf.tw/images/seo/favicon.ico?v=2025' },
+        { rel: 'apple-touch-icon', href: 'https://webconf.tw/images/seo/appleTouchIcon.png?v=2025' },
       ],
     },
     pageTransition: {
