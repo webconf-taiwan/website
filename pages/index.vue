@@ -4,6 +4,7 @@ import {
   eventLocation,
   eventOffers,
   eventOrganizer,
+  eventPerformers,
 } from '~/config/seo.config'
 
 useSchemaOrg([
@@ -12,6 +13,7 @@ useSchemaOrg([
     location: eventLocation,
     organizer: eventOrganizer,
     offers: eventOffers,
+    performer: eventPerformers,
   },
 ])
 </script>
