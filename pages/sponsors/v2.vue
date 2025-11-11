@@ -14,10 +14,21 @@ const SPONSORSINFO = [
     description:
       '新加坡商鈦坦科技是一間軟體開發公司,致力於線上軟體平台客製開發與維護,以及代理 Atlassian 旗下產品,以自身實際使用經驗提供一站式導入服務。',
     socialLinks: [
-      { name: 'fb', icon: '/images/icon/fb.svg', url: '#' },
-      { name: 'twitter', icon: '/images/icon/twitter.svg', url: '#' },
-      { name: 'web', icon: '/images/icon/web.svg', url: '#' },
-      { name: 'ig', icon: '/images/icon/ig.svg', url: '#' },
+      {
+        name: 'fb',
+        icon: '/images/icon/fb.svg',
+        url: 'https://www.facebook.com/TitansoftTW',
+      },
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://titansoft.com/tw',
+      },
+      {
+        name: 'ig',
+        icon: '/images/icon/ig.svg',
+        url: 'https://www.instagram.com/titaner_titansoft',
+      },
     ],
   },
   {
@@ -28,10 +39,16 @@ const SPONSORSINFO = [
     description:
       'AscentisTech 專注於打造全球領先的線上軟體開發平台,匯集實力堅強、技術與數據背景的菁英團隊,具備高效能系統架構設計、多語系支援與模組化整合能力。',
     socialLinks: [
-      { name: 'fb', icon: '/images/icon/fb.svg', url: '#' },
-      { name: 'twitter', icon: '/images/icon/twitter.svg', url: '#' },
-      { name: 'web', icon: '/images/icon/web.svg', url: '#' },
-      { name: 'ig', icon: '/images/icon/ig.svg', url: '#' },
+      {
+        name: 'fb',
+        icon: '/images/icon/fb.svg',
+        url: 'https://www.facebook.com/AscentisTech',
+      },
+      {
+        name: 'ig',
+        icon: '/images/icon/ig.svg',
+        url: 'https://www.instagram.com/ascentistech/',
+      },
     ],
   },
 ]
@@ -46,10 +63,21 @@ const ORGANIZERS = [
       '我們擅長協助企業執行各類軟體開發專案，從系統規劃、技術架構、前後端開發到客製化需求落地，皆以專案管理流程與工程標準確保交付品質與時效。',
     ],
     socialLinks: [
-      { name: 'fb', icon: '/images/icon/fb.svg', url: '#' },
-      { name: 'twitter', icon: '/images/icon/twitter.svg', url: '#' },
-      { name: 'web', icon: '/images/icon/web.svg', url: '#' },
-      { name: 'ig', icon: '/images/icon/ig.svg', url: '#' },
+      {
+        name: 'fb',
+        icon: '/images/icon/fb.svg',
+        url: 'https://www.facebook.com/5xruby',
+      },
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://5xcampus.com/',
+      },
+      {
+        name: 'ig',
+        icon: '/images/icon/ig.svg',
+        url: 'https://www.instagram.com/5xcampus/',
+      },
     ],
   },
   {
@@ -60,10 +88,21 @@ const ORGANIZERS = [
       '六角學院是一所程式開發學習單位，目前已累積超過 30,000 名學員，我們的使命是讓更多人藉由程式學習，在職涯規劃上有更多的選擇。',
     ],
     socialLinks: [
-      { name: 'fb', icon: '/images/icon/fb.svg', url: '#' },
-      { name: 'twitter', icon: '/images/icon/twitter.svg', url: '#' },
-      { name: 'web', icon: '/images/icon/web.svg', url: '#' },
-      { name: 'ig', icon: '/images/icon/ig.svg', url: '#' },
+      {
+        name: 'fb',
+        icon: '/images/icon/fb.svg',
+        url: 'https://www.facebook.com/hexschool',
+      },
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://www.hexschool.com/',
+      },
+      {
+        name: 'ig',
+        icon: '/images/icon/ig.svg',
+        url: 'https://www.instagram.com/hexschool/',
+      },
     ],
   },
   {
@@ -74,10 +113,21 @@ const ORGANIZERS = [
       '悠識學院提供實戰型 UX 學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業 UX 方法，講座及實務研討關注 AI/UX、DesignOps 設計營運、數位職涯發展。我們也營運 IG、Threads、Podcasat「UX有差嗎？」等社群平台，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
     ],
     socialLinks: [
-      { name: 'fb', icon: '/images/icon/fb.svg', url: '#' },
-      { name: 'twitter', icon: '/images/icon/twitter.svg', url: '#' },
-      { name: 'web', icon: '/images/icon/web.svg', url: '#' },
-      { name: 'ig', icon: '/images/icon/ig.svg', url: '#' },
+      {
+        name: 'fb',
+        icon: '/images/icon/fb.svg',
+        url: 'https://www.facebook.com/userxper.tw',
+      },
+      {
+        name: 'web',
+        icon: '/images/icon/web.svg',
+        url: 'https://blog.userxper.com/writer/userxper-edu/',
+      },
+      {
+        name: 'ig',
+        icon: '/images/icon/ig.svg',
+        url: 'https://www.instagram.com/userxper/',
+      },
     ],
   },
 ]
