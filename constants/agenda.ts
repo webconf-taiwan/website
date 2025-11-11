@@ -355,7 +355,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Huli 胡立',
-        avatarUrl: '/images/speakers/17_huli.webp',
+        avatarUrl: '/images/speakers/17_Huli.webp',
         JobTitle: '技術部落格 Huli\'s blog / 站長',
         speakerId: '17',
       },
