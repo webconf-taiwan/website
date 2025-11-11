@@ -111,6 +111,7 @@ export default antfu(
             'speakerInfo',
             'custom-ul-style',
             'sponsors-section',
+            'organizer-description-paragraph',
           ], // 允許自定義的 CSS 類名
         },
       ],
