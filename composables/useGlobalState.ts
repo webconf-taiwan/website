@@ -2,7 +2,7 @@ export function useGlobalState() {
   // 是否已經開賣
   const isSaleOpen = useState<boolean>('isSaleOpen', () => false)
   // 是否已經完成初次加載動畫
-  const isFirstLoad = useState<boolean>('isFirstLoad', () => true)
+  const isFirstLoad = useState<boolean>('isFirstLoad', () => false)
   // 是否已經打開選單
   const isMenuOpen = useState<boolean>('isMenuOpen', () => false)
   // 是否已經打開講者詳細資訊彈窗
