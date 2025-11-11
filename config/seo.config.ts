@@ -42,11 +42,72 @@ export const eventBasic = {
   'url': site.url,
 }
 
+// keynote speaker
 export const eventPerformers = [
   {
     '@type': 'Person',
-    'name': '待公布講者',
-    'url': 'https://webconf.tw/speakers',
+    'name': '李昆謀',
+    'url': 'https://webconf.tw/speakers/1',
+    'jobTitle': '產品長',
+    'worksFor': {
+      '@type': 'Organization',
+      'name': '91APP',
+    },
+    'description': '91APP 產品長，零售的科學的站長，多年連續創業家，也經營自媒體，有電子報、Podcast、以及 Youtube 頻道，時常分享被社群大量轉發的零售、產品經理、以及科技與個人成長的特殊觀點與看法。',
+    'image': 'https://webconf.tw/images/speakers/1_%E6%9D%8E%E6%98%86%E8%AC%80.webp',
+    'sameAs': [
+      'https://www.facebook.com/91app.happylee',
+      'https://www.instagram.com/happylee.tw',
+      'https://happylee.blog',
+    ],
+  },
+  {
+    '@type': 'Person',
+    'name': 'Will 保哥',
+    'url': 'https://webconf.tw/speakers/2',
+    'jobTitle': '技術總監',
+    'worksFor': {
+      '@type': 'Organization',
+      'name': '多奇數位創意有限公司',
+    },
+    'description': '現任「多奇數位創意有限公司」技術總監。2024 年榮獲 GenAI 方向的 Google Developer Expert (GDE) 開發專家。2019 獲選微軟技術社群區域總監 (Microsoft Regional Director)。2018 年榮獲 Angular 方向的 Google Developer Expert (GDE) 開發專家。連續 18 度當選微軟最有價值專家(MVP)。熟悉 Generative AI、Angular、JavaScript、.NET、C#、Java、Go、Docker、Kubernetes 相關技術。擅長 DevOps 與組織文化建立、軟體團隊建構與管理。熱愛分享知識。',
+    'image': 'https://webconf.tw/images/speakers/2_Will_%E4%BF%9D%E5%93%A5.webp',
+    'sameAs': [
+      'https://www.facebook.com/will.fans',
+      'https://x.com/Will_Huang',
+      'https://blog.miniasp.com',
+    ],
+  },
+  {
+    '@type': 'Person',
+    'name': 'Huli',
+    'url': 'https://webconf.tw/speakers/17',
+    'jobTitle': '站長',
+    'worksFor': {
+      '@type': 'Organization',
+      'name': '技術部落格 Huli\'s blog',
+    },
+    'description': '前端是工作，資安是興趣，有時兩者會互換。 喜歡寫 code，喜歡寫部落格，有些人的興趣是旅遊、露營、看電影，而寫部落格就是我的興趣。不為了什麼特殊目的而寫，單純只是寫了會快樂（雖然近幾年寫作頻率明顯下降就是了）。',
+    'image': 'https://webconf.tw/images/speakers/17_Huli.webp',
+    'sameAs': [
+      'https://www.facebook.com/huli.blog',
+    ],
+  },
+  {
+    '@type': 'Person',
+    'name': '游舒帆',
+    'url': 'https://webconf.tw/speakers/18',
+    'jobTitle': '院長',
+    'worksFor': {
+      '@type': 'Organization',
+      'name': '商業思維學院',
+    },
+    'description': '技術背景出身，後投身商業世界，相信科技與商業是改變世界的兩大力量。',
+    'image': 'https://webconf.tw/images/speakers/18_%E6%B8%B8%E8%88%92%E5%B8%86_Gipi.webp',
+    'sameAs': [
+      'https://www.facebook.com/gipi.net',
+      'https://gipi.tw',
+    ],
   },
 ]
 
@@ -56,8 +117,8 @@ export const eventLocation = {
   'address': {
     '@type': 'PostalAddress',
     'streetAddress': '南港路二段13號',
-    'addressLocality': '台北市',
-    'addressRegion': '南港區',
+    'addressLocality': '南港區',
+    'addressRegion': '台北市',
     'postalCode': '115',
     'addressCountry': 'TW',
   },
