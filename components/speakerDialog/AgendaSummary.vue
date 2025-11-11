@@ -23,6 +23,7 @@ async function handleShareClick() {
       closeOnClick: true,
       progressBar: false,
       backgroundColor: '#E6E6E6',
+      closeOnEscape: true,
       displayMode: 1,
       class: 'custom-toast',
       timeout: 1500,
@@ -51,7 +52,7 @@ async function handleShareClick() {
   >
     <!-- 議程簡介 -->
     <div class="-mx-12 border-b-[0.5px] border-webconf-frame">
-      <div class="px-8 py-5 lg:px-12 lg:py-8">
+      <div class="px-5 py-8 lg:px-12 lg:py-8">
         <div class="mb-10">
           <span
             class="mb-8 inline-block bg-webconf-gray px-4 py-[6px] text-xs font-semibold leading-[1.4] tracking-[0.02em] text-webconf-blue"
@@ -80,7 +81,7 @@ async function handleShareClick() {
             共筆文件
           </a>
           <a
-            v-if="meta.doc"
+            v-if="meta.slides"
             :href="typeof meta.slides === 'string' ? meta.slides : '#'"
             class="inline-block bg-webconf-blue px-[31px] py-2"
           >
@@ -90,7 +91,7 @@ async function handleShareClick() {
         <ContentRenderer :value="speakerInfo.summarySection" />
         <div
           v-if="meta.tags"
-          class="hidden flex-wrap gap-2 text-xs font-semibold leading-[1.4] tracking-[0.02em] text-webconf-gray lg:flex"
+          class="flex flex-wrap gap-2 text-xs font-semibold leading-[1.4] tracking-[0.02em] text-webconf-gray"
         >
           <div
             v-for="tag in meta.tags"
@@ -104,7 +105,7 @@ async function handleShareClick() {
     </div>
     <!-- 目標受眾 -->
     <div class="-mx-12 border-b-[0.5px] border-webconf-frame">
-      <div class="px-8 py-5 lg:px-12 lg:py-8">
+      <div class="px-5 py-8 lg:px-12 lg:py-8">
         <h3 class="mb-4 text-h4-24">
           目標受眾
         </h3>
@@ -113,7 +114,7 @@ async function handleShareClick() {
     </div>
     <!-- 預期收穫 -->
     <div class="-mx-12">
-      <div class="px-8 py-5 lg:px-12 lg:py-8">
+      <div class="px-5 py-8 lg:px-12 lg:py-8">
         <h3 class="mb-4 text-h4-24">
           預期收穫
         </h3>

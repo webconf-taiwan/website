@@ -68,7 +68,7 @@ defineExpose({
   <div
     ref="contentRef"
     data-lenis-prevent
-    class="info w-full overflow-y-auto border-webconf-gray px-8 py-5 text-white scrollbar-none lg:w-1/2 lg:px-12 lg:py-8"
+    class="info w-full overflow-y-auto border-webconf-gray px-5 py-8 text-white scrollbar-none lg:w-1/2 lg:px-12 lg:py-8"
   >
     <div class="mb-10">
       <div class="flex justify-between">
