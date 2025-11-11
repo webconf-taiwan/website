@@ -122,7 +122,7 @@ watch(isMenuOpen, (newValue) => {
             <!-- 靜態軌道 -->
             <line
               x1="0"
-              y1="55"
+              y1="54.5"
               x2="345"
               y2="400"
               stroke="#E6E6E6"
@@ -178,7 +178,7 @@ watch(isMenuOpen, (newValue) => {
 
     <main class="border-b border-webconf-gray text-webconf-gray">
       <section
-        class="sticky top-[47px] z-20 border-b border-webconf-gray bg-black xs:top-[55px] sm:top-[57px] lg:top-[54.5px]"
+        class="sticky top-[54px] z-20 border-b border-webconf-gray bg-black sm:top-[57px] lg:top-[54px]"
       >
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <!-- 日期篩選 -->
@@ -220,10 +220,10 @@ watch(isMenuOpen, (newValue) => {
         <!-- 議程類型篩選清單 -->
         <aside
           :class="{
-            'z-10 flex': isMenuOpen || showAside,
-            'hidden lg:flex': !isMenuOpen && !showAside,
+            'z-50 flex': isMenuOpen || showAside,
+            'hidden lg:z-auto lg:flex': !isMenuOpen && !showAside,
           }"
-          class="sticky top-[106px] h-[calc(100dvh-106px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
+          class="fixed top-[54.5px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124.5px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
@@ -250,7 +250,7 @@ watch(isMenuOpen, (newValue) => {
           >
             <div
               v-if="isMenuOpen"
-              class="absolute inset-0 h-full w-[100dvw] bg-black/80"
+              class="absolute inset-0 z-10 h-full w-[100dvw] bg-black/80"
               @click="isMenuOpen = false"
             ></div>
           </transition>

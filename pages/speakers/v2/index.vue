@@ -111,7 +111,7 @@ watch(isMenuOpen, (newValue) => {
       class="mr-[-0.5px] border-b border-webconf-gray bg-black text-webconf-gray"
     >
       <section
-        class="sticky top-[54.5px] z-20 border-b border-webconf-gray bg-black lg:hidden"
+        class="sticky top-[54px] z-20 border-b border-webconf-gray bg-black lg:hidden"
       >
         <div class="group flex justify-end p-4">
           <label class="flex items-center gap-3">
@@ -136,13 +136,13 @@ watch(isMenuOpen, (newValue) => {
         ></div>
       </section>
 
-      <section class="relative z-10 flex">
+      <section class="relative flex">
         <aside
           :class="{
-            'z-10 flex': isMenuOpen || showAside,
-            'hidden lg:flex': !isMenuOpen && !showAside,
+            'z-50 flex': isMenuOpen || showAside,
+            'hidden lg:z-auto lg:flex': !isMenuOpen && !showAside,
           }"
-          class="sticky top-[126px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[54px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
+          class="fixed top-[54.5px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[54.5px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
           <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
