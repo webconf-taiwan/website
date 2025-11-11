@@ -96,9 +96,7 @@ const scaleY = computed(() => height.value / initialSize.value)
                     :alt="speaker.name"
                     width="43"
                     height="60"
-                    class="grayscale"
                   />
-                  <ShareGradientMask />
                   <ShareNoiseMask />
                 </div>
               </div>
