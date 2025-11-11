@@ -263,7 +263,33 @@ watch(isMenuOpen, (newValue) => {
           }"
           class="grid grow grid-cols-3 bg-black"
         >
-          <!-- 上午議程 -->
+          <transition-group
+            name="agenda-fade"
+            tag="div"
+            class="col-span-3"
+            appear
+          >
+            <div
+              v-if="selectedDate === '12'"
+              class="relative"
+            >
+              <time
+                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
+              >
+                <span>09:00</span>
+                <span class="lg:hidden">{{ ` - ` }}</span>
+                <span class="lg:hidden">09:10</span>
+              </time>
+
+              <h2
+                key="opening-speech"
+                class="col-span-3 border-b-[0.5px] border-webconf-gray/50 bg-black px-5 py-7 text-h4-24 lg:py-10 lg:text-center xl:py-14"
+              >
+                開幕致詞
+              </h2>
+            </div>
+          </transition-group>
+
           <transition-group
             name="agenda-fade"
             tag="div"
@@ -303,7 +329,6 @@ watch(isMenuOpen, (newValue) => {
             </div>
           </transition-group>
 
-          <!-- 中午休息 -->
           <transition-group
             name="agenda-fade"
             tag="div"
@@ -318,7 +343,6 @@ watch(isMenuOpen, (newValue) => {
             </h2>
           </transition-group>
 
-          <!-- 下午議程 -->
           <transition-group
             name="agenda-fade"
             tag="div"
@@ -355,6 +379,33 @@ watch(isMenuOpen, (newValue) => {
                     || selectedTags.length === 0
                 "
               />
+            </div>
+          </transition-group>
+
+          <transition-group
+            name="agenda-fade"
+            tag="div"
+            class="col-span-3"
+            appear
+          >
+            <div
+              v-if="selectedDate === '13'"
+              class="relative"
+            >
+              <time
+                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
+              >
+                <span>17:00</span>
+                <span class="lg:hidden">{{ ` - ` }}</span>
+                <span class="lg:hidden">17:10</span>
+              </time>
+
+              <h2
+                key="opening-speech"
+                class="col-span-3 border-b-[0.5px] border-webconf-gray/50 bg-black px-5 py-7 text-h4-24 lg:py-10 lg:text-center xl:py-14"
+              >
+                閉幕致詞
+              </h2>
             </div>
           </transition-group>
         </div>
