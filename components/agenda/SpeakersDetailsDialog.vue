@@ -5,6 +5,7 @@ import type {
   SpeakerDialogIntro,
 } from '#components'
 import type { ContentCollectionItem } from '@nuxt/content'
+import { onKeyStroke } from '@vueuse/core'
 import { site } from '~/config/seo.config'
 import { BACK_LINKS } from '~/constants/agenda'
 
@@ -288,6 +289,10 @@ useSeoMeta({
   keywords: ((meta.value.tags as string[]).join(', ') as string) || '',
 })
 
+onKeyStroke('Escape', () => {
+  handleClose()
+})
+
 onMounted(() => {
   const lenis = useLenis()
 
@@ -330,7 +335,8 @@ onUnmounted(() => {
   <div
     ref="popoverRef"
     data-lenis-prevent
-    class="fixed inset-0 z-40 flex h-svh flex-col overflow-y-auto bg-black/80 pt-[47px] scrollbar-none xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
+    class="fixed inset-0 z-40 flex min-h-screen flex-col overflow-y-auto bg-black/80 pt-[47px] scrollbar-none xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
+    @keyup.esc="handleClose"
   >
     <AgendaFloatingBlocks />
 
