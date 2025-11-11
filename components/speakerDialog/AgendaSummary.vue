@@ -11,11 +11,35 @@ defineProps<{
 
 const toast = useToast()
 
-function handleShareClick() {
-  toast.success({
-    title: 'Success!',
-    message: 'Your action was completed successfully.',
-  })
+async function handleShareClick() {
+  const link = globalThis.location.href
+
+  try {
+    await navigator.clipboard.writeText(link)
+    const copyRightText = '連結複製成功'
+    toast.success({
+      icon: '',
+      close: false,
+      closeOnClick: true,
+      progressBar: false,
+      backgroundColor: '#E6E6E6',
+      displayMode: 1,
+      class: 'custom-toast',
+      timeout: 1500,
+      message: `<div class="flex justify-center items-center text-btn-14 text text-black gap-1 py-[9px] pr-4 pl-6">
+        <span>${copyRightText}</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5.25 13.05L9.91667 18L19.25 9" stroke="black" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>`,
+    })
+  }
+  catch (err) {
+    console.error('複製失敗:', err)
+    toast.error({
+      message: '複製連結失敗,請重試',
+    })
+  }
 }
 </script>
 
