@@ -21,6 +21,8 @@ const props = withDefaults(
 
 const emit = defineEmits(['close'])
 
+const lenis = useLenis()
+
 const router = useRouter()
 const { gsap } = useGsap()
 const { isModalOpen, setToggleModal } = useGlobalState()
@@ -292,6 +294,9 @@ onKeyStroke('Escape', () => {
 })
 
 onMounted(() => {
+  if (lenis) {
+    lenis.stop()
+  }
   // 淡入動畫
   if (isModalOpen.value) {
     nextTick(() => {
@@ -317,6 +322,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   pauseAutoPlay()
+  if (lenis) {
+    lenis.start()
+  }
 })
 </script>
 

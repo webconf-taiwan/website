@@ -17,13 +17,6 @@ export default defineNuxtPlugin({
 
     // 切換頁面會滾到最上面
     nuxtApp.hook('page:finish', () => {
-      // 如果是 agenda 的詳細頁面(Dialog)就不滾動
-      const route = useRoute()
-
-      if (route.path.startsWith('/agenda/')) {
-        return
-      }
-
       lenis.scrollTo(0, { immediate: false })
     })
 
