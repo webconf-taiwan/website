@@ -43,17 +43,32 @@ const speakerRef = computed(() => props.speaker)
 const { renderableIntroSection, speakerInfo, meta, formattedDate }
   = useSpeakerSections(speakerRef, currentPageNumber)
 
+// 用於圖片顯示的索引
+const displayImageIndex = ref(0)
+
 const pageNumber = computed(() => {
   return {
-    current: props.speaker[currentPageNumber.value].meta,
+    current: props.speaker[displayImageIndex.value].meta,
     next:
-      currentPageNumber.value < props.speaker.length - 1
-        ? props.speaker[currentPageNumber.value + 1].meta
+      displayImageIndex.value < props.speaker.length - 1
+        ? props.speaker[displayImageIndex.value + 1].meta
         : props.speaker[0].meta,
   }
 })
 
 let autoPlayTween: gsap.core.Tween | null = null
+
+function getPageTitle() {
+  if (props.speaker?.length > 1) {
+    return meta.value.topic || site.title
+  }
+
+  if (meta.value.name && meta.value.topic) {
+    return `${meta.value.name} | ${meta.value.topic}`
+  }
+
+  return site.title
+}
 
 /* 處理關閉彈出視窗 */
 function handleClose() {
@@ -86,69 +101,56 @@ function getActiveImageContainer() {
   }
 }
 
-/* 動畫切換內容 */
-function animateContentTransition(
-  nextIndex: number,
-  type: 'next' | 'prev',
-  imageAnimationCallback: () => void,
-) {
+/* 動畫切換內容 - 只負責內容淡入淡出 */
+function animateContentTransition(nextIndex: number, type: 'next' | 'prev') {
   if (isAnimating.value)
     return
   isAnimating.value = true
 
   if (!speakerDialogIntroComponentRef.value?.contentRef) {
+    // 沒有內容元素時，直接更新
     currentPageNumber.value = nextIndex
-    imageAnimationCallback()
+    displayImageIndex.value = nextIndex
+    if (type === 'next') {
+      animateImageTransition(nextIndex)
+    }
+    else {
+      animateImageTransitionReverse(nextIndex)
+    }
+    isAnimating.value = false
     return
   }
+
   const tl = gsap.timeline({
     onComplete: () => {
       isAnimating.value = false
     },
   })
 
-  if (type === 'next') {
-    tl.to(speakerDialogIntroComponentRef.value.contentRef, {
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power2.out',
-    })
-      .add('hideComplete')
-      .call(imageAnimationCallback, null, 'hideComplete+=0')
-      .call(
-        () => {
-          currentPageNumber.value = nextIndex
-        },
-        null,
-        'hideComplete+=0.8',
-      )
-      .to(speakerDialogIntroComponentRef.value.contentRef, {
-        opacity: 1,
-        duration: 0.3,
-        ease: 'power2.in',
-      })
-  }
-  else {
-    tl.to(speakerDialogIntroComponentRef.value.contentRef, {
-      opacity: 0,
-      duration: 0.3,
-      ease: 'power2.out',
-      onComplete: async () => {
-        currentPageNumber.value = nextIndex
-        await nextTick()
-        imageAnimationCallback()
-      },
-    })
-    tl.to(
-      speakerDialogIntroComponentRef.value.contentRef,
-      {
-        opacity: 1,
-        duration: 0.3,
-        ease: 'power2.in',
-      },
-      '+=0.8',
-    )
-  }
+  // 內容淡出
+  tl.to(speakerDialogIntroComponentRef.value.contentRef, {
+    opacity: 0,
+    duration: 0.3,
+    ease: 'power2.out',
+  })
+
+  // 更新內容資料 + 啟動圖片動畫
+  tl.call(() => {
+    currentPageNumber.value = nextIndex
+    if (type === 'next') {
+      animateImageTransition(nextIndex)
+    }
+    else {
+      animateImageTransitionReverse(nextIndex)
+    }
+  })
+
+  // 內容淡入
+  tl.to(speakerDialogIntroComponentRef.value.contentRef, {
+    opacity: 1,
+    duration: 0.3,
+    ease: 'power2.in',
+  })
 }
 
 /* 處理下一位講者 */
@@ -159,9 +161,7 @@ function handleNext(speakers: ContentCollectionItem[]) {
     = currentPageNumber.value < speakers.length - 1
       ? currentPageNumber.value + 1
       : 0
-  animateContentTransition(nextIndex, 'next', () => {
-    animateImageTransition()
-  })
+  animateContentTransition(nextIndex, 'next')
 }
 
 /* 處理上一位講者 */
@@ -172,14 +172,11 @@ function handlePrev() {
     = currentPageNumber.value > 0
       ? currentPageNumber.value - 1
       : props.speaker!.length - 1
-
-  animateContentTransition(prevIndex, 'prev', () => {
-    animateImageTransitionReverse()
-  })
+  animateContentTransition(prevIndex, 'prev')
 }
 
-/* 講者圖片切換動畫 */
-function animateImageTransition() {
+/* 講者圖片切換動畫 - 接收目標索引作為參數 */
+function animateImageTransition(targetIndex: number) {
   const container = getActiveImageContainer()
   if (!container)
     return
@@ -187,9 +184,12 @@ function animateImageTransition() {
   pauseAutoPlay()
 
   const tl = gsap.timeline({
-    onComplete: async () => {
-      await nextTick()
+    onComplete: () => {
+      // 重置位置
       gsap.set(container, { x: 0 })
+
+      // 圖片動畫完成後，更新顯示索引
+      displayImageIndex.value = targetIndex
 
       if (props.speaker && props.speaker.length > 1) {
         startAutoPlay()
@@ -205,19 +205,23 @@ function animateImageTransition() {
   })
 }
 
-/* 講者圖片切換動畫(反向) */
-function animateImageTransitionReverse() {
+/* 講者圖片切換動畫(反向) - 接收目標索引作為參數 */
+function animateImageTransitionReverse(targetIndex: number) {
   const container = getActiveImageContainer()
   if (!container)
     return
 
   pauseAutoPlay()
 
+  // 先更新顯示索引（因為要立即顯示目標圖片）
+  displayImageIndex.value = targetIndex
+
+  // 先將容器移到 -100% 位置
   gsap.set(container, { x: '-100%' })
 
   const tl = gsap.timeline({
-    onComplete: async () => {
-      await nextTick()
+    onComplete: () => {
+      // 重置位置
       gsap.set(container, { x: 0 })
 
       if (props.speaker && props.speaker.length > 1) {
@@ -226,7 +230,7 @@ function animateImageTransitionReverse() {
     },
   })
 
-  // 向右滑動到 0，露出第一張圖片
+  // 向右滑動到 0
   tl.to(container, {
     x: 0,
     duration: 0.8,
@@ -270,64 +274,49 @@ function handleMouseLeaveContent() {
 }
 
 useSeoMeta({
-  title:
-    meta.value.name && meta.value.topic
-      ? `${meta.value.name} | ${meta.value.topic}`
-      : site.title,
-  description:
-    props.speaker?.[currentPageNumber.value]?.seo.description
-    || site.description,
+  title: getPageTitle(),
+  description: props.speaker?.[0]?.seo.description || site.description,
   twitterTitle:
     meta.value.name && meta.value.topic
       ? `${meta.value.name} | ${meta.value.topic}`
       : site.title,
-  twitterDescription:
-    props.speaker?.[currentPageNumber.value]?.seo.description
-    || site.description,
-  ogUrl: `https://webconf.tw/agenda?speakerId=${meta.value.speakerId}`,
+  twitterDescription: props.speaker?.[0]?.seo.description || site.description,
+  ogUrl: `https://webconf.tw/agenda?speakerId=${meta.value.id}`,
   author: (meta.value.name as string) || site.name,
   keywords: ((meta.value.tags as string[]).join(', ') as string) || '',
 })
 
+/** 處理 ESC 關閉事件監聽 */
 onKeyStroke('Escape', () => {
   handleClose()
 })
 
 onMounted(() => {
-  const lenis = useLenis()
-
-  if (lenis) {
-    lenis.stop()
-  }
-
   // 淡入動畫
   if (isModalOpen.value) {
-    gsap.fromTo(
-      popoverRef.value,
-      {
-        opacity: 0,
-      },
-      {
-        opacity: 1,
-        duration: 0.5,
-        ease: 'power2.out',
-        onComplete: () => {
-          if (props.speaker && props.speaker.length > 1) {
-            startAutoPlay()
-          }
+    nextTick(() => {
+      gsap.fromTo(
+        popoverRef.value,
+        {
+          opacity: 0,
         },
-      },
-    )
+        {
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power2.out',
+          onComplete: () => {
+            if (props.speaker && props.speaker.length > 1) {
+              startAutoPlay()
+            }
+          },
+        },
+      )
+    })
   }
 })
 
 onUnmounted(() => {
   pauseAutoPlay()
-
-  const lenis = useLenis()
-  if (lenis) {
-    lenis.start()
-  }
 })
 </script>
 
