@@ -225,7 +225,7 @@ const CO_ORGANIZERS = [
   {
     id: 1,
     name: '版塊設計',
-    logo: '/images/sponsors/BlockStudio.webp',
+    logo: '/images/home/sponsors/BlockStudio.svg',
     description: [
       '版塊是網站立體化數位體驗的探險者，從數位策略規劃到品牌視覺識別再到動態特效網站 ，全方位視覺數位形象設計公司。以動態特效為核心、網站設計為起點，為客戶提供全面的數位形象策略解。',
     ],
@@ -240,7 +240,7 @@ const CO_ORGANIZERS = [
   {
     id: 2,
     name: 'WebCRACK',
-    logo: '/images/sponsors/WebCRACK.webp',
+    logo: '/images/home/sponsors/WebCRACK.svg',
     description: [
       'WebCRACK 是一個專屬於數位設計的線上共享平台，匯聚國內數位設計的能量，創造資源媒合、知識傳遞及作品認證的創意樞紐，構建完整的數位設計生態圈。',
       '從知識系統建構開始，WebCRACK 聚集設計資源與智慧，為設計師提供實用的設計資訊；透過作品展示認證，讓設計作品被看見並實現價值；更以培育數位人才為目標，透過交流與知識分享，助力未來設計力量的成長。',
@@ -540,7 +540,7 @@ const CO_ORGANIZERS = [
             :src="organizer.logo"
             width="225"
             height="180"
-            :alt="`主辦單位${organizer.name}標誌`"
+            :alt="`協辦單位${organizer.name}標誌`"
           />
         </div>
 
