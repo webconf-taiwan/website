@@ -119,18 +119,6 @@ async function handleShareClick() {
           預期收穫
         </h3>
         <ContentRenderer :value="speakerInfo.earningsSection" />
-        <div
-          v-if="meta.tags"
-          class="flex flex-wrap gap-2 text-[12px] font-semibold leading-[1.4] tracking-[0.02em] text-webconf-gray lg:hidden"
-        >
-          <div
-            v-for="tag in meta.tags"
-            :key="tag"
-            class="bg-webconf-blue px-4 py-[6px]"
-          >
-            {{ tag }}
-          </div>
-        </div>
       </div>
     </div>
     <!-- 分享按鈕 -->

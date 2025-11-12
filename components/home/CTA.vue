@@ -69,7 +69,7 @@ onBeforeUnmount(() => {
         <div class="flex flex-col items-center pb-10 pt-4 sm:py-0">
           <div class="pic pb-6 sm:pb-10">
             <NuxtImg
-              src="/images/CTATitleLogo.webp"
+              src="/images/home/CTA/CTATitleLogo.svg"
               alt="2025 webconf CTA"
               width="409"
               height="60"
@@ -94,7 +94,7 @@ onBeforeUnmount(() => {
 
 <style>
 .cta-section {
-  background-image: url("/images/CTABg.webp");
+  background-image: url("/images/home/CTA/CTABg.webp");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

@@ -9,7 +9,7 @@ const SPONSORSINFO = [
   {
     id: 1,
     name: '鈦坦科技',
-    logo: '/images/sponsors/titansoft.webp',
+    logo: '/images/sponsors/titansoft.svg',
     badge: '連續第三年贊助',
     description:
       '新加坡商鈦坦科技是一間軟體開發公司,致力於線上軟體平台客製開發與維護,以及代理 Atlassian 旗下產品,以自身實際使用經驗提供一站式導入服務。',
@@ -39,7 +39,7 @@ const SPONSORSINFO = [
   {
     id: 2,
     name: '昇新科技',
-    logo: '/images/sponsors/ascentisTech.webp',
+    logo: '/images/sponsors/ascentisTech.svg',
     badge: '',
     description:
       'AscentisTech 專注於打造全球領先的線上軟體開發平台,匯集實力堅強、技術與數據背景的菁英團隊,具備高效能系統架構設計、多語系支援與模組化整合能力。',
@@ -62,7 +62,7 @@ const ORGANIZERS = [
   {
     id: 1,
     name: '五倍學院',
-    logo: '/images/sponsors/5xcampus.webp',
+    logo: '/images/sponsors/5xcampus.svg',
     description: [
       '五倍學院十餘年來深耕程式教育，陪伴無數學員從零起步，成為引領時代的軟體工程師與 AI 開發人才。',
       '我們以實戰為核心，打造最貼近產業需求的課程，內容涵蓋前後端網頁技術、AI 工具應用與自動化實作，幫助學員在瞬息萬變的科技浪潮中不斷成長，用技術實現自我價值。',
@@ -94,7 +94,7 @@ const ORGANIZERS = [
   {
     id: 2,
     name: '六角學院',
-    logo: '/images/sponsors/hexschool.webp',
+    logo: '/images/sponsors/hexschool.svg',
     description: [
       '六角學院是一所專注培養軟體工程師與數位人才的職能學校，目前已累積超過 30,000 名學員。我們的核心使命，是讓更多人透過程式學習，為自己的職涯創造更多選擇與可能性。',
       '課程橫跨前端、後端到全端開發，強調實戰專題、系統化學習規劃與職涯陪跑機制，不只教會寫程式，更著重溝通力、解決問題能力與自學能力等「工程師思維」，協助學員在 AI 時代持續成長與轉職發展。',
@@ -125,7 +125,7 @@ const ORGANIZERS = [
   {
     id: 3,
     name: '悠識學院',
-    logo: '/images/sponsors/userxper.webp',
+    logo: '/images/sponsors/userxper.svg',
     description: [
       '悠識學院致力於推動實戰型的 UX（使用者體驗）學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業方法，幫助學員從真實案例中培養洞察與分析能力。我們長期關注設計與科技的交會，定期舉辦以 AI/UX、DesignOps 設計營運與數位職涯發展為主題的講座與實務研討，協助設計師與產品團隊掌握產業趨勢、拓展跨領域視野。',
       '此外，悠識學院也經營多元社群平台——包含 Circle 社群、IG、Threads，以及 Podcast《UX 有差嗎？》，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。',
@@ -158,7 +158,7 @@ const ORGANIZERS = [
 const DECORATIVEIMAGES = [
   {
     id: 1,
-    src: '/images/sponsors-1.webp',
+    src: '/images/home/sponsors/sponsors-1.webp',
     width: 254,
     height: 169,
     alt: 'WebConf Taiwan 活動照片',
@@ -167,7 +167,7 @@ const DECORATIVEIMAGES = [
   },
   {
     id: 2,
-    src: '/images/sponsors-1.webp',
+    src: '/images/home/sponsors/sponsors-2.webp',
     width: 361,
     height: 241,
     alt: 'WebConf Taiwan 活動照片',
@@ -176,7 +176,7 @@ const DECORATIVEIMAGES = [
   },
   {
     id: 3,
-    src: '/images/sponsors-3.webp',
+    src: '/images/home/sponsors/sponsors-3.webp',
     width: 348,
     height: 232,
     alt: 'WebConf Taiwan 活動照片',
@@ -185,7 +185,7 @@ const DECORATIVEIMAGES = [
   },
   {
     id: 4,
-    src: '/images/sponsors-4.webp',
+    src: '/images/home/sponsors/sponsors-4.webp',
     width: 240,
     height: 160,
     alt: 'WebConf Taiwan 活動照片',
@@ -198,25 +198,25 @@ const SUPPORTSTARGET = [
   {
     id: 1,
     title: '品牌曝光',
-    image: '/images/sponsors-brand.webp',
+    image: '/images/home/sponsors/sponsors-brand.webp',
     description: '透過活動網站、社群平台與現場的場地陳設皆將呈現您的品牌',
   },
   {
     id: 2,
     title: '精準觸及',
-    image: '/images/sponsors-target.webp',
+    image: '/images/home/sponsors/sponsors-target.webp',
     description: '對網頁開發者、設計師、產品經理與產業決策者，直接建立聯繫',
   },
   {
     id: 3,
     title: '專業交流',
-    image: '/images/sponsors-communication.webp',
+    image: '/images/home/sponsors/sponsors-communication.webp',
     description: '直接與業界專家對話，拓展未來合作與人才招募的可能性',
   },
   {
     id: 4,
     title: '共創永續價值',
-    image: '/images/sponsors-sustainability.webp',
+    image: '/images/home/sponsors/sponsors-sustainability.webp',
     description: '與我們一同推廣「科技 x 永續」的願景，展現企業責任與影響力',
   },
 ]
@@ -224,7 +224,7 @@ const SUPPORTSTARGET = [
 const CO_ORGANIZERS = [
   {
     id: 1,
-    name: 'BlockStudio 版塊設計',
+    name: '版塊設計',
     logo: '/images/sponsors/BlockStudio.webp',
     description: [
       '版塊是網站立體化數位體驗的探險者，從數位策略規劃到品牌視覺識別再到動態特效網站 ，全方位視覺數位形象設計公司。以動態特效為核心、網站設計為起點，為客戶提供全面的數位形象策略解。',
@@ -239,7 +239,7 @@ const CO_ORGANIZERS = [
   },
   {
     id: 2,
-    name: 'WebCRACK 數位共享平台',
+    name: 'WebCRACK',
     logo: '/images/sponsors/WebCRACK.webp',
     description: [
       'WebCRACK 是一個專屬於數位設計的線上共享平台，匯聚國內數位設計的能量，創造資源媒合、知識傳遞及作品認證的創意樞紐，構建完整的數位設計生態圈。',
@@ -363,7 +363,7 @@ const CO_ORGANIZERS = [
         class="sponsors-content flex-1 lg:border-l"
       >
         <div
-          class="relative grid place-content-center border-b-[0.5px] border-webconf-frame px-10 py-4 before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:px-[107.5px] lg:py-0 lg:before:size-7"
+          class="relative grid place-content-center border-b-[0.5px] border-webconf-frame py-4 before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:py-0 lg:before:size-7"
         >
           <!-- 徽章元素 -->
           <span
@@ -443,7 +443,7 @@ const CO_ORGANIZERS = [
         class="sponsors-content flex-1 lg:border-l"
       >
         <div
-          class="relative grid place-content-center border-b-[0.5px] border-webconf-frame px-[67.5px] before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:px-[84.17px] lg:before:size-7"
+          class="relative grid place-content-center border-b-[0.5px] border-webconf-frame before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:before:size-7"
         >
           <NuxtImg
             :src="organizer.logo"
@@ -534,7 +534,7 @@ const CO_ORGANIZERS = [
         class="sponsors-content flex-1 lg:border-l"
       >
         <div
-          class="relative grid place-content-center border-b-[0.5px] border-webconf-frame px-[67.5px] before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:px-[182.5px] lg:before:size-7"
+          class="relative grid place-content-center border-b-[0.5px] border-webconf-frame before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:before:size-7"
         >
           <NuxtImg
             :src="organizer.logo"
@@ -683,7 +683,7 @@ const CO_ORGANIZERS = [
       </ShareGradientDotsCard>
 
       <NuxtImg
-        class="absolute right-[-10%] top-[-8%] -z-10 block lg:hidden"
+        class="absolute right-[-36px] top-[-96.6406px] -z-10 block lg:hidden"
         src="/images/sponsors/sponsors-line-mobile.svg"
         width="394"
         height="326"

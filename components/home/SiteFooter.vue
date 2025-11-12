@@ -36,7 +36,7 @@ const SOCIAL_ITEMS = [
           >
             <!-- default logo -->
             <NuxtImg
-              src="/images/footerLogo.webp"
+              src="images/home/footer/footerLogo.svg"
               alt="2025 WebConf"
               width="280"
               height="106"
@@ -45,7 +45,7 @@ const SOCIAL_ITEMS = [
             />
             <!-- hover logo -->
             <NuxtImg
-              src="/images/footerLogoHover.webp"
+              src="/images/home/footer/footerLogo-hover.svg"
               alt="2025 WebConf"
               width="280"
               height="106"
@@ -89,7 +89,7 @@ const SOCIAL_ITEMS = [
 
 <style scoped>
 .main-footer {
-  background-image: url("/images/footerBg.webp");
+  background-image: url("/images/home/footer/footerBg.webp");
   background-repeat: no-repeat;
   background-position: center bottom;
   background-size: auto 155px;

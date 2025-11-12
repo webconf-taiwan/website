@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { site } from '~/config/seo.config'
 
-const { isFirstLoad } = useGlobalState()
-
 defineOgImage({
   url: 'https://webconf.tw/images/seo/ogImage.png',
   width: 1200,
@@ -46,8 +44,7 @@ useEasterEgg()
 
 <template>
   <Body
-    class="main-body cursor-auto bg-black lg:cursor-none"
-    :class="{ 'overflow-hidden': !isFirstLoad }"
+    class="main-body cursor-auto overflow-hidden bg-black scrollbar-none lg:cursor-none"
   >
     <NuxtLayout>
       <NuxtPage />

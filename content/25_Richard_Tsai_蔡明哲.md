@@ -9,7 +9,7 @@ tags: ["設計實務"]
 speakerInfo: "》經歷過技術人、行銷人，最後成為 UX 人及創業人 》職涯路徑曲折，老天巧思安排塑造獨特連結， 》第二人生階段以助人成長為樂趣，使命是培養跟產業需求對接的 UX 人才 》專長於使用者研究、數據分析、資訊架構、專案管理、跨多元領域 UX研究 / 設計 / 行銷 / 技術"
 description: "兩小時工作坊，請自備筆電與網路，內容包括: - 網站用戶行為的數據工具概覽 - 網頁點擊熱圖的用途 - 認識微軟 Clarity 操作-設定、追蹤、檢視 - 從點擊熱圖數據，推敲用戶行為與意圖 適合初階經驗的UX工作者，以及不曾嘗試點擊熱圖的同學"
 email: richard@userxper.com
-image: /images/speakers/24_Kaba_Su.webp
+image: /images/speakers/25_Richard_Tsai_蔡明哲.webp
 fb: https://facebook.com/uxrichard
 other_link: https://edu.userxper.com/@richard-tsai
 day: day2

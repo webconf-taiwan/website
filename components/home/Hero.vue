@@ -696,7 +696,7 @@ import { EXTERNAL_LINKS } from '~/constants/externalLinks'
           <h1>
             <span class="sr-only">2025 WebConf</span>
             <NuxtImg
-              src="/images/heroLogo.webp"
+              src="/images/home/hero/heroLogo.svg"
               alt="2025 WebConf Logo"
               width="570"
               height="215"

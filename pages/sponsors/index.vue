@@ -94,28 +94,28 @@ useSeoMeta({
     <div class="relative md:pb-[116px] md:pt-[120px]">
       <!-- 活動照片 -->
       <NuxtImg
-        src="/images/sponsors-1.webp"
+        src="/images/home/sponsors/sponsors-1.webp"
         width="254"
         height="169"
         alt="WebConf Taiwan 活動照片"
         class="blue-shadow sponsors-img-filter absolute left-[-94px] top-[392px] hidden xl:block"
       />
       <NuxtImg
-        src="/images/sponsors-1.webp"
+        src="/images/home/sponsors/sponsors-2.webp"
         width="361"
         height="241"
         alt="WebConf Taiwan 活動照片"
         class="blue-shadow sponsors-img-filter absolute right-[-40px] top-[80px] hidden xl:block"
       />
       <NuxtImg
-        src="/images/sponsors-3.webp"
+        src="/images/home/sponsors/sponsors-3.webp"
         width="348"
         height="232"
         alt="WebConf Taiwan 活動照片"
         class="blue-shadow sponsors-img-filter absolute bottom-[80px] left-[-28px] hidden xl:block"
       />
       <NuxtImg
-        src="/images/sponsors-4.webp"
+        src="/images/home/sponsors/sponsors-4.webp"
         width="240"
         height="160"
         alt="WebConf Taiwan 活動照片"
@@ -159,7 +159,7 @@ useSeoMeta({
             <li class="flex items-center justify-center gap-6 py-0 sm:py-6">
               <div class="pic">
                 <NuxtImg
-                  src="/images/sponsors-brand.webp"
+                  src="/images/home/sponsors/sponsors-brand.webp"
                   width="100"
                   height="100"
                   alt="品牌曝光"
@@ -178,7 +178,7 @@ useSeoMeta({
             <li class="flex items-center justify-center gap-6 py-0 sm:py-6">
               <div class="pic">
                 <NuxtImg
-                  src="/images/sponsors-target.webp"
+                  src="/images/home/sponsors/sponsors-target.webp"
                   width="100"
                   height="100"
                   alt="品牌曝光"
@@ -197,7 +197,7 @@ useSeoMeta({
             <li class="flex items-center justify-center gap-6 py-0 sm:py-6">
               <div class="pic">
                 <NuxtImg
-                  src="/images/sponsors-communication.webp"
+                  src="/images/home/sponsors/sponsors-communication.webp"
                   width="100"
                   height="100"
                   alt="品牌曝光"
@@ -216,7 +216,7 @@ useSeoMeta({
             <li class="flex items-center justify-center gap-6 py-0 sm:py-6">
               <div class="pic">
                 <NuxtImg
-                  src="/images/sponsors-sustainability.webp"
+                  src="/images/home/sponsors/sponsors-sustainability.webp"
                   width="100"
                   height="100"
                   alt="品牌曝光"

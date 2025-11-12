@@ -46,6 +46,7 @@ const scheduleMap = {
   'Max Chen': { id: '10', day: 'day1', date: '2025-12-12', time: '11:55~12:40', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/10_Max_Chen.webp' },
   'Shirney Huang 黃琇琳': { id: '11', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/11_Shirney_Huang 黃琇琳.webp' },
   'Eric Lee': { id: '12', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/12_Eric_Lee.webp' },
+  'Kuro Hsu': { id: '38', day: 'day1', date: '2025-12-12', time: '11:00~11:45', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/38_KURO.webp' },
 
   // F 棟
   '顏勝豪 Otto': { id: '13', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/13_顏勝豪_Otto.webp' },
