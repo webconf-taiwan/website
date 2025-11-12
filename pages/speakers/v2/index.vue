@@ -195,18 +195,22 @@ watch(isMenuOpen, (newValue) => {
               "
               :show-square="false"
             >
-              <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
+              <div class="flex gap-3 p-5 lg:flex-col lg:p-6 xl:p-9">
                 <div class="relative shrink-0">
                   <NuxtImg
                     :src="speaker.avatarUrl"
                     :alt="speaker.name"
                     width="220"
                     height="314"
-                    class="aspect-speaker-img-full h-[144px] w-[100px] object-cover grayscale duration-300 group-hover:grayscale-0 lg:size-full"
+                    class="aspect-speaker-img-full h-[144px] w-[100px] object-cover duration-300 group-hover:grayscale-0 lg:size-full lg:grayscale"
                   />
 
-                  <ShareGradientMask class="group-hover:opacity-0" />
-                  <ShareNoiseMask class="group-hover:opacity-0" />
+                  <ShareGradientMask
+                    class="hidden group-hover:opacity-0 lg:block"
+                  />
+                  <ShareNoiseMask
+                    class="hidden group-hover:opacity-0 lg:block"
+                  />
                 </div>
 
                 <div>
