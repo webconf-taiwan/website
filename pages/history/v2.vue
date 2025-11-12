@@ -146,6 +146,7 @@ const hoveredImageIndex = ref(-1)
               <NuxtLink
                 :to="item.link"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="mt-6 inline-block bg-webconf-blue px-6 py-2 lg:hidden"
               >
                 前往頁面
@@ -160,6 +161,7 @@ const hoveredImageIndex = ref(-1)
                 }"
                 :href="item.link"
                 target="_blank"
+                rel="noopener noreferrer"
                 class="absolute left-0 top-0 mt-6 hidden size-full bg-webconf-blue px-6 py-2 lg:block lg:bg-transparent"
               >
               </a>

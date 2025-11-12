@@ -53,7 +53,7 @@ const tags: AgendaTag[] = [
         </svg>
       </button>
 
-      <ul class="mt-7 lg:mt-6">
+      <ul class="mt-7 flex flex-col gap-2 lg:mt-6">
         <li>
           <label
             class="flex items-center gap-[10px] text-body-18"
