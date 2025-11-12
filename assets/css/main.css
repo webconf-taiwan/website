@@ -102,6 +102,11 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  html,
+  body {
+    @apply scrollbar-none;
+  }
 }
 
 @layer components {
