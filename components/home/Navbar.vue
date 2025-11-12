@@ -92,7 +92,7 @@ onUnmounted(() => {
       >
         <!-- default logo -->
         <NuxtImg
-          src="/images/headerLogo.webp"
+          src="/images/home/header/headerLogo.svg"
           alt="2025 WebConf"
           width="191"
           height="28"
@@ -100,7 +100,7 @@ onUnmounted(() => {
         />
         <!-- hover logo -->
         <NuxtImg
-          src="/images/headerLogoHover.webp"
+          src="/images/home/header/headerLogoHover.svg"
           alt="2025 WebConf"
           width="191"
           height="28"

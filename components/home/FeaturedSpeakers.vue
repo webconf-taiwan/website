@@ -28,7 +28,7 @@ const speakers = [
   },
   {
     name: 'KURO',
-    src: '/images/speakers/000_KURO.webp',
+    src: '/images/speakers/38_KURO.webp',
   },
   {
     name: 'Peter',
