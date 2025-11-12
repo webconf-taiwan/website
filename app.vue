@@ -43,9 +43,7 @@ useEasterEgg()
 </script>
 
 <template>
-  <Body
-    class="main-body cursor-auto overflow-hidden bg-black scrollbar-none lg:cursor-none"
-  >
+  <Body class="main-body cursor-auto bg-black lg:cursor-none">
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
