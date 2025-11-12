@@ -37,5 +37,5 @@ FinMind 作者
 
 ::speaker-earnings
 #expectedEarnings
-增加 FinMind 知名度
+預期聽眾了解到，Side Project / Open Source 的發展性，不只是個人專案這麼簡單，有各種可能的發展。也預期聽眾聽完分享後，了解到資料工程，並不一定要加入大公司才能做到，實際上個人 Side Project 就能累積 Data Engineer 的技能樹。
 ::
