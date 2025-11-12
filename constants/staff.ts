@@ -47,7 +47,7 @@ export const STAFF = [
   },
   {
     name: 'EG',
-    title: '設計小夥伴',
+    title: 'UI/UX 設計師',
     avatarUrl: '/images/staff/eg.webp',
     links: [
       'https://www.facebook.com/eg.pan',
@@ -56,7 +56,7 @@ export const STAFF = [
   },
   {
     name: '豪萱',
-    title: '設計小夥伴',
+    title: 'UI/UX 設計師',
     avatarUrl: '/images/staff/birte-liu.webp',
     links: ['https://www.facebook.com/zyi870213'],
   },
@@ -70,7 +70,10 @@ export const STAFF = [
     name: '楊正弘',
     title: '設計小夥伴',
     avatarUrl: '/images/staff/scott.webp',
-    links: ['https://www.instagram.com/helloscott23050000/'],
+    links: [
+      'https://www.instagram.com/helloscott23050000/',
+      'https://www.facebook.com/scottyang0011',
+    ],
   },
   {
     name: 'Antonio',
@@ -79,6 +82,8 @@ export const STAFF = [
     links: [
       'https://www.facebook.com/ling.jun.hao.839468',
       'https://www.instagram.com/qd513020/',
+      'https://www.linkedin.com/in/antonio-222984258/',
+      'https://ling-jun-hao.github.io/Blog/',
     ],
   },
   {
@@ -87,7 +92,7 @@ export const STAFF = [
     avatarUrl: '/images/staff/shin.webp',
     links: [
       'https://www.instagram.com/penspulse/',
-      'https://www.linkedin.com/feed/',
+      'https://www.linkedin.com/in/vincent-chen-237986152/',
       'https://penspulse326.github.io/',
     ],
   },

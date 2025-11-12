@@ -120,7 +120,7 @@ useSeoMeta({
           :show-square="true"
           :disabled-square-effect="true"
         >
-          <div class="flex gap-3 p-5 lg:flex-col lg:p-7 xl:p-9">
+          <div class="flex gap-3 p-5 lg:flex-col lg:p-7 2xl:p-9">
             <div class="relative shrink-0">
               <NuxtImg
                 :src="staff.avatarUrl"
