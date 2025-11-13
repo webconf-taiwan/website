@@ -1,6 +1,6 @@
 ---
 speakerId: "11"
-name: Shirney Huang 黃琇琳
+name: 黃琇琳 Shirney Huang
 slug: Shirney_Huang_黃琇琳
 company: "Aiworks"
 job_title: CEO

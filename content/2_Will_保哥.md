@@ -1,7 +1,7 @@
 ---
 speakerId: "2"
-name: Will 保哥
-slug: Will_保哥
+name: 保哥 Will
+slug: 保哥_Will
 company: "多奇數位創意有限公司"
 job_title: 技術總監
 topic: 深入淺出 Playwright Agent 代理人模式
