@@ -87,7 +87,16 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
   {
-    title: 'TBD',
+    title: 'AI 只懂 React? Vue.js 也能 Vibe coding!',
+    speakerInfo: [
+      {
+        name: 'Kuro Hsu',
+        avatarUrl: '/images/speakers/38_KURO.webp',
+        JobTitle: 'Vue.js Taiwan / Community Organizer',
+        speakerId: '38',
+      },
+    ],
+    tags: ['Frontend', 'AI'],
     day: '12',
     startTime: '11:00',
     endTime: '11:45',
@@ -391,7 +400,16 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
   {
-    title: 'TBD',
+    title: '讓CSS動畫提升你的網站使用者體驗',
+    speakerInfo: [
+      {
+        name: 'Amos 李建杭',
+        avatarUrl: '/images/speakers/41_Amos李建杭.webp',
+        JobTitle: '友達光電 / 工程經理',
+        speakerId: '41',
+      },
+    ],
+    tags: ['Frontend', 'AI', '設計實務'],
     day: '13',
     startTime: '10:00',
     endTime: '10:45',
@@ -529,14 +547,32 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
   {
-    title: 'TBD',
+    title: '實戰 AI Agents 應用開發: 從 Web 後端到前端的整合',
+    speakerInfo: [
+      {
+        name: '張文鈿 ihower',
+        avatarUrl: '/images/speakers/42_張文鈿_ihower.webp',
+        JobTitle: '愛好資訊科技有限公司 / 負責人',
+        speakerId: '42',
+      },
+    ],
+    tags: ['AI'],
     day: '13',
     startTime: '13:30',
     endTime: '14:15',
     location: 'M 棟',
   },
   {
-    title: 'TBD',
+    title: '實戰 AI Agents 應用開發: 從 Web 後端到前端的整合',
+    speakerInfo: [
+      {
+        name: '張文鈿 ihower',
+        avatarUrl: '/images/speakers/42_張文鈿_ihower.webp',
+        JobTitle: '愛好資訊科技有限公司 / 負責人',
+        speakerId: '42',
+      },
+    ],
+    tags: ['AI'],
     day: '13',
     startTime: '13:30',
     endTime: '14:15',
@@ -616,7 +652,16 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    title: 'TBD',
+    title: '初探 LLM 可觀測性：打造可持續擴展的 AI 系統',
+    speakerInfo: [
+      {
+        name: 'Mike Hsu',
+        avatarUrl: '/images/speakers/43_Mike_Hsu.webp',
+        JobTitle: 'OpenNet / DevOps',
+        speakerId: '43',
+      },
+    ],
+    tags: ['Backend', 'DevOps', 'AI'],
     day: '13',
     startTime: '15:20',
     endTime: '16:05',
