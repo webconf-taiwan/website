@@ -7,7 +7,7 @@ job_title: 前理事
 topic: 轉職 PM 之後，我獨自升級：為產品開發世界獻上美好洞察
 tags: ["AI", "設計實務", "產品思維", "團隊管理"]
 speakerInfo: "在設計領域多年探索學習，後來有機會加入產品管理領域。參與過多個大型網路產品的設計與營運管理。"
-description: "那年，我從設計師轉職成產品經理。沒有導師、沒有攻略，只有bug與deadline。這場分享，是關於在現實職場中如何習得心法、解鎖技能，並在每一次「重生」中找回初心與力量。"
+description: "那年，我從設計師轉職成產品經理。沒有導師、沒有攻略，只有 bug 與 deadline。這場分享，是關於在現實職場中如何習得心法、解鎖技能，並在每一次「重生」中找回初心與力量。"
 email: kabaism@gmail.com
 image: /images/speakers/24_Kaba_Su.webp
 fb: https://www.facebook.com/kabaism
@@ -25,7 +25,7 @@ room: A2 棟
 
 ::speaker-summary
 #speechAbstract
-那年，我從設計師轉職成產品經理。沒有導師、沒有攻略，只有bug與deadline。這場分享，是關於在現實職場中如何習得心法、解鎖技能，並在每一次「重生」中找回初心與力量。
+那年，我從設計師轉職成產品經理。沒有導師、沒有攻略，只有 bug 與 deadline。這場分享，是關於在現實職場中如何習得心法、解鎖技能，並在每一次「重生」中找回初心與力量。
 ::
 
 ::speaker-audience
