@@ -1,6 +1,6 @@
 ---
 speakerId: "25"
-name: Richard Tsai 蔡明哲
+name: 蔡明哲 Richard Tsai
 slug: Richard_Tsai_蔡明哲
 company: "悠識數位"
 job_title: UX Coach 暨創辦人

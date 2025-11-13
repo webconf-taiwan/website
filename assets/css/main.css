@@ -87,15 +87,16 @@
 @layer base {
   * {
     @apply border-border;
+  }
+
+  body *,
+  body button,
+  a {
     cursor: none !important;
   }
 
   html {
     font-family: "Noto Sans TC", sans-serif;
-  }
-
-  a {
-    cursor: none;
   }
 
   /* shadcn 設定 */
