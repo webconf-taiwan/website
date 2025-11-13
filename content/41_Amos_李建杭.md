@@ -4,7 +4,7 @@ name: 李建杭 Amos
 slug: Amos_李建杭
 company: "友達光電"
 job_title: 工程經理
-topic: 讓CSS動畫提升你的網站使用者體驗
+topic: 讓 CSS 動畫提升你的網站使用者體驗
 tags: ["Frontend", "AI", "設計實務"]
 speakerInfo: "金魚都能懂的教學系列作者、網頁技術愛好者"
 description: "自從CSS增加動畫模組後，網頁互動變得更加豐富精彩，搭配各種新的CSS屬性讓我們的創意輕鬆得以展現，更提升了使用者體驗，透過CSS撰寫動畫，不僅網頁效能 up up，更讓設計師與開發者得以輕鬆製作互動效果，一起來玩CSS動畫吧。"
