@@ -87,7 +87,16 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
   {
-    title: 'TBD',
+    title: 'AI 只懂 React？Vue.js 也能 Vibe Coding！',
+    speakerInfo: [
+      {
+        name: 'Kuro Hsu',
+        avatarUrl: '/images/speakers/38_KURO.webp',
+        JobTitle: 'Vue.js Taiwan / Community Organizer',
+        speakerId: '38',
+      },
+    ],
+    tags: ['Frontend', 'AI'],
     day: '12',
     startTime: '11:00',
     endTime: '11:45',
@@ -170,7 +179,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '深入淺出 Playwright Agent 代理人模式',
     speakerInfo: [
       {
-        name: 'Will 保哥',
+        name: '保哥 Will',
         avatarUrl: '/images/speakers/2_Will_保哥.webp',
         JobTitle: '多奇數位創意 / 技術總監',
         speakerId: '2',
@@ -256,7 +265,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '從使用者到工程師：AI 在企業怎麼落地？',
     speakerInfo: [
       {
-        name: 'Shirney Huang 黃琇琳',
+        name: '黃琇琳 Shirney Huang',
         avatarUrl: '/images/speakers/11_Shirney_Huang 黃琇琳.webp',
         JobTitle: 'Aiworks / CEO',
         speakerId: '11',
@@ -338,7 +347,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
     speakerInfo: [
       {
-        name: 'Joey 蕭喬伊',
+        name: '蕭喬伊 Joey',
         avatarUrl: '/images/speakers/19_Joey.webp',
         JobTitle: '引鹿創新體驗研究室 / UX總監',
         speakerId: '19',
@@ -354,7 +363,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
     speakerInfo: [
       {
-        name: 'Huli 胡立',
+        name: '胡立 Huli',
         avatarUrl: '/images/speakers/17_Huli.webp',
         JobTitle: '技術部落格 Huli\'s blog / 站長',
         speakerId: '17',
@@ -391,7 +400,16 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
   {
-    title: 'TBD',
+    title: '讓 CSS 動畫提升你的網站使用者體驗',
+    speakerInfo: [
+      {
+        name: '李建杭 Amos',
+        avatarUrl: '/images/speakers/41_Amos李建杭.webp',
+        JobTitle: '友達光電 / 工程經理',
+        speakerId: '41',
+      },
+    ],
+    tags: ['Frontend', 'AI', '設計實務'],
     day: '13',
     startTime: '10:00',
     endTime: '10:45',
@@ -529,14 +547,23 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'A2 棟',
   },
   {
-    title: 'TBD',
+    title: '實戰 AI Agents 應用開發: 從 Web 後端到前端的整合',
+    speakerInfo: [
+      {
+        name: '張文鈿 ihower',
+        avatarUrl: '/images/speakers/42_張文鈿_ihower.webp',
+        JobTitle: '愛好資訊科技有限公司 / 負責人',
+        speakerId: '42',
+      },
+    ],
+    tags: ['AI'],
     day: '13',
     startTime: '13:30',
     endTime: '14:15',
     location: 'M 棟',
   },
   {
-    title: 'TBD',
+    title: '同步聯播',
     day: '13',
     startTime: '13:30',
     endTime: '14:15',
@@ -544,7 +571,7 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 14:25 - 15:10
   {
-    title: '轉職PM之後，我獨自升級：為產品開發世界獻上美好洞察',
+    title: '轉職 PM 之後，我獨自升級：為產品開發世界獻上美好洞察',
     speakerInfo: [
       {
         name: 'Kaba Su',
@@ -576,7 +603,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    title: '從Side Project到開源生態:FinMind 的資料工程之路',
+    title: '從 Side Project 到開源生態：FinMind 的資料工程之路',
     speakerInfo: [
       {
         name: '林子軒 Sam',
@@ -616,7 +643,16 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    title: 'TBD',
+    title: '初探 LLM 可觀測性：打造可持續擴展的 AI 系統',
+    speakerInfo: [
+      {
+        name: 'Mike Hsu',
+        avatarUrl: '/images/speakers/43_Mike_Hsu.webp',
+        JobTitle: 'OpenNet / DevOps',
+        speakerId: '43',
+      },
+    ],
+    tags: ['Backend', 'DevOps', 'AI'],
     day: '13',
     startTime: '15:20',
     endTime: '16:05',
