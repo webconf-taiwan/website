@@ -46,7 +46,7 @@ const currentSpeaker = computed(() => {
 })
 
 function handleClose() {
-  router.push('/agenda/v2')
+  router.push('/agenda')
 }
 </script>
 

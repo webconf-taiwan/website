@@ -186,7 +186,7 @@ watch(isMenuOpen, (newValue) => {
           <NuxtLink
             v-for="(speaker, index) in SPEAKERS"
             :key="`${speaker.name}-${index}`"
-            :to="`/speakers/v2/${speaker.speakerId}`"
+            :to="`/speakers/${speaker.speakerId}`"
           >
             <ShareGridCard
               :is-selected="

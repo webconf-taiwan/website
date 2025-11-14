@@ -692,8 +692,8 @@ export const AGENDA_LIST: AgendaItem[] = [
 ]
 
 export const BACK_LINKS = {
-  agendas: { title: '返回議程列表', link: '/agenda/v2' },
-  speakers: { title: '返回講者列表', link: '/speakers/v2' },
+  agendas: { title: '返回議程列表', link: '/agenda' },
+  speakers: { title: '返回講者列表', link: '/speakers' },
 } as const
 
 export const SPEAKERS = AGENDA_LIST.reduce<Array<

@@ -24,7 +24,7 @@ const currentSpeaker = computed(() => {
 })
 
 function handleClose() {
-  router.push('/speakers/v2')
+  router.push('/speakers')
 }
 
 watch(

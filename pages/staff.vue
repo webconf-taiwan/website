@@ -116,7 +116,6 @@ useSeoMeta({
         <ShareGridCard
           v-for="(staff, index) in STAFF"
           :key="`${staff.name}-${index}`"
-          link="/staff/v2"
           :show-square="true"
           :disabled-square-effect="true"
         >
