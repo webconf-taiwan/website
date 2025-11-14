@@ -53,9 +53,11 @@ const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
 
 // 監聽 selectedDate 變化，切換時滾動到頂部
 watch(selectedDate, () => {
-  const lenis = useLenis()
-  if (lenis) {
-    lenis.scrollTo(0)
+  if (process.client) {
+    const lenis = useLenis()
+    if (lenis) {
+      lenis.scrollTo(0)
+    }
   }
 })
 
@@ -122,7 +124,7 @@ watch(isMenuOpen, (newValue) => {
             <!-- 靜態軌道 -->
             <line
               x1="0"
-              y1="54.5"
+              y1="55"
               x2="345"
               y2="400"
               stroke="#E6E6E6"

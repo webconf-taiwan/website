@@ -1,6 +1,2 @@
 User-Agent: *
-Disallow: /history/v2
-Disallow: /speakers/v2
-Disallow: /agenda/v2
-Disallow: /sponsors/v2
-Disallow: /staff/v2
+Disallow:

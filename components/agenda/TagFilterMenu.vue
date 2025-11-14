@@ -19,6 +19,36 @@ const tags: AgendaTag[] = [
   '軟體設計',
   '設計實務',
 ]
+
+// 監聽 ESC 鍵關閉選單
+function handleEscKey(event: KeyboardEvent) {
+  if (event.key === 'Escape' && isOpen.value) {
+    isOpen.value = false
+  }
+}
+
+watch(isOpen, (newValue) => {
+  if (newValue) {
+    window.addEventListener('keydown', handleEscKey)
+  }
+  else {
+    window.removeEventListener('keydown', handleEscKey)
+  }
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleEscKey)
+})
+
+// 處理標籤切換
+function toggleTag(tag: AgendaTag) {
+  if (selectedTags.value.includes(tag)) {
+    selectedTags.value = selectedTags.value.filter(t => t !== tag)
+  }
+  else {
+    selectedTags.value = [...selectedTags.value, tag]
+  }
+}
 </script>
 
 <template>
@@ -56,9 +86,12 @@ const tags: AgendaTag[] = [
       <ul class="mt-7 flex flex-col gap-2 lg:mt-6">
         <li>
           <label
-            class="flex items-center gap-[10px] text-body-18"
+            class="flex items-center gap-[10px] text-body-18 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-webconf-blue"
             role="button"
+            tabindex="0"
             @click="selectedTags = []"
+            @keydown.enter.prevent="selectedTags = []"
+            @keydown.space.prevent="selectedTags = []"
           >
             <span
               :class="{ 'border-white bg-white': selectedTags.length === 0 }"
@@ -76,12 +109,16 @@ const tags: AgendaTag[] = [
           v-for="tag in tags"
           :key="tag"
         >
-          <label class="flex items-center gap-[10px] text-body-18">
+          <label
+            class="flex items-center gap-[10px] text-body-18 focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-webconf-blue"
+            @keydown.enter.prevent="toggleTag(tag as AgendaTag)"
+            @keydown.space.prevent="toggleTag(tag as AgendaTag)"
+          >
             <input
               v-model="selectedTags"
               type="checkbox"
               :value="tag"
-              class="hidden"
+              class="sr-only"
             />
 
             <span

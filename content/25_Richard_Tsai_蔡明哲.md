@@ -14,7 +14,7 @@ fb: https://facebook.com/uxrichard
 other_link: https://edu.userxper.com/@richard-tsai
 day: day2
 date: 2025-12-13
-time: 14:25~15:10
+time: 15:20~16:05
 room: A2 棟
 ---
 

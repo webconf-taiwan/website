@@ -45,8 +45,8 @@ const scaleY = computed(() => height.value / initialSize.value)
       }"
       :to="
         data.speakerInfo && data.speakerInfo.length > 0
-          ? `/agenda/v2/${data.speakerInfo.map((s) => s.speakerId).join('/')}`
-          : '/agenda/v2'
+          ? `/agendas/${data.speakerInfo.map((s) => s.speakerId).join('/')}`
+          : '/agendas'
       "
       @click="setToggleModal(true)"
     >

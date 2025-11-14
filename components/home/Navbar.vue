@@ -5,14 +5,14 @@ const NAV_ITEMS = [
   {
     name: '議程資訊',
     enName: 'Agenda',
-    href: '/agenda',
+    href: '/agendas',
     isTablet: true,
     isDesktop: true,
   },
   {
     name: '講者陣容',
     enName: 'Speakers',
-    href: '/coming-soon',
+    href: '/speakers',
     isTablet: false,
     isDesktop: true,
   },
@@ -33,14 +33,14 @@ const NAV_ITEMS = [
   {
     name: '主辦團隊',
     enName: 'Staff',
-    href: '/coming-soon',
+    href: '/staff',
     isTablet: false,
     isDesktop: true,
   },
   {
     name: '歷屆回顧',
     enName: 'History',
-    href: '/coming-soon',
+    href: '/history',
     isTablet: false,
     isDesktop: true,
   },

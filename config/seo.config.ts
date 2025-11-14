@@ -22,10 +22,45 @@ export const sitemap = {
     { label: 'Hreflangs', select: 'count(xhtml:link)', width: '12.5%' },
   ],
   urls: [
-    { loc: '/', priority: 1.0 },
-    { loc: '/agenda', priority: 0.9 },
-    { loc: '/sponsors', priority: 0.8 },
-    { loc: '/coming-soon', priority: 0.5 },
+    // 核心頁面
+    { loc: '/', priority: 1 },
+
+    // 主要內容頁面
+    { loc: '/agendas', priority: 0.9 },
+    { loc: '/speakers', priority: 0.9 },
+
+    // 次要頁面
+    { loc: '/sponsors', priority: 0.7 },
+    { loc: '/staff', priority: 0.6 },
+    { loc: '/history', priority: 0.6 },
+
+    // 個別議程頁面 (1-35, 38, 41-43)
+    ...Array.from({ length: 35 }, (_, i) => ({
+      loc: `/agendas/${i + 1}`,
+      priority: 0.8,
+    })),
+    { loc: '/agendas/38', priority: 0.8 },
+    { loc: '/agendas/41', priority: 0.8 },
+    { loc: '/agendas/42', priority: 0.8 },
+    { loc: '/agendas/43', priority: 0.8 },
+
+    // 特殊議程組合
+    { loc: '/agendas/3/4', priority: 0.7 },
+    { loc: '/agendas/33/34', priority: 0.7 },
+    { loc: '/agendas/00/23/24', priority: 0.7 },
+
+    // 個別講者頁面 (1-35, 38, 41-43)
+    ...Array.from({ length: 35 }, (_, i) => ({
+      loc: `/speakers/${i + 1}`,
+      priority: 0.8,
+    })),
+    { loc: '/speakers/38', priority: 0.8 },
+    { loc: '/speakers/41', priority: 0.8 },
+    { loc: '/speakers/42', priority: 0.8 },
+    { loc: '/speakers/43', priority: 0.8 },
+
+    // 其他頁面
+    { loc: '/coming-soon', priority: 0.3 },
   ],
 }
 
@@ -107,6 +142,23 @@ export const eventPerformers = [
     'sameAs': [
       'https://www.facebook.com/gipi.net',
       'https://gipi.tw',
+    ],
+  },
+  {
+    '@type': 'Person',
+    'name': '張文鈿 ihower',
+    'url': 'https://webconf.tw/speakers/42',
+    'jobTitle': '負責人',
+    'worksFor': {
+      '@type': 'Organization',
+      'name': '愛好資訊科技有限公司',
+    },
+    'description': 'AI 工程獨立顧問、軟體工程師、開課講師。2002年開始從事 Web App 軟體開發工作，曾任新創公司技術長、多年程式教育講師。 目前自行開業愛好資訊科技有限公司，經營愛好 AI Engineer 電子報，近期積極參與 OpenAI Agents SDK 原始碼貢獻。 部落格: https://ihower.tw/blog/。',
+    'image': 'https://webconf.tw/images/speakers/42_%E5%BC%B5%E6%96%87%E9%88%BF_ihower.webp',
+    'sameAs': [
+      'https://www.facebook.com/ihower',
+      'https://x.com/ihower',
+      'https://ihower.tw/blog/',
     ],
   },
 ]

@@ -1,16 +1,9 @@
 <script setup lang="ts">
-import { site } from '~/config/seo.config'
-
 defineOgImage({
   url: 'https://webconf.tw/images/seo/ogImage.png',
   width: 1200,
   height: 630,
   alt: 'WebConf Taiwan 2025',
-})
-
-useSeoMeta({
-  twitterTitle: site.title,
-  twitterDescription: site.description,
 })
 
 const isProduction = import.meta.env.PROD

@@ -1,11 +1,7 @@
 <script setup lang="ts">
-const route = useRoute('speakers-v2-index-speakerId')
+const route = useRoute('speakers-speakerId')
 const router = useRouter()
 const { setToggleModal } = useGlobalState()
-
-useSeoMeta({
-  robots: 'noindex, nofollow',
-})
 
 const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
   queryCollection('content').all())
@@ -24,7 +20,7 @@ const currentSpeaker = computed(() => {
 })
 
 function handleClose() {
-  router.push('/speakers/v2')
+  router.push('/speakers')
 }
 
 watch(
@@ -41,6 +37,7 @@ watch(
 <template>
   <AgendaSpeakersDetailsDialog
     v-if="currentSpeaker && currentSpeaker.length > 0"
+    :speaker-ids="route.params.speakerId"
     :speaker="currentSpeaker"
     type="speakers"
     :is-animation="true"

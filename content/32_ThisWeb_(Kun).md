@@ -13,9 +13,9 @@ image: /images/speakers/32_ThisWeb (Kun).webp
 ig: https://www.instagram.com/this.web
 threads: https://www.threads.com/@this.web
 other_link: https://thisweb.dev/
-day: day2
-date: 2025-12-13
-time: 11:50~12:35
+day: day1
+date: 2025-12-12
+time: 15:20~16:05
 room: F 棟
 ---
 
