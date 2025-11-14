@@ -107,7 +107,7 @@ function getResponsivePosition(tagPosition: any) {
     </p>
 
     <ShareLinkButton
-      to="/agendas"
+      to="/agenda"
       class="mt-[60px]"
     >
       議程資訊

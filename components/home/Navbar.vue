@@ -5,7 +5,7 @@ const NAV_ITEMS = [
   {
     name: '議程資訊',
     enName: 'Agenda',
-    href: '/agendas',
+    href: '/agenda',
     isTablet: true,
     isDesktop: true,
   },
