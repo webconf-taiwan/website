@@ -8,8 +8,9 @@ useSeoMeta({
 
 // 允許的多人議程組合 (白名單)
 const ALLOWED_MULTI_SPEAKER_GROUPS = [
-  ['3', '4'], // 第一組
-  ['33', '34'], // 第二組
+  ['3', '4'], // 第一場
+  ['33', '34'], // 第二場
+  ['00', '23', '24'], // 第三場
 ]
 
 const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
@@ -54,6 +55,7 @@ function handleClose() {
   <AgendaSpeakersDetailsDialog
     v-if="currentSpeaker && currentSpeaker.length > 0"
     :speaker="currentSpeaker"
+    :speaker-ids="route.params.speakerId"
     :is-animation="true"
     @close="handleClose"
   />
