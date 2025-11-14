@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const route = useRoute('agendas-speakerId')
+const route = useRoute('agenda-speakerId')
 const router = useRouter()
 
 // 允許的多人議程組合 (白名單)
@@ -43,7 +43,7 @@ const currentSpeaker = computed(() => {
 })
 
 function handleClose() {
-  router.push('/agendas')
+  router.push('/agenda')
 }
 </script>
 

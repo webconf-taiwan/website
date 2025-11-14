@@ -5,7 +5,7 @@ import { BACK_LINKS } from '~/constants/agenda'
 export function useSpeakerSeo(
   speaker: ContentCollectionItem[],
   speakerIds: string[] = [],
-  type: 'agendas' | 'speakers' = 'agendas',
+  type: 'agenda' | 'speakers' = 'agenda',
 ) {
   const firstSpeaker = speaker[0]
   const meta = firstSpeaker?.meta || {}

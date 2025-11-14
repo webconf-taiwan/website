@@ -2,7 +2,7 @@
 import { BACK_LINKS } from '~/constants/agenda'
 
 defineProps<{
-  type: 'agendas' | 'speakers'
+  type: 'agenda' | 'speakers'
 }>()
 
 const emit = defineEmits<(_event: 'close') => void>()

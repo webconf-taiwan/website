@@ -12,10 +12,10 @@ const props = withDefaults(
   defineProps<{
     speaker: ContentCollectionItem[]
     speakerIds?: string[]
-    type?: 'agendas' | 'speakers'
+    type?: 'agenda' | 'speakers'
   }>(),
   {
-    type: 'agendas',
+    type: 'agenda',
   },
 )
 

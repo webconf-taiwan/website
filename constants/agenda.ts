@@ -754,10 +754,10 @@ export const AGENDA_LIST: AgendaItem[] = [
 ]
 
 export const BACK_LINKS = {
-  agendas:
+  agenda:
    {
      title: '返回議程列表',
-     link: '/agendas',
+     link: '/agenda',
    },
   speakers:
   {
