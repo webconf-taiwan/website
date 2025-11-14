@@ -5,42 +5,52 @@ const speakers = [
   {
     name: 'Happy',
     src: '/images/speakers/1_李昆謀.webp',
+    link: '/speakers/1',
   },
   {
-    name: 'Gipi',
+    name: '游舒帆 Gipi',
     src: '/images/speakers/18_游舒帆_Gipi.webp',
+    link: '/speakers/18',
   },
   {
-    name: 'Will 保哥',
+    name: '保哥 Will',
     src: '/images/speakers/2_Will_保哥.webp',
+    link: '/speakers/2',
   },
   {
-    name: 'Huli 胡立',
+    name: '胡立 Huli',
     src: '/images/speakers/17_Huli.webp',
+    link: '/speakers/17',
   },
   {
     name: 'Hannah',
     src: '/images/speakers/28_hannah.webp',
+    link: '/speakers/28',
   },
   {
     name: '奶綠茶',
     src: '/images/speakers/29_奶綠.webp',
+    link: '/speakers/29',
   },
   {
-    name: 'KURO',
+    name: 'Kuro',
     src: '/images/speakers/38_KURO.webp',
+    link: '/speakers/38',
   },
   {
     name: 'Peter',
     src: '/images/speakers/20_Peter_Su.webp',
+    link: '/speakers/20',
   },
   {
     name: 'Chris',
     src: '/images/speakers/3_陳偉仁_Chris_Chen.webp',
+    link: '/speakers/3',
   },
   {
     name: 'Tinya',
     src: '/images/speakers/4_黃庭亞-Yaya.webp',
+    link: '/speakers/4',
   },
 ]
 
@@ -48,6 +58,7 @@ const speakerAssets = computed(() =>
   speakers.map(speaker => ({
     ...speaker,
     src: $img(speaker.src, { width: 282, height: 448 }),
+    link: speaker.link,
   })),
 )
 
@@ -122,9 +133,8 @@ function handleSlideToNext() {
           />
         </div>
 
-        <!-- TODO: 連結到講者頁面 -->
         <ShareLinkButton
-          to="/coming-soon"
+          to="/speakers"
           class="hidden text-center xl:block"
         >
           更多講者
@@ -195,8 +205,7 @@ function handleSlideToNext() {
       />
 
       <div class="justify-self-center">
-        <!-- TODO: 連結到講者頁面 -->
-        <ShareLinkButton to="/coming-soon">
+        <ShareLinkButton to="/speakers">
           更多講者
         </ShareLinkButton>
       </div>
