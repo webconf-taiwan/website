@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { gsap } = useGsap()
 const route = useRoute()
-const hiddenPaths = ['/agenda', '/sponsors', '/history']
+const hiddenPaths = ['/agendas', '/sponsors', '/history']
 const shouldHide = computed(() => {
   return hiddenPaths.some(path => route.path.startsWith(path))
 })

@@ -1,10 +1,6 @@
 <script setup lang="ts">
-const route = useRoute('agenda-index-speakerId')
+const route = useRoute('agendas-speakerId')
 const router = useRouter()
-
-useSeoMeta({
-  robots: 'noindex, nofollow',
-})
 
 // 允許的多人議程組合 (白名單)
 const ALLOWED_MULTI_SPEAKER_GROUPS = [
@@ -47,7 +43,7 @@ const currentSpeaker = computed(() => {
 })
 
 function handleClose() {
-  router.push('/agenda')
+  router.push('/agendas')
 }
 </script>
 

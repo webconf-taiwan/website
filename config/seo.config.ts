@@ -23,7 +23,7 @@ export const sitemap = {
   ],
   urls: [
     { loc: '/', priority: 1.0 },
-    { loc: '/agenda', priority: 0.9 },
+    { loc: '/agendas', priority: 0.9 },
     { loc: '/sponsors', priority: 0.8 },
     { loc: '/coming-soon', priority: 0.5 },
   ],

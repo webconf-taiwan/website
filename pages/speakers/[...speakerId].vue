@@ -1,11 +1,7 @@
 <script setup lang="ts">
-const route = useRoute('speakers-index-speakerId')
+const route = useRoute('speakers-speakerId')
 const router = useRouter()
 const { setToggleModal } = useGlobalState()
-
-useSeoMeta({
-  robots: 'noindex, nofollow',
-})
 
 const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
   queryCollection('content').all())

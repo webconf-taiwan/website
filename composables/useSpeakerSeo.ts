@@ -72,7 +72,7 @@ export function useSpeakerSeo(
     return {
       '@type': 'Person',
       'name': s.meta.name,
-      'url': `https://webconf.tw/speakers/v2/${s.meta.speakerId}`,
+      'url': `https://webconf.tw/speakers/${s.meta.speakerId}`,
       'jobTitle': s.meta.job_title,
       'worksFor': {
         '@type': 'Organization',
