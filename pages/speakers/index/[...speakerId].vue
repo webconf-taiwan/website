@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const route = useRoute('speakers-v2-index-speakerId')
+const route = useRoute('speakers-index-speakerId')
 const router = useRouter()
 const { setToggleModal } = useGlobalState()
 

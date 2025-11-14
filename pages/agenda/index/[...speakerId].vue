@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const route = useRoute('agenda-v2-index-speakerId')
+const route = useRoute('agenda-index-speakerId')
 const router = useRouter()
 
 useSeoMeta({
