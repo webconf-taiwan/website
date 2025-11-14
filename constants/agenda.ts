@@ -6,7 +6,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: 'B2B 服務的 AI Agent 產品設計原則',
     speakerInfo: [
       {
-        name: 'Happy',
+        name: '李昆謀',
         avatarUrl: '/images/speakers/1_李昆謀.webp',
         JobTitle: '91APP / 產品長',
         speakerId: '1',
@@ -37,13 +37,13 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: 'AI 時代下， Product Sense 就是你的秘密武器',
     speakerInfo: [
       {
-        name: 'Chris',
+        name: '陳偉仁',
         avatarUrl: '/images/speakers/3_陳偉仁_Chris_Chen.webp',
         JobTitle: 'PicCollage 拼貼趣 / 資深產品設計經理',
         speakerId: '3',
       },
       {
-        name: 'Tinya',
+        name: '黃庭亞',
         avatarUrl: '/images/speakers/4_黃庭亞-Yaya.webp',
         JobTitle: 'PicCollage 拼貼趣 / 資深產品設計師',
         speakerId: '4',
@@ -347,7 +347,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
     speakerInfo: [
       {
-        name: '蕭喬伊 Joey',
+        name: 'Joey',
         avatarUrl: '/images/speakers/19_Joey.webp',
         JobTitle: '引鹿創新體驗研究室 / UX總監',
         speakerId: '19',
@@ -363,7 +363,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
     speakerInfo: [
       {
-        name: '胡立 Huli',
+        name: 'Huli',
         avatarUrl: '/images/speakers/17_Huli.webp',
         JobTitle: '技術部落格 Huli\'s blog / 站長',
         speakerId: '17',
@@ -452,7 +452,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '鍵盤救國：解決社會性問題的工程師',
     speakerInfo: [
       {
-        name: '吳展瑋 Howard',
+        name: '吳展瑋',
         avatarUrl: '/images/speakers/26_吳展瑋 Howard.webp',
         JobTitle: '好想工作室 / 創辦人',
         speakerId: '26',
@@ -590,7 +590,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     title: '程式碼與尿布：媽媽工程師的生存指南',
     speakerInfo: [
       {
-        name: 'Hannah',
+        name: 'Hannah Lin',
         avatarUrl: '/images/speakers/28_hannah.webp',
         JobTitle: 'Remote / Frontend',
         speakerId: '28',
@@ -620,7 +620,28 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/13 15:20 - 16:05
   {
-    title: 'TBD',
+    title: '座談｜從設計到產品管理：AI 浪潮下的角色轉變與價值重構',
+    speakerInfo: [
+      {
+        name: '蔡明哲',
+        avatarUrl: '/images/speakers/25_Richard_Tsai_蔡明哲.webp',
+        JobTitle: 'UX Coach 暨創辦人',
+        speakerId: '00',
+      },
+      {
+        name: '趙柏強',
+        avatarUrl: '/images/speakers/23_趙柏強.webp',
+        JobTitle: 'Growth Companion',
+        speakerId: '23',
+      },
+      {
+        name: 'Kaba Su',
+        avatarUrl: '/images/speakers/24_Kaba_Su.webp',
+        JobTitle: '前理事',
+        speakerId: '24',
+      },
+    ],
+    tags: ['AI', '設計實務', '產品思維', '團隊管理'],
     day: '13',
     startTime: '15:20',
     endTime: '16:05',
@@ -692,8 +713,16 @@ export const AGENDA_LIST: AgendaItem[] = [
 ]
 
 export const BACK_LINKS = {
-  agendas: { title: '返回議程列表', link: '/agenda' },
-  speakers: { title: '返回講者列表', link: '/speakers' },
+  agendas:
+   {
+     title: '返回議程列表',
+     link: '/agenda/v2',
+   },
+  speakers:
+  {
+    title: '返回講者列表',
+    link: '/speakers/v2',
+  },
 } as const
 
 export const SPEAKERS = AGENDA_LIST.reduce<Array<

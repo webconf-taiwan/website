@@ -18,7 +18,7 @@ const speakers = [
     link: '/speakers/2',
   },
   {
-    name: '胡立 Huli',
+    name: 'Huli',
     src: '/images/speakers/17_Huli.webp',
     link: '/speakers/17',
   },
@@ -33,7 +33,7 @@ const speakers = [
     link: '/speakers/29',
   },
   {
-    name: 'Kuro',
+    name: 'Kuro Hsu',
     src: '/images/speakers/38_KURO.webp',
     link: '/speakers/38',
   },
@@ -43,12 +43,12 @@ const speakers = [
     link: '/speakers/20',
   },
   {
-    name: 'Chris',
+    name: '陳偉仁',
     src: '/images/speakers/3_陳偉仁_Chris_Chen.webp',
     link: '/speakers/3',
   },
   {
-    name: 'Tinya',
+    name: '黃庭亞',
     src: '/images/speakers/4_黃庭亞-Yaya.webp',
     link: '/speakers/4',
   },
