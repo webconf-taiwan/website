@@ -22,10 +22,45 @@ export const sitemap = {
     { label: 'Hreflangs', select: 'count(xhtml:link)', width: '12.5%' },
   ],
   urls: [
-    { loc: '/', priority: 1.0 },
+    // 核心頁面
+    { loc: '/', priority: 1 },
+
+    // 主要內容頁面
     { loc: '/agendas', priority: 0.9 },
-    { loc: '/sponsors', priority: 0.8 },
-    { loc: '/coming-soon', priority: 0.5 },
+    { loc: '/speakers', priority: 0.9 },
+
+    // 次要頁面
+    { loc: '/sponsors', priority: 0.7 },
+    { loc: '/staff', priority: 0.6 },
+    { loc: '/history', priority: 0.6 },
+
+    // 個別議程頁面 (1-35, 38, 41-43)
+    ...Array.from({ length: 35 }, (_, i) => ({
+      loc: `/agendas/${i + 1}`,
+      priority: 0.8,
+    })),
+    { loc: '/agendas/38', priority: 0.8 },
+    { loc: '/agendas/41', priority: 0.8 },
+    { loc: '/agendas/42', priority: 0.8 },
+    { loc: '/agendas/43', priority: 0.8 },
+
+    // 特殊議程組合
+    { loc: '/agendas/3/4', priority: 0.7 },
+    { loc: '/agendas/33/34', priority: 0.7 },
+    { loc: '/agendas/00/23/24', priority: 0.7 },
+
+    // 個別講者頁面 (1-35, 38, 41-43)
+    ...Array.from({ length: 35 }, (_, i) => ({
+      loc: `/speakers/${i + 1}`,
+      priority: 0.8,
+    })),
+    { loc: '/speakers/38', priority: 0.8 },
+    { loc: '/speakers/41', priority: 0.8 },
+    { loc: '/speakers/42', priority: 0.8 },
+    { loc: '/speakers/43', priority: 0.8 },
+
+    // 其他頁面
+    { loc: '/coming-soon', priority: 0.3 },
   ],
 }
 
