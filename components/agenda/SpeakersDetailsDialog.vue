@@ -6,12 +6,12 @@ import type {
 } from '#components'
 import type { ContentCollectionItem } from '@nuxt/content'
 import { onKeyStroke } from '@vueuse/core'
-import { site } from '~/config/seo.config'
 import { BACK_LINKS } from '~/constants/agenda'
 
 const props = withDefaults(
   defineProps<{
     speaker: ContentCollectionItem[]
+    speakerIds?: string[]
     type?: 'agendas' | 'speakers'
   }>(),
   {
@@ -45,6 +45,10 @@ const speakerRef = computed(() => props.speaker)
 const { renderableIntroSection, speakerInfo, meta, formattedDate }
   = useSpeakerSections(speakerRef, currentPageNumber)
 
+useSpeakerSeo(props.speaker, props.speakerIds, props.type)
+
+const currentMeta = toValue(meta)
+
 // 用於圖片顯示的索引
 const displayImageIndex = ref(0)
 
@@ -59,18 +63,6 @@ const pageNumber = computed(() => {
 })
 
 let autoPlayTween: gsap.core.Tween | null = null
-
-function getPageTitle() {
-  if (props.speaker?.length > 1) {
-    return meta.value.topic || site.title
-  }
-
-  if (meta.value.name && meta.value.topic) {
-    return `${meta.value.name} | ${meta.value.topic}`
-  }
-
-  return site.title
-}
 
 /* 處理關閉彈出視窗 */
 function handleClose() {
@@ -275,19 +267,6 @@ function handleMouseLeaveContent() {
   }
 }
 
-useSeoMeta({
-  title: getPageTitle(),
-  description: props.speaker?.[0]?.seo.description || site.description,
-  twitterTitle:
-    meta.value.name && meta.value.topic
-      ? `${meta.value.name} | ${meta.value.topic}`
-      : site.title,
-  twitterDescription: props.speaker?.[0]?.seo.description || site.description,
-  ogUrl: `https://webconf.tw/agenda?speakerId=${meta.value.id}`,
-  author: (meta.value.name as string) || site.name,
-  keywords: ((meta.value.tags as string[]).join(', ') as string) || '',
-})
-
 /** 處理 ESC 關閉事件監聽 */
 onKeyStroke('Escape', () => {
   handleClose()
@@ -382,7 +361,7 @@ onUnmounted(() => {
         />
         <!-- 議程大綱區塊 -->
         <SpeakerDialogAgendaSummary
-          :meta="meta"
+          :meta="currentMeta"
           :formatted-date="formattedDate"
           :speaker-info="speakerInfo"
         />

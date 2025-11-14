@@ -109,6 +109,23 @@ export const eventPerformers = [
       'https://gipi.tw',
     ],
   },
+  {
+    '@type': 'Person',
+    'name': '張文鈿 ihower',
+    'url': 'https://webconf.tw/speakers/42',
+    'jobTitle': '負責人',
+    'worksFor': {
+      '@type': 'Organization',
+      'name': '愛好資訊科技有限公司',
+    },
+    'description': 'AI 工程獨立顧問、軟體工程師、開課講師。2002年開始從事 Web App 軟體開發工作，曾任新創公司技術長、多年程式教育講師。 目前自行開業愛好資訊科技有限公司，經營愛好 AI Engineer 電子報，近期積極參與 OpenAI Agents SDK 原始碼貢獻。 部落格: https://ihower.tw/blog/。',
+    'image': 'https://webconf.tw/images/speakers/42_%E5%BC%B5%E6%96%87%E9%88%BF_ihower.webp',
+    'sameAs': [
+      'https://www.facebook.com/ihower',
+      'https://x.com/ihower',
+      'https://ihower.tw/blog/',
+    ],
+  },
 ]
 
 export const eventLocation = {
