@@ -30,14 +30,17 @@ function handleEscKey(event: KeyboardEvent) {
 watch(isOpen, (newValue) => {
   if (newValue) {
     window.addEventListener('keydown', handleEscKey)
+    document.body.style.overflow = 'hidden'
   }
   else {
     window.removeEventListener('keydown', handleEscKey)
+    document.body.style.overflow = ''
   }
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleEscKey)
+  document.body.style.overflow = ''
 })
 
 // 處理標籤切換
