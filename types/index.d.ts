@@ -16,6 +16,7 @@ export interface SpeakerInfo {
   avatarUrl: string
   JobTitle: string
   speakerId: string
+  order?: number
 }
 
 export interface AgendaItem {
