@@ -12,9 +12,9 @@ email: bearhsu2@gmail.com
 image: /images/speakers/15_Kuma_Syu.webp
 fb: https://www.facebook.com/kukumamaya
 youtube: https://www.youtube.com/@kukumamaya
-day: day1
-date: 2025-12-12
-time: 15:20~16:05
+day: day2
+date: 2025-12-13
+time: 10:55~11:40
 room: F 棟
 ---
 

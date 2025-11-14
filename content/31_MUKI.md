@@ -14,7 +14,7 @@ fb: https://www.facebook.com/mukispace/
 other_link: https://muki.tw
 day: day2
 date: 2025-12-13
-time: 10:55~11:40
+time: 11:50~12:35
 room: F 棟
 ---
 

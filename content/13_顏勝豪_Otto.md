@@ -13,7 +13,7 @@ image: /images/speakers/13_顏勝豪_Otto.webp
 other_link: https://ottoyen.github.io/
 day: day1
 date: 2025-12-12
-time: 10:05~10:50
+time: 11:00~11:50
 room: F 棟
 ---
 
