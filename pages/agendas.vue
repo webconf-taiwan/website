@@ -124,7 +124,7 @@ watch(isMenuOpen, (newValue) => {
             <!-- 靜態軌道 -->
             <line
               x1="0"
-              y1="54.5"
+              y1="55"
               x2="345"
               y2="400"
               stroke="#E6E6E6"
