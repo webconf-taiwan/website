@@ -28,12 +28,19 @@ const initialSize = computed(() => {
   return BLOCK_SIZE_MOBILE
 })
 
-// 計算縮放比例
-const scaleX = computed(() => width.value / initialSize.value)
-const scaleY = computed(() => height.value / initialSize.value)
+// 計算目標寬高（使用寬高動畫取代 scale，避免超出容器）
+const targetWidth = computed(() => width.value * (props.data.space ?? 1))
+const targetHeight = computed(() => height.value)
 
-// lg 斷點時，scaleX 會乘以 space 值
-const scaleXForLg = computed(() => scaleX.value * (props.data.space ?? 1))
+// 計算初始和目標尺寸的 CSS 值
+const blockStyle = computed(() => {
+  const baseSize = initialSize.value
+  return {
+    '--initial-size': `${baseSize}px`,
+    '--target-width': `${targetWidth.value}px`,
+    '--target-height': `${targetHeight.value}px`,
+  }
+})
 
 // 計算屬性
 const isSpecialCard = computed(() => {
@@ -75,12 +82,8 @@ const cardLink = computed(() => {
       <!-- 縮放特效方塊 -->
       <div
         v-if="!isSpecialCard"
-        class="pointer-events-none absolute left-0 top-0 z-10 size-5 origin-top-left bg-webconf-blue mix-blend-screen transition-transform duration-300 ease-out lg:block lg:size-7 lg:group-hover:[transform:scale(var(--scale-x-lg),var(--scale-y))]"
-        :style="{
-          '--scale-x': scaleX,
-          '--scale-y': scaleY,
-          '--scale-x-lg': scaleXForLg,
-        }"
+        class="pointer-events-none absolute left-0 top-0 z-10 size-5 bg-webconf-blue mix-blend-screen transition-all duration-300 ease-out lg:block lg:size-7 lg:group-hover:h-[var(--target-height)] lg:group-hover:w-[var(--target-width)]"
+        :style="blockStyle"
       ></div>
 
       <div class="h-full px-5 py-8 lg:px-10 xl:min-h-[285px]">
@@ -181,10 +184,10 @@ const cardLink = computed(() => {
         </div>
       </div>
 
-      <!-- 半透明遮罩 -->
+      <!-- 標籤選取遮罩 -->
       <div
         v-if="!isSelected"
-        class="absolute inset-0 size-full bg-black opacity-70 duration-300"
+        class="absolute inset-0 z-10 size-full bg-black opacity-70 duration-300"
       ></div>
     </NuxtLink>
   </div>
