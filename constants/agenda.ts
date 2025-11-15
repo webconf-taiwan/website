@@ -18,6 +18,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '09:10',
     endTime: '09:55',
     location: 'A2 棟',
+    space: 3,
   },
   {
     title: '同步聯播',
@@ -25,6 +26,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '09:10',
     endTime: '09:55',
     location: 'M 棟',
+    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
   },
   {
     title: '同步聯播',
@@ -32,6 +34,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '09:10',
     endTime: '09:55',
     location: 'F 棟',
+    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
   },
   // 12/12 10:05 - 10:50
   {
@@ -200,6 +203,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '13:30',
     endTime: '14:15',
     location: 'M 棟',
+    space: 2,
   },
   {
     title: '同步聯播',
@@ -207,6 +211,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '13:30',
     endTime: '14:15',
     location: 'F 棟',
+    tags: ['Frontend', 'AI'],
   },
   // 12/12 14:25 - 15:10
   {
@@ -395,9 +400,11 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '09:00',
     endTime: '09:45',
     location: 'M 棟',
+    space: 2,
   },
   {
     title: '同步聯播',
+    tags: ['Frontend', 'Backend', 'Security'],
     day: '13',
     startTime: '09:00',
     endTime: '09:45',
@@ -593,6 +600,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '13:30',
     endTime: '14:15',
     location: 'M 棟',
+    space: 2,
   },
   {
     title: '同步聯播',
@@ -600,6 +608,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '13:30',
     endTime: '14:15',
     location: 'F 棟',
+    tags: ['AI'],
   },
   // 12/13 14:25 - 15:10
   {
@@ -736,6 +745,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '16:15',
     endTime: '17:00',
     location: 'A2 棟',
+    space: 3,
   },
   {
     title: '同步聯播',
@@ -743,6 +753,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '16:15',
     endTime: '17:00',
     location: 'M 棟',
+    tags: ['AI', '產品思維', '軟體設計'],
   },
   {
     title: '同步聯播',
@@ -750,6 +761,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '16:15',
     endTime: '17:00',
     location: 'F 棟',
+    tags: ['AI', '產品思維', '軟體設計'],
   },
 ]
 

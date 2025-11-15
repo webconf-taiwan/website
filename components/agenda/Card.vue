@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AgendaItem } from '~/types'
 
-defineProps<{
+const props = defineProps<{
   data: AgendaItem
   index: number
   time?: string
@@ -9,18 +9,44 @@ defineProps<{
   isSelected: boolean
 }>()
 
+// 常數定義
+const BLOCK_SIZE_MOBILE = 20
+const BLOCK_SIZE_DESKTOP = 28
+const LG_BREAKPOINT = 1024
+
 const cardRef = ref<HTMLElement>()
 const { setToggleModal } = useGlobalState()
 const { width, height } = useElementSize(cardRef, undefined, {
   box: 'border-box',
 })
 
-// 根據螢幕尺寸決定初始方塊大小 (行動版 20px, 桌面版 28px)
-const initialSize = computed(() => (width.value >= 1280 ? 28 : 20))
+// 根據螢幕尺寸決定初始方塊大小
+const initialSize = computed(() => {
+  if (process.client && window.innerWidth >= LG_BREAKPOINT) {
+    return BLOCK_SIZE_DESKTOP
+  }
+  return BLOCK_SIZE_MOBILE
+})
 
-// 計算 X 和 Y 軸各自需要的縮放比例，讓兩個方向同時到達邊界
+// 計算縮放比例
 const scaleX = computed(() => width.value / initialSize.value)
 const scaleY = computed(() => height.value / initialSize.value)
+
+// lg 斷點時，scaleX 會乘以 space 值
+const scaleXForLg = computed(() => scaleX.value * (props.data.space ?? 1))
+
+// 計算屬性
+const isSpecialCard = computed(() => {
+  return props.data.title === '同步聯播' || props.data.title === 'TBD'
+})
+
+const cardLink = computed(() => {
+  if (props.data.speakerInfo && props.data.speakerInfo.length > 0) {
+    const speakerIds = props.data.speakerInfo.map(s => s.speakerId).join('/')
+    return `/agenda/${speakerIds}`
+  }
+  return '/agenda'
+})
 </script>
 
 <template>
@@ -39,31 +65,28 @@ const scaleY = computed(() => height.value / initialSize.value)
     <!-- 議程卡片 -->
     <NuxtLink
       ref="cardRef"
-      class="group relative block h-full overflow-hidden bg-black transition-colors duration-300"
+      class="group relative block h-full bg-black transition-colors duration-300 lg:overflow-visible"
       :class="{
         'lg:-mt-7': showTime,
       }"
-      :to="
-        data.speakerInfo && data.speakerInfo.length > 0
-          ? `/agenda/${data.speakerInfo.map((s) => s.speakerId).join('/')}`
-          : '/agenda'
-      "
+      :to="cardLink"
       @click="setToggleModal(true)"
     >
       <!-- 縮放特效方塊 -->
       <div
-        v-if="data.title !== '同步聯播' && data.title !== 'TBD'"
-        class="absolute left-0 top-0 z-0 size-5 origin-top-left bg-webconf-blue transition-transform duration-300 ease-out group-hover:[transform:scale(var(--scale-x),var(--scale-y))] lg:block lg:size-7"
+        v-if="!isSpecialCard"
+        class="pointer-events-none absolute left-0 top-0 z-10 size-5 origin-top-left bg-webconf-blue mix-blend-screen transition-transform duration-300 ease-out lg:block lg:size-7 lg:group-hover:[transform:scale(var(--scale-x-lg),var(--scale-y))]"
         :style="{
           '--scale-x': scaleX,
           '--scale-y': scaleY,
+          '--scale-x-lg': scaleXForLg,
         }"
       ></div>
 
       <div class="h-full px-5 py-8 lg:px-10 xl:min-h-[285px]">
         <!-- 議程簡介 -->
         <div
-          v-if="data.title !== '同步聯播' && data.title !== 'TBD'"
+          v-if="!isSpecialCard"
           class="relative flex h-full flex-col gap-4"
         >
           <h2 class="text-h4-24 leading-[1.4]">
@@ -83,8 +106,9 @@ const scaleY = computed(() => height.value / initialSize.value)
             </li>
           </ul>
 
-          <div class="flex items-end justify-between">
+          <div class="z-10 flex items-end justify-between">
             <div class="flex items-end gap-3">
+              <!-- 講者頭像 -->
               <div class="flex gap-2">
                 <div
                   v-for="speaker in data.speakerInfo"
@@ -101,6 +125,7 @@ const scaleY = computed(() => height.value / initialSize.value)
                 </div>
               </div>
 
+              <!-- 講者名稱 -->
               <div
                 class="flex flex-col flex-wrap items-center gap-1 lg:flex-row lg:gap-2"
               >
@@ -111,7 +136,6 @@ const scaleY = computed(() => height.value / initialSize.value)
                   <p class="text-body-16">
                     {{ speaker.name }}
                   </p>
-
                   <p
                     v-if="data.speakerInfo && idx < data.speakerInfo.length - 1"
                     class="hidden text-[#999] lg:block"
@@ -122,6 +146,7 @@ const scaleY = computed(() => height.value / initialSize.value)
               </div>
             </div>
 
+            <!-- 地點 (行動版) -->
             <div class="flex items-center gap-1 text-body-18 lg:hidden">
               <NuxtImg
                 src="/images/icon/location.svg"
@@ -134,7 +159,7 @@ const scaleY = computed(() => height.value / initialSize.value)
           </div>
         </div>
 
-        <!-- 同步聯播 -->
+        <!-- 特殊卡片 (同步聯播/TBD) -->
         <div
           v-else
           class="flex h-full items-center justify-between"
@@ -143,6 +168,7 @@ const scaleY = computed(() => height.value / initialSize.value)
             {{ data.title }}
           </h2>
 
+          <!-- 地點 (行動版) -->
           <div class="flex items-center gap-1 text-body-18 lg:hidden">
             <NuxtImg
               src="/images/icon/location.svg"
@@ -157,11 +183,8 @@ const scaleY = computed(() => height.value / initialSize.value)
 
       <!-- 半透明遮罩 -->
       <div
-        class="absolute inset-0 size-full bg-black opacity-0 duration-300"
-        :class="{
-          'block opacity-70': !isSelected,
-          'hidden': isSelected,
-        }"
+        v-if="!isSelected"
+        class="absolute inset-0 size-full bg-black opacity-70 duration-300"
       ></div>
     </NuxtLink>
   </div>
