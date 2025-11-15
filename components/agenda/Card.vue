@@ -9,36 +9,21 @@ const props = defineProps<{
   isSelected: boolean
 }>()
 
-// 常數定義
-const BLOCK_SIZE_MOBILE = 20
-const BLOCK_SIZE_DESKTOP = 28
-const LG_BREAKPOINT = 1024
-
 const cardRef = ref<HTMLElement>()
 const { setToggleModal } = useGlobalState()
 const { width, height } = useElementSize(cardRef, undefined, {
   box: 'border-box',
 })
 
-// 根據螢幕尺寸決定初始方塊大小
-const initialSize = computed(() => {
-  if (process.client && window.innerWidth >= LG_BREAKPOINT) {
-    return BLOCK_SIZE_DESKTOP
-  }
-  return BLOCK_SIZE_MOBILE
-})
-
-// 計算目標寬高（使用寬高動畫取代 scale，避免超出容器）
-const targetWidth = computed(() => width.value * (props.data.space ?? 1))
-const targetHeight = computed(() => height.value)
-
-// 計算初始和目標尺寸的 CSS 值
-const blockStyle = computed(() => {
-  const baseSize = initialSize.value
+// 計算目標尺寸的 CSS 值
+const squareStyle = computed(() => {
+  const targetWidth
+    = Math.ceil(width.value) * (props.data.space ?? 1)
+      + (props.data.space ?? 0.5)
+  const targetHeight = Math.ceil(height.value)
   return {
-    '--initial-size': `${baseSize}px`,
-    '--target-width': `${targetWidth.value}px`,
-    '--target-height': `${targetHeight.value}px`,
+    '--target-width': `${targetWidth}px`,
+    '--target-height': `${targetHeight}px`,
   }
 })
 
@@ -58,7 +43,9 @@ const cardLink = computed(() => {
 
 <template>
   <div
-    :class="{ 'lg:border-r-[0.5px]': index !== 2 }"
+    :class="{
+      'lg:border-r-[0.5px]': index !== 2,
+    }"
     class="relative grow border-b-[0.5px] border-webconf-gray/50"
   >
     <!-- 時間標記 (桌面版) -->
@@ -69,7 +56,6 @@ const cardLink = computed(() => {
       {{ time }}
     </div>
 
-    <!-- 議程卡片 -->
     <NuxtLink
       ref="cardRef"
       class="group relative block h-full bg-black transition-colors duration-300 lg:overflow-visible"
@@ -79,15 +65,13 @@ const cardLink = computed(() => {
       :to="cardLink"
       @click="setToggleModal(true)"
     >
-      <!-- 縮放特效方塊 -->
       <div
         v-if="!isSpecialCard"
         class="pointer-events-none absolute left-0 top-0 z-10 size-5 bg-webconf-blue mix-blend-screen transition-all duration-300 ease-out lg:block lg:size-7 lg:group-hover:h-[var(--target-height)] lg:group-hover:w-[var(--target-width)]"
-        :style="blockStyle"
+        :style="squareStyle"
       ></div>
 
       <div class="h-full px-5 py-8 lg:px-10 xl:min-h-[285px]">
-        <!-- 議程簡介 -->
         <div
           v-if="!isSpecialCard"
           class="relative flex h-full flex-col gap-4"
@@ -112,11 +96,17 @@ const cardLink = computed(() => {
           <div class="z-10 flex items-end justify-between">
             <div class="flex items-end gap-3">
               <!-- 講者頭像 -->
-              <div class="flex gap-2">
+              <div class="flex shrink-0 gap-2">
                 <div
-                  v-for="speaker in data.speakerInfo"
+                  v-for="(speaker, idx) in data.speakerInfo"
                   :key="speaker.name"
                   class="relative"
+                  :style="{
+                    transform:
+                      data.speakerInfo?.length && data.speakerInfo.length > 2
+                        ? `translateX(${-50 * idx}%)`
+                        : undefined,
+                  }"
                 >
                   <NuxtImg
                     :src="speaker.avatarUrl"
@@ -130,7 +120,11 @@ const cardLink = computed(() => {
 
               <!-- 講者名稱 -->
               <div
-                class="flex flex-col flex-wrap items-center gap-1 lg:flex-row lg:gap-2"
+                class="flex min-w-[50%] flex-col flex-wrap items-center gap-1 lg:flex-row lg:gap-[6px]"
+                :class="{
+                  'ml-[-43px]':
+                    data.speakerInfo?.length && data.speakerInfo.length > 2,
+                }"
               >
                 <template
                   v-for="(speaker, idx) in data.speakerInfo"
@@ -162,7 +156,7 @@ const cardLink = computed(() => {
           </div>
         </div>
 
-        <!-- 特殊卡片 (同步聯播/TBD) -->
+        <!-- 同步聯播 / TBD -->
         <div
           v-else
           class="flex h-full items-center justify-between"
