@@ -93,7 +93,7 @@ const cardLink = computed(() => {
             </li>
           </ul>
 
-          <div class="z-10 flex items-end justify-between">
+          <div class="flex items-end justify-between lg:z-10">
             <div class="flex items-end gap-3">
               <!-- 講者頭像 -->
               <div class="flex shrink-0 gap-2">
