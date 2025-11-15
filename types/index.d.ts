@@ -27,4 +27,5 @@ export interface AgendaItem {
   startTime: string
   endTime: string
   location: string
+  space?: 1 | 2 | 3
 }
