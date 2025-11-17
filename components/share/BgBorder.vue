@@ -16,7 +16,12 @@ const breakpoints = useBreakpoints({
 const isDesktop = breakpoints.greaterOrEqual('lg')
 
 const isInSpeakerDetailPage = computed(() => {
-  return route.path.startsWith('/agenda/') && route.path !== '/agenda'
+  const isAgendaDetail
+    = route.path.startsWith('/agenda/') && route.path !== '/agenda'
+  const isSpeakerDetail
+    = route.path.startsWith('/speakers/') && route.path !== '/speakers'
+
+  return isAgendaDetail || isSpeakerDetail
 })
 
 const { isMenuOpen } = useGlobalState()
