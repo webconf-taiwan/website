@@ -170,7 +170,7 @@ watch(isMenuOpen, (newValue) => {
             leave-to-class="opacity-0"
           >
             <div
-              v-if="isMenuOpen"
+              v-show="isMenuOpen"
               class="absolute inset-0 h-full w-[100dvw] bg-black/80"
               @click="isMenuOpen = false"
             ></div>
