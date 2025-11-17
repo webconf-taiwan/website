@@ -66,6 +66,7 @@ export const sitemap = {
 
 // SchemaOrg Event JSON-LD Data
 export const eventBasic = {
+  '@id': 'https://webconf.tw/#main-event',
   '@type': 'Event',
   'name': site.name,
   'description': site.description,
@@ -80,6 +81,7 @@ export const eventBasic = {
 // keynote speaker
 export const eventPerformers = [
   {
+    '@id': 'https://webconf.tw/#person/1',
     '@type': 'Person',
     'name': '李昆謀',
     'url': 'https://webconf.tw/speakers/1',
@@ -97,6 +99,7 @@ export const eventPerformers = [
     ],
   },
   {
+    '@id': 'https://webconf.tw/#person/2',
     '@type': 'Person',
     'name': 'Will 保哥',
     'url': 'https://webconf.tw/speakers/2',
@@ -114,6 +117,7 @@ export const eventPerformers = [
     ],
   },
   {
+    '@id': 'https://webconf.tw/#person/17',
     '@type': 'Person',
     'name': 'Huli',
     'url': 'https://webconf.tw/speakers/17',
@@ -129,6 +133,7 @@ export const eventPerformers = [
     ],
   },
   {
+    '@id': 'https://webconf.tw/#person/18',
     '@type': 'Person',
     'name': '游舒帆',
     'url': 'https://webconf.tw/speakers/18',
@@ -145,6 +150,7 @@ export const eventPerformers = [
     ],
   },
   {
+    '@id': 'https://webconf.tw/#person/42',
     '@type': 'Person',
     'name': '張文鈿 ihower',
     'url': 'https://webconf.tw/speakers/42',
@@ -164,6 +170,7 @@ export const eventPerformers = [
 ]
 
 export const eventLocation = {
+  '@id': 'https://webconf.tw/#location',
   '@type': 'Place',
   'name': '瓶蓋工廠台北製造所',
   'address': {
@@ -177,6 +184,7 @@ export const eventLocation = {
 }
 
 export const eventOrganizer = {
+  '@id': 'https://webconf.tw/#organization',
   '@type': 'Organization',
   'name': 'WebConf Taiwan',
   'url': site.url,

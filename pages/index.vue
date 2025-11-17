@@ -8,12 +8,15 @@ import {
 } from '~/config/seo.config'
 
 useSchemaOrg([
+  eventOrganizer,
+  eventLocation,
+  ...eventPerformers,
   {
     ...eventBasic,
-    location: eventLocation,
-    organizer: eventOrganizer,
+    location: { '@id': 'https://webconf.tw/#location' },
+    organizer: { '@id': 'https://webconf.tw/#organization' },
     offers: eventOffers,
-    performer: eventPerformers,
+    performer: eventPerformers.map(p => ({ '@id': p['@id'] })),
   },
 ])
 </script>

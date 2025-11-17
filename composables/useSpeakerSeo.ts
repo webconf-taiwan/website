@@ -1,5 +1,5 @@
 import type { ContentCollectionItem } from '@nuxt/content'
-import { site } from '~/config/seo.config'
+import { eventLocation, eventOrganizer, site } from '~/config/seo.config'
 import { BACK_LINKS } from '~/constants/agenda'
 
 export function useSpeakerSeo(
@@ -59,33 +59,70 @@ export function useSpeakerSeo(
     keywords,
   }
 
-  const schemaOrg = speaker.map((s) => {
+  const speakersInfo = speaker.map((s) => {
     const socialsTags = ['fb', 'x', 'other_link', 'ig', 'threads', 'youtube', 'linkedin']
-    const socialsLinks = []
 
-    for (const tag of socialsTags) {
-      if (s.meta?.[tag]) {
-        socialsLinks.push(s.meta?.[tag])
-      }
-    }
+    const socialsLinks = socialsTags
+      .map(tag => s.meta?.[tag])
+      .filter(link => typeof link === 'string' && link.length > 0) as string[]
 
     return {
+      '@id': `https://webconf.tw/#person/${s.meta.speakerId}`,
       '@type': 'Person',
-      'name': s.meta.name,
+      'name': String(s.meta.name),
       'url': `https://webconf.tw/speakers/${s.meta.speakerId}`,
       'jobTitle': s.meta.job_title,
       'worksFor': {
         '@type': 'Organization',
         'name': s.meta.company,
       },
-      'description': s.meta?.speakerInfo || site.description,
+      'description': typeof s.meta?.speakerInfo === 'string' ? s.meta.speakerInfo : site.description,
       'image': `https://webconf.tw${s.meta.image}`,
       'sameAs': socialsLinks,
     }
   })
 
+  if (type === 'agenda') {
+    const date = meta.date
+    const [startTime, endTime] = (meta.time as string).split('~')
+    const agendaEventSchema = {
+      '@id': `https://webconf.tw/#event/${speakerIdsFormat}#event`,
+      '@type': 'Event',
+      'name': title,
+      description,
+      'startDate': `${date}T${startTime}:00+08:00`,
+      'endDate': `${date}T${endTime}:00+08:00`,
+      'eventStatus': 'https://schema.org/EventScheduled',
+      'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+      'inLanguage': 'zh-TW',
+      'location': {
+        '@id': 'https://webconf.tw/#location',
+      },
+      'organizer': {
+        '@id': 'https://webconf.tw/#organization',
+      },
+      'performer': speaker.length > 1
+        ? speaker.map(s => ({
+            '@id': `https://webconf.tw/#person/${s.meta.speakerId}`,
+          }))
+        : {
+            '@id': `https://webconf.tw/#person/${speakerIdsFormat}`,
+          },
+      'url': ogUrl,
+      'superEvent': {
+        '@type': 'Event',
+        '@id': 'https://webconf.tw/#main-event',
+        'name': 'WebConf Taiwan 2025',
+        'url': 'https://webconf.tw/',
+      },
+    }
+    useSchemaOrg([...speakersInfo, eventOrganizer, eventLocation, agendaEventSchema])
+  }
+  else {
+    useSchemaOrg(speakersInfo)
+  }
+
   useSeoMeta(seoData)
-  useSchemaOrg(schemaOrg)
 
   return seoData
 }
