@@ -200,13 +200,13 @@ watch(isMenuOpen, (newValue) => {
             class="hidden grow text-center text-h4-24 lg:grid lg:grid-cols-3"
           >
             <h3 class="col-span-1">
-              A2 棟
-            </h3>
-            <h3 class="col-span-1">
               M 棟
             </h3>
             <h3 class="col-span-1">
               F 棟
+            </h3>
+            <h3 class="col-span-1">
+              A2 棟
             </h3>
           </div>
         </div>

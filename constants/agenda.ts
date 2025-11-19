@@ -17,26 +17,59 @@ export const AGENDA_LIST: AgendaItem[] = [
     day: '12',
     startTime: '09:10',
     endTime: '09:55',
-    location: 'A2 棟',
-    space: 3,
-  },
-  {
-    title: '同步聯播',
-    day: '12',
-    startTime: '09:10',
-    endTime: '09:55',
     location: 'M 棟',
-    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
   },
   {
-    title: '同步聯播',
+    title: 'B2B 服務的 AI Agent 產品設計原則',
+    speakerInfo: [
+      {
+        name: '李昆謀',
+        avatarUrl: '/images/speakers/1_李昆謀.webp',
+        JobTitle: '91APP / 產品長',
+        speakerId: '1',
+        order: 7,
+      },
+    ],
+    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
     day: '12',
     startTime: '09:10',
     endTime: '09:55',
     location: 'F 棟',
+    isCoStream: true,
+  },
+  {
+    title: 'B2B 服務的 AI Agent 產品設計原則',
+    speakerInfo: [
+      {
+        name: '李昆謀',
+        avatarUrl: '/images/speakers/1_李昆謀.webp',
+        JobTitle: '91APP / 產品長',
+        speakerId: '1',
+        order: 7,
+      },
+    ],
     tags: ['AI', '產品思維', '產業應用', '團隊管理'],
+    day: '12',
+    startTime: '09:10',
+    endTime: '09:55',
+    location: 'A2 棟',
+    isCoStream: true,
   },
   // 12/12 10:05 - 10:50
+  {
+    title: 'TBD',
+    day: '12',
+    startTime: '10:05',
+    endTime: '10:50',
+    location: 'M 棟',
+  },
+  {
+    title: 'TBD',
+    day: '12',
+    startTime: '10:05',
+    endTime: '10:50',
+    location: 'F 棟',
+  },
   {
     title: 'AI 時代下， Product Sense 就是你的秘密武器',
     speakerInfo: [
@@ -61,38 +94,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '10:50',
     location: 'A2 棟',
   },
-  {
-    title: 'TBD',
-    day: '12',
-    startTime: '10:05',
-    endTime: '10:50',
-    location: 'M 棟',
-  },
-  {
-    title: 'TBD',
-    day: '12',
-    startTime: '10:05',
-    endTime: '10:50',
-    location: 'F 棟',
-  },
   // 12/12 11:00 - 11:45
-  {
-    title: 'AI時代下， 如何運用數據幫助產品發揮影響力',
-    speakerInfo: [
-      {
-        name: '姜乃文',
-        avatarUrl: '/images/speakers/5_姜乃文.webp',
-        JobTitle: '天下雜誌集團 / 主任分析師',
-        speakerId: '5',
-        order: 26,
-      },
-    ],
-    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
-    day: '12',
-    startTime: '11:00',
-    endTime: '11:45',
-    location: 'A2 棟',
-  },
   {
     title: 'AI 只懂 React？Vue.js 也能 Vibe Coding！',
     speakerInfo: [
@@ -127,24 +129,24 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '11:45',
     location: 'F 棟',
   },
-  // 12/12 11:55 - 12:40
   {
-    title: '產品 OKR 的訂立與 Roadmap 展開',
+    title: 'AI時代下， 如何運用數據幫助產品發揮影響力',
     speakerInfo: [
       {
-        name: '曾友志',
-        avatarUrl: '/images/speakers/6_曾友志.webp',
-        JobTitle: '下午先生有限公司 / 資深產品顧問',
-        speakerId: '6',
-        order: 25,
+        name: '姜乃文',
+        avatarUrl: '/images/speakers/5_姜乃文.webp',
+        JobTitle: '天下雜誌集團 / 主任分析師',
+        speakerId: '5',
+        order: 26,
       },
     ],
-    tags: ['產品思維', '團隊管理'],
+    tags: ['AI', '產品思維', '產業應用', '團隊管理'],
     day: '12',
-    startTime: '11:55',
-    endTime: '12:40',
+    startTime: '11:00',
+    endTime: '11:45',
     location: 'A2 棟',
   },
+  // 12/12 11:55 - 12:40
   {
     title: '零基礎打造 400 萬用戶，我們犯了哪些錯誤',
     speakerInfo: [
@@ -169,7 +171,59 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '12:40',
     location: 'F 棟',
   },
+  {
+    title: '產品 OKR 的訂立與 Roadmap 展開',
+    speakerInfo: [
+      {
+        name: '曾友志',
+        avatarUrl: '/images/speakers/6_曾友志.webp',
+        JobTitle: '下午先生有限公司 / 資深產品顧問',
+        speakerId: '6',
+        order: 25,
+      },
+    ],
+    tags: ['產品思維', '團隊管理'],
+    day: '12',
+    startTime: '11:55',
+    endTime: '12:40',
+    location: 'A2 棟',
+  },
   // 12/12 13:30 - 14:15
+  {
+    title: '深入淺出 Playwright Agent 代理人模式',
+    speakerInfo: [
+      {
+        name: '保哥 Will',
+        avatarUrl: '/images/speakers/2_Will_保哥.webp',
+        JobTitle: '多奇數位創意 / 技術總監',
+        speakerId: '2',
+        order: 1,
+      },
+    ],
+    tags: ['Frontend', 'AI'],
+    day: '12',
+    startTime: '13:30',
+    endTime: '14:15',
+    location: 'M 棟',
+  },
+  {
+    title: '深入淺出 Playwright Agent 代理人模式',
+    speakerInfo: [
+      {
+        name: '保哥 Will',
+        avatarUrl: '/images/speakers/2_Will_保哥.webp',
+        JobTitle: '多奇數位創意 / 技術總監',
+        speakerId: '2',
+        order: 1,
+      },
+    ],
+    tags: ['Frontend', 'AI'],
+    day: '12',
+    startTime: '13:30',
+    endTime: '14:15',
+    location: 'F 棟',
+    isCoStream: true,
+  },
   {
     title: '當 Product Mindset 走出產品設計：跨界的設計影響力',
     speakerInfo: [
@@ -187,50 +241,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '14:15',
     location: 'A2 棟',
   },
-  {
-    title: '深入淺出 Playwright Agent 代理人模式',
-    speakerInfo: [
-      {
-        name: '保哥 Will',
-        avatarUrl: '/images/speakers/2_Will_保哥.webp',
-        JobTitle: '多奇數位創意 / 技術總監',
-        speakerId: '2',
-        order: 1,
-      },
-    ],
-    tags: ['Frontend', 'AI'],
-    day: '12',
-    startTime: '13:30',
-    endTime: '14:15',
-    location: 'M 棟',
-    space: 2,
-  },
-  {
-    title: '同步聯播',
-    day: '12',
-    startTime: '13:30',
-    endTime: '14:15',
-    location: 'F 棟',
-    tags: ['Frontend', 'AI'],
-  },
   // 12/12 14:25 - 15:10
-  {
-    title: '從研究到上線：全流程設計與 AI 協作專案實戰',
-    speakerInfo: [
-      {
-        name: 'Niki Liu',
-        avatarUrl: '/images/speakers/8_Niki_Liu.webp',
-        JobTitle: '新加坡商鈦坦科技 / Senior Product Designer',
-        speakerId: '8',
-        order: 29,
-      },
-    ],
-    tags: ['AI', '產品思維', '設計實務'],
-    day: '12',
-    startTime: '14:25',
-    endTime: '15:10',
-    location: 'A2 棟',
-  },
   {
     title: 'TBD',
     day: '12',
@@ -255,31 +266,24 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '15:10',
     location: 'F 棟',
   },
-  // 12/12 15:20 - 16:05
   {
-    title: '從設計到共識：悠識如何在每一次新專案裡，用溝通建立信任關係',
+    title: '從研究到上線：全流程設計與 AI 協作專案實戰',
     speakerInfo: [
       {
-        name: '林星妤',
-        avatarUrl: '/images/speakers/33_林星妤.webp',
-        JobTitle: '悠識數位 / Senior Experience Designer',
-        speakerId: '33',
-        order: 31,
-      },
-      {
-        name: '黃明硯',
-        avatarUrl: '/images/speakers/34_黃明硯.webp',
-        JobTitle: '悠識數位 / Experience Designer',
-        speakerId: '34',
-        order: 32,
+        name: 'Niki Liu',
+        avatarUrl: '/images/speakers/8_Niki_Liu.webp',
+        JobTitle: '新加坡商鈦坦科技 / Senior Product Designer',
+        speakerId: '8',
+        order: 29,
       },
     ],
-    tags: ['產品思維', '設計實務'],
+    tags: ['AI', '產品思維', '設計實務'],
     day: '12',
-    startTime: '15:20',
-    endTime: '16:05',
+    startTime: '14:25',
+    endTime: '15:10',
     location: 'A2 棟',
   },
+  // 12/12 15:20 - 16:05
   {
     title: '從使用者到工程師：AI 在企業怎麼落地？',
     speakerInfo: [
@@ -314,24 +318,31 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '16:05',
     location: 'F 棟',
   },
-  // 12/12 16:15 - 17:00
   {
-    title: '敏捷環境中的產品經理生存之道：以產品思維實現價值與成果',
+    title: '從設計到共識：悠識如何在每一次新專案裡，用溝通建立信任關係',
     speakerInfo: [
       {
-        name: 'Jenson Lee',
-        avatarUrl: '/images/speakers/9_Jenson_Lee.webp',
-        JobTitle: '台灣敏捷協會 / 理事長',
-        speakerId: '9',
-        order: 30,
+        name: '林星妤',
+        avatarUrl: '/images/speakers/33_林星妤.webp',
+        JobTitle: '悠識數位 / Senior Experience Designer',
+        speakerId: '33',
+        order: 31,
+      },
+      {
+        name: '黃明硯',
+        avatarUrl: '/images/speakers/34_黃明硯.webp',
+        JobTitle: '悠識數位 / Experience Designer',
+        speakerId: '34',
+        order: 32,
       },
     ],
-    tags: ['Agile', '產品思維'],
+    tags: ['產品思維', '設計實務'],
     day: '12',
-    startTime: '16:15',
-    endTime: '17:00',
+    startTime: '15:20',
+    endTime: '16:05',
     location: 'A2 棟',
   },
+  // 12/12 16:15 - 17:00
   {
     title: '對微前端的美好想像',
     speakerInfo: [
@@ -366,7 +377,59 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '17:00',
     location: 'F 棟',
   },
+  {
+    title: '敏捷環境中的產品經理生存之道：以產品思維實現價值與成果',
+    speakerInfo: [
+      {
+        name: 'Jenson Lee',
+        avatarUrl: '/images/speakers/9_Jenson_Lee.webp',
+        JobTitle: '台灣敏捷協會 / 理事長',
+        speakerId: '9',
+        order: 30,
+      },
+    ],
+    tags: ['Agile', '產品思維'],
+    day: '12',
+    startTime: '16:15',
+    endTime: '17:00',
+    location: 'A2 棟',
+  },
   // 12/13 09:00 - 09:45
+  {
+    title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
+    speakerInfo: [
+      {
+        name: 'Huli',
+        avatarUrl: '/images/speakers/17_Huli.webp',
+        JobTitle: '技術部落格 Huli\'s blog / 站長',
+        speakerId: '17',
+        order: 4,
+      },
+    ],
+    tags: ['Frontend', 'Backend', 'Security'],
+    day: '13',
+    startTime: '09:00',
+    endTime: '09:45',
+    location: 'M 棟',
+  },
+  {
+    title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
+    speakerInfo: [
+      {
+        name: 'Huli',
+        avatarUrl: '/images/speakers/17_Huli.webp',
+        JobTitle: '技術部落格 Huli\'s blog / 站長',
+        speakerId: '17',
+        order: 4,
+      },
+    ],
+    tags: ['Frontend', 'Backend', 'Security'],
+    day: '13',
+    startTime: '09:00',
+    endTime: '09:45',
+    location: 'F 棟',
+    isCoStream: true,
+  },
   {
     title: '掌握田野中的「人」：真實場域研究的人際溝通與信任建立',
     speakerInfo: [
@@ -384,50 +447,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '09:45',
     location: 'A2 棟',
   },
-  {
-    title: '從冷知識到漏洞：你不懂的 Web，駭客懂',
-    speakerInfo: [
-      {
-        name: 'Huli',
-        avatarUrl: '/images/speakers/17_Huli.webp',
-        JobTitle: '技術部落格 Huli\'s blog / 站長',
-        speakerId: '17',
-        order: 4,
-      },
-    ],
-    tags: ['Frontend', 'Backend', 'Security'],
-    day: '13',
-    startTime: '09:00',
-    endTime: '09:45',
-    location: 'M 棟',
-    space: 2,
-  },
-  {
-    title: '同步聯播',
-    tags: ['Frontend', 'Backend', 'Security'],
-    day: '13',
-    startTime: '09:00',
-    endTime: '09:45',
-    location: 'F 棟',
-  },
   // 12/13 10:00 - 10:45
-  {
-    title: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
-    speakerInfo: [
-      {
-        name: 'Peter Su',
-        avatarUrl: '/images/speakers/20_Peter_Su.webp',
-        JobTitle: '漸強實驗室 / Product Lead',
-        speakerId: '20',
-        order: 10,
-      },
-    ],
-    tags: ['Agile', 'AI', '產品思維', '團隊管理'],
-    day: '13',
-    startTime: '10:00',
-    endTime: '10:45',
-    location: 'A2 棟',
-  },
   {
     title: '讓 CSS 動畫提升你的網站使用者體驗',
     speakerInfo: [
@@ -462,24 +482,24 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '10:45',
     location: 'F 棟',
   },
-  // 12/13 10:55 - 11:40
   {
-    title: '以打詐為例，服務設計如何讓公共數位服務有感',
+    title: '別再瞎忙了！讓 AI 幫產品團隊找到對的問題',
     speakerInfo: [
       {
-        name: '卓致遠',
-        avatarUrl: '/images/speakers/21_卓致遠.webp',
-        JobTitle: '致遠體驗設計 / 體驗總監',
-        speakerId: '21',
-        order: 20,
+        name: 'Peter Su',
+        avatarUrl: '/images/speakers/20_Peter_Su.webp',
+        JobTitle: '漸強實驗室 / Product Lead',
+        speakerId: '20',
+        order: 10,
       },
     ],
-    tags: ['產品思維', '設計實務'],
+    tags: ['Agile', 'AI', '產品思維', '團隊管理'],
     day: '13',
-    startTime: '10:55',
-    endTime: '11:40',
+    startTime: '10:00',
+    endTime: '10:45',
     location: 'A2 棟',
   },
+  // 12/13 10:55 - 11:40
   {
     title: '鍵盤救國：解決社會性問題的工程師',
     speakerInfo: [
@@ -514,24 +534,24 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '11:40',
     location: 'F 棟',
   },
-  // 12/13 11:50 - 12:35
   {
-    title: '服務設計師的傳說：90% 的時間在讓設計發生',
+    title: '以打詐為例，服務設計如何讓公共數位服務有感',
     speakerInfo: [
       {
-        name: '郭心喻',
-        avatarUrl: '/images/speakers/22_郭心喻.webp',
-        JobTitle: 'Government of Nova Scotia 加拿大新斯科舍省政府 / Senior Service Designer',
-        speakerId: '22',
-        order: 14,
+        name: '卓致遠',
+        avatarUrl: '/images/speakers/21_卓致遠.webp',
+        JobTitle: '致遠體驗設計 / 體驗總監',
+        speakerId: '21',
+        order: 20,
       },
     ],
-    tags: ['產品思維', '產業應用', '軟體設計', '設計實務'],
+    tags: ['產品思維', '設計實務'],
     day: '13',
-    startTime: '11:50',
-    endTime: '12:35',
+    startTime: '10:55',
+    endTime: '11:40',
     location: 'A2 棟',
   },
+  // 12/13 11:50 - 12:35
   {
     title: 'GenAI 時代下的測試三板斧',
     speakerInfo: [
@@ -566,7 +586,59 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '12:35',
     location: 'F 棟',
   },
+  {
+    title: '服務設計師的傳說：90% 的時間在讓設計發生',
+    speakerInfo: [
+      {
+        name: '郭心喻',
+        avatarUrl: '/images/speakers/22_郭心喻.webp',
+        JobTitle: 'Government of Nova Scotia 加拿大新斯科舍省政府 / Senior Service Designer',
+        speakerId: '22',
+        order: 14,
+      },
+    ],
+    tags: ['產品思維', '產業應用', '軟體設計', '設計實務'],
+    day: '13',
+    startTime: '11:50',
+    endTime: '12:35',
+    location: 'A2 棟',
+  },
   // 12/13 13:30 - 14:15
+  {
+    title: '實戰 AI Agents 應用開發: 從 Web 後端到前端的整合',
+    speakerInfo: [
+      {
+        name: '張文鈿 ihower',
+        avatarUrl: '/images/speakers/42_張文鈿_ihower.webp',
+        JobTitle: '愛好資訊科技有限公司 / 負責人',
+        speakerId: '42',
+        order: 37,
+      },
+    ],
+    tags: ['AI'],
+    day: '13',
+    startTime: '13:30',
+    endTime: '14:15',
+    location: 'M 棟',
+
+  },
+  {
+    title: '實戰 AI Agents 應用開發: 從 Web 後端到前端的整合',
+    speakerInfo: [
+      {
+        name: '張文鈿 ihower',
+        avatarUrl: '/images/speakers/42_張文鈿_ihower.webp',
+        JobTitle: '愛好資訊科技有限公司 / 負責人',
+        speakerId: '42',
+        order: 37,
+      },
+    ],
+    tags: ['AI'],
+    day: '13',
+    startTime: '13:30',
+    endTime: '14:15',
+    location: 'F 棟',
+  },
   {
     title: '培養十倍速 PM：從工具到習慣',
     speakerInfo: [
@@ -584,50 +656,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '14:15',
     location: 'A2 棟',
   },
-  {
-    title: '實戰 AI Agents 應用開發: 從 Web 後端到前端的整合',
-    speakerInfo: [
-      {
-        name: '張文鈿 ihower',
-        avatarUrl: '/images/speakers/42_張文鈿_ihower.webp',
-        JobTitle: '愛好資訊科技有限公司 / 負責人',
-        speakerId: '42',
-        order: 37,
-      },
-    ],
-    tags: ['AI'],
-    day: '13',
-    startTime: '13:30',
-    endTime: '14:15',
-    location: 'M 棟',
-    space: 2,
-  },
-  {
-    title: '同步聯播',
-    day: '13',
-    startTime: '13:30',
-    endTime: '14:15',
-    location: 'F 棟',
-    tags: ['AI'],
-  },
   // 12/13 14:25 - 15:10
-  {
-    title: '轉職 PM 之後，我獨自升級：為產品開發世界獻上美好洞察',
-    speakerInfo: [
-      {
-        name: 'Kaba Su',
-        avatarUrl: '/images/speakers/24_Kaba_Su.webp',
-        JobTitle: '台灣互動設計協會 IxDA Taiwan / 前理事',
-        speakerId: '24',
-        order: 17,
-      },
-    ],
-    tags: ['AI', '產品思維', '團隊管理', '設計實務'],
-    day: '13',
-    startTime: '14:25',
-    endTime: '15:10',
-    location: 'A2 棟',
-  },
   {
     title: '程式碼與尿布：媽媽工程師的生存指南',
     speakerInfo: [
@@ -662,24 +691,9 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '15:10',
     location: 'F 棟',
   },
-  // 12/13 15:20 - 16:05
   {
-    title: '座談｜從設計到產品管理：AI 浪潮下的角色轉變與價值重構',
+    title: '轉職 PM 之後，我獨自升級：為產品開發世界獻上美好洞察',
     speakerInfo: [
-      {
-        name: '蔡明哲',
-        avatarUrl: '/images/speakers/25_Richard_Tsai_蔡明哲.webp',
-        JobTitle: 'UX Coach 暨創辦人',
-        speakerId: '00',
-        order: 15,
-      },
-      {
-        name: '趙柏強',
-        avatarUrl: '/images/speakers/23_趙柏強.webp',
-        JobTitle: 'Growth Companion',
-        speakerId: '23',
-        order: 28,
-      },
       {
         name: 'Kaba Su',
         avatarUrl: '/images/speakers/24_Kaba_Su.webp',
@@ -688,12 +702,13 @@ export const AGENDA_LIST: AgendaItem[] = [
         order: 17,
       },
     ],
-    tags: ['AI', '設計實務', '產品思維', '團隊管理'],
+    tags: ['AI', '產品思維', '團隊管理', '設計實務'],
     day: '13',
-    startTime: '15:20',
-    endTime: '16:05',
+    startTime: '14:25',
+    endTime: '15:10',
     location: 'A2 棟',
   },
+  // 12/13 15:20 - 16:05
   {
     title: '大 AI 時代，工程師的成長之路 - 從 Junior 到 Staff',
     speakerInfo: [
@@ -728,6 +743,37 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '16:05',
     location: 'F 棟',
   },
+  {
+    title: '座談｜從設計到產品管理：AI 浪潮下的角色轉變與價值重構',
+    speakerInfo: [
+      {
+        name: '蔡明哲',
+        avatarUrl: '/images/speakers/25_Richard_Tsai_蔡明哲.webp',
+        JobTitle: 'UX Coach 暨創辦人',
+        speakerId: '00',
+        order: 15,
+      },
+      {
+        name: '趙柏強',
+        avatarUrl: '/images/speakers/23_趙柏強.webp',
+        JobTitle: 'Growth Companion',
+        speakerId: '23',
+        order: 28,
+      },
+      {
+        name: 'Kaba Su',
+        avatarUrl: '/images/speakers/24_Kaba_Su.webp',
+        JobTitle: '台灣互動設計協會 IxDA Taiwan / 前理事',
+        speakerId: '24',
+        order: 17,
+      },
+    ],
+    tags: ['AI', '設計實務', '產品思維', '團隊管理'],
+    day: '13',
+    startTime: '15:20',
+    endTime: '16:05',
+    location: 'A2 棟',
+  },
   // 12/13 16:15 - 17:00
   {
     title: '活在科技工作者最好的年代，用商業思維優化你的人生選擇',
@@ -744,24 +790,44 @@ export const AGENDA_LIST: AgendaItem[] = [
     day: '13',
     startTime: '16:15',
     endTime: '17:00',
-    location: 'A2 棟',
-    space: 3,
-  },
-  {
-    title: '同步聯播',
-    day: '13',
-    startTime: '16:15',
-    endTime: '17:00',
     location: 'M 棟',
-    tags: ['AI', '產品思維', '軟體設計'],
+
   },
   {
-    title: '同步聯播',
+    title: '活在科技工作者最好的年代，用商業思維優化你的人生選擇',
+    speakerInfo: [
+      {
+        name: 'Gipi',
+        avatarUrl: '/images/speakers/18_游舒帆_Gipi.webp',
+        JobTitle: '商業思維學院 / 院長',
+        speakerId: '18',
+        order: 2,
+      },
+    ],
+    tags: ['AI', '產品思維', '軟體設計'],
     day: '13',
     startTime: '16:15',
     endTime: '17:00',
     location: 'F 棟',
+    isCoStream: true,
+  },
+  {
+    title: '活在科技工作者最好的年代，用商業思維優化你的人生選擇',
+    speakerInfo: [
+      {
+        name: 'Gipi',
+        avatarUrl: '/images/speakers/18_游舒帆_Gipi.webp',
+        JobTitle: '商業思維學院 / 院長',
+        speakerId: '18',
+        order: 2,
+      },
+    ],
     tags: ['AI', '產品思維', '軟體設計'],
+    day: '13',
+    startTime: '16:15',
+    endTime: '17:00',
+    location: 'A2 棟',
+    isCoStream: true,
   },
 ]
 
