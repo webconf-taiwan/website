@@ -7,6 +7,17 @@ export function useSpeakerSeo(
   speakerIds: string[] = [],
   type: 'agenda' | 'speakers' = 'agenda',
 ) {
+  // 如果沒有講者數據，提前返回
+  if (!speaker || speaker.length === 0) {
+    return {
+      title: site.title,
+      description: site.description,
+      ogUrl: 'https://webconf.tw/',
+      author: site.name,
+      keywords: '',
+    }
+  }
+
   const firstSpeaker = speaker[0]
   const meta = firstSpeaker?.meta || {}
 
@@ -24,7 +35,9 @@ export function useSpeakerSeo(
   })()
 
   // 描述
-  const description = firstSpeaker?.seo?.description || site.description
+  const description = type === 'speakers'
+    ? (firstSpeaker?.meta?.speakerInfo as string || site.description)
+    : (firstSpeaker?.seo?.description || site.description)
 
   const speakerIdsFormat = speakerIds.join('/')
 
@@ -76,17 +89,30 @@ export function useSpeakerSeo(
         '@type': 'Organization',
         'name': s.meta.company,
       },
+      'image': {
+        '@type': 'ImageObject',
+        '@id': `https://webconf.tw/#image/speaker${s.meta.speakerId}`,
+        'contentUrl': `https://webconf.tw${s.meta.image}`,
+        'url': `https://webconf.tw${s.meta.image}`,
+        'inLanguage': 'zh-TW',
+      },
       'description': typeof s.meta?.speakerInfo === 'string' ? s.meta.speakerInfo : site.description,
-      'image': `https://webconf.tw${s.meta.image}`,
       'sameAs': socialsLinks,
     }
   })
 
   if (type === 'agenda') {
     const date = meta.date
-    const [startTime, endTime] = (meta.time as string).split('~')
+    const timeString = meta.time as string
+
+    // 確保 time 存在才進行 split
+    if (!timeString) {
+      return seoData
+    }
+
+    const [startTime, endTime] = timeString.split('~')
     const agendaEventSchema = {
-      '@id': `https://webconf.tw/#event/${speakerIdsFormat}#event`,
+      '@id': `https://webconf.tw/#event/${speakerIdsFormat}`,
       '@type': 'Event',
       'name': title,
       description,

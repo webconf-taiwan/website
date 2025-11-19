@@ -16,7 +16,6 @@ useSchemaOrg([
     location: { '@id': 'https://webconf.tw/#location' },
     organizer: { '@id': 'https://webconf.tw/#organization' },
     offers: eventOffers,
-    performer: eventPerformers.map(p => ({ '@id': p['@id'] })),
   },
 ])
 </script>
