@@ -50,7 +50,7 @@ function handleClose() {
 <template>
   <AgendaSpeakersDetailsDialog
     v-if="currentSpeaker && currentSpeaker.length > 0"
-    :speaker="currentSpeaker"
+    :speaker="currentSpeaker ?? []"
     :speaker-ids="route.params.speakerId"
     :is-animation="true"
     @close="handleClose"

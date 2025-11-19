@@ -524,7 +524,7 @@ const CO_ORGANIZERS = [
         <h2
           class="inline-block text-h4-24 text-webconf-gray lg:text-[60px] lg:leading-[1.2] lg:tracking-[0em] lg:[writing-mode:vertical-rl]"
         >
-          協辦單位
+          品牌夥伴
         </h2>
       </div>
 
