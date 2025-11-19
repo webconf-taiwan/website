@@ -49,7 +49,7 @@ function handleClose() {
 
 <template>
   <AgendaSpeakersDetailsDialog
-    v-show="currentSpeaker && currentSpeaker.length > 0"
+    v-if="currentSpeaker && currentSpeaker.length > 0"
     :speaker="currentSpeaker ?? []"
     :speaker-ids="route.params.speakerId"
     :is-animation="true"

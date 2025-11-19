@@ -36,7 +36,7 @@ watch(
 
 <template>
   <AgendaSpeakersDetailsDialog
-    v-show="currentSpeaker && currentSpeaker.length > 0"
+    v-if="currentSpeaker && currentSpeaker.length > 0"
     :speaker-ids="route.params.speakerId"
     :speaker="currentSpeaker ?? []"
     type="speakers"
