@@ -76,8 +76,8 @@ const cardLink = computed(() => {
           v-if="!isSpecialCard"
           class="relative flex h-full flex-col"
         >
-          <div class="grow">
-            <div class="overflow-hidden">
+          <div class="min-w-0 grow">
+            <div class="relative">
               <span
                 v-if="data.isCoStream"
                 class="float-left mr-3 shrink-0 bg-webconf-gray px-3 py-[6px] text-center text-body-16 font-semibold leading-none text-webconf-blue"
