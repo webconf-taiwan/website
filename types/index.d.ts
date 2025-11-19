@@ -20,7 +20,7 @@ export interface SpeakerInfo {
 }
 
 export interface AgendaItem {
-  title: string | '同步聯播'
+  title: string
   speakerInfo?: SpeakerInfo[]
   tags?: AgendaTag[]
   day: '12' | '13'
@@ -28,4 +28,5 @@ export interface AgendaItem {
   endTime: string
   location: string
   space?: 1 | 2 | 3
+  isCoStream?: boolean
 }

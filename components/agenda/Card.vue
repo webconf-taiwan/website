@@ -71,29 +71,40 @@ const cardLink = computed(() => {
         :style="squareStyle"
       ></div>
 
-      <div class="h-full px-5 py-8 lg:px-10 xl:min-h-[285px]">
+      <div class="h-full px-5 py-8 lg:px-8 xl:min-h-[285px] xl:px-10">
         <div
           v-if="!isSpecialCard"
-          class="relative flex h-full flex-col gap-4"
+          class="relative flex h-full flex-col"
         >
-          <h2 class="text-h4-24 leading-[1.4]">
-            {{ data.title }}
-          </h2>
+          <div class="min-w-0 grow">
+            <div class="relative">
+              <span
+                v-if="data.isCoStream"
+                class="float-left mr-3 shrink-0 bg-webconf-gray px-3 py-[6px] text-center text-body-16 font-semibold leading-none text-webconf-blue"
+              >
+                聯播
+              </span>
 
-          <ul
-            v-if="data.tags"
-            class="relative flex grow flex-wrap items-start gap-2"
-          >
-            <li
-              v-for="tag in data.tags"
-              :key="`${data.title}-${tag}`"
-              class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
+              <h2 class="-mt-1 text-h4-24 leading-[1.4]">
+                {{ data.title }}
+              </h2>
+            </div>
+
+            <ul
+              v-if="data.tags"
+              class="relative mt-3 flex flex-wrap items-start gap-2 lg:mt-4"
             >
-              {{ tag }}
-            </li>
-          </ul>
+              <li
+                v-for="tag in data.tags"
+                :key="`${data.title}-${tag}`"
+                class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
+              >
+                {{ tag }}
+              </li>
+            </ul>
+          </div>
 
-          <div class="flex items-end justify-between lg:z-10">
+          <div class="mt-6 flex items-end justify-between lg:z-10">
             <div class="flex items-end gap-3">
               <!-- 講者頭像 -->
               <div class="flex shrink-0 gap-2">
