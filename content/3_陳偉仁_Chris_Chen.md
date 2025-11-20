@@ -10,7 +10,7 @@ speakerInfo: "Chris 是拼貼趣的首位產品設計經理，透過無數的面
 description: "AI 讓人人都能快速做出產品，但你的角色會被取代嗎？但真正能創造價值的關鍵在於 Product Sense ——分辨產品、團隊與商業價值的敏銳度。這場演講將帶你從業界案例與實戰經驗出發，理解什麼是 Product Sense、為何它決定你在團隊中的不可取代性，以及如何透過 AI 放大這項能力。若你是設計師、工程師或 PM，想要在 AI 時代展現獨特價值，希望這場分享將給你關鍵啟發。"
 email: chris.chen@cardinalblue.com
 image: /images/speakers/3_陳偉仁_Chris_Chen.webp
-ogImage: /images/ogImage/3_陳偉仁_Chris_Chen.png
+ogImage: /images/ogImage/3_Chris_Chen.png
 linkedin: https://www.linkedin.com/in/chris-chen-48871056/
 day: day1
 date: 2025-12-12
