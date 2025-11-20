@@ -10,6 +10,7 @@ speakerInfo: "兩個小孩的前端工程師。從台灣到矽谷累積的十多
 description: "媽媽 × 工程師：兩個身分，一個我。每天都在自我懷疑：工作做不好，育兒也力不從心，還有一堆做不完的家事。我會坦承分享內心拉扯、選擇與取捨，以及如何透過認識自己找到屬於我的平衡點。"
 email: hannahpun@gmail.com
 image: /images/speakers/28_hannah.webp
+ogImage: /images/ogImage/28_hannah.png
 fb: https://www.facebook.com/hannapun/
 other_link: https://medium.com/hannah-lin
 day: day2

@@ -10,6 +10,7 @@ speakerInfo: "擔任產品經理 10 多年。 頭五年在新創公司，經歷 
 description: "當 AI 正大幅加速產品交付（Product Delivery），真正的瓶頸其實出現在 Product Discovery。團隊的挑戰已經不只是交付速度，而是如何找到對的問題並快速驗證。這場演講將具體分享 AI 如何介入 Discovery 的每個環節：如何用 AI 從業務客服回饋、市場調查、快速整理需求洞察；如何生成多種產品假設並排序優先級；以及如何透過 vibe coding prototype 快速完成驗證。會提供一套實用框架與真實案例，幫助產品團隊在 AI 時代建立持續的 feedback loop，不只做得更快，更能持續做對事。"
 email: petitpj@gmail.com
 image: /images/speakers/20_Peter_Su.webp
+ogImage: /images/ogImage/20_Peter_Su.png
 other_link: https://medium.com/@petersuppi
 day: day2
 date: 2025-12-13

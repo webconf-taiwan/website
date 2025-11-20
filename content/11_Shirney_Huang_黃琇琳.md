@@ -10,6 +10,7 @@ speakerInfo: "黃琇琳（Shirney Huang）現任 Aiworks 執行長。Aiworks 前
 description: "AI 工具正在悄悄改變公司裡的日常工作，越來越多使用者開始自己嘗試小規模的 AI 自動化應用。這些看似零散的嘗試，其實是企業推動導入的重要起點，也帶動了工程師角色的調整與人才分工的轉變。本場將分享我們在台灣企業看到的案例：從使用者的實驗，到需要工程師介入的時刻。透過這些觀察，我們想一起聊聊，企業裡不同角色如何在 AI 的浪潮中找到彼此的位置，並逐步展開個人職能的升級之路。"
 email: shirney@appworks.tw / ellie@aiworks.tw
 image: /images/speakers/11_Shirney_Huang 黃琇琳.webp
+ogImage: /images/ogImage/11_Shirney_Huang 黃琇琳.png
 fb: https://www.facebook.com/hsiulin.huang.5?locale=zh_TW
 other_link: https://aiworks.tw/
 day: day1

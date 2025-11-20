@@ -10,6 +10,7 @@ speakerInfo: "我是 Kun，ThisWeb 請網這邊走的創辦人。曾經是非本
 description: "現在 AI 的輔助開發工具越來越強大，但你有沒有想過： 如果不了解 React 的運作原理和效能陷阱，AI 產生的程式碼可能會帶來更多隱藏的問題。 想要讓 AI 寫出高品質的程式碼，第一步是先理解手上的工具，掌握它的行為、限制與最佳實踐。 這次的議程不是單純教你用 Hook 或工具，而是帶你真正理解 React 的渲染機制、重複渲染的原因、解法與陷阱，並透過實戰分析，幫你建立一套能診斷與優化效能的完整思維與方法。"
 email: thisweb.tech@gmail.com
 image: /images/speakers/32_ThisWeb (Kun).webp
+ogImage: /images/ogImage/32_ThisWeb (Kun).png
 ig: https://www.instagram.com/this.web
 threads: https://www.threads.com/@this.web
 other_link: https://thisweb.dev/

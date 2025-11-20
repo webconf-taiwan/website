@@ -510,7 +510,7 @@ const CO_ORGANIZERS = [
       />
     </div>
 
-    <!-- 協辦單位區塊 -->
+    <!-- 品牌夥伴區塊 -->
     <div
       class="relative mt-[95px] flex flex-col border-y border-webconf-gray bg-black text-white lg:mt-[141px] lg:flex-row"
     >
@@ -540,7 +540,7 @@ const CO_ORGANIZERS = [
             :src="organizer.logo"
             width="225"
             height="180"
-            :alt="`協辦單位${organizer.name}標誌`"
+            :alt="`品牌夥伴${organizer.name}標誌`"
           />
         </div>
 
