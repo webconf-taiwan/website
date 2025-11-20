@@ -10,6 +10,7 @@ speakerInfo: "擔任教育科技非營利組織「影響力評估設計師」，
 description: "設計部門如何推動專業影響力」為核心，回顧從建立設計基礎、跨職能整合到設計賦能的三個發展階段。內容涵蓋 產品思維（Product Mindset） 在不同情境下的應用、設計與跨部門協作的實務經驗，以及 AI 如何加速設計與研究工作的轉化。講者將透過實際案例，帶出設計師如何在團隊運作、產品策略與組織文化中發揮影響力，並分享在這個過程中淬鍊出的心法與工作觀點。"
 email: shigure0912@gmail.com
 image: /images/speakers/7_周明璇(Zizi Chou，小紫).webp
+ogImage: /images/ogImage/7_周明璇(Zizi Chou，小紫).png
 fb: https://www.facebook.com/shigure0912
 linkedin: https://www.linkedin.com/in/zizichou/
 day: day1

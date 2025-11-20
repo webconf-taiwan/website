@@ -10,6 +10,7 @@ speakerInfo: "一個專注於前端又對 AI 的發展很感興趣的軟體工�
 description: "微前端帶來很多自主性和靈活性，也帶來很多一開始可能看不到的隱形成本，這邊講講我自己的經驗聊一開始用微前端的契機、困難、最後採取了什麼替代方案。"
 email: fetalk.podcast@gmail.com
 image: /images/speakers/12_Eric_Lee.webp
+ogImage: /images/ogImage/12_Eric_Lee.png
 x: https://x.com/fetalkpodcast
 threads: https://www.threads.com/@fetalkpodcast
 ig: https://www.instagram.com/fetalkpodcast/

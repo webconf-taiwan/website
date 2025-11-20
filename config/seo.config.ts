@@ -208,6 +208,20 @@ export const eventBasic = {
   }),
 }
 
+export const eventBasicForSuperEvent = {
+  '@id': 'https://webconf.tw/#main-event',
+  '@type': 'Event',
+  'name': site.name,
+  'description': site.description,
+  'inLanguage': 'zh-TW',
+  'image': 'https://webconf.tw/images/seo/ogImage.png',
+  'startDate': '2025-12-12T09:00:00+08:00',
+  'endDate': '2025-12-13T18:00:00+08:00',
+  'eventStatus': 'https://schema.org/EventScheduled',
+  'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
+  'url': site.url,
+}
+
 export const eventLocation = {
   '@id': 'https://webconf.tw/#location',
   '@type': 'Place',

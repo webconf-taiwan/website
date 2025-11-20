@@ -10,6 +10,7 @@ speakerInfo: "在設計領域多年探索學習，後來有機會加入產品管
 description: "那年，我從設計師轉職成產品經理。沒有導師、沒有攻略，只有 bug 與 deadline。這場分享，是關於在現實職場中如何習得心法、解鎖技能，並在每一次「重生」中找回初心與力量。"
 email: kabaism@gmail.com
 image: /images/speakers/24_Kaba_Su.webp
+ogImage: /images/ogImage/24_Kaba_Su.png
 fb: https://www.facebook.com/kabaism
 linkedin: https://www.linkedin.com/in/kabaism/
 day: day2

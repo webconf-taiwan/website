@@ -10,6 +10,7 @@ speakerInfo: "Jenson 擁有二十年以上的跨產業從業經驗，涉足網�
 description: "在實施敏捷開發的團隊裡，產品經理必須在快速迭代的節奏中，持續推動團隊交付真正有價值的成果。本場演講將分享產品經理如何運用產品思維 —— 包含使用者中心思考、假設驅動、成果導向與目標對齊 —— 作為在敏捷環境中的「生存之道」。透過實務經驗與案例，探討產品經理如何在迭代週期中發揮效益，並在 AI 帶來的產品管理流程典範轉移下，持續展現專業及影響力。"
 email: realhere@gmail.com
 image: /images/speakers/9_Jenson_Lee.webp
+ogImage: /images/ogImage/9_Jenson_Lee.png
 fb: https://www.facebook.com/realhere
 ig: https://www.instagram.com/realhere
 day: day1

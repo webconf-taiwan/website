@@ -10,6 +10,7 @@ speakerInfo: "蕭喬尹 (Joey) 是專精於共融設計的 UX 研究顧問。擅
 description: "你曾在走出辦公室、面對真實場域的受訪者時感到緊張，甚至讓團隊陷入一片混亂嗎？本次分享將帶您直擊田野研究前線。我將從資深UX研究員的角度解析如何克服真實場域中的不確定性，快速與受訪者及協作夥伴建立信任的技巧，以及將第一手觀察轉化為有價值的洞察的經驗。這場分享將不僅涵蓋研究方法，更著重於團隊協作與跨角色溝通的實戰經驗，為您的下一個專案做好準備。"
 email: joeyhsiao.uxr@gmail.com
 image: /images/speakers/19_Joey.webp
+ogImage: /images/ogImage/19_Joey.png
 ig: https://www.instagram.com/joeyhsiao.uxr/
 threads: https://www.threads.com/@joeyhsiao.uxr
 day: day2

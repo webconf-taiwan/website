@@ -1,5 +1,5 @@
 import type { ContentCollectionItem } from '@nuxt/content'
-import { eventLocation, eventOrganizer, site } from '~/config/seo.config'
+import { eventBasicForSuperEvent, eventLocation, eventOrganizer, site } from '~/config/seo.config'
 import { BACK_LINKS } from '~/constants/agenda'
 
 export function useSpeakerSeo(
@@ -66,6 +66,10 @@ export function useSpeakerSeo(
   // SEO Meta
   const seoData = {
     title,
+    ogImage: `https://webconf.tw${firstSpeaker.meta.ogImage}`,
+    ogImageAlt: typeof firstSpeaker.meta.name === 'string' ? firstSpeaker.meta.name : site.name,
+    twitterImage: `https://webconf.tw${firstSpeaker.meta.ogImage}`,
+    twitterImageAlt: typeof firstSpeaker.meta.name === 'string' ? firstSpeaker.meta.name : site.name,
     description,
     ogUrl,
     author,
@@ -114,8 +118,9 @@ export function useSpeakerSeo(
     const agendaEventSchema = {
       '@id': `https://webconf.tw/#event/${speakerIdsFormat}`,
       '@type': 'Event',
-      'name': title,
+      'name': firstSpeaker.meta.topic,
       description,
+      'image': `https://webconf.tw${firstSpeaker.meta.ogImage}`,
       'startDate': `${date}T${startTime}:00+08:00`,
       'endDate': `${date}T${endTime}:00+08:00`,
       'eventStatus': 'https://schema.org/EventScheduled',
@@ -136,10 +141,9 @@ export function useSpeakerSeo(
           },
       'url': ogUrl,
       'superEvent': {
-        '@type': 'Event',
-        '@id': 'https://webconf.tw/#main-event',
-        'name': 'WebConf Taiwan 2025',
-        'url': 'https://webconf.tw/',
+        ...eventBasicForSuperEvent,
+        location: { '@id': 'https://webconf.tw/#location' },
+        organizer: { '@id': 'https://webconf.tw/#organization' },
       },
     }
     useSchemaOrg([...speakersInfo, eventOrganizer, eventLocation, agendaEventSchema])
@@ -149,6 +153,12 @@ export function useSpeakerSeo(
   }
 
   useSeoMeta(seoData)
+
+  useHead({
+    meta: [
+      { name: 'twitter:image:src', content: `https://webconf.tw${firstSpeaker.meta.ogImage}` },
+    ],
+  })
 
   return seoData
 }

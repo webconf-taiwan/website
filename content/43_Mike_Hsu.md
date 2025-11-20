@@ -10,6 +10,7 @@ speakerInfo: "DevOps 工程師，專注於打造穩定且易於理解的系統�
 description: "這場分享源自我在 Grafana Assistant 項目中的實踐與觀察。最初只是想優化 Grafana 的使用體驗，但隨著深入 LLM 領域，我開始意識到 AI 系統的可觀測性需求截然不同於傳統應用。以往的可觀測性 1.0 和 2.0 主要聚焦在基礎設施、微服務與指標上，而在 LLM 的世界，核心關注的是模型本身、提示設計、評測迭代及使用者互動。這場分享將從理論、實踐、生態系統以及架構設計多角度切入，解構如何打造一個可持續擴展的 AI 可觀測體系。期待與你一起探索傳統可觀測性與 LLM 應用交匯處的火花。"
 email: a3698521tw11@gmail.com
 image: /images/speakers/43_Mike_Hsu.webp
+ogImage: /images/ogImage/43_Mike_Hsu.png
 fb: https://www.facebook.com/mike.hsu.775
 day: day2
 date: 2025-12-13
