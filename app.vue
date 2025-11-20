@@ -1,9 +1,11 @@
 <script setup lang="ts">
-defineOgImage({
-  url: 'https://webconf.tw/images/seo/ogImage.png',
-  width: 1200,
-  height: 630,
-  alt: 'WebConf Taiwan 2025',
+useSeoMeta({
+  ogImage: 'https://webconf.tw/images/seo/ogImage.png',
+  ogImageAlt: 'WebConf Taiwan 2025',
+  ogImageWidth: 1200,
+  ogImageHeight: 630,
+  twitterImage: 'https://webconf.tw/images/seo/ogImage.png',
+  twitterImageAlt: 'WebConf Taiwan 2025',
 })
 
 const isProduction = import.meta.env.PROD
