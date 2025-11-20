@@ -10,7 +10,7 @@ speakerInfo: "現任「多奇數位創意有限公司」技術總監。2024 年�
 description: "在 AI 驅動的時代，測試自動化也需要與時俱進。本議程將深入探討 Playwright Agents 代理人模式，展示如何結合 AI 與端到端測試框架，打造更智能、更靈活的測試解決方案。 我們將從基礎概念開始，逐步介紹： - Playwright Agents 的核心架構與設計理念 - 如何使用自主決策的測試代理人 - 結合 LLM 實現智能化測試場景 - 實際案例分析與最佳實踐 - 常見挑戰與解決方案 無論您是測試工程師、開發者，或是對 AI 與自動化測試整合感興趣的技術人員，都能從本議程中獲得實用的知識與啟發，為您的測試策略注入新的可能性。"
 email: will.huang@miniasp.com
 image: /images/speakers/2_Will_保哥.webp
-ogImage: /images/ogImage/2_Will_保哥.png
+ogImage: /images/ogImage/2_will.png
 fb: https://www.facebook.com/will.fans/
 x: https://x.com/Will_Huang
 other_link: https://blog.miniasp.com/

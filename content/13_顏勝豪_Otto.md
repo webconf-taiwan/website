@@ -10,7 +10,7 @@ speakerInfo: "10 年以上的專案開發經驗，歷經紮實的養成訓練，
 description: "在金融產業，雲端轉型已成為競爭力的關鍵。國泰金控自 2020 年啟動集團雲端轉型計劃，從 Cloud Ready 到大規模系統遷移上雲之系統重構，不僅克服了合規、安全與組織轉型的挑戰，更透過前瞻性的策略與跨多雲合作，逐步建立符合金融監管與彈性架構兼具的雲端環境。本演講將分享國泰在雲端轉型過程中的關鍵洞察與啟示，包括面對挑戰時的突破方法，以及如何在技術與治理之間取得平衡。同時，也將介紹 Vibe Coding 在系統上雲重構中的實踐案例，展現 AI 輔助開發如何加速遷移效率、提升架構彈性，讓雲端轉型不只是「上雲」，而是推動金融業 IT 現代化的重要引擎。"
 email: ottoyen2014@gmail.com
 image: /images/speakers/13_顏勝豪_Otto.webp
-ogImage: /images/ogImage/13_顏勝豪_Otto.png
+ogImage: /images/ogImage/13_Otto.png
 other_link: https://ottoyen.github.io/
 day: day1
 date: 2025-12-12

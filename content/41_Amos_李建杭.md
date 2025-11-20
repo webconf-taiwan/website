@@ -10,7 +10,7 @@ speakerInfo: "金魚都能懂的教學系列作者、網頁技術愛好者"
 description: "自從 CSS 增加動畫模組後，網頁互動變得更加豐富精彩，搭配各種新的 CSS 屬性讓我們的創意輕鬆得以展現，更提升了使用者體驗，透過 CSS 撰寫動畫，不僅網頁效能 up up，更讓設計師與開發者得以輕鬆製作互動效果，一起來玩 CSS 動畫吧。"
 email: s.may.lee@gmail.com
 image: /images/speakers/41_Amos李建杭.webp
-ogImage: /images/ogImage/41_Amos李建杭.png
+ogImage: /images/ogImage/41_Amos.png
 fb: https://www.facebook.com/banPrint
 day: day2
 date: 2025-12-13
