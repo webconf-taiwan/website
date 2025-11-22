@@ -14,7 +14,7 @@ import { CO_ORGANIZERS } from '~/constants/sponsors'
       class="sponsors-title-section sticky top-[47px] z-20 border-b py-3 pl-5 xs:top-[55px] sm:top-[57px] lg:top-[55px] lg:border-b-0 lg:pl-12 lg:pr-[152px] lg:pt-10"
     >
       <h2
-        class="inline-block text-h4-24 text-webconf-gray lg:text-[60px] lg:leading-[1.2] lg:tracking-[0em] lg:[writing-mode:vertical-rl]"
+        class="inline-block text-h4-24 text-webconf-gray lg:text-[60px] lg:leading-[1.2] lg:tracking-[0.2em] lg:[writing-mode:vertical-rl]"
       >
         品牌夥伴
       </h2>

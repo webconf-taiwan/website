@@ -109,6 +109,9 @@ export default antfu(
             'speakerInfo',
             'custom-ul-style',
             'organizer-description-paragraph',
+            'venue-bg',
+            'venue-content',
+            'venue-map',
           ], // 允許自定義的 CSS 類名
         },
       ],
