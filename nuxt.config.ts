@@ -157,7 +157,6 @@ export default defineNuxtConfig({
         '/speakers/41',
         '/speakers/42',
         '/speakers/43',
-        '/coming-soon',
       ],
     },
     routeRules: {
