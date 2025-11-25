@@ -10,7 +10,7 @@ speakerInfo: "》經歷過技術人、行銷人，最後成為 UX 人及創業�
 description: "本場座談由 Richard Tsai（悠識數位創辦人） 主持，邀請 柏強 與 Kaba 同台對談，將從各自的實戰經驗出發，分享他們如何看待設計與產品管理的轉變、AI 技術帶來的挑戰與機會，以及在快速變動的產業環境中，如何找到自身的定位與長期價值。"
 email: richard@userxper.com
 image: /images/speakers/25_Richard_Tsai_蔡明哲.webp
-ogImage: /images/ogImage/25_Richard_Tsai_蔡明哲.png
+ogImage: /images/ogImage/25_Richard_Tsai.png
 fb: https://facebook.com/uxrichard
 other_link: https://edu.userxper.com/@richard-tsai
 day: day2
