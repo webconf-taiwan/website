@@ -141,7 +141,7 @@ watch(selectedVenueNum, () => {
       class="relative flex flex-col border-y border-webconf-gray bg-black text-white lg:flex-row"
     >
       <div
-        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+        v-arrow="{ speed1: '10s', color: '#E6E6E6' }"
         class="absolute z-40 w-full"
       ></div>
       <div
@@ -161,15 +161,28 @@ watch(selectedVenueNum, () => {
           target="_blank"
           class="relative col-span-4 grid place-content-center pb-4 pt-[50px] lg:border-l lg:py-10"
         >
-          <span
+          <p
             ref="venueNameRef"
-            class="absolute left-5 top-4 text-h5-20 text-webconf-gray lg:left-10 lg:top-8 lg:text-h4-24"
-          >{{ selectedVenue?.name }}</span>
-          <NuxtImg
-            :src="selectedVenue?.image"
-            width="866"
-            height="470"
-          />
+            class="absolute inset-x-5 top-4 flex items-center justify-between lg:left-10 lg:top-8"
+          >
+            <span class="text-h5-20 text-webconf-gray lg:text-h4-24">{{
+              selectedVenue?.name
+            }}</span>
+            <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
+          </p>
+          <div class="relative">
+            <NuxtImg
+              :src="selectedVenue?.image"
+              width="866"
+              height="470"
+            />
+            <NuxtImg
+              src="/images/home/venue/venueCompass.svg"
+              width="161"
+              height="117"
+              class="absolute right-[-51.2px] top-[11px] opacity-0 lg:opacity-100"
+            />
+          </div>
         </NuxtLink>
         <button
           v-for="map in MAP_INFO"
@@ -181,13 +194,12 @@ watch(selectedVenueNum, () => {
           type="button"
           class="venue-map relative col-span-2 border-t border-l-webconf-frame px-6 py-5 before:absolute before:inset-0 before:z-10 before:block before:size-0 before:bg-webconf-blue before:transition-all before:duration-300 before:content-[''] lg:col-span-1 lg:border-l-[0.5px] lg:py-8 lg:pl-10 lg:pr-6 lg:before:size-7"
           :class="[
-            map.isAvailable
-              ? 'cursor-pointer hover:before:size-full'
-              : 'cursor-not-allowed',
+            map.isAvailable ? 'hover:before:size-full' : '',
             selectedVenueNum === map.id && map.isAvailable
               ? 'before:size-full lg:before:size-full'
               : '',
           ]"
+          :disabled="!map.isAvailable"
           @click="setVenue(map.id, map.isAvailable)"
         >
           <h3
@@ -205,11 +217,11 @@ watch(selectedVenueNum, () => {
       class="relative flex flex-col border-y border-webconf-gray bg-black text-white lg:mt-[141px] lg:flex-row"
     >
       <div
-        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
+        v-arrow="{ speed1: '10s', color: '#E6E6E6' }"
         class="absolute z-40 w-full"
       ></div>
       <div
-        class="sponsors-title-section sticky top-[47px] z-30 border-b py-3 pl-5 xs:top-[55px] sm:top-[57px] lg:top-[55px] lg:border-b-0 lg:pl-12 lg:pr-[152px] lg:pt-10"
+        class="sponsors-title-section sticky top-[47px] z-30 border-b py-3 pl-5 xs:top-[55px] sm:top-[57px] lg:top-[55px] lg:z-10 lg:border-b-0 lg:pl-12 lg:pr-[152px] lg:pt-10"
       >
         <h2
           class="inline-block text-h4-24 text-webconf-gray lg:text-[60px] lg:leading-[1.2] lg:tracking-[0.2em] lg:[writing-mode:vertical-rl]"
