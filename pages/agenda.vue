@@ -321,9 +321,9 @@ watch(isMenuOpen, (newValue) => {
               <time
                 class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
               >
-                <span>17:00</span>
+                <span>17:15</span>
                 <span class="lg:hidden">{{ ` - ` }}</span>
-                <span class="lg:hidden">17:10</span>
+                <span class="lg:hidden">17:25</span>
               </time>
 
               <h2

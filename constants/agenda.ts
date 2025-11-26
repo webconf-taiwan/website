@@ -57,7 +57,17 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 10:05 - 10:50
   {
-    title: 'TBD',
+    title: 'SaaS 的下一步：從 Service 到 Agent 的轉移',
+    speakerInfo: [
+      {
+        name: '安德魯',
+        avatarUrl: '/images/speakers/36_安得魯.webp',
+        JobTitle: '91APP / 首席架構師',
+        speakerId: '36',
+        order: 40,
+      },
+    ],
+    tags: ['AI', '軟體設計'],
     day: '12',
     startTime: '10:05',
     endTime: '10:50',
@@ -165,7 +175,17 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    title: 'TBD',
+    title: 'AI 時代的 Legacy Code 營救術',
+    speakerInfo: [
+      {
+        name: '墨嗓 (陳佑竹)',
+        avatarUrl: '/images/speakers/39_Mouson.webp',
+        JobTitle: '世成科技股份有限公司 / 資深系統分析師',
+        speakerId: '39',
+        order: 41,
+      },
+    ],
+    tags: ['DevOps', 'AI', '軟體設計'],
     day: '12',
     startTime: '11:55',
     endTime: '12:40',
@@ -243,7 +263,17 @@ export const AGENDA_LIST: AgendaItem[] = [
   },
   // 12/12 14:25 - 15:10
   {
-    title: 'TBD',
+    title: 'AI 時間槓桿賦能之術 - 全端工程師獨自升級全記錄',
+    speakerInfo: [
+      {
+        name: '馮元詰',
+        avatarUrl: '/images/speakers/40_fong.webp',
+        JobTitle: '薩泰爾娛樂股份有限公司 / 全端工程師',
+        speakerId: '40',
+        order: 42,
+      },
+    ],
+    tags: ['AI', '軟體設計', '產品思維', '產業應用'],
     day: '12',
     startTime: '14:25',
     endTime: '15:10',
@@ -774,7 +804,61 @@ export const AGENDA_LIST: AgendaItem[] = [
     endTime: '16:05',
     location: 'A2 棟',
   },
-  // 12/13 16:15 - 17:00
+  // 12/13 16:15 - 16:30
+  {
+    title: '軟體工程不只是寫程式',
+    speakerInfo: [
+      {
+        name: '李智樺',
+        avatarUrl: '/images/speakers/44_ruddy.webp',
+        JobTitle: '集英信誠 / 顧問',
+        speakerId: '44',
+        order: 43,
+      },
+    ],
+    tags: ['DevOps', 'AI', '軟體設計', '產品思維', '團隊管理', 'Agile'],
+    day: '13',
+    startTime: '16:15',
+    endTime: '16:30',
+    location: 'M 棟',
+  },
+  {
+    title: '軟體工程不只是寫程式',
+    speakerInfo: [
+      {
+        name: '李智樺',
+        avatarUrl: '/images/speakers/44_ruddy.webp',
+        JobTitle: '集英信誠 / 顧問',
+        speakerId: '44',
+        order: 43,
+      },
+    ],
+    tags: ['DevOps', 'AI', '軟體設計', '產品思維', '團隊管理', 'Agile'],
+    day: '13',
+    startTime: '16:15',
+    endTime: '16:30',
+    location: 'F 棟',
+    isCoStream: true,
+  },
+  {
+    title: '軟體工程不只是寫程式',
+    speakerInfo: [
+      {
+        name: '李智樺',
+        avatarUrl: '/images/speakers/44_ruddy.webp',
+        JobTitle: '集英信誠 / 顧問',
+        speakerId: '44',
+        order: 43,
+      },
+    ],
+    tags: ['DevOps', 'AI', '軟體設計', '產品思維', '團隊管理', 'Agile'],
+    day: '13',
+    startTime: '16:15',
+    endTime: '16:30',
+    location: 'A2 棟',
+    isCoStream: true,
+  },
+  // 12/13 16:30 - 17:15
   {
     title: '活在科技工作者最好的年代，用商業思維優化你的人生選擇',
     speakerInfo: [
@@ -788,8 +872,8 @@ export const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['AI', '產品思維', '軟體設計'],
     day: '13',
-    startTime: '16:15',
-    endTime: '17:00',
+    startTime: '16:30',
+    endTime: '17:15',
     location: 'M 棟',
 
   },
@@ -806,8 +890,8 @@ export const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['AI', '產品思維', '軟體設計'],
     day: '13',
-    startTime: '16:15',
-    endTime: '17:00',
+    startTime: '16:30',
+    endTime: '17:15',
     location: 'F 棟',
     isCoStream: true,
   },
@@ -824,8 +908,8 @@ export const AGENDA_LIST: AgendaItem[] = [
     ],
     tags: ['AI', '產品思維', '軟體設計'],
     day: '13',
-    startTime: '16:15',
-    endTime: '17:00',
+    startTime: '16:30',
+    endTime: '17:15',
     location: 'A2 棟',
     isCoStream: true,
   },
