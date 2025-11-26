@@ -47,18 +47,21 @@ const scheduleMap = {
   'Shirney Huang 黃琇琳': { id: '11', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/11_Shirney_Huang 黃琇琳.webp', ogImage: '/images/ogImage/11_Shirney_Huang 黃琇琳.png' },
   'Eric Lee': { id: '12', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/12_Eric_Lee.webp', ogImage: '/images/ogImage/12_Eric_Lee.png' },
   'Kuro Hsu': { id: '38', day: 'day1', date: '2025-12-12', time: '11:00~11:45', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/38_KURO.webp', ogImage: '/images/ogImage/38_KURO.png' },
+  '馮元詰': { id: '40', day: 'day1', date: '2025-12-12', time: '14:25~15:10', room: 'M 棟', doc: '', slides: '', image: '/images/speakers/40_fong.webp', ogImage: '/images/ogImage/40_fong.png' },
 
   // F 棟
   '顏勝豪 Otto': { id: '13', day: 'day1', date: '2025-12-12', time: '10:05~10:50', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/13_顏勝豪_Otto.webp', ogImage: '/images/ogImage/13_顏勝豪_Otto.png' },
   '蕭晊莛': { id: '14', day: 'day1', date: '2025-12-12', time: '14:25~15:10', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/14_蕭晊莛.webp', ogImage: '/images/ogImage/14_蕭晊莛.png' },
   'Kuma Syu': { id: '15', day: 'day1', date: '2025-12-12', time: '15:20~16:05', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/15_Kuma_Syu.webp', ogImage: '/images/ogImage/15_Kuma_Syu.png' },
   '陳正瑋（艦長）': { id: '16', day: 'day1', date: '2025-12-12', time: '16:15~17:00', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/16_陳正瑋(艦長).webp', ogImage: '/images/ogImage/16_陳正瑋(艦長).png' },
+  '墨嗓 (陳佑竹)': { id: '39', day: 'day1', date: '2025-12-12', time: '11:55~12:40', room: 'F 棟', doc: '', slides: '', image: '/images/speakers/39_Mouson.webp', ogImage: '/images/ogImage/39_Mouson.png' },
 
   // Day 2~2025-12-13
 
   // Keynote Speaker
   'Huli': { id: '17', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/17_Huli.webp', ogImage: '/images/ogImage/17_Huli.png' },
   '游舒帆': { id: '18', day: 'day2', date: '2025-12-13', time: '16:15~17:00', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/18_游舒帆_Gipi.webp', ogImage: '/images/ogImage/18_游舒帆_Gipi.png' },
+  '李智樺': { id: '44', day: 'day2', date: '2025-12-13', time: '16:15~16:30', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/44_ruddy.webp', ogImage: '/images/ogImage/44_ruddy.png' },
 
   // A2 棟
   'Joey': { id: '19', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'A2 棟', doc: '', slides: '', image: '/images/speakers/19_Joey.webp', ogImage: '/images/ogImage/19_Joey.png' },
