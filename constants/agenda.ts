@@ -64,7 +64,7 @@ export const AGENDA_LIST: AgendaItem[] = [
         avatarUrl: '/images/speakers/36_安得魯.webp',
         JobTitle: '91APP / 首席架構師',
         speakerId: '36',
-        order: 40,
+        order: 41,
       },
     ],
     tags: ['AI', '軟體設計'],
@@ -74,7 +74,16 @@ export const AGENDA_LIST: AgendaItem[] = [
     location: 'M 棟',
   },
   {
-    title: 'TBD',
+    title: '不寫 JS 也有行雲流水的前端體驗，AI 時代後端工程師的心流開發禪境',
+    speakerInfo: [
+      {
+        name: '蘇泰安 taiansu',
+        avatarUrl: '/images/speakers/37_taiansu.webp',
+        JobTitle: '伊格控股 / CTO',
+        speakerId: '37',
+        order: 40,
+      },
+    ],
     day: '12',
     startTime: '10:05',
     endTime: '10:50',

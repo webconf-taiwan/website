@@ -194,7 +194,7 @@ export const eventBasic = {
   'inLanguage': 'zh-TW',
   'image': 'https://webconf.tw/images/seo/ogImage.png',
   'startDate': '2025-12-12T09:00:00+08:00',
-  'endDate': '2025-12-13T18:00:00+08:00',
+  'endDate': '2025-12-13T17:25:00+08:00',
   'eventStatus': 'https://schema.org/EventScheduled',
   'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
   'url': site.url,
