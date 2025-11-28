@@ -84,6 +84,7 @@ export const AGENDA_LIST: AgendaItem[] = [
         order: 40,
       },
     ],
+    tags: ['Frontend', 'Backend', 'AI'],
     day: '12',
     startTime: '10:05',
     endTime: '10:50',
