@@ -31,7 +31,7 @@ const TRANSPORT_INFO = [
     id: 4,
     name: '自行開車',
     description: [
-      '周邊備有兩個付費停車場，步行 3 分鐘即可抵達，車位數量有限，建議搭乘大眾運輸前往。',
+      '周邊備有兩個付費停車場，步行 3 分鐘即可抵達,車位數量有限,建議搭乘大眾運輸前往。',
       '• Times 南港車站前停車場',
       '• CITY PARKING 城市車旅停車場 全聯南港旗艦站',
     ],
@@ -42,49 +42,57 @@ const MAP_INFO = [
   {
     id: 1,
     name: 'HQ｜大會報到處',
-    image: '/images/home/venue/map.svg',
+    display: 'HQ｜大會報到處',
+    image: '/images/venue/HQ.svg',
     isAvailable: true,
   },
   {
     id: 2,
     name: 'M 棟｜議程廳',
-    image: '/images/home/venue/map.svg',
+    display: 'M 棟｜議程廳',
+    image: '/images/venue/M.svg',
     isAvailable: true,
   },
   {
     id: 3,
     name: 'I 棟｜休息區',
-    image: '/images/home/venue/map.svg',
+    display: 'I 棟｜休息區',
+    image: '/images/venue/I.svg',
     isAvailable: true,
   },
   {
     id: 4,
     name: 'F 棟｜議程廳',
-    image: '/images/home/venue/map.svg',
+    display: 'F 棟｜議程廳',
+    image: '/images/venue/F.svg',
     isAvailable: true,
   },
   {
     id: 5,
     name: 'B 棟｜交流攤位',
-    image: '/images/home/venue/map.svg',
+    display: 'B 棟｜交流攤位',
+    image: '/images/venue/B.svg',
     isAvailable: true,
   },
   {
     id: 6,
     name: 'A1 棟｜工作坊',
-    image: '/images/home/venue/map.svg',
+    display: 'A1 棟｜工作坊（2F）',
+    image: '/images/venue/F.svg',
     isAvailable: true,
   },
   {
     id: 7,
     name: 'A2 棟｜議程廳',
-    image: '/images/home/venue/map.svg',
+    display: 'A2 棟｜議程廳',
+    image: '/images/venue/A2.svg',
     isAvailable: true,
   },
   {
     id: 8,
     name: 'G 棟｜未開放',
-    image: '/images/home/venue/map.svg',
+    display: 'G 棟｜未開放',
+    image: '',
     isAvailable: false,
   },
 ]
@@ -96,24 +104,12 @@ const selectedVenue = computed(() =>
 )
 
 function setVenue(num: number, isAvailable: boolean) {
-  if (isAvailable) {
+  if (isAvailable && num !== selectedVenueNum.value) {
     selectedVenueNum.value = num
   }
 }
 
-const venueNameRef = ref<HTMLSpanElement | null>(null)
 const venueBgRef = ref<HTMLDivElement | null>(null)
-
-watch(selectedVenueNum, () => {
-  if (!venueNameRef.value)
-    return
-
-  gsap.fromTo(
-    venueNameRef.value,
-    { opacity: 0 },
-    { opacity: 1, duration: 0.5, ease: 'power2.out' },
-  )
-})
 
 onMounted(() => {
   if (!venueBgRef.value)
@@ -187,29 +183,35 @@ onMounted(() => {
           :to="selectedVenue?.image || '#'"
           rel="noopener noreferrer"
           target="_blank"
-          class="relative col-span-4 grid place-content-center pb-4 pt-[50px] lg:border-l lg:py-10"
+          class="relative col-span-4 grid place-content-center pb-4 pt-[50px] lg:border-l lg:py-0"
         >
-          <p
-            ref="venueNameRef"
-            class="absolute inset-x-5 top-4 flex items-center justify-between lg:left-10 lg:top-8"
-          >
-            <span class="text-h5-20 text-webconf-gray lg:text-h4-24">{{
-              selectedVenue?.name
-            }}</span>
-            <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
-          </p>
           <div class="relative">
-            <NuxtImg
-              :src="selectedVenue?.image"
-              width="866"
-              height="470"
-            />
-            <NuxtImg
-              src="/images/home/venue/venueCompass.svg"
-              width="161"
-              height="117"
-              class="absolute right-[-51.2px] top-[11px] opacity-0 lg:opacity-100"
-            />
+            <p
+              class="absolute inset-x-5 top-4 z-10 flex items-center justify-between lg:left-10 lg:top-8"
+            >
+              <span class="text-h5-20 text-webconf-gray lg:text-h4-24">{{
+                selectedVenue?.display
+              }}</span>
+              <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
+            </p>
+            <div class="relative min-h-[550px]">
+              <NuxtImg
+                v-for="venue in MAP_INFO.filter((v) => v.isAvailable)"
+                :key="venue.id"
+                :src="venue.image"
+                :alt="`${venue.display}平面圖`"
+                width="1180"
+                height="550"
+                loading="eager"
+                fetchpriority="high"
+                class="transition-opacity duration-500"
+                :class="
+                  selectedVenueNum === venue.id
+                    ? 'opacity-100'
+                    : 'opacity-0 absolute inset-0 pointer-events-none'
+                "
+              />
+            </div>
           </div>
         </NuxtLink>
         <button
