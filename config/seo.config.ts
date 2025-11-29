@@ -34,33 +34,22 @@ export const sitemap = {
     { loc: '/staff', priority: 0.6 },
     { loc: '/history', priority: 0.6 },
 
-    // 個別議程頁面 (1-35, 38, 41-43)
-    ...Array.from({ length: 35 }, (_, i) => ({
+    // 個別議程頁面
+    ...Array.from({ length: 44 }, (_, i) => ({
       loc: `/agenda/${i + 1}`,
       priority: 0.8,
     })),
-    { loc: '/agenda/38', priority: 0.8 },
-    { loc: '/agenda/41', priority: 0.8 },
-    { loc: '/agenda/42', priority: 0.8 },
-    { loc: '/agenda/43', priority: 0.8 },
 
     // 特殊議程組合
     { loc: '/agenda/3/4', priority: 0.7 },
     { loc: '/agenda/33/34', priority: 0.7 },
     { loc: '/agenda/00/23/24', priority: 0.7 },
 
-    // 個別講者頁面 (1-35, 38, 41-43)
-    ...Array.from({ length: 35 }, (_, i) => ({
+    // 個別講者頁面
+    ...Array.from({ length: 44 }, (_, i) => ({
       loc: `/speakers/${i + 1}`,
       priority: 0.8,
     })),
-    { loc: '/speakers/38', priority: 0.8 },
-    { loc: '/speakers/41', priority: 0.8 },
-    { loc: '/speakers/42', priority: 0.8 },
-    { loc: '/speakers/43', priority: 0.8 },
-
-    // 其他頁面
-    { loc: '/coming-soon', priority: 0.3 },
   ],
 }
 
@@ -194,7 +183,7 @@ export const eventBasic = {
   'inLanguage': 'zh-TW',
   'image': 'https://webconf.tw/images/seo/ogImage.png',
   'startDate': '2025-12-12T09:00:00+08:00',
-  'endDate': '2025-12-13T18:00:00+08:00',
+  'endDate': '2025-12-13T17:25:00+08:00',
   'eventStatus': 'https://schema.org/EventScheduled',
   'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
   'url': site.url,

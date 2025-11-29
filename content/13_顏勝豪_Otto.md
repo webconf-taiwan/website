@@ -14,7 +14,7 @@ ogImage: /images/ogImage/13_Otto.png
 other_link: https://ottoyen.github.io/
 day: day1
 date: 2025-12-12
-time: 11:00~11:50
+time: 11:00~11:45
 room: F 棟
 ---
 
