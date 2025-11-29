@@ -300,6 +300,7 @@ onMounted(() => {
   content: "";
   position: absolute;
   background-image: url("/images/venue/venueBgMask.webp");
+  background-size: cover;
   display: block;
   width: 100%;
   height: 100%;
@@ -316,6 +317,10 @@ onMounted(() => {
   .sponsors-title-section {
     background-image: url("/images/sponsors/sponsorsBg.webp");
     background-size: 100% 215px;
+  }
+
+  .venue-bg {
+    background-size: cover;
   }
 }
 

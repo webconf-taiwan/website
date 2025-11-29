@@ -132,7 +132,7 @@ onMounted(() => {
 
     <section
       ref="historyBgRef"
-      class="z-10 flex h-[500px] flex-col items-center justify-center border-y border-webconf-gray bg-[url('/images/home/CTA/CTABg.webp')] bg-center bg-no-repeat"
+      class="z-10 flex h-[500px] flex-col items-center justify-center border-y border-webconf-gray bg-[url('/images/home/CTA/CTABg.webp')] bg-center bg-no-repeat md:bg-cover"
     >
       <h3 class="text-h4-60 text-webconf-gray">
         歷屆活動花絮
