@@ -78,7 +78,7 @@ const MAP_INFO = [
     id: 6,
     name: 'A1 棟｜工作坊',
     display: 'A1 棟｜工作坊（2F）',
-    image: '/images/venue/F.svg',
+    image: '/images/venue/A1.svg',
     isAvailable: true,
   },
   {
@@ -185,33 +185,31 @@ onMounted(() => {
           target="_blank"
           class="relative col-span-4 grid place-content-center pb-4 pt-[50px] lg:border-l lg:py-0"
         >
+          <p
+            class="absolute inset-x-5 top-4 z-10 flex items-center justify-between lg:left-10 lg:top-8"
+          >
+            <span class="text-h5-20 text-webconf-gray lg:text-h4-24">{{
+              selectedVenue?.display
+            }}</span>
+            <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
+          </p>
           <div class="relative">
-            <p
-              class="absolute inset-x-5 top-4 z-10 flex items-center justify-between lg:left-10 lg:top-8"
-            >
-              <span class="text-h5-20 text-webconf-gray lg:text-h4-24">{{
-                selectedVenue?.display
-              }}</span>
-              <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
-            </p>
-            <div class="relative min-h-[550px]">
-              <NuxtImg
-                v-for="venue in MAP_INFO.filter((v) => v.isAvailable)"
-                :key="venue.id"
-                :src="venue.image"
-                :alt="`${venue.display}平面圖`"
-                width="1180"
-                height="550"
-                loading="eager"
-                fetchpriority="high"
-                class="transition-opacity duration-500"
-                :class="
-                  selectedVenueNum === venue.id
-                    ? 'opacity-100'
-                    : 'opacity-0 absolute inset-0 pointer-events-none'
-                "
-              />
-            </div>
+            <NuxtImg
+              v-for="venue in MAP_INFO.filter((v) => v.isAvailable)"
+              :key="venue.id"
+              :src="venue.image"
+              :alt="`${venue.display}平面圖`"
+              width="1180"
+              height="550"
+              loading="eager"
+              fetchpriority="high"
+              class="transition-opacity duration-500"
+              :class="
+                selectedVenueNum === venue.id
+                  ? 'opacity-100'
+                  : 'opacity-0 absolute inset-0 pointer-events-none'
+              "
+            />
           </div>
         </NuxtLink>
         <button
@@ -296,7 +294,6 @@ onMounted(() => {
 .venue-bg {
   position: relative;
   background-image: url("/images/venue/venueBg.webp");
-  background-size: cover;
 }
 
 .venue-bg::after {
