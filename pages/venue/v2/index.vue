@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
+useSeoMeta({
+  title: '場域介紹',
+})
+
 const { gsap } = useGsap()
 
 const TRANSPORT_INFO = [
@@ -98,6 +102,7 @@ function setVenue(num: number, isAvailable: boolean) {
 }
 
 const venueNameRef = ref<HTMLSpanElement | null>(null)
+const venueBgRef = ref<HTMLDivElement | null>(null)
 
 watch(selectedVenueNum, () => {
   if (!venueNameRef.value)
@@ -109,6 +114,26 @@ watch(selectedVenueNum, () => {
     { opacity: 1, duration: 0.5, ease: 'power2.out' },
   )
 })
+
+onMounted(() => {
+  if (!venueBgRef.value)
+    return
+
+  gsap.fromTo(
+    venueBgRef.value,
+    { backgroundPosition: 'center 0%' },
+    {
+      backgroundPosition: 'center 100%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: venueBgRef.value,
+        start: 'top bottom',
+        end: 'bottom top',
+        scrub: 0.8,
+      },
+    },
+  )
+})
 </script>
 
 <template>
@@ -118,7 +143,10 @@ watch(selectedVenueNum, () => {
       sub-title="場域介紹"
     />
     <!-- 場地背景圖 -->
-    <div class="venue-bg relative h-[400px] text-center lg:h-[500px]">
+    <div
+      ref="venueBgRef"
+      class="venue-bg relative h-[400px] text-center lg:h-[500px]"
+    >
       <div class="absolute top-[141px] z-10 w-full text-center">
         <h2 class="pb-4 text-h2-60 text-white">
           瓶蓋工廠台北製造所
@@ -266,9 +294,7 @@ watch(selectedVenueNum, () => {
 .venue-bg {
   position: relative;
   background-image: url("/images/venue/venueBg.webp");
-  background-attachment: fixed;
   background-size: cover;
-  background-position: center;
 }
 
 .venue-bg::after {

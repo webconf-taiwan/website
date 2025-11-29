@@ -5,6 +5,8 @@ useSeoMeta({
   title: '歷屆回顧',
 })
 
+const { gsap } = useGsap()
+
 const WEBSITES = [
   {
     year: 2024,
@@ -27,6 +29,28 @@ const WEBSITES = [
 ]
 
 const hoveredImageIndex = ref(-1)
+
+const historyBgRef = ref<HTMLDivElement | null>(null)
+
+onMounted(() => {
+  if (!historyBgRef.value)
+    return
+
+  gsap.fromTo(
+    historyBgRef.value,
+    { backgroundPosition: 'center 50%' },
+    {
+      backgroundPosition: 'center 90%',
+      ease: 'none',
+      scrollTrigger: {
+        trigger: historyBgRef.value,
+        start: 'top center',
+        end: 'bottom top',
+        scrub: 0.5,
+      },
+    },
+  )
+})
 </script>
 
 <template>
@@ -107,6 +131,7 @@ const hoveredImageIndex = ref(-1)
     />
 
     <section
+      ref="historyBgRef"
       class="z-10 flex h-[500px] flex-col items-center justify-center border-y border-webconf-gray bg-[url('/images/home/CTA/CTABg.webp')] bg-cover bg-center bg-no-repeat"
     >
       <h3 class="text-h4-60 text-webconf-gray">
