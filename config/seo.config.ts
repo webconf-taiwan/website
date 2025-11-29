@@ -34,33 +34,22 @@ export const sitemap = {
     { loc: '/staff', priority: 0.6 },
     { loc: '/history', priority: 0.6 },
 
-    // 個別議程頁面 (1-35, 38, 41-43)
-    ...Array.from({ length: 35 }, (_, i) => ({
+    // 個別議程頁面
+    ...Array.from({ length: 44 }, (_, i) => ({
       loc: `/agenda/${i + 1}`,
       priority: 0.8,
     })),
-    { loc: '/agenda/38', priority: 0.8 },
-    { loc: '/agenda/41', priority: 0.8 },
-    { loc: '/agenda/42', priority: 0.8 },
-    { loc: '/agenda/43', priority: 0.8 },
 
     // 特殊議程組合
     { loc: '/agenda/3/4', priority: 0.7 },
     { loc: '/agenda/33/34', priority: 0.7 },
     { loc: '/agenda/00/23/24', priority: 0.7 },
 
-    // 個別講者頁面 (1-35, 38, 41-43)
-    ...Array.from({ length: 35 }, (_, i) => ({
+    // 個別講者頁面
+    ...Array.from({ length: 44 }, (_, i) => ({
       loc: `/speakers/${i + 1}`,
       priority: 0.8,
     })),
-    { loc: '/speakers/38', priority: 0.8 },
-    { loc: '/speakers/41', priority: 0.8 },
-    { loc: '/speakers/42', priority: 0.8 },
-    { loc: '/speakers/43', priority: 0.8 },
-
-    // 其他頁面
-    { loc: '/coming-soon', priority: 0.3 },
   ],
 }
 
