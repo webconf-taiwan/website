@@ -30,6 +30,7 @@ const WEBSITES = [
 
 const hoveredImageIndex = ref(-1)
 
+// 使用 useMouseInElement 更新 hoveredImageIndex 以確保 hover 效果正確觸發
 function useItemHover(index: number) {
   const itemRef = ref<HTMLLIElement | null>(null)
   const { isOutside } = useMouseInElement(itemRef)
@@ -45,6 +46,32 @@ function useItemHover(index: number) {
 }
 
 const itemRefs = WEBSITES.map((_, i) => useItemHover(i))
+
+// 手動觸發 v-cursor 效果
+function useCursorLink() {
+  const linkRef = ref<HTMLAnchorElement | null>(null)
+  const { isOutside } = useMouseInElement(linkRef)
+
+  watch(isOutside, (outside) => {
+    if (!linkRef.value)
+      return
+
+    if (!outside) {
+      linkRef.value.dispatchEvent(
+        new MouseEvent('mouseenter', { bubbles: true, cancelable: true }),
+      )
+    }
+    else {
+      linkRef.value.dispatchEvent(
+        new MouseEvent('mouseleave', { bubbles: true, cancelable: true }),
+      )
+    }
+  })
+
+  return linkRef
+}
+
+const cursorLinkRefs = WEBSITES.map(() => useCursorLink())
 
 const historyBgRef = ref<HTMLDivElement | null>(null)
 
@@ -119,6 +146,11 @@ onMounted(() => {
               </NuxtLink>
 
               <a
+                :ref="
+                  (el) => {
+                    cursorLinkRefs[index].value = el as HTMLAnchorElement;
+                  }
+                "
                 v-cursor="{
                   scale: 5,
                   duration: 0.5,
