@@ -27,11 +27,6 @@ const squareStyle = computed(() => {
   }
 })
 
-// 計算屬性
-const isSpecialCard = computed(() => {
-  return props.data.title === '同步聯播' || props.data.title === 'TBD'
-})
-
 const cardLink = computed(() => {
   if (props.data.speakerInfo && props.data.speakerInfo.length > 0) {
     const speakerIds = props.data.speakerInfo.map(s => s.speakerId).join('/')
@@ -66,16 +61,12 @@ const cardLink = computed(() => {
       @click="setToggleModal(true)"
     >
       <div
-        v-if="!isSpecialCard"
         class="pointer-events-none absolute left-0 top-0 z-10 size-5 bg-webconf-blue mix-blend-screen transition-all duration-300 ease-out lg:block lg:size-7 lg:group-hover:h-[var(--target-height)] lg:group-hover:w-[var(--target-width)]"
         :style="squareStyle"
       ></div>
 
       <div class="h-full px-5 py-8 lg:px-8 xl:min-h-[285px] xl:px-10">
-        <div
-          v-if="!isSpecialCard"
-          class="relative flex h-full flex-col"
-        >
+        <div class="relative flex h-full flex-col">
           <div class="min-w-0 grow">
             <div class="relative">
               <span
@@ -104,7 +95,12 @@ const cardLink = computed(() => {
             </ul>
           </div>
 
-          <div class="mt-6 flex items-end justify-between lg:z-10">
+          <div
+            class="mt-6 flex items-end justify-between"
+            :class="{
+              'lg:z-10': isSelected,
+            }"
+          >
             <div class="flex items-end gap-3">
               <!-- 講者頭像 -->
               <div class="flex shrink-0 gap-2">
@@ -166,33 +162,12 @@ const cardLink = computed(() => {
             </div>
           </div>
         </div>
-
-        <!-- 同步聯播 / TBD -->
-        <div
-          v-else
-          class="flex h-full items-center justify-between"
-        >
-          <h2 class="grow text-h4-24 lg:text-center">
-            {{ data.title }}
-          </h2>
-
-          <!-- 地點 (行動版) -->
-          <div class="flex items-center gap-1 text-body-18 lg:hidden">
-            <NuxtImg
-              src="/images/icon/location.svg"
-              alt="location"
-              width="20"
-              height="20"
-            />
-            {{ data.location }}
-          </div>
-        </div>
       </div>
 
       <!-- 標籤選取遮罩 -->
       <div
         v-if="!isSelected"
-        class="absolute inset-0 z-10 size-full bg-black opacity-70 duration-300"
+        class="absolute inset-0 z-[5] size-full bg-black opacity-70 duration-300"
       ></div>
     </NuxtLink>
   </div>
