@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { CONF_LINKS } from '~/constants/confLinks'
 import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 useSeoMeta({
@@ -7,35 +8,56 @@ useSeoMeta({
 
 const { gsap } = useGsap()
 
-const WEBSITES = [
-  {
-    year: 2024,
-    desc: '本屆科技年會將探討 UI/UX 設計的最新趨勢，包括使用者界面設計、使用者體驗優化、人機互動設計等議題，以深入探討如何打造出引人入勝的用戶體驗，提升產品的價值和競爭力。',
-    link: 'https://2024.webconf.tw',
-    img: '/images/history/webconf-2024.webp',
-  },
-  {
-    year: 2023,
-    desc: '重啟十年前的 WebConf 研討會中，帶領與會者穿越時間，探索網路的過去、現在和未來。過去十年間，網路發生了巨大的變化，我們將重新審視網路的起源以及它在這些年裡的演進。',
-    link: 'https://2023.webconf.tw',
-    img: '/images/history/webconf-2023.webp',
-  },
-  {
-    year: 2013,
-    desc: '聚焦於網站開發的全方位議題，從前端設計、介面體驗，到後端架構、資料安全與法律規範，全面探索網站建置與經營的多重面向。透過業界講師的實務分享，深入剖析技術與設計的整合應用，帶領與會者掌握 Web 開發的最新趨勢與實踐方法，打造兼具創意與效能的網頁體驗。',
-    link: 'https://2013.webconf.tw',
-    img: '/images/history/webconf-2013.webp',
-  },
-]
-
 const hoveredImageIndex = ref(-1)
+
+// 使用 useMouseInElement 更新 hoveredImageIndex 以確保 hover 效果正確觸發
+function useItemHover(index: number) {
+  const itemRef = ref<HTMLLIElement | null>(null)
+  const { isOutside } = useMouseInElement(itemRef)
+
+  watch(isOutside, (outside) => {
+    if (!outside)
+      hoveredImageIndex.value = index
+    else if (hoveredImageIndex.value === index)
+      hoveredImageIndex.value = -1
+  })
+
+  return itemRef
+}
+
+const itemRefs = CONF_LINKS.map((_, i) => useItemHover(i))
+
+// 手動觸發 v-cursor 效果
+function useCursorLink() {
+  const linkRef = ref<HTMLAnchorElement | null>(null)
+  const { isOutside } = useMouseInElement(linkRef)
+
+  watch(isOutside, (outside) => {
+    if (!linkRef.value)
+      return
+
+    if (!outside) {
+      linkRef.value.dispatchEvent(
+        new MouseEvent('mouseenter', { bubbles: true, cancelable: true }),
+      )
+    }
+    else {
+      linkRef.value.dispatchEvent(
+        new MouseEvent('mouseleave', { bubbles: true, cancelable: true }),
+      )
+    }
+  })
+
+  return linkRef
+}
+
+const cursorLinkRefs = CONF_LINKS.map(() => useCursorLink())
 
 const historyBgRef = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
   if (!historyBgRef.value)
     return
-
   gsap.fromTo(
     historyBgRef.value,
     { backgroundPosition: 'center 50%' },
@@ -65,14 +87,17 @@ onMounted(() => {
     <main class="lg:mb-40 lg:mt-[100px]">
       <ul class="flex w-full flex-col lg:gap-[100px] lg:px-[calc(100%/9)]">
         <li
-          v-for="(item, index) in WEBSITES"
+          v-for="(item, index) in CONF_LINKS"
           :key="item.year"
+          :ref="
+            (el) => {
+              itemRefs[index].value = el as HTMLLIElement | null;
+            }
+          "
           :class="{
             'lg:self-end': index % 2 === 1,
           }"
           class="hover:blue-shadow group relative border-b border-webconf-gray/50 bg-black text-white duration-300 lg:w-[calc(100dvw/2)]"
-          @mousemove="hoveredImageIndex = index"
-          @mouseleave="hoveredImageIndex = -1"
         >
           <div class="size-full">
             <NuxtImg
@@ -101,6 +126,11 @@ onMounted(() => {
               </NuxtLink>
 
               <a
+                :ref="
+                  (el) => {
+                    cursorLinkRefs[index].value = el as HTMLAnchorElement;
+                  }
+                "
                 v-cursor="{
                   scale: 5,
                   duration: 0.5,
@@ -110,7 +140,7 @@ onMounted(() => {
                 :href="item.link"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="absolute left-0 top-0 mt-6 hidden size-full bg-webconf-blue px-6 py-2 lg:block lg:bg-transparent"
+                class="absolute left-0 top-0 hidden size-full bg-webconf-blue lg:block lg:bg-transparent"
               >
               </a>
             </div>
@@ -120,7 +150,7 @@ onMounted(() => {
     </main>
 
     <NuxtImg
-      v-for="(item, index) in WEBSITES"
+      v-for="(item, index) in CONF_LINKS"
       :key="item.year"
       :src="item.img"
       :alt="`${item.year} WebConf 網站封面`"

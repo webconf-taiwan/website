@@ -104,13 +104,11 @@ watch(isMenuOpen, (newValue) => {
 
     <main class="border-b border-webconf-gray text-webconf-gray">
       <section
-        class="sticky top-[54px] z-20 border-b border-webconf-gray bg-black sm:top-[57px] lg:top-[54px]"
+        class="sticky top-[54px] z-[15] border-b border-webconf-gray bg-black sm:top-[57px] lg:top-[54px]"
       >
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
-          <!-- 日期篩選 -->
           <AgendaEventDaySwitch v-model="selectedDate" />
 
-          <!-- 議程類型篩選 -->
           <AgendaTagFilterBtn
             :is-menu-open="isMenuOpen"
             size="sm"
@@ -119,7 +117,6 @@ watch(isMenuOpen, (newValue) => {
             @click="isMenuOpen = true"
           />
 
-          <!-- 廳號 -->
           <div
             class="hidden grow text-center text-h4-24 lg:grid lg:grid-cols-3"
           >
@@ -141,9 +138,7 @@ watch(isMenuOpen, (newValue) => {
         ></div>
       </section>
 
-      <!-- 議程列表 -->
       <section class="relative flex">
-        <!-- 議程類型篩選清單 -->
         <aside
           :class="{
             'z-50 flex': isMenuOpen || showAside,
@@ -151,7 +146,6 @@ watch(isMenuOpen, (newValue) => {
           }"
           class="fixed top-[54.5px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124.5px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
-          <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
             :is-menu-open="isMenuOpen"
             size="lg"
@@ -159,13 +153,11 @@ watch(isMenuOpen, (newValue) => {
             @click="isMenuOpen = true"
           />
 
-          <!-- 篩選清單 -->
           <AgendaTagFilterMenu
             v-model:is-open="isMenuOpen"
             v-model:selected-tags="selectedTags"
           />
 
-          <!-- 半透明遮罩 -->
           <transition
             enter-active-class="transition-opacity duration-300"
             leave-active-class="transition-opacity duration-200"
@@ -200,7 +192,7 @@ watch(isMenuOpen, (newValue) => {
               class="relative"
             >
               <time
-                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
+                class="sticky top-[107px] z-10 flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
               >
                 <span>09:00</span>
                 <span class="lg:hidden">{{ ` - ` }}</span>
@@ -229,7 +221,7 @@ watch(isMenuOpen, (newValue) => {
             >
               <!-- 時間標記 (行動版) -->
               <div
-                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xs:top-[107px] sm:top-[109px] lg:top-[107px] lg:hidden"
+                class="sticky top-[107px] z-10 flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xs:top-[107px] sm:top-[109px] lg:top-[107px] lg:hidden"
               >
                 <time :datetime="time">
                   {{ time }}
@@ -282,7 +274,7 @@ watch(isMenuOpen, (newValue) => {
             >
               <!-- 時間標記 (行動版) -->
               <div
-                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xs:top-[107px] sm:top-[109px] lg:top-[107px] lg:hidden"
+                class="sticky top-[107px] z-10 flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue xs:top-[107px] sm:top-[109px] lg:top-[107px] lg:hidden"
               >
                 <time :datetime="time">
                   {{ time }}
@@ -319,7 +311,7 @@ watch(isMenuOpen, (newValue) => {
               class="relative"
             >
               <time
-                class="sticky top-[99px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
+                class="sticky top-[107px] z-10 flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
               >
                 <span>17:15</span>
                 <span class="lg:hidden">{{ ` - ` }}</span>
