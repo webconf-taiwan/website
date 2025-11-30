@@ -30,12 +30,27 @@ const WEBSITES = [
 
 const hoveredImageIndex = ref(-1)
 
+function useItemHover(index: number) {
+  const itemRef = ref<HTMLLIElement | null>(null)
+  const { isOutside } = useMouseInElement(itemRef)
+
+  watch(isOutside, (outside) => {
+    if (!outside)
+      hoveredImageIndex.value = index
+    else if (hoveredImageIndex.value === index)
+      hoveredImageIndex.value = -1
+  })
+
+  return itemRef
+}
+
+const itemRefs = WEBSITES.map((_, i) => useItemHover(i))
+
 const historyBgRef = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
   if (!historyBgRef.value)
     return
-
   gsap.fromTo(
     historyBgRef.value,
     { backgroundPosition: 'center 50%' },
@@ -67,12 +82,15 @@ onMounted(() => {
         <li
           v-for="(item, index) in WEBSITES"
           :key="item.year"
+          :ref="
+            (el) => {
+              itemRefs[index].value = el as HTMLLIElement | null;
+            }
+          "
           :class="{
             'lg:self-end': index % 2 === 1,
           }"
           class="hover:blue-shadow group relative border-b border-webconf-gray/50 bg-black text-white duration-300 lg:w-[calc(100dvw/2)]"
-          @mousemove="hoveredImageIndex = index"
-          @mouseleave="hoveredImageIndex = -1"
         >
           <div class="size-full">
             <NuxtImg
@@ -110,7 +128,7 @@ onMounted(() => {
                 :href="item.link"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="absolute left-0 top-0 mt-6 hidden size-full bg-webconf-blue px-6 py-2 lg:block lg:bg-transparent"
+                class="absolute left-0 top-0 hidden size-full bg-webconf-blue lg:block lg:bg-transparent"
               >
               </a>
             </div>
