@@ -44,6 +44,7 @@ const MAP_INFO = [
     name: 'HQ｜大會報到處',
     display: 'HQ｜大會報到處',
     image: '/images/venue/HQ.svg',
+    link: '/images/venue/HQ.png',
     isAvailable: true,
   },
   {
@@ -51,6 +52,7 @@ const MAP_INFO = [
     name: 'M 棟｜議程廳',
     display: 'M 棟｜議程廳',
     image: '/images/venue/M.svg',
+    link: '/images/venue/M.png',
     isAvailable: true,
   },
   {
@@ -58,6 +60,7 @@ const MAP_INFO = [
     name: 'I 棟｜休息區',
     display: 'I 棟｜休息區',
     image: '/images/venue/I.svg',
+    link: '/images/venue/I.png',
     isAvailable: true,
   },
   {
@@ -65,6 +68,7 @@ const MAP_INFO = [
     name: 'F 棟｜議程廳',
     display: 'F 棟｜議程廳',
     image: '/images/venue/F.svg',
+    link: '/images/venue/F.png',
     isAvailable: true,
   },
   {
@@ -72,6 +76,7 @@ const MAP_INFO = [
     name: 'B 棟｜交流攤位',
     display: 'B 棟｜交流攤位',
     image: '/images/venue/B.svg',
+    link: '/images/venue/B.png',
     isAvailable: true,
   },
   {
@@ -79,6 +84,7 @@ const MAP_INFO = [
     name: 'A1 棟｜工作坊',
     display: 'A1 棟｜工作坊（2F）',
     image: '/images/venue/A1.svg',
+    link: '/images/venue/A1.png',
     isAvailable: true,
   },
   {
@@ -86,6 +92,7 @@ const MAP_INFO = [
     name: 'A2 棟｜議程廳',
     display: 'A2 棟｜議程廳',
     image: '/images/venue/A2.svg',
+    link: '/images/venue/A2.png',
     isAvailable: true,
   },
   {
@@ -93,6 +100,7 @@ const MAP_INFO = [
     name: 'G 棟｜未開放',
     display: 'G 棟｜未開放',
     image: '',
+    link: '',
     isAvailable: false,
   },
 ]
@@ -180,7 +188,7 @@ onMounted(() => {
 
       <div class="grid w-full grid-cols-4">
         <NuxtLink
-          :to="selectedVenue?.image || '#'"
+          :to="selectedVenue?.link || '#'"
           rel="noopener noreferrer"
           target="_blank"
           class="relative col-span-4 grid place-content-center pb-4 pt-[50px] lg:border-l lg:py-0"
