@@ -43,7 +43,7 @@ const MAP_INFO = [
     id: 1,
     name: 'HQ｜大會報到處',
     display: 'HQ｜大會報到處',
-    image: '/images/venue/HQ.svg',
+    image: '/images/venue/HQ.webp',
     link: '/images/venue/HQ.png',
     isAvailable: true,
   },
@@ -51,7 +51,7 @@ const MAP_INFO = [
     id: 2,
     name: 'M 棟｜議程廳',
     display: 'M 棟｜議程廳',
-    image: '/images/venue/M.svg',
+    image: '/images/venue/M.webp',
     link: '/images/venue/M.png',
     isAvailable: true,
   },
@@ -59,7 +59,7 @@ const MAP_INFO = [
     id: 3,
     name: 'I 棟｜休息區',
     display: 'I 棟｜休息區',
-    image: '/images/venue/I.svg',
+    image: '/images/venue/I.webp',
     link: '/images/venue/I.png',
     isAvailable: true,
   },
@@ -67,7 +67,7 @@ const MAP_INFO = [
     id: 4,
     name: 'F 棟｜議程廳',
     display: 'F 棟｜議程廳',
-    image: '/images/venue/F.svg',
+    image: '/images/venue/F.webp',
     link: '/images/venue/F.png',
     isAvailable: true,
   },
@@ -75,7 +75,7 @@ const MAP_INFO = [
     id: 5,
     name: 'B 棟｜交流攤位',
     display: 'B 棟｜交流攤位',
-    image: '/images/venue/B.svg',
+    image: '/images/venue/B.webp',
     link: '/images/venue/B.png',
     isAvailable: true,
   },
@@ -83,7 +83,7 @@ const MAP_INFO = [
     id: 6,
     name: 'A1 棟｜工作坊',
     display: 'A1 棟｜工作坊（2F）',
-    image: '/images/venue/A1.svg',
+    image: '/images/venue/A1.webp',
     link: '/images/venue/A1.png',
     isAvailable: true,
   },
@@ -91,7 +91,7 @@ const MAP_INFO = [
     id: 7,
     name: 'A2 棟｜議程廳',
     display: 'A2 棟｜議程廳',
-    image: '/images/venue/A2.svg',
+    image: '/images/venue/A2.webp',
     link: '/images/venue/A2.png',
     isAvailable: true,
   },
@@ -110,6 +110,18 @@ const selectedVenueNum = ref(1)
 const selectedVenue = computed(() =>
   MAP_INFO.find(venue => venue.id === selectedVenueNum.value),
 )
+
+// 只保留當前和前一張
+const visibleVenueIds = computed(() => {
+  const ids = new Set([selectedVenueNum.value])
+
+  const prev = selectedVenueNum.value - 1
+  if (MAP_INFO.find(v => v.id === prev)?.isAvailable) {
+    ids.add(prev)
+  }
+
+  return ids
+})
 
 function setVenue(num: number, isAvailable: boolean) {
   if (isAvailable && num !== selectedVenueNum.value) {
@@ -202,16 +214,16 @@ onMounted(() => {
             <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
           </p>
           <div class="relative">
-            <NuxtImg
-              v-for="venue in MAP_INFO.filter((v) => v.isAvailable)"
+            <img
+              v-for="venue in MAP_INFO.filter(
+                (v) => v.isAvailable && visibleVenueIds.has(v.id),
+              )"
               :key="venue.id"
               :src="venue.image"
               :alt="`${venue.display}平面圖`"
               width="1180"
               height="550"
-              loading="eager"
-              fetchpriority="high"
-              class="transition-opacity duration-500"
+              class="transition-opacity duration-500 [transform:translateZ(0)]"
               :class="
                 selectedVenueNum === venue.id
                   ? 'opacity-100'
@@ -223,10 +235,6 @@ onMounted(() => {
         <button
           v-for="map in MAP_INFO"
           :key="map.id"
-          v-cursor="{
-            scale: 0.5,
-            duration: 0.5,
-          }"
           type="button"
           class="venue-map relative col-span-2 border-t border-l-webconf-frame px-6 py-5 before:absolute before:inset-0 before:z-10 before:block before:size-0 before:bg-webconf-blue before:transition-all before:duration-300 before:content-[''] lg:col-span-1 lg:border-l-[0.5px] lg:py-8 lg:pl-10 lg:pr-6 lg:before:size-7"
           :class="[
@@ -253,7 +261,7 @@ onMounted(() => {
       class="relative flex flex-col border-y border-webconf-gray bg-black text-white lg:mt-[141px] lg:flex-row"
     >
       <div
-        v-arrow="{ speed1: '10s', color: '#E6E6E6' }"
+        v-arrow="{ speed1: '12s', color: '#E6E6E6' }"
         class="absolute z-40 w-full"
       ></div>
       <div

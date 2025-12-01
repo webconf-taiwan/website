@@ -15,7 +15,6 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/scripts',
     'nuxt-typed-router',
-    'shadcn-nuxt',
     '@vueuse/nuxt',
     'nuxt-marquee',
     '@nuxt/content',
