@@ -38,7 +38,7 @@ watch(isMenuOpen, (newValue) => {
       class="mr-[-0.5px] border-b border-webconf-gray bg-black text-webconf-gray"
     >
       <section
-        class="sticky top-[54px] z-20 border-b border-webconf-gray bg-black lg:hidden"
+        class="sticky top-[54px] z-10 border-b border-webconf-gray bg-black lg:hidden"
       >
         <div class="group flex justify-end p-4">
           <label class="flex items-center gap-3">
