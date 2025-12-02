@@ -43,7 +43,9 @@ const MAP_INFO = [
     id: 1,
     name: 'HQ｜大會報到處',
     display: 'HQ｜大會報到處',
-    image: '/images/venue/HQ.webp',
+    image: '/images/venue/HQ.svg',
+    width: 918,
+    height: 470,
     link: '/images/venue/HQ.png',
     isAvailable: true,
   },
@@ -51,7 +53,9 @@ const MAP_INFO = [
     id: 2,
     name: 'M 棟｜議程廳',
     display: 'M 棟｜議程廳',
-    image: '/images/venue/M.webp',
+    image: '/images/venue/M.svg',
+    width: 509,
+    height: 455,
     link: '/images/venue/M.png',
     isAvailable: true,
   },
@@ -59,7 +63,9 @@ const MAP_INFO = [
     id: 3,
     name: 'I 棟｜休息區',
     display: 'I 棟｜休息區',
-    image: '/images/venue/I.webp',
+    image: '/images/venue/I.svg',
+    width: 1079,
+    height: 219,
     link: '/images/venue/I.png',
     isAvailable: true,
   },
@@ -67,7 +73,9 @@ const MAP_INFO = [
     id: 4,
     name: 'F 棟｜議程廳',
     display: 'F 棟｜議程廳',
-    image: '/images/venue/F.webp',
+    image: '/images/venue/F.svg',
+    width: 1077,
+    height: 258,
     link: '/images/venue/F.png',
     isAvailable: true,
   },
@@ -75,7 +83,9 @@ const MAP_INFO = [
     id: 5,
     name: 'B 棟｜交流攤位',
     display: 'B 棟｜交流攤位',
-    image: '/images/venue/B.webp',
+    image: '/images/venue/B.svg',
+    width: 858,
+    height: 425,
     link: '/images/venue/B.png',
     isAvailable: true,
   },
@@ -83,7 +93,9 @@ const MAP_INFO = [
     id: 6,
     name: 'A1 棟｜工作坊',
     display: 'A1 棟｜工作坊（2F）',
-    image: '/images/venue/A1.webp',
+    image: '/images/venue/A1.svg',
+    width: 560,
+    height: 320,
     link: '/images/venue/A1.png',
     isAvailable: true,
   },
@@ -91,7 +103,9 @@ const MAP_INFO = [
     id: 7,
     name: 'A2 棟｜議程廳',
     display: 'A2 棟｜議程廳',
-    image: '/images/venue/A2.webp',
+    image: '/images/venue/A2.svg',
+    width: 1049,
+    height: 308,
     link: '/images/venue/A2.png',
     isAvailable: true,
   },
@@ -99,6 +113,8 @@ const MAP_INFO = [
     id: 8,
     name: 'G 棟｜未開放',
     display: 'G 棟｜未開放',
+    width: 0,
+    height: 0,
     image: '',
     link: '',
     isAvailable: false,
@@ -110,18 +126,6 @@ const selectedVenueNum = ref(1)
 const selectedVenue = computed(() =>
   MAP_INFO.find(venue => venue.id === selectedVenueNum.value),
 )
-
-// 只保留當前和前一張
-const visibleVenueIds = computed(() => {
-  const ids = new Set([selectedVenueNum.value])
-
-  const prev = selectedVenueNum.value - 1
-  if (MAP_INFO.find(v => v.id === prev)?.isAvailable) {
-    ids.add(prev)
-  }
-
-  return ids
-})
 
 function setVenue(num: number, isAvailable: boolean) {
   if (isAvailable && num !== selectedVenueNum.value) {
@@ -203,7 +207,7 @@ onMounted(() => {
           :to="selectedVenue?.link || '#'"
           rel="noopener noreferrer"
           target="_blank"
-          class="relative col-span-4 grid place-content-center pb-4 pt-[50px] lg:border-l lg:py-0"
+          class="relative col-span-4 grid h-[234px] place-content-center pb-4 pt-[50px] lg:h-[550px] lg:border-l lg:py-0"
         >
           <p
             class="absolute inset-x-5 top-4 z-10 flex items-center justify-between lg:left-10 lg:top-8"
@@ -213,21 +217,20 @@ onMounted(() => {
             }}</span>
             <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
           </p>
-          <div class="relative">
-            <img
-              v-for="venue in MAP_INFO.filter(
-                (v) => v.isAvailable && visibleVenueIds.has(v.id),
-              )"
+          <div class="relative grid place-content-center">
+            <NuxtImg
+              v-for="venue in MAP_INFO.filter((v) => v.isAvailable)"
               :key="venue.id"
               :src="venue.image"
               :alt="`${venue.display}平面圖`"
-              width="1180"
-              height="550"
-              class="transition-opacity duration-500 [transform:translateZ(0)]"
+              :width="venue.width"
+              :height="venue.height"
+              class="h-[143px] w-[264px] transition-opacity duration-500 lg:size-auto"
+              loading="eager"
               :class="
                 selectedVenueNum === venue.id
                   ? 'opacity-100'
-                  : 'opacity-0 absolute inset-0 pointer-events-none'
+                  : 'opacity-0 absolute inset-0 pointer-events-none invisible'
               "
             />
           </div>
