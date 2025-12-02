@@ -43,9 +43,7 @@ const MAP_INFO = [
     id: 1,
     name: 'HQ｜大會報到處',
     display: 'HQ｜大會報到處',
-    image: '/images/venue/HQ.svg',
-    width: 918,
-    height: 470,
+    image: '/images/venue/HQ.webp',
     link: '/images/venue/HQ.png',
     isAvailable: true,
   },
@@ -53,9 +51,7 @@ const MAP_INFO = [
     id: 2,
     name: 'M 棟｜議程廳',
     display: 'M 棟｜議程廳',
-    image: '/images/venue/M.svg',
-    width: 509,
-    height: 455,
+    image: '/images/venue/M.webp',
     link: '/images/venue/M.png',
     isAvailable: true,
   },
@@ -63,9 +59,7 @@ const MAP_INFO = [
     id: 3,
     name: 'I 棟｜休息區',
     display: 'I 棟｜休息區',
-    image: '/images/venue/I.svg',
-    width: 1079,
-    height: 219,
+    image: '/images/venue/I.webp',
     link: '/images/venue/I.png',
     isAvailable: true,
   },
@@ -73,9 +67,7 @@ const MAP_INFO = [
     id: 4,
     name: 'F 棟｜議程廳',
     display: 'F 棟｜議程廳',
-    image: '/images/venue/F.svg',
-    width: 1077,
-    height: 258,
+    image: '/images/venue/F.webp',
     link: '/images/venue/F.png',
     isAvailable: true,
   },
@@ -83,9 +75,7 @@ const MAP_INFO = [
     id: 5,
     name: 'B 棟｜交流攤位',
     display: 'B 棟｜交流攤位',
-    image: '/images/venue/B.svg',
-    width: 858,
-    height: 425,
+    image: '/images/venue/B.webp',
     link: '/images/venue/B.png',
     isAvailable: true,
   },
@@ -93,9 +83,7 @@ const MAP_INFO = [
     id: 6,
     name: 'A1 棟｜工作坊',
     display: 'A1 棟｜工作坊（2F）',
-    image: '/images/venue/A1.svg',
-    width: 560,
-    height: 320,
+    image: '/images/venue/A1.webp',
     link: '/images/venue/A1.png',
     isAvailable: true,
   },
@@ -103,9 +91,7 @@ const MAP_INFO = [
     id: 7,
     name: 'A2 棟｜議程廳',
     display: 'A2 棟｜議程廳',
-    image: '/images/venue/A2.svg',
-    width: 1049,
-    height: 308,
+    image: '/images/venue/A2.webp',
     link: '/images/venue/A2.png',
     isAvailable: true,
   },
@@ -135,7 +121,16 @@ function setVenue(num: number, isAvailable: boolean) {
 
 const venueBgRef = ref<HTMLDivElement | null>(null)
 
+function preloadImages() {
+  MAP_INFO.filter(venue => venue.isAvailable).forEach((venue) => {
+    const img = new Image()
+    img.src = venue.image
+  })
+}
+
 onMounted(() => {
+  preloadImages()
+
   if (!venueBgRef.value)
     return
 
@@ -179,7 +174,7 @@ onMounted(() => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Google map
+          GOOGLE MAPS
         </ShareLinkButton>
       </div>
     </div>
@@ -207,7 +202,7 @@ onMounted(() => {
           :to="selectedVenue?.link || '#'"
           rel="noopener noreferrer"
           target="_blank"
-          class="relative col-span-4 grid h-[234px] place-content-center pb-4 pt-[50px] lg:h-[550px] lg:border-l lg:py-0"
+          class="relative col-span-4 pb-4 pt-[50px] lg:border-l lg:py-0"
         >
           <p
             class="absolute inset-x-5 top-4 z-10 flex items-center justify-between lg:left-10 lg:top-8"
@@ -217,27 +212,30 @@ onMounted(() => {
             }}</span>
             <span class="visible text-btn-14 text-webconf-blue lg:invisible">點圖放大</span>
           </p>
-          <div class="relative grid place-content-center">
-            <NuxtImg
-              v-for="venue in MAP_INFO.filter((v) => v.isAvailable)"
-              :key="venue.id"
-              :src="venue.image"
-              :alt="`${venue.display}平面圖`"
-              :width="venue.width"
-              :height="venue.height"
-              class="h-[143px] w-[264px] transition-opacity duration-500 lg:size-auto"
-              loading="eager"
-              :class="
-                selectedVenueNum === venue.id
-                  ? 'opacity-100'
-                  : 'opacity-0 absolute inset-0 pointer-events-none invisible'
-              "
-            />
+          <div class="relative grid place-items-center">
+            <Transition
+              name="venue-fade"
+              mode="out-in"
+            >
+              <NuxtImg
+                v-if="selectedVenue && selectedVenue.isAvailable"
+                :key="selectedVenue.id"
+                :src="selectedVenue.image"
+                :alt="`${selectedVenue.display}平面圖`"
+                width="1180"
+                height="550"
+                loading="eager"
+              />
+            </Transition>
           </div>
         </NuxtLink>
         <button
           v-for="map in MAP_INFO"
           :key="map.id"
+          v-cursor="{
+            scale: 0.5,
+            duration: 0.5,
+          }"
           type="button"
           class="venue-map relative col-span-2 border-t border-l-webconf-frame px-6 py-5 before:absolute before:inset-0 before:z-10 before:block before:size-0 before:bg-webconf-blue before:transition-all before:duration-300 before:content-[''] lg:col-span-1 lg:border-l-[0.5px] lg:py-8 lg:pl-10 lg:pr-6 lg:before:size-7"
           :class="[
@@ -310,6 +308,29 @@ onMounted(() => {
 </template>
 
 <style scoped>
+/* 優化 transition 效果 */
+.venue-fade-enter-active,
+.venue-fade-leave-active {
+  transition: opacity 0.15s ease-in-out;
+}
+
+.venue-fade-enter-from,
+.venue-fade-leave-to {
+  opacity: 0;
+}
+
+/* 手機優化 */
+@media (max-width: 1023px) {
+  .venue-fade-enter-active,
+  .venue-fade-leave-active {
+    transition: opacity 0.1s ease-in-out;
+  }
+}
+
+/* 避免重複渲染 */
+img {
+  will-change: auto;
+}
 .venue-bg {
   position: relative;
   background-image: url("/images/venue/venueBg.webp");
