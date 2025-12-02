@@ -40,4 +40,5 @@ room: F 棟
 
 1. 瞭解 Phoenix LiveView + Tidewave 生態系的開發體驗，認識其優缺點，以及為何它是最適合個人開發或小團隊的技術棧。
 2. 看懂 Phoenix 框架, LiveView 套件及 Tidewave 的核心功能，重新思考如何評估 AI 時代開發工具鏈，以及帶走能在立即套用到自己工作流中的開發思維。
-   ::
+
+::
