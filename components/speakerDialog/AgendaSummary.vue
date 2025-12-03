@@ -70,7 +70,7 @@ async function handleShareClick() {
           </div>
         </div>
         <div
-          v-if="meta.doc && meta.slides"
+          v-if="meta.doc || meta.slides"
           class="mb-10 flex gap-3 text-btn-16 text-webconf-gray"
         >
           <a

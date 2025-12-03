@@ -17,6 +17,7 @@ day: day2
 date: 2025-12-13
 time: 11:50~12:35
 room: F 棟
+doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2Fpdw4NCDAQCmrxrnF2bnW9Q
 ---
 
 ::speaker-intro
