@@ -520,7 +520,7 @@
             </p>
           </div>
           <ShareLinkButton
-            to="/coming-soon"
+            to="/venue"
             class="m-auto flex w-fit"
           >
             更多資訊

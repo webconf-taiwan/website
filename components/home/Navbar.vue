@@ -19,7 +19,7 @@ const NAV_ITEMS = [
   {
     name: '場域介紹',
     enName: 'Venue',
-    href: '/coming-soon',
+    href: '/venue',
     isTablet: true,
     isDesktop: true,
   },
