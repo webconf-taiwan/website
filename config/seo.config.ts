@@ -33,6 +33,8 @@ export const sitemap = {
     { loc: '/sponsors', priority: 0.7 },
     { loc: '/staff', priority: 0.6 },
     { loc: '/history', priority: 0.6 },
+    { loc: '/venue', priority: 0.6 },
+    { loc: '/coming-soon', priority: 0.6 },
 
     // 個別議程頁面
     ...Array.from({ length: 44 }, (_, i) => ({

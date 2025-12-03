@@ -1,2 +1,2 @@
 User-Agent: *
-Disallow: /venue/v2
+Disallow:
