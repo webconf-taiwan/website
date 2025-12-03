@@ -289,7 +289,7 @@ onMounted(() => {
             <span
               v-for="(paragraph, index) in transport.description"
               :key="index"
-              class="inline-block"
+              class="block"
             >
               {{ paragraph }}
             </span>
