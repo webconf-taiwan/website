@@ -70,23 +70,25 @@ async function handleShareClick() {
           </div>
         </div>
         <div
-          v-if="meta.doc && meta.slides"
+          v-if="meta.doc || meta.slides"
           class="mb-10 flex gap-3 text-btn-16 text-webconf-gray"
         >
-          <a
+          <NuxtLink
             v-if="meta.doc"
-            href="#"
+            :to="meta.doc"
+            target="_blank"
             class="inline-block bg-webconf-blue px-6 py-2"
           >
             共筆文件
-          </a>
-          <a
+          </NuxtLink>
+          <NuxtLink
             v-if="meta.slides"
-            :href="typeof meta.slides === 'string' ? meta.slides : '#'"
+            :to="meta.slides"
+            target="_blank"
             class="inline-block bg-webconf-blue px-[31px] py-2"
           >
             投影片
-          </a>
+          </NuxtLink>
         </div>
         <ContentRenderer :value="speakerInfo.summarySection" />
         <div
