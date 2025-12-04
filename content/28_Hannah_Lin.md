@@ -6,7 +6,7 @@ company: "Remote"
 job_title: Front End Developer
 topic: 程式碼與尿布：媽媽工程師的生存指南
 tags: ["Frontend"]
-speakerInfo: "兩個小孩的前端工程師。從台灣到矽谷累積的十多年跨國工作經驗真的不算什麼，倒是經歷過二年以上全職工作 + 24小時無後援育兒的雙重挑戰，那才是真正難以超越的成就。"
+speakerInfo: "兩個小孩的前端工程師。從台灣到矽谷累積的十多年跨國工作經驗真的不算什麼，倒是經歷過二年以上全職工作 + 24 小時無後援育兒的雙重挑戰，那才是真正難以超越的成就。"
 description: "媽媽 × 工程師：兩個身分，一個我。每天都在自我懷疑：工作做不好，育兒也力不從心，還有一堆做不完的家事。我會坦承分享內心拉扯、選擇與取捨，以及如何透過認識自己找到屬於我的平衡點。"
 email: hannahpun@gmail.com
 image: /images/speakers/28_hannah.webp
@@ -22,7 +22,7 @@ doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FobwkZkiMSeuZ4ATdFKsMLg
 
 ::speaker-intro
 #personalIntroduction
-兩個小孩的前端工程師。從台灣到矽谷累積的十多年跨國工作經驗真的不算什麼，倒是經歷過二年以上全職工作 + 24小時無後援育兒的雙重挑戰，那才是真正難以超越的成就。
+兩個小孩的前端工程師。從台灣到矽谷累積的十多年跨國工作經驗真的不算什麼，倒是經歷過二年以上全職工作 + 24 小時無後援育兒的雙重挑戰，那才是真正難以超越的成就。
 ::
 
 ::speaker-summary

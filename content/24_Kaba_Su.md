@@ -37,5 +37,5 @@ doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FwedbmdbOTc-DS2iPlBIMcQ
 
 ::speaker-earnings
 #expectedEarnings
-有關設計師轉職PM所需要解鎖的技能
+有關設計師轉職 PM 所需要解鎖的技能
 ::
