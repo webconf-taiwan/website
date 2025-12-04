@@ -5,7 +5,7 @@ export const SPONSORSINFO = [
     logo: '/images/sponsors/titansoft.svg',
     badge: '連續第三年贊助',
     description:
-      '新加坡商鈦坦科技是一間軟體開發公司,致力於線上軟體平台客製開發與維護,以及代理 Atlassian 旗下產品,以自身實際使用經驗提供一站式導入服務。',
+      '新加坡商鈦坦科技是一間軟體開發公司，致力於線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品，以自身實際使用經驗提供一站式導入服務。',
     socialLinks: [
       {
         name: 'web',
@@ -35,7 +35,7 @@ export const SPONSORSINFO = [
     logo: '/images/sponsors/ascentisTech.svg',
     badge: '',
     description:
-      'AscentisTech 專注於打造全球領先的線上軟體開發平台,匯集實力堅強、技術與數據背景的菁英團隊,具備高效能系統架構設計、多語系支援與模組化整合能力。',
+      'AscentisTech 專注於打造全球領先的線上軟體開發平台，匯集實力堅強、技術與數據背景的菁英團隊，具備高效能系統架構設計、多語系支援與模組化整合能力。 ',
     socialLinks: [
       {
         name: 'fb',
