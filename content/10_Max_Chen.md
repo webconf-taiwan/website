@@ -4,7 +4,7 @@ name: Max Chen
 slug: Max_Chen
 company: "對稱資訊股份有限公司/面試趣"
 job_title: CEO
-topic: 零基礎打造400萬用戶，我們犯了哪些錯誤
+topic: 零基礎打造 400 萬用戶，我們犯了哪些錯誤
 tags: ["產品思維", "產業應用"]
 speakerInfo: "面試趣、比薪水創辦人"
 description: "分享面試趣、比薪水的創立過程，以及我們踩過哪些坑"
