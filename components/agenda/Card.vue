@@ -7,6 +7,7 @@ const props = defineProps<{
   time?: string
   showTime?: boolean
   isSelected: boolean
+  isMenuOpen: boolean
 }>()
 
 const cardRef = ref<HTMLElement>()
@@ -166,7 +167,11 @@ const cardLink = computed(() => {
 
       <!-- 標籤選取遮罩 -->
       <div
-        v-if="!isSelected"
+        v-if="!isSelected && !isMenuOpen"
+        :class="{
+          'opacity-0': isSelected || isMenuOpen,
+          'opacity-70': !isSelected && !isMenuOpen,
+        }"
         class="absolute inset-0 z-[5] size-full bg-black opacity-70 duration-300"
       ></div>
     </NuxtLink>

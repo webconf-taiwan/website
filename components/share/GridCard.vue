@@ -3,6 +3,7 @@ interface Props {
   isSelected?: boolean
   disabledSquareEffect?: boolean
   showSquare?: boolean
+  isMenuOpen?: boolean
 }
 
 const {
@@ -58,7 +59,11 @@ const scaleY = computed(() => {
 
     <!-- 半透明遮罩 -->
     <div
-      v-if="isSelected === false"
+      v-if="!isSelected && !isMenuOpen"
+      :class="{
+        'opacity-0': isSelected || isMenuOpen,
+        'opacity-70': !isSelected && !isMenuOpen,
+      }"
       class="absolute inset-0 z-10 size-full bg-black opacity-70 duration-300"
     ></div>
 

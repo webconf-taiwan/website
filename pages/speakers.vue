@@ -116,6 +116,7 @@ watch(isMenuOpen, (newValue) => {
             :to="`/speakers/${speaker.speakerId}`"
           >
             <ShareGridCard
+              :is-menu-open="isMenuOpen"
               :is-selected="
                 speaker.tags?.some((tag) => selectedTags.includes(tag))
                   || selectedTags.length === 0
