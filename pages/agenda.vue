@@ -235,6 +235,7 @@ watch(isMenuOpen, (newValue) => {
               <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
+                :is-menu-open="isMenuOpen"
                 :data="agenda"
                 :index="index"
                 :time="time"
@@ -288,6 +289,7 @@ watch(isMenuOpen, (newValue) => {
               <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
+                :is-menu-open="isMenuOpen"
                 :data="agenda"
                 :index="index"
                 :time="time"
