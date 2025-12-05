@@ -678,6 +678,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     startTime: '13:30',
     endTime: '14:15',
     location: 'F 棟',
+    isCoStream: true,
   },
   {
     title: '培養十倍速 PM：從工具到習慣',
