@@ -71,7 +71,7 @@ export const STAFF = [
     title: '設計小夥伴',
     avatarUrl: '/images/staff/scott.webp',
     links: [
-      'https://www.instagram.com/helloscott23050000/',
+      'https://www.instagram.com/scott23050000/',
       'https://www.facebook.com/scottyang0011',
     ],
   },

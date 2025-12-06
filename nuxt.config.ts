@@ -138,7 +138,7 @@ export default defineNuxtConfig({
     prerender: {
       routes: [
         '/',
-        '/agenda',
+        // '/agenda' 使用 SSR，不進行預渲染
         '/speakers',
         '/sponsors',
         '/staff',
@@ -151,6 +151,11 @@ export default defineNuxtConfig({
       ],
     },
     routeRules: {
+      // 議程頁面不進行預渲染，使用 SSR 動態渲染
+      '/agenda': {
+        prerender: false,
+      },
+
       // 原始圖片路徑快取(背景圖片使用)
       '/images/**': {
         headers: { 'Cache-Control': 'public, max-age=2592000, s-maxage=2592000' },

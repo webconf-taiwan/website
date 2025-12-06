@@ -1,6 +1,4 @@
 <script setup lang="ts">
-const $img = useImage()
-
 const speakers = [
   {
     name: 'Happy',
@@ -53,14 +51,6 @@ const speakers = [
     link: '/speakers/4',
   },
 ]
-
-const speakerAssets = computed(() =>
-  speakers.map(speaker => ({
-    ...speaker,
-    src: $img(speaker.src, { width: 282, height: 448 }),
-    link: speaker.link,
-  })),
-)
 
 const { width } = useWindowSize()
 const isHovered = ref(false)
@@ -118,7 +108,6 @@ function handleSlideToNext() {
     <section
       class="relative z-10 border-b-[0.5px] border-white bg-black text-white"
     >
-      <!-- 區塊標題 -->
       <div
         v-arrow="{ speed1: '12s', color: 'white' }"
         class="relative flex items-center justify-between border-y-[0.5px] border-white px-5 py-10 sm:px-8 xl:px-20"
@@ -140,14 +129,12 @@ function handleSlideToNext() {
           更多講者
         </ShareLinkButton>
 
-        <!-- 箭頭軌道 -->
         <div
           v-arrow="{ speed1: '10s', color: 'white' }"
           class="absolute bottom-0 left-0 w-screen"
         ></div>
       </div>
 
-      <!-- 講者輪播 -->
       <div class="relative">
         <div
           class="relative left-1/2 grid w-[768px] -translate-x-1/2 grid-cols-3 lg:left-0 lg:mx-auto lg:w-full lg:translate-x-0 lg:grid-cols-4 3xl:grid-cols-5"
@@ -157,9 +144,9 @@ function handleSlideToNext() {
           <!-- 講者卡片 -->
           <HomeFeaturedSpeakerCard
             v-for="index in displayCardLengthArr"
-            :key="`${speakerAssets[index].name}-${forceRerenderKey}`"
+            :key="`${speakers[index].name}-${forceRerenderKey}`"
             :ref="(el) => (speakerCards[index] = el)"
-            :speakers="speakerAssets"
+            :speakers="speakers"
             :original-index="index"
             :initial-index="index"
             :is-parent-hovered="isHovered"
@@ -195,7 +182,6 @@ function handleSlideToNext() {
       </div>
     </section>
 
-    <!-- 動作按鈕 -->
     <div
       class="grid grid-cols-1 gap-6 pb-[132px] pt-6 md:grid-cols-3 md:px-8 md:pb-20 md:pt-10 xl:hidden"
     >
