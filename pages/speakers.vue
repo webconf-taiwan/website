@@ -71,7 +71,6 @@ watch(isMenuOpen, (newValue) => {
           }"
           class="fixed top-[54.5px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[54.5px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
-          <!-- 篩選按鈕 -->
           <AgendaTagFilterBtn
             :is-menu-open="isMenuOpen"
             size="lg"
@@ -79,27 +78,19 @@ watch(isMenuOpen, (newValue) => {
             @click="isMenuOpen = true"
           />
 
-          <!-- 篩選標籤選單 -->
           <AgendaTagFilterMenu
             v-model:is-open="isMenuOpen"
             v-model:selected-tags="selectedTags"
           />
 
-          <!-- 半透明遮罩 -->
-          <transition
-            enter-active-class="transition-opacity duration-300"
-            leave-active-class="transition-opacity duration-200"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-          >
-            <div
-              v-show="isMenuOpen"
-              class="absolute inset-0 h-full w-[100dvw] bg-black/80"
-              @click="isMenuOpen = false"
-            ></div>
-          </transition>
+          <div
+            :class="{
+              'opacity-100': isMenuOpen,
+              'opacity-0': !isMenuOpen,
+            }"
+            class="absolute inset-0 h-full w-[100dvw] bg-black/30 duration-300"
+            @click="isMenuOpen = false"
+          ></div>
         </aside>
 
         <!-- 講者卡片 -->
@@ -116,7 +107,6 @@ watch(isMenuOpen, (newValue) => {
             :to="`/speakers/${speaker.speakerId}`"
           >
             <ShareGridCard
-              :is-menu-open="isMenuOpen"
               :is-selected="
                 speaker.tags?.some((tag) => selectedTags.includes(tag))
                   || selectedTags.length === 0

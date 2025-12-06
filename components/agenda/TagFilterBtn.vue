@@ -9,7 +9,7 @@ defineProps<Props>()
 </script>
 
 <template>
-  <label class="group">
+  <label class="group relative z-20">
     <button
       type="button"
       :class="{
