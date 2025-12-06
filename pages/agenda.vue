@@ -4,7 +4,13 @@ import { AGENDA_LIST } from '~/constants/agenda'
 
 useSeoMeta({
   title: '議程資訊',
+  description:
+    'WebConf Taiwan 2025 完整議程資訊，包含兩天精彩內容、講者資訊與議題標籤',
 })
+
+// 加入完整的議程結構化資料，確保 SEO 可以擷取所有議程
+const { mainEvent, day1Event, day2Event } = useAgendaSeo()
+useSchemaOrg([mainEvent, day1Event, day2Event])
 
 // 將議程按時間分組
 function groupAgendasByTime(agendas: AgendaItem[]) {
@@ -49,7 +55,15 @@ const agendasAtDec13Afternoon = computed(() => {
   return groupAgendasByTime(afternoonAgendas)
 })
 
-const selectedDate = ref(new Date() <= new Date('2025-12-13') ? '12' : '13')
+// SSR: 在伺服器端根據當前時間決定預設顯示的日期
+// 在 12/12 當天及之前顯示第一天，12/13 及之後顯示第二天
+function getDefaultDate() {
+  const now = new Date()
+  const day13Start = new Date('2025-12-13T00:00:00+08:00')
+  return now < day13Start ? '12' : '13'
+}
+
+const selectedDate = ref(getDefaultDate())
 
 // 監聽 selectedDate 變化，切換時滾動到頂部
 watch(selectedDate, () => {
