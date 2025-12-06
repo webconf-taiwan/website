@@ -6,7 +6,7 @@ const { setFirstLoad } = useGlobalState()
 onMounted(() => {
   const dots = gsap.utils.toArray('.dot') as HTMLElement[]
   const horizontalLine = document.querySelector(
-    '.horizontalLine',
+    '.horizontal-line',
   ) as HTMLElement
 
   const tl = gsap.timeline({ repeat: -1 })
