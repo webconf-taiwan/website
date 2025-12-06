@@ -2,6 +2,7 @@
 const { gsap } = useGsap()
 
 const { setFirstLoad } = useGlobalState()
+
 onMounted(() => {
   const dots = gsap.utils.toArray('.dot') as HTMLElement[]
   const horizontalLine = document.querySelector(
@@ -43,7 +44,7 @@ onMounted(() => {
       <div class="dot size-[18px] bg-webconf-gray"></div>
     </div>
     <div
-      class="horizontalLine absolute bottom-[70px] left-0 h-[1px] w-0 bg-webconf-gray sm:bottom-[90px]"
+      class="horizontal-line absolute bottom-[70px] left-0 h-[1px] w-0 bg-webconf-gray sm:bottom-[90px]"
     ></div>
   </div>
 </template>
