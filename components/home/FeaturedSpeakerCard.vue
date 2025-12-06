@@ -181,7 +181,6 @@ watch(
         class="flex"
         style="will-change: transform; transform: translateZ(0)"
       >
-        <!-- 當前講者卡片 -->
         <NuxtLink
           :to="speakers[currentIndex].link"
           :aria-label="speakers[currentIndex].name"
@@ -206,7 +205,6 @@ watch(
           </h3>
         </NuxtLink>
 
-        <!-- 下一張講者卡片 -->
         <div
           class="shrink-0"
           :style="{ width: `${currentCardWidth}px` }"
