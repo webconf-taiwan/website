@@ -10,7 +10,7 @@ speakerInfo: "前端是工作，資安是興趣，有時兩者會互換。 喜�
 description: "網頁的世界博大精深，看似平凡的程式碼常常暗藏了許多不為人知的功能，我們一般把這種東西叫做「冷知識」。有些冷知識在開發上可能毫無用處，但到了資安的圈子裡，卻成了引出漏洞的關鍵。在這場演講裡面，將會分享幾個 Web 相關的冷知識（都是其他前輩們發現的，我只是整理一下），以及這些冷知識是如何成為漏洞的一部分。"
 email: aszx87410@gmail.com
 image: /images/speakers/17_Huli.webp
-ogImage: /images/ogImage/17_Huli.png
+ogImage: /images/ogImage/17_huli.png
 fb: https://www.facebook.com/huli.blog
 other_link: https://blog.huli.tw
 day: day2
