@@ -52,7 +52,7 @@ const snsInfo = computed(() => {
 <template>
   <a
     :href="link"
-    class="block size-[44px] border border-webconf-blue/90 p-[10px] transition-colors duration-500 hover:bg-webconf-blue"
+    class="block size-[44px] border border-webconf-blue/90 p-[10px] transition-colors duration-300 hover:bg-webconf-blue"
     target="_blank"
     rel="noopener noreferrer"
   >

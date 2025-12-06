@@ -59,7 +59,7 @@ const scaleY = computed(() => {
 
     <div
       :class="{
-        'z-0 opacity-0': isSelected,
+        'opacity-0': isSelected,
         'opacity-70': !isSelected,
       }"
       class="absolute inset-0 z-[5] size-full bg-black duration-300"

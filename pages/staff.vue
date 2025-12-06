@@ -72,7 +72,7 @@ useSeoMeta({
                 </p>
               </div>
 
-              <ul class="mt-3 flex flex-wrap gap-3">
+              <ul class="relative z-10 mt-3 flex flex-wrap gap-3">
                 <li
                   v-for="link in staff.links"
                   :key="`${staff.name}-${link}`"
