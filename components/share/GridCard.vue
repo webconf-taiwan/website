@@ -57,14 +57,12 @@ const scaleY = computed(() => {
       <slot></slot>
     </div>
 
-    <!-- 半透明遮罩 -->
     <div
-      v-if="!isSelected && !isMenuOpen"
       :class="{
-        'opacity-0': isSelected || isMenuOpen,
-        'opacity-70': !isSelected && !isMenuOpen,
+        'opacity-0': isSelected,
+        'opacity-70': !isSelected,
       }"
-      class="absolute inset-0 z-10 size-full bg-black opacity-70 duration-300"
+      class="absolute inset-0 z-[5] size-full bg-black duration-300"
     ></div>
 
     <slot name="floating-block"></slot>

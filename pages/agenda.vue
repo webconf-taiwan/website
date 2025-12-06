@@ -158,20 +158,14 @@ watch(isMenuOpen, (newValue) => {
             v-model:selected-tags="selectedTags"
           />
 
-          <transition
-            enter-active-class="transition-opacity duration-300"
-            leave-active-class="transition-opacity duration-200"
-            enter-from-class="opacity-0"
-            enter-to-class="opacity-100"
-            leave-from-class="opacity-100"
-            leave-to-class="opacity-0"
-          >
-            <div
-              v-if="isMenuOpen"
-              class="absolute inset-0 z-10 h-full w-[100dvw] bg-black/80"
-              @click="isMenuOpen = false"
-            ></div>
-          </transition>
+          <div
+            :class="{
+              'opacity-100': isMenuOpen,
+              'opacity-0': !isMenuOpen,
+            }"
+            class="absolute inset-0 h-full w-[100dvw] bg-black/30 duration-300"
+            @click="isMenuOpen = false"
+          ></div>
         </aside>
 
         <div
@@ -235,7 +229,6 @@ watch(isMenuOpen, (newValue) => {
               <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
-                :is-menu-open="isMenuOpen"
                 :data="agenda"
                 :index="index"
                 :time="time"
@@ -289,7 +282,6 @@ watch(isMenuOpen, (newValue) => {
               <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
-                :is-menu-open="isMenuOpen"
                 :data="agenda"
                 :index="index"
                 :time="time"
