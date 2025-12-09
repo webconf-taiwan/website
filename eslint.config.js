@@ -92,6 +92,7 @@ export default antfu(
             'hero-section',
             'cta-section',
             'float-blocks',
+            'banner-float-block',
             'blue-overlay',
             'mobile-menu',
             'content-container',
