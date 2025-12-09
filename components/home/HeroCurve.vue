@@ -138,7 +138,7 @@ class CurveNode {
         this.dragOffset.x * scale,
         this.dragOffset.y * scale,
       )
-      return p.constructor.Vector.sub(mousePos, scaledDragOffset)
+      return mousePos.copy().sub(scaledDragOffset)
     }
 
     // 基礎位置加上偏移量
@@ -149,10 +149,7 @@ class CurveNode {
 
     // 加上漂浮效果的偏移量
     const floatingOffset = curveController.getOffset()
-    const finalPosition = p.constructor.Vector.add(
-      baseWithOffset,
-      floatingOffset,
-    )
+    const finalPosition = baseWithOffset.copy().add(floatingOffset)
 
     // 最後套用縮放
     return p.createVector(finalPosition.x * scale, finalPosition.y * scale)
@@ -167,7 +164,7 @@ class CurveNode {
     const position = this.getCurrentPosition(p, curveController, offset)
     // 繪製主要錨點
     p.noStroke()
-    p.fill(isActive ? p.color(20, 120, 255) : '#E6E6E6')
+    p.fill(isActive ? p.color(20, 120, 255) : p.color('#E6E6E6'))
     p.rectMode(p.CENTER)
     const scale = getScale()
     const scaledSize = ANCHOR_POINT_SIZE * scale
@@ -198,7 +195,7 @@ class CurveNode {
   ) {
     this.isDragging = true
     const currentPos = this.getCurrentPosition(p, curveController, offset)
-    this.dragOffset = p.constructor.Vector.sub(mouseVec, currentPos)
+    this.dragOffset = mouseVec.copy().sub(currentPos)
   }
 
   updateDrag(
@@ -208,18 +205,16 @@ class CurveNode {
     offset: { x: number, y: number } = { x: 0, y: 0 },
   ) {
     const scale = getScale()
-    const targetPosition = p.constructor.Vector.sub(mouseVec, this.dragOffset)
+    const targetPosition = mouseVec.copy().sub(this.dragOffset)
 
     // 移除縮放影響並考慮偏移量
     const unscaledPosition = p.createVector(
       targetPosition.x / scale - offset.x,
       targetPosition.y / scale - offset.y,
     )
-
-    this.basePosition = p.constructor.Vector.sub(
-      unscaledPosition,
-      curveController.getOffset(),
-    )
+    this.basePosition = unscaledPosition
+      .copy()
+      .sub(curveController.getOffset())
   }
 
   endDrag() {
@@ -278,7 +273,7 @@ function sketch(p: p5) {
   }
 
   p.draw = () => {
-    if (!p.canvas || !p._renderer)
+    if (!(p as any).canvas || !(p as any)._renderer)
       return
     p.clear()
 
@@ -367,7 +362,7 @@ function sketch(p: p5) {
   // 檢查滑鼠是否在 canvas 範圍內
   function isMouseInCanvas(p: p5): boolean {
     return (
-      p.canvas
+      (p as any).canvas
       && p.mouseX >= 0
       && p.mouseY >= 0
       && p.mouseX <= p.width
