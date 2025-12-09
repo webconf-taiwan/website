@@ -7,29 +7,30 @@ interface P5SketchOptions {
 
 export function useP5Sketch({ container, sketch }: P5SketchOptions) {
   const { $p5 } = useNuxtApp()
-  let p5Instance: p5 | null = null
+  const p5Instance = ref<p5 | null>(null)
 
   const destroySketch = () => {
-    if (p5Instance) {
-      // 移除所有事件監聽器
-      if (p5Instance.mouseMoved) {
-        p5Instance.mouseMoved = () => {}
+    if (p5Instance.value) {
+      p5Instance.value.noLoop()
+
+      if (p5Instance.value.mouseMoved) {
+        p5Instance.value.mouseMoved = () => {}
       }
-      if (p5Instance.mouseDragged) {
-        p5Instance.mouseDragged = () => {}
+      if (p5Instance.value.mouseDragged) {
+        p5Instance.value.mouseDragged = () => {}
       }
-      if (p5Instance.mousePressed) {
-        p5Instance.mousePressed = () => {}
+      if (p5Instance.value.mousePressed) {
+        p5Instance.value.mousePressed = () => {}
       }
-      if (p5Instance.mouseReleased) {
-        p5Instance.mouseReleased = () => {}
+      if (p5Instance.value.mouseReleased) {
+        p5Instance.value.mouseReleased = () => {}
       }
-      if (p5Instance.draw) {
-        p5Instance.draw = () => {}
+      if (p5Instance.value.draw) {
+        p5Instance.value.draw = () => {}
       }
 
-      p5Instance.remove()
-      p5Instance = null
+      p5Instance.value.remove()
+      p5Instance.value = null
     }
   }
 
@@ -40,12 +41,12 @@ export function useP5Sketch({ container, sketch }: P5SketchOptions) {
     if (!$p5)
       return
 
-    if (p5Instance) {
+    if (p5Instance.value) {
       destroySketch()
     }
 
     if (container.value) {
-      p5Instance = new $p5(sketch, container.value)
+      p5Instance.value = new $p5(sketch, container.value)
     }
   }
 
@@ -56,6 +57,6 @@ export function useP5Sketch({ container, sketch }: P5SketchOptions) {
   return {
     createSketch,
     destroySketch,
-    p5Instance: readonly(ref(p5Instance)),
+    p5Instance: readonly(p5Instance),
   }
 }
