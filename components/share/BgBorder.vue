@@ -7,7 +7,7 @@ const props = withDefaults(defineProps<Props>(), {
   borderWidth: 1,
   borderAlpha: 0.3,
   dvdDotSpeed: 1,
-  dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'] as const,
+  dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'],
 })
 const route = useRoute()
 const breakpoints = useBreakpoints({
@@ -100,7 +100,7 @@ function drawGrid(
   alpha: number = 1,
   customStrokeWeight?: number,
 ) {
-  if (!pg)
+  if (!(p as any)._renderer || !pg)
     return
 
   pg.background(0)
@@ -142,6 +142,10 @@ function drawGrid(
 
 // 圖層初始化函數
 function initializeLayersSync(p: p5) {
+  // 確保 p5 實例有效
+  if (!(p as any)._renderer || p.width === undefined || p.height === undefined)
+    return
+
   // 清理舊的 Graphics 對象
   if (topLayer) {
     topLayer.remove()
@@ -155,9 +159,6 @@ function initializeLayersSync(p: p5) {
     tempLayer.remove()
     tempLayer = null
   }
-
-  if (p.width === undefined || p.height === undefined)
-    return
 
   // 建立三層畫布
   topLayer = p.createGraphics(p.width, p.height, 'p2d')
@@ -209,7 +210,7 @@ function gridSketch(p: p5) {
   }
 
   p.draw = () => {
-    if (!p || !topLayer || !bottomLayer || !tempLayer)
+    if (!p || !(p as any)._renderer || !topLayer || !bottomLayer || !tempLayer)
       return
 
     p.clear()
@@ -307,7 +308,12 @@ function boxSketch(p: p5) {
   }
 
   p.draw = () => {
-    if (!p || p.width === undefined || p.height === undefined) {
+    if (
+      !p
+      || !(p as any)._renderer
+      || p.width === undefined
+      || p.height === undefined
+    ) {
       return
     }
 
@@ -425,8 +431,12 @@ const boxP5Sketch = useP5Sketch({
 })
 
 onMounted(async () => {
-  gridP5Sketch.createSketch()
-  boxP5Sketch.createSketch()
+  // 等待下一個 tick 確保 DOM 和插件都已就緒
+  await nextTick()
+  requestAnimationFrame(() => {
+    gridP5Sketch.createSketch()
+    boxP5Sketch.createSketch()
+  })
 })
 
 onUnmounted(() => {
