@@ -278,8 +278,7 @@ function sketch(p: p5) {
   }
 
   p.draw = () => {
-    // 確保 canvas 已經初始化
-    if (!p.canvas)
+    if (!p.canvas || !p._renderer)
       return
     p.clear()
 
@@ -495,7 +494,9 @@ const { createSketch, destroySketch } = useP5Sketch({
   sketch,
 })
 
-onMounted(() => {
+onMounted(async () => {
+  // 等待下一個 tick 確保 DOM 和插件都已就緒
+  await nextTick()
   requestAnimationFrame(() => {
     createSketch()
   })
