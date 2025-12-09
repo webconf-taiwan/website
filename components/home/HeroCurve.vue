@@ -273,7 +273,7 @@ function sketch(p: p5) {
   }
 
   p.draw = () => {
-    if (!(p as any).canvas || !(p as any)._renderer)
+    if (!(p as any).canvas)
       return
     p.clear()
 
