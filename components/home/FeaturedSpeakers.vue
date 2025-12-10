@@ -92,13 +92,17 @@ watch(displayCardLengthArr, () => {
 
 function handleSlideToPrev() {
   speakerCards.value.forEach((card) => {
-    card.slideToLeft()
+    if (card && typeof card.slideToLeft === 'function') {
+      card.slideToLeft()
+    }
   })
 }
 
 function handleSlideToNext() {
   speakerCards.value.forEach((card) => {
-    card.slideToRight()
+    if (card && typeof card.slideToRight === 'function') {
+      card.slideToRight()
+    }
   })
 }
 </script>
