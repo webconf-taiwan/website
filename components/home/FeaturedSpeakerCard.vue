@@ -24,7 +24,14 @@ const currentCardWidth = ref(0)
 
 useResizeObserver(cardContainer, (entries) => {
   const entry = entries[0]
-  currentCardWidth.value = Math.ceil(entry.contentRect.width)
+  const newWidth = Math.ceil(entry.contentRect.width)
+
+  // 只在寬度真的改變時才更新，並且使用 RAF 延遲更新
+  if (newWidth !== currentCardWidth.value) {
+    requestAnimationFrame(() => {
+      currentCardWidth.value = newWidth
+    })
+  }
 })
 
 function getNextIndex() {
