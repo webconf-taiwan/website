@@ -100,7 +100,7 @@ function drawGrid(
   alpha: number = 1,
   customStrokeWeight?: number,
 ) {
-  if (!(p as any)._renderer || !pg)
+  if (!pg)
     return
 
   pg.background(0)
@@ -142,8 +142,7 @@ function drawGrid(
 
 // 圖層初始化函數
 function initializeLayersSync(p: p5) {
-  // 確保 p5 實例有效
-  if (!(p as any)._renderer || p.width === undefined || p.height === undefined)
+  if (p.width === undefined || p.height === undefined)
     return
 
   // 清理舊的 Graphics 對象
@@ -210,7 +209,7 @@ function gridSketch(p: p5) {
   }
 
   p.draw = () => {
-    if (!p || !(p as any)._renderer || !topLayer || !bottomLayer || !tempLayer)
+    if (!topLayer || !bottomLayer || !tempLayer)
       return
 
     p.clear()
@@ -266,8 +265,7 @@ function gridSketch(p: p5) {
 
   p.mouseMoved = () => {
     if (
-      !p
-      || !topLayer
+      !topLayer
       || !bottomLayer
       || !tempLayer
       || p.width === undefined
@@ -281,8 +279,7 @@ function gridSketch(p: p5) {
 
   p.mouseDragged = () => {
     if (
-      !p
-      || !topLayer
+      !topLayer
       || !bottomLayer
       || !tempLayer
       || p.width === undefined
@@ -308,12 +305,7 @@ function boxSketch(p: p5) {
   }
 
   p.draw = () => {
-    if (
-      !p
-      || !(p as any)._renderer
-      || p.width === undefined
-      || p.height === undefined
-    ) {
+    if (!p || p.width === undefined || p.height === undefined) {
       return
     }
 
