@@ -42,6 +42,12 @@ const snsInfo = computed(() => {
       platform: 'Threads',
     }
   }
+  if (linkLower.includes('behance')) {
+    return {
+      icon: '/images/icon/behance.svg',
+      platform: 'Behance',
+    }
+  }
   return {
     icon: '/images/icon/web.svg',
     platform: '網站',

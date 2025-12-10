@@ -51,6 +51,7 @@ export const STAFF = [
     avatarUrl: '/images/staff/eg.webp',
     links: [
       'https://www.facebook.com/eg.pan',
+      'https://pantomimeg.com/',
       'https://www.behance.net/egpan',
     ],
   },
