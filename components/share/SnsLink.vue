@@ -48,6 +48,12 @@ const snsInfo = computed(() => {
       platform: 'Behance',
     }
   }
+  if (linkLower.includes('lin.ee')) {
+    return {
+      icon: '/images/icon/chat-dots.svg',
+      platform: 'LINE',
+    }
+  }
   return {
     icon: '/images/icon/web.svg',
     platform: '網站',
