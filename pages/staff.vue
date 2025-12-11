@@ -34,15 +34,15 @@ useSeoMeta({
       </aside>
 
       <div
-        v-cursor="{
-          scale: 0.5,
-          duration: 0.5,
-        }"
         class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
       >
         <ShareGridCard
           v-for="(staff, index) in STAFF"
           :key="`${staff.name}-${index}`"
+          v-cursor="{
+            scale: 0.5,
+            duration: 0.5,
+          }"
           :show-square="true"
           :disabled-square-effect="true"
         >
