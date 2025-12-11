@@ -325,7 +325,7 @@ onUnmounted(() => {
       @next="handleNext"
     />
     <div
-      class="txt order-1 flex-1 border-0 border-webconf-gray bg-black lg:order-2 lg:border-x"
+      class="txt order-1 flex-1 border-0 border-webconf-gray bg-black lg:order-2 lg:border-x lg:border-r-0"
     >
       <!-- Banner 區塊 -->
       <SpeakerDialogBanner
