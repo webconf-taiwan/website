@@ -41,7 +41,7 @@ export const STAFF = [
   },
   {
     name: '陳彥宇',
-    title: '設計小夥伴',
+    title: '設計老司機｜逐光者',
     avatarUrl: '/images/staff/karas.webp',
     links: ['https://www.instagram.com/luminova.tw', 'https://lin.ee/aE077lU', 'https://luminova.tw/'],
   },
@@ -63,7 +63,7 @@ export const STAFF = [
   },
   {
     name: 'Nina',
-    title: '設計小夥伴',
+    title: 'UI/UX 設計師',
     avatarUrl: '/images/staff/nina.webp',
     links: ['https://www.facebook.com/yinshu.huang/'],
   },
