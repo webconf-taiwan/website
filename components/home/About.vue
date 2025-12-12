@@ -123,28 +123,28 @@ onBeforeUnmount(() => {
       <div class="flex flex-col items-start sm:w-1/2 md:mb-[72px]">
         <NuxtImg
           ref="aboutPhotoL1Ref"
-          src="/images/aboutPhotoL1.webp"
+          src="/images/home/about/left-1.webp"
           alt="about"
-          width="360"
-          height="240"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative hidden w-full sm:left-0 sm:mt-[300px] sm:block sm:max-w-[280px] xl:left-[120px] xl:mt-[260px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 1 }"
         />
         <NuxtImg
           ref="aboutPhotoL2Ref"
-          src="/images/aboutPhotoL2.webp"
+          src="/images/home/about/left-2.webp"
           alt="about"
-          width="360"
-          height="240"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 2 }"
         />
         <NuxtImg
           ref="aboutPhotoL3Ref"
-          src="/images/aboutPhotoL3.webp"
+          src="/images/home/about/left-3.webp"
           alt="about"
-          width="439"
-          height="293"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative w-full sm:left-0 sm:mt-[250px] sm:max-w-[360px] xl:left-10 xl:mt-[150px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 3 }"
         />
@@ -155,28 +155,28 @@ onBeforeUnmount(() => {
       <div class="flex flex-col items-end sm:w-1/2">
         <NuxtImg
           ref="aboutPhotoR1Ref"
-          src="/images/aboutPhotoR1.webp"
+          src="/images/home/about/right-1.webp"
           alt="about"
-          width="420"
-          height="280"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative hidden w-full sm:right-10 sm:mt-[150px] sm:block sm:max-w-[280px] xl:right-20 xl:mt-[120px] xl:max-w-[420px]"
           :class="{ 'is-hovered': hoveredImageIndex === 4 }"
         />
         <NuxtImg
           ref="aboutPhotoR2Ref"
-          src="/images/aboutPhotoR2.webp"
+          src="/images/home/about/right-2.webp"
           alt="about"
-          width="480"
-          height="320"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 5 }"
         />
         <NuxtImg
           ref="aboutPhotoR3Ref"
-          src="/images/aboutPhotoR3.webp"
+          src="/images/home/about/right-3.webp"
           alt="about"
-          width="240"
-          height="160"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative hidden w-full sm:right-10 sm:mt-[200px] sm:block sm:max-w-[240px] xl:right-[120px] xl:mt-[180px]"
           :class="{ 'is-hovered': hoveredImageIndex === 6 }"
         />
