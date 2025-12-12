@@ -105,7 +105,7 @@ Papa.parse(csv, {
       const formateFacebook = facebook === 'fb.com/realhere' ? 'https://www.facebook.com/realhere' : facebook // 9_Jenson_Lee 特殊處理
       const x = row['X 個人社交連結']?.trim() || ''
       const ig = row['IG 個人社交連結']?.trim() || ''
-      const formateIg = ig === 'Instagram.com/realhere' ? 'https://www.instagram.com/realhere' : ig // 9_Jenson_Lee 特殊處理
+      const formateIg = ig === 'Instagram.com/jenson' ? 'https://www.instagram.com/jenson' : ig // 9_Jenson_Lee 特殊處理
       const otherLink = row['其他連結 (ex: 個人網站 / 部落格)']?.trim() || ''
       let formateOtherLink = otherLink
       if (speakerName === 'ThisWeb (Kun)')
