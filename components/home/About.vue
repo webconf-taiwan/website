@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const hoveredImageIndex = ref(-1)
-const { gsap } = useGsap()
+const { gsap, ScrollTrigger } = useGsap()
+const { width } = useWindowSize()
 
 function useImageHoverEffect(index: number) {
   const imageRef = ref<HTMLElement | null>(null)
@@ -24,8 +25,30 @@ const aboutPhotoR1Ref = useImageHoverEffect(4)
 const aboutPhotoR2Ref = useImageHoverEffect(5)
 const aboutPhotoR3Ref = useImageHoverEffect(6)
 
-// 設定滾動視差效果
-onMounted(() => {
+interface ScrollTriggerInstance {
+  instance: any
+  element: HTMLElement
+}
+const scrollTriggerInstances = ref<ScrollTriggerInstance[]>([])
+let resizeTimeout: NodeJS.Timeout | null = null
+
+function cleanupScrollTriggers() {
+  scrollTriggerInstances.value.forEach(({ instance }) => {
+    if (instance) {
+      instance.kill()
+    }
+  })
+  scrollTriggerInstances.value = []
+}
+
+function initParallaxEffect() {
+  cleanupScrollTriggers()
+
+  // sm 以下不啟動滾動視差效果
+  if (width.value < 640) {
+    return
+  }
+
   const images = [
     { ref: aboutPhotoL1Ref, y: 300 },
     { ref: aboutPhotoL2Ref, y: 200 },
@@ -37,12 +60,9 @@ onMounted(() => {
 
   images.forEach(({ ref, y }) => {
     if (ref.value) {
-      const element = ref.value.$el || ref.value
+      const element = (ref.value as any).$el || ref.value
 
-      // 保存原始位置
-      const _originalY = window.getComputedStyle(element).transform
-
-      gsap.from(element, {
+      const animation = gsap.from(element, {
         y,
         ease: 'none',
         scrollTrigger: {
@@ -53,8 +73,44 @@ onMounted(() => {
           toggleActions: 'play none none reverse',
         },
       })
+
+      if (animation.scrollTrigger) {
+        scrollTriggerInstances.value.push({
+          instance: animation.scrollTrigger,
+          element,
+        })
+      }
     }
   })
+}
+
+function handleResize() {
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
+
+  resizeTimeout = setTimeout(() => {
+    setTimeout(() => {
+      initParallaxEffect()
+      ScrollTrigger.refresh()
+    }, 0)
+  }, 200)
+}
+
+watch(width, handleResize)
+
+onMounted(() => {
+  setTimeout(() => {
+    initParallaxEffect()
+    ScrollTrigger.refresh()
+  }, 100)
+})
+
+onBeforeUnmount(() => {
+  cleanupScrollTriggers()
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
 })
 </script>
 
