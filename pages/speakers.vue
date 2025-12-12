@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AgendaTag } from '~/types'
-import { SPEAKERS } from '~/constants/agenda'
+import { CUSTOMAGENDAITEM, SPEAKERS } from '~/constants/agenda'
 
 useSeoMeta({
   title: '講者陣容',
@@ -102,7 +102,7 @@ watch(isMenuOpen, (newValue) => {
           class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
           <NuxtLink
-            v-for="(speaker, index) in SPEAKERS"
+            v-for="(speaker, index) in [...SPEAKERS, CUSTOMAGENDAITEM]"
             :key="`${speaker.name}-${index}`"
             :to="`/speakers/${speaker.speakerId}`"
           >

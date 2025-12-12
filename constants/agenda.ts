@@ -964,3 +964,14 @@ export const SPEAKERS = AGENDA_LIST.reduce<Array<
 
   return acc
 }, []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+
+export const CUSTOMAGENDAITEM: SpeakerInfo & {
+  tags: AgendaTag[]
+} = {
+  name: '小賴',
+  avatarUrl: '/images/speakers/45_Azole_Lai.webp',
+  JobTitle: '技術講師',
+  speakerId: '45',
+  order: 45,
+  tags: ['工作坊', '團隊管理'],
+}

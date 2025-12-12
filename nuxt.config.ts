@@ -144,7 +144,7 @@ export default defineNuxtConfig({
         '/staff',
         '/history',
         ...Array.from({ length: 43 }, (_, i) => `/agenda/${i + 1}`),
-        ...Array.from({ length: 43 }, (_, i) => `/speakers/${i + 1}`),
+        ...Array.from({ length: 44 }, (_, i) => `/speakers/${i + 1}`),
         '/agenda/3/4',
         '/agenda/33/34',
         '/agenda/00/23/24',
