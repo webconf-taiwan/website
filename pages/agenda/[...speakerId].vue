@@ -9,8 +9,7 @@ const ALLOWED_MULTI_SPEAKER_GROUPS = [
   ['00', '23', '24'], // 第三場
 ]
 
-const { data: allSpeakers } = await useAsyncData('all-speakers', () =>
-  queryCollection('content').all())
+const { data: allSpeakers } = await useAllSpeakers()
 
 const currentSpeaker = computed(() => {
   const speakerIds = route.params.speakerId

@@ -6,6 +6,8 @@ const shouldShowLoading = computed(() => {
   return route.name !== 'all'
 })
 
+await useAllSpeakers()
+
 // 404 頁面就不顯示首次加載動畫
 if (!shouldShowLoading.value) {
   setFirstLoad(true)
