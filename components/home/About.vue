@@ -33,10 +33,12 @@ const scrollTriggerInstances = ref<ScrollTriggerInstance[]>([])
 let resizeTimeout: NodeJS.Timeout | null = null
 
 function cleanupScrollTriggers() {
-  scrollTriggerInstances.value.forEach(({ instance }) => {
+  scrollTriggerInstances.value.forEach(({ instance, element }) => {
     if (instance) {
       instance.kill()
     }
+    // 清除 GSAP 設定的樣式，讓元素回到原始位置
+    gsap.set(element, { clearProps: 'all' })
   })
   scrollTriggerInstances.value = []
 }
