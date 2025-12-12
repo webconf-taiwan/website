@@ -3,7 +3,7 @@ const { isFirstLoad, setFirstLoad } = useGlobalState()
 
 const route = useRoute()
 const shouldShowLoading = computed(() => {
-  return route.name !== 'all'
+  return route.name === 'index'
 })
 
 await useAllSpeakers()
