@@ -10,6 +10,7 @@ export type AgendaTag
     | '團隊管理'
     | '軟體設計'
     | '設計實務'
+    | '工作坊'
 
 export interface SpeakerInfo {
   name: string

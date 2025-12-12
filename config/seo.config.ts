@@ -48,7 +48,7 @@ export const sitemap = {
     { loc: '/agenda/00/23/24', priority: 0.7 },
 
     // 個別講者頁面
-    ...Array.from({ length: 44 }, (_, i) => ({
+    ...Array.from({ length: 45 }, (_, i) => ({
       loc: `/speakers/${i + 1}`,
       priority: 0.8,
     })),
