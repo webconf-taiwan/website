@@ -151,6 +151,7 @@ function handleSlideToNext() {
             :key="`${speakers[index].name}-${forceRerenderKey}`"
             :ref="(el) => (speakerCards[index] = el)"
             :speakers="speakers"
+            :card-count="displayCardLengthArr.length"
             :original-index="index"
             :initial-index="index"
             :is-parent-hovered="isHovered"
