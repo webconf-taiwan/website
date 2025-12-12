@@ -12,7 +12,7 @@ email: realhere@gmail.com
 image: /images/speakers/9_Jenson_Lee.webp
 ogImage: /images/ogImage/9_Jenson_Lee.png
 fb: https://www.facebook.com/realhere
-ig: https://www.instagram.com/realhere
+ig: https://www.instagram.com/jenson
 day: day1
 date: 2025-12-12
 time: 16:15~17:00
