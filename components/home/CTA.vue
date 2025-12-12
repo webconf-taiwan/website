@@ -3,7 +3,7 @@ import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 const ctaCard = ref<HTMLElement | null>(null)
 const ctaContainer = ref<HTMLElement | null>(null)
-const { gsap } = useGsap()
+const { gsap, ScrollTrigger } = useGsap()
 
 let matchMedia: gsap.MatchMedia | null = null
 let resizeTimeout: NodeJS.Timeout | null = null
@@ -68,7 +68,7 @@ function handleResize() {
     // 使用 macrotask 確保 DOM 完全更新
     setTimeout(() => {
       initScrollAnimation()
-      gsap.ScrollTrigger.refresh()
+      ScrollTrigger.refresh()
     }, 0)
   }, 200)
 }
@@ -77,7 +77,7 @@ function handleResize() {
 onMounted(() => {
   setTimeout(() => {
     initScrollAnimation()
-    gsap.ScrollTrigger.refresh()
+    ScrollTrigger.refresh()
   }, 100)
 
   // 監聽 resize 事件

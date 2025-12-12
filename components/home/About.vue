@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const hoveredImageIndex = ref(-1)
-const { gsap } = useGsap()
+const { gsap, ScrollTrigger } = useGsap()
+const { width } = useWindowSize()
 
 function useImageHoverEffect(index: number) {
   const imageRef = ref<HTMLElement | null>(null)
@@ -24,8 +25,32 @@ const aboutPhotoR1Ref = useImageHoverEffect(4)
 const aboutPhotoR2Ref = useImageHoverEffect(5)
 const aboutPhotoR3Ref = useImageHoverEffect(6)
 
-// 設定滾動視差效果
-onMounted(() => {
+interface ScrollTriggerInstance {
+  instance: any
+  element: HTMLElement
+}
+const scrollTriggerInstances = ref<ScrollTriggerInstance[]>([])
+let resizeTimeout: NodeJS.Timeout | null = null
+
+function cleanupScrollTriggers() {
+  scrollTriggerInstances.value.forEach(({ instance, element }) => {
+    if (instance) {
+      instance.kill()
+    }
+    // 清除 GSAP 設定的樣式，讓元素回到原始位置
+    gsap.set(element, { clearProps: 'all' })
+  })
+  scrollTriggerInstances.value = []
+}
+
+function initParallaxEffect() {
+  cleanupScrollTriggers()
+
+  // sm 以下不啟動滾動視差效果
+  if (width.value < 640) {
+    return
+  }
+
   const images = [
     { ref: aboutPhotoL1Ref, y: 300 },
     { ref: aboutPhotoL2Ref, y: 200 },
@@ -37,12 +62,9 @@ onMounted(() => {
 
   images.forEach(({ ref, y }) => {
     if (ref.value) {
-      const element = ref.value.$el || ref.value
+      const element = (ref.value as any).$el || ref.value
 
-      // 保存原始位置
-      const _originalY = window.getComputedStyle(element).transform
-
-      gsap.from(element, {
+      const animation = gsap.from(element, {
         y,
         ease: 'none',
         scrollTrigger: {
@@ -53,8 +75,44 @@ onMounted(() => {
           toggleActions: 'play none none reverse',
         },
       })
+
+      if (animation.scrollTrigger) {
+        scrollTriggerInstances.value.push({
+          instance: animation.scrollTrigger,
+          element,
+        })
+      }
     }
   })
+}
+
+function handleResize() {
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
+
+  resizeTimeout = setTimeout(() => {
+    setTimeout(() => {
+      initParallaxEffect()
+      ScrollTrigger.refresh()
+    }, 0)
+  }, 200)
+}
+
+watch(width, handleResize)
+
+onMounted(() => {
+  setTimeout(() => {
+    initParallaxEffect()
+    ScrollTrigger.refresh()
+  }, 100)
+})
+
+onBeforeUnmount(() => {
+  cleanupScrollTriggers()
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
 })
 </script>
 
@@ -67,28 +125,28 @@ onMounted(() => {
       <div class="flex flex-col items-start sm:w-1/2 md:mb-[72px]">
         <NuxtImg
           ref="aboutPhotoL1Ref"
-          src="/images/aboutPhotoL1.webp"
+          src="/images/home/about/left-1.webp"
           alt="about"
-          width="360"
-          height="240"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative hidden w-full sm:left-0 sm:mt-[300px] sm:block sm:max-w-[280px] xl:left-[120px] xl:mt-[260px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 1 }"
         />
         <NuxtImg
           ref="aboutPhotoL2Ref"
-          src="/images/aboutPhotoL2.webp"
+          src="/images/home/about/left-2.webp"
           alt="about"
-          width="360"
-          height="240"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 2 }"
         />
         <NuxtImg
           ref="aboutPhotoL3Ref"
-          src="/images/aboutPhotoL3.webp"
+          src="/images/home/about/left-3.webp"
           alt="about"
-          width="439"
-          height="293"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative w-full sm:left-0 sm:mt-[250px] sm:max-w-[360px] xl:left-10 xl:mt-[150px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 3 }"
         />
@@ -99,28 +157,28 @@ onMounted(() => {
       <div class="flex flex-col items-end sm:w-1/2">
         <NuxtImg
           ref="aboutPhotoR1Ref"
-          src="/images/aboutPhotoR1.webp"
+          src="/images/home/about/right-1.webp"
           alt="about"
-          width="420"
-          height="280"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative hidden w-full sm:right-10 sm:mt-[150px] sm:block sm:max-w-[280px] xl:right-20 xl:mt-[120px] xl:max-w-[420px]"
           :class="{ 'is-hovered': hoveredImageIndex === 4 }"
         />
         <NuxtImg
           ref="aboutPhotoR2Ref"
-          src="/images/aboutPhotoR2.webp"
+          src="/images/home/about/right-2.webp"
           alt="about"
-          width="480"
-          height="320"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 5 }"
         />
         <NuxtImg
           ref="aboutPhotoR3Ref"
-          src="/images/aboutPhotoR3.webp"
+          src="/images/home/about/right-3.webp"
           alt="about"
-          width="240"
-          height="160"
+          width="768"
+          height="512"
           class="blue-shadow about-img-filter relative hidden w-full sm:right-10 sm:mt-[200px] sm:block sm:max-w-[240px] xl:right-[120px] xl:mt-[180px]"
           :class="{ 'is-hovered': hoveredImageIndex === 6 }"
         />
