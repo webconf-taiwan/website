@@ -1,19 +1,36 @@
 <script setup lang="ts">
-const { gsap } = useGsap()
+const { gsap, ScrollTrigger } = useGsap()
 const { width } = useWindowSize()
 const aboutCardRef = ref<any>(null)
-const scrollTriggerInstance = ref<any>(null)
 
-watch([aboutCardRef, width], ([newRef, newWidth]) => {
-  if (scrollTriggerInstance.value) {
-    scrollTriggerInstance.value.kill()
-    scrollTriggerInstance.value = null
+let matchMedia: gsap.MatchMedia | null = null
+let resizeTimeout: NodeJS.Timeout | null = null
+
+function cleanupAnimations() {
+  if (matchMedia) {
+    matchMedia.revert()
+    matchMedia = null
   }
+}
 
-  if (newRef && newRef.$el && newWidth >= 640) {
-    const element = newRef.$el
+function initPinEffect() {
+  // 清理舊的動畫
+  cleanupAnimations()
 
-    scrollTriggerInstance.value = gsap.to(newRef.$el, {
+  if (!aboutCardRef.value?.$el)
+    return
+
+  // 使用 GSAP matchMedia 處理響應式
+  matchMedia = gsap.matchMedia()
+
+  if (!matchMedia)
+    return
+
+  // 只在 sm 以上啟動 pin 效果
+  matchMedia.add('(min-width: 640px)', () => {
+    const element = aboutCardRef.value.$el
+
+    gsap.to(element, {
       scrollTrigger: {
         trigger: element,
         start: 'center center',
@@ -24,7 +41,46 @@ watch([aboutCardRef, width], ([newRef, newWidth]) => {
         scrub: 2,
         anticipatePin: 1,
       },
-    }).scrollTrigger
+    })
+
+    // 清理函數會自動被 matchMedia.revert() 呼叫
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.trigger === element) {
+          trigger.kill()
+        }
+      })
+    }
+  })
+}
+
+function handleResize() {
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
+  }
+
+  resizeTimeout = setTimeout(() => {
+    initPinEffect()
+    ScrollTrigger.refresh()
+  }, 200)
+}
+
+onMounted(() => {
+  // 等待 DOM 和 GSAP plugin 完全初始化
+  setTimeout(() => {
+    initPinEffect()
+    ScrollTrigger.refresh()
+  }, 100)
+
+  // 監聽 resize 事件
+  window.addEventListener('resize', handleResize)
+})
+
+onBeforeUnmount(() => {
+  cleanupAnimations()
+  window.removeEventListener('resize', handleResize)
+  if (resizeTimeout) {
+    clearTimeout(resizeTimeout)
   }
 })
 

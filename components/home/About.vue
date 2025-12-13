@@ -1,7 +1,6 @@
 <script setup lang="ts">
 const hoveredImageIndex = ref(-1)
 const { gsap, ScrollTrigger } = useGsap()
-const { width } = useWindowSize()
 
 function useImageHoverEffect(index: number) {
   const imageRef = ref<HTMLElement | null>(null)
@@ -25,33 +24,22 @@ const aboutPhotoR1Ref = useImageHoverEffect(4)
 const aboutPhotoR2Ref = useImageHoverEffect(5)
 const aboutPhotoR3Ref = useImageHoverEffect(6)
 
-interface ScrollTriggerInstance {
-  instance: any
-  element: HTMLElement
-}
-const scrollTriggerInstances = ref<ScrollTriggerInstance[]>([])
+let matchMedia: gsap.MatchMedia | null = null
 let resizeTimeout: NodeJS.Timeout | null = null
-const isInitialized = ref(false)
 
-function cleanupScrollTriggers() {
-  scrollTriggerInstances.value.forEach(({ instance, element }) => {
-    if (instance) {
-      instance.kill()
-    }
-    // 清除 GSAP 設定的樣式，讓元素回到原始位置
-    gsap.set(element, { clearProps: 'all' })
-  })
-  scrollTriggerInstances.value = []
+function cleanupAnimations() {
+  if (matchMedia) {
+    matchMedia.revert()
+    matchMedia = null
+  }
 }
 
 function initParallaxEffect() {
-  cleanupScrollTriggers()
+  // 清理舊的動畫
+  cleanupAnimations()
 
-  // sm 以下不啟動滾動視差效果
-  if (width.value < 640) {
-    isInitialized.value = true
-    return
-  }
+  // 使用 GSAP matchMedia 處理響應式
+  matchMedia = gsap.matchMedia()
 
   const images = [
     { ref: aboutPhotoL1Ref, y: 300 },
@@ -62,34 +50,48 @@ function initParallaxEffect() {
     { ref: aboutPhotoR3Ref, y: 250 },
   ]
 
-  images.forEach(({ ref, y }) => {
-    if (ref.value) {
-      const element = (ref.value as any).$el || ref.value
+  if (!matchMedia)
+    return
 
-      const animation = gsap.from(element, {
-        y,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: element,
-          start: 'top bottom',
-          end: 'bottom center',
-          scrub: 2,
-          toggleActions: 'play none none reverse',
-          // 防止初始化時的抖動
-          invalidateOnRefresh: true,
-        },
-      })
+  // 只在 sm 以上啟動視差效果
+  matchMedia.add('(min-width: 640px)', () => {
+    images.forEach(({ ref, y }) => {
+      if (ref.value) {
+        const element = (ref.value as any).$el || ref.value
 
-      if (animation.scrollTrigger) {
-        scrollTriggerInstances.value.push({
-          instance: animation.scrollTrigger,
+        gsap.fromTo(
           element,
-        })
+          {
+            y,
+          },
+          {
+            y: 0,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: element,
+              start: 'top bottom',
+              end: 'bottom center',
+              scrub: 2,
+            },
+          },
+        )
       }
+    })
+
+    // 清理函數會自動被 matchMedia.revert() 呼叫
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (
+          images.some(({ ref }) => {
+            const element = (ref.value as any)?.$el || ref.value
+            return trigger.trigger === element
+          })
+        ) {
+          trigger.kill()
+        }
+      })
     }
   })
-
-  isInitialized.value = true
 }
 
 function handleResize() {
@@ -99,30 +101,24 @@ function handleResize() {
 
   resizeTimeout = setTimeout(() => {
     initParallaxEffect()
-    // 延遲 refresh 確保元素已經重新定位
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh()
-    })
+    ScrollTrigger.refresh()
   }, 200)
 }
 
-watch(width, handleResize)
-
 onMounted(() => {
-  // 等待頁面完全載入和 ScrollTrigger 初始化
-  nextTick(() => {
-    setTimeout(() => {
-      initParallaxEffect()
-      // 使用 requestAnimationFrame 確保在下一幀才 refresh
-      requestAnimationFrame(() => {
-        ScrollTrigger.refresh()
-      })
-    }, 150)
-  })
+  // 等待 DOM 和 GSAP plugin 完全初始化
+  setTimeout(() => {
+    initParallaxEffect()
+    ScrollTrigger.refresh()
+  }, 100)
+
+  // 監聽 resize 事件
+  window.addEventListener('resize', handleResize)
 })
 
 onBeforeUnmount(() => {
-  cleanupScrollTriggers()
+  cleanupAnimations()
+  window.removeEventListener('resize', handleResize)
   if (resizeTimeout) {
     clearTimeout(resizeTimeout)
   }
@@ -201,16 +197,9 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* 確保圖片在視差效果初始化前有正確的位置 */
 .about-photo {
-  /* 防止 GSAP 初始化時的閃爍 */
+  /* 硬體加速，提升動畫效能 */
   will-change: transform;
-}
-
-/* 手機版確保圖片位置正確（不受視差效果影響） */
-@media (max-width: 639px) {
-  .about-photo {
-    transform: translate3d(0, 0, 0) !important;
-  }
+  transform: translate3d(0, 0, 0);
 }
 </style>
