@@ -31,6 +31,7 @@ interface ScrollTriggerInstance {
 }
 const scrollTriggerInstances = ref<ScrollTriggerInstance[]>([])
 let resizeTimeout: NodeJS.Timeout | null = null
+const isInitialized = ref(false)
 
 function cleanupScrollTriggers() {
   scrollTriggerInstances.value.forEach(({ instance, element }) => {
@@ -48,6 +49,7 @@ function initParallaxEffect() {
 
   // sm 以下不啟動滾動視差效果
   if (width.value < 640) {
+    isInitialized.value = true
     return
   }
 
@@ -73,6 +75,8 @@ function initParallaxEffect() {
           end: 'bottom center',
           scrub: 2,
           toggleActions: 'play none none reverse',
+          // 防止初始化時的抖動
+          invalidateOnRefresh: true,
         },
       })
 
@@ -84,6 +88,8 @@ function initParallaxEffect() {
       }
     }
   })
+
+  isInitialized.value = true
 }
 
 function handleResize() {
@@ -92,20 +98,27 @@ function handleResize() {
   }
 
   resizeTimeout = setTimeout(() => {
-    setTimeout(() => {
-      initParallaxEffect()
+    initParallaxEffect()
+    // 延遲 refresh 確保元素已經重新定位
+    requestAnimationFrame(() => {
       ScrollTrigger.refresh()
-    }, 0)
+    })
   }, 200)
 }
 
 watch(width, handleResize)
 
 onMounted(() => {
-  setTimeout(() => {
-    initParallaxEffect()
-    ScrollTrigger.refresh()
-  }, 100)
+  // 等待頁面完全載入和 ScrollTrigger 初始化
+  nextTick(() => {
+    setTimeout(() => {
+      initParallaxEffect()
+      // 使用 requestAnimationFrame 確保在下一幀才 refresh
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh()
+      })
+    }, 150)
+  })
 })
 
 onBeforeUnmount(() => {
@@ -129,7 +142,7 @@ onBeforeUnmount(() => {
           alt="about"
           width="768"
           height="512"
-          class="blue-shadow about-img-filter relative hidden w-full sm:left-0 sm:mt-[300px] sm:block sm:max-w-[280px] xl:left-[120px] xl:mt-[260px] xl:max-w-[360px]"
+          class="blue-shadow about-img-filter about-photo relative hidden w-full sm:left-0 sm:mt-[300px] sm:block sm:max-w-[280px] xl:left-[120px] xl:mt-[260px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 1 }"
         />
         <NuxtImg
@@ -138,7 +151,7 @@ onBeforeUnmount(() => {
           alt="about"
           width="768"
           height="512"
-          class="blue-shadow about-img-filter relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
+          class="blue-shadow about-img-filter about-photo relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 2 }"
         />
         <NuxtImg
@@ -147,7 +160,7 @@ onBeforeUnmount(() => {
           alt="about"
           width="768"
           height="512"
-          class="blue-shadow about-img-filter relative w-full sm:left-0 sm:mt-[250px] sm:max-w-[360px] xl:left-10 xl:mt-[150px] xl:max-w-[439px]"
+          class="blue-shadow about-img-filter about-photo relative w-full sm:left-0 sm:mt-[250px] sm:max-w-[360px] xl:left-10 xl:mt-[150px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 3 }"
         />
       </div>
@@ -161,7 +174,7 @@ onBeforeUnmount(() => {
           alt="about"
           width="768"
           height="512"
-          class="blue-shadow about-img-filter relative hidden w-full sm:right-10 sm:mt-[150px] sm:block sm:max-w-[280px] xl:right-20 xl:mt-[120px] xl:max-w-[420px]"
+          class="blue-shadow about-img-filter about-photo relative hidden w-full sm:right-10 sm:mt-[150px] sm:block sm:max-w-[280px] xl:right-20 xl:mt-[120px] xl:max-w-[420px]"
           :class="{ 'is-hovered': hoveredImageIndex === 4 }"
         />
         <NuxtImg
@@ -170,7 +183,7 @@ onBeforeUnmount(() => {
           alt="about"
           width="768"
           height="512"
-          class="blue-shadow about-img-filter relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
+          class="blue-shadow about-img-filter about-photo relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 5 }"
         />
         <NuxtImg
@@ -179,10 +192,25 @@ onBeforeUnmount(() => {
           alt="about"
           width="768"
           height="512"
-          class="blue-shadow about-img-filter relative hidden w-full sm:right-10 sm:mt-[200px] sm:block sm:max-w-[240px] xl:right-[120px] xl:mt-[180px]"
+          class="blue-shadow about-img-filter about-photo relative hidden w-full sm:right-10 sm:mt-[200px] sm:block sm:max-w-[240px] xl:right-[120px] xl:mt-[180px]"
           :class="{ 'is-hovered': hoveredImageIndex === 6 }"
         />
       </div>
     </section>
   </div>
 </template>
+
+<style scoped>
+/* 確保圖片在視差效果初始化前有正確的位置 */
+.about-photo {
+  /* 防止 GSAP 初始化時的閃爍 */
+  will-change: transform;
+}
+
+/* 手機版確保圖片位置正確（不受視差效果影響） */
+@media (max-width: 639px) {
+  .about-photo {
+    transform: translate3d(0, 0, 0) !important;
+  }
+}
+</style>

@@ -82,6 +82,7 @@ export default antfu(
         'error',
         {
           whitelist: [
+            'about-photo',
             'main-body',
             'pic',
             'txt',
