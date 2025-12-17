@@ -2,8 +2,8 @@
 speakerId: "41"
 name: 李建杭 Amos
 slug: Amos_李建杭
-company: "友達光電"
-job_title: 工程經理
+company: "金魚切版作者"
+job_title: 技術講師
 topic: 讓 CSS 動畫提升你的網站使用者體驗
 tags: ["Frontend", "AI", "設計實務"]
 speakerInfo: "金魚都能懂的教學系列作者、網頁技術愛好者"
