@@ -118,6 +118,7 @@ watch(isMenuOpen, (newValue) => {
                 || selectedTags.length === 0
             "
             :show-square="false"
+            :fill-effect="true"
           >
             <NuxtLink
               :to="`/speakers/${speaker.speakerId}`"
