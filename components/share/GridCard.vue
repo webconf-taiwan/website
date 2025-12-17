@@ -62,7 +62,7 @@ const scaleY = computed(() => {
         'opacity-0': isSelected,
         'opacity-70': !isSelected,
       }"
-      class="absolute inset-0 z-[5] size-full bg-black duration-300"
+      class="pointer-events-none absolute inset-0 z-[5] size-full bg-black duration-300"
     ></div>
 
     <slot name="floating-block"></slot>
