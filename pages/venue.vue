@@ -311,7 +311,7 @@ onMounted(() => {
 /* 優化 transition 效果 */
 .venue-fade-enter-active,
 .venue-fade-leave-active {
-  transition: opacity 0.15s ease-in-out;
+  transition: opacity 0.1s ease-in-out;
 }
 
 .venue-fade-enter-from,
