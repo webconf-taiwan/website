@@ -52,6 +52,9 @@ devDependencies:
   '@nuxt/scripts':
     specifier: 0.11.10
     version: 0.11.10(@unhead/vue@2.0.14)(typescript@5.9.2)(vue@3.5.18)
+  '@nuxtjs/device':
+    specifier: 4.0.0
+    version: 4.0.0
   '@nuxtjs/seo':
     specifier: ^3.1.0
     version: 3.1.0(@unhead/vue@2.0.14)(h3@1.15.4)(unstorage@1.16.1)(vite@6.3.5)(vue@3.5.18)
@@ -2551,6 +2554,12 @@ packages:
       - vti
       - vue-tsc
       - yaml
+    dev: true
+
+  /@nuxtjs/device@4.0.0:
+    resolution: {integrity: sha512-Tkbvde/GInmigbS/n3X3X+qXJWi6hsYrViKpZrakaBBYY3NbGYJb0c8aVxd3vI636HBbOhu0I39rv7MSjP7w8Q==}
+    dependencies:
+      defu: 6.1.4
     dev: true
 
   /@nuxtjs/mdc@0.17.0:
