@@ -333,9 +333,7 @@ watch(isMenuOpen, (newValue) => {
     </main>
 
     <!-- 講者資訊彈跳視窗 -->
-    <KeepAlive>
-      <NuxtPage />
-    </KeepAlive>
+    <NuxtPage />
   </div>
 </template>
 

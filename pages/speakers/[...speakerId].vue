@@ -3,7 +3,7 @@ const route = useRoute('speakers-speakerId')
 const router = useRouter()
 const { setToggleModal } = useGlobalState()
 
-const { data: allSpeakers } = await useAllSpeakers()
+const { data: allSpeakers } = useAllSpeakers()
 
 const currentSpeaker = computed(() => {
   const speakerIds = route.params.speakerId
