@@ -11,6 +11,15 @@ const showAside = ref(false)
 
 const selectedTags = ref<AgendaTag[]>([])
 
+function handleTagClick(tag: AgendaTag) {
+  if (selectedTags.value.includes(tag)) {
+    selectedTags.value = selectedTags.value.filter(t => t !== tag)
+  }
+  else {
+    selectedTags.value = [...selectedTags.value, tag]
+  }
+}
+
 // 延遲隱藏 aside 以確保過渡完成
 watch(isMenuOpen, (newValue) => {
   if (newValue) {
@@ -101,17 +110,19 @@ watch(isMenuOpen, (newValue) => {
           }"
           class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
-          <NuxtLink
+          <ShareGridCard
             v-for="(speaker, index) in [...SPEAKERS, CUSTOMAGENDAITEM]"
             :key="`${speaker.name}-${index}`"
-            :to="`/speakers/${speaker.speakerId}`"
+            :is-selected="
+              speaker.tags?.some((tag) => selectedTags.includes(tag))
+                || selectedTags.length === 0
+            "
+            :show-square="false"
+            :fill-effect="true"
           >
-            <ShareGridCard
-              :is-selected="
-                speaker.tags?.some((tag) => selectedTags.includes(tag))
-                  || selectedTags.length === 0
-              "
-              :show-square="false"
+            <NuxtLink
+              :to="`/speakers/${speaker.speakerId}`"
+              class="block"
             >
               <div class="flex gap-3 p-5 lg:flex-col lg:p-6 xl:p-9">
                 <div class="relative shrink-0">
@@ -140,28 +151,33 @@ watch(isMenuOpen, (newValue) => {
                   >
                     {{ speaker.JobTitle }}
                   </p>
-
-                  <ul
-                    class="relative mt-3 flex grow flex-wrap items-start gap-2"
-                  >
-                    <li
-                      v-for="tag in speaker.tags"
-                      :key="`${speaker.name}-${tag}`"
-                      class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
-                    >
-                      {{ tag }}
-                    </li>
-                  </ul>
                 </div>
               </div>
+            </NuxtLink>
 
-              <template #floating-block>
-                <ClientOnly>
-                  <ShareFloatingBlock />
-                </ClientOnly>
-              </template>
-            </ShareGridCard>
-          </NuxtLink>
+            <ul
+              class="relative mx-5 mb-5 mt-0 flex grow flex-wrap items-start gap-2 lg:mx-6 lg:mb-6 xl:mx-9 xl:mb-9"
+            >
+              <li
+                v-for="tag in speaker.tags"
+                :key="`${speaker.name}-${tag}`"
+              >
+                <button
+                  type="button"
+                  class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray hover:border-webconf-blue hover:bg-white hover:text-webconf-blue"
+                  @click="handleTagClick(tag)"
+                >
+                  {{ tag }}
+                </button>
+              </li>
+            </ul>
+
+            <template #floating-block>
+              <ClientOnly>
+                <ShareFloatingBlock />
+              </ClientOnly>
+            </template>
+          </ShareGridCard>
         </div>
       </section>
     </main>

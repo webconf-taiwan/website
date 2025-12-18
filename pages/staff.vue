@@ -39,12 +39,8 @@ useSeoMeta({
         <ShareGridCard
           v-for="(staff, index) in STAFF"
           :key="`${staff.name}-${index}`"
-          v-cursor="{
-            scale: 0.5,
-            duration: 0.5,
-          }"
           :show-square="true"
-          :disabled-square-effect="true"
+          :fill-effect="false"
         >
           <div class="flex gap-3 p-5 lg:flex-col lg:p-6 2xl:p-9">
             <div class="relative shrink-0">

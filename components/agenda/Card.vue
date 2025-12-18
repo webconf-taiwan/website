@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AgendaItem } from '~/types'
+import type { AgendaItem, AgendaTag } from '~/types'
 
 const props = defineProps<{
   data: AgendaItem
@@ -7,6 +7,10 @@ const props = defineProps<{
   time?: string
   showTime?: boolean
   isSelected: boolean
+}>()
+
+const emit = defineEmits<{
+  tagClick: [tag: AgendaTag]
 }>()
 
 const cardRef = ref<HTMLElement>()
@@ -34,6 +38,20 @@ const cardLink = computed(() => {
   }
   return '/agenda'
 })
+
+function handleTagClick(tag: AgendaTag) {
+  emit('tagClick', tag)
+}
+
+function handleCardClick(event: MouseEvent) {
+  // 如果點擊的是按鈕，不執行 modal 開啟
+  const target = event.target as HTMLElement
+  if (target.closest('button')) {
+    event.preventDefault()
+    return
+  }
+  setToggleModal(true)
+}
 </script>
 
 <template>
@@ -58,7 +76,7 @@ const cardLink = computed(() => {
         'lg:-mt-7': showTime,
       }"
       :to="cardLink"
-      @click="setToggleModal(true)"
+      @click="handleCardClick"
     >
       <div
         class="pointer-events-none absolute left-0 top-0 z-10 size-5 bg-webconf-blue mix-blend-screen transition-all duration-300 ease-out lg:block lg:size-7 lg:group-hover:h-[var(--target-height)] lg:group-hover:w-[var(--target-width)]"
@@ -83,14 +101,19 @@ const cardLink = computed(() => {
 
             <ul
               v-if="data.tags"
-              class="relative mt-3 flex flex-wrap items-start gap-2 lg:mt-4"
+              class="relative z-10 mt-3 flex flex-wrap items-start gap-2 lg:mt-4"
             >
               <li
                 v-for="tag in data.tags"
                 :key="`${data.title}-${tag}`"
-                class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray"
               >
-                {{ tag }}
+                <button
+                  type="button"
+                  class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray hover:border-webconf-blue hover:bg-white hover:text-webconf-blue"
+                  @click.stop.prevent="handleTagClick(tag)"
+                >
+                  {{ tag }}
+                </button>
               </li>
             </ul>
           </div>
@@ -169,7 +192,7 @@ const cardLink = computed(() => {
           'opacity-0': isSelected,
           'opacity-70': !isSelected,
         }"
-        class="absolute inset-0 z-[5] size-full bg-black duration-300"
+        class="pointer-events-none absolute inset-0 z-[5] size-full bg-black duration-300"
       ></div>
     </NuxtLink>
   </div>

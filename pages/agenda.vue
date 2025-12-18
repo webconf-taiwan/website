@@ -87,6 +87,15 @@ const showAside = ref(false)
 
 const selectedTags = ref<AgendaTag[]>([])
 
+function handleTagClick(tag: AgendaTag) {
+  if (selectedTags.value.includes(tag)) {
+    selectedTags.value = selectedTags.value.filter(t => t !== tag)
+  }
+  else {
+    selectedTags.value = [...selectedTags.value, tag]
+  }
+}
+
 // 延遲隱藏 aside 以確保過渡完成
 watch(isMenuOpen, (newValue) => {
   if (newValue) {
@@ -245,6 +254,7 @@ watch(isMenuOpen, (newValue) => {
                   agenda.tags?.some((tag) => selectedTags.includes(tag))
                     || selectedTags.length === 0
                 "
+                @tag-click="handleTagClick"
               />
             </div>
           </transition-group>
@@ -298,6 +308,7 @@ watch(isMenuOpen, (newValue) => {
                   agenda.tags?.some((tag) => selectedTags.includes(tag))
                     || selectedTags.length === 0
                 "
+                @tag-click="handleTagClick"
               />
             </div>
           </transition-group>
