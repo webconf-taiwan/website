@@ -4,6 +4,8 @@ import { CUSTOMAGENDAITEM, SPEAKERS } from '~/constants/agenda'
 
 useSeoMeta({
   title: '講者陣容',
+  description:
+    'WebConf Taiwan 2025 再次集結產業各領域的專家，講者不只是分享技術與設計實務，更是一次難得的跨領域對話，你會聽到真實的挑戰、失敗背後的思考、團隊如何解題，以及那些改變產品方向的關鍵洞察。',
 })
 
 const isMenuOpen = ref(false)
