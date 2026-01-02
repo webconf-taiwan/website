@@ -4,6 +4,7 @@ import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 useSeoMeta({
   title: '歷屆回顧',
+  description: '回顧 WebConf Taiwan 歷屆活動網站與花絮相簿。',
 })
 
 const { gsap } = useGsap()

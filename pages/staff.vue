@@ -3,6 +3,8 @@ import { STAFF } from '~/constants/staff'
 
 useSeoMeta({
   title: '主辦團隊',
+  description:
+    '來自悠識數位、五倍紅寶石、六角學院等單位夥伴共同協力舉辦 WebConf Taiwan 2025。',
 })
 </script>
 

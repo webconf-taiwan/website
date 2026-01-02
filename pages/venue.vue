@@ -3,6 +3,8 @@ import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 useSeoMeta({
   title: '場域介紹',
+  description:
+    'WebConf Taiwan 2025 舉辦於瓶蓋工廠台北製造所，提供場地平面圖、交通方式。',
 })
 
 const { gsap } = useGsap()

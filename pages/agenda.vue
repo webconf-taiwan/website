@@ -5,7 +5,7 @@ import { AGENDA_LIST } from '~/constants/agenda'
 useSeoMeta({
   title: '議程資訊',
   description:
-    'WebConf Taiwan 2025 完整議程資訊，包含兩天精彩內容、講者資訊與議題標籤',
+    'WebConf Taiwan 2025 完整議程資訊，包含兩天精彩內容、講者資訊、簡報與共筆連結。',
 })
 
 const { mainEvent, day1Event, day2Event } = useAgendaSeo()
