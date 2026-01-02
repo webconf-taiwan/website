@@ -19,6 +19,7 @@ date: 2025-12-12
 time: 10:05~10:50
 room: F 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FP_fzeqGpTtuUPAxyFjgGMg
+slides: https://onedrive.live.com/?redeem=aHR0cHM6Ly8xZHJ2Lm1zL2IvYy81ODAxNWJjYjAwMmU2YWM4L0lRQTBYcGJzNHRIbFE3NFRqdjJqNWhjdkFkUlp0ZVBZYmkxSWN1a0U0emhENk8wP2U9Z2R0cUhW&cid=58015BCB002E6AC8&id=58015BCB002E6AC8%21sec965e34d1e243e5be138efda3e6172f&parId=58015BCB002E6AC8%2132065&o=OneUp
 ---
 
 ::speaker-intro

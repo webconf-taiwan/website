@@ -19,6 +19,7 @@ date: 2025-12-12
 time: 11:00~11:45
 room: M 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FSsKHqlcXSaqzzoyt-peN7Q
+slides: https://kurohsu.dev/misc/webconf-2025-vue-sdd-ai-development.html?fbclid=IwY2xjawO3F3xleHRuA2FlbQIxMQBzcnRjBmFwcF9pZBAyMjIwMzkxNzg4MjAwODkyAAEewsdaV07xLVQnLPFb0IFZCfSHuhMx9Ba1II0UP0_HkKMz3S92oqzLPZVngqk_aem_FTlGdmn8oCZXkiApRh38og
 ---
 
 ::speaker-intro

@@ -19,6 +19,7 @@ date: 2025-12-12
 time: 15:20~16:05
 room: F 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FJvkL07H2Qget8PAil8laFw
+slides: https://webconf-2025.vercel.app/1
 ---
 
 ::speaker-intro

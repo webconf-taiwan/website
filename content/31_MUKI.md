@@ -18,6 +18,7 @@ date: 2025-12-13
 time: 11:50~12:35
 room: F 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2Fpdw4NCDAQCmrxrnF2bnW9Q
+slides: https://gamma.app/docs/Web-API--1k1bzh5d9rxyuiy?mode=doc
 ---
 
 ::speaker-intro
