@@ -12,17 +12,15 @@ const { x: mouseX, y: mouseY } = useMouse({ type: 'client' })
 
 const cursorPosition = { x: 0, y: 0 }
 const cursorRef = ref<HTMLElement | null>(null)
-const showCursor = ref(false)
 const device = useDevice()
+
+const showCursor = computed(() => device.isDesktop)
 
 let setX: (_value: number) => void
 let setY: (_value: number) => void
 
 onMounted(() => {
-  const hasPointer = device.isDesktop
-  showCursor.value = hasPointer
-
-  if (!gsap || !hasPointer)
+  if (!gsap || !showCursor.value)
     return
 
   setX = gsap.quickSetter(cursorRef.value, 'x', 'px') as (
@@ -50,6 +48,7 @@ onMounted(() => {
 
 <template>
   <div
+    v-if="showCursor"
     ref="cursorRef"
     data-cursor
     class="pointer-events-none fixed left-0 top-0 z-[150] grid size-5 -translate-x-1/2 -translate-y-1/2 place-content-center will-change-transform"

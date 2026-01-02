@@ -17,6 +17,7 @@ date: 2025-12-12
 time: 11:00~11:45
 room: F 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2F0htyId3jRK-S9VwkmCCI6Q
+slides: https://ottoyen.dev/assets/%E8%B5%B0%E5%9C%A8%E5%90%8C%E6%A5%AD%E5%89%8D%E9%9D%A2_%E5%9C%8B%E6%B3%B0%E7%9A%84%E9%9B%B2%E7%AB%AF%E8%BD%89%E5%9E%8B%E6%B4%9E%E5%AF%9F%E8%88%87%E5%95%9F%E7%A4%BA_v3.pdf
 ---
 
 ::speaker-intro

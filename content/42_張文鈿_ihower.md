@@ -19,6 +19,7 @@ date: 2025-12-13
 time: 13:30~14:15
 room: M 棟 & F 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FjioJQzn_SlyxNCTzy9nCvQ
+slides: https://ihower.tw/presentation/ihower-agents-202512.pdf
 ---
 
 ::speaker-intro

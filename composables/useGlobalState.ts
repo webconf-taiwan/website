@@ -1,6 +1,6 @@
 export function useGlobalState() {
   // 是否已經開賣
-  const isSaleOpen = useState<boolean>('isSaleOpen', () => false)
+  const isSaleOpen = useState<boolean>('isSaleOpen', () => true)
   // 是否已經完成初次加載動畫
   const isFirstLoad = useState<boolean>('isFirstLoad', () => false)
   // 是否已經打開選單

@@ -18,6 +18,7 @@ date: 2025-12-12
 time: 16:15~17:00
 room: A2 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FcAduwH_fSHSxpx7QCBm-Dw
+slides: https://www.dropbox.com/scl/fi/y80ycqilb2kzf30ixfwap/Product-Mindset_Webconf_20251212_sharing.pdf?rlkey=35f7ph5q704y3ft0ushdaww0j&e=2&st=jdtkle2e&dl=0
 ---
 
 ::speaker-intro

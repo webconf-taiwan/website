@@ -17,6 +17,7 @@ date: 2025-12-13
 time: 15:20~16:05
 room: F 棟
 doc: https://hackmd.io/@webconf/HJiwwqnxZe/%2FO_bBsYiqTHysuP27CMdbwQ
+slides: https://drive.google.com/file/d/169rfcCCuJRFfeZpBzApuC_k3TutohptF/view
 ---
 
 ::speaker-intro
