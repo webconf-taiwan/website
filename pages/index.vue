@@ -29,5 +29,6 @@ useSchemaOrg([
     <HomeOrganizersMarquee />
     <HomeCTA />
     <HomeCocNotice />
+    <HomeAnnouncementBar />
   </div>
 </template>
