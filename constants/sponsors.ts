@@ -1,4 +1,4 @@
-export const SPONSORSINFO = [
+export const SPONSORS_INFO = [
   {
     id: 1,
     name: '鈦坦科技',

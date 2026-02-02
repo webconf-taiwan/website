@@ -965,7 +965,7 @@ export const SPEAKERS = AGENDA_LIST.reduce<Array<
   return acc
 }, []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 
-export const CUSTOMAGENDAITEM: SpeakerInfo & {
+export const CUSTOM_AGENDA_ITEM: SpeakerInfo & {
   tags: AgendaTag[]
 } = {
   name: '小賴',

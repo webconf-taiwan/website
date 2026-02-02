@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { AgendaTag } from '~/types'
-import { CUSTOMAGENDAITEM, SPEAKERS } from '~/constants/agenda'
+import { CUSTOM_AGENDA_ITEM, SPEAKERS } from '~/constants/agenda'
 
 useSeoMeta({
   title: '講者陣容',
@@ -113,7 +113,7 @@ watch(isMenuOpen, (newValue) => {
           class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
           <ShareGridCard
-            v-for="(speaker, index) in [...SPEAKERS, CUSTOMAGENDAITEM]"
+            v-for="(speaker, index) in [...SPEAKERS, CUSTOM_AGENDA_ITEM]"
             :key="`${speaker.name}-${index}`"
             :is-selected="
               speaker.tags?.some((tag) => selectedTags.includes(tag))
