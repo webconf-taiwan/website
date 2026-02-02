@@ -75,26 +75,24 @@ const isMenuOpen = ref(false)
           >
             <NuxtLink
               :to="`/speakers/${speaker.speakerId}`"
-              class="block"
+              class="flex gap-3 p-5 lg:flex-col lg:p-6 xl:p-9"
             >
-              <div class="flex gap-3 p-5 lg:flex-col lg:p-6 xl:p-9">
-                <div class="relative shrink-0">
-                  <NuxtImg
-                    :src="speaker.avatarUrl"
-                    :alt="speaker.name"
-                    width="220"
-                    height="314"
-                    class="aspect-speaker-img-full h-[144px] w-[100px] object-cover duration-300 group-hover:grayscale-0 lg:size-full lg:grayscale"
-                  />
+              <div class="relative shrink-0">
+                <NuxtImg
+                  :src="speaker.avatarUrl"
+                  :alt="speaker.name"
+                  width="220"
+                  height="314"
+                  class="aspect-speaker-img-full h-[144px] w-[100px] object-cover duration-300 group-hover:grayscale-0 lg:size-full lg:grayscale"
+                />
 
-                  <ShareGradientMask
-                    class="hidden group-hover:opacity-0 lg:block"
-                  />
-                  <ShareNoiseMask
-                    class="hidden group-hover:opacity-0 lg:block"
-                  />
-                </div>
+                <ShareGradientMask
+                  class="hidden group-hover:opacity-0 lg:block"
+                />
+                <ShareNoiseMask class="hidden group-hover:opacity-0 lg:block" />
+              </div>
 
+              <div class="flex flex-col gap-3">
                 <div>
                   <h3 class="text-h4-24 leading-[1.4]">
                     {{ speaker.name }}
@@ -105,25 +103,23 @@ const isMenuOpen = ref(false)
                     {{ speaker.JobTitle }}
                   </p>
                 </div>
+
+                <ul class="relative flex grow flex-wrap items-start gap-2">
+                  <li
+                    v-for="tag in speaker.tags"
+                    :key="`${speaker.name}-${tag}`"
+                  >
+                    <button
+                      type="button"
+                      class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray hover:border-webconf-blue hover:bg-white hover:text-webconf-blue"
+                      @click="handleTagClick(tag)"
+                    >
+                      {{ tag }}
+                    </button>
+                  </li>
+                </ul>
               </div>
             </NuxtLink>
-
-            <ul
-              class="relative mx-5 mb-5 mt-0 flex grow flex-wrap items-start gap-2 lg:mx-6 lg:mb-6 xl:mx-9 xl:mb-9"
-            >
-              <li
-                v-for="tag in speaker.tags"
-                :key="`${speaker.name}-${tag}`"
-              >
-                <button
-                  type="button"
-                  class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray hover:border-webconf-blue hover:bg-white hover:text-webconf-blue"
-                  @click="handleTagClick(tag)"
-                >
-                  {{ tag }}
-                </button>
-              </li>
-            </ul>
 
             <template #floating-block>
               <ClientOnly>
