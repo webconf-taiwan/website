@@ -1,10 +1,45 @@
 <script setup lang="ts">
+/**
+ * TagFilterMenu
+ * 議程類型篩選選單
+ */
 import type { AgendaTag } from '~/types'
 
-const isOpen = defineModel<boolean>('isOpen', { required: true })
+const isOpen = defineModel<boolean>('isOpen', {
+  required: true,
+})
 const selectedTags = defineModel<AgendaTag[]>('selectedTags', {
   required: true,
 })
+
+// 監聽 ESC 鍵事件來關閉選單
+function handleEscKey(event: KeyboardEvent) {
+  if (event.key === 'Escape' && isOpen.value) {
+    isOpen.value = false
+  }
+}
+
+watch(isOpen, (newValue) => {
+  if (newValue) {
+    window.addEventListener('keydown', handleEscKey)
+    document.body.style.overflow = 'hidden'
+  }
+
+  onWatcherCleanup(() => {
+    window.removeEventListener('keydown', handleEscKey)
+    document.body.style.overflow = 'auto'
+  })
+})
+
+// 處理標籤切換
+function toggleTag(tag: AgendaTag) {
+  if (selectedTags.value.includes(tag)) {
+    selectedTags.value = [...selectedTags.value.filter(t => t !== tag)]
+  }
+  else {
+    selectedTags.value = [...selectedTags.value, tag]
+  }
+}
 
 const tags: AgendaTag[] = [
   'Frontend',
@@ -19,39 +54,6 @@ const tags: AgendaTag[] = [
   '軟體設計',
   '設計實務',
 ]
-
-// 監聽 ESC 鍵關閉選單
-function handleEscKey(event: KeyboardEvent) {
-  if (event.key === 'Escape' && isOpen.value) {
-    isOpen.value = false
-  }
-}
-
-watch(isOpen, (newValue) => {
-  if (newValue) {
-    window.addEventListener('keydown', handleEscKey)
-    document.body.style.overflow = 'hidden'
-  }
-  else {
-    window.removeEventListener('keydown', handleEscKey)
-    document.body.style.overflow = ''
-  }
-})
-
-onUnmounted(() => {
-  window.removeEventListener('keydown', handleEscKey)
-  document.body.style.overflow = ''
-})
-
-// 處理標籤切換
-function toggleTag(tag: AgendaTag) {
-  if (selectedTags.value.includes(tag)) {
-    selectedTags.value = selectedTags.value.filter(t => t !== tag)
-  }
-  else {
-    selectedTags.value = [...selectedTags.value, tag]
-  }
-}
 </script>
 
 <template>
@@ -69,7 +71,7 @@ function toggleTag(tag: AgendaTag) {
       class="tag-filter-menu absolute left-0 top-0 z-50 h-full w-screen border-webconf-gray bg-black px-12 py-6 lg:size-full lg:w-[228px] lg:border-r lg:pl-4 2xl:w-[260px] 2xl:pl-12"
     >
       <button
-        class="flex-center group size-10 bg-white duration-300 hover:bg-webconf-blue lg:size-[44px]"
+        class="flex-center group size-10 bg-white duration-300 hover:bg-webconf-blue lg:size-11"
         aria-label="關閉篩選選單"
         @click="isOpen = false"
       >

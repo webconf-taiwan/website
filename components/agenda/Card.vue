@@ -101,7 +101,7 @@ function handleCardClick(event: MouseEvent) {
 
             <ul
               v-if="data.tags"
-              class="relative z-10 mt-3 flex flex-wrap items-start gap-2 lg:mt-4"
+              class="relative z-[5] mt-3 flex flex-wrap items-start gap-2 lg:mt-4"
             >
               <li
                 v-for="tag in data.tags"
