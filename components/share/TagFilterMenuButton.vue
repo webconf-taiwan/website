@@ -4,7 +4,6 @@
  * 開啟議程類型篩選選單的按鈕
  */
 interface Props {
-  isMenuOpen: boolean
   size: 'sm' | 'lg'
   selectedTagsCount: number
 }

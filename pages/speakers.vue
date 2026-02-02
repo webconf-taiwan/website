@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AgendaTag } from '~/types'
 import { CUSTOM_AGENDA_ITEM, SPEAKERS } from '~/constants/agenda'
 
 useSeoMeta({
@@ -8,42 +7,17 @@ useSeoMeta({
     'WebConf Taiwan 2025 再次集結產業各領域的專家，講者不只是分享技術與設計實務，更是一次難得的跨領域對話，你會聽到真實的挑戰、失敗背後的思考、團隊如何解題，以及那些改變產品方向的關鍵洞察。',
 })
 
+// 議程類型篩選
+const { selectedTags, handleTagClick } = useSelectedTags()
 const isMenuOpen = ref(false)
-const showAside = ref(false)
-
-const selectedTags = ref<AgendaTag[]>([])
-
-function handleTagClick(tag: AgendaTag) {
-  if (selectedTags.value.includes(tag)) {
-    selectedTags.value = selectedTags.value.filter(t => t !== tag)
-  }
-  else {
-    selectedTags.value = [...selectedTags.value, tag]
-  }
-}
-
-// 延遲隱藏 aside 以確保過渡完成
-watch(isMenuOpen, (newValue) => {
-  if (newValue) {
-    showAside.value = true
-  }
-  else {
-    // 等待 leave transition 完成後再隱藏
-    setTimeout(() => {
-      showAside.value = false
-    }, 200)
-  }
-})
 </script>
 
 <template>
   <div>
-    <section class="flex-1">
-      <ShareBanner
-        title="SPEAKERS"
-        sub-title="講者陣容"
-      />
-    </section>
+    <ShareBanner
+      title="SPEAKERS"
+      sub-title="講者陣容"
+    />
 
     <main
       class="mr-[-0.5px] border-b border-webconf-gray bg-black text-webconf-gray"
@@ -75,34 +49,11 @@ watch(isMenuOpen, (newValue) => {
       </section>
 
       <section class="relative flex">
-        <aside
-          :class="{
-            'z-50 flex': isMenuOpen || showAside,
-            'hidden lg:z-auto lg:flex': !isMenuOpen && !showAside,
-          }"
-          class="fixed top-[54.5px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[54.5px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
-        >
-          <ShareTagFilterMenuButton
-            :is-menu-open="isMenuOpen"
-            size="lg"
-            :selected-tags-count="selectedTags.length"
-            @click="isMenuOpen = true"
-          />
-
-          <ShareTagFilterMenu
-            v-model:is-open="isMenuOpen"
-            v-model:selected-tags="selectedTags"
-          />
-
-          <div
-            :class="{
-              'opacity-100': isMenuOpen,
-              'opacity-0': !isMenuOpen,
-            }"
-            class="absolute inset-0 h-full w-[100dvw] bg-black/30 duration-300"
-            @click="isMenuOpen = false"
-          ></div>
-        </aside>
+        <ShareTagFilterMenuAside
+          v-model:is-open="isMenuOpen"
+          v-model:selected-tags="selectedTags"
+          class="lg:top-[54.5px]"
+        />
 
         <!-- 講者卡片 -->
         <div
