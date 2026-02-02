@@ -24,6 +24,13 @@ export type Speaker = SpeakerInfo & {
   tags?: AgendaTag[]
 }
 
+export interface Staff {
+  name: string
+  title: string
+  avatarUrl: string
+  links: readonly string[]
+}
+
 export interface AgendaItem {
   title: string
   speakerInfo?: SpeakerInfo[]
