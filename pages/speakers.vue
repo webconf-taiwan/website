@@ -57,10 +57,6 @@ const isMenuOpen = ref(false)
 
         <!-- 講者卡片 -->
         <div
-          v-cursor="{
-            scale: 0.5,
-            duration: 0.5,
-          }"
           class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
           <SpeakerCard

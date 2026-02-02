@@ -92,13 +92,7 @@ const isMenuOpen = ref(false)
           v-model:selected-tags="selectedTags"
         />
 
-        <div
-          v-cursor="{
-            scale: 0.5,
-            duration: 0.5,
-          }"
-          class="grid grow grid-cols-3 bg-black"
-        >
+        <div class="grid grow grid-cols-3 bg-black">
           <transition-group
             name="agenda-fade"
             tag="div"

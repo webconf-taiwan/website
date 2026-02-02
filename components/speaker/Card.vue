@@ -19,6 +19,10 @@ const emit = defineEmits<{
     :fill-effect="true"
   >
     <NuxtLink
+      v-cursor="{
+        scale: 0.5,
+        duration: 0.5,
+      }"
       :to="`/speakers/${speaker.speakerId}`"
       class="flex gap-3 p-5 lg:flex-col lg:p-6 xl:p-9"
     >

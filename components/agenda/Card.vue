@@ -54,6 +54,10 @@ function handleCardClick(event: MouseEvent) {
     </div>
 
     <NuxtLink
+      v-cursor="{
+        scale: 0.5,
+        duration: 0.5,
+      }"
       class="group relative flex h-full flex-col px-5 py-8 text-left transition-colors duration-300 lg:overflow-visible lg:px-8 xl:min-h-[285px] xl:px-10"
       :class="{
         'lg:-mt-7': showTime,
