@@ -126,7 +126,7 @@ watch(isMenuOpen, (newValue) => {
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <AgendaEventDaySwitch v-model="selectedDate" />
 
-          <AgendaTagFilterBtn
+          <ShareTagFilterMenuButton
             :is-menu-open="isMenuOpen"
             size="sm"
             :selected-tags-count="selectedTags.length"
@@ -163,14 +163,14 @@ watch(isMenuOpen, (newValue) => {
           }"
           class="fixed top-[54.5px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124.5px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
         >
-          <AgendaTagFilterBtn
+          <ShareTagFilterMenuButton
             :is-menu-open="isMenuOpen"
             size="lg"
             :selected-tags-count="selectedTags.length"
             @click="isMenuOpen = true"
           />
 
-          <AgendaTagFilterMenu
+          <ShareTagFilterMenu
             v-model:is-open="isMenuOpen"
             v-model:selected-tags="selectedTags"
           />
