@@ -63,6 +63,10 @@ const snsInfo = computed(() => {
 
 <template>
   <a
+    v-cursor="{
+      scale: 0.5,
+      duration: 0.5,
+    }"
     :href="link"
     class="block size-[44px] border border-webconf-blue/90 p-[10px] transition-colors duration-300 hover:bg-webconf-blue"
     target="_blank"

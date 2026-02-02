@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { SPONSORSINFO } from '~/constants/sponsors'
+import { SPONSORS_INFO } from '~/constants/sponsors'
 </script>
 
 <template>
@@ -17,7 +17,7 @@ import { SPONSORSINFO } from '~/constants/sponsors'
     </div>
 
     <div
-      v-for="sponsor in SPONSORSINFO"
+      v-for="sponsor in SPONSORS_INFO"
       :key="sponsor.id"
       class="sponsors-content flex-1 lg:border-l"
     >

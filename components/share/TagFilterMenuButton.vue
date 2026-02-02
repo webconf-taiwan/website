@@ -1,6 +1,9 @@
 <script setup lang="ts">
+/**
+ * TagFilterMenuButton
+ * 開啟議程類型篩選選單的按鈕
+ */
 interface Props {
-  isMenuOpen: boolean
   size: 'sm' | 'lg'
   selectedTagsCount: number
 }
@@ -13,7 +16,7 @@ defineProps<Props>()
     <button
       type="button"
       :class="{
-        'size-[44px]': size === 'lg',
+        'size-11': size === 'lg',
         'size-10': size === 'sm',
         'bg-webconf-blue': selectedTagsCount > 0,
       }"

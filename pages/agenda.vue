@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { AgendaItem, AgendaTag } from '~/types'
-import { AGENDA_LIST } from '~/constants/agenda'
+import { GROUPED_AGENDAS } from '~/constants/agenda'
 
 useSeoMeta({
   title: '議程資訊',
@@ -11,113 +10,46 @@ useSeoMeta({
 const { mainEvent, day1Event, day2Event } = useAgendaSeo()
 useSchemaOrg([mainEvent, day1Event, day2Event])
 
-// 將議程按時間分組
-function groupAgendasByTime(agendas: AgendaItem[]) {
-  return agendas.reduce(
-    (acc, agenda) => {
-      const time = agenda.startTime
-      if (!acc[time]) {
-        acc[time] = []
-      }
-      acc[time].push(agenda)
-      return acc
-    },
-    {} as Record<string, AgendaItem[]>,
-  )
-}
-
-const agendasAtDec12Morning = computed(() => {
-  const morningAgendas = AGENDA_LIST.filter(
-    item => item.day === '12' && item.startTime < '12:00',
-  )
-  return groupAgendasByTime(morningAgendas)
-})
-
-const agendasAtDec12Afternoon = computed(() => {
-  const afternoonAgendas = AGENDA_LIST.filter(
-    item => item.day === '12' && item.startTime >= '12:00',
-  )
-  return groupAgendasByTime(afternoonAgendas)
-})
-
-const agendasAtDec13Morning = computed(() => {
-  const morningAgendas = AGENDA_LIST.filter(
-    item => item.day === '13' && item.startTime < '12:00',
-  )
-  return groupAgendasByTime(morningAgendas)
-})
-
-const agendasAtDec13Afternoon = computed(() => {
-  const afternoonAgendas = AGENDA_LIST.filter(
-    item => item.day === '13' && item.startTime >= '12:00',
-  )
-  return groupAgendasByTime(afternoonAgendas)
-})
-
-// 根據當前日期決定預設顯示的議程
-const selectedDate = ref(
-  new Date() < new Date('2025-12-13T00:00:00+08:00') ? '12' : '13',
-)
+// 議程資料
+const {
+  agendasAtDec12Morning,
+  agendasAtDec12Afternoon,
+  agendasAtDec13Morning,
+  agendasAtDec13Afternoon,
+} = GROUPED_AGENDAS
 
 // 監聽 selectedDate 變化，切換時滾動到頂部
+const selectedDate = ref('12')
+
 watch(selectedDate, () => {
-  if (process.client) {
-    const lenis = useLenis()
-    if (lenis) {
-      lenis.scrollTo(0)
-    }
+  const lenis = useLenis()
+  if (lenis) {
+    lenis.scrollTo(0)
   }
 })
 
 // 根據選定日期動態獲取議程
 const currentMorningAgendas = computed(() =>
-  selectedDate.value === '12'
-    ? agendasAtDec12Morning.value
-    : agendasAtDec13Morning.value,
+  selectedDate.value === '12' ? agendasAtDec12Morning : agendasAtDec13Morning,
 )
 
 const currentAfternoonAgendas = computed(() =>
   selectedDate.value === '12'
-    ? agendasAtDec12Afternoon.value
-    : agendasAtDec13Afternoon.value,
+    ? agendasAtDec12Afternoon
+    : agendasAtDec13Afternoon,
 )
 
+// 議程類型篩選
+const { selectedTags, handleTagClick } = useSelectedTags()
 const isMenuOpen = ref(false)
-const showAside = ref(false)
-
-const selectedTags = ref<AgendaTag[]>([])
-
-function handleTagClick(tag: AgendaTag) {
-  if (selectedTags.value.includes(tag)) {
-    selectedTags.value = selectedTags.value.filter(t => t !== tag)
-  }
-  else {
-    selectedTags.value = [...selectedTags.value, tag]
-  }
-}
-
-// 延遲隱藏 aside 以確保過渡完成
-watch(isMenuOpen, (newValue) => {
-  if (newValue) {
-    showAside.value = true
-  }
-  else {
-    // 等待 leave transition 完成後再隱藏
-    setTimeout(() => {
-      showAside.value = false
-    }, 200)
-  }
-})
 </script>
 
 <template>
   <div>
-    <section class="flex-1">
-      <ShareBanner
-        title="Agenda"
-        sub-title="議程資訊"
-      />
-    </section>
+    <ShareBanner
+      title="Agenda"
+      sub-title="議程資訊"
+    />
 
     <main class="border-b border-webconf-gray text-webconf-gray">
       <section
@@ -126,10 +58,9 @@ watch(isMenuOpen, (newValue) => {
         <div class="flex-center py-[6px] text-h4-24 lg:py-3">
           <AgendaEventDaySwitch v-model="selectedDate" />
 
-          <AgendaTagFilterBtn
-            :is-menu-open="isMenuOpen"
-            size="sm"
+          <ShareTagFilterMenuButton
             :selected-tags-count="selectedTags.length"
+            size="sm"
             class="ml-3 lg:hidden"
             @click="isMenuOpen = true"
           />
@@ -156,42 +87,12 @@ watch(isMenuOpen, (newValue) => {
       </section>
 
       <section class="relative flex">
-        <aside
-          :class="{
-            'z-50 flex': isMenuOpen || showAside,
-            'hidden lg:z-auto lg:flex': !isMenuOpen && !showAside,
-          }"
-          class="fixed top-[54.5px] h-[calc(100dvh-54px)] w-0 shrink-0 flex-col items-start self-start border-webconf-gray bg-black lg:sticky lg:top-[124.5px] lg:w-[228px] lg:border-r lg:p-4 2xl:w-[260px] 2xl:pl-12"
-        >
-          <AgendaTagFilterBtn
-            :is-menu-open="isMenuOpen"
-            size="lg"
-            :selected-tags-count="selectedTags.length"
-            @click="isMenuOpen = true"
-          />
+        <ShareTagFilterMenuAside
+          v-model:is-open="isMenuOpen"
+          v-model:selected-tags="selectedTags"
+        />
 
-          <AgendaTagFilterMenu
-            v-model:is-open="isMenuOpen"
-            v-model:selected-tags="selectedTags"
-          />
-
-          <div
-            :class="{
-              'opacity-100': isMenuOpen,
-              'opacity-0': !isMenuOpen,
-            }"
-            class="absolute inset-0 h-full w-[100dvw] bg-black/30 duration-300"
-            @click="isMenuOpen = false"
-          ></div>
-        </aside>
-
-        <div
-          v-cursor="{
-            scale: 0.5,
-            duration: 0.5,
-          }"
-          class="grid grow grid-cols-3 bg-black"
-        >
+        <div class="grid grow grid-cols-3 bg-black">
           <transition-group
             name="agenda-fade"
             tag="div"
@@ -254,6 +155,7 @@ watch(isMenuOpen, (newValue) => {
                   agenda.tags?.some((tag) => selectedTags.includes(tag))
                     || selectedTags.length === 0
                 "
+                :selected-tags="selectedTags"
                 @tag-click="handleTagClick"
               />
             </div>
@@ -300,6 +202,7 @@ watch(isMenuOpen, (newValue) => {
               <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
+                :selected-tags="selectedTags"
                 :data="agenda"
                 :index="index"
                 :time="time"
@@ -324,7 +227,7 @@ watch(isMenuOpen, (newValue) => {
               class="relative"
             >
               <time
-                class="sticky top-[107px] z-10 flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
+                class="sticky top-[107px] z-[5] flex h-7 w-full items-center bg-webconf-gray px-5 text-btn-16 text-webconf-blue lg:top-[124px] lg:ml-[-86px] lg:w-[86px] lg:justify-center"
               >
                 <span>17:15</span>
                 <span class="lg:hidden">{{ ` - ` }}</span>

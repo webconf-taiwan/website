@@ -965,7 +965,8 @@ export const SPEAKERS = AGENDA_LIST.reduce<Array<
   return acc
 }, []).sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
 
-export const CUSTOMAGENDAITEM: SpeakerInfo & {
+// 自定義議程資料 e.g. 工作坊
+export const CUSTOM_AGENDA_ITEM: SpeakerInfo & {
   tags: AgendaTag[]
 } = {
   name: '小賴',
@@ -974,4 +975,25 @@ export const CUSTOMAGENDAITEM: SpeakerInfo & {
   speakerId: '45',
   order: 45,
   tags: ['工作坊', '團隊管理'],
+}
+
+// 依照時間分組議程
+function groupAgendasByTime(agendas: AgendaItem[]) {
+  return agendas.reduce((acc, agenda) => {
+    const time = agenda.startTime
+
+    if (!acc[time]) {
+      acc[time] = []
+    }
+    acc[time].push(agenda)
+
+    return acc
+  }, {} as Record<string, AgendaItem[]>)
+}
+
+export const GROUPED_AGENDAS = {
+  agendasAtDec12Morning: groupAgendasByTime(AGENDA_LIST.filter(agenda => agenda.day === '12' && agenda.startTime < '12:00')),
+  agendasAtDec12Afternoon: groupAgendasByTime(AGENDA_LIST.filter(agenda => agenda.day === '12' && agenda.startTime >= '12:00')),
+  agendasAtDec13Morning: groupAgendasByTime(AGENDA_LIST.filter(agenda => agenda.day === '13' && agenda.startTime < '12:00')),
+  agendasAtDec13Afternoon: groupAgendasByTime(AGENDA_LIST.filter(agenda => agenda.day === '13' && agenda.startTime >= '12:00')),
 }
