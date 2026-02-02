@@ -20,6 +20,10 @@ export interface SpeakerInfo {
   order?: number
 }
 
+export type Speaker = SpeakerInfo & {
+  tags?: AgendaTag[]
+}
+
 export interface AgendaItem {
   title: string
   speakerInfo?: SpeakerInfo[]

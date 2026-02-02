@@ -161,6 +161,7 @@ const isMenuOpen = ref(false)
                   agenda.tags?.some((tag) => selectedTags.includes(tag))
                     || selectedTags.length === 0
                 "
+                :selected-tags="selectedTags"
                 @tag-click="handleTagClick"
               />
             </div>
@@ -207,6 +208,7 @@ const isMenuOpen = ref(false)
               <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
+                :selected-tags="selectedTags"
                 :data="agenda"
                 :index="index"
                 :time="time"

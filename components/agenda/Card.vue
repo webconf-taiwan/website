@@ -7,6 +7,7 @@ const props = defineProps<{
   time?: string
   showTime?: boolean
   isSelected: boolean
+  selectedTags: AgendaTag[]
 }>()
 
 const emit = defineEmits<{
@@ -84,6 +85,10 @@ function handleCardClick(event: MouseEvent) {
           >
             <button
               type="button"
+              :class="{
+                'border-webconf-gray bg-webconf-gray text-webconf-blue':
+                  selectedTags.includes(tag),
+              }"
               class="relative border border-webconf-blue px-4 py-[6px] text-xs leading-[1.4] tracking-[0.02em] transition-colors duration-300 group-hover:border-webconf-gray hover:border-webconf-blue hover:bg-white hover:text-webconf-blue"
               @click.stop.prevent="emit('tagClick', tag)"
             >
