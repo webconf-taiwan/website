@@ -104,6 +104,7 @@ onMounted(() => {
             <NuxtImg
               :src="item.img"
               :alt="`${item.year} WebConf 網站封面`"
+              placeholder
               class="size-full object-cover"
             />
             <div
@@ -155,6 +156,7 @@ onMounted(() => {
       :key="item.year"
       :src="item.img"
       :alt="`${item.year} WebConf 網站封面`"
+      placeholder
       :class="{
         'opacity-60': hoveredImageIndex === index,
       }"
@@ -169,14 +171,15 @@ onMounted(() => {
         歷屆活動花絮
       </h3>
 
-      <ShareLinkButton
+      <LazyShareLinkButton
         :to="EXTERNAL_LINKS.WEBCONF_GALLERY_URL"
         target="_blank"
         rel="noopener noreferrer"
         class="mt-10"
+        hydrate-on-idle
       >
         前往回顧
-      </ShareLinkButton>
+      </LazyShareLinkButton>
     </section>
   </div>
 </template>

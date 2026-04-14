@@ -440,7 +440,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Huli',
-        avatarUrl: '/images/speakers/17_Huli.webp',
+        avatarUrl: '/images/speakers/17_huli.webp',
         JobTitle: '技術部落格 Huli\'s blog / 站長',
         speakerId: '17',
         order: 4,
@@ -457,7 +457,7 @@ export const AGENDA_LIST: AgendaItem[] = [
     speakerInfo: [
       {
         name: 'Huli',
-        avatarUrl: '/images/speakers/17_Huli.webp',
+        avatarUrl: '/images/speakers/17_huli.webp',
         JobTitle: '技術部落格 Huli\'s blog / 站長',
         speakerId: '17',
         order: 4,

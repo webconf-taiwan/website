@@ -12,9 +12,9 @@ useSeoMeta({
       title="SPONSORS"
       sub-title="贊助廠商"
     />
-    <SponsorsPanel />
-    <SponsorsOrganizersSection />
-    <SponsorsPartnersSection />
-    <SponsorsSponsorshipSection />
+    <LazySponsorsPanel hydrate-on-idle />
+    <LazySponsorsOrganizersSection hydrate-on-idle />
+    <LazySponsorsPartnersSection hydrate-on-idle />
+    <LazySponsorsSponsorshipSection hydrate-on-idle />
   </section>
 </template>

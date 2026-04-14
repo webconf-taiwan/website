@@ -63,6 +63,14 @@ export default defineNuxtConfig({
         display: 'swap',
         preload: true,
       },
+      // izitoast CSS 使用 Lato，明確設定讓 @nuxt/fonts 以 woff2 下載，覆蓋自動發現的 .woff 版本
+      {
+        name: 'Lato',
+        provider: 'google',
+        weights: [400],
+        styles: ['normal', 'italic'],
+        display: 'swap',
+      },
     ],
   },
 

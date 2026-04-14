@@ -41,6 +41,8 @@ const SOCIAL_ITEMS = [
               width="280"
               height="106"
               format="webp"
+              loading="eager"
+              placeholder
               class="opacity-100 transition-opacity duration-500 lg:group-hover:opacity-0"
             />
             <!-- hover logo -->
@@ -49,6 +51,8 @@ const SOCIAL_ITEMS = [
               alt="2025 WebConf"
               width="280"
               height="106"
+              loading="eager"
+              placeholder
               class="absolute inset-0 opacity-0 transition-opacity duration-500 lg:group-hover:opacity-100"
             />
           </NuxtLink>

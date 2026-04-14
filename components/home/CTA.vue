@@ -116,7 +116,8 @@ onBeforeUnmount(() => {
                   alt="2025 WebConf Taiwan"
                   width="409"
                   height="60"
-                  loading="lazy"
+                  loading="eager"
+                  placeholder
                 />
               </div>
 
@@ -147,7 +148,8 @@ onBeforeUnmount(() => {
               alt="2025 WebConf Taiwan"
               width="409"
               height="60"
-              loading="lazy"
+              loading="eager"
+              placeholder
             />
           </div>
 

@@ -76,6 +76,7 @@ const SUPPORTSTARGET = [
       :width="image.width"
       :height="image.height"
       :alt="image.alt"
+      placeholder
       :class="image.class"
     />
     <ShareGradientDotsCard
@@ -124,6 +125,7 @@ const SUPPORTSTARGET = [
                 width="100"
                 height="100"
                 :alt="support.title"
+                placeholder
                 class="aspect-[1/1] w-[60px] sm:w-[100px]"
               />
             </div>
@@ -152,6 +154,7 @@ const SUPPORTSTARGET = [
       src="/images/sponsors/sponsors-line-mobile.svg"
       width="394"
       height="326"
+      placeholder
     />
   </div>
 </template>

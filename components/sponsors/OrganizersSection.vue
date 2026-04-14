@@ -33,6 +33,7 @@ import { ORGANIZERS } from '~/constants/sponsors'
           width="225"
           height="180"
           :alt="`主辦單位${organizer.name}標誌`"
+          placeholder
         />
       </div>
 
@@ -62,6 +63,7 @@ import { ORGANIZERS } from '~/constants/sponsors'
                 width="24"
                 height="24"
                 :alt="link.name"
+                placeholder
               />
             </a>
           </li>
@@ -84,12 +86,14 @@ import { ORGANIZERS } from '~/constants/sponsors'
       src="/images/sponsors/sponsors-line.svg"
       width="908"
       height="749"
+      placeholder
     />
     <NuxtImg
       class="absolute right-[-36px] top-[-186.375px] -z-10 block lg:hidden"
       src="/images/sponsors/sponsors-line-mobile.svg"
       width="394"
       height="326"
+      placeholder
     />
   </div>
 </template>

@@ -17,7 +17,7 @@ const speakers = [
   },
   {
     name: 'Huli',
-    src: '/images/speakers/17_Huli.webp',
+    src: '/images/speakers/17_huli.webp',
     link: '/speakers/17',
   },
   {
