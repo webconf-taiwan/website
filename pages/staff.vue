@@ -36,10 +36,11 @@ useSeoMeta({
       <div
         class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
       >
-        <StaffCard
+        <LazyStaffCard
           v-for="(staff, index) in STAFF"
           :key="`${staff.name}-${index}`"
           :staff="staff"
+          hydrate-on-idle
         />
       </div>
     </main>

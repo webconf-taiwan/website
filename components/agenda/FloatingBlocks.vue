@@ -10,16 +10,18 @@ onMounted(() => {
   const mm = gsap.matchMedia()
 
   mm.add('(min-width: 1024px)', () => {
-    for (const el of els) {
-      gsap.to(el, {
-        x: () => gsap.utils.random(-10, 10),
-        y: () => gsap.utils.random(-10, 10),
-        duration: gsap.utils.random(1, 1.5),
-        ease: 'none',
-        repeat: -1,
-        repeatRefresh: true,
-      })
-    }
+    gsap.delayedCall(0.6, () => {
+      for (const el of els) {
+        gsap.to(el, {
+          x: () => gsap.utils.random(-10, 10),
+          y: () => gsap.utils.random(-10, 10),
+          duration: gsap.utils.random(1, 1.5),
+          ease: 'none',
+          repeat: -1,
+          repeatRefresh: true,
+        })
+      }
+    })
   })
 
   onUnmounted(() => {

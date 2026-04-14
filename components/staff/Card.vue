@@ -18,6 +18,7 @@ defineProps<{
           :alt="staff.name"
           width="220"
           height="314"
+          placeholder
           class="aspect-speaker-img-full h-[144px] w-[100px] object-cover duration-300 group-hover:grayscale-0 lg:size-full lg:grayscale"
         />
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const route = useRoute('agenda-speakerId')
 const router = useRouter()
+const { setToggleModal } = useGlobalState()
 
 // 允許的多人議程組合 (白名單)
 const ALLOWED_MULTI_SPEAKER_GROUPS = [
@@ -44,6 +45,16 @@ const currentSpeaker = computed(() => {
 function handleClose() {
   router.push('/agenda')
 }
+
+watch(
+  () => currentSpeaker.value,
+  (speaker) => {
+    if (speaker && speaker.length > 0) {
+      setToggleModal(true)
+    }
+  },
+  { immediate: true },
+)
 </script>
 
 <template>

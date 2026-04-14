@@ -151,6 +151,12 @@
 }
 
 /* nuxt-toast 彈窗使用 */
+/* 覆寫 izitoast 的 Lato font-family，使用已載入的 Noto Sans TC */
+.iziToast,
+.iziToast * {
+  font-family: "Noto Sans TC", sans-serif;
+}
+
 .custom-toast,
 .custom-toast :is(.iziToast-body, .iziToast-texts, .iziToast-message) {
   min-height: 0 !important;

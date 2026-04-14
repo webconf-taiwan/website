@@ -25,7 +25,7 @@ const lenis = useLenis()
 
 const router = useRouter()
 const { gsap } = useGsap()
-const { isModalOpen, setToggleModal } = useGlobalState()
+const { setToggleModal } = useGlobalState()
 
 const desktopImageComponentRef = ref<InstanceType<
   typeof SpeakerDialogImageDesktop
@@ -276,27 +276,16 @@ onMounted(() => {
   if (lenis) {
     lenis.stop()
   }
-  // 淡入動畫
-  if (isModalOpen.value) {
-    nextTick(() => {
-      gsap.fromTo(
-        popoverRef.value,
-        {
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          duration: 0.5,
-          ease: 'power2.out',
-          onComplete: () => {
-            if (props.speaker && props.speaker.length > 1) {
-              startAutoPlay()
-            }
-          },
-        },
-      )
-    })
-  }
+  gsap.to(popoverRef.value, {
+    opacity: 1,
+    duration: 0.5,
+    ease: 'power2.out',
+    onComplete: () => {
+      if (props.speaker && props.speaker.length > 1) {
+        startAutoPlay()
+      }
+    },
+  })
 })
 
 onUnmounted(() => {
@@ -311,7 +300,7 @@ onUnmounted(() => {
   <div
     ref="popoverRef"
     data-lenis-prevent
-    class="fixed inset-0 z-40 flex h-dvh flex-col overflow-y-auto bg-black/80 pt-[47px] scrollbar-none xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
+    class="fixed inset-0 z-40 flex h-dvh flex-col overflow-y-auto bg-black/80 pt-[47px] opacity-0 scrollbar-none xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
     @keyup.esc="handleClose"
   >
     <AgendaFloatingBlocks />

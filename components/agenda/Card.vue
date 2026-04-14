@@ -127,6 +127,7 @@ function handleCardClick(event: MouseEvent) {
                 :alt="speaker.name"
                 width="43"
                 height="60"
+                placeholder
               />
               <ShareNoiseMask />
             </div>
@@ -164,6 +165,7 @@ function handleCardClick(event: MouseEvent) {
             alt="location"
             width="20"
             height="20"
+            placeholder
           />
           {{ data.location }}
         </div>

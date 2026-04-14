@@ -34,6 +34,7 @@ function handleNext(speakers: any[]) {
       <div class="max-w-[350px] overflow-hidden">
         <div
           ref="imageContainerRef"
+          style="will-change: transform"
           class="flex"
         >
           <!-- 當前講者照片 -->
@@ -46,6 +47,7 @@ function handleNext(speakers: any[]) {
             width="350"
             height="498"
             alt="講者照片"
+            placeholder
             class="shrink-0"
           />
 
@@ -59,6 +61,7 @@ function handleNext(speakers: any[]) {
             width="350"
             height="498"
             alt="下一位講者照片"
+            loading="lazy"
             class="shrink-0"
           />
         </div>

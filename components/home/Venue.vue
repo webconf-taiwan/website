@@ -470,6 +470,8 @@
             width="793"
             height="536"
             fit="contain"
+            loading="eager"
+            placeholder
             class="size-full translate-y-0 object-contain"
           />
         </div>
@@ -485,6 +487,8 @@
           alt="指北針圖示"
           width="161"
           height="117"
+          loading="eager"
+          placeholder
           class="absolute right-0 top-12 hidden sm:block"
         />
         <div

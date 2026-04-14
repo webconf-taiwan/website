@@ -8,8 +8,9 @@ useSeoMeta({
   <div
     class="grid flex-1 place-content-stretch pb-0 pt-[129px] sm:place-content-center sm:pb-[131px] sm:pt-[147px]"
   >
-    <ShareGradientDotsCard
+    <LazyShareGradientDotsCard
       class="w-full px-5 pb-[125px] pt-10 sm:w-[640px] sm:px-[60px] sm:py-12"
+      hydrate-on-idle
     >
       <div class="flex flex-col items-center">
         <!-- 標題 -->
@@ -32,6 +33,6 @@ useSeoMeta({
           返回首頁
         </ShareLinkButton>
       </div>
-    </ShareGradientDotsCard>
+    </LazyShareGradientDotsCard>
   </div>
 </template>

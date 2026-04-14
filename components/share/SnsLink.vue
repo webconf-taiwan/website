@@ -77,6 +77,7 @@ const snsInfo = computed(() => {
       :alt="`前往 ${props.name} 的 ${snsInfo.platform}`"
       width="24"
       height="24"
+      placeholder
     />
   </a>
 </template>
