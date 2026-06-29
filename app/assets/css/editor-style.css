@@ -1,0 +1,251 @@
+.defaultEditorStyle *:not(:last-child):not(li) {
+  margin-bottom: 1.25rem;
+}
+.defaultEditorStyle h1 {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0px;
+}
+
+@media screen and (max-width: 767px) {
+  .defaultEditorStyle h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: 0px;
+  }
+}
+.defaultEditorStyle h2{
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0px;
+}
+
+@media screen and (max-width: 767px) {
+  .defaultEditorStyle h2 {
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: 0px;
+  }
+}
+
+.defaultEditorStyle h3{
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0px;
+}
+
+@media screen and (max-width: 767px) {
+  .defaultEditorStyle h3{
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: 0px;
+  }
+}
+
+.defaultEditorStyle h4{
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0px;
+}
+
+@media screen and (max-width: 767px) {
+  .defaultEditorStyle h4{
+    font-size: 1.125rem;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: 0px;
+  }
+}
+
+.defaultEditorStyle h5{
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: 0px;
+}
+
+@media screen and (max-width: 767px) {
+  .defaultEditorStyle h5{
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: 0px;
+  }
+}
+
+.defaultEditorStyle p{
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 150%;
+  letter-spacing: 1px;
+}
+
+@media screen and (max-width: 767px) {
+  .defaultEditorStyle p{
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 150%;
+  }
+}
+
+.defaultEditorStyle ul {
+  padding-left: 1.5rem;
+}
+
+.defaultEditorStyle ul li{
+    position: relative;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: 0.5px;
+}
+
+.defaultEditorStyle ul li::before{
+  position: absolute;
+  top: 8px;
+  left: -0.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  content: '';
+  background-color: black;
+  transform: translate(-100%,0);
+}
+
+.defaultEditorStyle ul li:not(:last-child){
+  margin-bottom: 5px;
+}
+
+.defaultEditorStyle ol {
+  padding-left: 30px;
+  counter-reset: item;
+}
+
+.defaultEditorStyle ol li{
+    position: relative;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: 0.5px;
+}
+
+.defaultEditorStyle ol li::before{
+  position: absolute;
+  top: 4px;
+  left: -10px;
+  width: 1.25rem;
+  height: 1.25rem;
+  content:'';
+  background-color: black;
+  border:1px solid black;
+  border-radius: 999px;
+  transform: translate(-100%,0);
+}
+
+.defaultEditorStyle ol li::after{
+  position: absolute;
+  top: 2px;
+  left: -12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  font-size: 14px;
+  font-weight: 400;
+  vertical-align: bottom;
+  color: white;
+  content: counter(item) '';
+  counter-increment: item;
+  transform: translate(-100%,0);
+}
+
+.defaultEditorStyle ol li:not(:last-child){
+  margin-bottom: 5px;
+}
+
+.defaultEditorStyle img{
+  width: 100%;
+}
+.defaultEditorStyle video , .defaultEditorStyle .wp-video{
+  width: 100% !important;
+}
+.defaultEditorStyle .gallery{
+  display: flex;
+  gap:1rem;
+  align-items: center;
+}
+
+.defaultEditorStyle .gallery .gallery-item{
+  flex:1;
+  margin-bottom: 0 !important;
+}
+
+.defaultEditorStyle .gallery img{
+  margin-bottom: 0 !important;
+}
+
+.defaultEditorStyle .gallery .gallery-icon{
+  margin-bottom: 0 !important;
+}
+
+.defaultEditorStyle a{
+  color: #5FA718;
+  text-decoration: underline;
+}
+
+.defaultEditorStyle blockquote{
+  width: fit-content;
+  padding: 1rem 10px;
+  margin: 0 auto;
+  font-style: normal;
+  color: black;
+}
+
+.defaultEditorStyle blockquote p{
+  position: relative;
+  margin-right: 40px;
+  margin-bottom: 0 !important;
+  margin-left: 40px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 140%;
+  text-align: center;
+}
+.defaultEditorStyle blockquote p::before{
+  position: absolute;
+  top:50%;
+  left: 0%;
+  width: 10px;
+  height: 10px;
+  content: '';
+  background-color: black;
+  transform: translate(-50px,-50%);
+}
+.defaultEditorStyle blockquote p::after{
+  position: absolute;
+  top:50%;
+  right: 0%;
+  width: 10px;
+  height: 10px;
+  content: '';
+  background-color: black;
+  transform: translate(50px,-50%);
+}
+
+.defaultEditorStyle strong{
+  font-weight: 700;
+}
+
+@media screen and (max-width: 767px) {
+  .defaultEditorStyle blockquote{
+    padding: 20px 12px;
+    margin-right:16px;
+    margin-left:16px;
+  }
+}
