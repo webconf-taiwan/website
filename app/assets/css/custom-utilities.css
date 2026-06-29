@@ -1,0 +1,86 @@
+/*
+ * 屬於 Tailwind 原生無法達成的樣式、webkit 效果
+ * class 命名原則盡量與 Tailwind 一致
+ */
+
+@layer utilities {
+  /* 隱藏卷軸 */
+  .scrollbar-none {
+    &::-webkit-scrollbar {
+      display: none;
+    }
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* 防止圖片拖曳 */
+  .no-drag {
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+  }
+
+  /* Youtube iFrame 套用比例 */
+  .youtube-aspect {
+    @media (min-aspect-ratio: 16/9) {
+      height: 56.25vw;
+    }
+
+    @media (max-aspect-ratio: 16/9) {
+      width: 177.78vh;
+    }
+  }
+
+  /* 文字斷行字數平均 */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar-style::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+  }
+
+  .scrollbar-style::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+  }
+
+  .scrollbar-style::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  .scrollbar-style--gray::-webkit-scrollbar-thumb {
+    background: rgba(200, 200, 200, 0.25);
+    border-radius: 4px;
+  }
+
+  .scrollbar-style--gray::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  /* 預設客製化滿版 container */
+  .container-fulid {
+    @apply mx-auto w-full max-w-[1920px] px-4 md:px-8 xl:px-10 2xl:px-20 3xl:px-[120px];
+  }
+
+  /* 預設客製化 Scrollbar */
+  .blockScroll {
+    &::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      @apply bg-gray-200;
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      @apply bg-gray-400;
+    }
+  }
+}

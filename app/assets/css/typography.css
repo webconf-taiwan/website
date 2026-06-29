@@ -1,0 +1,57 @@
+@layer utilities {
+  .text-zh-head-1 {
+    @apply text-mb/zh/5xl lg:text-dt/zh/5xl;
+  }
+
+  .text-zh-head-2 {
+    @apply text-mb/zh/4xl lg:text-dt/zh/4xl;
+  }
+
+  .text-zh-head-3 {
+    @apply text-mb/zh/3xl lg:text-dt/zh/3xl;
+  }
+
+  .text-zh-head-4 {
+    @apply text-mb/zh/2xl lg:text-dt/zh/2xl;
+  }
+
+  .text-zh-head-5 {
+    @apply text-mb/zh/1xl lg:text-dt/zh/1xl;
+  }
+
+  .text-zh-display-1 {
+    @apply text-mb/zh/7xl lg:text-dt/zh/7xl;
+  }
+
+  .text-zh-display-2 {
+    @apply text-mb/zh/6xl lg:text-dt/zh/6xl;
+  }
+
+  .text-zh-body-1 {
+    @apply text-mb/zh/base lg:text-dt/zh/base;
+  }
+
+  .text-zh-body-2 {
+    @apply text-mb/zh/lg lg:text-dt/zh/lg;
+  }
+
+  .text-zh-mini {
+    @apply text-mb/zh/xs lg:text-dt/zh/xs;
+  }
+
+  .text-zh-link {
+    @apply text-mb/zh/link-xs lg:text-dt/zh/link-xs;
+  }
+
+  .text-zh-btn-lg {
+    @apply text-mb/zh/btn-lg lg:text-dt/zh/btn-lg;
+  }
+
+  .text-zh-btn {
+    @apply text-mb/zh/btn-md lg:text-dt/zh/btn-md;
+  }
+
+  .text-zh-btn-sm {
+    @apply text-mb/zh/btn-xs lg:text-dt/zh/btn-xs;
+  }
+}
