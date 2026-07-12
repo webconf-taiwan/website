@@ -25,3 +25,6 @@ logs
 !.env.template
 
 *.local.*
+
+demo
+.playwright-mcp
