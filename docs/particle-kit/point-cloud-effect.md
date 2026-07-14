@@ -216,6 +216,29 @@ engine.respawn('fromImage');
 
 顏色對位小技巧：若想讓點雲更貼近原圖色彩，可以反向操作——先統計圖片主色，動態組一個 7 色 palette 餵給引擎，而不是遷就既有色盤。
 
+### ✅ 已實作（2026-07，`app/pages/people.vue` + `particle-image.js`）
+
+工作流與踩過的坑，供之後加新人像時照抄：
+
+1. **離線去背**：macOS 原生 Vision（`VNGenerateForegroundInstanceMaskRequest`，
+   swift 單檔腳本）抽人物 → PIL 轉正、裁邊、alpha MinFilter 收縮 1px 去背景殘邊。
+2. **烘 JSON 點資料**：`PLImage.prepare(url, {count})` 取樣後 `JSON.stringify(spec.data)`
+   存檔（Uint16 座標 base64 打包，32k 點約 208KB）。正式站用
+   `PLImage.prepareFromData(json)` 載入——**不必公開原始照片**、比 PNG 小、免解圖。
+   原圖 cutout 收在 `docs/people-src/`（不進 public）。
+3. **互動模式「hover 擴散、離開凍結、點擊倒帶」**：
+   - 預設 `pause(true)` 凍結完整人形（先跑 2 幀渲染出畫面再凍；pause 會跳過渲染，
+     canvas 保留最後一幀）。
+   - **坑：任何正自吸引矩陣（cellular / self > 0）會把人像凝結成菌落圓點**。
+     氣體感要用 wavefield 式正弦相位環流 + 全域微斥力：
+     `m[i][j] = 0.45·sin(2π(j−i)/n) − 0.08`，self −0.06，forceFactor 0.3、simSpeed 0.3。
+   - **倒帶重組（不改引擎的 morph 替代）**：`readParticles()` 讀回目前狀態 →
+     與目標點做「同物種內掃描線排序配對」（GPU 每幀 spatial sort 會打亂粒子順序，
+     index 對不上原點位，但同色可互換所以無妨）→ easing 逐幀插值、借
+     `respawn('__rewind')`（臨時 pattern）整批上傳。倒帶期間 `setForce(0)`。
+     32k 點 × 60fps 上傳約 640KB/幀，桌機無壓力。
+4. 效能守則照 §10：hover 才跑、離屏/分頁隱藏凍結、行動裝置粒子減半。
+
 ## 8. 延伸方向 B：多組點雲之間的漸變（morph）
 
 目標：多張圖各自轉成點雲後，每隔幾秒漸變到下一張。
@@ -342,6 +365,7 @@ particle-life.js          CPU fallback 引擎（window.ParticleLife）
 particle-life-gpu.js      WebGPU 引擎 + makeEngine（window.ParticleLifeGPU）
 particle-palettes.js      8 組色盤（window.PLPalettes）— 抽自 components.jsx
 particle-ambient.js       四層擾動排程（window.PLAmbient）— 抽自 startBreath()
+particle-image.js         圖片 → 點雲取樣（window.PLImage）— prepare / prepareFromData
 example.html              最小可跑範例（含可視暫停 + fps 自適應粒子數）
 point-cloud-effect.md     本文件副本
 ```
