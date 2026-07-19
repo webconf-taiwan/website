@@ -30,7 +30,6 @@ const PEOPLE = [
 
 const NEBULA_FORCE = 0.3          // 擴散時的力度（倒帶時會暫時歸零）
 const REWIND_MS = 2200            // 倒帶動畫時長
-const MORPH_MS = 2000             // 講師間漸變時長
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
@@ -184,48 +183,96 @@ async function tweenToSpec(eng, sp, ms, tag, opts = {}) {
 }
 
 // ===========================================================================
-// 三講師 sticky canvas — 捲動漸變
+// 三講師 sticky canvas — 捲動綁定漸變（scrub）
+// 漸變進度直接綁在捲動位置上：每個講師區塊的頂邊從畫面 100%（底）移到 70% 的這段
+// 捲動過程 = 這位講師從上一位「長」出來；此範圍以外一律定格在完成樣子（看得清楚）。
+// 逆向捲動自動倒放。不用計時器、不讀回粒子，端點都是預先算好的人像目標點，可任意 scrub。
 // ===========================================================================
 const SPECS = []
+const PAIRINGS = []              // 相鄰兩人的配對（PAIRINGS[s]：人 s → 人 s+1）
+const PAIR_LIN = []             // 對應的線性光色盤（換色插值用）
 let stickyEngine = null
 let stickyIO = null, stickyOnVis = null
 let stickyInView = true
-let stickyCurrent = 0, stickyTarget = 0, stickyMorphing = false
 let stickyTriggers = []
+let stickyN = 0
+let stickyIX = null, stickyIY = null, stickyTT = null
 const blockEls = ref([])
 
 function syncStickyPause() {
-  // 只有在漸變中且在視窗內、分頁可見時才讓引擎跑；其餘時間凍結（保留最後一幀）
-  if (stickyEngine) stickyEngine.pause(!(stickyMorphing && stickyInView && !document.hidden))
+  // 在視窗內且分頁可見才讓引擎渲染（力場為 0、只重繪定格畫面，成本低）；離屏即凍結保留末幀
+  if (stickyEngine) stickyEngine.pause(!(stickyInView && !document.hidden))
 }
 
-// 捲動觸發：把目標指到第 i 位講師；若目前沒在漸變就啟動（連跳幾位也會逐一補上）
-function requestMorph(i) {
-  stickyTarget = i
-  runMorph()
-}
-async function runMorph() {
-  if (stickyMorphing) return
-  while (stickyEngine && stickyTarget !== stickyCurrent) {
-    const idx = stickyTarget
-    stickyMorphing = true
-    syncStickyPause()
-    if (!stickyEngine.readParticles) {
-      // CPU fallback：換色盤 + 直接重生（無逐幀遷徙）
-      stickyEngine.setPalette?.(SPECS[idx].palette)
-      stickyEngine.setSeedPattern?.(SPECS[idx].pattern)
-      stickyEngine.respawn(SPECS[idx].pattern)
-    } else {
-      // 位置與色盤用同一 easing 逐幀插值 → 顏色隨形狀一起流過去，換色順滑無卡頓
-      await tweenToSpec(stickyEngine, SPECS[idx], MORPH_MS, '__tween_sticky', {
-        fromPalette: SPECS[stickyCurrent].palette,
-        toPalette: SPECS[idx].palette,
-      })
+// 相鄰兩人像的粒子配對：同物種內以掃描線順序就近配對（正規化座標排序，跨解析度穩定）。
+// 回傳每顆粒子在 A / B 的取樣索引與物種 t；端點都是完整人像，任意 e 插值都成立。
+function buildPairing(A, B, N) {
+  const T = Math.min(A.palette.length, B.palette.length)
+  const aByType = Array.from({ length: T }, () => [])
+  const bByType = Array.from({ length: T }, () => [])
+  for (let i = 0; i < N; i++) { const j = i % A.count; aByType[A.types[j] % T].push(i) }
+  for (let m = 0; m < N; m++) { const j = m % B.count; bByType[B.types[j] % T].push(m) }
+  const orderA = (i) => { const j = i % A.count; return A.py[j] * 4096 + A.px[j] }
+  const orderB = (m) => { const j = m % B.count; return B.py[j] * 4096 + B.px[j] }
+  const aSample = new Int32Array(N), bSample = new Int32Array(N), tt = new Uint8Array(N)
+  let cursor = 0
+  const leftA = [], leftB = []
+  for (let t = 0; t < T; t++) {
+    const a = aByType[t].sort((x, y) => orderA(x) - orderA(y))
+    const b = bByType[t].sort((x, y) => orderB(x) - orderB(y))
+    const n = Math.min(a.length, b.length)
+    for (let k = 0; k < n; k++, cursor++) {
+      aSample[cursor] = a[k] % A.count; bSample[cursor] = b[k] % B.count; tt[cursor] = t
     }
-    stickyCurrent = idx
-    stickyMorphing = false
-    syncStickyPause()
+    for (let k = n; k < a.length; k++) leftA.push(a[k])
+    for (let k = n; k < b.length; k++) leftB.push(b[k])
   }
+  for (let k = 0; k < leftB.length && cursor < N; k++, cursor++) {
+    const ai = leftA[k % Math.max(1, leftA.length)]
+    const bm = leftB[k]
+    aSample[cursor] = ai != null ? ai % A.count : bm % B.count
+    bSample[cursor] = bm % B.count; tt[cursor] = B.types[bm % B.count] % T
+  }
+  for (; cursor < N; cursor++) {  // A 較多的殘餘：留在原地（e=1 收合回自身）
+    aSample[cursor] = cursor % A.count; bSample[cursor] = cursor % A.count; tt[cursor] = A.types[cursor % A.count] % T
+  }
+  return { aSample, bSample, tt }
+}
+
+// 某 spec 的 contain-fit 置中參數（與 particle-image.js registerPattern 一致）
+function fitParams(sp, W, H) {
+  const boxW = W * sp.fit, boxH = H * sp.fit
+  const s = Math.min(boxW / sp.aspect, boxH)
+  const drawW = s * sp.aspect, drawH = s
+  return { x0: (W - drawW) / 2, y0: (H - drawH) / 2, drawW, drawH }
+}
+
+// 依目前捲動把整體相位（0..n-1）拆成「第 seg 段 + 段內進度 e」，插值位置與色盤後整批上傳。
+// 相位 = 各 trigger progress 之和：較早的段已達 1、較晚的段仍 0，故任一時刻只有一段在 (0,1)，
+// 且段邊界兩側相位一致（seg 段 e=1 = seg+1 段 e=0 = 同一人）→ 不論 onUpdate 次序都一致。
+function renderSticky() {
+  if (!stickyEngine || !stickyIX) return
+  const n = SPECS.length
+  let phase = 0
+  for (const t of stickyTriggers) phase += t.progress
+  let seg = Math.floor(phase)
+  if (seg < 0) seg = 0
+  if (seg > n - 2) seg = n - 2
+  let e = Math.min(1, Math.max(0, phase - seg))
+  e = e * e * (3 - 2 * e)                       // smoothstep：兩端自然收尾
+  const A = SPECS[seg], B = SPECS[seg + 1], pr = PAIRINGS[seg]
+  const { W, H } = stickyEngine.size
+  const fa = fitParams(A, W, H), fb = fitParams(B, W, H)
+  const N = stickyN, ix = stickyIX, iy = stickyIY
+  for (let i = 0; i < N; i++) {
+    const ja = pr.aSample[i], jb = pr.bSample[i]
+    const ax = fa.x0 + A.px[ja] * fa.drawW, ay = fa.y0 + A.py[ja] * fa.drawH
+    const bx = fb.x0 + B.px[jb] * fb.drawW, by = fb.y0 + B.py[jb] * fb.drawH
+    ix[i] = ax + (bx - ax) * e; iy[i] = ay + (by - ay) * e
+  }
+  stickyTT = pr.tt
+  stickyEngine.setColors?.(lerpPaletteLinear(PAIR_LIN[seg].a, PAIR_LIN[seg].b, e))
+  stickyEngine.respawn('__sticky')
 }
 
 async function initSticky() {
@@ -238,6 +285,21 @@ async function initSticky() {
 
   const first = SPECS[0]
   const count = window.innerWidth < 768 ? 16000 : first.count
+  stickyN = count
+  stickyIX = new Float32Array(count)
+  stickyIY = new Float32Array(count)
+
+  // 預先算好相鄰兩人的配對與線性光色盤（scrub 時只做 O(N) 插值，不再排序）
+  for (let s = 0; s < SPECS.length - 1; s++) {
+    PAIRINGS.push(buildPairing(SPECS[s], SPECS[s + 1], count))
+    PAIR_LIN.push({ a: paletteToLinear(SPECS[s].palette), b: paletteToLinear(SPECS[s + 1].palette) })
+  }
+  stickyTT = PAIRINGS[0].tt
+
+  // 一次註冊臨時 pattern，讀 module 級的 ix/iy/tt（renderSticky 每次更新其內容後 respawn）
+  window.PLSeeds.PATTERNS.__sticky = (write, nn) => {
+    for (let i = 0; i < nn; i++) write(i, stickyIX[i], stickyIY[i], 0, 0, stickyTT[i])
+  }
 
   stickyEngine = await window.makeEngine(canvas, {
     species: first.palette.length,
@@ -245,7 +307,7 @@ async function initSticky() {
     palette: first.palette,
     seedPattern: first.pattern,
     preset: 'nebula',
-    forceFactor: 0,                 // 凍結人像；漸變時本來就以插值覆寫位置
+    forceFactor: 0,                 // 無演化力：位置完全由 scrub 插值決定
     friction: 0.4,
     minR: 4,
     rMax: 55,
@@ -260,11 +322,9 @@ async function initSticky() {
   })
   if (!backend.value) backend.value = stickyEngine.backend
 
-  // 先渲染出第一位講師（兩幀）再凍結
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
-  syncStickyPause()
 
-  // 效能守則：離屏 / 分頁隱藏都凍結
+  // 效能守則：離屏 / 分頁隱藏都凍結（保留末幀）
   stickyOnVis = () => syncStickyPause()
   document.addEventListener('visibilitychange', stickyOnVis)
   stickyIO = new IntersectionObserver(
@@ -272,21 +332,26 @@ async function initSticky() {
     { threshold: 0.05 },
   )
   stickyIO.observe(canvas)
+  syncStickyPause()
 
-  // GSAP ScrollTrigger：每個右側區塊捲到畫面中央 → 漸變到對應講師
+  // GSAP ScrollTrigger（scrub）：每個「後續」講師區塊的頂邊 100%→70% 這段捲動 = 上一位漸變成它。
+  // 第 s 段（人 s→s+1）綁在 blockEls[s+1] 上；scrub 讓進度跟著捲動、可逆。
   const { $ScrollTrigger } = useNuxtApp()
   if ($ScrollTrigger) {
-    blockEls.value.forEach((el, i) => {
-      if (!el) return
+    for (let s = 0; s < SPECS.length - 1; s++) {
+      const el = blockEls.value[s + 1]
+      if (!el) continue
       stickyTriggers.push($ScrollTrigger.create({
         trigger: el,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => requestMorph(i),
-        onEnterBack: () => requestMorph(i),
+        start: 'top bottom',      // 區塊頂邊在畫面 100%（底）→ 進度 0
+        end: 'top 70%',           // 區塊頂邊到畫面 70% → 進度 1，之後定格
+        scrub: true,
+        onUpdate: renderSticky,
+        onRefresh: renderSticky,  // 尺寸變動 / 重整時重算定格畫面
       }))
-    })
+    }
     $ScrollTrigger.refresh()
+    renderSticky()               // 初始定格在第一位講師
   }
 }
 
