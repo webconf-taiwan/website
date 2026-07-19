@@ -269,6 +269,8 @@
         sprites = null; // invalidate sprite cache
       }
     }
+    // setColors — 與 GPU 引擎介面對齊（CPU 路徑換色本就是重建 sprite 快取）
+    function setColors(palette) { setPalette(palette); }
 
     function setBgFade(v) { config.bgFade = v; }
     function setCount(n) {
@@ -982,7 +984,7 @@
         _removeFpsOverlay();
         if (gpu) gpu.destroy();
       },
-      setPalette, setPreset, setSpecies, setBgFade, setCount,
+      setPalette, setColors, setPreset, setSpecies, setBgFade, setCount,
       setPointSize, setGlow, setForce, setRMax,
       disturb,
       pause(v) { config.paused = !!v; },

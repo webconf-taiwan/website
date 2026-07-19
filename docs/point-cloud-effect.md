@@ -218,14 +218,24 @@ engine.respawn('fromImage');
 
 ### ✅ 已實作（2026-07，`app/pages/people.vue` + `particle-image.js`）
 
-工作流與踩過的坑，供之後加新人像時照抄：
+工作流與踩過的坑，供之後加新人像時照抄。**加新講師三步驟**（工具都在 `docs/people-src/`）：
+
+```bash
+cd docs/people-src
+swift cutout.swift <原圖> /tmp/raw.png          # ① Vision 去背
+python3 cleanup.py /tmp/raw.png people-0N.png 0.03   # ② 轉正/裁邊/alpha 收縮
+python3 bake.py people-0N.png ../../public/people/people-0N.json people-0N 32000  # ③ 烘 JSON
+```
+然後把 `people-0N` 加進 `people.vue` 的 `PEOPLE` 陣列即可。
 
 1. **離線去背**：macOS 原生 Vision（`VNGenerateForegroundInstanceMaskRequest`，
-   swift 單檔腳本）抽人物 → PIL 轉正、裁邊、alpha MinFilter 收縮 1px 去背景殘邊。
-2. **烘 JSON 點資料**：`PLImage.prepare(url, {count})` 取樣後 `JSON.stringify(spec.data)`
-   存檔（Uint16 座標 base64 打包，32k 點約 208KB）。正式站用
+   `cutout.swift` 單檔腳本）抽人物 → `cleanup.py`（PIL）轉正、裁邊、alpha MinFilter
+   收縮 1px 去背景殘邊。
+2. **烘 JSON 點資料**：`bake.py` 是 `PLImage.prepare` 的 Python 移植（用 PIL 讀像素，
+   同一套重要性採樣 + k-means 量化 + Uint16/base64 打包），產出的 `v:1` 資料格式與
+   瀏覽器版**完全相容**——免開瀏覽器 console，直接寫檔。32k 點約 208KB。正式站用
    `PLImage.prepareFromData(json)` 載入——**不必公開原始照片**、比 PNG 小、免解圖。
-   原圖 cutout 收在 `docs/people-src/`（不進 public）。
+   原圖 cutout（`people-0N.png`）與三支工具都收在 `docs/people-src/`（不進 public）。
 3. **互動模式「hover 擴散、離開凍結、點擊倒帶」**：
    - 預設 `pause(true)` 凍結完整人形（先跑 2 幀渲染出畫面再凍；pause 會跳過渲染，
      canvas 保留最後一幀）。
@@ -243,9 +253,34 @@ engine.respawn('fromImage');
 
 目標：多張圖各自轉成點雲後，每隔幾秒漸變到下一張。
 
-### 現況
+### ✅ 已實作（2026-07，`people.vue` sticky 三講師捲動漸變）
 
-引擎目前**沒有** morph 功能：力只有三種來源（互動矩陣、近距排斥、disturb 脈衝）。`respawn()` 是瞬間重生不是漸變。所以要加一個「目標點吸引」機制，有兩條路：
+不必動 shader——把 §7.4 的「倒帶」機制一般化成 `tweenToSpec(eng, spec, ms, tag, {fromPalette, toPalette})`
+就是 morph：`readParticles()` 讀回現況 → 與目標人像做**同物種掃描線配對** → easing 逐幀
+插值位置、借 `respawn(臨時 pattern)` 整批上傳。GSAP ScrollTrigger 讓右側每個區塊捲到畫面
+中央時觸發 `requestMorph(i)`（連跳幾位會逐一補上），十萬顆粒子集體遷徙成下一位講師。
+
+**換色順滑的關鍵坑**：morph 換人時色盤也要換，但
+
+- `setPalette()` 內含 `rebuildBindGroups()`（重建十幾個 bind group）→ 逐幀呼叫會**卡頓**；
+  且一次性換色是**瞬間跳色**。
+- 解法：引擎新增輕量 `setColors(palette)`——只 `writeColors()`（重寫 128B 顏色 buffer），
+  **跳過 rebuildBindGroups**（colorsBuffer 尺寸不變時既有 bind group 仍有效）。morph 時
+  以**同一 easing** 把色盤在**線性光空間**逐幀插值（naive sRGB 插值中點會發灰），顏色隨
+  形狀一起流過去。由於配對讓粒子的 type index t 在新舊人像間一致（都是「第 t 亮的色」），
+  `fromPalette[t] → toPalette[t]` 的插值天然對位，開場不跳色、過程不卡。
+
+粒子順序無法跨人像對位（GPU spatial sort 每幀打亂）不影響——同色可互換。所有人像採樣點數
+需一致（都 32k），色盤長度一致（都 7）故免 `setSpecies`。
+
+### 若要「每隔幾秒自動漸變」而非捲動觸發
+
+引擎原生**沒有** morph 力場；上面的 `tweenToSpec` 是不改引擎的替代（respawn 覆寫位置）。
+若要粒子在形狀「裡面」持續游動、用磁場式拉力遷徙，仍可走下面的 shader 路線：
+
+### 現況（原生力場）
+
+引擎目前**沒有** morph 力：力只有三種來源（互動矩陣、近距排斥、disturb 脈衝）。`respawn()` 是瞬間重生不是漸變。所以要加一個「目標點吸引」機制，有兩條路：
 
 ### 路線 1（推薦）：在 GPU 引擎加 target buffer + seek 力
 

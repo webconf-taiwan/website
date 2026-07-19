@@ -1485,6 +1485,14 @@
         rebuildBindGroups();
       }
     }
+    // setColors — 只重寫顏色 buffer，跳過 rebuildBindGroups。colorsBuffer 尺寸不變
+    // 時既有 bind group 仍指向同一 buffer，故可逐幀呼叫做順滑換色（morph 用）而無卡頓。
+    function setColors(palette) {
+      if (Array.isArray(palette) && palette.length >= 2) {
+        config.palette = palette.slice();
+        writeColors();
+      }
+    }
     function setPreset(name) {
       if (name !== 'auto' && !window.PLRules?.PRESETS[name]) return;
       config.preset = name;
@@ -1640,7 +1648,7 @@
 
     return {
       destroy,
-      setPalette, setPreset, setSpecies, setBgFade, setCount,
+      setPalette, setColors, setPreset, setSpecies, setBgFade, setCount,
       setPointSize, setGlow, setForce, setRMax,
       disturb,
       setShowFps, getFps, setSimSpeed, setCameraZoom, setShowGlow,
