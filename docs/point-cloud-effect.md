@@ -249,6 +249,27 @@ python3 bake.py people-0N.png ../../public/people/people-0N.json people-0N 32000
      32k 點 × 60fps 上傳約 640KB/幀，桌機無壓力。
 4. 效能守則照 §10：hover 才跑、離屏/分頁隱藏凍結、行動裝置粒子減半。
 
+### ✅ 已實作（2026-07，`people.vue` 使用者自製粒子卡片）
+
+讓訪客上傳照片 / 直接拍照 → **瀏覽器端**自動去背 → 取樣成點雲 → 下載 JSON（同 `v:1`
+格式，`prepareFromData` 可直接載入）。全程不經伺服器，照片不外傳。
+
+- **瀏覽器去背**：`@imgly/background-removal`（ISNet 分割模型，跑在 onnxruntime-web WASM）。
+  `removeBackground(fileOrBlob, { model:'isnet_quint8', output:{format:'image/png'} })`
+  回傳帶 alpha 的 PNG blob → `URL.createObjectURL` → 丟給 `PLImage.prepare(url, {count})`。
+  只在使用者操作時 `await import('@imgly/background-removal')` 動態載入（SSR 不打包）。
+- **⚠️ 版本硬綁（踩過的坑）**：`@imgly/background-removal` 把 `onnxruntime-web` 當
+  **未宣告的 peer**（`import("onnxruntime-web")`），且從 CDN 抓的 ort **wasm 版本**要與
+  npm 的 ort **JS 版本**一致，否則 `InferenceSession.create` 丟 `TypeError: r._Ort…`。
+  1.7.0 對應 **onnxruntime-web 1.21.0**（兩者都在 `package.json` 鎖死；升 @imgly 前先查
+  它 build 用哪版 ort，同步改）。`nuxt.config` 的 `optimizeDeps.include` 要含 @imgly，
+  否則 dev 會 `@fs` 404 / 依賴優化失敗（連帶整包 client bundle 掛掉）。
+- **相機拍照**：`getUserMedia({video:{facingMode:'user'}})` 即時預覽 → canvas 擷取一幀
+  → toBlob → 同一條去背/取樣管線。
+- 首次用要下載去背模型（quint8 約 44MB + wasm ~12MB），之後瀏覽器快取。要更好品質可換
+  `isnet_fp16`（88MB）。要 CSP 硬化 / 離線可自架：把 CDN `dist/` 鏡像到 `public/` 並設
+  `config.publicPath`（但 ort wasm 版本仍須與 npm JS 對齊）。
+
 ## 8. 延伸方向 B：多組點雲之間的漸變（morph）
 
 目標：多張圖各自轉成點雲後，每隔幾秒漸變到下一張。

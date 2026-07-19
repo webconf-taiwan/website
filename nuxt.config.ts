@@ -73,7 +73,9 @@ export default defineNuxtConfig({
       include: [
         'class-variance-authority',
         'gsap',
-        'lenis'
+        'lenis',
+        // 動態載入的去背套件：預打包成單一 chunk，dev 才不會 @fs 404（模型/wasm 仍執行期抓）
+        '@imgly/background-removal'
       ]
     },
     esbuild: {

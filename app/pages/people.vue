@@ -463,6 +463,183 @@ async function rewind() {
   syncPause()
 }
 
+// ===========================================================================
+// 使用者自製粒子卡片 — 上傳照片 → @imgly 瀏覽器端 AI 去背 → 取樣成點雲 → 下載 JSON
+// 全程在瀏覽器：去背模型（ISNet quint8，首次約 56MB，之後快取）與取樣都不經伺服器，
+// 產出的 JSON 與 people-0N.json 同格式（prepareFromData 可直接載入）。
+// ===========================================================================
+const cardCanvasRef = ref(null)
+const cardVideoRef = ref(null)
+const cardState = ref('idle')      // idle | camera | removing | sampling | ready | error
+const cardProgress = ref(0)        // 去背/模型下載進度 %
+const cardError = ref('')
+const cardFileName = ref('')
+let cardEngine = null
+let cardSpec = null
+let cardCutoutUrl = null
+let cardStream = null
+let cardIO = null, cardOnVis = null
+let cardInView = true, cardHovering = false, cardRewinding = false, cardStopAmbient = null
+
+function syncCardPause() {
+  if (cardEngine) cardEngine.pause(!((cardHovering || cardRewinding) && cardInView && !document.hidden))
+}
+
+// 上傳檔或拍照 → 共用處理管線：@imgly 去背 → PLImage 取樣 → 掛引擎
+async function processCardSource(src, name) {
+  if (!window.PLImage) return
+  cardFileName.value = name
+  cardError.value = ''
+  cardProgress.value = 0
+  try {
+    cardState.value = 'removing'
+    // 動態載入（純瀏覽器、SSR 不打包）；首次會下載去背模型
+    const { removeBackground } = await import('@imgly/background-removal')
+    const blob = await removeBackground(src, {
+      model: 'isnet_quint8',                 // 最小的量化模型；換 isnet_fp16 品質更好但更大
+      output: { format: 'image/png' },       // 帶 alpha 的去背 PNG
+      progress: (_key, current, total) => {
+        if (total) cardProgress.value = Math.min(100, Math.round((current / total) * 100))
+      },
+    })
+    if (cardCutoutUrl) URL.revokeObjectURL(cardCutoutUrl)
+    cardCutoutUrl = URL.createObjectURL(blob)
+
+    cardState.value = 'sampling'
+    const count = window.innerWidth < 768 ? 16000 : 24000
+    cardSpec = await window.PLImage.prepare(cardCutoutUrl, { count, name: 'card', colors: 7 })
+    await mountCardEngine(count)
+    cardState.value = 'ready'
+  } catch (e) {
+    cardError.value = (e && e.message) || String(e)
+    cardState.value = 'error'
+  }
+}
+
+function onCardFile(ev) {
+  const file = ev.target?.files?.[0]
+  if (file && file.type.startsWith('image/')) processCardSource(file, file.name)
+  if (ev.target) ev.target.value = ''         // 允許重選同一檔
+}
+
+// 直接拍照：開啟相機即時預覽 → 拍攝一張當作來源
+async function startCamera() {
+  cardError.value = ''
+  if (!navigator.mediaDevices?.getUserMedia) {
+    cardError.value = '此裝置 / 瀏覽器不支援相機'
+    cardState.value = 'error'
+    return
+  }
+  try {
+    cardStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'user', width: { ideal: 1280 }, height: { ideal: 1280 } },
+      audio: false,
+    })
+    cardState.value = 'camera'
+    await nextTick()
+    const v = cardVideoRef.value
+    if (v) { v.srcObject = cardStream; await v.play() }
+  } catch (e) {
+    cardError.value = '無法開啟相機：' + ((e && e.message) || e)
+    cardState.value = 'error'
+  }
+}
+function stopCamera() {
+  if (cardStream) { cardStream.getTracks().forEach(t => t.stop()); cardStream = null }
+}
+async function capturePhoto() {
+  const v = cardVideoRef.value
+  if (!v || !v.videoWidth) return
+  const w = v.videoWidth, h = v.videoHeight
+  const c = document.createElement('canvas')
+  c.width = w; c.height = h
+  c.getContext('2d').drawImage(v, 0, 0, w, h)
+  stopCamera()
+  const blob = await new Promise(res => c.toBlob(res, 'image/png'))
+  await processCardSource(blob, 'camera-photo')
+}
+function cancelCamera() {
+  stopCamera()
+  cardState.value = 'idle'
+}
+
+async function mountCardEngine(count) {
+  const canvas = cardCanvasRef.value
+  if (!canvas) return
+  if (cardEngine) { cardEngine.destroy(); cardEngine = null }
+  cardEngine = await window.makeEngine(canvas, {
+    species: cardSpec.palette.length,
+    count,
+    palette: cardSpec.palette,
+    seedPattern: cardSpec.pattern,
+    preset: 'nebula',
+    forceFactor: NEBULA_FORCE,
+    friction: 0.4, minR: 4, rMax: 55, repel: 1.0,
+    simSpeed: 0.3, cameraZoom: 1, pointSize: 0.9,
+    particleOpacity: 1, showGlow: false, cellSubdivisions: 2,
+    bgFade: 'rgba(10,10,12,0.18)',
+  })
+  if (!backend.value) backend.value = cardEngine.backend
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))
+  syncCardPause()
+  if (!cardIO) {
+    cardOnVis = () => syncCardPause()
+    document.addEventListener('visibilitychange', cardOnVis)
+    cardIO = new IntersectionObserver(
+      (es) => { cardInView = es[0].isIntersecting; syncCardPause() },
+      { threshold: 0.05 },
+    )
+    cardIO.observe(canvas)
+  }
+}
+
+// 卡片互動：與示範 canvas 同款（hover 擴散 + 亂流、離開凍結、點擊倒帶重組）
+function onCardEnter() {
+  cardHovering = true; syncCardPause()
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  if (!cardStopAmbient && !reduced && window.PLAmbient) {
+    cardStopAmbient = window.PLAmbient.start(() => (cardRewinding ? null : cardEngine), { breath: false, tide: false, intensity: 0.4 })
+  }
+}
+function onCardLeave() {
+  cardHovering = false; syncCardPause()
+  if (cardStopAmbient) { cardStopAmbient(); cardStopAmbient = null }
+}
+function onCardMove(ev) {
+  if (!cardEngine || !cardHovering || cardRewinding) return
+  const r = ev.currentTarget.getBoundingClientRect()
+  const { W, H } = cardEngine.size
+  cardEngine.disturb(((ev.clientX - r.left) / r.width) * W, ((ev.clientY - r.top) / r.height) * H, 180, 6)
+}
+async function onCardClick() {
+  if (!cardEngine || cardRewinding || !cardSpec) return
+  if (!cardEngine.readParticles) { cardEngine.respawn(); return }
+  cardRewinding = true; syncCardPause()
+  await tweenToSpec(cardEngine, cardSpec, REWIND_MS, '__tween_card')
+  cardEngine.setForce?.(NEBULA_FORCE)
+  cardRewinding = false; syncCardPause()
+}
+
+function downloadCardJSON() {
+  if (!cardSpec) return
+  const blob = new Blob([JSON.stringify(cardSpec.data)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = (cardFileName.value || 'particle-card').replace(/\.[^.]+$/, '') + '.json'
+  a.click()
+  URL.revokeObjectURL(url)
+}
+function resetCard() {
+  stopCamera()
+  if (cardEngine) { cardEngine.destroy(); cardEngine = null }
+  if (cardCutoutUrl) { URL.revokeObjectURL(cardCutoutUrl); cardCutoutUrl = null }
+  cardSpec = null
+  cardState.value = 'idle'
+  cardProgress.value = 0
+  cardError.value = ''
+}
+
 onMounted(async () => {
   for (const s of SCRIPTS) await loadScript(`${KIT}/${s}`)
   registerNebula()
@@ -480,6 +657,13 @@ onBeforeUnmount(() => {
   if (io) io.disconnect()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
   if (engine) { engine.destroy(); engine = null }
+
+  if (cardStopAmbient) cardStopAmbient()
+  if (cardIO) cardIO.disconnect()
+  if (cardOnVis) document.removeEventListener('visibilitychange', cardOnVis)
+  if (cardEngine) { cardEngine.destroy(); cardEngine = null }
+  if (cardCutoutUrl) URL.revokeObjectURL(cardCutoutUrl)
+  stopCamera()
 })
 </script>
 
@@ -520,6 +704,98 @@ onBeforeUnmount(() => {
         <span>LIVING SPECIMEN · 01 — hover 擴散 · 點擊倒帶重組</span>
         <span>{{ backend ? `simulation · live · ${backend}` : 'initializing…' }}</span>
       </p>
+    </section>
+
+    <!-- 使用者自製粒子卡片 -->
+    <section class="mx-auto mt-20 max-w-3xl md:mt-28">
+      <h2 class="text-zh-head-1 mb-2">
+        做你自己的粒子卡片
+      </h2>
+      <p class="text-zh-body-2 mb-4 text-neutral-400">
+        上傳一張人像照，瀏覽器會自動去背、轉成粒子點雲，可下載成 JSON 卡片資料。全程在你的裝置上完成，照片不會上傳伺服器。
+      </p>
+      <div class="relative overflow-hidden rounded-2xl bg-[#0a0a0c]">
+        <canvas
+          ref="cardCanvasRef"
+          class="block h-[72vh] min-h-[420px] w-full"
+          :class="cardState === 'ready' ? 'cursor-crosshair' : 'pointer-events-none'"
+          @pointerenter="onCardEnter"
+          @pointerleave="onCardLeave"
+          @pointermove="onCardMove"
+          @click="onCardClick"
+        />
+        <!-- 相機即時預覽（拍照模式）；video 常駐但只在 camera 狀態顯示 -->
+        <video
+          ref="cardVideoRef"
+          class="absolute inset-0 h-full w-full -scale-x-100 object-cover"
+          :class="cardState === 'camera' ? 'block' : 'hidden'"
+          playsinline
+          muted
+        />
+        <div
+          v-if="cardState !== 'ready'"
+          class="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center"
+        >
+          <template v-if="cardState === 'idle'">
+            <div class="flex flex-wrap items-center justify-center gap-3">
+              <label class="cursor-pointer rounded-full border border-neutral-600 px-6 py-3 text-zh-body-1 transition hover:bg-white/5">
+                選擇照片
+                <input type="file" accept="image/*" class="hidden" @change="onCardFile">
+              </label>
+              <button class="rounded-full border border-neutral-600 px-6 py-3 text-zh-body-1 transition hover:bg-white/5" @click="startCamera">
+                直接拍照
+              </button>
+            </div>
+            <p class="font-mono text-xs tracking-widest text-neutral-500">
+              JPG / PNG · 建議清楚的單人正面照
+            </p>
+          </template>
+          <template v-else-if="cardState === 'camera'">
+            <div class="flex flex-wrap items-center justify-center gap-3">
+              <button class="rounded-full bg-white px-6 py-3 text-zh-body-1 text-black transition hover:bg-neutral-200" @click="capturePhoto">
+                拍攝
+              </button>
+              <button class="rounded-full border border-neutral-600 px-6 py-3 text-zh-body-1 transition hover:bg-white/5" @click="cancelCamera">
+                取消
+              </button>
+            </div>
+          </template>
+          <template v-else-if="cardState === 'removing'">
+            <p class="text-zh-body-1">
+              AI 去背中… {{ cardProgress ? cardProgress + '%' : '' }}
+            </p>
+            <p class="max-w-sm font-mono text-xs tracking-widest text-neutral-500">
+              首次使用需下載去背模型（約 56MB），完成後瀏覽器會快取，下次就很快。
+            </p>
+          </template>
+          <template v-else-if="cardState === 'sampling'">
+            <p class="text-zh-body-1">
+              取樣成粒子中…
+            </p>
+          </template>
+          <template v-else-if="cardState === 'error'">
+            <p class="text-zh-body-1 text-red-400">
+              處理失敗：{{ cardError }}
+            </p>
+            <button class="rounded-full border border-neutral-600 px-6 py-3 transition hover:bg-white/5" @click="resetCard">
+              重試
+            </button>
+          </template>
+        </div>
+      </div>
+      <div v-if="cardState === 'ready'" class="mt-3 flex flex-wrap items-center justify-between gap-4">
+        <p class="font-mono text-xs tracking-widest text-neutral-400">
+          YOUR SPECIMEN — hover 擴散 · 點擊倒帶重組
+        </p>
+        <div class="flex gap-3">
+          <button class="rounded-full border border-neutral-600 px-4 py-2 text-sm transition hover:bg-white/5" @click="resetCard">
+            換一張
+          </button>
+          <button class="rounded-full bg-white px-4 py-2 text-sm text-black transition hover:bg-neutral-200" @click="downloadCardJSON">
+            下載 JSON
+          </button>
+        </div>
+      </div>
     </section>
   </div>
 </template>
