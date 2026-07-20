@@ -28,3 +28,6 @@ logs
 
 demo
 .playwright-mcp
+
+# MediaPipe wasm — 由 postinstall 從 node_modules 複製，不進版控（模型 .tflite 仍 commit）
+public/mediapipe/wasm/

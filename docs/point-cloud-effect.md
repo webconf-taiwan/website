@@ -269,6 +269,9 @@ python3 bake.py people-0N.png ../../public/people/people-0N.json people-0N 32000
 - 首次用要下載去背模型（quint8 約 44MB + wasm ~12MB），之後瀏覽器快取。要更好品質可換
   `isnet_fp16`（88MB）。要 CSP 硬化 / 離線可自架：把 CDN `dist/` 鏡像到 `public/` 並設
   `config.publicPath`（但 ort wasm 版本仍須與 npm JS 對齊）。
+- **相關工具**：即時視訊換背景（虛擬綠幕）另有獨立頁 `/greenscreen`，用 MediaPipe 即時分割
+  （見 `docs/greenscreen.md`）。MediaPipe 的 wasm 與 JS 同一個 npm 套件、版本天生對齊，
+  自架比 @imgly + onnxruntime-web 省心得多。
 
 ## 8. 延伸方向 B：多組點雲之間的漸變（morph）
 

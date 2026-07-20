@@ -75,7 +75,9 @@ export default defineNuxtConfig({
         'gsap',
         'lenis',
         // 動態載入的去背套件：預打包成單一 chunk，dev 才不會 @fs 404（模型/wasm 仍執行期抓）
-        '@imgly/background-removal'
+        '@imgly/background-removal',
+        // 綠幕即時分割：同理預打包（wasm/模型從 public/mediapipe 自架載入）
+        '@mediapipe/tasks-vision'
       ]
     },
     esbuild: {

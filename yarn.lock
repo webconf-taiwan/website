@@ -617,7 +617,7 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/retry/-/retry-0.4.3.tgz#c2b9d2e374ee62c586d3adbea87199b1d7a7a6ba"
   integrity sha512-bV0Tgo9K4hfPCek+aMAn81RppFKv2ySDQeMoSZuvTASywNTnVJCArCZE2FWqpvIatKu7VMRLWlR1EazvVhDyhQ==
 
-"@imgly/background-removal@^1.7.0":
+"@imgly/background-removal@1.7.0":
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/@imgly/background-removal/-/background-removal-1.7.0.tgz#de210d26a545a09406b866f4f24c0479b154bb5c"
   integrity sha512-/1ZryrMYg2ckIvJKoTu5Np50JfYMVffDMlVmppw/BdbN3pBTN7e6stI5/7E/LVh9DDzz6J588s7sWqul3fy5wA==
@@ -727,6 +727,11 @@
     nopt "^8.0.0"
     semver "^7.5.3"
     tar "^7.4.0"
+
+"@mediapipe/tasks-vision@^0.10.35":
+  version "0.10.35"
+  resolved "https://registry.yarnpkg.com/@mediapipe/tasks-vision/-/tasks-vision-0.10.35.tgz#ae1ff52d68550e0a4dd971ac6f67ef9aad7f946f"
+  integrity sha512-HOvadwVRE6JC+45nyYhmnywnr5h/J8KZvOeUNVOG9q/0875pZgItznFB9bRTvLc264YSJqiZ1NsIpCStJw/egg==
 
 "@napi-rs/wasm-runtime@^1.1.4":
   version "1.1.6"

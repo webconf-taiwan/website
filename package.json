@@ -7,10 +7,11 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare && node scripts/copy-mediapipe-wasm.mjs"
   },
   "dependencies": {
     "@imgly/background-removal": "1.7.0",
+    "@mediapipe/tasks-vision": "0.10.35",
     "@pinia/nuxt": "^0.11.3",
     "@vueuse/nuxt": "^14.3.0",
     "class-variance-authority": "^0.7.1",
