@@ -47,7 +47,7 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: `${process.env.APP_BASE_URL}/manifest.webmanifest` },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap' }
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Serif+TC:wght@300;400;500;600&display=swap' }
       ],
       noscript: [{ innerHTML: '此網站需要開啟 JavaScript' }]
     }

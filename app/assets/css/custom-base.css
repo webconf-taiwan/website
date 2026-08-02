@@ -7,7 +7,7 @@
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: theme('fontFamily.Noto');
+    font-family: theme('fontFamily.serif');
   }
 
   input[type='search'],

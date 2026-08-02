@@ -23,7 +23,7 @@ watch(() => route.path, () => {
 <template>
   <header class="sticky top-0 z-50 border-b border-gray-200 bg-white">
     <div class="container flex items-center justify-between gap-4 py-4 lg:py-6">
-      <NuxtLink to="/" class="text-zh-head-5 shrink-0 font-medium text-txt-dark">
+      <NuxtLink to="/" class="text-h5 shrink-0 font-medium text-txt-dark">
         {{ config.public.APP_TITLE }}
       </NuxtLink>
 
@@ -64,7 +64,7 @@ watch(() => route.path, () => {
         <li v-for="link in links" :key="link.href">
           <NuxtLink
             :to="link.href"
-            class="text-zh-body-1 block py-3 transition"
+            class="text-body block py-3 transition"
             :class="isActive(link.href) ? 'text-brand' : 'text-txt-dark hover:text-brand'"
           >
             {{ link.label }}
