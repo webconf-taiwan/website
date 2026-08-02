@@ -77,4 +77,6 @@ function simulateLoading () {
 
     <LayoutPageLoading :show="pageLoading" text="載入中…" />
   </div>
+
+  <HomeSponsorMarquee />
 </template>
