@@ -17,6 +17,7 @@
 //   4. PLAmbient 四層擾動（代謝／呼吸／亂流／潮汐）。
 
 const { loadParticleKit } = useParticleKit()
+const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 
 const canvasRef = ref(null)
 const backend = ref('')
@@ -32,7 +33,25 @@ const backend = ref('')
 const PRESET = 'spiral-conveyor'
 const SPECIES = 7                    // 對齊色盤長度（每組 palette 都是 7 色）
 const HERO_PALETTE = 'blue'          // PL.I 滿版藍場
-const ABOUT_PALETTE = 'slime'        // PL.II 金／橄欖色的那團
+
+// PL.II 收攏的目標圖。出圖規則很重要：畫布要留成最終版位的比例、主體放在
+// 要出現的位置（side.png 是 1440×720、主體在左 1/3 且切齊左緣），
+// 因為 registerPattern 是把「整張圖」等比置中，主體的相對位置會被原樣保留。
+const ABOUT_IMAGE = '/source_images/side.png'
+const ABOUT_SAMPLES = 32000          // ⚠️ 之後每張圖都要用同一個點數，否則配對會有殘餘
+// 色盤：null = 用圖片自動量化出來的主色；要更接近設計稿就填一組 7 色覆蓋。
+const ABOUT_PALETTE_OVERRIDE = null
+// 收攏參數（advance shader 的速度導引，單位都是 1/s）：
+//   PULL —— 每單位距離想要的靠攏速度。調大 = 更貼合原圖輪廓。
+//   GRIP —— 速度被導引的強度。調大 = 抓得更緊，但輪廓裡剩下的 particle-life
+//           運動就越少；調小 = 更有生命力，但形狀會鬆散甚至撐開。
+// 這對數值決定「像不像原圖」與「活不活」之間的平衡，是這個效果的主要旋鈕。
+// ⚠️ 數值偏大是有原因的：shader 拿到的 dt 已被 simSpeed 縮過（待機 0.16 → dt 約
+// 0.0026s），而導引比例是 grip × dt。grip=5 只導引了 1.3%，完全壓不過互動力場，
+// 形狀會整個炸開。實測 pull 8–12 / grip 60–100 才守得住又留得住運動；
+// pull 50 就完全鎖死（平均速度 0，形狀變成死的貼圖）。
+const MORPH_PULL = 10
+const MORPH_GRIP = 70
 
 // 模擬速度分三段疊起來：
 //   1. 開場 —— 粒子從 seedPattern 的螺旋構圖「散開」的那幾秒要快，才看得到
@@ -49,15 +68,23 @@ const ATTACK = 0.14                  // 每幀往上追的比例
 const RELEASE = 0.022                // 每幀往下降的比例（比 ATTACK 小很多）
 const AMBIENT_INTENSITY = 0.55       // 四層擾動的全域強度倍率（1 = demo 原設定）
 
+// 對齊 SandboxScience 預設。路線 C 不需要在遷移時關掉它 —— 互動力場與 seek 力
+// 同時作用，正是「形狀是活的」的來源。
+const FORCE_FACTOR = 1.0
+// 捲動中把互動力場壓掉多少（1 = 全部暫停）。遷移過程乾淨、停下來才擴散。
+const SCROLL_CALM = 0.6
+
+// 相機：改用圖片收攏之後，「往左收」是靠 side.png 自己的構圖決定的
+//（點雲落在圖片框的左 1/3），所以相機維持不動，避免雙重位移把圖推出畫面。
+// 要微調第二區塊的取景就動這兩個值。
 const HERO_ZOOM = 1.35
-const ABOUT_ZOOM = 1.75              // 進 about 推近一點，讓群落讀起來更密
-// about 區塊時，畫面內容往左推的比例（相對視窗寬度）。設計稿上那團在左側約 1/3。
+const ABOUT_ZOOM = 1.35
+// 畫面內容往左推的比例（相對視窗寬度）。
 // ⚠️ 上限：粒子只存在於 [0,W]×[0,H]，相機推出這個範圍就會看到空白。
-// 可推的最大比例 = (1 − 1/zoom) / 2 × zoom = (zoom − 1) / 2，ABOUT_ZOOM 1.75 → 0.375。
-// 目前 0.30 留了餘裕；要再往左推就得同步調高 ABOUT_ZOOM。
-const ABOUT_SHIFT = 0.30
+// 可推的最大比例 = (zoom − 1) / 2。
+const ABOUT_SHIFT = 0
 const HERO_OPACITY = 0.55
-const ABOUT_OPACITY = 0.4
+const ABOUT_OPACITY = 0.75           // 圖片點雲要看得出形狀，比自由場亮一點
 
 // 粒子預算：保守起步，開場實測 fps 再決定加減（docs §10 陷阱二）
 const COUNT_DESKTOP = 48000
@@ -86,6 +113,8 @@ let progress = 0
 
 // 捲動速度 → 模擬速度的狀態（見 driftLoop）
 let simSpeed = SIM_SPEED_INTRO
+let scrollHeat = 0                   // 平滑後的捲動強度 0..1
+let appliedForce = FORCE_FACTOR      // 上次寫進引擎的 forceFactor
 let lastScrollY = 0
 let lastTime = 0
 let introStart = 0                   // 引擎就緒的時刻，開場包絡從這裡算
@@ -93,30 +122,17 @@ let introStart = 0                   // 引擎就緒的時刻，開場包絡從�
 let heroLin = null
 let aboutLin = null
 
-// --- 色盤在線性光空間插值（naive sRGB 插值中點會發灰，同 people.vue）---------
-function srgbToLinear (v) { v /= 255; return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4) }
-function linearToByte (v) {
-  v = v <= 0.0031308 ? v * 12.92 : 1.055 * Math.pow(v, 1 / 2.4) - 0.055
-  return Math.max(0, Math.min(255, Math.round(v * 255)))
-}
-function paletteToLinear (pal) {
-  return pal.map((h) => {
-    const n = parseInt(h.slice(1), 16)
-    return [srgbToLinear((n >> 16) & 255), srgbToLinear((n >> 8) & 255), srgbToLinear(n & 255)]
-  })
-}
-function lerpPaletteLinear (linA, linB, e) {
-  const out = []
-  const n = Math.min(linA.length, linB.length)
-  for (let i = 0; i < n; i++) {
-    const a = linA[i]; const b = linB[i]
-    out.push('#'
-      + linearToByte(a[0] + (b[0] - a[0]) * e).toString(16).padStart(2, '0')
-      + linearToByte(a[1] + (b[1] - a[1]) * e).toString(16).padStart(2, '0')
-      + linearToByte(a[2] + (b[2] - a[2]) * e).toString(16).padStart(2, '0'))
-  }
-  return out
-}
+// --- 圖片收攏（路線 C：shader seek 力）---------------------------------------
+// 引擎的 advance shader 會把每顆粒子往 targets[slot] 彈簧式拉過去，而
+// particle-life 的互動力場「同時照常跑」。所以：
+//   · 停在定位時粒子仍在輪廓裡游動、邊緣會呼吸 —— 形狀是活的
+//   · 捲動只改一個 uniform（morphStrength），沒有任何快取軌跡會過期
+//     → 停頓、恢復、反向捲動全都天然連續，不需要偵測邏輯
+//   · 位置在 GPU 上算，不再每幀上傳 48k 粒子 → fps 回到 60
+//
+// targets 只算一次：配對只決定「誰去哪個點」，之後由物理接管，不會過期。
+let aboutSpec = null                 // PLImage.prepare 的產物
+let targetsReady = false
 
 // 相機位移的單位換算：shader 算的是 ndc = (pos - center) * (2*zoom/W)，
 // 所以畫面上位移的「視窗寬度比例」= 相機位移(sim px) * zoom / W。
@@ -160,12 +176,21 @@ function driftLoop (now) {
     const base = SIM_SPEED_IDLE + (SIM_SPEED_INTRO - SIM_SPEED_IDLE) * intro
 
     const v = Math.abs(y - lastScrollY) / dt                   // px/s
-    const target = base
-      + (SIM_SPEED_MAX - SIM_SPEED_IDLE) * Math.min(1, v / SCROLL_REF)
+    const heat = Math.min(1, v / SCROLL_REF)                   // 0 = 靜止, 1 = 全速捲動
+    const target = base + (SIM_SPEED_MAX - SIM_SPEED_IDLE) * heat
     // 加速追得快、減速拖得慢
     const k = target > simSpeed ? ATTACK : RELEASE
     simSpeed += (target - simSpeed) * k
     engine.setSimSpeed?.(simSpeed)
+
+    // 捲動中壓低互動力場 = 暫停「自動擴散」，讓遷移讀起來乾淨；停下來再放回去，
+    // 粒子就在輪廓裡重新活過來。用同一組 attack/release，跟 simSpeed 同步呼吸。
+    scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
+    const wanted = FORCE_FACTOR * (1 - SCROLL_CALM * scrollHeat)
+    if (Math.abs(wanted - appliedForce) > 0.01) {
+      appliedForce = wanted
+      engine.setForce?.(wanted)      // 會重寫 80 bytes 的 options buffer，所以設個門檻
+    }
   }
   lastTime = t
   lastScrollY = y
@@ -188,13 +213,31 @@ function driftLoop (now) {
   engine.setCameraOffset?.(baseX + dx, dy)
 }
 
-// 捲動只改「相機 + 色盤 + 透明度」，完全不碰粒子位置 → 模擬不中斷。
+// 捲動只改「色盤 + 透明度 + morph 強度」—— 粒子位置全程由 GPU 上的物理決定。
+// 沒有任何 JS 端的軌跡快取，所以停頓、恢復、反向捲動都天然連續。
 function applyProgress (p) {
   progress = Math.min(1, Math.max(0, p))
   if (!engine) return
   const e = progress * progress * (3 - 2 * progress)   // smoothstep，兩端收尾自然
   if (heroLin && aboutLin) engine.setColors?.(lerpPaletteLinear(heroLin, aboutLin, e))
   engine.setParticleOpacity?.(HERO_OPACITY + (ABOUT_OPACITY - HERO_OPACITY) * e)
+
+  if (!targetsReady) return
+  // 這是整個收攏效果的全部：一個 uniform。
+  engine.setMorph?.(MORPH_PULL * e, MORPH_GRIP * e)
+}
+
+// 一次性：讀回目前粒子 → 同物種內就近配對圖片點 → 攤成以 slot 為索引的 target
+// 陣列上傳。配對只決定「誰去哪個點」，之後位置由物理接管，target 不會過期。
+async function buildTargets () {
+  if (!aboutSpec || !engine?.readParticles || !engine.setTargets) return
+  const snap = await engine.readParticles()
+  const { W, H } = engine.size
+  const T = aboutSpec.palette.length
+  const targets = buildImageTargets(aboutSpec, snap.length, W, H)
+  engine.setTargets(buildSlotTargets(snap, targets, T, W))
+  targetsReady = true
+  applyProgress(progress)              // 補算一次，避免首屏就在第二區塊時沒套上
 }
 
 function syncPause () {
@@ -223,9 +266,7 @@ async function init () {
 
   const PAL = window.PLPalettes.PALETTES
   const hero = PAL[HERO_PALETTE]
-  const about = PAL[ABOUT_PALETTE]
   heroLin = paletteToLinear(hero.particles)
-  aboutLin = paletteToLinear(about.particles)
 
   const count = window.innerWidth < 768 ? COUNT_MOBILE : COUNT_DESKTOP
 
@@ -237,7 +278,7 @@ async function init () {
     palette: hero.particles,
     bgFade: hero.bgFade,
     // 物理常數對齊 SandboxScience 預設（實測 Force 1 / Repel 1 / Friction 0.3）
-    forceFactor: 1.0,
+    forceFactor: FORCE_FACTOR,
     friction: 0.3,
     repel: 1.0,
     minR: 5,
@@ -257,6 +298,20 @@ async function init () {
   // 四層環境擾動：沒有它，場域幾十秒後會收斂成靜態圖（docs §4）。
   // intensity 調弱一點，讓它是「底噪」而不是主要的動能來源。
   if (!reducedMotion) stopAmbient = window.PLAmbient.start(() => engine, { intensity: AMBIENT_INTENSITY })
+
+  // 第二區塊的收攏目標：執行期直接取樣圖片（約 190ms / 32k 點）。
+  // 之後要省這段成本就改成烘好的 JSON + PLImage.prepareFromData()，
+  // 兩者產出的 spec 介面相同，這裡不用改。
+  try {
+    aboutSpec = await window.PLImage.prepare(ABOUT_IMAGE, {
+      count: ABOUT_SAMPLES,
+      colors: SPECIES,              // 色盤長度必須與 species 一致，否則得 setSpecies
+    })
+    if (ABOUT_PALETTE_OVERRIDE) aboutSpec.palette = ABOUT_PALETTE_OVERRIDE
+    aboutLin = paletteToLinear(aboutSpec.palette)
+  } catch (err) {
+    console.warn('[ParticleField] 圖片點雲取樣失敗，第二區塊維持自由場', err)
+  }
 
   onVisibility = () => syncPause()
   document.addEventListener('visibilitychange', onVisibility)
@@ -279,9 +334,17 @@ async function init () {
       idlePaused,
       idleFor: Math.round(performance.now() - lastActivity),
       paused: engine.config.paused,
+      progress: +progress.toFixed(3),
+      morphPull: +engine.config.morphPull.toFixed(2),
+      scrollHeat: +scrollHeat.toFixed(2),
+      force: +engine.config.forceFactor.toFixed(2),
+      targetsReady,
     })
   }
   driftLoop()
+
+  // 目標點只算一次（等場域先散開一下，配對出來的路徑比較短）
+  setTimeout(() => { buildTargets() }, 2500)
 
   // 開場實測 fps，不夠就砍半（docs §10 陷阱二）。setCount 會整場重生，所以趁早做。
   setTimeout(() => {

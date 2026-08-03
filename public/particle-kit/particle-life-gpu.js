@@ -71,6 +71,12 @@
       vx: f32,
       vy: f32,
       particleType: f32,
+      // Stable per-particle id, assigned once at spawn and never changed.
+      // particleSort rewrites particles into bin order every frame, so the
+      // array index is NOT a stable identity — but whole structs are copied,
+      // so anything stored in here travels with the particle. Morph targets
+      // are looked up as targets[u32(slot)].
+      slot: f32,
     };
   `;
 
@@ -284,6 +290,17 @@
     @group(1) @binding(0) var<uniform> options: SimOptions;
     @group(2) @binding(0) var<uniform> frameInfo: vec4<f32>; // x: dt seconds
     @group(3) @binding(0) var<uniform> disturb: vec4<f32>;   // x,y,radius,strength
+    // Morph: steer each particle toward a per-particle target while the
+    // particle-life forces keep running.
+    //   morph.x = pull (1/s)  — desired closing speed per unit of distance
+    //   morph.y = grip (1/s)  — how hard velocity is steered toward that
+    // Deliberately NOT a spring acceleration: v += k*(t-p)*dt goes unstable
+    // once dt grows, and dt here is scaled by simSpeed (0.16 idle → 0.6 while
+    // scrolling, a 4x swing) so a value tuned at rest blows up mid-scroll.
+    // This form is a first-order lag with the blend factor clamped to 1, so
+    // it can never overshoot regardless of dt.
+    @group(3) @binding(1) var<uniform> morph: vec4<f32>;
+    @group(3) @binding(2) var<storage, read> targets: array<vec2<f32>>;
 
     @compute @workgroup_size(64)
     fn particleAdvance(@builtin(global_invocation_id) id: vec3u) {
@@ -309,6 +326,20 @@
           particle.vx += (dx / d) * push;
           particle.vy += (dy / d) * push;
         }
+      }
+
+      // Morph seek — spring toward the target, critically damped enough that
+      // the cloud settles into the shape instead of ringing around it.
+      // Runs *alongside* the interaction forces (which are applied in
+      // computeForces), so the shape stays alive: particles keep swimming
+      // inside the silhouette and the edges breathe.
+      if (morph.x > 0.0) {
+        let t = targets[u32(particle.slot)];
+        let desiredVx = (t.x - particle.x) * morph.x;
+        let desiredVy = (t.y - particle.y) * morph.x;
+        let a = clamp(morph.y * deltaTime, 0.0, 1.0);
+        particle.vx = mix(particle.vx, desiredVx, a);
+        particle.vy = mix(particle.vy, desiredVy, a);
       }
 
       particle.x += particle.vx * deltaTime;
@@ -499,12 +530,13 @@
   function seedPattern(name, n, species, W, H, arr) {
     const seeds = window.PLSeeds;
     const write = (i, x, y, vx, vy, t) => {
-      const k = i * 5;
+      const k = i * 6;
       arr[k] = x;
       arr[k + 1] = y;
       arr[k + 2] = vx;
       arr[k + 3] = vy;
       arr[k + 4] = t;
+      arr[k + 5] = i;              // slot — stable id, survives the spatial sort
     };
     if (!seeds) {
       // Defensive fallback if particle-life-seeds.js failed to load — just
@@ -632,6 +664,10 @@
       // almost no visual gain at sub-pixel point sizes — see §10 of
       // docs/point-cloud-effect.md. Default stays 2 for backward compat;
       // fullscreen callers should pass 1.5 or lower.
+      // Morph seek — steer each particle toward targets[slot]. 0 = off.
+      // Runs alongside the interaction forces, so the shape stays alive.
+      morphPull: opts.morphPull ?? 0,
+      morphGrip: opts.morphGrip ?? 0,
       maxDpr: opts.maxDpr ?? 2,
       cameraX: opts.cameraX ?? 0,
       cameraY: opts.cameraY ?? 0,
@@ -671,6 +707,8 @@
     let glowBuffer = null;
     let deltaTimeBuffer = null;       // vec4<f32>; .x = dt
     let disturbBuffer = null;         // vec4<f32>; xyzw = x,y,radius,strength
+    let morphBuffer = null;           // vec4<f32>; x = seek strength, y = seek damping
+    let targetsBuffer = null;         // array<vec2<f32>>; indexed by particle.slot
     let pendingDisturb = null;
 
     // HDR target
@@ -758,7 +796,11 @@
     });
     const bglDisturb = device.createBindGroupLayout({
       label: 'bglDisturb',
-      entries: [{ binding: 0, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'uniform' } }],
+      entries: [
+        { binding: 0, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'uniform' } },
+        { binding: 1, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'uniform' } },
+        { binding: 2, visibility: GPUShaderStage.COMPUTE, buffer: { type: 'read-only-storage' } },
+      ],
     });
     const bglRenderGlow = device.createBindGroupLayout({
       label: 'bglRenderGlow',
@@ -868,7 +910,7 @@
     // -----------------------------------------------------------------------
     // Buffer allocators
     // -----------------------------------------------------------------------
-    const PARTICLE_STRIDE = 5 * 4;
+    const PARTICLE_STRIDE = 6 * 4;   // x, y, vx, vy, type, slot
 
     function allocParticleBuffers(n) {
       if (particleBufferA) particleBufferA.destroy();
@@ -886,6 +928,16 @@
         size: bytes,
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
       });
+      // Morph targets — one vec2 per slot. Always allocated so the advance
+      // bind group is valid even when morph is off (strength 0 = no-op).
+      if (targetsBuffer) targetsBuffer.destroy();
+      targetsBuffer = device.createBuffer({
+        label: 'morphTargets',
+        size: Math.max(8, 8 * n),
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+      });
+      config.morphPull = 0;          // 粒子重生後舊目標失效，先關掉
+      writeMorph();
     }
 
     function recomputeGridParams() {
@@ -1025,6 +1077,19 @@
       device.queue.writeBuffer(cameraBuffer, 0, arr);
     }
 
+    function writeMorph() {
+      if (!morphBuffer) {
+        morphBuffer = device.createBuffer({
+          label: 'morphOptions',
+          size: 16,
+          usage: GPUBufferUsage.UNIFORM | GPUBufferUsage.COPY_DST,
+        });
+      }
+      device.queue.writeBuffer(morphBuffer, 0, new Float32Array([
+        config.morphPull, config.morphGrip, 0, 0,
+      ]));
+    }
+
     function writeGlow() {
       const arr = new Float32Array([
         config.glowSize,
@@ -1075,7 +1140,7 @@
     }
 
     function seedAndUpload() {
-      const arr = new Float32Array(config.count * 5);
+      const arr = new Float32Array(config.count * 6);
       seedPattern(config.seedPattern, config.count, config.species, W || 800, H || 600, arr);
       device.queue.writeBuffer(particleBufferA, 0, arr);
     }
@@ -1202,7 +1267,11 @@
       });
       bgDisturb = device.createBindGroup({
         layout: bglDisturb,
-        entries: [{ binding: 0, resource: { buffer: disturbBuffer } }],
+        entries: [
+          { binding: 0, resource: { buffer: disturbBuffer } },
+          { binding: 1, resource: { buffer: morphBuffer } },
+          { binding: 2, resource: { buffer: targetsBuffer } },
+        ],
       });
       bgComposeHdr = device.createBindGroup({
         layout: bglCompose,
@@ -1488,6 +1557,8 @@
       if (glowBuffer) glowBuffer.destroy();
       if (deltaTimeBuffer) deltaTimeBuffer.destroy();
       if (disturbBuffer) disturbBuffer.destroy();
+      if (morphBuffer) morphBuffer.destroy();
+      if (targetsBuffer) targetsBuffer.destroy();
       for (const b of prefixStepSizeBuffers) b.destroy();
       prefixStepSizeBuffers.length = 0;
     }
@@ -1591,6 +1662,24 @@
       config.cameraY = y || 0;
       writeCamera();
     }
+    // Upload morph targets. `xy` is a Float32Array of [x0,y0,x1,y1,...] in sim
+    // space, indexed by particle slot (0..count-1). Cheap enough to call on a
+    // palette/target change, but it is a full buffer write — don't call it per
+    // frame; animate setMorphStrength instead.
+    function setTargets(xy) {
+      if (!targetsBuffer || !xy) return;
+      const n = Math.min(config.count, xy.length >> 1);
+      device.queue.writeBuffer(targetsBuffer, 0, xy, 0, n * 2);
+    }
+    // pull: desired closing speed per unit distance (1/s). Higher = tighter fit.
+    // grip: how hard velocity is steered toward that (1/s). Higher = less of
+    //       the particle-life motion survives inside the shape.
+    // Both 0 = off (pure particle life). Stable for any dt — see the shader.
+    function setMorph(pull, grip) {
+      config.morphPull = Math.max(0, Math.min(100, pull || 0));
+      if (typeof grip === 'number') config.morphGrip = Math.max(0, Math.min(100, grip));
+      writeMorph();
+    }
     function setShowGlow(v) { config.showGlow = !!v; }
     // Live control panel setters — clamp to safe ranges so stats-panel
     // slider drags can't blow the engine up (NaN repel → infinite force,
@@ -1655,11 +1744,12 @@
         const out = new Array(n);
         for (let i = 0; i < n; i++) {
           out[i] = {
-            x: raw[i * 5],
-            y: raw[i * 5 + 1],
-            vx: raw[i * 5 + 2],
-            vy: raw[i * 5 + 3],
-            s: raw[i * 5 + 4] | 0,
+            x: raw[i * 6],
+            y: raw[i * 6 + 1],
+            vx: raw[i * 6 + 2],
+            vy: raw[i * 6 + 3],
+            s: raw[i * 6 + 4] | 0,
+            slot: raw[i * 6 + 5] | 0,
           };
         }
         return out;
@@ -1674,6 +1764,7 @@
       setPointSize, setGlow, setForce, setRMax,
       disturb,
       setShowFps, getFps, setSimSpeed, setCameraZoom, setCameraOffset, setShowGlow,
+      setTargets, setMorph,
       // Stats-panel control surface — live-tunable engine internals
       setFriction, setRepel, setGlowSize, setGlowIntensity, setGlowSteepness,
       setParticleOpacity, setSeedPattern, respawn,

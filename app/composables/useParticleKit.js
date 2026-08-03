@@ -4,8 +4,6 @@
 
 const KIT = '/particle-kit'
 
-// 完整套件。只要點雲／粒子場都用這份；particle-image.js 只有需要「圖片轉點雲」
-// 的頁面（people）才需要，這裡不收，省一支請求。
 const SCRIPTS = [
   'particle-life-seeds.js',
   'particle-life-rules.js',
@@ -13,6 +11,7 @@ const SCRIPTS = [
   'particle-life-gpu.js',
   'particle-palettes.js',
   'particle-ambient.js',
+  'particle-image.js',      // 圖片 → 點雲取樣（首頁第二區塊的收攏目標）
 ]
 
 function loadScript(src) {
