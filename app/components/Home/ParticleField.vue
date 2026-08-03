@@ -22,17 +22,39 @@ const canvasRef = ref(null)
 const backend = ref('')
 
 // --- 可調參數：改這裡就好 -------------------------------------------------
-// 力矩陣。非對稱的才會一直動：spiral-conveyor（螺旋輸送）、rps（三方追逐）、
-// snake（追尾）。cellular / chains1 / chains2 是對稱的，會定住 —— 別用。
+// 力矩陣。非對稱的才會一直動 —— 這是生命感最大的來源。
+//   snake            self=1 會聚成一顆顆分明的圓群落（設計稿的樣子），
+//                    但 i→i+1 是單向吸引（i-1 為 0），群落之間會一直互相追逐。
+//   spiral-conveyor  self=-0.1，長成絲狀環流，比較像星雲、比較不像細胞。
+//   rps              三方追逐，動得最兇。
+// cellular / chains1 / chains2 是「對稱」矩陣（i↔j 相等），會收斂成不動的菌落球
+// —— demo 呆板的主因就是它，別用。
 const PRESET = 'spiral-conveyor'
 const SPECIES = 7                    // 對齊色盤長度（每組 palette 都是 7 色）
 const HERO_PALETTE = 'blue'          // PL.I 滿版藍場
 const ABOUT_PALETTE = 'slime'        // PL.II 金／橄欖色的那團
 
-const SIM_SPEED = 0.85               // demo 是 0.5（慢動作）；1.0 = 真實速度
+// 模擬速度分三段疊起來：
+//   1. 開場 —— 粒子從 seedPattern 的螺旋構圖「散開」的那幾秒要快，才看得到
+//      規則接管、結構溶解的過程；散開後要明顯慢下來。
+//   2. 待機 —— 極慢，只是緩緩呼吸。
+//   3. 捲動 —— 依捲動速度即時加速，停下來再緩降回待機。
+const SIM_SPEED_INTRO = 1.5          // 開場散開時
+const INTRO_HOLD_MS = 1800           // 維持全速多久
+const INTRO_FADE_MS = 5000           // 之後花多久降到待機速度
+const SIM_SPEED_IDLE = 0.16          // 散開後的待機速度
+const SIM_SPEED_MAX = 0.6            // 全速捲動時
+const SCROLL_REF = 2200              // 捲動速度 px/s 到這個值就吃滿加速
+const ATTACK = 0.14                  // 每幀往上追的比例
+const RELEASE = 0.022                // 每幀往下降的比例（比 ATTACK 小很多）
+const AMBIENT_INTENSITY = 0.55       // 四層擾動的全域強度倍率（1 = demo 原設定）
+
 const HERO_ZOOM = 1.35
 const ABOUT_ZOOM = 1.75              // 進 about 推近一點，讓群落讀起來更密
 // about 區塊時，畫面內容往左推的比例（相對視窗寬度）。設計稿上那團在左側約 1/3。
+// ⚠️ 上限：粒子只存在於 [0,W]×[0,H]，相機推出這個範圍就會看到空白。
+// 可推的最大比例 = (1 − 1/zoom) / 2 × zoom = (zoom − 1) / 2，ABOUT_ZOOM 1.75 → 0.375。
+// 目前 0.30 留了餘裕；要再往左推就得同步調高 ABOUT_ZOOM。
 const ABOUT_SHIFT = 0.30
 const HERO_OPACITY = 0.55
 const ABOUT_OPACITY = 0.4
@@ -52,6 +74,12 @@ let reducedMotion = false
 // 捲動進度 0（hero）→ 1（about）。相機漂移迴圈每幀讀它，跟 idle drift 疊加後
 // 一次寫進相機 uniform —— 兩者搶同一個 setCameraOffset，必須合在同一處算。
 let progress = 0
+
+// 捲動速度 → 模擬速度的狀態（見 driftLoop）
+let simSpeed = SIM_SPEED_INTRO
+let lastScrollY = 0
+let lastTime = 0
+let introStart = 0                   // 引擎就緒的時刻，開場包絡從這裡算
 
 let heroLin = null
 let aboutLin = null
@@ -88,9 +116,37 @@ function shiftToCameraX (f, zoom, W) { return (f * W) / zoom }
 
 // 每幀：把「捲動決定的相機狀態」與「idle 緩慢漂移」疊起來寫進引擎。
 // 只是一次 16 bytes 的 uniform write，不重建 bind group，可以放心逐幀呼叫。
-function driftLoop () {
+function driftLoop (now) {
   driftRaf = requestAnimationFrame(driftLoop)
   if (!engine) return
+
+  // --- 捲動速度 → 模擬速度 -------------------------------------------------
+  // 自己從 scrollY 差分算，不依賴 Lenis 內部屬性（reduced-motion 下 Lenis 也可能沒接）
+  const t = now || performance.now()
+  const y = window.scrollY
+  const dt = lastTime ? Math.min(0.1, (t - lastTime) / 1000) : 0
+  if (dt > 0) {
+    // 開場包絡：先維持 INTRO 速度，再 smoothstep 降到待機速度，之後恆為 0
+    const age = t - introStart
+    let intro = 0
+    if (age < INTRO_HOLD_MS) {
+      intro = 1
+    } else if (age < INTRO_HOLD_MS + INTRO_FADE_MS) {
+      const u = 1 - (age - INTRO_HOLD_MS) / INTRO_FADE_MS
+      intro = u * u * (3 - 2 * u)
+    }
+    const base = SIM_SPEED_IDLE + (SIM_SPEED_INTRO - SIM_SPEED_IDLE) * intro
+
+    const v = Math.abs(y - lastScrollY) / dt                   // px/s
+    const target = base
+      + (SIM_SPEED_MAX - SIM_SPEED_IDLE) * Math.min(1, v / SCROLL_REF)
+    // 加速追得快、減速拖得慢
+    const k = target > simSpeed ? ATTACK : RELEASE
+    simSpeed += (target - simSpeed) * k
+    engine.setSimSpeed?.(simSpeed)
+  }
+  lastTime = t
+  lastScrollY = y
 
   const p = progress
   const { W } = engine.size
@@ -101,9 +157,9 @@ function driftLoop () {
   let dx = 0; let dy = 0; let dz = 1
   if (!reducedMotion) {
     const t = performance.now() * 0.001
-    dx = Math.sin(t * 0.037) * 42 + Math.sin(t * 0.011) * 26
-    dy = Math.cos(t * 0.029) * 30 + Math.sin(t * 0.017) * 16
-    dz = 1 + 0.035 * Math.sin(t * 0.019)
+    dx = Math.sin(t * 0.021) * 42 + Math.sin(t * 0.006) * 26
+    dy = Math.cos(t * 0.017) * 30 + Math.sin(t * 0.010) * 16
+    dz = 1 + 0.035 * Math.sin(t * 0.011)
   }
 
   engine.setCameraZoom?.(zoom * dz)
@@ -152,7 +208,7 @@ async function init () {
     repel: 1.0,
     minR: 5,
     rMax: 72,
-    simSpeed: SIM_SPEED,
+    simSpeed: SIM_SPEED_INTRO,      // 開場快速散開；之後由 driftLoop 的包絡接手
     cameraZoom: HERO_ZOOM,
     pointSize: 0.8,
     particleOpacity: HERO_OPACITY,
@@ -164,13 +220,19 @@ async function init () {
   // dev 時開個把手，方便在 console 直接調參（engine.setForce(1.4) 之類）
   if (import.meta.dev) window.__field = engine
 
-  // 四層環境擾動：沒有它，場域幾十秒後會收斂成靜態圖（docs §4）
-  if (!reducedMotion) stopAmbient = window.PLAmbient.start(() => engine)
+  // 四層環境擾動：沒有它，場域幾十秒後會收斂成靜態圖（docs §4）。
+  // intensity 調弱一點，讓它是「底噪」而不是主要的動能來源。
+  if (!reducedMotion) stopAmbient = window.PLAmbient.start(() => engine, { intensity: AMBIENT_INTENSITY })
 
   onVisibility = () => syncPause()
   document.addEventListener('visibilitychange', onVisibility)
   syncPause()
 
+  introStart = performance.now()
+  lastScrollY = window.scrollY
+  if (import.meta.dev) {
+    window.__fieldDbg = () => ({ age: Math.round(performance.now() - introStart), simSpeed: +simSpeed.toFixed(3), engineSim: engine.config.simSpeed })
+  }
   driftLoop()
 
   // 開場實測 fps，不夠就砍半（docs §10 陷阱二）。setCount 會整場重生，所以趁早做。

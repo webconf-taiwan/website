@@ -22,9 +22,9 @@ const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
     ==================================================================== -->
     <section
       data-field-hero
-      class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center px-6 py-20 text-center"
+      class="relative z-10 flex bg-black/30 min-h-[calc(100dvh-52px)] flex-col items-center justify-center px-6 py-20 text-center"
     >
-      <p class="font-mono text-fs-micro uppercase text-white/35">
+      <p class="font-mono text-fs-micro uppercase text-white/55">
         PL. I · Living Specimen · 2026
       </p>
 
@@ -36,7 +36,7 @@ const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
         Taipei Popop · Dec 11-12, 2026
       </p>
 
-      <p class="mt-3 font-mono text-fs-micro uppercase text-white/35">
+      <p class="mt-3 font-mono text-fs-micro uppercase text-white/55">
         Agent · Connections · Code
       </p>
 
@@ -50,18 +50,18 @@ const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
       <!-- 四角的「標本標籤」：科學紀錄語彙，桌機才出現 -->
       <div class="pointer-events-none absolute inset-x-6 bottom-8 hidden items-end justify-between lg:flex">
         <div class="text-left">
-          <p class="font-mono text-fs-micro uppercase text-white/35">
+          <p class="font-mono text-fs-micro uppercase text-white/55">
             Code · Emergence
           </p>
-          <p class="font-serif text-fs-caption italic text-white/45">
+          <p class="font-serif text-fs-caption italic text-white/55">
             vol. iii · plate i .
           </p>
         </div>
         <div class="text-right">
-          <p class="font-mono text-fs-micro uppercase text-white/35">
+          <p class="font-mono text-fs-micro uppercase text-white/55">
             N 25.04° · E 121.56°
           </p>
-          <p class="font-serif text-fs-caption italic text-white/45">
+          <p class="font-serif text-fs-caption italic text-white/55">
             simulation · live{{ backend ? ` · ${backend}` : '' }}
           </p>
         </div>
@@ -84,7 +84,7 @@ const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
           <p class="mt-2 font-serif text-fs-h2 italic leading-none">
             II.
           </p>
-          <p class="mt-2 font-mono text-fs-micro uppercase text-white/35">
+          <p class="mt-2 font-mono text-fs-micro uppercase text-white/55">
             About
           </p>
 
