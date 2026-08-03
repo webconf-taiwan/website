@@ -621,6 +621,20 @@
       // side). No shader change required — the existing camera.scaleXY
       // multiply in vertexGlow / vertexCircle does all the work.
       cameraZoom: opts.cameraZoom ?? 1.0,
+      // Camera pan, in sim pixels, offsetting the view centre away from
+      // (W/2, H/2). Positive X moves the camera right, so the field drifts
+      // left on screen. Lets a scroll timeline slide the whole colony to one
+      // side of the viewport, and lets an idle loop add slow cinematic drift
+      // — both without touching particle positions, so the simulation keeps
+      // running untouched underneath. Same uniform as zoom; no shader change.
+      // Cap on the backing-store device-pixel ratio. A fullscreen field is
+      // an rgba16float HDR target, so DPR 2 costs 4x the pixels of DPR 1 for
+      // almost no visual gain at sub-pixel point sizes — see §10 of
+      // docs/point-cloud-effect.md. Default stays 2 for backward compat;
+      // fullscreen callers should pass 1.5 or lower.
+      maxDpr: opts.maxDpr ?? 2,
+      cameraX: opts.cameraX ?? 0,
+      cameraY: opts.cameraY ?? 0,
       // Render the soft glow halo pass? When true (default), each particle
       // gets a big additive quad behind it (pointSize × glowSize wide).
       // At hero density + zoom the halos pile up into bloom, so Hero
@@ -632,7 +646,7 @@
 
     // Engine state — populated by resize / allocBuffers / seedParticles
     let W = 0, H = 0;                // sim space = canvas CSS pixels
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let dpr = Math.min(window.devicePixelRatio || 1, config.maxDpr);
     let cellSize = 0;
     let gridW = 0, gridH = 0;
     let binCount = 0;
@@ -997,8 +1011,8 @@
       // pulls it out (more sim visible, particles smaller).
       const zoom = config.cameraZoom ?? 1.0;
       const arr = new Float32Array(4);
-      arr[0] = W * 0.5;
-      arr[1] = H * 0.5;
+      arr[0] = W * 0.5 + (config.cameraX ?? 0);
+      arr[1] = H * 0.5 + (config.cameraY ?? 0);
       arr[2] = (2.0 * zoom) / Math.max(1, W);
       arr[3] = (2.0 * zoom) / Math.max(1, H);
       if (!cameraBuffer) {
@@ -1204,7 +1218,7 @@
       const rect = canvas.getBoundingClientRect();
       const newW = Math.max(1, Math.floor(rect.width));
       const newH = Math.max(1, Math.floor(rect.height));
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, config.maxDpr);
       canvas.width = Math.floor(newW * dpr);
       canvas.height = Math.floor(newH * dpr);
       const sizeChanged = (newW !== W) || (newH !== H);
@@ -1569,6 +1583,14 @@
       config.cameraZoom = Math.max(0.2, Math.min(8, z));
       writeCamera();
     }
+    // Pan the view without moving a single particle — cheap enough to call
+    // every frame from a scroll scrub or an idle drift loop (one 16-byte
+    // uniform write, no bind-group rebuild).
+    function setCameraOffset(x, y) {
+      config.cameraX = x || 0;
+      config.cameraY = y || 0;
+      writeCamera();
+    }
     function setShowGlow(v) { config.showGlow = !!v; }
     // Live control panel setters — clamp to safe ranges so stats-panel
     // slider drags can't blow the engine up (NaN repel → infinite force,
@@ -1651,7 +1673,7 @@
       setPalette, setColors, setPreset, setSpecies, setBgFade, setCount,
       setPointSize, setGlow, setForce, setRMax,
       disturb,
-      setShowFps, getFps, setSimSpeed, setCameraZoom, setShowGlow,
+      setShowFps, getFps, setSimSpeed, setCameraZoom, setCameraOffset, setShowGlow,
       // Stats-panel control surface — live-tunable engine internals
       setFriction, setRepel, setGlowSize, setGlowIntensity, setGlowSteepness,
       setParticleOpacity, setSeedPattern, respawn,

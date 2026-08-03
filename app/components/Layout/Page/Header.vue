@@ -142,31 +142,36 @@ onMounted(() => {
       :class="open ? 'opacity-100' : 'pointer-events-none opacity-0'"
       @click="open = false"
     ></div>
-    <aside
-      class="fixed right-0 top-0 z-50 flex h-dvh w-72 max-w-[80vw] flex-col bg-[#0a0a0b] transition-transform duration-300 ease-out lg:hidden"
-      :class="open ? 'translate-x-0' : 'translate-x-full'"
-    >
-      <button
-        type="button"
-        class="self-end p-6 text-white"
-        aria-label="關閉選單"
-        @click="open = false"
+    <!-- 抽屜關閉時用 translate-x-full 收在畫面右外側，會把頁面捲動範圍撐寬
+         （390px 視窗實測被撐成 678px、可以橫捲）。外面包一層會裁切的固定容器
+         擋掉；容器本身不吃事件，抽屜再把 pointer-events 收回來。 -->
+    <div class="pointer-events-none fixed inset-0 z-50 overflow-x-hidden lg:hidden">
+      <aside
+        class="pointer-events-auto absolute right-0 top-0 flex h-dvh w-72 max-w-[80vw] flex-col bg-[#0a0a0b] transition-transform duration-300 ease-out"
+        :class="open ? 'translate-x-0' : 'translate-x-full'"
       >
-        <span class="relative block size-5">
-          <span class="absolute left-0 top-1/2 block h-0.5 w-full -translate-y-1/2 rotate-45 bg-current"></span>
-          <span class="absolute left-0 top-1/2 block h-0.5 w-full -translate-y-1/2 -rotate-45 bg-current"></span>
-        </span>
-      </button>
-      <ul class="flex flex-col px-6">
-        <li v-for="link in dropdownMenu" :key="link.href" :class="link.cls">
-          <a
-            :href="link.href"
-            class="block py-3 font-mono text-[16px] uppercase tracking-[0.04em] text-[#efe6d2] transition-colors hover:text-[#71c1f0]"
-          >
-            {{ link.label }}
-          </a>
-        </li>
-      </ul>
-    </aside>
+        <button
+          type="button"
+          class="self-end p-6 text-white"
+          aria-label="關閉選單"
+          @click="open = false"
+        >
+          <span class="relative block size-5">
+            <span class="absolute left-0 top-1/2 block h-0.5 w-full -translate-y-1/2 rotate-45 bg-current"></span>
+            <span class="absolute left-0 top-1/2 block h-0.5 w-full -translate-y-1/2 -rotate-45 bg-current"></span>
+          </span>
+        </button>
+        <ul class="flex flex-col px-6">
+          <li v-for="link in dropdownMenu" :key="link.href" :class="link.cls">
+            <a
+              :href="link.href"
+              class="block py-3 font-mono text-[16px] uppercase tracking-[0.04em] text-[#efe6d2] transition-colors hover:text-[#71c1f0]"
+            >
+              {{ link.label }}
+            </a>
+          </li>
+        </ul>
+      </aside>
+    </div>
   </header>
 </template>
