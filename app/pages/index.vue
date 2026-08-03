@@ -73,7 +73,7 @@ const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
     ==================================================================== -->
     <section
       id="about"
-      class="relative z-10 border-t border-white/15 px-6 py-16 md:py-24 lg:px-12 2xl:px-20"
+      class="relative z-10 border-t bg-black/30 border-white/15 px-6 py-16 md:py-24 lg:px-12 2xl:px-20"
     >
       <div class="mx-auto grid max-w-[1680px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
         <!-- 左欄：卷號 + Skills 標本框 -->

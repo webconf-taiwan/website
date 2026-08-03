@@ -64,7 +64,7 @@ onMounted(() => {
 <template>
   <header
     ref="rootRef"
-    class="sticky top-0 z-50 bg-black/80 backdrop-blur-[8px]"
+    class="fixed top-0 z-50 bg-black/80 left-0 w-full backdrop-blur-[8px]"
   >
     <div class="flex items-center justify-between gap-6 px-6 py-3 lg:justify-center lg:gap-[60px]">
       <!-- 左側選單（僅桌機 lg+） -->

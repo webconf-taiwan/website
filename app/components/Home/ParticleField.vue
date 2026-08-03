@@ -62,14 +62,23 @@ const ABOUT_OPACITY = 0.4
 // 粒子預算：保守起步，開場實測 fps 再決定加減（docs §10 陷阱二）
 const COUNT_DESKTOP = 48000
 const COUNT_MOBILE = 16000
+
+// 閒置多久就停掉模擬。pause 只是跳過渲染與計算，canvas 會保留最後一幀，
+// 所以畫面不會消失、只是定格 —— 使用者一動就無縫接回去。
+const IDLE_STOP_MS = 5000
 // --------------------------------------------------------------------------
 
 let engine = null
 let stopAmbient = null
 let onVisibility = null
+let onActivity = null
 let driftRaf = 0
 let scrollTrigger = null
 let reducedMotion = false
+
+// 閒置停止的狀態
+let lastActivity = 0
+let idlePaused = false
 
 // 捲動進度 0（hero）→ 1（about）。相機漂移迴圈每幀讀它，跟 idle drift 疊加後
 // 一次寫進相機 uniform —— 兩者搶同一個 setCameraOffset，必須合在同一處算。
@@ -124,6 +133,19 @@ function driftLoop (now) {
   // 自己從 scrollY 差分算，不依賴 Lenis 內部屬性（reduced-motion 下 Lenis 也可能沒接）
   const t = now || performance.now()
   const y = window.scrollY
+
+  // --- 閒置超過 IDLE_STOP_MS 就停掉模擬 -------------------------------------
+  if (!idlePaused && t - lastActivity > IDLE_STOP_MS) {
+    idlePaused = true
+    syncPause()
+  }
+  // 停住時仍要更新時間/捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度
+  if (idlePaused) {
+    lastTime = t
+    lastScrollY = y
+    return
+  }
+
   const dt = lastTime ? Math.min(0.1, (t - lastTime) / 1000) : 0
   if (dt > 0) {
     // 開場包絡：先維持 INTRO 速度，再 smoothstep 降到待機速度，之後恆為 0
@@ -176,8 +198,20 @@ function applyProgress (p) {
 }
 
 function syncPause () {
-  // 固定背景永遠在視窗內，所以只需要理分頁隱藏（rAF 在背景分頁只是降頻，不是停止）
-  if (engine) engine.pause(document.hidden)
+  // 固定背景永遠在視窗內，所以不必 IntersectionObserver；要理的是分頁隱藏
+  //（rAF 在背景分頁只是降頻，不是停止）與使用者閒置。
+  if (engine) engine.pause(document.hidden || idlePaused)
+}
+
+// 使用者有動作 → 記時間；若正停著就立刻喚醒。
+// 除了滑鼠移動，捲動與觸控也算 —— 否則用觸控板捲頁時（不會發 pointermove）
+// 場域會定格，hero → about 的遷移看起來就像壞掉。
+function markActivity () {
+  lastActivity = performance.now()
+  if (idlePaused) {
+    idlePaused = false
+    syncPause()
+  }
 }
 
 async function init () {
@@ -226,12 +260,26 @@ async function init () {
 
   onVisibility = () => syncPause()
   document.addEventListener('visibilitychange', onVisibility)
+
+  onActivity = () => markActivity()
+  window.addEventListener('pointermove', onActivity, { passive: true })
+  window.addEventListener('pointerdown', onActivity, { passive: true })
+  window.addEventListener('scroll', onActivity, { passive: true })
+  window.addEventListener('wheel', onActivity, { passive: true })
+
+  lastActivity = performance.now()
   syncPause()
 
   introStart = performance.now()
   lastScrollY = window.scrollY
   if (import.meta.dev) {
-    window.__fieldDbg = () => ({ age: Math.round(performance.now() - introStart), simSpeed: +simSpeed.toFixed(3), engineSim: engine.config.simSpeed })
+    window.__fieldDbg = () => ({
+      age: Math.round(performance.now() - introStart),
+      simSpeed: +simSpeed.toFixed(3),
+      idlePaused,
+      idleFor: Math.round(performance.now() - lastActivity),
+      paused: engine.config.paused,
+    })
   }
   driftLoop()
 
@@ -263,6 +311,12 @@ onBeforeUnmount(() => {
   if (scrollTrigger) scrollTrigger.kill()
   if (stopAmbient) stopAmbient()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
+  if (onActivity) {
+    window.removeEventListener('pointermove', onActivity)
+    window.removeEventListener('pointerdown', onActivity)
+    window.removeEventListener('scroll', onActivity)
+    window.removeEventListener('wheel', onActivity)
+  }
   if (engine) { engine.destroy(); engine = null }
 })
 
