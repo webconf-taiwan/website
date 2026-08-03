@@ -128,6 +128,11 @@ export function pairSnapshotToTargets (snap, targets, T, W) {
 //
 // 同物種內配對很重要 —— 粒子的 species 在生成後不能改，所以要讓每顆粒子去
 // 「自己顏色」的目標點，最終形狀的配色才會跟原圖一致。
+// 回傳兩組以 slot 為索引的目標點：
+//   spread —— 快照當下的位置（開闊的自由場）
+//   shape  —— 配對到的圖片點
+// 兩組都上傳給 shader，捲動時只插值 blend，所以往回捲會「主動把粒子拉回滿版」，
+// 而不是放掉 seek 之後乾等它們慢慢擴散回來。
 export function buildSlotTargets (snap, targets, T, W) {
   const N = snap.length
   const { tx, ty, tt } = targets
@@ -137,7 +142,13 @@ export function buildSlotTargets (snap, targets, T, W) {
   for (let i = 0; i < N; i++) tgtBy[tt[i]].push(i)
 
   const orderKey = (x, y) => y * W + x
-  const out = new Float32Array(N * 2)
+  const shape = new Float32Array(N * 2)
+  const spread = new Float32Array(N * 2)
+  for (let i = 0; i < N; i++) {
+    const slot = snap[i].slot
+    spread[slot * 2] = snap[i].x
+    spread[slot * 2 + 1] = snap[i].y
+  }
 
   for (let t = 0; t < T; t++) {
     const a = snapBy[t].sort((i, j) => orderKey(snap[i].x, snap[i].y) - orderKey(snap[j].x, snap[j].y))
@@ -146,8 +157,8 @@ export function buildSlotTargets (snap, targets, T, W) {
       // 這個物種在圖片裡沒有對應色 —— 讓它們留在原地，不要被拉去別色的位置
       for (let k = 0; k < a.length; k++) {
         const slot = snap[a[k]].slot
-        out[slot * 2] = snap[a[k]].x
-        out[slot * 2 + 1] = snap[a[k]].y
+        shape[slot * 2] = snap[a[k]].x
+        shape[slot * 2 + 1] = snap[a[k]].y
       }
       continue
     }
@@ -155,11 +166,11 @@ export function buildSlotTargets (snap, targets, T, W) {
       const slot = snap[a[k]].slot
       // 兩邊數量不等時循環取用：同色點可互換，視覺上看不出來
       const m = b[Math.floor(k * b.length / a.length)]
-      out[slot * 2] = tx[m]
-      out[slot * 2 + 1] = ty[m]
+      shape[slot * 2] = tx[m]
+      shape[slot * 2 + 1] = ty[m]
     }
   }
-  return out
+  return { spread, shape }
 }
 
 export function useParticleMorph () {

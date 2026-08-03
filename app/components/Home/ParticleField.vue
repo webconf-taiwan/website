@@ -52,6 +52,14 @@ const ABOUT_PALETTE_OVERRIDE = null
 // pull 50 就完全鎖死（平均速度 0，形狀變成死的貼圖）。
 const MORPH_PULL = 10
 const MORPH_GRIP = 70
+// 拉力的跟隨速度。ATTACK 快（收攏要跟得上捲動），RELEASE 慢（放手要拖一段，
+// 才有時間把粒子從左邊帶回滿版）。0.012 ≈ 1.4 秒的時間常數。
+const MORPH_ATTACK = 0.20
+const MORPH_RELEASE = 0.012
+// targets 失效後（視窗改變尺寸、或 fps 自適應觸發 setCount 整場重生）要等場域
+// 重新散開才能重建 —— 「自由場」那組目標點就是當下的粒子分布，抓太早會記成
+// 一團緊湊的開場構圖，之後捲回來就回不到滿版。
+const REBUILD_SETTLE_MS = 3000
 
 // 模擬速度分三段疊起來：
 //   1. 開場 —— 粒子從 seedPattern 的螺旋構圖「散開」的那幾秒要快，才看得到
@@ -114,6 +122,7 @@ let progress = 0
 // 捲動速度 → 模擬速度的狀態（見 driftLoop）
 let simSpeed = SIM_SPEED_INTRO
 let scrollHeat = 0                   // 平滑後的捲動強度 0..1
+let morphAmount = 0                  // 平滑後的收攏拉力 0..1（釋放比進場慢）
 let appliedForce = FORCE_FACTOR      // 上次寫進引擎的 forceFactor
 let lastScrollY = 0
 let lastTime = 0
@@ -133,6 +142,11 @@ let aboutLin = null
 // targets 只算一次：配對只決定「誰去哪個點」，之後由物理接管，不會過期。
 let aboutSpec = null                 // PLImage.prepare 的產物
 let targetsReady = false
+let targetsGen = -1                  // 建 targets 當下的引擎世代
+let targetsW = 0                     // 建 targets 當下的模擬尺寸
+let targetsH = 0
+let onResize = null
+let resizeTimer = 0
 
 // 相機位移的單位換算：shader 算的是 ndc = (pos - center) * (2*zoom/W)，
 // 所以畫面上位移的「視窗寬度比例」= 相機位移(sim px) * zoom / W。
@@ -196,7 +210,7 @@ function driftLoop (now) {
   lastScrollY = y
 
   const p = progress
-  const { W } = engine.size
+  const { W, H } = engine.size
   const zoom = HERO_ZOOM + (ABOUT_ZOOM - HERO_ZOOM) * p
   const baseX = shiftToCameraX(ABOUT_SHIFT * p, zoom, W)
 
@@ -211,6 +225,24 @@ function driftLoop (now) {
 
   engine.setCameraZoom?.(zoom * dz)
   engine.setCameraOffset?.(baseX + dx, dy)
+
+  // --- 收攏拉力 -------------------------------------------------------------
+  // blend（目標點在「自由場 ↔ 圖形」之間的位置）直接跟著 progress 走，但「拉力」
+  // 要拖一下才放掉：pull 若跟著 progress 一起歸零，回到 hero 的瞬間就沒有力氣把
+  // 粒子帶回滿版，它們會整團留在左邊慢慢擴散（實測左半邊佔比 92%，正常約 50%）。
+  // 所以 pull 用慢速釋放，讓 seek 在 progress 歸零後還有一段時間把粒子送回原位，
+  // 再交還給物理。
+  // targets 若已失效（setCount / respawn 重配過 buffer，或視窗尺寸變了）就別用 ——
+  // 對著全 0 或舊座標的目標點跑 seek 會把整場粒子吸走。
+  if (targetsReady && (engine.targetsGeneration !== targetsGen || W !== targetsW || H !== targetsH)) {
+    invalidateTargets()
+  }
+  if (targetsReady) {
+    const e = p * p * (3 - 2 * p)
+    morphAmount += (e - morphAmount) * (e > morphAmount ? MORPH_ATTACK : MORPH_RELEASE)
+    if (morphAmount < 0.002) morphAmount = 0
+    engine.setMorph?.(MORPH_PULL * morphAmount, MORPH_GRIP * morphAmount, e)
+  }
 }
 
 // 捲動只改「色盤 + 透明度 + morph 強度」—— 粒子位置全程由 GPU 上的物理決定。
@@ -222,20 +254,30 @@ function applyProgress (p) {
   if (heroLin && aboutLin) engine.setColors?.(lerpPaletteLinear(heroLin, aboutLin, e))
   engine.setParticleOpacity?.(HERO_OPACITY + (ABOUT_OPACITY - HERO_OPACITY) * e)
 
-  if (!targetsReady) return
-  // 這是整個收攏效果的全部：一個 uniform。
-  engine.setMorph?.(MORPH_PULL * e, MORPH_GRIP * e)
+  // 收攏拉力本身在 driftLoop 逐幀寫（見那裡的 morphAmount），因為它需要釋放延遲。
 }
 
 // 一次性：讀回目前粒子 → 同物種內就近配對圖片點 → 攤成以 slot 為索引的 target
 // 陣列上傳。配對只決定「誰去哪個點」，之後位置由物理接管，target 不會過期。
+function invalidateTargets () {
+  targetsReady = false
+  morphAmount = 0
+  engine?.setMorph?.(0, 0, 0)
+  clearTimeout(resizeTimer)
+  resizeTimer = setTimeout(() => { buildTargets() }, REBUILD_SETTLE_MS)
+}
+
 async function buildTargets () {
   if (!aboutSpec || !engine?.readParticles || !engine.setTargets) return
   const snap = await engine.readParticles()
   const { W, H } = engine.size
   const T = aboutSpec.palette.length
   const targets = buildImageTargets(aboutSpec, snap.length, W, H)
-  engine.setTargets(buildSlotTargets(snap, targets, T, W))
+  const { spread, shape } = buildSlotTargets(snap, targets, T, W)
+  engine.setTargets(spread, shape)
+  targetsGen = engine.targetsGeneration
+  targetsW = W
+  targetsH = H
   targetsReady = true
   applyProgress(progress)              // 補算一次，避免首屏就在第二區塊時沒套上
 }
@@ -316,6 +358,9 @@ async function init () {
   onVisibility = () => syncPause()
   document.addEventListener('visibilitychange', onVisibility)
 
+  onResize = () => invalidateTargets()
+  window.addEventListener('resize', onResize)
+
   onActivity = () => markActivity()
   window.addEventListener('pointermove', onActivity, { passive: true })
   window.addEventListener('pointerdown', onActivity, { passive: true })
@@ -337,20 +382,25 @@ async function init () {
       progress: +progress.toFixed(3),
       morphPull: +engine.config.morphPull.toFixed(2),
       scrollHeat: +scrollHeat.toFixed(2),
+      morphAmount: +morphAmount.toFixed(3),
       force: +engine.config.forceFactor.toFixed(2),
       targetsReady,
     })
   }
   driftLoop()
 
-  // 目標點只算一次（等場域先散開一下，配對出來的路徑比較短）
-  setTimeout(() => { buildTargets() }, 2500)
-
-  // 開場實測 fps，不夠就砍半（docs §10 陷阱二）。setCount 會整場重生，所以趁早做。
-  setTimeout(() => {
+  // 先讓開場的 fps 自適應定案，再建 targets ——
+  // setCount 會重配粒子與 targets buffer，順序反了 targets 會被清空。
+  setTimeout(async () => {
     const fps = engine?.getFps ? engine.getFps() : 60
-    if (fps > 0 && fps < 45) engine.setCount?.(Math.round(count / 2))
-  }, 5000)
+    if (fps > 0 && fps < 45) {
+      engine.setCount?.(Math.round(count / 2))
+      // setCount 會整場重生成「開場構圖」（緊湊的螺旋）。要等它散開再建 targets，
+      // 否則「自由場」那組目標會記成那團緊湊的東西，之後捲回來就回不到滿版。
+      await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
+    }
+    await buildTargets()
+  }, 4000)
 
   // 捲動：hero 底邊捲出畫面的這段 = 粒子場從滿版遷移到左側。scrub 讓它可逆。
   const { $ScrollTrigger } = useNuxtApp()
@@ -374,6 +424,8 @@ onBeforeUnmount(() => {
   if (scrollTrigger) scrollTrigger.kill()
   if (stopAmbient) stopAmbient()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
+  clearTimeout(resizeTimer)
+  if (onResize) window.removeEventListener('resize', onResize)
   if (onActivity) {
     window.removeEventListener('pointermove', onActivity)
     window.removeEventListener('pointerdown', onActivity)

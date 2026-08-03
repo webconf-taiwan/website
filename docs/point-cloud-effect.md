@@ -306,6 +306,17 @@ python3 bake.py people-0N.png ../../public/people/people-0N.json people-0N 32000
 
 引擎目前**沒有** morph 力：力只有三種來源（互動矩陣、近距排斥、disturb 脈衝）。`respawn()` 是瞬間重生不是漸變。所以要加一個「目標點吸引」機制，有兩條路：
 
+### ✅ 已實作（2026-08，首頁 `app/components/Home/ParticleField.vue`）
+
+路線 1 已經做進引擎了：`setTargets(spreadXY, shapeXY)` + `setMorph(pull, grip, blend)`。
+**實作與踩過的坑另有專文：[`living-particle-motion.md`](./living-particle-motion.md)**，
+下面這段原始構想保留作為背景，但有兩處與實際做法不同，照抄會壞：
+
+- ⚠️ `array<vec2f>` 用 `targets[id.x]` 索引**會錯位** —— `particleSort` 每幀重排粒子，
+  array index 不是穩定身分。實作改成在 `Particle` struct 裡放一個永不改變的 `slot`。
+- ⚠️ `v += to * strength * dt` 這種彈簧加速度**會發散** —— dt 被 `simSpeed` 縮放
+  （0.16↔0.6，4 倍擺幅），在待機調好的值一捲動就爆。實作改成 clamp 過的一階遲滯。
+
 ### 路線 1（推薦）：在 GPU 引擎加 target buffer + seek 力
 
 在 `particleAdvance` shader（`particle-life-gpu.js`，disturb 已經證明這裡可以插自訂力）加：
@@ -463,5 +474,8 @@ md 內含足夠資訊讓 AI/工程師重寫出同精神的效果——粒子生�
 
 ## 12. 一句話總結
 
+> 動態與編排（怎麼讓它「活」、怎麼捲動變形、效能與量測方法）見
+> [`living-particle-motion.md`](./living-particle-motion.md)。
+>
 > 這個效果 = **Particle Life 模擬（物種互動矩陣產生湧現形態）** × **每次載入隨機抽 色盤/初始佈局/力規則** × **四層排程擾動讓它永遠不靜止** × **HDR 加法混合渲染的星雲質感**。
 > 延伸圖片點雲：新增一個 seed pattern 即可接入；延伸多圖漸變：在 advance shader 加 target buffer + seek 力，讓十萬顆粒子集體遷徙過去。

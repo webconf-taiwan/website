@@ -292,15 +292,23 @@
     @group(3) @binding(0) var<uniform> disturb: vec4<f32>;   // x,y,radius,strength
     // Morph: steer each particle toward a per-particle target while the
     // particle-life forces keep running.
-    //   morph.x = pull (1/s)  — desired closing speed per unit of distance
-    //   morph.y = grip (1/s)  — how hard velocity is steered toward that
+    //   morph.x = pull  (1/s) — desired closing speed per unit of distance
+    //   morph.y = grip  (1/s) — how hard velocity is steered toward that
+    //   morph.z = blend (0..1) — mix between the two target sets stored per
+    //             slot: .xy = "spread" (the open field), .zw = "shape".
+    //             Both sets live in the buffer so scrolling only ever writes
+    //             uniforms. Crucially this makes the *return* work: releasing
+    //             the seek alone leaves every particle piled where the shape
+    //             was, and diffusing back to a full field takes forever at a
+    //             slow simSpeed. Interpolating the target instead actively
+    //             walks them back out as you scroll up.
     // Deliberately NOT a spring acceleration: v += k*(t-p)*dt goes unstable
     // once dt grows, and dt here is scaled by simSpeed (0.16 idle → 0.6 while
     // scrolling, a 4x swing) so a value tuned at rest blows up mid-scroll.
     // This form is a first-order lag with the blend factor clamped to 1, so
     // it can never overshoot regardless of dt.
     @group(3) @binding(1) var<uniform> morph: vec4<f32>;
-    @group(3) @binding(2) var<storage, read> targets: array<vec2<f32>>;
+    @group(3) @binding(2) var<storage, read> targets: array<vec4<f32>>;
 
     @compute @workgroup_size(64)
     fn particleAdvance(@builtin(global_invocation_id) id: vec3u) {
@@ -334,7 +342,8 @@
       // computeForces), so the shape stays alive: particles keep swimming
       // inside the silhouette and the edges breathe.
       if (morph.x > 0.0) {
-        let t = targets[u32(particle.slot)];
+        let pair = targets[u32(particle.slot)];
+        let t = mix(pair.xy, pair.zw, morph.z);
         let desiredVx = (t.x - particle.x) * morph.x;
         let desiredVy = (t.y - particle.y) * morph.x;
         let a = clamp(morph.y * deltaTime, 0.0, 1.0);
@@ -668,6 +677,7 @@
       // Runs alongside the interaction forces, so the shape stays alive.
       morphPull: opts.morphPull ?? 0,
       morphGrip: opts.morphGrip ?? 0,
+      morphBlend: opts.morphBlend ?? 0,
       maxDpr: opts.maxDpr ?? 2,
       cameraX: opts.cameraX ?? 0,
       cameraY: opts.cameraY ?? 0,
@@ -708,7 +718,8 @@
     let deltaTimeBuffer = null;       // vec4<f32>; .x = dt
     let disturbBuffer = null;         // vec4<f32>; xyzw = x,y,radius,strength
     let morphBuffer = null;           // vec4<f32>; x = seek strength, y = seek damping
-    let targetsBuffer = null;         // array<vec2<f32>>; indexed by particle.slot
+    let targetsBuffer = null;         // array<vec4<f32>>; indexed by particle.slot
+    let targetsGeneration = 0;        // bumped whenever targetsBuffer is reallocated
     let pendingDisturb = null;
 
     // HDR target
@@ -933,10 +944,15 @@
       if (targetsBuffer) targetsBuffer.destroy();
       targetsBuffer = device.createBuffer({
         label: 'morphTargets',
-        size: Math.max(8, 8 * n),
+        size: Math.max(16, 16 * n),   // vec4 per slot: spread.xy + shape.zw
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
       });
-      config.morphPull = 0;          // 粒子重生後舊目標失效，先關掉
+      // 粒子重生 → 舊目標失效。關掉 seek，並推進世代編號讓呼叫端知道要重建：
+      // 少了這個，setCount / respawn 之後 targets 全是 0，seek 會把整場粒子
+      // 吸到座標原點（畫面看起來就是「整個消失」）。
+      config.morphPull = 0;
+      config.morphGrip = 0;
+      targetsGeneration++;
       writeMorph();
     }
 
@@ -1086,7 +1102,7 @@
         });
       }
       device.queue.writeBuffer(morphBuffer, 0, new Float32Array([
-        config.morphPull, config.morphGrip, 0, 0,
+        config.morphPull, config.morphGrip, config.morphBlend, 0,
       ]));
     }
 
@@ -1662,22 +1678,32 @@
       config.cameraY = y || 0;
       writeCamera();
     }
-    // Upload morph targets. `xy` is a Float32Array of [x0,y0,x1,y1,...] in sim
-    // space, indexed by particle slot (0..count-1). Cheap enough to call on a
-    // palette/target change, but it is a full buffer write — don't call it per
-    // frame; animate setMorphStrength instead.
-    function setTargets(xy) {
-      if (!targetsBuffer || !xy) return;
-      const n = Math.min(config.count, xy.length >> 1);
-      device.queue.writeBuffer(targetsBuffer, 0, xy, 0, n * 2);
+    // Upload the two morph target sets. Both are Float32Array of [x0,y0,x1,y1,…]
+    // in sim space, indexed by particle slot (0..count-1):
+    //   spreadXY — where particles sit when blend = 0 (the open field)
+    //   shapeXY  — where they sit when blend = 1 (the image point cloud)
+    // Interleaved here into one vec4 per slot. This is a full buffer write —
+    // call it when the targets change, not per frame; animate setMorph instead.
+    function setTargets(spreadXY, shapeXY) {
+      if (!targetsBuffer || !spreadXY || !shapeXY) return;
+      const n = Math.min(config.count, spreadXY.length >> 1, shapeXY.length >> 1);
+      const packed = new Float32Array(n * 4);
+      for (let i = 0; i < n; i++) {
+        packed[i * 4] = spreadXY[i * 2];
+        packed[i * 4 + 1] = spreadXY[i * 2 + 1];
+        packed[i * 4 + 2] = shapeXY[i * 2];
+        packed[i * 4 + 3] = shapeXY[i * 2 + 1];
+      }
+      device.queue.writeBuffer(targetsBuffer, 0, packed, 0, n * 4);
     }
     // pull: desired closing speed per unit distance (1/s). Higher = tighter fit.
     // grip: how hard velocity is steered toward that (1/s). Higher = less of
     //       the particle-life motion survives inside the shape.
     // Both 0 = off (pure particle life). Stable for any dt — see the shader.
-    function setMorph(pull, grip) {
+    function setMorph(pull, grip, blend) {
       config.morphPull = Math.max(0, Math.min(100, pull || 0));
       if (typeof grip === 'number') config.morphGrip = Math.max(0, Math.min(100, grip));
+      if (typeof blend === 'number') config.morphBlend = Math.max(0, Math.min(1, blend));
       writeMorph();
     }
     function setShowGlow(v) { config.showGlow = !!v; }
@@ -1771,6 +1797,10 @@
       readParticles,                   // async — for SVG / vector export
       pause(v) { config.paused = !!v; },
       get size() { return { W, H }; },
+      // Bumped whenever the targets buffer is reallocated (setCount / respawn).
+      // Callers must rebuild and re-upload targets when this changes, otherwise
+      // the seek pulls everything to (0,0).
+      get targetsGeneration() { return targetsGeneration; },
       get config() { return config; },
       get particles() { return []; },   // GPU-resident; use readParticles()
       get matrix() { return null; },
