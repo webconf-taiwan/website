@@ -29,6 +29,7 @@
     "bootstrap-icons": "1.13.1",
     "eslint": "^10.6.0",
     "tailwindcss": "^3.4",
-    "vite-plugin-svg-icons": "^2.0.1"
+    "vite-plugin-svg-icons": "^2.0.1",
+    "wrangler": "^4"
   }
 }

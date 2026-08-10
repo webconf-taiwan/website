@@ -1,0 +1,31 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+
+  // Worker 名稱，同時決定預設網址 webconf-2026.<你的子網域>.workers.dev
+  "name": "webconf-2026",
+
+  // 對齊 nuxt.config.ts 的 compatibilityDate
+  "compatibility_date": "2026-05-19",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // 開了才看得到即時 log 與請求量，debug 會用到
+  "observability": { "enabled": true },
+
+  // 自訂網域。jordanttc.com 已在 Cloudflare，deploy 時會自動建立 proxied CNAME 並簽憑證，
+  // DNS 不需要手動加任何記錄。
+  "routes": [
+    { "pattern": "webconf2026.jordanttc.com", "custom_domain": true }
+  ]
+
+  // ─────────────────────────────────────────────────────────────
+  // 這裡刻意不寫 main 與 assets。
+  // Nitro build 完會自己算好並寫進 .output/server/wrangler.json：
+  //     main:   "index.mjs"
+  //     assets: { "binding": "ASSETS", "directory": "../public" }
+  // 寫在這裡只會被覆蓋並跳警告（nitropack presets/cloudflare/utils.mjs）。
+  //
+  // 環境變數也不寫在這裡。nuxt.config.ts 是在「build 階段」讀 process.env，
+  // 所以 APP_* 必須設在 Workers Builds 的 build variables，不是 Worker runtime vars。
+  // 尤其 APP_BASE_URL 漏設會讓 app.baseURL 變成字串 "undefined"，整站 404 且 build 不報錯。
+  // ─────────────────────────────────────────────────────────────
+}

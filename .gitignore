@@ -6,6 +6,9 @@
 .cache
 dist
 
+# Cloudflare（build 時產生的 deploy config，不進版控；wrangler.jsonc 要進）
+.wrangler
+
 # Node dependencies
 node_modules
 

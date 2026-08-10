@@ -7,6 +7,17 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2026-05-19',
 
+  nitro: {
+    // Cloudflare Workers（含 static assets）。輸出 .output/server/index.mjs + .output/public
+    preset: 'cloudflare_module',
+    cloudflare: {
+      // 讓 build 產生 .output/server/wrangler.json 與 .wrangler/deploy/config.json，
+      // 根目錄的 wrangler.jsonc 會被讀進來合併。在 CF CI 會自動開啟，這裡寫死是為了本機行為一致。
+      deployConfig: true,
+      nodeCompat: true
+    }
+  },
+
   modules: [
     '@nuxt/eslint',
     '@pinia/nuxt',
