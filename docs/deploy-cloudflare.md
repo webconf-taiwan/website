@@ -112,6 +112,27 @@ title / description / lang / og:locale / robots、`runtimeConfig` 的預設值�
 | `WEB_SEARCH` | `NO` | 上線前保持 `NO` → `noindex, nofollow`；開站當天改 `YES` |
 | `SHOW_CONSOLE_LOG` | `NO` | 讓 vite esbuild 清掉 `console.log` / `console.info` |
 | `NODE_VERSION` | `22` | 對齊本機 v22.18.0 |
+| `YARN_VERSION` | `1.22.22` | **不設會 install 失敗**，見下 |
+
+### ⚠️ Yarn 版本：不釘會在 Install 階段就掛掉
+
+Cloudflare build image 預設給 **Yarn 4.x**，但本專案的 `yarn.lock` 是 **v1 格式**
+（檔案第二行 `# yarn lockfile v1`）。Yarn 4 會自動「幫你升級」lockfile，然後在 CI 的
+immutable 模式下拒絕這個改動，自相矛盾地失敗：
+
+```
+YN0087: Migrated your project to the latest Yarn version 🚀
+YN0028: The lockfile would have been modified by this install, which is explicitly forbidden.
+Failed: error occurred while installing tools or dependencies
+```
+
+兩道保險都要做：
+
+1. build variable `YARN_VERSION=1.22.22`
+2. `package.json` 的 `"packageManager": "yarn@1.22.22"` —— 讓這個資訊留在 repo 裡，
+   不是只存在於某個人的 Dashboard 設定中
+
+驗證方式（本機）：`yarn install --frozen-lockfile` 要能過。
 
 之後若要在**不重 build** 的情況下換 API 位置，可在 `wrangler.jsonc` 的 `vars` 加
 `NUXT_APP_API` / `NUXT_PUBLIC_APP_API` 覆蓋 `runtimeConfig`。現階段不需要。
@@ -223,6 +244,7 @@ npx wrangler dev    # 會自動跟著 .wrangler/deploy/config.json 走
 
 | 症狀 | 原因 |
 |---|---|
+| Install 階段 `YN0028: The lockfile would have been modified` | 沒釘 `YARN_VERSION=1.22.22`，CI 用了 Yarn 4 去讀 v1 lockfile |
 | 全站 404、資產路徑多一層 `/undefined/` | build variables 漏了 `APP_BASE_URL=/` |
 | `<title>` 顯示 `undefined` | 漏了 `APP_TITLE`（其他 `APP_*` 同理） |
 | 部署失敗，訊息提到單檔大小 | ORT wasm 超過 25 MiB，檢查 `onnxruntime-web` 是否被升版 |
