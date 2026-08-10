@@ -13,6 +13,13 @@ module.exports = {
       '3xl': '1920px'
     },
     fontFamily: {
+      // A · English serif — 標題與英文內文
+      serif: ['"Inria Serif"', '"Noto Serif TC"', 'serif'],
+      // B · 中文襯線 — 正文、抒情
+      zh: ['"Noto Serif TC"', '"Inria Serif"', 'serif'],
+      // C · Mono — 數字、座標、標籤
+      mono: ['"IBM Plex Mono"', 'ui-monospace', 'monospace'],
+      // legacy（保留給既有元件，如需舊的無襯線）
       Noto: ['Noto Sans TC', 'sans-serif']
     },
     container: {
@@ -84,34 +91,22 @@ module.exports = {
         full: '9999px'
       },
       fontSize: {
-        'dt/zh/5xl': ['3rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'dt/zh/4xl': ['2rem', { lineHeight: '160%', letterSpacing: '0px', fontWeight: '500' }],
-        'dt/zh/3xl': ['1.5rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'dt/zh/2xl': ['1.25rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'dt/zh/1xl': ['1rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'dt/zh/7xl': ['4rem', { lineHeight: '120%', letterSpacing: '1.28px', fontWeight: '500' }],
-        'dt/zh/6xl': ['3rem', { lineHeight: '120%', letterSpacing: '0px', fontWeight: '500' }],
-        'dt/zh/base': ['1rem', { lineHeight: '150%', letterSpacing: '0.32px', fontWeight: '400' }],
-        'dt/zh/lg': ['1.125rem', { lineHeight: '150%', letterSpacing: '0px', fontWeight: '400' }],
-        'dt/zh/xs': ['0.875rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '400' }],
-        'dt/zh/link-xs': ['0.875rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '400', textDecoration: 'underline' }],
-        'dt/zh/btn-lg': ['1rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '700' }],
-        'dt/zh/btn-md': ['0.875rem', { lineHeight: '140%', letterSpacing: '0.28px', fontWeight: '700' }],
-        'dt/zh/btn-xs': ['0.875rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'mb/zh/5xl': ['1.75rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'mb/zh/4xl': ['1.25rem', { lineHeight: '160%', letterSpacing: '0px', fontWeight: '500' }],
-        'mb/zh/3xl': ['1.125rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'mb/zh/2xl': ['1rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'mb/zh/1xl': ['0.875rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }],
-        'mb/zh/7xl': ['3.5rem', { lineHeight: '120%', letterSpacing: '1.12px', fontWeight: '500' }],
-        'mb/zh/6xl': ['2rem', { lineHeight: '120%', letterSpacing: '0px', fontWeight: '500' }],
-        'mb/zh/base': ['0.875rem', { lineHeight: '150%', letterSpacing: '0px', fontWeight: '400' }],
-        'mb/zh/lg': ['1rem', { lineHeight: '150%', letterSpacing: '0px', fontWeight: '400' }],
-        'mb/zh/xs': ['0.75rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '400' }],
-        'mb/zh/link-xs': ['0.75rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '400', textDecoration: 'underline' }],
-        'mb/zh/btn-lg': ['1rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '700' }],
-        'mb/zh/btn-md': ['0.875rem', { lineHeight: '140%', letterSpacing: '0.28px', fontWeight: '700' }],
-        'mb/zh/btn-xs': ['0.875rem', { lineHeight: '140%', letterSpacing: '0px', fontWeight: '500' }]
+        // ===== WebConf 2026 型階 · One ladder, thirteen rungs =====
+        // 語意用 typography.css 的 .text-* class；這裡只放尺寸+行高+字距
+        'fs-hero': ['4.5rem', { lineHeight: '1.05', letterSpacing: '-0.02em' }], //  72 · Hero（Inria）
+        'fs-h1': ['4rem', { lineHeight: '1.08', letterSpacing: '-0.02em' }], //  64 · Section opener（Inria）
+        'fs-display': ['3.5rem', { lineHeight: '1.3', letterSpacing: '0.04em' }], //  56 · 中文 specimen（Noto Serif TC）
+        'fs-h2': ['3rem', { lineHeight: '1.12', letterSpacing: '-0.01em' }], //  48 · Plate H2
+        'fs-h3': ['2rem', { lineHeight: '1.2', letterSpacing: '0px' }], //  32 · Plate subhead
+        'fs-h4': ['1.75rem', { lineHeight: '1.3', letterSpacing: '0px' }], //  28 · Card title
+        'fs-h5': ['1.375rem', { lineHeight: '1.45', letterSpacing: '0px' }], //  22 · Card subtitle
+        'fs-body-lg': ['1.125rem', { lineHeight: '1.9', letterSpacing: '0.04em' }], //  18 · 正文 lede
+        'fs-body': ['1rem', { lineHeight: '1.95', letterSpacing: '0.04em' }], //  16 · base body（中文 行高 1.95）
+        'fs-body-sm': ['0.875rem', { lineHeight: '1.8', letterSpacing: '0.04em' }], //  14 · dense paragraph
+        'fs-caption': ['0.8125rem', { lineHeight: '1.6', letterSpacing: '0.04em' }], //  13 · caption / footnote
+        'fs-meta': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.18em' }], //  12 · KV / mono labels
+        'fs-micro': ['0.6875rem', { lineHeight: '1.4', letterSpacing: '0.24em' }], //  11 · status / tag / corner
+        'fs-btn': ['1rem', { lineHeight: '1.6', letterSpacing: '0.02em' }] //  16/160 · 按鈕
       }
     }
   }

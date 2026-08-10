@@ -1,80 +1,137 @@
 <script setup>
-const allStore = useAllStore()
-const { count, doubleCount, windowWidth, pageLoading } = storeToRefs(allStore)
+// 首頁 PL.I（Hero）+ PL.II（About）。
+// 背景是一張固定的粒子場 canvas（HomeParticleField），兩個區塊都疊在它上面 ——
+// 捲動時是「相機」在移動、色盤在過渡，粒子模擬全程沒有停過。
 
-onMounted(() => {
-  windowWidth.value = window.innerWidth
+const fieldRef = ref(null)
 
-  window.addEventListener('resize', () => {
-    windowWidth.value = window.innerWidth
-  })
-})
+// 右下角的狀態列會顯示實際跑起來的後端（webgpu / webgl2 / canvas2d）
+const backend = computed(() => fieldRef.value?.backend || '')
 
-function simulateLoading () {
-  pageLoading.value = true
-
-  setTimeout(() => {
-    pageLoading.value = false
-  }, 1500)
-}
+const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
 </script>
 
 <template>
-  <div class="container py-16 md:py-24">
-    <section class="mx-auto max-w-2xl text-center">
-      <p class="text-zh-body-2 mb-4 text-brand">
-        Pinia Demo
+  <div class="relative bg-black text-[#efe6d2]">
+    <HomeParticleField ref="fieldRef" />
+
+    <!-- ===================================================================
+         PL. I — Hero
+         data-field-hero 是背景粒子場的 ScrollTrigger 觸發器：這個區塊的底邊
+         從畫面底捲到畫面頂的這段 = 粒子場從滿版遷移到左側、色盤轉金橄欖。
+    ==================================================================== -->
+    <section
+      data-field-hero
+      class="relative z-10 flex bg-black/30 min-h-[calc(100dvh-52px)] flex-col items-center justify-center px-6 py-20 text-center"
+    >
+      <p class="font-mono text-fs-micro uppercase text-white/55">
+        PL. I · Living Specimen · 2026
       </p>
-      <h1 class="text-zh-display-2 text-txt-dark">
-        allStore 示範
+
+      <h1 class="mt-6 font-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
+        WebConf
       </h1>
-      <p class="text-zh-body-1 mt-4 text-txt-light">
-        計數器、視窗寬度、全頁 Loading 都走 Pinia 全域狀態。
-      </p>
-    </section>
 
-    <section class="mx-auto mt-12 max-w-xl rounded-2xl border border-gray-200 p-8">
-      <h2 class="text-zh-head-4 text-txt-dark">
-        計數器
-      </h2>
-
-      <p class="text-zh-display-1 mt-6 text-brand">
-        {{ count }}
-      </p>
-      <p class="text-zh-body-2 mt-2 text-txt-light">
-        doubleCount：{{ doubleCount }}
+      <p class="mt-6 font-serif text-[clamp(18px,2.2vw,30px)] italic leading-snug">
+        Taipei Popop · Dec 11-12, 2026
       </p>
 
-      <div class="mt-6 flex flex-wrap justify-center gap-3">
-        <AtomButton intent="secondary" @click="allStore.decrement">
-          <AtomIcon name="minus" />
-          減一
-        </AtomButton>
-        <AtomButton intent="primary" @click="allStore.increment">
-          <AtomIcon name="plus" />
-          加一
-        </AtomButton>
+      <p class="mt-3 font-mono text-fs-micro uppercase text-white/55">
+        Agent · Connections · Code
+      </p>
+
+      <a
+        href="#ticket"
+        class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 font-zh text-fs-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
+      >
+        前往購票 →
+      </a>
+
+      <!-- 四角的「標本標籤」：科學紀錄語彙，桌機才出現 -->
+      <div class="pointer-events-none absolute inset-x-6 bottom-8 hidden items-end justify-between lg:flex">
+        <div class="text-left">
+          <p class="font-mono text-fs-micro uppercase text-white/55">
+            Code · Emergence
+          </p>
+          <p class="font-serif text-fs-caption italic text-white/55">
+            vol. iii · plate i .
+          </p>
+        </div>
+        <div class="text-right">
+          <p class="font-mono text-fs-micro uppercase text-white/55">
+            N 25.04° · E 121.56°
+          </p>
+          <p class="font-serif text-fs-caption italic text-white/55">
+            simulation · live{{ backend ? ` · ${backend}` : '' }}
+          </p>
+        </div>
       </div>
     </section>
 
-    <section class="mx-auto mt-8 max-w-xl rounded-2xl border border-gray-200 p-8 text-center">
-      <h2 class="text-zh-head-4 text-txt-dark">
-        視窗寬度
-      </h2>
-      <p class="text-zh-body-1 mt-4 text-txt">
-        {{ windowWidth }}px
-      </p>
-    </section>
+    <!-- ===================================================================
+         PL. II — About
+    ==================================================================== -->
+    <section
+      id="about"
+      class="relative z-10 border-t bg-black/30 border-white/15 px-6 py-16 md:py-24 lg:px-12 2xl:px-20"
+    >
+      <div class="mx-auto grid max-w-[1680px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+        <!-- 左欄：卷號 + Skills 標本框 -->
+        <div class="lg:col-span-4">
+          <p class="font-mono text-fs-micro uppercase text-[#71c1f0]/70">
+            PL. II
+          </p>
+          <p class="mt-2 font-serif text-fs-h2 italic leading-none">
+            II.
+          </p>
+          <p class="mt-2 font-mono text-fs-micro uppercase text-white/55">
+            About
+          </p>
 
-    <section class="mx-auto mt-8 max-w-xl rounded-2xl border border-gray-200 p-8 text-center">
-      <h2 class="text-zh-head-4 text-txt-dark">
-        全頁 Loading
-      </h2>
-      <AtomButton class="mt-6" intent="primary" @click="simulateLoading">
-        模擬 1.5 秒 Loading
-      </AtomButton>
-    </section>
+          <!-- Skills 框：疊在背景粒子團上的「觀察框」。刻意留大量上方空白，
+               讓框落在粒子團中段（設計稿的構圖）。 -->
+          <div class="relative mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
+            <!-- 十字準星 -->
+            <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-caption text-white/40">+</span>
+            <div class="relative border border-white/25 px-4 py-5">
+              <span class="absolute -top-2.5 left-3 bg-black px-1 font-mono text-fs-caption text-white/60">
+                Skills
+              </span>
+              <ul class="space-y-1 text-right font-mono text-fs-caption text-white/55">
+                <li v-for="s in skills" :key="s">
+                  {{ s }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-    <LayoutPageLoading :show="pageLoading" text="載入中…" />
+        <!-- 右欄：主文案 -->
+        <div class="lg:col-span-8">
+          <h2 class="font-serif text-[clamp(40px,5.2vw,88px)] leading-[1.08] tracking-[-0.02em]">
+            An emergent gathering of the Web.
+          </h2>
+
+          <p class="mt-8 max-w-[52ch] font-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
+            WebConf Taiwan is a two-day field study of the living web —
+            where <span class="text-[#71c1f0]">agents</span>,
+            <span class="text-[#71c1f0]">connections</span>, and
+            <span class="text-[#71c1f0]">code</span>
+            coalesce into something larger than their parts.
+          </p>
+
+          <p class="mt-8 max-w-[46ch] font-zh text-fs-body-lg text-[#efe6d2]/75">
+            WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。這些技術如同顯微鏡下的細胞，從簡單規則出發，彼此影響、共同演化，逐步形成新的網頁生態。
+          </p>
+
+          <a
+            href="#agenda"
+            class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 font-zh text-fs-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
+          >
+            議程資訊 →
+          </a>
+        </div>
+      </div>
+    </section>
   </div>
 </template>

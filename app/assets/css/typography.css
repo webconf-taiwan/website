@@ -1,57 +1,71 @@
 @layer utilities {
-  .text-zh-head-1 {
-    @apply text-mb/zh/5xl lg:text-dt/zh/5xl;
+  /* =========================================================================
+     WebConf 2026 · 文型（type styles）
+     一組型階十三階，桌機／手機目前共用同一組數值（之後要拆 mb 再加 lg: 前綴）。
+       A · Inria Serif（font-serif）    → 英文標題與內文
+       B · Noto Serif TC（font-zh）     → 中文正文、抒情
+       C · IBM Plex Mono（font-mono）   → 數字、座標、標籤（一律大寫）
+     斜體 Inria 用於強調（emphasis）。
+     ========================================================================= */
+  .text-hero {
+    @apply font-serif text-fs-hero font-normal;
   }
 
-  .text-zh-head-2 {
-    @apply text-mb/zh/4xl lg:text-dt/zh/4xl;
+  .text-h1 {
+    @apply font-serif text-fs-h1 font-normal;
   }
 
-  .text-zh-head-3 {
-    @apply text-mb/zh/3xl lg:text-dt/zh/3xl;
+  .text-display {
+    @apply font-zh text-fs-display font-medium;
   }
 
-  .text-zh-head-4 {
-    @apply text-mb/zh/2xl lg:text-dt/zh/2xl;
+  .text-h2 {
+    @apply font-serif text-fs-h2 font-normal;
   }
 
-  .text-zh-head-5 {
-    @apply text-mb/zh/1xl lg:text-dt/zh/1xl;
+  .text-h3 {
+    @apply font-serif text-fs-h3 font-normal;
   }
 
-  .text-zh-display-1 {
-    @apply text-mb/zh/7xl lg:text-dt/zh/7xl;
+  .text-h4 {
+    @apply font-serif text-fs-h4 font-normal;
   }
 
-  .text-zh-display-2 {
-    @apply text-mb/zh/6xl lg:text-dt/zh/6xl;
+  .text-h5 {
+    @apply font-serif text-fs-h5 font-normal;
   }
 
-  .text-zh-body-1 {
-    @apply text-mb/zh/base lg:text-dt/zh/base;
+  .text-body-lg {
+    @apply font-zh text-fs-body-lg font-normal;
   }
 
-  .text-zh-body-2 {
-    @apply text-mb/zh/lg lg:text-dt/zh/lg;
+  .text-body {
+    @apply font-zh text-fs-body font-normal;
   }
 
-  .text-zh-mini {
-    @apply text-mb/zh/xs lg:text-dt/zh/xs;
+  .text-body-sm {
+    @apply font-zh text-fs-body-sm font-normal;
   }
 
-  .text-zh-link {
-    @apply text-mb/zh/link-xs lg:text-dt/zh/link-xs;
+  .text-caption {
+    @apply font-zh text-fs-caption font-normal;
   }
 
-  .text-zh-btn-lg {
-    @apply text-mb/zh/btn-lg lg:text-dt/zh/btn-lg;
+  .text-meta {
+    @apply font-mono text-fs-meta font-medium uppercase;
   }
 
-  .text-zh-btn {
-    @apply text-mb/zh/btn-md lg:text-dt/zh/btn-md;
+  .text-micro {
+    @apply font-mono text-fs-micro font-normal uppercase;
   }
 
-  .text-zh-btn-sm {
-    @apply text-mb/zh/btn-xs lg:text-dt/zh/btn-xs;
+  /* 按鈕：襯線 16/160，各尺寸共用同一型 */
+  .text-btn {
+    @apply font-serif text-fs-btn font-medium;
+  }
+
+  /* 強調：斜體 Inria Serif */
+  .text-emphasis {
+    @apply font-serif italic;
   }
 }

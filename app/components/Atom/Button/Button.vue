@@ -88,10 +88,10 @@ const button = cva([
       ]
     },
     size: {
-      xs: ['text-zh-body-2 py-0.5'],
-      sm: ['text-zh-body-2 px-3 py-1 md:px-4 md:py-2'],
-      md: ['text-zh-body-1 px-5 py-1 md:px-6 md:py-2'],
-      lg: ['text-zh-body-1 px-7 py-2 md:px-8 md:py-2'],
+      xs: ['text-btn py-0.5'],
+      sm: ['text-btn px-3 py-1 md:px-4 md:py-2'],
+      md: ['text-btn px-5 py-1 md:px-6 md:py-2'],
+      lg: ['text-btn px-7 py-2 md:px-8 md:py-2'],
       link: ['px-1 py-2']
     },
     position: {

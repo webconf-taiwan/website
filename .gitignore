@@ -6,6 +6,9 @@
 .cache
 dist
 
+# Cloudflare（build 時產生的 deploy config，不進版控；wrangler.jsonc 要進）
+.wrangler
+
 # Node dependencies
 node_modules
 
@@ -25,3 +28,9 @@ logs
 !.env.template
 
 *.local.*
+
+demo
+.playwright-mcp
+
+# MediaPipe wasm — 由 postinstall 從 node_modules 複製，不進版控（模型 .tflite 仍 commit）
+public/mediapipe/wasm/

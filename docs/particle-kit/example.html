@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>particle-kit · 最小範例</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0a0a0c; overflow: hidden; }
+  canvas { display: block; width: 100vw; height: 100vh; }
+  .hud { position: fixed; left: 12px; bottom: 10px; color: #888;
+         font: 11px/1.6 ui-monospace, monospace; letter-spacing: 0.08em; }
+</style>
+</head>
+<body>
+<canvas id="stage"></canvas>
+<div class="hud" id="hud">booting…</div>
+
+<!-- 載入順序固定：seeds → rules → CPU 引擎 → GPU 引擎 → 色盤 → 擾動 -->
+<script src="particle-life-seeds.js"></script>
+<script src="particle-life-rules.js"></script>
+<script src="particle-life.js"></script>
+<script src="particle-life-gpu.js"></script>
+<script src="particle-palettes.js"></script>
+<script src="particle-ambient.js"></script>
+
+<script>
+(async () => {
+  const canvas = document.getElementById('stage');
+  const hud = document.getElementById('hud');
+  const palette = window.PLPalettes.pick();
+  document.body.style.background = palette.bg === 'parchment' ? '#efe6d2' : '#0a0a0c';
+
+  // --- 效能守則 1：粒子預算從保守值起步，依實測 fps 決定去留 -------------
+  // demo 的 64k–116k 是 M 系列高階機的基準；無風扇機種跑同預算會熱到降頻。
+  const START_COUNT = 36000;
+
+  const engine = await window.makeEngine(canvas, {
+    species: 3 + Math.floor(Math.random() * 5),
+    count: START_COUNT,
+    preset: 'auto',                       // 22 種力矩陣隨機（PLRules）
+    seedPattern: 'auto',                  // 18 種初始佈局隨機（PLSeeds）
+    palette: palette.particles,
+    bgFade: palette.bgFade,
+    pointSize: 0.8,
+    particleOpacity: 0.5,
+    forceFactor: 0.95,
+    friction: 0.31,
+    minR: 5,
+    rMax: 72,
+    repel: 1.1,
+    simSpeed: 0.5,                        // 模擬半速、渲染全速 → 呼吸感
+    cameraZoom: 1.5,
+    showGlow: false,                      // 高密度時關光暈，只留銳利點
+    cellSubdivisions: 2,
+  });
+  window.engine = engine;                 // 方便 console 調試
+
+  // --- 四層環境擾動：讓場域永不靜止 ----------------------------------------
+  const stopAmbient = window.PLAmbient.start(() => engine);
+
+  // --- 滑鼠攪動 -------------------------------------------------------------
+  canvas.addEventListener('pointermove', (ev) => {
+    const r = canvas.getBoundingClientRect();
+    const { W, H } = engine.size;
+    engine.disturb(
+      ((ev.clientX - r.left) / r.width) * W,
+      ((ev.clientY - r.top) / r.height) * H,
+      360, 16,
+    );
+  });
+
+  // --- 效能守則 2：分頁隱藏時暫停模擬（rAF 只是降頻，不是停止） -----------
+  document.addEventListener('visibilitychange', () => {
+    engine.pause(document.hidden);
+  });
+  // 多 canvas 頁面請再對每個 canvas 掛 IntersectionObserver：
+  //   離開視窗 → engine.pause(true)，進入 → engine.pause(false)
+
+  // --- 效能守則 3：開場實測 fps，不夠就砍半粒子數 ---------------------------
+  setTimeout(() => {
+    const fps = engine.getFps ? engine.getFps() : 60;
+    if (fps > 0 && fps < 45) {
+      engine.setCount(Math.round(START_COUNT / 2));   // 注意：setCount 會整場重生
+      hud.textContent = `backend ${engine.backend} · fps ${fps | 0} → count 降至 ${START_COUNT / 2}`;
+    } else {
+      hud.textContent = `backend ${engine.backend} · fps ${fps | 0} · count ${START_COUNT}`;
+    }
+  }, 5000);
+
+  hud.textContent = `backend ${engine.backend} · palette ${palette.name}`;
+})();
+</script>
+</body>
+</html>

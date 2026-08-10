@@ -46,7 +46,7 @@ onBeforeUnmount(() => {
       >
         <div class="flex flex-col items-center gap-4">
           <div class="size-12 animate-spin rounded-full border-4 border-white/20 border-t-white"></div>
-          <p v-if="text" class="text-zh-body-2 text-white">
+          <p v-if="text" class="text-body-lg text-white">
             {{ text }}
           </p>
         </div>

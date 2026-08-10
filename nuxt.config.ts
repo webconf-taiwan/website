@@ -7,6 +7,17 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2026-05-19',
 
+  nitro: {
+    // Cloudflare Workers（含 static assets）。輸出 .output/server/index.mjs + .output/public
+    preset: 'cloudflare_module',
+    cloudflare: {
+      // 讓 build 產生 .output/server/wrangler.json 與 .wrangler/deploy/config.json，
+      // 根目錄的 wrangler.jsonc 會被讀進來合併。在 CF CI 會自動開啟，這裡寫死是為了本機行為一致。
+      deployConfig: true,
+      nodeCompat: true
+    }
+  },
+
   modules: [
     '@nuxt/eslint',
     '@pinia/nuxt',
@@ -47,7 +58,7 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: `${process.env.APP_BASE_URL}/manifest.webmanifest` },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap' }
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Serif+TC:wght@300;400;500;600&display=swap' }
       ],
       noscript: [{ innerHTML: '此網站需要開啟 JavaScript' }]
     }
@@ -73,7 +84,11 @@ export default defineNuxtConfig({
       include: [
         'class-variance-authority',
         'gsap',
-        'lenis'
+        'lenis',
+        // 動態載入的去背套件：預打包成單一 chunk，dev 才不會 @fs 404（模型/wasm 仍執行期抓）
+        '@imgly/background-removal',
+        // 綠幕即時分割：同理預打包（wasm/模型從 public/mediapipe 自架載入）
+        '@mediapipe/tasks-vision'
       ]
     },
     esbuild: {
