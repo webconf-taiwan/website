@@ -2,6 +2,11 @@
 import path from 'node:path'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 
+// app.baseURL 需要結尾的斜線（'/'），但拼接資源路徑時要去掉，
+// 否則 '/' + '/favicon.ico' = '//favicon.ico'，那是 protocol-relative URL，
+// 瀏覽器會當成 https://favicon.ico/ 這個「主機」去抓，全部失效。
+const assetBase = `${process.env.APP_BASE_URL || '/'}`.replace(/\/+$/, '')
+
 export default defineNuxtConfig({
   ssr: true,
 
@@ -52,10 +57,10 @@ export default defineNuxtConfig({
         }
       ],
       link: [
-        { rel: 'icon', sizes: '32x32', href: `${process.env.APP_BASE_URL}/favicon.ico` },
-        { rel: 'icon', type: 'image/svg+xml', href: `${process.env.APP_BASE_URL}/favicon.svg` },
-        { rel: 'apple-touch-icon', href: `${process.env.APP_BASE_URL}/apple-touch-icon.png` },
-        { rel: 'manifest', href: `${process.env.APP_BASE_URL}/manifest.webmanifest` },
+        { rel: 'icon', sizes: '32x32', href: `${assetBase}/favicon.ico` },
+        { rel: 'icon', type: 'image/svg+xml', href: `${assetBase}/favicon.svg` },
+        { rel: 'apple-touch-icon', href: `${assetBase}/apple-touch-icon.png` },
+        { rel: 'manifest', href: `${assetBase}/manifest.webmanifest` },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Serif+TC:wght@300;400;500;600&display=swap' }

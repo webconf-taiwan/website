@@ -247,6 +247,8 @@ npx wrangler dev    # 會自動跟著 .wrangler/deploy/config.json 走
 | Install 階段 `YN0028: The lockfile would have been modified` | 沒釘 `YARN_VERSION=1.22.22`，CI 用了 Yarn 4 去讀 v1 lockfile |
 | 全站 404、資產路徑多一層 `/undefined/` | build variables 漏了 `APP_BASE_URL=/` |
 | `<title>` 顯示 `undefined` | 漏了 `APP_TITLE`（其他 `APP_*` 同理） |
+| `<html>` 沒有 `lang`、`og:locale` 消失 | 漏了 `APP_DEFAULT_LANG=zh-TW` |
+| favicon / manifest 抓不到，href 是 `//favicon.ico` | `APP_BASE_URL` 的結尾斜線和路徑的開頭斜線疊成 `//`，被當成 protocol-relative URL（`https://favicon.ico/`）。`nuxt.config.ts` 用 `assetBase` 去尾斜線處理，不要改回 `process.env.APP_BASE_URL` 直接拼 |
 | 部署失敗，訊息提到單檔大小 | ORT wasm 超過 25 MiB，檢查 `onnxruntime-web` 是否被升版 |
 | build 成功但沒有部署設定 | `nitro.cloudflare.deployConfig` 沒開 |
 | `main`/`assets is overridden` 警告 | `wrangler.jsonc` 裡誤寫了 `main` 或 `assets`，刪掉 |
