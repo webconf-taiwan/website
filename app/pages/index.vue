@@ -1,4 +1,6 @@
 <script setup>
+import TicketCard from '~/components/Home/TicketCard.vue';
+
 // 首頁 PL.I（Hero）+ PL.II（About）。
 // 背景是一張固定的粒子場 canvas（HomeParticleField），兩個區塊都疊在它上面 ——
 // 捲動時是「相機」在移動、色盤在過渡，粒子模擬全程沒有停過。
@@ -9,6 +11,38 @@ const fieldRef = ref(null)
 const backend = computed(() => fieldRef.value?.backend || '')
 
 const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
+
+// PL. VI · 票種資料。先集中成一個變數，之後做關注點分離時，
+// 整包搬去 composable 或改接 CMS/API 都只動這裡，template 不用改。
+const tickets = ref([
+  {
+    code: 'PL. VI · 01',
+    title: '一般票',
+    price: '4,980',
+    category: 'FIELD NOTES · General Admission',
+    highlighted: false,
+    features: [
+      { en: 'Programme', zh: '兩日完整議程' },
+      { en: 'Daily Hospitality', zh: '兩日午餐、下午茶' },
+      { en: 'Annual Edition', zh: '年度紀念品' },
+      { en: 'Interactive Area', zh: '攤位互動體驗' }
+    ]
+  },
+  {
+    code: 'PL. VI · 02',
+    title: '三人揪團票',
+    price: '4,400',
+    category: 'Field Group · Group Admission',
+    highlighted: true,
+    features: [
+      { en: 'Three-Person Group Offer', zh: '三人同行限定優惠' },
+      { en: 'Programme', zh: '兩日完整議程' },
+      { en: 'Daily Hospitality', zh: '兩日午餐、下午茶' },
+      { en: 'Annual Edition', zh: '年度紀念品' },
+      { en: 'Interactive Area', zh: '攤位互動體驗' }
+    ],
+    backgroundColor: '',
+  }])
 </script>
 
 <template>
@@ -132,6 +166,22 @@ const skills = ['UI · UX', 'Frontend', 'AI Agent', 'Backend', 'Agile']
           </a>
         </div>
       </div>
+    </section>
+
+    <section class="relative flex flex-col gap-y-6">
+      <h2 class="text-center text-h1">
+        Two ways<br>to enter the field.
+      </h2>
+      <div class="flex flex-col gap-6 px-5 lg:flex-row lg:justify-center lg:items-stretch">
+        <TicketCard
+          v-for="ticket in tickets" :key="ticket.code"
+          :data="ticket"
+        />
+      </div>
+      <button type="button" class="flex justify-center items-center">
+        <span>前往購票</span>
+        <span>-></span>
+      </button>
     </section>
   </div>
 </template>

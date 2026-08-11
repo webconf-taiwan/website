@@ -54,7 +54,15 @@ module.exports = {
       auto: 'auto'
     },
     extend: {
+      spacing: {
+        34: '8.5rem', // 136px
+        35: '8.75rem', // 140px
+        54: '13.5rem' // 216px
+      },
       colors: {
+        pre: {
+          800: '#EFE6D2'
+        },
         brand: {
           light: '#A0BEFF',
           DEFAULT: '#110AFF',
