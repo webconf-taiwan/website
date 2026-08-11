@@ -27,7 +27,7 @@
 
 const { loadParticleKit, registerNebula } = useParticleKit()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
-const { activeStage, claimStage, releaseStage } = useParticleStage()
+const { activeStage, idle, claimStage, releaseStage } = useParticleStage()
 
 const STAGE = 'speaker'
 
@@ -284,6 +284,14 @@ function liveLoop (now) {
   liveRaf = requestAnimationFrame(liveLoop)
   if (!engine) return
 
+  // 閒置就整個收工。⚠️ 光靠 engine.pause() 不夠 —— 這個迴圈自己每 1.8 秒會配一份
+  // 64000 元素的 Float32Array 再上傳 512KB（jitterXY + setTargets），閒置時純屬浪費。
+  if (idle.value) {
+    cancelAnimationFrame(liveRaf)
+    liveRaf = 0
+    return
+  }
+
   const t = now || performance.now()
   const want = live && !reducedMotion ? LIVE_FORCE : 0
   const step = LIVE_FORCE * (1000 / 60) / FORCE_FADE_MS
@@ -335,10 +343,18 @@ function startLiveLoop () {
 // ---------------------------------------------------------------------------
 function syncPause () {
   if (!engine) return
-  // 上台中、換人漸變中、或力場還沒淡完 → 要繼續算；其餘一律凍結（保留末幀）
-  const running = (live || switching.value || force > 0) && !document.hidden
+  // 上台中、換人漸變中、或力場還沒淡完 → 要繼續算；其餘一律凍結（保留末幀）。
+  // 閒置超過 5 秒也停 —— 使用者沒在看的時候沒有理由讓 GPU 全速跑（會發燙）。
+  const running = (live || switching.value || force > 0) && !document.hidden && !idle.value
   engine.pause(!running)
 }
+
+// 閒置狀態改變 → 立刻套用。醒來時 rAF 迴圈可能已經停了，要重新啟動。
+watch(idle, (v) => {
+  if (!engine) return
+  syncPause()
+  if (!v && live) startLiveLoop()
+})
 
 async function goLive () {
   if (!engine) return
@@ -585,6 +601,10 @@ async function init () {
       onToggle: self => (self.isActive ? claimStage(STAGE) : releaseStage(STAGE)),
     })
     $ScrollTrigger.refresh()
+    // ⚠️ onToggle 只在「狀態改變」時觸發。init 是 async 的，使用者可能在它完成前
+    // 就捲到這一區了 —— 那時 trigger 一建立就是 active，沒有「改變」，onToggle
+    // 永遠不會叫。必須自己補一次。
+    if (scrollTrigger.isActive) claimStage(STAGE)
   }
 
   // 首屏就落在這一區時，watch 早在引擎就緒前就跑過了，這裡補一次
@@ -681,7 +701,7 @@ defineExpose({ backend })
 
     <!-- 名單 + 觀景框。桌機三欄（左四位／人像／右四位），手機單欄堆疊。 -->
     <div
-      class="relative z-2 mx-auto mt-10 grid max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:min-h-[720px] lg:grid-cols-[1fr_300px_1fr] lg:content-center lg:gap-y-12"
+      class="relative z-2 mx-auto mt-10 grid max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:min-h-screen lg:grid-cols-[1fr_300px_1fr] lg:content-center lg:gap-y-12"
     >
       <!-- 左欄。pl-[23.5%] 是欄寬的比例，在 1440 下 = 120px，剛好讓文字落在設計稿的
            x=180；單雙數再各多推 40px，就是設計稿那個交錯的構圖。 -->

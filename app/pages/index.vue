@@ -175,6 +175,13 @@ const tickets = ref([
     ==================================================================== -->
     <HomeSpeakerField />
 
+    <!-- ===================================================================
+         PL. IV — Venue + PL. V — FAQ
+         兩區共用一張 sticky canvas，捲過去時點雲從第一隻標本連續變形成第二隻。
+         右側文字區塊尚未實作。
+    ==================================================================== -->
+    <HomeVenueFaqField />
+
     <section class="relative flex flex-col gap-y-6">
       <h2 class="text-center text-h1">
         Two ways<br>to enter the field.

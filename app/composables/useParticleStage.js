@@ -17,7 +17,59 @@
 // client 程式碼會寫入），所以不會有跨請求汙染。
 const activeStage = ref('background')
 
+// --- 閒置暫停 --------------------------------------------------------------
+// 使用者停止操作超過 IDLE_STOP_MS 就把所有粒子場停掉。
+// ⚠️ 這不是可有可無的優化：幾萬顆粒子的 compute pass 全速跑會讓筆電發燙、耗電，
+// 而使用者沒在看的時候完全沒有理由繼續算。
+//
+// 為什麼放在這裡而不是各元件自己做：三張 canvas 各寫一份，遲早會漏掉其中一張
+//（實際上就發生過 —— PL.III 與 PL.IV/V 都漏了）。集中在仲裁層，新增 canvas 只要
+// 記得「pause 條件要 && !idle」就好。
+//
+// 除了滑鼠移動，捲動與觸控也算 —— 否則用觸控板捲頁時（不會發 pointermove）
+// 場域會直接定格，看起來像壞掉。
+const IDLE_STOP_MS = 5000
+const idle = ref(false)
+
+let idleTimer = 0
+let listening = false
+let lastX = -1
+let lastY = -1
+
+function poke () {
+  if (idle.value) idle.value = false
+  clearTimeout(idleTimer)
+  idleTimer = setTimeout(() => { idle.value = true }, IDLE_STOP_MS)
+}
+
+// ⚠️ 座標沒變的 pointermove 不算活動。
+// 瀏覽器在「內容自己在動、但滑鼠停著」時仍會發合成的 pointermove（實測靜置 4 秒
+// 收到 8 次）。照單全收的話閒置永遠不會觸發，這個省電機制等於沒做。
+function pokeFromPointer (ev) {
+  if (ev.clientX === lastX && ev.clientY === lastY) return
+  lastX = ev.clientX
+  lastY = ev.clientY
+  poke()
+}
+
+// 監聽器全 app 只掛一次，不隨元件生滅
+function startWatchingActivity () {
+  if (listening || typeof window === 'undefined') return
+  listening = true
+  window.addEventListener('pointermove', pokeFromPointer, { passive: true })
+  for (const ev of ['pointerdown', 'scroll', 'wheel', 'keydown', 'touchstart']) {
+    window.addEventListener(ev, poke, { passive: true })
+  }
+  poke()
+}
+
 export function useParticleStage () {
+  startWatchingActivity()
+  // dev 觀測點：在 console 直接看目前是誰在台上、有沒有閒置
+  if (import.meta.dev && typeof window !== 'undefined') {
+    window.__stage = () => ({ active: activeStage.value, idle: idle.value })
+  }
+
   function claimStage (name) {
     if (activeStage.value !== name) activeStage.value = name
   }
@@ -29,5 +81,5 @@ export function useParticleStage () {
     if (activeStage.value === name) activeStage.value = fallback
   }
 
-  return { activeStage, claimStage, releaseStage }
+  return { activeStage, idle, claimStage, releaseStage }
 }
