@@ -168,6 +168,13 @@ const tickets = ref([
       </div>
     </section>
 
+    <!-- ===================================================================
+         PL. III — Speaker
+         自己帶一張獨立的粒子 canvas（人像點雲），捲到中央時會把上面那張背景場
+         接管過去暫停 —— 同時只有一張在算。仲裁見 useParticleStage。
+    ==================================================================== -->
+    <HomeSpeakerField />
+
     <section class="relative flex flex-col gap-y-6">
       <h2 class="text-center text-h1">
         Two ways<br>to enter the field.

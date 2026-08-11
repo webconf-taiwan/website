@@ -34,6 +34,26 @@ function loadScript(src) {
 // 多個元件同時掛載時共用同一次載入（第二個以後拿到同一個 promise）
 let pending = null
 
+// 人像專用的「星雲擴散」力矩陣（見 docs/point-cloud-effect.md §7.4 的踩坑）：
+// 任何正的自吸引（i===j 給正值）都會把人像凝結成一顆顆菌落圓點，五官就沒了。
+// 氣體感要靠「正弦相位環流 + 全域微斥力」——沒有靜止解，所以粒子會一直緩緩流動，
+// 但又不會塌陷成球。註冊到 window.PLRules.PRESETS 供 preset: 'nebula' 使用。
+// ⚠️ people.vue 目前有一份自己的複本，之後該改成呼叫這裡（本次未動那頁）。
+export function registerNebula () {
+  if (!window.PLRules || window.PLRules.PRESETS.nebula) return
+  window.PLRules.PRESETS.nebula = (n) => {
+    const m = []
+    for (let i = 0; i < n; i++) {
+      for (let j = 0; j < n; j++) {
+        if (i === j) { m.push(-0.06); continue }
+        const phase = 2 * Math.PI * (j - i) / n
+        m.push(0.45 * Math.sin(phase) - 0.08)
+      }
+    }
+    return m
+  }
+}
+
 export function useParticleKit () {
   function loadParticleKit () {
     if (!pending) {
@@ -44,5 +64,5 @@ export function useParticleKit () {
     return pending
   }
 
-  return { loadParticleKit }
+  return { loadParticleKit, registerNebula }
 }

@@ -63,6 +63,11 @@ module.exports = {
         pre: {
           800: '#EFE6D2'
         },
+        // Figma 變數 theme/accent-1。⚠️ index.vue 目前散落硬寫的 #71c1f0 是舊值，
+        // 與設計稿不同色，之後應統一改用這個 token。
+        accent: {
+          1: '#7CC8F2'
+        },
         brand: {
           light: '#A0BEFF',
           DEFAULT: '#110AFF',

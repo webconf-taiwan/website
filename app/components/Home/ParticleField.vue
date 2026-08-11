@@ -18,6 +18,8 @@
 
 const { loadParticleKit } = useParticleKit()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
+// 首頁不只這一張 canvas（PL.III 講者場也有一張），同時只能有一張在跑 —— 見 useParticleStage。
+const { activeStage } = useParticleStage()
 
 const canvasRef = ref(null)
 const backend = ref('')
@@ -115,6 +117,11 @@ let reducedMotion = false
 let lastActivity = 0
 let idlePaused = false
 
+// 台上/台下：別的區塊（PL.III）把台搶走時，這張就整個凍結。
+// 與 idlePaused 分開兩個旗標，因為兩者的喚醒條件不同 —— 閒置是「使用者一動就醒」，
+// 交棒是「捲出那一區才醒」，混在一起會互相覆蓋。
+let stageActive = true
+
 // 捲動進度 0（hero）→ 1（about）。相機漂移迴圈每幀讀它，跟 idle drift 疊加後
 // 一次寫進相機 uniform —— 兩者搶同一個 setCameraOffset，必須合在同一處算。
 let progress = 0
@@ -169,8 +176,9 @@ function driftLoop (now) {
     idlePaused = true
     syncPause()
   }
-  // 停住時仍要更新時間/捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度
-  if (idlePaused) {
+  // 停住時仍要更新時間/捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度。
+  // 交棒給別張 canvas 時走同一條路 —— 凍結但基準照跑。
+  if (idlePaused || !stageActive) {
     lastTime = t
     lastScrollY = y
     return
@@ -284,9 +292,17 @@ async function buildTargets () {
 
 function syncPause () {
   // 固定背景永遠在視窗內，所以不必 IntersectionObserver；要理的是分頁隱藏
-  //（rAF 在背景分頁只是降頻，不是停止）與使用者閒置。
-  if (engine) engine.pause(document.hidden || idlePaused)
+  //（rAF 在背景分頁只是降頻，不是停止）、使用者閒置，以及被別的區塊搶走台。
+  if (engine) engine.pause(document.hidden || idlePaused || !stageActive)
 }
+
+// 交棒。⚠️ 拿回台面時要一併重設 lastActivity —— 否則「離開這區的那一刻」
+// 距離上次 pointermove 早就超過 IDLE_STOP_MS，會醒來後立刻又被閒置邏輯停掉。
+watch(activeStage, (v) => {
+  stageActive = v === 'background'
+  if (stageActive) lastActivity = performance.now()
+  syncPause()
+})
 
 // 使用者有動作 → 記時間；若正停著就立刻喚醒。
 // 除了滑鼠移動，捲動與觸控也算 —— 否則用觸控板捲頁時（不會發 pointermove）
