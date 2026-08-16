@@ -24,6 +24,32 @@ const { activeStage, idle, claimStage, releaseStage } = useParticleStage()
 
 const STAGE = 'venue-faq'
 
+// PL.IV「更多資訊」的連結目標。⚠️ 設計稿沒標，先留 '#'，需要確認要連到
+// 場地官網、Google Maps 還是站內的交通頁。填好之後如果是外部網址，
+// 記得把 target="_blank" rel="noopener noreferrer" 加回去。
+const VENUE_URL = '#'
+
+// PL.V 常見問答。之後要接 CMS/API 只要換掉這個陣列，template 不用動。
+// ⚠️ 設計稿的分頁是 1 2 3 … 10，代表實際題數遠多於這三題 —— 目前只有設計稿上
+// 看得到的內容，其餘待補。總頁數先照設計稿寫死，接了資料來源就改成算出來的。
+const FAQ_TOTAL_PAGES = 10
+const faqPage = ref(1)
+
+const FAQS = [
+  {
+    q: '大會有提供 Wi-Fi 嗎？',
+    a: '僅提供瓶蓋工廠台北製造所原場地的 Wi-Fi，因同時會有 700 位以上裝置，若臨時流量壅塞，建議專注聆聽議程。',
+  },
+  {
+    q: '場地有插可以充電的地方嗎？',
+    a: 'B 棟休息區，以及議程廳內後方皆設有充電區可以充電喔！',
+  },
+  {
+    q: '這次大會有錄影嗎？',
+    a: '沒有，我們希望大家可以專注在現場的演講！有提供大會共筆文件。',
+  },
+]
+
 // --- 兩段標本 --------------------------------------------------------------
 // shift = 內容往左推的「視窗寬度比例」，就是「圖片移出畫面」那件事。
 //   0.18 = 往左推 18% 視窗寬，主體會有一部分被左邊緣切掉（設計稿 PL.V 的圖是
@@ -215,6 +241,49 @@ function startLiveLoop () {
   if (!liveRaf) liveRaf = requestAnimationFrame(liveLoop)
 }
 
+// ---------------------------------------------------------------------------
+// 文字進場：捲到區塊時由上而下逐項淡入。與粒子無關，獨立一段。
+//
+// ⚠️ 初始的 opacity:0 是用 JS 設的，不是 CSS —— 寫在 CSS 裡的話，萬一 JS 沒跑起來
+// （載入失敗、或 gsap plugin 沒註冊）文字就永遠看不見了。用 JS 設至少是「壞掉時
+// 文字仍然是可見的」。這一區在首屏之外，設定前的那一幀使用者也看不到。
+//
+// once: true —— 進場動畫只播一次，來回捲動不重播（重播會很煩）。
+// ---------------------------------------------------------------------------
+const STAGGER_STEP = 0.09      // 每項之間的間隔（秒）
+const STAGGER_DUR = 0.7        // 單項的淡入時長
+const STAGGER_Y = 16           // 從下方多少 px 浮上來
+
+let staggerTriggers = []
+
+// 每個區塊各自一組 —— 兩區共用一組的話，捲到 PL.IV 時 PL.V 的文字就一起播完了。
+function initStagger (root) {
+  if (!root) return
+  const { $gsap, $ScrollTrigger } = useNuxtApp()
+  if (!$gsap || !$ScrollTrigger) return
+
+  const els = root.querySelectorAll('[data-stagger]')
+  if (!els.length) return
+  // reduced-motion：不做動畫，文字維持原樣直接可見
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+  $gsap.set(els, { opacity: 0, y: STAGGER_Y })
+  staggerTriggers.push($ScrollTrigger.create({
+    trigger: root,
+    start: 'top 75%',
+    once: true,
+    onEnter: () => {
+      $gsap.to(els, {
+        opacity: 1,
+        y: 0,
+        duration: STAGGER_DUR,
+        ease: 'power2.out',
+        stagger: STAGGER_STEP,
+      })
+    },
+  }))
+}
+
 function syncPause () {
   if (!engine) return
   engine.pause(!((live || force > 0) && !document.hidden && !idle.value))
@@ -333,10 +402,16 @@ watch(activeStage, (v) => {
   else goIdle()
 })
 
-onMounted(() => { init() })
+onMounted(() => {
+  // 與 canvas 各自獨立：粒子初始化失敗也不該讓文字消失
+  initStagger(venueRef.value)
+  initStagger(faqRef.value)
+  init()
+})
 
 onBeforeUnmount(() => {
   releaseStage(STAGE)
+  staggerTriggers.forEach(t => t.kill())
   if (liveRaf) cancelAnimationFrame(liveRaf)
   triggers.forEach(t => t.kill())
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
@@ -370,41 +445,153 @@ defineExpose({ backend })
       />
     </div>
 
-    <!-- PL. IV — Venue。右側文字區塊依你的指示先不做。 -->
+    <!-- PL. IV — Venue。設計稿是兩欄：左欄固定 484 寬只放卷號，右欄 flex-1 放內容。
+         兩欄各自有自己的 border-t（不是同一條線橫貫），右欄再多 24px 內縮。 -->
     <section
       id="venue"
       ref="venueRef"
-      class="relative z-10 min-h-[658px] border-t border-pre-800/35 px-6 py-16 lg:px-[60px] lg:py-[60px]"
+      class="relative z-10 min-h-[658px]"
     >
-      <div class="flex flex-col border-t border-pre-800/35 py-8">
-        <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-          PL. IV
-        </p>
-        <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-          IV.
-        </p>
-        <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-          VENUE
-        </p>
+      <div class="flex flex-col lg:flex-row lg:items-start">
+        <!-- 左欄：卷號。
+             ⚠️ data-stagger 掛在「文字的外層」而不是有 border-t 的那層 ——
+             分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。 -->
+        <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
+          <div class="flex flex-col border-t border-pre-800/35 py-8">
+            <div data-stagger>
+              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
+                PL. IV
+              </p>
+              <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
+                IV.
+              </p>
+              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
+                VENUE
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右欄：標題 + 交通方式 + 按鈕 -->
+        <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
+          <div class="flex flex-col gap-12 border-t border-pre-800/35 py-8 lg:pl-6">
+            <div class="flex flex-col gap-4">
+              <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
+                Taipei Popop
+              </h2>
+              <p data-stagger class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
+                瓶蓋工廠台北製造所
+              </p>
+            </div>
+
+            <div class="flex flex-col gap-12">
+              <!-- ⚠️ 這裡的藍是 #71c1f0，不是 token 的 accent-1 (#7cc8f2)。
+                   設計稿兩種藍並存（按鈕外框用 accent-1、這兩個標題用 #71c1f0），
+                   不是筆誤，統一與否要問設計師。 -->
+              <div class="flex max-w-[650px] flex-col gap-8">
+                <div data-stagger class="flex flex-col gap-2">
+                  <p class="font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
+                    By MRT
+                  </p>
+                  <p class="font-Noto text-[16px] leading-[1.6] tracking-[0.08em] text-pre-800/[62%] lg:text-[18px]">
+                    捷運南港站 1A 出口，步行至連通道至台鐵/高鐵北門出站，經市民大道向西步行約 5 分鐘
+                  </p>
+                </div>
+                <div data-stagger class="flex flex-col gap-2">
+                  <p class="font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
+                    By Train
+                  </p>
+                  <p class="font-Noto text-[16px] leading-[1.6] tracking-[0.08em] text-pre-800/[62%] lg:text-[18px]">
+                    搭乘至南港火車站的北門出站，經市民大道向西步行約 5 分鐘
+                  </p>
+                </div>
+              </div>
+
+              <a
+                data-stagger
+                :href="VENUE_URL"
+                class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 font-Noto text-[16px] font-medium leading-none tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/10"
+              >
+                更多資訊
+                <span class="flex size-6 items-center justify-center">
+                  <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
-    <!-- PL. V — FAQ -->
+    <!-- PL. V — FAQ。兩欄結構與 PL.IV 相同。 -->
     <section
       id="faq"
       ref="faqRef"
-      class="relative z-10 min-h-[741px] border-t border-pre-800/35 px-6 py-16 lg:px-[60px] lg:py-[60px]"
+      class="relative z-10 min-h-[741px]"
     >
-      <div class="flex flex-col border-t border-pre-800/35 py-8">
-        <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-          PL. V
-        </p>
-        <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-          V.
-        </p>
-        <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-          FAQ
-        </p>
+      <div class="flex flex-col lg:flex-row lg:items-start">
+        <!-- 左欄：卷號 -->
+        <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
+          <div class="flex flex-col border-t border-pre-800/35 py-8">
+            <div data-stagger>
+              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
+                PL. V
+              </p>
+              <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
+                V.
+              </p>
+              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
+                FAQ
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 右欄：標題 + 問答 + 分頁 -->
+        <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
+          <div class="flex flex-col gap-12 border-t border-pre-800/35 py-8 lg:pl-6">
+            <div class="flex flex-col gap-4">
+              <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
+                FAQ
+              </h2>
+              <p data-stagger class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
+                常見問答
+              </p>
+            </div>
+
+            <ul class="flex flex-col">
+              <li
+                v-for="(item, i) in FAQS"
+                :key="item.q"
+                data-stagger
+                class="flex gap-x-4 border-b border-dashed border-pre-800/35 py-6 lg:gap-x-6"
+                :class="i === 0 ? 'border-t border-dashed' : ''"
+              >
+                <span class="shrink-0 font-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
+                  Q{{ i + 1 }}
+                </span>
+                <div class="flex min-w-0 flex-col gap-3">
+                  <p class="font-zh text-[18px] font-bold leading-[1.4] text-pre-800">
+                    {{ item.q }}
+                  </p>
+                  <p class="flex gap-x-2 font-Noto text-[15px] leading-[1.7] tracking-[0.04em] text-pre-800/[62%]">
+                    <span class="shrink-0">→</span>
+                    <span>{{ item.a }}</span>
+                  </p>
+                </div>
+              </li>
+            </ul>
+
+            <!-- ⚠️ 換頁目前只會改 faqPage，還不會換題目 —— FAQS 是寫死的三題，
+                 沒有分頁資料來源。接上 CMS/API 之後，這裡改成依 faqPage 取資料即可。 -->
+            <div data-stagger>
+              <CommonControlPagination
+                v-model:page="faqPage"
+                :total="FAQ_TOTAL_PAGES"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
