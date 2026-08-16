@@ -47,8 +47,8 @@ const footerMenu = [
 </script>
 
 <template>
-  <footer class="relative flex flex-col gap-y-6 bg-[#0a0a0c] border border-pre-800/[35%] px-5 py-8 lg:flex-row lg:gap-x-34 lg:px-auto lg:pl-10 lg:py-12">
-    <div class="lg:w-96">
+  <footer class="relative grid grid-cols-1 gap-y-6 bg-[#0a0a0c] border border-pre-800/[35%] px-5 py-8 lg:gap-y-12 lg:px-auto lg:pl-10 lg:py-12 xl:grid-cols-[24rem_auto] xl:gap-x-34">
+    <div class="lg:max-w-96">
       <div class="flex items-center gap-x-2 mb-6">
         <a href="./">
           <img class="w-35 h-10" :src="footerIntro.logo.src" :alt="footerIntro.logo.alt">
@@ -59,8 +59,8 @@ const footerMenu = [
         <div v-for="paragraph in footerIntro.paragraphs" :key="paragraph" v-html="paragraph"></div>
       </div>
     </div>
-    <div class="grid grid-cols-2 gap-x-4 gap-y-8 lg:flex lg:flex-row lg:gap-x-14">
-      <div v-for="parentMenu in footerMenu" :key="parentMenu.title" class="lg:w-54">
+    <div class="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-[repeat(3,13.5rem)] lg:gap-x-14">
+      <div v-for="parentMenu in footerMenu" :key="parentMenu.title">
         <h2 class="text-fs-h5 text-pre-800 italic mb-4">{{ parentMenu.title }}</h2>
         <ul class="flex flex-col gap-y-2">
           <li v-for="childMenu in parentMenu.links" :key="childMenu.label">

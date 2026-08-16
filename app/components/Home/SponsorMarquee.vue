@@ -48,10 +48,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <!-- ⚠️ 不要給不透明底色。設計稿裡 logo 是直接疊在背景粒子場上的，
+       加了 bg 會在票券與 CoC 之間切出一條看得見的暗帶。 -->
   <section
     id="sponsors"
     ref="sectionRef"
-    class="overflow-hidden bg-[#0a0a0c] py-10"
+    class="relative z-10 overflow-hidden py-10"
   >
     <div ref="trackRef" class="flex w-max">
       <div

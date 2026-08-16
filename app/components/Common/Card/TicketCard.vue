@@ -7,10 +7,10 @@ const props = defineProps({
 </script>
 
 <template>
-  <div class="relative border border-pre-500/50 bg-pre-800/10 backdrop-blur-md rounded p-4 lg:p-8">
-    <div class="flex flex-col gap-y-6 lg:justify-between h-full">
+  <div class="relative border border-pre-500/50 bg-pre-800/10 backdrop-blur-md rounded p-4 md:p-8">
+    <div class="flex flex-col gap-y-6 md:justify-between h-full">
       <div>
-        <div class="flex flex-col gap-y-4 lg:mb-8">
+        <div class="flex flex-col gap-y-4 md:mb-8">
           <span class="text-pre-800/[62%] text-fs-meta">{{ data.code }}</span>
           <h3 class="text-pre-800 text-h3">{{ data.title }}</h3>
           <div class="flex gap-x-4 items-baseline text-fs-h5 leading-[18px]">
@@ -46,7 +46,7 @@ const props = defineProps({
         </span>
       </button> -->
       <!-- 電腦版才顯示 -->
-      <div class="hidden lg:flex justify-between items-center">
+      <div class="hidden md:flex justify-between items-center">
         <span>reserve</span>
         <button type="button">-></button>
       </div>

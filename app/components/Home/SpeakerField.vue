@@ -640,7 +640,7 @@ defineExpose({ backend })
   <section
     id="speaker"
     ref="sectionRef"
-    class="relative z-10 overflow-clip border-t border-pre-800/35 px-6 py-16 lg:min-h-[720px] lg:px-[60px] lg:py-0"
+    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[720px] lg:px-[60px] lg:py-0"
   >
     <!-- 粒子人像：鋪滿整區、墊在所有文字底下。
          它同時也是這一區的底色（GPU 路徑必定是不透明黑），順便把背景粒子場整片蓋掉。 -->

@@ -1,5 +1,5 @@
 <script setup>
-import TicketCard from '~/components/Home/TicketCard.vue';
+import TicketCard from '~/components/Common/Card/TicketCard.vue';
 
 // 首頁 PL.I（Hero）+ PL.II（About）。
 // 背景是一張固定的粒子場 canvas（HomeParticleField），兩個區塊都疊在它上面 ——
@@ -107,9 +107,9 @@ const tickets = ref([
     ==================================================================== -->
     <section
       id="about"
-      class="relative z-10 border-t bg-black/30 border-white/15 px-6 py-16 md:py-24 lg:px-12 2xl:px-20"
+      class="relative z-10 bg-black/30 px-6 lg:px-12 2xl:px-20"
     >
-      <div class="mx-auto grid max-w-[1680px] grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
+      <div class="mx-auto grid max-w-[1680px] border-t border-pre-800/35 pt-8 pb-16 md:pb-24 grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
         <!-- 左欄：卷號 + Skills 標本框 -->
         <div class="lg:col-span-4">
           <p class="font-mono text-fs-micro uppercase text-[#71c1f0]/70">
@@ -186,16 +186,35 @@ const tickets = ref([
       <h2 class="text-center text-h1">
         Two ways<br>to enter the field.
       </h2>
-      <div class="flex flex-col gap-6 px-5 lg:flex-row lg:justify-center lg:items-stretch">
+      <div class="flex flex-col gap-6 px-5 md:flex-row md:justify-center md:items-stretch">
         <TicketCard
           v-for="ticket in tickets" :key="ticket.code"
           :data="ticket"
         />
       </div>
-      <button type="button" class="flex justify-center items-center">
-        <span>前往購票</span>
-        <span>-></span>
-      </button>
+      <div class="flex justify-center">
+        <AtomButton
+          intent="specimen"
+          size="md"
+          rounded="none"
+          href="#ticket"
+          text="前往購票"
+        >
+          前往購票
+          <span class="flex size-6 items-center justify-center">
+            <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
+          </span>
+        </AtomButton>
+      </div>
     </section>
+
+    <!-- 贊助商跑馬燈。素材在 public/sponsors/ -->
+    <HomeSponsorMarquee />
+
+    <!-- ===================================================================
+         PL. VII — Code of Conduct
+         沒有自己的 canvas：視覺主體是把背後的背景粒子場糊掉的那塊毛玻璃。
+    ==================================================================== -->
+    <HomeCodeOfConduct />
   </div>
 </template>

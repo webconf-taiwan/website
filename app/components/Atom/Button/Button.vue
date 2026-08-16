@@ -6,7 +6,7 @@ const props = defineProps({
   intent: {
     type: String,
     default: 'primary',
-    validator: value => ['primary', 'secondary', 'link', 'tag', 'outline'].includes(value)
+    validator: value => ['primary', 'secondary', 'link', 'tag', 'outline', 'specimen'].includes(value)
   },
   size: {
     type: String,
@@ -21,7 +21,7 @@ const props = defineProps({
   rounded: {
     type: String,
     default: 'lg',
-    validator: value => ['sm', 'md', 'lg', 'full'].includes(value)
+    validator: value => ['none', 'sm', 'md', 'lg', 'full'].includes(value)
   },
   disabled: {
     type: Boolean,
@@ -47,8 +47,11 @@ const props = defineProps({
 
 const { intent, size, position, disabled, text, href, type, title } = toRefs(props)
 
+// ⚠️ 基底不要再寫 rounded-lg —— 下面已經有 rounded variant，兩邊都輸出的話會同時
+// 帶上 rounded-lg 與 rounded-none 兩個 class（cva 不做 tailwind-merge），
+// 到底哪個生效只能看 CSS 產出順序。預設值本來就是 lg，拿掉不影響既有外觀。
 const button = cva([
-  'flex cursor-pointer select-none items-center gap-2 rounded-lg border',
+  'flex cursor-pointer select-none items-center gap-2 border',
   'transition duration-300'
 ], {
   variants: {
@@ -85,6 +88,18 @@ const button = cva([
         'focus:border-brand focus:bg-brand focus:outline focus:outline-2 focus:outline-ad/20',
         'active:border-brand active:bg-brand',
         'disabled:cursor-not-allowed disabled:border-gray-300 disabled:bg-gray-300 disabled:text-white'
+      ],
+      // WebConf 2026 深色主題。其他 intent 都是舊設計系統的配色（gray-800 / brand /
+      // 白底），套在這個站的黑底上完全不對，所以另開一個而不是改既有的。
+      // 字體用 Noto Sans TC 對齊設計 token zh/btn_16px（.text-btn 是襯線體）。
+      specimen: [
+        // ⚠️ font / tracking 必須加 ! —— size variant 帶的 .text-btn 是
+        // `@apply font-serif` 且 text-fs-btn 自帶 letter-spacing，兩者與這裡的
+        // utility 同優先權，誰贏只看 CSS 產出順序。不加 ! 會被蓋成襯線體。
+        'border-accent-1 bg-[#0a0a0c] text-pre-800 !font-Noto font-medium !tracking-[0.1em]',
+        'hover:bg-accent-1/10',
+        'focus:outline focus:outline-2 focus:outline-accent-1/40',
+        'disabled:cursor-not-allowed disabled:border-pre-800/30 disabled:text-pre-800/30'
       ]
     },
     size: {
@@ -100,6 +115,7 @@ const button = cva([
       end: 'justify-end'
     },
     rounded: {
+      none: 'rounded-none',
       sm: 'rounded-sm',
       md: 'rounded-md',
       lg: 'rounded-lg',

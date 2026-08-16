@@ -21,6 +21,7 @@
 const { loadParticleKit } = useParticleKit()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { activeStage, idle, claimStage, releaseStage } = useParticleStage()
+const { staggerIn, killStaggers } = useStaggerIn()
 
 const STAGE = 'venue-faq'
 
@@ -241,49 +242,6 @@ function startLiveLoop () {
   if (!liveRaf) liveRaf = requestAnimationFrame(liveLoop)
 }
 
-// ---------------------------------------------------------------------------
-// 文字進場：捲到區塊時由上而下逐項淡入。與粒子無關，獨立一段。
-//
-// ⚠️ 初始的 opacity:0 是用 JS 設的，不是 CSS —— 寫在 CSS 裡的話，萬一 JS 沒跑起來
-// （載入失敗、或 gsap plugin 沒註冊）文字就永遠看不見了。用 JS 設至少是「壞掉時
-// 文字仍然是可見的」。這一區在首屏之外，設定前的那一幀使用者也看不到。
-//
-// once: true —— 進場動畫只播一次，來回捲動不重播（重播會很煩）。
-// ---------------------------------------------------------------------------
-const STAGGER_STEP = 0.09      // 每項之間的間隔（秒）
-const STAGGER_DUR = 0.7        // 單項的淡入時長
-const STAGGER_Y = 16           // 從下方多少 px 浮上來
-
-let staggerTriggers = []
-
-// 每個區塊各自一組 —— 兩區共用一組的話，捲到 PL.IV 時 PL.V 的文字就一起播完了。
-function initStagger (root) {
-  if (!root) return
-  const { $gsap, $ScrollTrigger } = useNuxtApp()
-  if (!$gsap || !$ScrollTrigger) return
-
-  const els = root.querySelectorAll('[data-stagger]')
-  if (!els.length) return
-  // reduced-motion：不做動畫，文字維持原樣直接可見
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-  $gsap.set(els, { opacity: 0, y: STAGGER_Y })
-  staggerTriggers.push($ScrollTrigger.create({
-    trigger: root,
-    start: 'top 75%',
-    once: true,
-    onEnter: () => {
-      $gsap.to(els, {
-        opacity: 1,
-        y: 0,
-        duration: STAGGER_DUR,
-        ease: 'power2.out',
-        stagger: STAGGER_STEP,
-      })
-    },
-  }))
-}
-
 function syncPause () {
   if (!engine) return
   engine.pause(!((live || force > 0) && !document.hidden && !idle.value))
@@ -404,14 +362,14 @@ watch(activeStage, (v) => {
 
 onMounted(() => {
   // 與 canvas 各自獨立：粒子初始化失敗也不該讓文字消失
-  initStagger(venueRef.value)
-  initStagger(faqRef.value)
+  staggerIn(venueRef.value)
+  staggerIn(faqRef.value)
   init()
 })
 
 onBeforeUnmount(() => {
   releaseStage(STAGE)
-  staggerTriggers.forEach(t => t.kill())
+  killStaggers()
   if (liveRaf) cancelAnimationFrame(liveRaf)
   triggers.forEach(t => t.kill())
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
