@@ -1,120 +1,73 @@
 /**
- * 判斷 HTTP status 是否為成功（2xx）
- */
-const isSuccessStatus = (status) => status >= 200 && status < 300
-
-/**
- * 從 ofetch 錯誤物件取出 status code
- */
-const getErrorStatus = (error) => {
-  return error?.statusCode ?? error?.response?.status ?? error?.status ?? 0
-}
-
-/**
- * 命令式 API 請求工具（基於 $fetch / ofetch）
+ * API 請求工具
  *
- * 與原版差異：
- * - 用 $fetch 取代 useFetch：可在任何地方呼叫，不受 setup context 限制
- * - 修正未定義的 token：改由參數傳入
- * - SSR 走私有 APP_API，瀏覽器端走 public.APP_API
- * - 依 HTTP status code 判斷成功與否，統一回傳 { success, statusCode, data, error }
- *
- * @param {object} options
- * @param {string} options.apiPath        相對路徑，例如 '/posts'
- * @param {string} [options.method]       HTTP method，預設 GET
- * @param {object} [options.query]        query string 物件
- * @param {*}      [options.body]         request body（非 GET 時送出）
- * @param {string} [options.token]        Bearer token，有值才帶 Authorization
- * @param {object} [options.headers]      額外 headers
- * @param {string} [options.baseUrl]      自訂完整 base URL，會略過 runtimeConfig
- * @param {number[]} [options.acceptedStatusCodes] 額外視為成功的 status（預設僅 2xx）
- * @param {object} [options.fetchOptions] 其餘原生 $fetch 設定（如 timeout、retry）
+ * @param {object}  options
+ * @param {string}  options.apiPath      相對路徑，例如 '/api/global'
+ * @param {string}  [options.method]     HTTP method，預設 GET
+ * @param {boolean} [options.auth]       是否帶 Authorization
+ * @param {string}  [options.token]      Bearer token，auth 為 true 時才會帶
+ * @param {object}  [options.query]      query string
+ * @param {*}       [options.body]       request body（非 GET 時送出）
+ * @param {boolean} [options.client]     true 走 public.APP_API，false 走私有 APP_API
+ * @param {boolean} [options.customApiUrl] true 則不接 APP_API，apiPath 直接當網址用
+ *                                        （打自家 Nuxt server API /api/* 就是這個）
  */
-export const fetchFn = async ({
+const fetchFn = async ({
   apiPath,
   method = 'GET',
+  auth = false,
+  token,
   query = {},
   body,
-  token = '',
-  headers = {},
-  baseUrl,
-  acceptedStatusCodes = [],
-  fetchOptions = {}
-} = {}) => {
+  client = true,
+  customApiUrl = false
+}) => {
   const config = useRuntimeConfig()
-  const base = baseUrl ?? (import.meta.server ? config.APP_API : config.public.APP_API)
+  let APP_API = ''
 
-  const route = useRoute()
-  const mergedQuery = { ...query }
-  if (route?.query?.preview_id) {
-    mergedQuery.preview_id = route.query.preview_id
+  if (!customApiUrl) {
+    APP_API = client ? config.public.APP_API : config.APP_API
   }
 
-  const requestHeaders = {
-    'Content-Type': 'application/json',
-    ...headers
-  }
-  if (token) {
-    requestHeaders.Authorization = `Bearer ${token}`
+  // SPA + --host：client 不要打死 localhost，改跟目前頁面同源（走 Nitro proxy）
+  // SSR 仍用 .env 的絕對網址，相對路徑在 server 會被 Vue Router 誤判成頁面路徑
+  if (import.meta.client && APP_API) {
+    APP_API = APP_API.replace(
+      /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?/,
+      window.location.origin
+    )
   }
 
-  const isAcceptedStatus = (status) => {
-    return isSuccessStatus(status) || acceptedStatusCodes.includes(status)
+  const apiUrl = `${APP_API}${apiPath}`
+
+  const headers = {
+    'Content-Type': 'application/json'
   }
+
+  if (auth && token) {
+    headers.Authorization = `Bearer ${token}`
+  }
+
+  const fetchQuery = { ...query }
 
   try {
-    const response = await $fetch.raw(apiPath, {
-      baseURL: base,
-      method,
-      headers: requestHeaders,
-      query: mergedQuery,
-      body: method !== 'GET' ? body : undefined,
-      ignoreResponseError: true,
-      ...fetchOptions
-    })
+    const route = useRoute()
 
-    const statusCode = response.status
-    const data = response._data
-
-    if (!isAcceptedStatus(statusCode)) {
-      const error = {
-        statusCode,
-        message: `HTTP ${statusCode}`,
-        data
-      }
-
-      if (import.meta.dev) {
-        console.error(`[fetchFn] ${method} ${apiPath} 非成功狀態：`, error)
-      }
-
-      return {
-        success: false,
-        statusCode,
-        data,
-        error
-      }
+    if (route.query?.preview_id) {
+      fetchQuery.preview_id = route.query.preview_id
     }
-
-    return {
-      success: true,
-      statusCode,
-      data,
-      error: null
-    }
-  } catch (error) {
-    const statusCode = getErrorStatus(error)
-
-    if (import.meta.dev) {
-      console.error(`[fetchFn] ${method} ${apiPath} 失敗 (${statusCode})：`, error)
-    }
-
-    return {
-      success: false,
-      statusCode,
-      data: error?.data ?? null,
-      error
-    }
+  } catch {
+    // 不在 Nuxt 執行環境時略過 preview_id
   }
+
+  const response = await $fetch(apiUrl, {
+    method,
+    headers,
+    body: body && method !== 'GET' ? body : undefined,
+    query: fetchQuery
+  })
+
+  return response?.data ?? response
 }
 
 /**
@@ -123,9 +76,12 @@ export const fetchFn = async ({
  * @param {string} targetUrl 資源相對路徑
  * @returns {string} 完整網址
  */
-export const fetchPublic = (targetUrl = '') => {
+const fetchPublic = (targetUrl = '') => {
   const config = useRuntimeConfig()
-  const base = config.public.APP_URL ?? ''
 
-  return `${base}${targetUrl}`
+  // 這個專案只有 public.APP_URL（沒有另一支私有的 CDN 網域），
+  // 所以 server / client 走同一個值。
+  return `${config.public.APP_URL ?? ''}${targetUrl}`
 }
+
+export { fetchFn, fetchPublic }

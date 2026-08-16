@@ -25,31 +25,25 @@ const { staggerIn, killStaggers } = useStaggerIn()
 
 const STAGE = 'venue-faq'
 
-// PL.IV「更多資訊」的連結目標。⚠️ 設計稿沒標，先留 '#'，需要確認要連到
-// 場地官網、Google Maps 還是站內的交通頁。填好之後如果是外部網址，
-// 記得把 target="_blank" rel="noopener noreferrer" 加回去。
-const VENUE_URL = '#'
+// 內容由 /api/home 的 venue / faq 兩個區塊提供（見 pages/index.vue）。
+// ⚠️ PL.IV「更多資訊」的 href 設計稿沒標，資料裡先放 '#'，需要確認要連到
+// 場地官網、Google Maps 還是站內的交通頁；若填外部網址記得一併把 target 改成 _blank。
+const props = defineProps({
+  venue: {
+    type: Object,
+    default: () => ({})
+  },
+  faq: {
+    type: Object,
+    default: () => ({})
+  }
+})
 
-// PL.V 常見問答。之後要接 CMS/API 只要換掉這個陣列，template 不用動。
-// ⚠️ 設計稿的分頁是 1 2 3 … 10，代表實際題數遠多於這三題 —— 目前只有設計稿上
-// 看得到的內容，其餘待補。總頁數先照設計稿寫死，接了資料來源就改成算出來的。
-const FAQ_TOTAL_PAGES = 10
+// ⚠️ 設計稿的分頁是 1 2 3 … 10，代表實際題數遠多於目前這三題 —— 其餘待補。
+// total_pages 現在由資料給，接了真正的分頁 API 之後改成後端算出來的總頁數。
 const faqPage = ref(1)
-
-const FAQS = [
-  {
-    q: '大會有提供 Wi-Fi 嗎？',
-    a: '僅提供瓶蓋工廠台北製造所原場地的 Wi-Fi，因同時會有 700 位以上裝置，若臨時流量壅塞，建議專注聆聽議程。',
-  },
-  {
-    q: '場地有插可以充電的地方嗎？',
-    a: 'B 棟休息區，以及議程廳內後方皆設有充電區可以充電喔！',
-  },
-  {
-    q: '這次大會有錄影嗎？',
-    a: '沒有，我們希望大家可以專注在現場的演講！有提供大會共筆文件。',
-  },
-]
+const FAQS = computed(() => props.faq?.items || [])
+const FAQ_TOTAL_PAGES = computed(() => props.faq?.total_pages || 1)
 
 // --- 兩段標本 --------------------------------------------------------------
 // shift = 內容往左推的「視窗寬度比例」，就是「圖片移出畫面」那件事。
@@ -418,13 +412,13 @@ defineExpose({ backend })
           <div class="flex flex-col border-t border-pre-800/35 py-8">
             <div data-stagger>
               <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                PL. IV
+                {{ venue.plate?.code }}
               </p>
               <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-                IV.
+                {{ venue.plate?.number }}
               </p>
               <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                VENUE
+                {{ venue.plate?.label }}
               </p>
             </div>
           </div>
@@ -435,10 +429,10 @@ defineExpose({ backend })
           <div class="flex flex-col gap-12 border-t border-pre-800/35 py-8 lg:pl-6">
             <div class="flex flex-col gap-4">
               <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
-                Taipei Popop
+                {{ venue.title_en }}
               </h2>
               <p data-stagger class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
-                瓶蓋工廠台北製造所
+                {{ venue.title_zh }}
               </p>
             </div>
 
@@ -447,30 +441,29 @@ defineExpose({ backend })
                    設計稿兩種藍並存（按鈕外框用 accent-1、這兩個標題用 #71c1f0），
                    不是筆誤，統一與否要問設計師。 -->
               <div class="flex max-w-[650px] flex-col gap-8">
-                <div data-stagger class="flex flex-col gap-2">
+                <div
+                  v-for="transport in venue.transports"
+                  :key="transport.title"
+                  data-stagger
+                  class="flex flex-col gap-2"
+                >
                   <p class="font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
-                    By MRT
+                    {{ transport.title }}
                   </p>
                   <p class="font-Noto text-[16px] leading-[1.6] tracking-[0.08em] text-pre-800/[62%] lg:text-[18px]">
-                    捷運南港站 1A 出口，步行至連通道至台鐵/高鐵北門出站，經市民大道向西步行約 5 分鐘
-                  </p>
-                </div>
-                <div data-stagger class="flex flex-col gap-2">
-                  <p class="font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
-                    By Train
-                  </p>
-                  <p class="font-Noto text-[16px] leading-[1.6] tracking-[0.08em] text-pre-800/[62%] lg:text-[18px]">
-                    搭乘至南港火車站的北門出站，經市民大道向西步行約 5 分鐘
+                    {{ transport.description }}
                   </p>
                 </div>
               </div>
 
               <a
                 data-stagger
-                :href="VENUE_URL"
+                :href="venue.more_link?.href"
+                :target="venue.more_link?.target"
+                :rel="linkRel(venue.more_link?.target)"
                 class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 font-Noto text-[16px] font-medium leading-none tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/10"
               >
-                更多資訊
+                {{ venue.more_link?.label }}
                 <span class="flex size-6 items-center justify-center">
                   <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
                 </span>
@@ -493,13 +486,13 @@ defineExpose({ backend })
           <div class="flex flex-col border-t border-pre-800/35 py-8">
             <div data-stagger>
               <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                PL. V
+                {{ faq.plate?.code }}
               </p>
               <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-                V.
+                {{ faq.plate?.number }}
               </p>
               <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                FAQ
+                {{ faq.plate?.label }}
               </p>
             </div>
           </div>
@@ -510,17 +503,17 @@ defineExpose({ backend })
           <div class="flex flex-col gap-12 border-t border-pre-800/35 py-8 lg:pl-6">
             <div class="flex flex-col gap-4">
               <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
-                FAQ
+                {{ faq.title_en }}
               </h2>
               <p data-stagger class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
-                常見問答
+                {{ faq.title_zh }}
               </p>
             </div>
 
             <ul class="flex flex-col">
               <li
                 v-for="(item, i) in FAQS"
-                :key="item.q"
+                :key="item.question"
                 data-stagger
                 class="flex gap-x-4 border-b border-dashed border-pre-800/35 py-6 lg:gap-x-6"
                 :class="i === 0 ? 'border-t border-dashed' : ''"
@@ -530,18 +523,19 @@ defineExpose({ backend })
                 </span>
                 <div class="flex min-w-0 flex-col gap-3">
                   <p class="font-zh text-[18px] font-bold leading-[1.4] text-pre-800">
-                    {{ item.q }}
+                    {{ item.question }}
                   </p>
                   <p class="flex gap-x-2 font-Noto text-[15px] leading-[1.7] tracking-[0.04em] text-pre-800/[62%]">
                     <span class="shrink-0">→</span>
-                    <span>{{ item.a }}</span>
+                    <span>{{ item.answer }}</span>
                   </p>
                 </div>
               </li>
             </ul>
 
-            <!-- ⚠️ 換頁目前只會改 faqPage，還不會換題目 —— FAQS 是寫死的三題，
-                 沒有分頁資料來源。接上 CMS/API 之後，這裡改成依 faqPage 取資料即可。 -->
+            <!-- ⚠️ 換頁目前只會改 faqPage，還不會換題目 —— /api/home 一次把 items
+                 全給，沒有分頁參數。之後 FAQ 改成獨立的分頁 API 時，這裡改成
+                 watch(faqPage) 重打即可。 -->
             <div data-stagger>
               <CommonControlPagination
                 v-model:page="faqPage"

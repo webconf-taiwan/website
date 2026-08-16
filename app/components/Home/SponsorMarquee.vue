@@ -1,16 +1,17 @@
 <script setup>
-const { app } = useRuntimeConfig()
-const asset = f => `${app.baseURL}sponsors/${f}`.replace(/\/{2,}/g, '/')
+const props = defineProps({
+  // /api/home 的 sponsor 區塊
+  data: {
+    type: Object,
+    default: () => ({})
+  }
+})
 
-const sponsors = [
-  { name: '五倍學院', file: 'wubei.svg', h: 'h-8' },
-  { name: '六角學院', file: 'liuchiao.svg', h: 'h-8' },
-  { name: '悠識學院 userxper', file: 'yushi.svg', h: 'h-8' },
-  { name: '鈦坦科技 TITANSOFT', file: 'titansoft.png', h: 'h-20', badge: '連續 3 年贊助' },
-  { name: '昇新科技 AscentisTech', file: 'ascentis.svg', h: 'h-14' }
-]
+const sponsors = computed(() => props.data?.items || [])
 // 重複多份，確保任何螢幕寬度下 -50% 循環都無縫
-const loopList = [...sponsors, ...sponsors, ...sponsors, ...sponsors]
+const loopList = computed(() => [
+  ...sponsors.value, ...sponsors.value, ...sponsors.value, ...sponsors.value
+])
 
 const sectionRef = ref(null)
 const trackRef = ref(null)
@@ -61,11 +62,14 @@ onBeforeUnmount(() => {
         :key="i"
         class="flex w-[200px] shrink-0 flex-col items-center justify-center gap-2 px-8"
       >
+        <!-- 高度由資料給數字、走 inline style。
+             ⚠️ 不要改成 :class="`h-${s.logo_height}`" —— Tailwind 掃的是原始碼字串，
+             拼出來的 class 它看不到，產不出 CSS。 -->
         <img
-          :src="asset(s.file)"
+          :src="assetUrl(s.logo)"
           :alt="s.name"
           class="w-auto object-contain"
-          :class="s.h"
+          :style="{ height: `${s.logo_height}px` }"
           loading="lazy"
           draggable="false"
         >

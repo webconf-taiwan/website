@@ -32,28 +32,26 @@ const { activeStage, idle, claimStage, releaseStage } = useParticleStage()
 const STAGE = 'speaker'
 
 // --- 講者資料 --------------------------------------------------------------
+// 內容由 /api/home 的 speaker 區塊提供（見 pages/index.vue）。
 // portrait 是去背 PNG，執行期用 PLImage.prepare 取樣成點雲（與首頁 side.png 同一條路，
 // 不走 people.vue 的預烘 JSON —— prepare 只取樣到 480px，縮圖後檔案大小跟 JSON 一樣，
 // 但換照片只要丟檔案、不用跑 bake.py）。
 // ⚠️ 目前只有兩張臨時頭像（Figma 上標「待照片收集完再替換」），所以八個人輪流共用。
-// 照片到齊後只要把 portrait 換成各自的檔案即可，其他都不用動。
-const P1 = '/speakers/speaker-01.png'
-const P2 = '/speakers/speaker-02.png'
+// 照片到齊後只要改 home.json 裡各自的 portrait 路徑即可，程式都不用動。
+const props = defineProps({
+  data: {
+    type: Object,
+    default: () => ({})
+  }
+})
 
-const SPEAKERS = [
-  { name: 'Gipi', org: '商業思維學院', role: '院長', tag: 'Keynote Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P1 },
-  { name: '保哥 Will', org: '多奇數位創意有限公司', role: '技術總監', tag: 'Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P2 },
-  { name: '吳哲宇', org: '墨雨互動設計有限公司', role: '藝術家', tag: 'Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P1 },
-  { name: 'TonyQ', org: '商業思維學院', role: '院長', tag: 'Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P2 },
-  { name: 'Thomas Yin', org: '商業思維學院', role: '院長', tag: 'Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P1 },
-  { name: 'Summer', org: '商業思維學院', role: '院長', tag: 'Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P2 },
-  { name: 'Bo-Yi Wu', org: '商業思維學院', role: '院長', tag: 'Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P1 },
-  { name: 'Happy', org: '商業思維學院', role: '院長', tag: 'Speaker', skills: ['AI', '軟體設計', '產品思維'], portrait: P2 },
-]
+const SPEAKERS = computed(() => props.data?.items || [])
+const plate = computed(() => props.data?.plate || {})
+const moreLink = computed(() => props.data?.more_link || {})
 
 // 左右各四位（設計稿的構圖：人像置中，名單分列兩側）
-const LEFT = SPEAKERS.slice(0, 4)
-const RIGHT = SPEAKERS.slice(4)
+const LEFT = computed(() => SPEAKERS.value.slice(0, 4))
+const RIGHT = computed(() => SPEAKERS.value.slice(4))
 
 // grid 列位置要寫成完整 class 字面量 —— Tailwind 是掃原始碼字串的，
 // `lg:row-start-${i}` 這種拼接它看不到，產不出 CSS。
@@ -151,7 +149,7 @@ const leader = ref(null)            // { p1, p2, p3 }，各為 [x, y]
 const leaderDraw = ref(1)           // 0..1，畫出去的比例
 const leaderFade = ref(1)
 
-const currentSpeaker = computed(() => SPEAKERS[current.value])
+const currentSpeaker = computed(() => SPEAKERS.value[current.value] || null)
 const leaderPoints = computed(() => {
   const l = leader.value
   return l ? [l.p1, l.p2, l.p3].map(p => p.join(',')).join(' ') : ''
@@ -362,7 +360,7 @@ async function goLive () {
   syncPause()
   // 進場前 targets 可能已經失效（視窗改過尺寸）
   if (!targetsReady || targetsStale()) {
-    const spec = specs.get(currentSpeaker.value.portrait)
+    const spec = specs.get(currentSpeaker.value?.portrait)
     if (spec) {
       await buildTargets(spec)
       blend = 1
@@ -470,12 +468,12 @@ async function animateLeader () {
 
 async function select (i) {
   if (i === current.value || switching.value || !engine) return
-  const fromSpec = specs.get(currentSpeaker.value.portrait)
+  const fromSpec = specs.get(currentSpeaker.value?.portrait)
 
   // 點了就算「在看這區」—— 順手把台搶過來，維持「同時只有一張在動」
   claimStage(STAGE)
 
-  const spec = await getSpec(SPEAKERS[i].portrait)
+  const spec = await getSpec(SPEAKERS.value[i].portrait)
 
   switching.value = true
   syncPause()
@@ -518,7 +516,7 @@ function updateLeader () {
   // 給的是 border box。clientTop/clientLeft 就是兩者的差（border 寬度）。
   const ox = s.left + section.clientLeft
   const oy = s.top + section.clientTop
-  const isLeft = current.value < LEFT.length
+  const isLeft = current.value < LEFT.value.length
   const y = n.bottom - oy
   leader.value = {
     p1: [(isLeft ? f.left : f.right) - ox, f.top + f.height / 2 - oy],
@@ -530,7 +528,9 @@ function updateLeader () {
 // ---------------------------------------------------------------------------
 async function init () {
   const canvas = canvasRef.value
-  if (!canvas) return
+  // 沒有講者資料（API 掛了）就整個不啟動 —— 點雲的來源就是人像，
+  // 沒有人像可取樣，開了引擎也只會是一片空白的黑。
+  if (!canvas || !currentSpeaker.value) return
 
   await loadParticleKit()
   registerNebula()
@@ -580,7 +580,7 @@ async function init () {
     clearTimeout(resizeTimer)
     resizeTimer = setTimeout(async () => {
       if (!targetsStale()) return
-      const sp = specs.get(currentSpeaker.value.portrait)
+      const sp = specs.get(currentSpeaker.value?.portrait)
       if (!sp) return
       await buildTargets(sp)
       blend = 1
@@ -637,9 +637,13 @@ defineExpose({ backend })
 </script>
 
 <template>
+  <!-- data-field-return 是背景粒子場的「回程」觸發器：這一區進場時，背景場開始
+       從 side.png 的收攏構圖散回滿版自由場。等捲到票券區時已經散完 ——
+       那一區在被 PL.III～PL.V 蓋住的期間就完成了，見 ParticleField 的說明。 -->
   <section
     id="speaker"
     ref="sectionRef"
+    data-field-return
     class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[720px] lg:px-[60px] lg:py-0"
   >
     <!-- 粒子人像：鋪滿整區、墊在所有文字底下。
@@ -672,13 +676,13 @@ defineExpose({ backend })
     <!-- 卷號標籤 -->
     <div class="relative z-2 flex flex-col border-t border-pre-800/35 py-8 lg:absolute lg:inset-x-[60px] lg:top-[60px]">
       <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-        PL. III
+        {{ plate.code }}
       </p>
       <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-        III.
+        {{ plate.number }}
       </p>
       <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-        SPEAKER
+        {{ plate.label }}
       </p>
     </div>
 
@@ -741,7 +745,7 @@ defineExpose({ backend })
       <!-- 中央觀景框 -->
       <div class="order-first flex flex-col items-stretch gap-y-2 lg:order-none lg:col-start-2 lg:row-span-4 lg:row-start-1">
         <div class="flex items-start justify-between font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-pre-800">
-          <span>{{ currentSpeaker.tag }}</span>
+          <span>{{ currentSpeaker?.tag }}</span>
           <span>{{ current + 1 }}/{{ SPEAKERS.length }}</span>
         </div>
         <!-- 只有框線 —— 人像是底下那張 canvas，這是「觀察窗」不是圖片容器 -->
@@ -750,7 +754,7 @@ defineExpose({ backend })
           class="aspect-square w-full border border-pre-800/80 lg:size-[300px]"
         />
         <div class="flex flex-wrap items-center justify-end gap-x-2 font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800">
-          <template v-for="(sk, k) in currentSpeaker.skills" :key="sk">
+          <template v-for="(sk, k) in currentSpeaker?.skills" :key="sk">
             <span v-if="k > 0" class="text-accent-1">·</span>
             <span>{{ sk }}</span>
           </template>
@@ -794,10 +798,13 @@ defineExpose({ backend })
     <!-- 更多講者 -->
     <div class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:top-[663px] lg:mt-0 lg:-translate-y-1/2">
       <NuxtLink
-        to="/people"
+        v-if="moreLink.href"
+        :to="moreLink.href"
+        :target="moreLink.target"
+        :rel="linkRel(moreLink.target)"
         class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 font-Noto text-[16px] font-medium leading-none tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/10"
       >
-        更多講者
+        {{ moreLink.label }}
         <span class="flex size-6 items-center justify-center">
           <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
         </span>

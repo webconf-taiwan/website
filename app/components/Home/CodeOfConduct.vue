@@ -10,6 +10,16 @@
 // 為什麼用 backdrop-blur 而不是自己放一張模糊圖：背後是即時運算的粒子場，
 // 它一直在動，只有 backdrop-filter 才會跟著糊。
 
+const props = defineProps({
+  // /api/home 的 code_of_conduct 區塊
+  data: {
+    type: Object,
+    default: () => ({})
+  }
+})
+
+const content = computed(() => props.data || {})
+
 const sectionRef = ref(null)
 const { staggerIn, killStaggers } = useStaggerIn()
 
@@ -35,7 +45,7 @@ onBeforeUnmount(() => killStaggers())
 
     <div class="relative z-1 mx-auto max-w-[872px] px-6 py-16 lg:py-[92px]">
       <p data-stagger class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-        PL. VII
+        {{ content.plate?.code }}
       </p>
 
       <!-- ⚠️ 這裡的藍是 #71c1f0，與 PL.IV 的 By MRT / By Train 同一支，
@@ -44,27 +54,21 @@ onBeforeUnmount(() => killStaggers())
         data-stagger
         class="mt-6 font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]"
       >
-        Code Of Conduct
+        {{ content.title }}
       </h2>
 
       <p
         data-stagger
         class="mt-8 font-Noto text-[15px] leading-[1.75] tracking-[0.04em] text-pre-800/[85%] lg:text-[16px]"
       >
-        WebConf Taiwan 致力於為所有參與者提供一個無騷擾、尊重且包容的會議環境。我們堅決反對任何形式的騷擾，包括性別歧視、種族主義或排他性笑話，並期望所有參與者在會議期間（包括數位平台）都能遵守這些準則。我們鼓勵大家共同合作，確保每位成員都能享有平等、尊重的會議體驗。感謝您的配合與支持，讓我們一起努力，打造一個開放、尊重和創新的會議平台。
+        {{ content.body_zh }}
       </p>
 
       <p
         data-stagger
         class="mt-6 font-serif text-[13px] leading-[1.7] tracking-[0.06em] text-pre-800/[50%] lg:text-[14px]"
       >
-        WebConf Taiwan is committed to providing a harassment-free, respectful, and inclusive
-        environment for all participants. We firmly oppose any form of harassment, including sexism,
-        racism, or exclusionary jokes, and expect all participants to adhere to these guidelines
-        throughout the conference, including on digital platforms. We encourage everyone to work
-        together to ensure that every individual enjoys an equitable and respectful conference
-        experience. Thank you for your cooperation and support as we strive to create an open,
-        respectful, and innovative conference platform.
+        {{ content.body_en }}
       </p>
     </div>
 

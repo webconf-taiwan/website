@@ -16,7 +16,7 @@ const props = defineProps({
           <div class="flex gap-x-4 items-baseline text-fs-h5 leading-[18px]">
             <span>NT$</span>
             <span class="text-fs-h1 leading-10">{{ data.price }}</span>
-            <span>元 / 人</span>
+            <span>{{ data.unit }}</span>
           </div>
           <p class="text-pre-800/[62%] font-serif text-fs-meta">{{ data.category }}</p>
         </div>

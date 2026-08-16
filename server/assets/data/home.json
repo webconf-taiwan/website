@@ -1,0 +1,205 @@
+{
+  "hero": {
+    "plate_label": "PL. I · Living Specimen · 2026",
+    "title": "WebConf",
+    "subtitle": "Taipei Popop · Dec 11-12, 2026",
+    "keywords": "Agent · Connections · Code",
+    "cta": { "label": "前往購票 →", "href": "#ticket", "target": "_self" },
+    "corner_left": {
+      "label": "Code · Emergence",
+      "note": "vol. iii · plate i ."
+    },
+    "corner_right": {
+      "label": "N 25.04° · E 121.56°",
+      "note": "simulation · live"
+    }
+  },
+
+  "about": {
+    "plate": { "code": "PL. II", "number": "II.", "label": "About" },
+    "skills_box_label": "Skills",
+    "skills": ["UI · UX", "Frontend", "AI Agent", "Backend", "Agile"],
+    "heading": "An emergent gathering of the Web.",
+    "lede_runs": [
+      { "text": "WebConf Taiwan is a two-day field study of the living web — where " },
+      { "text": "agents", "is_accent": true },
+      { "text": ", " },
+      { "text": "connections", "is_accent": true },
+      { "text": ", and " },
+      { "text": "code", "is_accent": true },
+      { "text": " coalesce into something larger than their parts." }
+    ],
+    "body_zh": "WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。這些技術如同顯微鏡下的細胞，從簡單規則出發，彼此影響、共同演化，逐步形成新的網頁生態。",
+    "cta": { "label": "議程資訊 →", "href": "#agenda", "target": "_self" }
+  },
+
+  "speaker": {
+    "plate": { "code": "PL. III", "number": "III.", "label": "SPEAKER" },
+    "more_link": { "label": "更多講者", "href": "/people", "target": "_self" },
+    "items": [
+      {
+        "id": "gipi",
+        "name": "Gipi",
+        "org": "商業思維學院",
+        "role": "院長",
+        "tag": "Keynote Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-01.png"
+      },
+      {
+        "id": "will",
+        "name": "保哥 Will",
+        "org": "多奇數位創意有限公司",
+        "role": "技術總監",
+        "tag": "Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-02.png"
+      },
+      {
+        "id": "che-yu-wu",
+        "name": "吳哲宇",
+        "org": "墨雨互動設計有限公司",
+        "role": "藝術家",
+        "tag": "Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-01.png"
+      },
+      {
+        "id": "tonyq",
+        "name": "TonyQ",
+        "org": "商業思維學院",
+        "role": "院長",
+        "tag": "Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-02.png"
+      },
+      {
+        "id": "thomas-yin",
+        "name": "Thomas Yin",
+        "org": "商業思維學院",
+        "role": "院長",
+        "tag": "Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-01.png"
+      },
+      {
+        "id": "summer",
+        "name": "Summer",
+        "org": "商業思維學院",
+        "role": "院長",
+        "tag": "Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-02.png"
+      },
+      {
+        "id": "bo-yi-wu",
+        "name": "Bo-Yi Wu",
+        "org": "商業思維學院",
+        "role": "院長",
+        "tag": "Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-01.png"
+      },
+      {
+        "id": "happy",
+        "name": "Happy",
+        "org": "商業思維學院",
+        "role": "院長",
+        "tag": "Speaker",
+        "skills": ["AI", "軟體設計", "產品思維"],
+        "portrait": "/speakers/speaker-02.png"
+      }
+    ]
+  },
+
+  "venue": {
+    "plate": { "code": "PL. IV", "number": "IV.", "label": "VENUE" },
+    "title_en": "Taipei Popop",
+    "title_zh": "瓶蓋工廠台北製造所",
+    "transports": [
+      {
+        "title": "By MRT",
+        "description": "捷運南港站 1A 出口，步行至連通道至台鐵/高鐵北門出站，經市民大道向西步行約 5 分鐘"
+      },
+      {
+        "title": "By Train",
+        "description": "搭乘至南港火車站的北門出站，經市民大道向西步行約 5 分鐘"
+      }
+    ],
+    "more_link": { "label": "更多資訊", "href": "#", "target": "_self" }
+  },
+
+  "faq": {
+    "plate": { "code": "PL. V", "number": "V.", "label": "FAQ" },
+    "title_en": "FAQ",
+    "title_zh": "常見問答",
+    "total_pages": 10,
+    "items": [
+      {
+        "question": "大會有提供 Wi-Fi 嗎？",
+        "answer": "僅提供瓶蓋工廠台北製造所原場地的 Wi-Fi，因同時會有 700 位以上裝置，若臨時流量壅塞，建議專注聆聽議程。"
+      },
+      {
+        "question": "場地有插可以充電的地方嗎？",
+        "answer": "B 棟休息區，以及議程廳內後方皆設有充電區可以充電喔！"
+      },
+      {
+        "question": "這次大會有錄影嗎？",
+        "answer": "沒有，我們希望大家可以專注在現場的演講！有提供大會共筆文件。"
+      }
+    ]
+  },
+
+  "ticket": {
+    "heading_lines": ["Two ways", "to enter the field."],
+    "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
+    "items": [
+      {
+        "code": "PL. VI · 01",
+        "title": "一般票",
+        "price": "4,980",
+        "unit": "元 / 人",
+        "category": "FIELD NOTES · General Admission",
+        "is_highlighted": false,
+        "features": [
+          { "en": "Programme", "zh": "兩日完整議程" },
+          { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
+          { "en": "Annual Edition", "zh": "年度紀念品" },
+          { "en": "Interactive Area", "zh": "攤位互動體驗" }
+        ]
+      },
+      {
+        "code": "PL. VI · 02",
+        "title": "三人揪團票",
+        "price": "4,400",
+        "unit": "元 / 人",
+        "category": "Field Group · Group Admission",
+        "is_highlighted": true,
+        "features": [
+          { "en": "Three-Person Group Offer", "zh": "三人同行限定優惠" },
+          { "en": "Programme", "zh": "兩日完整議程" },
+          { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
+          { "en": "Annual Edition", "zh": "年度紀念品" },
+          { "en": "Interactive Area", "zh": "攤位互動體驗" }
+        ]
+      }
+    ]
+  },
+
+  "sponsor": {
+    "items": [
+      { "name": "五倍學院", "logo": "/sponsors/wubei.svg", "logo_height": 32, "badge": "" },
+      { "name": "六角學院", "logo": "/sponsors/liuchiao.svg", "logo_height": 32, "badge": "" },
+      { "name": "悠識學院 userxper", "logo": "/sponsors/yushi.svg", "logo_height": 32, "badge": "" },
+      { "name": "鈦坦科技 TITANSOFT", "logo": "/sponsors/titansoft.png", "logo_height": 80, "badge": "連續 3 年贊助" },
+      { "name": "昇新科技 AscentisTech", "logo": "/sponsors/ascentis.svg", "logo_height": 56, "badge": "" }
+    ]
+  },
+
+  "code_of_conduct": {
+    "plate": { "code": "PL. VII", "number": "VII.", "label": "CODE OF CONDUCT" },
+    "title": "Code Of Conduct",
+    "body_zh": "WebConf Taiwan 致力於為所有參與者提供一個無騷擾、尊重且包容的會議環境。我們堅決反對任何形式的騷擾，包括性別歧視、種族主義或排他性笑話，並期望所有參與者在會議期間（包括數位平台）都能遵守這些準則。我們鼓勵大家共同合作，確保每位成員都能享有平等、尊重的會議體驗。感謝您的配合與支持，讓我們一起努力，打造一個開放、尊重和創新的會議平台。",
+    "body_en": "WebConf Taiwan is committed to providing a harassment-free, respectful, and inclusive environment for all participants. We firmly oppose any form of harassment, including sexism, racism, or exclusionary jokes, and expect all participants to adhere to these guidelines throughout the conference, including on digital platforms. We encourage everyone to work together to ensure that every individual enjoys an equitable and respectful conference experience. Thank you for your cooperation and support as we strive to create an open, respectful, and innovative conference platform."
+  }
+}

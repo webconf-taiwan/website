@@ -1,31 +1,25 @@
 <script setup>
-const { app } = useRuntimeConfig()
 const route = useRoute()
-const logoSrc = `${app.baseURL}logo-webconf.svg`.replace(/\/{2,}/g, '/')
 
-// 單一來源；responsive 呈現由下方 template 控制
-const agenda = { label: 'AGENDA', href: '#agenda' }
-const ticket = { label: 'TICKET', href: '#ticket', highlight: true }
+// 資料來自 /api/global（與 Footer 共用同一次請求，見 useSiteData）
+const globalData = await useGlobalData()
+const header = computed(() => globalData.value.header)
+const navItems = computed(() => header.value.nav_items || [])
+const logoSrc = computed(() => assetUrl(header.value.logo?.src))
 
-const leftMenu = [
-  agenda,
-  { label: 'SPEAKER', href: '#speaker' },
-  { label: 'VENUE', href: '#venue' }
-]
-const rightMenu = [
-  { label: 'SPONSORS', href: '#sponsors' },
-  { label: 'HISTORY', href: '#history' },
-  ticket
-]
+// API 只給語意（side / is_highlight），「哪個斷點顯示哪些」是版面規則，留在元件裡。
+const EXPOSED_ON_MOBILE = 'ticket'   // 一律外露、不收進漢堡
+const EXPOSED_ON_MD = 'agenda'       // md 才外露，所以漢堡裡的那顆要在 md 以上藏起來
+
+const leftMenu = computed(() => navItems.value.filter(item => item.side === 'left'))
+const rightMenu = computed(() => navItems.value.filter(item => item.side === 'right'))
+const agenda = computed(() => navItems.value.find(item => item.id === EXPOSED_ON_MD))
+const ticket = computed(() => navItems.value.find(item => item.id === EXPOSED_ON_MOBILE))
 
 // 漢堡選單內容：TICKET 永遠外露不收；AGENDA 在 md 已外露，故 md 以上隱藏
-const dropdownMenu = [
-  { ...agenda, cls: 'md:hidden' },
-  { label: 'SPEAKER', href: '#speaker' },
-  { label: 'VENUE', href: '#venue' },
-  { label: 'SPONSORS', href: '#sponsors' },
-  { label: 'HISTORY', href: '#history' }
-]
+const dropdownMenu = computed(() => navItems.value
+  .filter(item => item.id !== EXPOSED_ON_MOBILE)
+  .map(item => ({ ...item, cls: item.id === EXPOSED_ON_MD ? 'md:hidden' : '' })))
 
 const open = ref(false)
 const rootRef = ref(null)
@@ -71,9 +65,11 @@ onMounted(() => {
       <nav class="hidden w-[360px] items-center justify-end gap-4 lg:flex">
         <a
           v-for="link in leftMenu"
-          :key="link.href"
+          :key="link.id"
           data-nav-item
           :href="link.href"
+          :target="link.target"
+          :rel="linkRel(link.target)"
           class="px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0]"
         >
           {{ link.label }}
@@ -82,9 +78,15 @@ onMounted(() => {
 
       <!-- 中央 logo（平板以下靠左） -->
       <NuxtLink data-logo to="/" class="flex shrink-0 items-center gap-1.5 opacity-0">
-        <img :src="logoSrc" alt="WebConf" class="h-7 w-auto" width="112" height="28">
+        <img
+          :src="logoSrc"
+          :alt="header.logo?.alt"
+          :width="header.logo?.width"
+          :height="header.logo?.height"
+          class="h-7 w-auto"
+        >
         <span class="flex items-center gap-1 font-mono text-xs uppercase tracking-[0.04em] text-[#efe6d2] opacity-80">
-          <span>tw</span><span>·</span><span>26</span>
+          <span v-for="part in header.logo?.suffix" :key="part">{{ part }}</span>
         </span>
       </NuxtLink>
 
@@ -92,11 +94,13 @@ onMounted(() => {
       <nav class="hidden w-[360px] items-center gap-4 lg:flex">
         <a
           v-for="link in rightMenu"
-          :key="link.href"
+          :key="link.id"
           data-nav-item
           :href="link.href"
+          :target="link.target"
+          :rel="linkRel(link.target)"
           class="px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] opacity-0 transition-colors hover:text-[#71c1f0]"
-          :class="link.highlight ? 'text-[#71c1f0]' : 'text-[#efe6d2]'"
+          :class="link.is_highlight ? 'text-[#71c1f0]' : 'text-[#efe6d2]'"
         >
           {{ link.label }}
         </a>
@@ -106,7 +110,10 @@ onMounted(() => {
       <div class="flex items-center gap-2 lg:hidden">
         <!-- AGENDA：md 才外露 -->
         <a
+          v-if="agenda"
           :href="agenda.href"
+          :target="agenda.target"
+          :rel="linkRel(agenda.target)"
           data-nav-item
           class="hidden px-3 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0] md:block"
         >
@@ -114,7 +121,10 @@ onMounted(() => {
         </a>
         <!-- TICKET：一律外露 -->
         <a
+          v-if="ticket"
           :href="ticket.href"
+          :target="ticket.target"
+          :rel="linkRel(ticket.target)"
           data-nav-item
           class="px-3 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#71c1f0] opacity-0 transition-colors"
         >
@@ -126,7 +136,7 @@ onMounted(() => {
           data-nav-item
           class="flex size-10 shrink-0 flex-col items-center justify-center gap-1.5 opacity-0"
           :aria-expanded="open"
-          aria-label="開啟選單"
+          :aria-label="header.menu_open_label"
           @click="open = true"
         >
           <span class="block h-0.5 w-6 bg-white"></span>
@@ -153,7 +163,7 @@ onMounted(() => {
         <button
           type="button"
           class="self-end p-6 text-white"
-          aria-label="關閉選單"
+          :aria-label="header.menu_close_label"
           @click="open = false"
         >
           <span class="relative block size-5">
@@ -162,9 +172,11 @@ onMounted(() => {
           </span>
         </button>
         <ul class="flex flex-col px-6">
-          <li v-for="link in dropdownMenu" :key="link.href" :class="link.cls">
+          <li v-for="link in dropdownMenu" :key="link.id" :class="link.cls">
             <a
               :href="link.href"
+              :target="link.target"
+              :rel="linkRel(link.target)"
               class="block py-3 font-mono text-[16px] uppercase tracking-[0.04em] text-[#efe6d2] transition-colors hover:text-[#71c1f0]"
             >
               {{ link.label }}

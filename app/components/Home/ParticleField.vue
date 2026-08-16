@@ -103,6 +103,16 @@ const COUNT_MOBILE = 16000
 // 閒置多久就停掉模擬。pause 只是跳過渲染與計算，canvas 會保留最後一幀，
 // 所以畫面不會消失、只是定格 —— 使用者一動就無縫接回去。
 const IDLE_STOP_MS = 5000
+
+// 被別區蓋住時的「追趕時間」。
+// ⚠️ 這段不能省。progress 是捲動位置算出來的，使用者滑多快它都立刻正確；但粒子要
+// 真的「跑過」才會移動，而這張場在 PL.III～PL.V 是暫停的 —— 一步都沒跑。結果就是
+// 捲到票券區時 morphPull 已經是 0，粒子卻還整團卡在 side.png 的形狀，接著才慢慢散，
+// 完全來不及。所以 progress 在台下變動時，讓它「繼續算一小段」把位置追上。
+// 反正畫面被蓋著，這段期間跳得多突兀都看不到。
+const CATCH_UP_MS = 1500
+// 追趕期間把模擬速度拉高，1.5 秒才夠把整場從收攏形狀帶回滿版
+const CATCH_UP_SIM_SPEED = 1.6
 // --------------------------------------------------------------------------
 
 let engine = null
@@ -111,6 +121,7 @@ let onVisibility = null
 let onActivity = null
 let driftRaf = 0
 let scrollTrigger = null
+let returnTrigger = null
 let reducedMotion = false
 
 // 閒置停止的狀態
@@ -121,10 +132,24 @@ let idlePaused = false
 // 與 idlePaused 分開兩個旗標，因為兩者的喚醒條件不同 —— 閒置是「使用者一動就醒」，
 // 交棒是「捲出那一區才醒」，混在一起會互相覆蓋。
 let stageActive = true
+// 台下追趕的截止時刻（performance.now() 基準）。0 = 沒在追趕。
+let catchUpUntil = 0
 
 // 捲動進度 0（hero）→ 1（about）。相機漂移迴圈每幀讀它，跟 idle drift 疊加後
 // 一次寫進相機 uniform —— 兩者搶同一個 setCameraOffset，必須合在同一處算。
 let progress = 0
+// 去程與回程各自的捲動進度，兩段都是 scrub，所以來回捲動可逆、停在中間也成立。
+//
+// ⚠️ 合成用 min 而不是「去程 × (1−回程)」。相乘的話，回程只要一啟動就立刻把去程
+// 的值壓低 —— 實測兩段的捲動範圍原本重疊 187px，去程最高只到 0.82，PL.II 根本沒
+// 完整收攏成 side.png。min 則是「回程真的低於去程才接手」，就算之後版面高度變動
+// 讓兩段再度相鄰，也只會少掉重疊的那一小段，不會整段被削掉。
+let heroProgress = 0
+let returnProgress = 0
+
+function updateProgress () {
+  applyProgress(Math.min(heroProgress, 1 - returnProgress))
+}
 
 // 捲動速度 → 模擬速度的狀態（見 driftLoop）
 let simSpeed = SIM_SPEED_INTRO
@@ -178,7 +203,13 @@ function driftLoop (now) {
   }
   // 停住時仍要更新時間/捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度。
   // 交棒給別張 canvas 時走同一條路 —— 凍結但基準照跑。
-  if (idlePaused || !stageActive) {
+  // 例外：台下追趕期間要照常運作，否則粒子永遠停在舊形狀（見 CATCH_UP_MS）。
+  const catchingUp = !stageActive && t < catchUpUntil
+  if (idlePaused || (!stageActive && !catchingUp)) {
+    if (catchUpUntil && !catchingUp) {   // 追趕剛結束 → 收工暫停
+      catchUpUntil = 0
+      syncPause()
+    }
     lastTime = t
     lastScrollY = y
     return
@@ -203,7 +234,7 @@ function driftLoop (now) {
     // 加速追得快、減速拖得慢
     const k = target > simSpeed ? ATTACK : RELEASE
     simSpeed += (target - simSpeed) * k
-    engine.setSimSpeed?.(simSpeed)
+    engine.setSimSpeed?.(catchingUp ? CATCH_UP_SIM_SPEED : simSpeed)
 
     // 捲動中壓低互動力場 = 暫停「自動擴散」，讓遷移讀起來乾淨；停下來再放回去，
     // 粒子就在輪廓裡重新活過來。用同一組 attack/release，跟 simSpeed 同步呼吸。
@@ -247,8 +278,17 @@ function driftLoop (now) {
   }
   if (targetsReady) {
     const e = p * p * (3 - 2 * p)
-    morphAmount += (e - morphAmount) * (e > morphAmount ? MORPH_ATTACK : MORPH_RELEASE)
-    if (morphAmount < 0.002) morphAmount = 0
+    // 台下追趕時把 seek 力「全開」去把粒子拖到目標位置（blend 仍是 e，
+    // 所以 e=0 時目標就是自由場那組點）。
+    // ⚠️ 這裡不能寫成 morphAmount = e。e=0 時那等於直接關掉 seek，粒子就沒有任何
+    // 力量被帶回滿版，只能靠互動力場慢慢擴散 —— 正是本檔上面警告過的失效模式
+    //（實測會停在「佔用 24/32 格、左半邊 74%」，而健康的自由場是 32/32、49%）。
+    // 追趕的重點是「快點到定位」，不是「快點放手」。
+    if (catchingUp) morphAmount = 1
+    else {
+      morphAmount += (e - morphAmount) * (e > morphAmount ? MORPH_ATTACK : MORPH_RELEASE)
+      if (morphAmount < 0.002) morphAmount = 0
+    }
     engine.setMorph?.(MORPH_PULL * morphAmount, MORPH_GRIP * morphAmount, e)
   }
 }
@@ -256,7 +296,14 @@ function driftLoop (now) {
 // 捲動只改「色盤 + 透明度 + morph 強度」—— 粒子位置全程由 GPU 上的物理決定。
 // 沒有任何 JS 端的軌跡快取，所以停頓、恢復、反向捲動都天然連續。
 function applyProgress (p) {
-  progress = Math.min(1, Math.max(0, p))
+  const next = Math.min(1, Math.max(0, p))
+  // 台下（被別區蓋住）而 progress 又在變 → 開一段追趕，讓粒子真的跑到新位置。
+  // 使用者滑得再快也不會在票券區看到還卡在舊形狀的場（見 CATCH_UP_MS）。
+  if (!stageActive && Math.abs(next - progress) > 0.002) {
+    catchUpUntil = performance.now() + CATCH_UP_MS
+    syncPause()
+  }
+  progress = next
   if (!engine) return
   const e = progress * progress * (3 - 2 * progress)   // smoothstep，兩端收尾自然
   if (heroLin && aboutLin) engine.setColors?.(lerpPaletteLinear(heroLin, aboutLin, e))
@@ -293,14 +340,24 @@ async function buildTargets () {
 function syncPause () {
   // 固定背景永遠在視窗內，所以不必 IntersectionObserver；要理的是分頁隱藏
   //（rAF 在背景分頁只是降頻，不是停止）、使用者閒置，以及被別的區塊搶走台。
-  if (engine) engine.pause(document.hidden || idlePaused || !stageActive)
+  const catchingUp = !stageActive && performance.now() < catchUpUntil
+  if (engine) engine.pause(document.hidden || idlePaused || (!stageActive && !catchingUp))
 }
 
 // 交棒。⚠️ 拿回台面時要一併重設 lastActivity —— 否則「離開這區的那一刻」
 // 距離上次 pointermove 早就超過 IDLE_STOP_MS，會醒來後立刻又被閒置邏輯停掉。
 watch(activeStage, (v) => {
   stageActive = v === 'background'
-  if (stageActive) lastActivity = performance.now()
+  if (stageActive) {
+    lastActivity = performance.now()
+    // ⚠️ 交棒回來時要把收攏狀態「直接對齊」progress，不能沿用 MORPH_RELEASE 慢慢放。
+    // 這張場在別區當家時是暫停的，driftLoop 沒在跑，morphAmount 還停在離開時的值；
+    // 不對齊的話，捲回票券區會看到粒子還在慢慢散開 —— 而那段散開過程本來應該
+    // 在被蓋住的期間就完成了。反正暫停期間畫面是定格的，直接跳不會被看到。
+    const e = progress * progress * (3 - 2 * progress)
+    morphAmount = e
+    if (targetsReady) engine?.setMorph?.(MORPH_PULL * morphAmount, MORPH_GRIP * morphAmount, e)
+  }
   syncPause()
 })
 
@@ -396,6 +453,8 @@ async function init () {
       idleFor: Math.round(performance.now() - lastActivity),
       paused: engine.config.paused,
       progress: +progress.toFixed(3),
+      heroProgress: +heroProgress.toFixed(3),
+      returnProgress: +returnProgress.toFixed(3),
       morphPull: +engine.config.morphPull.toFixed(2),
       scrollHeat: +scrollHeat.toFixed(2),
       morphAmount: +morphAmount.toFixed(3),
@@ -421,13 +480,42 @@ async function init () {
   // 捲動：hero 底邊捲出畫面的這段 = 粒子場從滿版遷移到左側。scrub 讓它可逆。
   const { $ScrollTrigger } = useNuxtApp()
   if ($ScrollTrigger) {
+    // 去程：hero 底邊捲出畫面 = 粒子場從滿版收攏成 side.png
     scrollTrigger = $ScrollTrigger.create({
       trigger: '[data-field-hero]',
       start: 'bottom bottom',
       end: 'bottom top',
       scrub: true,
-      onUpdate: (self) => applyProgress(self.progress),
-      onRefresh: (self) => applyProgress(self.progress),
+      onUpdate: (self) => { heroProgress = self.progress; updateProgress() },
+      onRefresh: (self) => { heroProgress = self.progress; updateProgress() },
+    })
+
+    // 回程：進入 PL.III 講者區就開始散回滿版。
+    // 為什麼要有這一段：這張背景場在 PL.III～PL.V 是被交棒暫停的（畫面被那幾區
+    // 蓋掉），等票券區塊重新露出來時，它還停在 side.png 的收攏構圖 —— 而票券區
+    // 設計上要的是 hero 那種滿版自由場。等到票券區才開始散開根本來不及。
+    // 提早到講者區開始，捲到票券時已經散完。
+    // ⚠️ 這一段的兩端分別服務兩個「方向」，起點與終點不能只看往下捲：
+    //
+    //   往下捲（散開）  起點 = 講者區頂邊到視窗 20%。這位置差不多就是「人物整個
+    //                   出現」（區塊 720 高、視窗 900 高時剛好貼齊底部）。
+    //                   ⚠️ 絕不能拉到 'top bottom'：去程要到頂邊約 79% 才跑完，
+    //                   從視窗底開始會把 PL.II 的收攏吃掉（實測只到 0.82）。
+    //
+    //   往上捲（收回）  scrub 是可逆的，所以「終點」就是往上捲時的起點。
+    //                   終點掛在 FAQ 區塊而不是講者區底邊 —— 從票券往回捲時，
+    //                   一進 FAQ 就開始收回 side.png，等捲到 PL.II 早就到定位了。
+    //                   終點放講者區底邊的話，往上捲要到講者區才開始收，來不及。
+    const returnEnd = document.querySelector('#faq')
+    returnTrigger = $ScrollTrigger.create({
+      trigger: '[data-field-return]',
+      start: 'top 20%',
+      // FAQ 還沒切出來時退回講者區底邊，至少行為不會壞掉
+      endTrigger: returnEnd || '[data-field-return]',
+      end: returnEnd ? 'top center' : 'bottom center',
+      scrub: true,
+      onUpdate: (self) => { returnProgress = self.progress; updateProgress() },
+      onRefresh: (self) => { returnProgress = self.progress; updateProgress() },
     })
     $ScrollTrigger.refresh()
   }
@@ -438,6 +526,7 @@ onMounted(() => { init() })
 onBeforeUnmount(() => {
   if (driftRaf) cancelAnimationFrame(driftRaf)
   if (scrollTrigger) scrollTrigger.kill()
+  if (returnTrigger) returnTrigger.kill()
   if (stopAmbient) stopAmbient()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
   clearTimeout(resizeTimer)
