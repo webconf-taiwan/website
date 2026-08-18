@@ -15,6 +15,12 @@ const props = defineProps({
   data: {
     type: Object,
     default: () => ({})
+  },
+  // 區塊內建的那串章節錨點。頁面已經有 fixed 的 CommonChapterNav 時要關掉，
+  // 否則兩串會疊在同一個位置（index-same.vue 就是這個情況）。
+  showChapterDots: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -72,8 +78,11 @@ onBeforeUnmount(() => killStaggers())
       </p>
     </div>
 
-    <!-- 章節錨點：PL.VII 亮第 7 顆。⚠️ 頁面級元件，之後應抽到 layout 由捲動決定。 -->
+    <!-- 章節錨點：PL.VII 亮第 7 顆。
+         ⚠️ 這是區塊內建的靜態版本（跟著區塊捲、不能點）。頁面層級的 fixed 版本是
+         CommonChapterNav，用它的頁面要傳 :show-chapter-dots="false" 把這串關掉。 -->
     <div
+      v-if="props.showChapterDots"
       aria-hidden="true"
       class="absolute left-[60px] top-1/2 hidden -translate-y-1/2 flex-col items-center lg:flex"
     >
