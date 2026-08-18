@@ -11,12 +11,12 @@ const footer = computed(() => globalData.value.footer)
 </script>
 
 <template>
-  <footer class="relative grid grid-cols-1 gap-y-6 bg-[#0a0a0c] border border-pre-800/[35%] px-5 py-8 lg:gap-y-12 lg:px-auto lg:pl-10 lg:py-12 xl:grid-cols-[24rem_auto] xl:gap-x-34">
+  <footer class="relative grid grid-cols-1 gap-y-6 bg-[#0a0a0c] border border-pre-800/[35%] px-5 py-8 lg:gap-y-12 lg:px-10 lg:py-12 xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] xl:gap-x-20 2xl:gap-x-34">
     <div class="lg:max-w-96">
       <div class="flex items-center gap-x-2 mb-6">
-        <a href="./">
-          <img class="w-35 h-10" :src="assetUrl(footer.logo.src)" :alt="footer.logo.alt">
-        </a>
+        <NuxtLink to="/">
+          <img class="h-7 w-28" :src="assetUrl(footer.logo.src)" :alt="footer.logo.alt">
+        </NuxtLink>
         <p class="text-fs-meta text-pre-800/80">{{ footer.tagline }}</p>
       </div>
       <div class="flex flex-col gap-y-6 text-pre-800/[62%] font-serif font-bold italic text-fs-btn">
@@ -29,7 +29,7 @@ const footer = computed(() => globalData.value.footer)
         </div>
       </div>
     </div>
-    <div class="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-[repeat(3,13.5rem)] lg:gap-x-14">
+    <nav aria-label="Footer" class="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3 lg:gap-x-10 xl:gap-x-10 2xl:gap-x-14">
       <div v-for="parentMenu in footer.menu_groups" :key="parentMenu.title">
         <h2 class="text-fs-h5 text-pre-800 italic mb-4">{{ parentMenu.title }}</h2>
         <ul class="flex flex-col gap-y-2">
@@ -45,7 +45,7 @@ const footer = computed(() => globalData.value.footer)
           </li>
         </ul>
       </div>
-    </div>
+    </nav>
     <button
       type="button"
       :aria-label="footer.back_to_top_label"
