@@ -12,6 +12,8 @@ useSeoMeta({
   twitterDescription: '瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。'
 })
 
+defineOgImage('Default', { title: '虛擬綠幕 · Webconf', description: '瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。' })
+
 const videoRef = ref(null)     // 相機來源（隱藏）
 const outputRef = ref(null)    // 合成輸出 canvas（顯示 / 拍照 / 錄影來源）
 const bgFileInput = ref(null)

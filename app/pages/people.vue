@@ -16,6 +16,8 @@ useSeoMeta({
   twitterDescription: '認識 WebConf Taiwan 的講者陣容。'
 })
 
+defineOgImage('Default', { title: '講者陣容 · Webconf', description: '認識 WebConf Taiwan 的講者陣容。' })
+
 const canvasRef = ref(null)          // 底部示範 canvas
 const canvasStickyRef = ref(null)    // 三講師滾動漸變 canvas
 const backend = ref('')

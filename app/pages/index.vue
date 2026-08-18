@@ -24,6 +24,8 @@ useSeoMeta({
   twitterDescription: homeData.about.body_zh
 })
 
+defineOgImage('Default', { title: pageTitle, description: homeData.about.body_zh })
+
 // 首頁掛 Event 結構化資料，讓 Google 搜尋結果能顯示活動時間、地點、票價卡片。
 // 票價/場地取自 server/assets/data/home.json 的 venue、ticket 區塊，日期待實際確認後再校正。
 useSchemaOrg([

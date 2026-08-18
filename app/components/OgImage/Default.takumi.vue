@@ -6,7 +6,10 @@ defineProps({
 </script>
 
 <template>
-  <div class="w-full h-full flex flex-col justify-between bg-black text-[#efe6d2] p-[64px]">
+  <div
+    class="w-full h-full flex flex-col justify-between bg-black text-[#efe6d2] p-[64px]"
+    style="font-family: 'Noto Sans TC', sans-serif;"
+  >
     <p class="text-[22px] tracking-[0.3em] uppercase opacity-60 m-0">
       WebConf · Living Specimen
     </p>
