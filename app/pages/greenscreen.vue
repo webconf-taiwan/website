@@ -3,7 +3,14 @@
 // 相機 → MediaPipe ImageSegmenter（Selfie，即時 ~30fps）取人像遮罩 → 2D canvas 合成到選定背景
 // → 可拍照下載 PNG、或錄影下載 webm。wasm/模型自架於 /public/mediapipe（同套件版本免對齊）。
 // 全程在瀏覽器，影像不上傳。實作說明見 docs/greenscreen.md。
-useHead({ title: '虛擬綠幕 · Webconf' })
+useSeoMeta({
+  title: '虛擬綠幕 · Webconf',
+  description: '瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。',
+  ogTitle: '虛擬綠幕 · Webconf',
+  ogDescription: '瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。',
+  twitterTitle: '虛擬綠幕 · Webconf',
+  twitterDescription: '瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。'
+})
 
 const videoRef = ref(null)     // 相機來源（隱藏）
 const outputRef = ref(null)    // 合成輸出 canvas（顯示 / 拍照 / 錄影來源）

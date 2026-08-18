@@ -27,8 +27,28 @@ export default defineNuxtConfig({
     '@nuxt/eslint',
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/seo',
     '@vueuse/nuxt'
   ],
+
+  // @nuxtjs/seo 統一管理 robots / sitemap / schema.org / og:image / canonical。
+  // indexable 綁現有 WEB_SEARCH 開關：機器人 meta、robots.txt、sitemap 收錄都跟著這顆旗標走，
+  // 不用再各處各自判斷一次。
+  site: {
+    url: process.env.APP_URL,
+    name: process.env.APP_TITLE,
+    description: process.env.APP_DESC,
+    defaultLocale: process.env.APP_DEFAULT_LANG,
+    indexable: process.env.WEB_SEARCH === 'YES'
+  },
+
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: process.env.APP_TITLE,
+      logo: '/logo-webconf.svg'
+    }
+  },
 
   app: {
     baseURL: `${process.env.APP_BASE_URL}`,
@@ -48,12 +68,6 @@ export default defineNuxtConfig({
         {
           property: 'og:locale',
           content: process.env.APP_DEFAULT_LANG
-        },
-        {
-          name: 'robots',
-          content: process.env.WEB_SEARCH === 'YES'
-            ? 'index, follow'
-            : 'noindex, nofollow'
         }
       ],
       link: [

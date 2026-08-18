@@ -1,3 +1,14 @@
+<script setup>
+useSeoMeta({
+  title: '關於 · Webconf',
+  description: 'WebConf Taiwan 的活動介紹與理念。',
+  ogTitle: '關於 · Webconf',
+  ogDescription: 'WebConf Taiwan 的活動介紹與理念。',
+  twitterTitle: '關於 · Webconf',
+  twitterDescription: 'WebConf Taiwan 的活動介紹與理念。'
+})
+</script>
+
 <template>
   <div class="container py-16 md:py-24">
     <section class="mx-auto max-w-2xl text-center">
