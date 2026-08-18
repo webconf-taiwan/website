@@ -45,6 +45,29 @@ const faqPage = ref(1)
 const FAQS = computed(() => props.faq?.items || [])
 const FAQ_TOTAL_PAGES = computed(() => props.faq?.total_pages || 1)
 
+// FAQPage 結構化資料：讓搜尋引擎／AI 摘要能直接讀到問答內容，而不必等
+// canvas 動畫或捲動觸發 —— JSON-LD 與畫面顯示無關，SSR 階段就會輸出。
+useHead(() => ({
+  script: FAQS.value.length
+    ? [{
+        key: 'faq-jsonld',
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQS.value.map(item => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: item.answer
+            }
+          }))
+        })
+      }]
+    : []
+}))
+
 // --- 兩段標本 --------------------------------------------------------------
 // shift = 內容往左推的「視窗寬度比例」，就是「圖片移出畫面」那件事。
 //   0.18 = 往左推 18% 視窗寬，主體會有一部分被左邊緣切掉（設計稿 PL.V 的圖是
