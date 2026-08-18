@@ -17,6 +17,7 @@
 //   4. PLAmbient 四層擾動（代謝／呼吸／亂流／潮汐）。
 
 const { loadParticleKit } = useParticleKit()
+const { countFor, maxDpr } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 // 首頁不只這一張 canvas（PL.III 講者場也有一張），同時只能有一張在跑 —— 見 useParticleStage。
 const { activeStage } = useParticleStage()
@@ -96,9 +97,13 @@ const ABOUT_SHIFT = 0
 const HERO_OPACITY = 0.55
 const ABOUT_OPACITY = 0.75           // 圖片點雲要看得出形狀，比自由場亮一點
 
-// 粒子預算：保守起步，開場實測 fps 再決定加減（docs §10 陷阱二）
-const COUNT_DESKTOP = 48000
-const COUNT_MOBILE = 16000
+// 粒子預算：依 canvas 面積算，不寫死（見 useParticleBudget 的長註解 ——
+// 力場成本是 N² / 面積，寫死的數字在窄視窗上會變成災難）。
+// DENSITY 就是「原本桌機的 48000 ÷ 1440×900」，所以桌機行為完全不變。
+// 開場再實測 fps 決定要不要對半砍（docs §10 陷阱二）。
+const COUNT_DENSITY = 0.037
+const COUNT_MAX = 48000
+const COUNT_MIN = 9000
 
 // 閒置多久就停掉模擬。pause 只是跳過渲染與計算，canvas 會保留最後一幀，
 // 所以畫面不會消失、只是定格 —— 使用者一動就無縫接回去。
@@ -383,7 +388,7 @@ async function init () {
   const hero = PAL[HERO_PALETTE]
   heroLin = paletteToLinear(hero.particles)
 
-  const count = window.innerWidth < 768 ? COUNT_MOBILE : COUNT_DESKTOP
+  const count = countFor(canvas, { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN })
 
   engine = await window.makeEngine(canvas, {
     species: SPECIES,
@@ -404,7 +409,7 @@ async function init () {
     particleOpacity: HERO_OPACITY,
     showGlow: false,                // 高密度時光暈會糊成一片，只留銳利點
     cellSubdivisions: 2,
-    maxDpr: 1.5,                    // 全螢幕 HDR target，DPR 2 是 4 倍像素、視覺收益極小
+    maxDpr: maxDpr(),               // 全螢幕 HDR target，DPR 2 是 4 倍像素、視覺收益極小
   })
   backend.value = engine.backend
   // dev 時開個把手，方便在 console 直接調參（engine.setForce(1.4) 之類）

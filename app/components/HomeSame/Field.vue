@@ -48,6 +48,7 @@ const props = defineProps({
 })
 
 const { loadParticleKit } = useParticleKit()
+const { countFor, maxDpr } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張 canvas，不需要 claim/release。
 const { idle } = useParticleStage()
@@ -97,8 +98,12 @@ const SEGMENTS = [
 // ⚠️ 點數要跟「點雲在螢幕上的面積」一起看。venue / faq 那兩隻標本有很細的放射狀
 // 尖刺，密度不夠就糊成一團白霧（原版 VenueFaqField 為此用到 52000）。這一版整頁
 // 共用同一組粒子，所以要取所有區塊裡最吃密度的那個當基準。
-const COUNT_DESKTOP = 50000
-const COUNT_MOBILE = 18000
+//
+// 依 canvas 面積算而不是寫死 —— 力場成本是 N² / 面積，窄視窗上寫死的數字會爆掉。
+// DENSITY = 桌機的 50000 ÷ 1440×900，所以桌機行為不變（見 useParticleBudget）。
+const COUNT_DENSITY = 0.0386
+const COUNT_MAX = 50000
+const COUNT_MIN = 10000
 // 每張圖的取樣點數。⚠️ 全部必須一致，否則配對會有一撮粒子配不到對。
 // 引擎點數可以大於它（buildImageTargets 會循環重用取樣點），也可以小於它
 // （取樣是重要性採樣、順序隨機，取前 N 個仍是整張圖的均勻子集）。
@@ -539,7 +544,7 @@ async function init () {
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   const hero = window.PLPalettes.PALETTES[HERO_PALETTE]
-  const count = window.innerWidth < 768 ? COUNT_MOBILE : COUNT_DESKTOP
+  const count = countFor(canvas, { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN })
 
   engine = await window.makeEngine(canvas, {
     species: SPECIES,
@@ -561,7 +566,7 @@ async function init () {
     particleOpacity: KEYS[0].opacity,
     showGlow: false,                // 高密度時光暈會糊成一片，只留銳利點
     cellSubdivisions: 2,
-    maxDpr: 1.5,                    // 全螢幕 HDR target，DPR 2 是 4 倍像素、視覺收益極小
+    maxDpr: maxDpr(),               // 全螢幕 HDR target，DPR 2 是 4 倍像素、視覺收益極小
   })
   backend.value = engine.backend
   if (import.meta.dev) window.__sameField = engine

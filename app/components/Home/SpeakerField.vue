@@ -26,6 +26,7 @@
 //                   那條路在這個點數下會掉幀，這條只寫 uniform，所以順。
 
 const { loadParticleKit, registerNebula } = useParticleKit()
+const { countFor, maxDpr } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { activeStage, idle, claimStage, releaseStage } = useParticleStage()
 
@@ -66,6 +67,14 @@ function nameRuns (name) {
 
 // --- 可調參數 --------------------------------------------------------------
 const SAMPLES = 32000       // ⚠️ 每張圖都要同一個點數，否則換人配對會有一撮粒子配不到對
+// 引擎點數。⚠️ 這裡以前直接用 SAMPLES，等於所有裝置都跑 32000 顆 —— 這一區在
+// 手機上實測 49fps 的原因。改成依 canvas 面積算（見 useParticleBudget）：
+// DENSITY = 桌機的 32000 ÷ 1440×900，所以桌機完全不變，窄視窗才會往下縮。
+// 引擎點數小於 SAMPLES 是安全的：buildImageTargets / registerPattern 都用
+// `i % spec.count` 取點，而 prepare() 的取樣順序是隨機的 → 前 N 個仍是均勻子集。
+const COUNT_DENSITY = 0.0247
+const COUNT_MAX = SAMPLES
+const COUNT_MIN = 9000
 const SPECIES = 7           // 色盤長度，必須與 species 一致（morph 中不能改 species）
 // 點雲佔 canvas 短邊的比例。canvas 現在是整個 section，桌機約 720 高，
 // 0.76 × 720 ≈ 547px ≈ 設計稿的 550。改這個值就是改人像大小。
@@ -540,7 +549,7 @@ async function init () {
 
   engine = await window.makeEngine(canvas, {
     species: SPECIES,
-    count: SAMPLES,
+    count: countFor(canvas, { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN }),
     palette: spec.palette,
     seedPattern: spec.pattern,      // 開場就直接長在人像上，不需要任何進場動畫
     preset: 'nebula',
@@ -555,7 +564,7 @@ async function init () {
     particleOpacity: OPACITY_BASE,
     showGlow: false,
     cellSubdivisions: 2,
-    maxDpr: 1.5,                    // 與 ParticleField 同：DPR 2 是 4 倍像素、視覺收益極小
+    maxDpr: maxDpr(),               // 與 ParticleField 同：DPR 2 是 4 倍像素、視覺收益極小
     bgFade: 'rgba(10,10,12,0.18)',  // 只有 CPU fallback 會用到；GPU 路徑是不透明黑
   })
   backend.value = engine.backend
@@ -686,22 +695,8 @@ defineExpose({ backend })
       </p>
     </div>
 
-    <!-- 章節錨點。⚠️ 這是「整頁第幾章」的指示器（現在固定亮第 3 顆 = PL.III），
-         等其他區塊都切完應該抽成 layout 層級的共用元件，由捲動位置決定亮哪顆。 -->
-    <div
-      aria-hidden="true"
-      class="absolute left-[60px] top-1/2 hidden -translate-y-1/2 flex-col items-center lg:flex"
-    >
-      <span class="h-2.5 w-px bg-pre-800/35" />
-      <template v-for="n in 7" :key="n">
-        <span
-          class="size-1 shrink-0 rounded-full"
-          :class="n === 3 ? 'bg-accent-1' : 'border border-pre-800/35'"
-        />
-        <span v-if="n < 7" class="h-6 w-px bg-pre-800/35" />
-      </template>
-      <span class="h-2.5 w-px bg-pre-800/35" />
-    </div>
+    <!-- 章節錨點不在這裡 —— 已經抽成頁面層級的 fixed 元件 CommonChapterNav，
+         全程停在畫面左側、由捲動位置決定亮哪顆、可以點著跳章。 -->
 
     <!-- 名單 + 觀景框。桌機三欄（左四位／人像／右四位），手機單欄堆疊。 -->
     <div

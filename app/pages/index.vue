@@ -20,12 +20,18 @@ const backend = computed(() => fieldRef.value?.backend || '')
   <div class="relative bg-black text-[#efe6d2]">
     <HomeParticleField ref="fieldRef" />
 
+    <!-- 側邊章節指示器。fixed 在畫面左側，捲到哪一卷就亮哪一顆，點了直接跳過去。
+         ⚠️ 它靠 section 的 id 定位（hero / about / speaker / venue / faq /
+         ticket / code-of-conduct），加減區塊時記得一起維護。 -->
+    <CommonChapterNav />
+
     <!-- ===================================================================
          PL. I — Hero
          data-field-hero 是背景粒子場的 ScrollTrigger 觸發器：這個區塊的底邊
          從畫面底捲到畫面頂的這段 = 粒子場從滿版遷移到左側、色盤轉金橄欖。
     ==================================================================== -->
     <section
+      id="hero"
       data-field-hero
       class="relative z-10 flex bg-black/30 min-h-[calc(100dvh-52px)] flex-col items-center justify-center px-6 py-20 text-center"
     >
@@ -158,7 +164,10 @@ const backend = computed(() => fieldRef.value?.backend || '')
     ==================================================================== -->
     <HomeVenueFaqField :venue="home.venue" :faq="home.faq" />
 
-    <section class="relative flex flex-col gap-y-6">
+    <!-- PL. VI — Ticket。id 同時是 CommonChapterNav 的錨點與 hero CTA 的 #ticket 目標。 -->
+    <!-- ⚠️ 不要加 scroll-mt-*：Lenis 的 scrollTo 會吃 scroll-margin，
+         跟 CommonChapterNav 自己的 offset 疊起來會多空一截，跟其他六區對不齊。 -->
+    <section id="ticket" class="relative flex flex-col gap-y-6">
       <h2 class="text-center text-h1">
         <template v-for="(line, i) in home.ticket.heading_lines" :key="i">
           <br v-if="i > 0">{{ line }}
@@ -193,6 +202,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
          PL. VII — Code of Conduct
          沒有自己的 canvas：視覺主體是把背後的背景粒子場糊掉的那塊毛玻璃。
     ==================================================================== -->
-    <HomeCodeOfConduct :data="home.code_of_conduct" />
+    <!-- 章節錨點交給上面那個 fixed 的 CommonChapterNav，關掉區塊內建的靜態版本 -->
+    <HomeCodeOfConduct :data="home.code_of_conduct" :show-chapter-dots="false" />
   </div>
 </template>

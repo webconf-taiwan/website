@@ -195,7 +195,7 @@ useHead({ meta: [{ name: 'robots', content: 'noindex, nofollow' }] })
     <section
       id="ticket"
       data-same-ticket
-      class="relative z-10 flex flex-col gap-y-6 scroll-mt-20"
+      class="relative z-10 flex flex-col gap-y-6"
     >
       <h2 class="text-center text-h1">
         <template v-for="(line, i) in home.ticket.heading_lines" :key="i">

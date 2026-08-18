@@ -19,6 +19,7 @@
 // setTargets(stage[k], stage[k+1]) 之後 scrub blend，JS 每幀只寫 16 bytes。
 
 const { loadParticleKit } = useParticleKit()
+const { countFor, maxDpr } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { activeStage, idle, claimStage, releaseStage } = useParticleStage()
 const { staggerIn, killStaggers } = useStaggerIn()
@@ -66,6 +67,13 @@ const STAGES = [
 // 883×851 上只有 0.04 顆/px，而 PL.III 的人像是 0.147 顆/px（差 3.7 倍）。
 // 縮小取景 + 提高點數之後回到 0.14 附近，結構才撐得起來。
 const SAMPLES = 52000       // ⚠️ 每張圖同一個點數，否則配對會有一撮粒子配不到對
+// 引擎點數。⚠️ 這裡以前直接用 SAMPLES = 所有裝置都跑 52000 顆，而這張 canvas 是
+// h-screen —— 手機上面積只有桌機的 1/4，密度變成 4 倍、每顆要掃的鄰居也是 4 倍。
+// 實測 @390×844 是 185M 候選 / 13fps（桌機 47M / 60fps），整頁最卡的就是這裡。
+// 改成依 canvas 面積算：DENSITY = 桌機的 52000 ÷ 1440×900，桌機完全不變。
+const COUNT_DENSITY = 0.0401
+const COUNT_MAX = SAMPLES
+const COUNT_MIN = 10000
 const SPECIES = 7
 const FIT = 0.82
 
@@ -279,7 +287,7 @@ async function init () {
 
   engine = await window.makeEngine(canvas, {
     species: SPECIES,
-    count: SAMPLES,
+    count: countFor(canvas, { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN }),
     palette: specs[0].palette,
     seedPattern: specs[0].pattern,
     preset: 'spiral-conveyor',      // 非對稱矩陣，不會收斂成不動的菌落球
@@ -294,7 +302,7 @@ async function init () {
     particleOpacity: STAGES[0].opacity,
     showGlow: false,
     cellSubdivisions: 2,
-    maxDpr: 1.5,
+    maxDpr: maxDpr(),
   })
   backend.value = engine.backend
   if (import.meta.dev) window.__venuefaq = engine
