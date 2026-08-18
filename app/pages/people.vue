@@ -7,6 +7,15 @@
 //   1. sticky 三講師 — GSAP ScrollTrigger：右側區塊捲到畫面中央時，粒子群集體
 //      遷徙、換色盤，從上一位講師「流」成下一位（people-01 → 02 → 03）。
 //   2. 底部示範 — 單一人像：hover 擴散 → 離開凍結 → 點擊倒帶重組。
+useSeoMeta({
+  title: '講者陣容 · Webconf',
+  description: '認識 WebConf Taiwan 的講者陣容。',
+  ogTitle: '講者陣容 · Webconf',
+  ogDescription: '認識 WebConf Taiwan 的講者陣容。',
+  twitterTitle: '講者陣容 · Webconf',
+  twitterDescription: '認識 WebConf Taiwan 的講者陣容。'
+})
+
 const canvasRef = ref(null)          // 底部示範 canvas
 const canvasStickyRef = ref(null)    // 三講師滾動漸變 canvas
 const backend = ref('')

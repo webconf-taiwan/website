@@ -9,6 +9,46 @@ import TicketCard from '~/components/Common/Card/TicketCard.vue';
 // 這一頁是唯一的取資料點，各區塊元件一律用 props 拿，不各自打 API。
 
 const home = await useHomeData()
+const config = useRuntimeConfig()
+
+const homeData = home.value
+
+const pageTitle = `${homeData.hero.title} — ${homeData.hero.subtitle}`
+
+useSeoMeta({
+  title: pageTitle,
+  description: homeData.about.body_zh,
+  ogTitle: pageTitle,
+  ogDescription: homeData.about.body_zh,
+  twitterTitle: pageTitle,
+  twitterDescription: homeData.about.body_zh
+})
+
+// 首頁掛 Event 結構化資料，讓 Google 搜尋結果能顯示活動時間、地點、票價卡片。
+// 票價/場地取自 server/assets/data/home.json 的 venue、ticket 區塊，日期待實際確認後再校正。
+useSchemaOrg([
+  defineEvent({
+    name: pageTitle,
+    description: homeData.about.body_zh,
+    startDate: '2026-12-11',
+    endDate: '2026-12-12',
+    eventAttendanceMode: 'OfflineEventAttendanceMode',
+    eventStatus: 'EventScheduled',
+    location: {
+      '@type': 'Place',
+      name: `${homeData.venue.title_zh} ${homeData.venue.title_en}`,
+      address: '台北市南港區南港路二段13號'
+    },
+    offers: homeData.ticket.items.map(item => ({
+      '@type': 'Offer',
+      name: item.title,
+      price: item.price.replace(/,/g, ''),
+      priceCurrency: 'TWD',
+      url: `${config.public.APP_URL}/#ticket`,
+      availability: 'https://schema.org/InStock'
+    }))
+  })
+])
 
 const fieldRef = ref(null)
 
