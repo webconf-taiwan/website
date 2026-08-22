@@ -1,0 +1,22 @@
+{
+  "name": "webconf-2026-api",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit",
+    "db:create": "wrangler d1 create webconf-2026-api-db",
+    "db:migrations:new": "wrangler d1 migrations create DB",
+    "db:migrations:local": "wrangler d1 migrations apply DB --local",
+    "db:migrations:remote": "wrangler d1 migrations apply DB --remote"
+  },
+  "dependencies": {
+    "hono": "^4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4",
+    "typescript": "^5",
+    "wrangler": "^4"
+  }
+}

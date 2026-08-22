@@ -1,0 +1,30 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+
+  // Worker 名稱，同時決定預設網址 webconf-2026-api.<你的子網域>.workers.dev
+  // 跟根目錄 webconf-2026（網站本體）分開部署，互不影響。
+  "name": "webconf-2026-api",
+
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-23",
+
+  // 開了才看得到即時 log 與請求量，debug 會用到
+  "observability": { "enabled": true },
+
+  // D1 binding，程式裡透過 c.env.DB 存取（見 src/index.ts 的 Bindings 型別）。
+  // database_id 要先執行 `yarn db:create` 建立實體資料庫後貼進來，
+  // 沒貼會在 wrangler dev / deploy 時直接報錯，不會誤連到別的資料庫。
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "webconf-2026-api-db",
+      "database_id": "TODO: 執行 yarn db:create 後把回傳的 database_id 貼在這裡"
+    }
+  ]
+
+  // 自訂網域之後再決定要不要接（例如 api.webconf2026.jordanttc.com）。
+  // 開發階段先用 workers.dev 預設網址即可，確定要接再打開：
+  // "routes": [
+  //   { "pattern": "api.webconf2026.jordanttc.com", "custom_domain": true }
+  // ]
+}
