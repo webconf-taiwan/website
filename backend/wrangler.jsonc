@@ -6,19 +6,23 @@
   "name": "webconf-2026-api",
 
   "main": "src/index.ts",
-  "compatibility_date": "2026-08-23",
+  // 原本寫今天日期（2026-08-23），但本機裝的 wrangler 4.125.0 還不認得這個日期
+  // （"in the future and unsupported"）——wrangler 只認得到它發布當下已知的
+  // compatibility date，不是真的日曆意義的「未來」。改用根目錄 wrangler.jsonc /
+  // nuxt.config.ts 同一個、已驗證能跑的日期，兩邊對齊。
+  "compatibility_date": "2026-05-19",
 
   // 開了才看得到即時 log 與請求量，debug 會用到
   "observability": { "enabled": true },
 
   // D1 binding，程式裡透過 c.env.DB 存取（見 src/index.ts 的 Bindings 型別）。
-  // database_id 要先執行 `yarn db:create` 建立實體資料庫後貼進來，
-  // 沒貼會在 wrangler dev / deploy 時直接報錯，不會誤連到別的資料庫。
+  // 目前建在 gui 的 Cloudflare 帳號底下，只是開發用；正式要不要搬到團隊共用帳號還沒定案，
+  // 見 backend/README.md「資料庫歸屬」。
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "webconf-2026-api-db",
-      "database_id": "TODO: 執行 yarn db:create 後把回傳的 database_id 貼在這裡"
+      "database_id": "e5230072-16b9-41fe-9bce-bdf028b68be4"
     }
   ]
 

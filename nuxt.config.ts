@@ -101,6 +101,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     APP_API: process.env.APP_API,
+    // server-only：只有 server/api/admin/* 這幾支代理路由會讀到，不會被打進瀏覽器端 bundle。
+    // 後台頁面（app/pages/admin/）透過這層代理呼叫 backend/ 的 Hono + D1 API，
+    // 瀏覽器全程不直接碰 backend，session cookie 也只發在這個網站的 origin 上。
+    adminApiUrl: process.env.ADMIN_API_URL || 'http://localhost:8787',
     public: {
       APP_TITLE: process.env.APP_TITLE,
       APP_DESC: process.env.APP_DESC,

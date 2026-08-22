@@ -12,7 +12,18 @@ yarn install
 yarn db:create
 ```
 
-`db:create` 會回傳 `database_id`，貼到 `wrangler.jsonc` 裡 `d1_databases[0].database_id` 的 TODO 位置。沒貼的話 `dev` / `deploy` 會直接報錯，不會誤連到別的資料庫。
+`db:create` 會回傳 `database_id`，貼到 `wrangler.jsonc` 裡 `d1_databases[0].database_id`。沒貼的話 `dev` / `deploy` 會直接報錯，不會誤連到別的資料庫。
+
+## 資料庫歸屬
+
+現有的 `database_id`（`webconf-2026-api-db`）是建在 gui 自己的 Cloudflare 帳號底下，純開發用，本機 `--local` 開發完全不受影響。
+
+前端網站目前是掛在開發夥伴的 Cloudflare 帳號部署，所以正式上線前要先決定 D1／這個 Worker 最終要留在哪個帳號：
+
+- **搬到夥伴的帳號**：現有 D1 建在別的帳號，其他人 `git pull` 下來即使看得到 `database_id`，也連不上（D1 存取權綁帳號，不是綁設定檔），需要重新在目標帳號 `wrangler d1 create` 一次、把資料匯過去。
+- **把兩人都加進同一個共用帳號**：Cloudflare Dashboard → Account Home → Manage Account → Members 互相邀請即可，不用搬資料庫。
+
+哪個方案都不會動到已經寫好的程式碼或 schema，決定好了再處理即可，不急。
 
 ## 開發
 

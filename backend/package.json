@@ -9,7 +9,8 @@
     "db:create": "wrangler d1 create webconf-2026-api-db",
     "db:migrations:new": "wrangler d1 migrations create DB",
     "db:migrations:local": "wrangler d1 migrations apply DB --local",
-    "db:migrations:remote": "wrangler d1 migrations apply DB --remote"
+    "db:migrations:remote": "wrangler d1 migrations apply DB --remote",
+    "hash-password": "node scripts/hash-password.mjs"
   },
   "dependencies": {
     "hono": "^4"
