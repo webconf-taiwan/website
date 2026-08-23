@@ -1,6 +1,7 @@
 import { Hono } from 'hono'
 import type { Bindings } from '../index'
 import { verifyPassword, generateSessionToken } from '../utils/crypto'
+import { requireAuth, type AuthVariables } from '../middleware/auth'
 
 // session 7 天過期，跟前端 Nuxt server route 設的 cookie maxAge 要對齊
 // （website/server/api/admin/login.post.js）。
@@ -12,13 +13,7 @@ type AdminRow = {
   password_hash: string
 }
 
-type SessionRow = {
-  id: number
-  email: string
-  expiresAt: string
-}
-
-export const auth = new Hono<{ Bindings: Bindings }>()
+export const auth = new Hono<{ Bindings: Bindings; Variables: AuthVariables }>()
 
 auth.post('/login', async (c) => {
   const body = await c.req.json().catch(() => null)
@@ -54,25 +49,8 @@ auth.post('/login', async (c) => {
   })
 })
 
-auth.get('/me', async (c) => {
-  const token = c.req.header('Authorization')?.replace(/^Bearer\s+/i, '')
-  if (!token) return c.json({ error: '未登入' }, 401)
-
-  const session = await c.env.DB
-    .prepare(
-      `SELECT admins.id as id, admins.email as email, sessions.expires_at as expiresAt
-       FROM sessions
-       JOIN admins ON admins.id = sessions.admin_id
-       WHERE sessions.token = ?`
-    )
-    .bind(token)
-    .first<SessionRow>()
-
-  if (!session || new Date(session.expiresAt) < new Date()) {
-    return c.json({ error: '登入已過期' }, 401)
-  }
-
-  return c.json({ admin: { id: session.id, email: session.email } })
+auth.get('/me', requireAuth, (c) => {
+  return c.json({ admin: c.get('admin') })
 })
 
 auth.post('/logout', async (c) => {

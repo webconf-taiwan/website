@@ -127,7 +127,13 @@ export default defineNuxtConfig({
         // 動態載入的去背套件：預打包成單一 chunk，dev 才不會 @fs 404（模型/wasm 仍執行期抓）
         '@imgly/background-removal',
         // 綠幕即時分割：同理預打包（wasm/模型從 public/mediapipe 自架載入）
-        '@mediapipe/tasks-vision'
+        '@mediapipe/tasks-vision',
+        // 後台專用（app/pages/admin/**）：Vite 不會預先知道這些只在 admin 路由才 import 的
+        // 套件，第一次進 /admin/login 才會現抓，沒預打包會硬重整一次頁面（連帶把表單內容清空）
+        '@tanstack/vue-query',
+        'vee-validate',
+        '@vee-validate/zod',
+        'zod'
       ]
     },
     esbuild: {

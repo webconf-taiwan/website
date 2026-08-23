@@ -18,6 +18,8 @@
     "@nuxtjs/seo": "^5.3.12",
     "@pinia/nuxt": "^0.11.3",
     "@takumi-rs/core": "^2.10.0",
+    "@tanstack/vue-query": "^5.102.0",
+    "@vee-validate/zod": "^4.15.1",
     "@vueuse/nuxt": "^14.3.0",
     "class-variance-authority": "^0.7.1",
     "gsap": "^3.15.0",
@@ -26,8 +28,10 @@
     "onnxruntime-web": "1.21.0",
     "pinia": "^3.0.4",
     "sharp": "^0.35.3",
+    "vee-validate": "^4.15.1",
     "vue": "^3.5.38",
-    "vue-router": "^5.1.0"
+    "vue-router": "^5.1.0",
+    "zod": "3.24.4"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.16.0",
