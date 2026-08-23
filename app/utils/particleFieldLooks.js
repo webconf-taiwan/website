@@ -68,6 +68,13 @@
 // particle-life 的互動力場「同時作用」，所以構圖留得住、粒子仍在裡面游動 ——
 // 是活的構圖，不是靜止貼圖。
 //
+//   renewMs  每隔多久「重生一次構圖」。0 / 沒給 = 構圖固定不變。
+//            ⚠️ 這是給「會真的收斂到終點」的矩陣用的解藥。seedPattern 產生器內部用
+//            Math.random，所以每次呼叫都是同款但不同排列的構圖 —— 粒子會從舊的一團團
+//            遷移到新的一團團，途中分裂、合併、長出新群落，永遠有下一個目標。
+//            配對是拿「上一組構圖」對「新構圖」算的（不是對 GPU 快照），所以不必
+//            readParticles 來回，也保證每顆粒子走的是短路徑、讀起來是遷移不是瞬移。
+//            太短會忙亂、太長會在中間那段又停住；12～18 秒是實測的舒服區間。
 //   pull  每單位距離想要的靠攏速度。調大 = 更貼合開場構圖。
 //   grip  速度被導引的強度。這是主要旋鈕：
 //           0        完全不維持（＝純湧現，規則想怎麼演就怎麼演）
@@ -96,6 +103,17 @@ export const PARTICLE_FIELD_LOOKS = {
   // 矩陣，那個 -0.55 會把各物種擠成互不往來的孤立球。snake 一樣是 self 極強（=1）
   // 所以「一顆顆分明的圓群落」這個細胞感留得住，但它對非鄰居給 0（沒有互斥），
   // 而且 i→i+1 是單向吸引（i+1→i 為 0）—— 群落之間會一直互相追逐，不會定格。
+  //
+  // ⚠️ 別把它換成 orbital（或其他 self 為負的矩陣）來「修」下面那個問題。
+  // 試過：長跑數字是好看（fill 0.26 / speed 20，不會退化），但 self 一變負就沒有
+  // 自我聚合，「匯聚成一顆顆細胞」的個性整個不見，看起來就跟另外四組一樣了。
+  // 這組要的就是匯聚感，那是它存在的理由。
+  //
+  // 真正的問題是「匯聚完就沒事做了」：粒子聚到 softClusters 那組群落之後，
+  // snake 的力已經滿足、hold 也已到位，整場停在十幾顆孤立的球上（實測 4 分鐘後
+  // fill 0.018 / speed 3–6，畫面 98% 全黑）。
+  // 解法不是換矩陣，是 hold.renewMs —— 讓「構圖本身」週期性重生，粒子永遠有下一個
+  // 目標要遷移過去，途中自然會分裂、合併、長出新群落。見檔頭 hold 那段。
   'cobalt-cells': {
     id: 'cobalt-cells',
     index: 1,
@@ -104,7 +122,14 @@ export const PARTICLE_FIELD_LOOKS = {
     swappedFrom: 'cellular',
     palette: 'blue',
     rules: { preset: 'snake', seedPattern: 'softClusters', species: 6 },
-    physics: { forceFactor: 0.95, friction: 0.31, repel: 1.1, minR: 5, rMax: 72 },
+    // ⚠️ minR 是這組唯一真正有效的旋鈕，別去調 grip。
+    // minR 是硬核斥力的半徑（dist < minR 就互斥），等於「粒子最多能擠多密」，
+    // 也就等於「一顆細胞有多大」。sandbox 原值 5 幾乎等於可以無限擠壓成一點，
+    // 所以 snake 會把整團 16000 顆疊成一個像素點（實測 fill 0.004、畫面 99% 全黑）。
+    // 為什麼不能用 grip 救：一團粒子裡 snake 的吸引力是「所有鄰居累加」的，密度越高
+    // 越強，而 seek 是每顆固定的 —— 實測 grip 從 28 拉到 56，fill 只從 0.004 到 0.012，
+    // 完全追不上。要讓細胞撐開就得從「能擠多密」下手。
+    physics: { forceFactor: 0.95, friction: 0.31, repel: 1.4, minR: 16, rMax: 72 },
     visual: { pointSize: 0.9, showGlow: false, heroOpacity: 0.6, aboutOpacity: 0.82 },
     glow: { glowSize: 3.2, glowIntensity: 0.016, glowSteepness: 5.5 },
     camera: { zoom: 1.58 },
@@ -113,7 +138,9 @@ export const PARTICLE_FIELD_LOOKS = {
     ambient: 0.55,
     // softClusters＝一團團柔邊細胞群。snake 的 SELF=1 本來就想結團，方向一致，
     // 所以鬆握就守得住，還能讓群落之間繼續互追。
-    hold: { pull: 6, grip: 28 },
+    // renewMs：這組唯一開著「構圖重生」的 —— 它是唯一會真的收斂到終點的矩陣，
+    // 需要有東西持續給它新目標。14 秒是「看得出在遷移」與「不會忙亂」之間的取捨。
+    hold: { pull: 6, grip: 28, renewMs: 14000 },
   },
 
   // ── 2 ────────────────────────────────────────────────────────────────────

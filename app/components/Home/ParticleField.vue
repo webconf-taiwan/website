@@ -223,7 +223,9 @@ let aboutSpec = null                 // PLImage.prepare 的產物
 let holdBase = null
 let shapeXY = null
 let holdJit = null                   // 游走用的 scratch，見 jitterInto
+let holdSpecies = null               // 每個 slot 的物種，構圖重生時配對要用（見 renewHold）
 let driftCycle = -1
+let renewCycle = -1
 let targetsReady = false
 let targetsGen = -1                  // 建 targets 當下的引擎世代
 let targetsW = 0                     // 建 targets 當下的模擬尺寸
@@ -243,6 +245,37 @@ function jitterInto (out, base, amp) {
     out[i + 1] = base[i + 1] + Math.sin(a) * r
   }
   return out
+}
+
+// 構圖重生：換一組「同款但不同排列」的開場構圖，粒子就會從舊的一團團遷移到新的
+// 一團團 —— 途中會分裂、合併、長出新群落。給 snake 那種「會真的收斂到終點」的
+// 矩陣用（見 particleFieldLooks 的 renewMs）。
+//
+// ⚠️ 配對是拿「上一組構圖」對「新構圖」算的，不是對 GPU 快照 ——
+//    readParticles 是一次 mapAsync 來回（1–2 幀），週期性做會固定掉幀；
+//    而 holdBase 本來就是粒子正被拉去的位置，拿它當起點配對的效果一樣好。
+// ⚠️ 每顆粒子的物種在生成後不能改，所以要配到「自己顏色」的目標點，
+//    holdSpecies 就是為此在 buildTargets 時記下來的。
+function renewHold () {
+  if (!holdBase || !holdSpecies || !engine) return
+  const { W, H } = engine.size
+  const T = look.rules.species
+  const n = holdSpecies.length
+
+  // 用上一組構圖的位置 + 記下來的物種組出一份「假快照」餵給配對器。
+  // slot 就是索引本身 —— holdBase / holdSpecies 都是以 slot 為索引存的。
+  const prev = new Array(n)
+  for (let i = 0; i < n; i++) {
+    prev[i] = { x: holdBase[i * 2], y: holdBase[i * 2 + 1], s: holdSpecies[i], slot: i }
+  }
+
+  try {
+    const seed = buildSeedTargets(look.rules.seedPattern, n, T, W, H)
+    holdBase = buildSlotTargets(prev, seed, T, W).shape
+    driftCycle = -1                  // 讓下一幀立刻用新構圖重算一次游走偏移
+  } catch (err) {
+    console.warn('[ParticleField] 構圖重生失敗，維持原構圖', err)
+  }
 }
 
 // 相機位移的單位換算：shader 算的是 ndc = (pos - center) * (2*zoom/W)，
@@ -376,6 +409,15 @@ function driftLoop (now) {
     // 目標點游走。只在「構圖那一端當家」時做 —— morphAmount 高的時候 blend 也高，
     // 這一槽的權重很低，換了看不到，只是白白上傳一次 buffer。
     if (hg > 0 && morphAmount < 0.5 && holdBase && shapeXY && !reducedMotion) {
+      // 構圖重生要排在游走之前 —— renewHold 會把 driftCycle 歸位，
+      // 讓同一幀就用新構圖重算偏移並上傳，不會有一輪拿舊構圖的空窗。
+      const renewMs = look.hold.renewMs
+      if (renewMs > 0) {
+        const rc = Math.floor(t / renewMs)
+        if (renewCycle === -1) renewCycle = rc        // 第一次不重生，先讓開場構圖站穩
+        else if (rc !== renewCycle) { renewCycle = rc; renewHold() }
+      }
+
       const cycle = Math.floor(t / HOLD_DRIFT_MS)
       if (cycle !== driftCycle) {
         driftCycle = cycle
@@ -414,6 +456,7 @@ function invalidateTargets () {
   holdBase = null
   shapeXY = null
   holdJit = null
+  holdSpecies = null
   morphAmount = 0
   engine?.setMorph?.(0, 0, 0)
   clearTimeout(resizeTimer)
@@ -453,7 +496,14 @@ async function buildTargets () {
 
   holdBase = hold
   shapeXY = shape
+  // 構圖重生時要配到「自己顏色」的目標點，而 slot 是粒子永不改變的身分 ——
+  // 趁這份快照還在，把每個 slot 的物種記下來（見 renewHold）。
+  holdSpecies = new Uint8Array(engine.config.count)
+  for (const p of snap) {
+    if (p.slot < holdSpecies.length) holdSpecies[p.slot] = p.s % T
+  }
   driftCycle = -1
+  renewCycle = -1
   engine.setTargets(hold, shape)
   targetsGen = engine.targetsGeneration
   targetsW = W
