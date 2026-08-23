@@ -56,6 +56,28 @@
 //
 // motion 欄位：這 5 組現在全是 chase（非對稱、站上待機速度下也還在動）。
 //
+// ─── hold：維持開場構圖的拉力 ──────────────────────────────────────────────
+// 換完矩陣之後還有第二個問題：五組看起來太像。因為真正好看、也真正有辨識度的是
+// seedPattern 畫出來的「開場構圖」（softClusters 的細胞團、orbitalBelts 的同心帶、
+// chaoticBands 的亂流條紋…），而規則一接管幾秒內就把它洗掉了 —— 剩下的都是同一種
+// 「飄浮細塵」。particle-life-seeds.js 的檔頭自己就寫著：
+//   "the opening read is what people see and remember"
+//
+// 所以每組多了一組 hold = { pull, grip }，用 PL.II 收攏圖片那套 shader seek 力
+// 把開場構圖按住（見 useParticleMorph 的 buildSeedTargets）。關鍵是這個力與
+// particle-life 的互動力場「同時作用」，所以構圖留得住、粒子仍在裡面游動 ——
+// 是活的構圖，不是靜止貼圖。
+//
+//   pull  每單位距離想要的靠攏速度。調大 = 更貼合開場構圖。
+//   grip  速度被導引的強度。這是主要旋鈕：
+//           0        完全不維持（＝純湧現，規則想怎麼演就怎麼演）
+//           12~25    鬆握，構圖看得出來但會慢慢流動變形
+//           30~50    握緊，構圖清楚，內部仍有運動
+//           55~85    近乎鎖死（PL.II 鎖圖片用的區間），內部運動幾乎沒了
+// ⚠️ grip 要跟 physics.forceFactor 一起看：力矩陣越想把粒子塌成球，就要越大的
+//    grip 才守得住。swappedFrom 那四組已經換成不塌的矩陣，所以鬆握就夠。
+// ⚠️ 這個值可以在 ?mode=tool 面板上即時拉，找到滿意的再寫回這裡。
+//
 // ─── 怎麼換 ────────────────────────────────────────────────────────────────
 //   1. 預設      不帶 query 就是「每次進站隨機抽一組」
 //   2. 指定一組  ?hero-animation=1 ~ 5（也認 id，例如 ?hero-animation=coral-membrane）
@@ -89,6 +111,9 @@ export const PARTICLE_FIELD_LOOKS = {
     budget: { density: 0.0278, max: 36000, min: 9000 },
     speed: { idle: 0.21, max: 0.8 },
     ambient: 0.55,
+    // softClusters＝一團團柔邊細胞群。snake 的 SELF=1 本來就想結團，方向一致，
+    // 所以鬆握就守得住，還能讓群落之間繼續互追。
+    hold: { pull: 6, grip: 28 },
   },
 
   // ── 2 ────────────────────────────────────────────────────────────────────
@@ -115,6 +140,9 @@ export const PARTICLE_FIELD_LOOKS = {
     budget: { density: 0.037, max: 48000, min: 9000 },
     speed: { idle: 0.16, max: 0.6 },
     ambient: 0.55,
+    // ⚠️ 這組刻意「不維持」開場構圖 —— spiral-conveyor 自己演化出來的絲狀環流
+    // 就是目前線上 hero 的樣子，按住反而是退步。要試著按住就把 grip 調到 20 上下。
+    hold: { pull: 0, grip: 0 },
   },
 
   // ── 3 ────────────────────────────────────────────────────────────────────
@@ -139,6 +167,9 @@ export const PARTICLE_FIELD_LOOKS = {
     budget: { density: 0.0208, max: 27000, min: 9000 },
     speed: { idle: 0.24, max: 0.9 },
     ambient: 0.55,
+    // orbitalBelts＝同心軌道帶。這是 5 組裡構圖最幾何、最像「標本切片」的一組，
+    // 所以握得比別組緊一點，讓那幾條帶子明確看得出來。
+    hold: { pull: 6, grip: 32 },
   },
 
   // ── 4 ────────────────────────────────────────────────────────────────────
@@ -166,6 +197,9 @@ export const PARTICLE_FIELD_LOOKS = {
     budget: { density: 0.0324, max: 42000, min: 9000 },
     speed: { idle: 0.27, max: 1.0 },
     ambient: 0.55,
+    // chaoticBands＝亂流條紋。這組刻意握最鬆 —— predator 的追逐速度是 5 組裡最快的
+    // （實測平均速率約 3 倍），握太緊就把「群飛」那個動感壓掉了。
+    hold: { pull: 5, grip: 20 },
   },
 
   // ── 5 ────────────────────────────────────────────────────────────────────
@@ -189,6 +223,8 @@ export const PARTICLE_FIELD_LOOKS = {
     budget: { density: 0.0254, max: 33000, min: 9000 },
     speed: { idle: 0.21, max: 0.8 },
     ambient: 0.55,
+    // linkedClusters＝一串串相連的團塊，很接近「珊瑚」的分枝感。
+    hold: { pull: 6, grip: 26 },
   },
 }
 

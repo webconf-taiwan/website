@@ -68,6 +68,40 @@ export function buildImageTargets (spec, N, W, H) {
   return { tx, ty, tt }
 }
 
+// --- 開場構圖 → 目標點 ------------------------------------------------------
+// seedPattern（softClusters / orbitalBelts / chaoticBands…）畫出來的那張開場圖
+// 是整個效果裡最好看、辨識度也最高的一刻 —— particle-life-seeds.js 的檔頭自己就
+// 寫著「the opening read is what people see and remember」。但規則一接管，幾秒內
+// 就會把它洗掉（力矩陣自吸引強的甚至會塌成幾顆球）。
+//
+// 這個函式把同一組 seed 產生器「當成目標點」再跑一次，交給 seek 力去維持，
+// 構圖就留得住，而粒子仍在裡面照常互相作用 —— 形狀是活的。
+//
+// ⚠️ 回傳的是 buildImageTargets 那組同樣的 {tx, ty, tt} 介面，所以可以直接餵給
+//    buildSlotTargets 做同物種配對。
+// ⚠️ 只會在 client 呼叫（要 window.PLSeeds）。seed 產生器內部用 Math.random，
+//    所以每次呼叫的結果不同 —— 一組 targets 只能算一次，重算會讓構圖跳掉。
+//
+// @param {string} name seedPattern 名稱
+// @param {number} N    粒子數
+// @param {number} T    物種數
+// @param {number} W    模擬寬（engine.size.W）
+// @param {number} H    模擬高
+export function buildSeedTargets (name, N, T, W, H) {
+  const tx = new Float32Array(N)
+  const ty = new Float32Array(N)
+  const tt = new Uint8Array(N)
+  const write = (i, x, y, _vx, _vy, type) => {
+    if (i < 0 || i >= N) return
+    tx[i] = x
+    ty[i] = y
+    tt[i] = type % T
+  }
+  window.PLSeeds.run(name, write, N, T, W, H)
+
+  return { tx, ty, tt }
+}
+
 // --- 配對：目前粒子快照 ↔ 圖片目標點 ----------------------------------------
 // snap 是 engine.readParticles() 的回傳（[{x,y,vx,vy,s}]）。
 // 同物種內各自依掃描線順序排序後就近配對，回傳「排好序的起點/終點」陣列，
@@ -178,6 +212,7 @@ export function useParticleMorph () {
     paletteToLinear,
     lerpPaletteLinear,
     buildImageTargets,
+    buildSeedTargets,
     pairSnapshotToTargets,
     buildSlotTargets,
   }
