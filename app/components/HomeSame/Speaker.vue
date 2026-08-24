@@ -37,8 +37,34 @@ function nameRuns (name) {
   return name.split(CJK_RUN).filter(Boolean).map(t => ({ t, zh: CJK_RUN.test(t) }))
 }
 
+// --- 換人的編排 ------------------------------------------------------------
+// 設計要的順序（點下另一位時）：
+//   1. 框線與框線上下的文字，連同引線一起淡出
+//   2. 正方形框線「由小放到大」
+//   3. 框線到定位之後，引線才從框邊延伸到名字
+//   4. 同時框線上下的文字用打字效果進場
+//
+// ⚠️ 粒子那邊（HomeSameField.swapSpeaker）是另一條時間軸，兩邊「不互相等待」——
+// 那邊是炸開 520ms + 重組 1100ms，這邊全長約 1.2 秒，收尾差不多同時。
+// 刻意不做成一條共用的 timeline：粒子那條要等 readParticles（非同步、時間不定），
+// 綁在一起的話版面動畫會被它卡住，反而更難對齊。
 const LEADER_OUT_MS = 260
 const LEADER_IN_MS = 420
+// ⚠️ 這一段是「為什麼調小起始值卻看不出差別」的答案，改之前先讀：
+//
+// 1. 框線的大小是動 width / height，不是 transform: scale。
+//    scale 會把 1px 的邊框一起縮 —— 起始 2% 時邊框是 0.02px，瀏覽器根本畫不出來，
+//    所以小的時候畫面上是「什麼都沒有」，框線要到三成大才浮現。那才是 0.1 與 0.02
+//    看起來一樣的真正原因，不是幅度不夠小。改動尺寸則邊框全程都是 1px。
+// 2. ease 要選前段慢的。power3.out 前 10% 的時間就衝到 27% 大小，那個「點」只存在
+//    一兩幀。power2.out 前 10% 是 19%，再配下面的「停一下」才看得出是從點放射開。
+const FRAME_DOT_MS = 130       // 小方點先停這麼久，讓眼睛跟得上
+const FRAME_GROW_MS = 520
+// 框線從幾倍大開始長。0.02 = 300px 的框從 6px 開始，等於從中央一個點放射出來。
+// ⚠️ transform: scale 連框線本身的粗細一起縮（1px 邊 → 0.02px），所以最初那幾格
+// 根本畫不出來 —— 看起來就是「從無到有長出來」，而不是「一個小方塊突然出現」。
+const FRAME_FROM = 0.3
+const TYPE_MS = 560            // 打字全長（實際步進數 = 字數，見 playSwap）
 
 const sectionRef = ref(null)
 const frameRef = ref(null)          // 中央 300×300 觀景框（引線的終點）
@@ -49,7 +75,13 @@ const nameRefs = ref([])            // 八個名字按鈕（引線的起點）
 const leader = ref(null)
 const leaderDraw = ref(1)
 const leaderFade = ref(1)
-let leaderTween = null
+// 框線與上下文字的動畫狀態。fade = 透明度，scale = 框線大小，
+// type* = 打字進度 0..1（用 clip-path 從左往右揭開，配 steps() 就是一格一字）。
+const frameFade = ref(1)
+const frameScale = ref(1)
+const typeTop = ref(1)
+const typeBottom = ref(1)
+let swapTweens = []      // 這一輪編排開出去的 tween，換人／卸載時要全部 kill
 let onResize = null
 let reducedMotion = false
 
@@ -91,39 +123,94 @@ function updateLeader () {
   }
 }
 
-// 先把舊的往中心收起並淡出，換好座標後再從中心畫出去。
-// ⚠️ 收起期間刻意不重算 leader.value —— 它還要指著「舊的」那個名字。
-async function animateLeader () {
+// gsap tween 包成 promise，讓下面那條編排可以直接 await
+function tween (obj, vars, ms, ease, onUpdate) {
   const { $gsap } = useNuxtApp()
-  const s = { draw: leaderDraw.value, fade: leaderFade.value }
-  const sync = () => { leaderDraw.value = s.draw; leaderFade.value = s.fade }
-
-  leaderTween?.kill()
-  if (leader.value && !reducedMotion) {
-    await new Promise((done) => {
-      leaderTween = $gsap.to(s, {
-        draw: 0, fade: 0, duration: LEADER_OUT_MS / 1000, ease: 'power2.in', onUpdate: sync, onComplete: done,
-      })
+  return new Promise((done) => {
+    const tw = $gsap.to(obj, {
+      ...vars,
+      duration: reducedMotion ? 0 : ms / 1000,
+      ease,
+      onUpdate,
+      onComplete: done,
     })
-  }
-
-  await nextTick()
-  updateLeader()                      // 這時 current 已經是新的了
-  s.draw = 0; s.fade = 1; sync()
-  if (!leader.value) return
-
-  await new Promise((done) => {
-    leaderTween = $gsap.to(s, {
-      draw: 1, duration: reducedMotion ? 0 : LEADER_IN_MS / 1000, ease: 'power2.out', onUpdate: sync, onComplete: done,
-    })
+    swapTweens.push(tw)
   })
 }
 
-// 引線與粒子同時跑，不互相等待
+// 打字用的字數。⚠️ 步進數要等於「看得到的字數」，steps() 才會一格一字；
+// 給固定值的話短字串會慢吞吞、長字串會一次跳好幾個字。
+const topChars = computed(() =>
+  (currentSpeaker.value?.tag || '').length + String(current.value + 1).length + 2)
+const bottomChars = computed(() =>
+  (currentSpeaker.value?.skills || []).join(' · ').length)
+
+// 換人的版面編排。與粒子那條時間軸並行，彼此不等待（見檔頭 LEADER_OUT_MS 那段）。
+async function playSwap () {
+  killSwap()
+
+  // reduced-motion：直接跳到定位，不做任何動畫
+  if (reducedMotion) {
+    frameFade.value = 1; frameScale.value = 1
+    typeTop.value = 1; typeBottom.value = 1
+    leaderFade.value = 1; leaderDraw.value = 1
+    await nextTick()
+    updateLeader()
+    return
+  }
+
+  // 1) 淡出：框線、上下文字、引線一起。引線同時往中心收（dashoffset 回去）。
+  // ⚠️ 這段刻意不重算 leader.value —— 它還要指著「舊的」那個名字，收起來才對得上。
+  const out = { fade: frameFade.value, draw: leaderDraw.value }
+  await tween(out, { fade: 0, draw: 0 }, LEADER_OUT_MS, 'power2.in', () => {
+    frameFade.value = out.fade
+    leaderFade.value = out.fade
+    typeTop.value = out.fade
+    typeBottom.value = out.fade
+    leaderDraw.value = out.draw
+  })
+
+  // 2) 框線由小放到大。文字這時是「透明度已經回來、但還沒打出來」的狀態。
+  frameScale.value = FRAME_FROM
+  frameFade.value = 0
+  typeTop.value = 0
+  typeBottom.value = 0
+  leaderFade.value = 1
+
+  // 2a) 中央那個小方點先亮起來、停一下 —— 少了這拍，放射的起點看不見（見上面註解）
+  const dot = { fade: 0 }
+  await tween(dot, { fade: 1 }, FRAME_DOT_MS, 'none', () => { frameFade.value = dot.fade })
+
+  // 2b) 放射長大
+  const grow = { s: FRAME_FROM }
+  await tween(grow, { s: 1 }, FRAME_GROW_MS, 'power2.out', () => { frameScale.value = grow.s })
+
+  // 3) 框線到定位之後才量引線的終點 —— 早一步量到的是「放大中」的框，位置會偏。
+  await nextTick()
+  updateLeader()
+
+  // 4) 引線延伸出去，同時上下文字打字進場。兩者並行，不互相等待。
+  const line = { draw: 0 }
+  const type = { top: 0, bottom: 0 }
+  await Promise.all([
+    leader.value
+      ? tween(line, { draw: 1 }, LEADER_IN_MS, 'power2.out', () => { leaderDraw.value = line.draw })
+      : Promise.resolve(),
+    tween(type, { top: 1 }, TYPE_MS, `steps(${Math.max(1, topChars.value)})`, () => { typeTop.value = type.top }),
+    tween(type, { bottom: 1 }, TYPE_MS, `steps(${Math.max(1, bottomChars.value)})`, () => { typeBottom.value = type.bottom }),
+  ])
+}
+
+function killSwap () {
+  for (const tw of swapTweens) tw.kill()
+  swapTweens = []
+}
+
+// 版面與粒子同時跑，不互相等待
 function select (i) {
   if (i === current.value || speakerBusy.value) return
   const next = SPEAKERS.value[i]
-  animateLeader()
+  playSwap()
   selectSpeaker(i, next?.portrait)
 }
 
@@ -135,7 +222,7 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  leaderTween?.kill()
+  killSwap()
   if (onResize) window.removeEventListener('resize', onResize)
 })
 </script>
@@ -220,17 +307,39 @@ onBeforeUnmount(() => {
         </span>
       </button>
 
-      <!-- 中央觀景框：只有框線，人像是背後那張 canvas -->
+      <!-- 中央觀景框：只有框線，人像是背後那張 canvas。
+           換人時三樣東西各自動：框線縮放（frameScale）、整組淡出入（frameFade）、
+           上下文字用 clip-path 從左往右揭開（typeTop / typeBottom = 打字）。
+           ⚠️ 打字用 clip-path 而不是逐字塞 DOM：後者每格都要動一次 DOM，
+           而且會讓文字寬度一直變、右對齊的那行會抖。 -->
       <div class="order-first flex flex-col items-stretch gap-y-2 lg:order-none lg:col-start-2 lg:row-span-4 lg:row-start-1">
-        <div class="flex items-start justify-between font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-pre-800">
-          <span>{{ currentSpeaker?.tag }}</span>
-          <span>{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+        <div
+          class="flex items-start justify-between font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-pre-800"
+          :style="{ opacity: frameFade }"
+        >
+          <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
+          <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+        </div>
+        <!-- 外層是固定尺寸的佔位（版面不能跟著動畫抖），框線本身絕對定位在正中央、
+             用 width/height 百分比放大。
+             ⚠️ 不要改回 transform: scale —— 那會把 1px 的邊框一起縮，起始 2% 時邊框
+             是 0.02px，瀏覽器畫不出來，於是「從小點放射」的前半段整段是空白的
+             （見 script 裡 FRAME_DOT_MS 那段註解）。動 width/height 則邊框全程 1px。 -->
+        <div class="relative aspect-square w-full lg:size-[300px]">
+          <div
+            ref="frameRef"
+            class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-pre-800/80"
+            :style="{
+              width: `${frameScale * 100}%`,
+              height: `${frameScale * 100}%`,
+              opacity: frameFade,
+            }"
+          />
         </div>
         <div
-          ref="frameRef"
-          class="aspect-square w-full border border-pre-800/80 lg:size-[300px]"
-        />
-        <div class="flex flex-wrap items-center justify-end gap-x-2 font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800">
+          class="flex flex-wrap items-center justify-end gap-x-2 font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800"
+          :style="{ opacity: frameFade, clipPath: `inset(0 ${(1 - typeBottom) * 100}% 0 0)` }"
+        >
           <template v-for="(sk, k) in currentSpeaker?.skills" :key="sk">
             <span v-if="k > 0" class="text-accent-1">·</span>
             <span>{{ sk }}</span>

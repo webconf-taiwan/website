@@ -17,25 +17,41 @@
 //   4. PLAmbient 四層擾動（代謝／呼吸／亂流／潮汐）。
 
 const { loadParticleKit } = useParticleKit()
-const { countFor, maxDpr } = useParticleBudget()
-const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
+const { countFor, maxDpr, isMobile } = useParticleBudget()
+const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 首頁不只這一張 canvas（PL.III 講者場也有一張），同時只能有一張在跑 —— 見 useParticleStage。
 const { activeStage } = useParticleStage()
 
 const canvasRef = ref(null)
 const backend = ref('')
 
-// --- 可調參數：改這裡就好 -------------------------------------------------
-// 力矩陣。非對稱的才會一直動 —— 這是生命感最大的來源。
-//   snake            self=1 會聚成一顆顆分明的圓群落（設計稿的樣子），
-//                    但 i→i+1 是單向吸引（i-1 為 0），群落之間會一直互相追逐。
-//   spiral-conveyor  self=-0.1，長成絲狀環流，比較像星雲、比較不像細胞。
-//   rps              三方追逐，動得最兇。
-// cellular / chains1 / chains2 是「對稱」矩陣（i↔j 相等），會收斂成不動的菌落球
-// —— demo 呆板的主因就是它，別用。
-const PRESET = 'spiral-conveyor'
-const SPECIES = 7                    // 對齊色盤長度（每組 palette 都是 7 色）
-const HERO_PALETTE = 'blue'          // PL.I 滿版藍場
+// --- 效果（力矩陣 / 物理 / 色盤 / 光暈 / 相機）------------------------------
+// 這些參數整組搬到 app/utils/particleFieldLooks.js 了，那裡有 sandbox demo 那 5 組
+// 「載入範例」的完整換算與踩坑說明。跑哪一組是網址決定的：
+//
+//   （不帶參數）              每次進站隨機抽一組
+//   ?hero-animation=1 ~ 5     指定一組（也認 id，例如 coral-membrane）
+//   ?mode=tool                右側開一塊切換面板，點一下就換、不用重整
+//   dev console               __fieldLook('fluoro-swarm')
+//
+// ⚠️ 用 let 而不是 ref：driftLoop 每幀都要讀它，不需要響應式的開銷。畫面上要跟著
+//    變的東西（面板的選取狀態）另外開 activeLook 這個 ref。
+// ⚠️ SSR 時讀不到 window，先拿保底那組；client 的 init() 會再讀一次網址。
+//    canvas 是 onMounted 才建的，畫面上沒有東西從 look 算出來 → 沒有 hydration 落差。
+let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
+
+// 只給右側面板用的響應式狀態
+// ⚠️ looks 這個別名不能省：auto-import 只掃 script，只在 template 出現的名字不會
+//    被補上 import。
+const looks = FIELD_LOOK_LIST
+const activeLook = shallowRef(look)   // 目前這組（shallow 就夠，look 物件不會被改）
+const pinned = ref(false)             // true = 網址指定的，false = 隨機抽到的
+const toolMode = ref(false)           // ?mode=tool
+const switching = ref(false)          // 切換中（重生成粒子要一兩秒）
+// 面板上那支「維持開場構圖」的滑桿。1 = 照 look.hold 的設定，0 = 完全放手（純湧現）。
+// ⚠️ 與 look 一樣是 driftLoop 每幀讀的裸變數，另外用 holdPct 這個 ref 給面板顯示。
+let holdScale = 1
+const holdPct = ref(100)
 
 // PL.II 收攏的目標圖。出圖規則很重要：畫布要留成最終版位的比例、主體放在
 // 要出現的位置（side.png 是 1440×720、主體在左 1/3 且切齊左緣），
@@ -64,46 +80,70 @@ const MORPH_RELEASE = 0.012
 // 一團緊湊的開場構圖，之後捲回來就回不到滿版。
 const REBUILD_SETTLE_MS = 3000
 
+// --- 讓「被按住的構圖」不要變成死的貼圖 --------------------------------------
+// ⚠️ 這段是機制上的必要，不是可有可無的裝飾。seek 是「收斂到固定點的臨界阻尼
+// 彈簧」：粒子一到定位，desiredV 就是 0，grip 會把速度歸零。實測 #1 在 grip 28
+// 之下平均速率從 27.8 px/s 掉到 1.1 —— 構圖守住了，但畫面等同靜止。
+// SpeakerField 已經完整踩過這個坑（見那裡的「閃動」長註解）：調 forceFactor、
+// 調 grip/pull、加 ambient 脈衝、加 disturb 全部無效，因為那是穩定平衡。
+//
+// 唯一有效的作法是「讓目標點自己會動」—— 每隔一段時間，把每顆粒子的目標點換成
+// 「自己原點附近的一個新的隨機偏移」，粒子就一直在追一個會動的東西。
+// 構圖在數學上跑不掉：每顆粒子永遠被限制在自己 seed 原點的 AMP 半徑內。
+//
+// ⚠️ 與 SpeakerField 的差異：那裡 spread/shape 兩個目標槽剛好一個閒著，所以它靠
+// blend 在 1↔0 之間擺盪來做游走；這裡兩個槽都用掉了（blend=0 是構圖、blend=1 是
+// side.png，而 blend 是捲動位置決定的），所以改成直接抽換 blend=0 那一槽的內容。
+// 偏移量小，換過去只是讓粒子有個新方向可追，看起來是流動而不是跳動。
+//
+// AMP 是「構圖清晰度 vs 游走幅度」的取捨，跟 SpeakerField 一樣是主要旋鈕。
+// 這裡的構圖尺度（細胞團、軌道帶）比人像五官大得多，所以 AMP 可以比那邊的 7 大。
+// 要更明顯優先縮短 PERIOD，不要放大 AMP。
+const HOLD_DRIFT_AMP = 22            // 每顆粒子的游走半徑（模擬 px）
+const HOLD_DRIFT_MS = 2400           // 多久換一組新的隨機偏移
+// ⚠️ 光是「換一組偏移」還不夠：粒子約 0.2 秒就追到新位置，接下來 2.2 秒又是靜止的
+//（實測平均速率仍只有 0.7 px/s）。SpeakerField 是靠 blend 在兩組目標之間連續擺盪
+// 才有持續運動，但這裡兩個目標槽都用掉了（構圖／side.png），blend 是捲動位置決定的。
+//
+// 所以改成讓「握力自己呼吸」：grip 在 0 ↔ 設定值之間緩慢來回。
+//   grip 低的半週期 —— 力場贏，構圖鬆開、粒子照自己的規則流動
+//   grip 高的半週期 —— seek 贏，粒子被帶回自己的構圖原點
+// 構圖仍然跑不掉（每輪都會被拉回原點），但畫面全程都在動。
+// 不需要任何 buffer 上傳，只是每幀多算一個 cos。
+const HOLD_BREATHE_MS = 7000         // 握力走完「鬆 → 緊 → 鬆」一輪
+const HOLD_BREATHE_FLOOR = 0.18      // 最鬆的時候還留多少握力（0 = 完全放手）
+
 // 模擬速度分三段疊起來：
 //   1. 開場 —— 粒子從 seedPattern 的螺旋構圖「散開」的那幾秒要快，才看得到
 //      規則接管、結構溶解的過程；散開後要明顯慢下來。
 //   2. 待機 —— 極慢，只是緩緩呼吸。
 //   3. 捲動 —— 依捲動速度即時加速，停下來再緩降回待機。
+// ⚠️ 只有開場那段是共用的（它是版面編排、不是效果）；待機速度與全速捲動速度
+// 各組效果不同，在 look.speed 裡。
 const SIM_SPEED_INTRO = 1.5          // 開場散開時
 const INTRO_HOLD_MS = 1800           // 維持全速多久
 const INTRO_FADE_MS = 5000           // 之後花多久降到待機速度
-const SIM_SPEED_IDLE = 0.16          // 散開後的待機速度
-const SIM_SPEED_MAX = 0.6            // 全速捲動時
 const SCROLL_REF = 2200              // 捲動速度 px/s 到這個值就吃滿加速
 const ATTACK = 0.14                  // 每幀往上追的比例
 const RELEASE = 0.022                // 每幀往下降的比例（比 ATTACK 小很多）
-const AMBIENT_INTENSITY = 0.55       // 四層擾動的全域強度倍率（1 = demo 原設定）
 
-// 對齊 SandboxScience 預設。路線 C 不需要在遷移時關掉它 —— 互動力場與 seek 力
-// 同時作用，正是「形狀是活的」的來源。
-const FORCE_FACTOR = 1.0
-// 捲動中把互動力場壓掉多少（1 = 全部暫停）。遷移過程乾淨、停下來才擴散。
+// 互動力場（look.physics.forceFactor）在遷移時不需要關掉 —— 它與 seek 力同時
+// 作用，正是「形狀是活的」的來源。
+// 這裡只留「捲動中要把它壓掉多少」（1 = 全部暫停）：遷移過程乾淨、停下來才擴散。
 const SCROLL_CALM = 0.6
 
 // 相機：改用圖片收攏之後，「往左收」是靠 side.png 自己的構圖決定的
 //（點雲落在圖片框的左 1/3），所以相機維持不動，避免雙重位移把圖推出畫面。
-// 要微調第二區塊的取景就動這兩個值。
-const HERO_ZOOM = 1.35
-const ABOUT_ZOOM = 1.35
+// hero 與 about 的 zoom 目前一樣（都是 look.camera.zoom），保留 lerp 是為了之後
+// 要單獨微調第二區塊取景時有地方下手。
 // 畫面內容往左推的比例（相對視窗寬度）。
 // ⚠️ 上限：粒子只存在於 [0,W]×[0,H]，相機推出這個範圍就會看到空白。
 // 可推的最大比例 = (zoom − 1) / 2。
 const ABOUT_SHIFT = 0
-const HERO_OPACITY = 0.55
-const ABOUT_OPACITY = 0.75           // 圖片點雲要看得出形狀，比自由場亮一點
 
-// 粒子預算：依 canvas 面積算，不寫死（見 useParticleBudget 的長註解 ——
-// 力場成本是 N² / 面積，寫死的數字在窄視窗上會變成災難）。
-// DENSITY 就是「原本桌機的 48000 ÷ 1440×900」，所以桌機行為完全不變。
+// 粒子預算在 look.budget（依 canvas 面積算、不寫死。見 useParticleBudget 的長註解
+// —— 力場成本是 N² / 面積，寫死的數字在窄視窗上會變成災難）。
 // 開場再實測 fps 決定要不要對半砍（docs §10 陷阱二）。
-const COUNT_DENSITY = 0.037
-const COUNT_MAX = 48000
-const COUNT_MIN = 9000
 
 // 閒置多久就停掉模擬。pause 只是跳過渲染與計算，canvas 會保留最後一幀，
 // 所以畫面不會消失、只是定格 —— 使用者一動就無縫接回去。
@@ -160,7 +200,7 @@ function updateProgress () {
 let simSpeed = SIM_SPEED_INTRO
 let scrollHeat = 0                   // 平滑後的捲動強度 0..1
 let morphAmount = 0                  // 平滑後的收攏拉力 0..1（釋放比進場慢）
-let appliedForce = FORCE_FACTOR      // 上次寫進引擎的 forceFactor
+let appliedForce = look.physics.forceFactor   // 上次寫進引擎的 forceFactor
 let lastScrollY = 0
 let lastTime = 0
 let introStart = 0                   // 引擎就緒的時刻，開場包絡從這裡算
@@ -178,12 +218,65 @@ let aboutLin = null
 //
 // targets 只算一次：配對只決定「誰去哪個點」，之後由物理接管，不會過期。
 let aboutSpec = null                 // PLImage.prepare 的產物
+// 兩組目標點留著參照：holdBase 是「開場構圖」的原點（游走以它為基準），
+// shapeXY 是 side.png。每次重掛 setTargets 都要兩個一起給。
+let holdBase = null
+let shapeXY = null
+let holdJit = null                   // 游走用的 scratch，見 jitterInto
+let holdSpecies = null               // 每個 slot 的物種，構圖重生時配對要用（見 renewHold）
+let driftCycle = -1
+let renewCycle = -1
 let targetsReady = false
 let targetsGen = -1                  // 建 targets 當下的引擎世代
 let targetsW = 0                     // 建 targets 當下的模擬尺寸
 let targetsH = 0
 let onResize = null
 let resizeTimer = 0
+
+// 游走用：每顆粒子在自己原點附近的一個隨機小偏移。
+// 半徑取 0.3~1.0 × amp，全部等長的話會變成一圈規則的環。
+// ⚠️ 寫進呼叫端給的 scratch buffer，不要每次配新的 —— 48000 顆是一份 384KB 的
+// Float32Array，每 2.4 秒配一份純粹是餵 GC（HomeSame/Field 為了同樣理由改成 jitA/jitB）。
+function jitterInto (out, base, amp) {
+  for (let i = 0; i < base.length; i += 2) {
+    const a = Math.random() * Math.PI * 2
+    const r = amp * (0.3 + 0.7 * Math.random())
+    out[i] = base[i] + Math.cos(a) * r
+    out[i + 1] = base[i + 1] + Math.sin(a) * r
+  }
+  return out
+}
+
+// 構圖重生：換一組「同款但不同排列」的開場構圖，粒子就會從舊的一團團遷移到新的
+// 一團團 —— 途中會分裂、合併、長出新群落。給 snake 那種「會真的收斂到終點」的
+// 矩陣用（見 particleFieldLooks 的 renewMs）。
+//
+// ⚠️ 配對是拿「上一組構圖」對「新構圖」算的，不是對 GPU 快照 ——
+//    readParticles 是一次 mapAsync 來回（1–2 幀），週期性做會固定掉幀；
+//    而 holdBase 本來就是粒子正被拉去的位置，拿它當起點配對的效果一樣好。
+// ⚠️ 每顆粒子的物種在生成後不能改，所以要配到「自己顏色」的目標點，
+//    holdSpecies 就是為此在 buildTargets 時記下來的。
+function renewHold () {
+  if (!holdBase || !holdSpecies || !engine) return
+  const { W, H } = engine.size
+  const T = look.rules.species
+  const n = holdSpecies.length
+
+  // 用上一組構圖的位置 + 記下來的物種組出一份「假快照」餵給配對器。
+  // slot 就是索引本身 —— holdBase / holdSpecies 都是以 slot 為索引存的。
+  const prev = new Array(n)
+  for (let i = 0; i < n; i++) {
+    prev[i] = { x: holdBase[i * 2], y: holdBase[i * 2 + 1], s: holdSpecies[i], slot: i }
+  }
+
+  try {
+    const seed = buildSeedTargets(look.rules.seedPattern, n, T, W, H)
+    holdBase = buildSlotTargets(prev, seed, T, W).shape
+    driftCycle = -1                  // 讓下一幀立刻用新構圖重算一次游走偏移
+  } catch (err) {
+    console.warn('[ParticleField] 構圖重生失敗，維持原構圖', err)
+  }
+}
 
 // 相機位移的單位換算：shader 算的是 ndc = (pos - center) * (2*zoom/W)，
 // 所以畫面上位移的「視窗寬度比例」= 相機位移(sim px) * zoom / W。
@@ -231,11 +324,12 @@ function driftLoop (now) {
       const u = 1 - (age - INTRO_HOLD_MS) / INTRO_FADE_MS
       intro = u * u * (3 - 2 * u)
     }
-    const base = SIM_SPEED_IDLE + (SIM_SPEED_INTRO - SIM_SPEED_IDLE) * intro
+    const idleSpeed = look.speed.idle
+    const base = idleSpeed + (SIM_SPEED_INTRO - idleSpeed) * intro
 
     const v = Math.abs(y - lastScrollY) / dt                   // px/s
     const heat = Math.min(1, v / SCROLL_REF)                   // 0 = 靜止, 1 = 全速捲動
-    const target = base + (SIM_SPEED_MAX - SIM_SPEED_IDLE) * heat
+    const target = base + (look.speed.max - idleSpeed) * heat
     // 加速追得快、減速拖得慢
     const k = target > simSpeed ? ATTACK : RELEASE
     simSpeed += (target - simSpeed) * k
@@ -244,7 +338,7 @@ function driftLoop (now) {
     // 捲動中壓低互動力場 = 暫停「自動擴散」，讓遷移讀起來乾淨；停下來再放回去，
     // 粒子就在輪廓裡重新活過來。用同一組 attack/release，跟 simSpeed 同步呼吸。
     scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
-    const wanted = FORCE_FACTOR * (1 - SCROLL_CALM * scrollHeat)
+    const wanted = look.physics.forceFactor * (1 - SCROLL_CALM * scrollHeat)
     if (Math.abs(wanted - appliedForce) > 0.01) {
       appliedForce = wanted
       engine.setForce?.(wanted)      // 會重寫 80 bytes 的 options buffer，所以設個門檻
@@ -255,7 +349,9 @@ function driftLoop (now) {
 
   const p = progress
   const { W, H } = engine.size
-  const zoom = HERO_ZOOM + (ABOUT_ZOOM - HERO_ZOOM) * p
+  const heroZoom = look.camera.zoom
+  const aboutZoom = look.camera.zoom
+  const zoom = heroZoom + (aboutZoom - heroZoom) * p
   const baseX = shiftToCameraX(ABOUT_SHIFT * p, zoom, W)
 
   // 緩慢的電影感漂移：兩個不同週期的正弦疊加，避免看得出循環
@@ -294,7 +390,41 @@ function driftLoop (now) {
       morphAmount += (e - morphAmount) * (e > morphAmount ? MORPH_ATTACK : MORPH_RELEASE)
       if (morphAmount < 0.002) morphAmount = 0
     }
-    engine.setMorph?.(MORPH_PULL * morphAmount, MORPH_GRIP * morphAmount, e)
+    // 拉力從「維持開場構圖」的底線，插值到「鎖成 side.png」的全力。
+    // ⚠️ 底線不是 0：morphAmount=0（hero）時 blend 也是 0，目標點就是開場構圖那組，
+    // 所以這條底線拉力做的是「把構圖按住」。hold.grip=0 的那組（深海流光）等於沒有
+    // 底線，行為與加這段之前完全一致。
+    // holdScale 是面板上那支滑桿（1 = 照 look 設定），只縮放「底線」那一端 ——
+    // morphAmount=1 時仍然是完整的 MORPH_PULL/GRIP，不會連 PL.II 鎖圖片一起被調弱。
+    // 握力呼吸（見上面 HOLD_BREATHE_MS 的說明）。reduced-motion 下就維持固定握力。
+    const breathe = reducedMotion
+      ? 1
+      : HOLD_BREATHE_FLOOR + (1 - HOLD_BREATHE_FLOOR) * (0.5 - 0.5 * Math.cos(t / HOLD_BREATHE_MS * Math.PI * 2))
+    const hp = look.hold.pull * holdScale * breathe
+    const hg = look.hold.grip * holdScale * breathe
+    const pull = hp + (MORPH_PULL - hp) * morphAmount
+    const grip = hg + (MORPH_GRIP - hg) * morphAmount
+    engine.setMorph?.(pull, grip, e)
+
+    // 目標點游走。只在「構圖那一端當家」時做 —— morphAmount 高的時候 blend 也高，
+    // 這一槽的權重很低，換了看不到，只是白白上傳一次 buffer。
+    if (hg > 0 && morphAmount < 0.5 && holdBase && shapeXY && !reducedMotion) {
+      // 構圖重生要排在游走之前 —— renewHold 會把 driftCycle 歸位，
+      // 讓同一幀就用新構圖重算偏移並上傳，不會有一輪拿舊構圖的空窗。
+      const renewMs = look.hold.renewMs
+      if (renewMs > 0) {
+        const rc = Math.floor(t / renewMs)
+        if (renewCycle === -1) renewCycle = rc        // 第一次不重生，先讓開場構圖站穩
+        else if (rc !== renewCycle) { renewCycle = rc; renewHold() }
+      }
+
+      const cycle = Math.floor(t / HOLD_DRIFT_MS)
+      if (cycle !== driftCycle) {
+        driftCycle = cycle
+        if (!holdJit || holdJit.length !== holdBase.length) holdJit = new Float32Array(holdBase.length)
+        engine.setTargets(jitterInto(holdJit, holdBase, HOLD_DRIFT_AMP), shapeXY)
+      }
+    }
   }
 }
 
@@ -312,7 +442,8 @@ function applyProgress (p) {
   if (!engine) return
   const e = progress * progress * (3 - 2 * progress)   // smoothstep，兩端收尾自然
   if (heroLin && aboutLin) engine.setColors?.(lerpPaletteLinear(heroLin, aboutLin, e))
-  engine.setParticleOpacity?.(HERO_OPACITY + (ABOUT_OPACITY - HERO_OPACITY) * e)
+  const { heroOpacity, aboutOpacity } = look.visual
+  engine.setParticleOpacity?.(heroOpacity + (aboutOpacity - heroOpacity) * e)
 
   // 收攏拉力本身在 driftLoop 逐幀寫（見那裡的 morphAmount），因為它需要釋放延遲。
 }
@@ -321,6 +452,11 @@ function applyProgress (p) {
 // 陣列上傳。配對只決定「誰去哪個點」，之後位置由物理接管，target 不會過期。
 function invalidateTargets () {
   targetsReady = false
+  // ⚠️ 一併清掉，否則游走會拿舊尺寸／舊配對的陣列去 setTargets，把粒子拉去錯的位置
+  holdBase = null
+  shapeXY = null
+  holdJit = null
+  holdSpecies = null
   morphAmount = 0
   engine?.setMorph?.(0, 0, 0)
   clearTimeout(resizeTimer)
@@ -332,9 +468,43 @@ async function buildTargets () {
   const snap = await engine.readParticles()
   const { W, H } = engine.size
   const T = aboutSpec.palette.length
-  const targets = buildImageTargets(aboutSpec, snap.length, W, H)
-  const { spread, shape } = buildSlotTargets(snap, targets, T, W)
-  engine.setTargets(spread, shape)
+
+  // blend=1 的那端：side.png 的點雲（PL.II）
+  const { shape } = buildSlotTargets(snap, buildImageTargets(aboutSpec, snap.length, W, H), T, W)
+
+  // blend=0 的那端。原本是「快照當下的位置」，也就是規則演化完的自由場；
+  // 現在改成 seedPattern 的開場構圖 —— 那才是每組效果真正好看、也真正互相不同的
+  // 樣子（見 particleFieldLooks 的 hold 那段）。hold.grip=0 的組沒有底線拉力，
+  // 這組目標點只在「從 PL.II 捲回來」時用得到，行為與改之前一樣。
+  //
+  // ⚠️ 一定要用同一份 snap 去配對兩端，每顆粒子在兩組目標之間才有一致的身分，
+  //    setTargets(hold, shape) 才能直接在兩者間插值（見 useParticleMorph 檔頭）。
+  // ⚠️ hold.grip === 0 的組（深海流光＝線上 hero）走原本那條路：blend=0 那端就是
+  // 「快照當下的自由場」。這一端不只在 hero 用得到 —— 從 PL.II 捲回來時，seek 是
+  // 靠它把粒子主動帶回滿版的（見下面「收攏拉力」那段的警告）。既然那組不需要維持
+  // 開場構圖，就不要改動它的回程目標。
+  let hold
+  try {
+    hold = look.hold.grip > 0
+      ? buildSlotTargets(snap, buildSeedTargets(look.rules.seedPattern, snap.length, T, W, H), T, W).shape
+      : buildSlotTargets(snap, buildImageTargets(aboutSpec, snap.length, W, H), T, W).spread
+  } catch (err) {
+    // seed 產生器掛掉就退回舊行為（快照位置），至少不會把粒子吸去座標原點
+    console.warn('[ParticleField] 開場構圖目標點建立失敗，退回自由場', err)
+    hold = buildSlotTargets(snap, buildImageTargets(aboutSpec, snap.length, W, H), T, W).spread
+  }
+
+  holdBase = hold
+  shapeXY = shape
+  // 構圖重生時要配到「自己顏色」的目標點，而 slot 是粒子永不改變的身分 ——
+  // 趁這份快照還在，把每個 slot 的物種記下來（見 renewHold）。
+  holdSpecies = new Uint8Array(engine.config.count)
+  for (const p of snap) {
+    if (p.slot < holdSpecies.length) holdSpecies[p.slot] = p.s % T
+  }
+  driftCycle = -1
+  renewCycle = -1
+  engine.setTargets(hold, shape)
   targetsGen = engine.targetsGeneration
   targetsW = W
   targetsH = H
@@ -377,6 +547,85 @@ function markActivity () {
   }
 }
 
+// 第二區塊的收攏目標：執行期直接取樣圖片（約 190ms / 32k 點）。
+// 之後要省這段成本就改成烘好的 JSON + PLImage.prepareFromData()，
+// 兩者產出的 spec 介面相同，這裡不用改。
+// ⚠️ colors 必須等於當下的 species，所以換效果（species 可能不同）時要重跑一次。
+async function prepareAboutSpec () {
+  try {
+    aboutSpec = await window.PLImage.prepare(ABOUT_IMAGE, {
+      count: ABOUT_SAMPLES,
+      colors: look.rules.species,
+    })
+    if (ABOUT_PALETTE_OVERRIDE) aboutSpec.palette = ABOUT_PALETTE_OVERRIDE
+    aboutLin = paletteToLinear(aboutSpec.palette)
+  } catch (err) {
+    console.warn('[ParticleField] 圖片點雲取樣失敗，第二區塊維持自由場', err)
+    aboutSpec = null
+    aboutLin = null
+  }
+}
+
+// 四層環境擾動：沒有它，場域幾十秒後會收斂成靜態圖（docs §4）。
+// intensity 由效果決定 —— 對稱矩陣那幾組（motion: 'convergent'）本來就會收斂，
+// 要靠比較強的外力才維持得住呼吸感。
+function startAmbient () {
+  stopAmbient?.()
+  stopAmbient = reducedMotion
+    ? null
+    : window.PLAmbient.start(() => engine, { intensity: look.ambient })
+}
+
+// 面板的滑桿：即時調整「維持開場構圖」的力度。
+// 只改一個裸變數，下一幀 driftLoop 就會用到 —— 不重生成粒子，所以拉的當下就看得到
+// 構圖收緊或散開，不會閃一下。
+// 上限開到 200 是為了試「握更緊」；再上去就接近 PL.II 鎖圖片的區間，內部運動會沒了。
+function setHold (pct) {
+  holdPct.value = Math.max(0, Math.min(200, Math.round(pct)))
+  holdScale = holdPct.value / 100
+}
+
+// 換一組效果，不重建 canvas。給右側面板、?hero-animation= 與 dev console 用。
+// ⚠️ setSpecies / setCount 會整場重生成粒子（等於重新開場），targets buffer 也
+// 會被重配 —— 所以一定要跟著 invalidateTargets()，它會等場散開再重建。
+//
+// @param {string|number|null} idOrIndex null = 重新隨機抽一組（不會抽到目前這組）
+async function switchLook (idOrIndex) {
+  const next = idOrIndex === null || idOrIndex === FIELD_LOOK_RANDOM
+    ? randomFieldLook(look)
+    : resolveFieldLook(idOrIndex)
+  const wantPinned = idOrIndex !== null && idOrIndex !== FIELD_LOOK_RANDOM
+
+  pinned.value = wantPinned
+  syncFieldLookQuery(wantPinned ? next : null)
+  if (!engine || next === look) {
+    activeLook.value = next
+    return next?.name
+  }
+
+  look = next
+  activeLook.value = next
+  switching.value = true
+
+  const count = countFor(canvasRef.value, look.budget)
+  // 手機一律關光暈：那是額外一趟全螢幕加法 pass，填充率成本跟 DPR 平方成正比。
+  applyFieldLook(engine, look, { count, allowGlow: !isMobile() })
+  appliedForce = look.physics.forceFactor
+
+  heroLin = paletteToLinear(window.PLPalettes.PALETTES[look.palette].particles)
+  await prepareAboutSpec()
+  invalidateTargets()
+  startAmbient()
+
+  // 重生成的粒子要再跑一次開場包絡才散得開；換效果時使用者正盯著看，
+  // 順便當成「已經醒著」，否則閒置邏輯會在散開到一半時把它停掉。
+  introStart = performance.now()
+  markActivity()
+  applyProgress(progress)
+  switching.value = false
+  return look.name
+}
+
 async function init () {
   const canvas = canvasRef.value
   if (!canvas) return
@@ -384,54 +633,57 @@ async function init () {
   await loadParticleKit()
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+  // 網址決定跑哪一組；沒指定就隨機抽（值有白名單，打錯字會退回保底那組）
+  const fromUrl = fieldLookFromLocation()
+  look = fromUrl.look
+  activeLook.value = fromUrl.look
+  pinned.value = fromUrl.pinned
+  toolMode.value = fromUrl.tool
+
   const PAL = window.PLPalettes.PALETTES
-  const hero = PAL[HERO_PALETTE]
+  const hero = PAL[look.palette]
   heroLin = paletteToLinear(hero.particles)
 
-  const count = countFor(canvas, { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN })
+  const count = countFor(canvas, look.budget)
 
   engine = await window.makeEngine(canvas, {
-    species: SPECIES,
+    species: look.rules.species,
     count,
-    preset: PRESET,
-    seedPattern: 'rainbowSpiral',   // 固定開場構圖；之後由規則接管（docs §6）
+    preset: look.rules.preset,
+    seedPattern: look.rules.seedPattern,   // 固定開場構圖；之後由規則接管（docs §6）
     palette: hero.particles,
     bgFade: hero.bgFade,
-    // 物理常數對齊 SandboxScience 預設（實測 Force 1 / Repel 1 / Friction 0.3）
-    forceFactor: FORCE_FACTOR,
-    friction: 0.3,
-    repel: 1.0,
-    minR: 5,
-    rMax: 72,
+    forceFactor: look.physics.forceFactor,
+    friction: look.physics.friction,
+    repel: look.physics.repel,
+    minR: look.physics.minR,
+    rMax: look.physics.rMax,
     simSpeed: SIM_SPEED_INTRO,      // 開場快速散開；之後由 driftLoop 的包絡接手
-    cameraZoom: HERO_ZOOM,
-    pointSize: 0.8,
-    particleOpacity: HERO_OPACITY,
-    showGlow: false,                // 高密度時光暈會糊成一片，只留銳利點
+    cameraZoom: look.camera.zoom,
+    pointSize: look.visual.pointSize,
+    particleOpacity: look.visual.heroOpacity,
+    // 手機一律關光暈（額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比）；
+    // 桌機也只有 fluoro-swarm / coral-membrane 這兩組原本就開著。
+    showGlow: look.visual.showGlow && !isMobile(),
+    glowSize: look.glow.glowSize,
+    glowIntensity: look.glow.glowIntensity,
+    glowSteepness: look.glow.glowSteepness,
     cellSubdivisions: 2,
     maxDpr: maxDpr(),               // 全螢幕 HDR target，DPR 2 是 4 倍像素、視覺收益極小
   })
   backend.value = engine.backend
+  appliedForce = look.physics.forceFactor
   // dev 時開個把手，方便在 console 直接調參（engine.setForce(1.4) 之類）
-  if (import.meta.dev) window.__field = engine
-
-  // 四層環境擾動：沒有它，場域幾十秒後會收斂成靜態圖（docs §4）。
-  // intensity 調弱一點，讓它是「底噪」而不是主要的動能來源。
-  if (!reducedMotion) stopAmbient = window.PLAmbient.start(() => engine, { intensity: AMBIENT_INTENSITY })
-
-  // 第二區塊的收攏目標：執行期直接取樣圖片（約 190ms / 32k 點）。
-  // 之後要省這段成本就改成烘好的 JSON + PLImage.prepareFromData()，
-  // 兩者產出的 spec 介面相同，這裡不用改。
-  try {
-    aboutSpec = await window.PLImage.prepare(ABOUT_IMAGE, {
-      count: ABOUT_SAMPLES,
-      colors: SPECIES,              // 色盤長度必須與 species 一致，否則得 setSpecies
-    })
-    if (ABOUT_PALETTE_OVERRIDE) aboutSpec.palette = ABOUT_PALETTE_OVERRIDE
-    aboutLin = paletteToLinear(aboutSpec.palette)
-  } catch (err) {
-    console.warn('[ParticleField] 圖片點雲取樣失敗，第二區塊維持自由場', err)
+  if (import.meta.dev) {
+    window.__field = engine
+    // 即時換效果：__fieldLook('coral-membrane') 或 __fieldLook(5)
+    window.__fieldLook = switchLook
+    window.__fieldLooks = PARTICLE_FIELD_LOOKS
+    window.__fieldHold = setHold        // __fieldHold(0) = 放手、(100) = 照設定
   }
+
+  startAmbient()
+  await prepareAboutSpec()
 
   onVisibility = () => syncPause()
   document.addEventListener('visibilitychange', onVisibility)
@@ -452,6 +704,8 @@ async function init () {
   lastScrollY = window.scrollY
   if (import.meta.dev) {
     window.__fieldDbg = () => ({
+      look: look.id,
+      holdPct: holdPct.value,
       age: Math.round(performance.now() - introStart),
       simSpeed: +simSpeed.toFixed(3),
       idlePaused,
@@ -553,5 +807,17 @@ defineExpose({ backend })
     ref="canvasRef"
     aria-hidden="true"
     class="pointer-events-none fixed inset-0 z-0 block h-full w-full"
+  />
+
+  <!-- ?mode=tool 的切換面板。與 index-same 的單張版共用同一個元件。 -->
+  <HomeFieldLookPanel
+    v-if="toolMode"
+    :look="activeLook"
+    :looks="looks"
+    :pinned="pinned"
+    :hold-pct="holdPct"
+    :switching="switching"
+    @pick="switchLook"
+    @hold="setHold"
   />
 </template>

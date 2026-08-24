@@ -25,10 +25,46 @@ export default defineNuxtConfig({
 
   modules: [
     '@nuxt/eslint',
+    '@nuxt/fonts',
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
+    '@nuxtjs/seo',
     '@vueuse/nuxt'
   ],
+
+  // OG 圖模板要顯示中文，nuxt-og-image 內建只有 Inter（拉丁字），中文字會變成缺字方框，
+  // 得靠 @nuxt/fonts 額外抓一套支援繁中的字型，並在 OgImage/Default 模板裡指定套用。
+  fonts: {
+    families: [
+      { name: 'Noto Sans TC', weights: [400, 700], global: true }
+    ]
+  },
+
+  // @nuxtjs/seo 統一管理 robots / sitemap / schema.org / og:image / canonical。
+  // indexable 綁現有 WEB_SEARCH 開關：機器人 meta、robots.txt、sitemap 收錄都跟著這顆旗標走，
+  // 不用再各處各自判斷一次。
+  site: {
+    url: process.env.APP_URL,
+    name: process.env.APP_TITLE,
+    description: process.env.APP_DESC,
+    defaultLocale: process.env.APP_DEFAULT_LANG,
+    indexable: process.env.WEB_SEARCH === 'YES'
+  },
+
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: process.env.APP_TITLE,
+      logo: '/logo-webconf.svg'
+    }
+  },
+
+  // nuxt-og-image 預設不會自動幫每個頁面加 og:image，要靠 route rule 開啟才會套用
+  // app/components/OgImage/Default.takumi.vue，並依各頁 title/description 自動產圖。
+  // 頁面沒各自呼叫 defineOgImage() 時的保底，用 Default 模板產生通用的 WebConf 卡片圖。
+  routeRules: {
+    '/**': { ogImage: {} }
+  },
 
   app: {
     baseURL: `${process.env.APP_BASE_URL}`,
@@ -48,12 +84,6 @@ export default defineNuxtConfig({
         {
           property: 'og:locale',
           content: process.env.APP_DEFAULT_LANG
-        },
-        {
-          name: 'robots',
-          content: process.env.WEB_SEARCH === 'YES'
-            ? 'index, follow'
-            : 'noindex, nofollow'
         }
       ],
       link: [

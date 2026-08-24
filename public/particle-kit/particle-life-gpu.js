@@ -18,7 +18,7 @@
  *
  * Engine instance surface:
  *   destroy, setPalette, setPreset, setSpecies, setBgFade, setCount,
- *   setPointSize, setGlow, setForce, setRMax, disturb, pause,
+ *   setPointSize, setGlow, setForce, setRMax, setMinR, disturb, pause,
  *   get size, get config, get backend ('webgpu'), get particles ([]),
  *   get matrix (null — GPU-resident)
  *
@@ -1636,6 +1636,17 @@
       config.forceFactor = Math.max(0.1, Math.min(2.0, v));
       writeOptions();
     }
+    // minR — hard-core repulsion radius: inside it every pair pushes apart, so it
+    // sets how tightly a clump can compress, i.e. how BIG a colony ends up.
+    // Added for the venue section, which runs the (symmetric, collapsing) cellular
+    // matrix on purpose: at minR 5 the whole field packs into a handful of pixel
+    // dots, at 16 it holds open into visible cells. Unlike setRMax this does not
+    // touch the spatial grid (cell size is derived from rMax alone), so it is just
+    // a repack of the interaction table — cheap enough to call on a scroll boundary.
+    function setMinR(v) {
+      config.minR = Math.max(1, Math.min(64, v));
+      writeInteractions();
+    }
     function setRMax(v) {
       config.rMax = Math.max(20, Math.min(160, v));
       writeInteractions();
@@ -1787,7 +1798,7 @@
     return {
       destroy,
       setPalette, setColors, setPreset, setSpecies, setBgFade, setCount,
-      setPointSize, setGlow, setForce, setRMax,
+      setPointSize, setGlow, setForce, setRMax, setMinR,
       disturb,
       setShowFps, getFps, setSimSpeed, setCameraZoom, setCameraOffset, setShowGlow,
       setTargets, setMorph,

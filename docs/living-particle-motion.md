@@ -1,9 +1,13 @@
 # 讓粒子場「活起來」— 動態效果實作要領
 
-> 對象：`app/components/Home/ParticleField.vue`（首頁固定背景粒子場）與
-> `public/particle-kit/`（引擎）。
+> 對象：`app/components/Home/ParticleField.vue`（首頁固定背景粒子場）、
+> `app/components/HomeSame/Field.vue`（一鏡到底版）、`app/utils/particleFieldLooks.js`
+> （效果目錄）與 `public/particle-kit/`（引擎）。
 > 目的：把 2026-08 這次做首頁 PL.I → PL.II 收攏效果時，**踩過的坑與判斷依據**寫下來，
 > 讓之後做類似效果（其他區塊、其他頁、換圖）能直接照著走，不必重新撞一次。
+>
+> 2026-08 下旬補上：力矩陣的**兩種**失效模式與量化判準（§1.1.1、§7）、
+> 「維持開場構圖」而不把畫面凍住的做法（§10）、效果目錄與網址參數（§11）。
 >
 > 引擎本身的原理（Particle Life、spatial hash、HDR 渲染、圖片轉點雲）看
 > [`point-cloud-effect.md`](./point-cloud-effect.md)。本文只談**動態與編排**。
@@ -56,12 +60,48 @@ self = -0.1;  j === i+1 → 0.7;  j === i+2 → 0.3;  其餘 → -0.6
 
 `particle-life-rules.js` 裡的分類：
 
-- **對稱、會定住**：`cellular`、`chains1`、`chains2`、`bipartite`、`shells`
-- **非對稱、會一直動**：`spiral-conveyor`、`rps`、`snake`、`tri-spiral`、`vortex`、`predator`
+- **對稱、會定住**：`cellular`、`chains1`、`chains2`、`chains3`、`bipartite`、`ring-road`、
+  `symbiosis`、`triad-flocks`、`dimers`、`swarm`、`membrane`
+- **非對稱、會一直動**：`spiral-conveyor`、`rps`、`snake`、`orbital`、`tri-spiral`、
+  `vortex`、`helical`、`wavefield`、`predator`
 - `self` 為**負**（如 `spiral-conveyor` 的 −0.1）→ 絲狀環流，像星雲
 - `self` 為**正**（如 `snake` 的 1.0）→ 聚成一顆顆分明的群落，像細胞
 
 > 選 preset 時先問兩題：**對稱嗎？self 是正是負？** 這兩題就決定了 80% 的觀感。
+
+### 1.1.1 非對稱是必要條件，不是充分條件（2026-08 補）
+
+`shells` 曾被歸在「非對稱」那類，但它照樣塌 —— 因為**還有第二個獨立的失效模式**。
+把兩者分清楚，才知道該調哪裡：
+
+| | 症狀 | 指標 | 成因 |
+| --- | --- | --- | --- |
+| **定格** | 結構成形後就不動了 | `speed` → 0 | 力矩陣對稱，存在靜止解 |
+| **塌陷** | 擠成少數幾團，畫面大半是空的 | `fill` 低、`clump` 高 | `self` 正值太大，又缺乏把群落推開的力 |
+
+`shells` 的 `SELF = 0.9` 太強，還沒開始追就先各自塌成實心球；
+`snake` 的 `self` 一樣是 1.0 卻能用，是因為它對非鄰居給 **0** 而不是負值 ——
+群落之間沒有互斥力去把彼此擠成孤立的球。
+
+> **`self` 正值大 + 非鄰居給負值 = 一定塌。** `cellular`（`0.8 / −0.55`）就是這個組合，
+> 也是最典型的反例。
+
+實測（1440×900、跑滿 25 秒，指標定義見 §7）：
+
+| preset | fill | clump | speed | 判定 |
+| --- | --- | --- | --- | --- |
+| `spiral-conveyor` | 0.75 | 0.11 | 131 | ✅ 滿版有內容 |
+| `tri-spiral` | 0.82 | 0.06 | 110 | ✅ |
+| `rps` | 0.78 | 0.06 | 67 | ✅ |
+| `snake` | 0.015 | 0.94 | 28 | ⚠️ 一直在動，但 98% 畫面是空的 |
+| `cellular` | — | — | — | ❌ 36000 顆塌成約 8 顆球 |
+| `swarm` | — | — | — | ❌ 塌成約 6 顆球 |
+
+⚠️ **這不是我們的參數調壞了。** 拿 sandbox demo 的官方範例（`webconf-visual-2026/sandbox.html`
+右上「載入範例」）逐一跑過，5 組裡有 4 組在滿版畫面上就是這個樣子。那些範例是設計來
+**出印刷素材**的（每組都帶 `exportGlow` / `exportScale`，那個工具本身叫「取素材實驗場」），
+散落的球當標本圖版很好看，當動態背景則是空的。
+**直接照搬 sandbox 參數到滿版背景之前，先量一次。**
 
 ### 1.2 `simSpeed` 是慢動作，不是「呼吸感」
 
@@ -358,13 +398,52 @@ const s = await __field.readParticles()
 | 有沒有塌到原點 | `hypot(x,y) < 60` 的比例 |
 | 有沒有數值爆掉 | `isFinite(x)` 的數量、平均速度是否異常大 |
 | 停頓後有沒有跳 | 停頓前後的質心 + 標準差距離 |
+| **有沒有塌成幾顆球** | **`fill` / `clump`（見下）** |
 
-### 兩個量測陷阱
+### `fill` / `clump`：一眼判斷「畫面是不是空的」
+
+把畫面切成 96×54 格，兩個數字就能把「滿版有內容 / 塌成幾顆球」分開，
+比肉眼看截圖可靠得多（尤其粒子很小的時候）：
+
+```js
+async function measure (engine) {
+  const snap = await engine.readParticles()
+  const { W, H } = engine.size
+  const GX = 96, GY = 54
+  const grid = new Int32Array(GX * GY)
+  let sp = 0
+  for (const p of snap) {
+    sp += Math.hypot(p.vx, p.vy)
+    grid[Math.min(GY - 1, (p.y / H * GY) | 0) * GX + Math.min(GX - 1, (p.x / W * GX) | 0)]++
+  }
+  const s = Array.from(grid).sort((a, b) => b - a)
+  return {
+    // 最密的 1% 格子裝了全部粒子的幾成 —— 越高越像「幾顆球」
+    clump: s.slice(0, Math.ceil(grid.length * 0.01)).reduce((a, b) => a + b, 0) / snap.length,
+    // 有粒子的格子佔比 —— 越低表示畫面越空
+    fill: s.filter(v => v > 0).length / grid.length,
+    speed: sp / snap.length,
+  }
+}
+```
+
+健康的滿版自由場大約是 `fill 0.7+` / `clump 0.1` / `speed 60+`。
+`fill < 0.05` 就是塌了，`speed < 5` 就是定住了。
+
+### 量測陷阱
 
 1. **`readParticles()` 會污染 fps。** 它是一次 `mapAsync` 來回（1–2 幀），
    量 fps 的那一輪不要夾雜它 —— 我一度量到 19fps，實際是 60。
 2. **HMR 會留下舊的 rAF 迴圈。** 改完參數後**一定要重新整理**再判斷手感，
    否則新舊兩個 `driftLoop` 會同時寫同一個 uniform，數字完全對不上。
+   （跑長時間量測時也別同時編輯檔案 —— HMR 的整頁重載會把量測腳本一起打斷。）
+3. **量之前先確認「捲動位置」與「有沒有被暫停」。** 這兩個最容易讓整輪數據作廢：
+   頁面若還停在第二區塊，量到的是收攏成圖片的狀態而不是 hero；閒置超過
+   `IDLE_STOP_MS` 引擎會 pause，`readParticles()` 會一直回同一份資料
+   （症狀：連續幾筆數值**一模一樣**）。自動化量測時要週期性補發 `pointermove`，
+   並在結果裡一起回報 `scrollY` 與 `__fieldDbg().paused` 當佐證。
+4. **一次只量一組效果的「長期」行為。** 有些矩陣短期健康、長期會退化
+   （`snake` 的群落會持續合併），至少要拉到 4 分鐘、每分鐘取樣一次才看得出來。
 
 `ParticleField.vue` 在 dev 模式掛了兩個把手：
 
@@ -415,12 +494,132 @@ dt 與捲動速度，導致相機瞬移＋模擬速度暴衝。
 
 ---
 
-## 10. 做新效果時的檢查順序
+## 10. 維持「開場構圖」（2026-08 新增）
 
-1. 先選 preset：**對稱嗎？self 正負？** 這決定 80% 的觀感
-2. `simSpeed` 分段（開場／待機／互動），所有跟隨都攻擊快、釋放慢
-3. 相機加緩慢漂移
-4. `PLAmbient` 當底噪，`intensity` 0.5 左右
-5. 要變形 → 走路線 C，別走 B
-6. 目標點記得處理**失效**（`setCount`／`respawn`／resize）與**回程**（兩組 target ＋ 釋放延遲）
-7. 每一步都用 `readParticles()` 量，別只靠肉眼；改完參數**重新整理**再判斷
+### 10.1 為什麼要維持
+
+`seedPattern` 畫出來的開場構圖（`softClusters` 的細胞團、`orbitalBelts` 的同心帶、
+`chaoticBands` 的亂流條紋…）才是**辨識度的來源**。`particle-life-seeds.js` 的檔頭自己就寫著：
+
+> the opening read is what people see and remember
+
+規則一接管，幾秒內就把它洗掉。更麻煩的是：同一族的力矩陣會收斂到**同一種樣子**。
+`spiral-conveyor` / `tri-spiral` / `helical` / `wavefield` / `vortex` 數學上都是
+「以 `j − i` 為變數的正弦環狀矩陣」，換名字不換族，最後長出來的都是「飄浮細塵」。
+
+> 想讓 N 組效果看起來真的不同，**別只換 preset 名字**。要嘛換族（`self` 強弱、
+> 有沒有角色結構如 `predator` 的獵食者列），要嘛就把開場構圖留住。
+
+### 10.2 ⚠️ 天真做法一定會把畫面凍住
+
+用路線 C 的 seek 力把粒子按在構圖上，**構圖會守住，但畫面會靜止**：
+
+```
+#1 鈷藍細胞（snake）  grip 0 → 28
+平均速率 27.8 px/s  →  1.1 px/s
+```
+
+原因是機制性的：seek 是「收斂到固定點的臨界阻尼彈簧」。粒子一到定位，
+`desiredV = (target − pos) × pull` 就是 0，而 `v = mix(v, desiredV, grip·dt)`
+會把殘餘速度吃掉。這是**穩定平衡**，不是參數沒調對 ——
+`SpeakerField.vue` 有完整紀錄：調 `forceFactor`（0.15→1.0）、掃 `grip/pull`、
+加 `PLAmbient` 脈衝、加 `disturb`，全部實測 0～1.4 px/s。
+
+### 10.3 兩個有效解法，看你有沒有空的目標槽
+
+引擎的 seek 有 `spread` / `shape` **兩個**目標槽，`blend` 在兩者之間插值。
+
+**解法 A —— 讓 `blend` 擺盪（`SpeakerField` 用這個）**
+
+`shape` = 原點，`spread` = 原點 + 每顆粒子各自的小隨機偏移，讓 `blend` 在 1 → 0 → 1
+之間緩慢來回，每顆粒子就在自己的小範圍內游走。實測 2.4～3.8 px/s，而形狀在數學上
+跑不掉（`blend` 回到 1 時每顆必定回到自己的原點）。
+
+- ✅ 運動連續、平滑
+- ❌ **需要一個空的目標槽**，而且 `blend` 不能被別人佔用
+
+**解法 B —— 讓「握力自己呼吸」（`ParticleField` / `HomeSame/Field` 用這個）**
+
+當兩個槽都被佔用（首頁是 `blend=0` 構圖、`blend=1` side.png，而 `blend` 是捲動位置
+決定的）就不能用 A。改成讓 `grip` 在 `FLOOR ↔ 1` 之間走一個慢週期：
+
+```js
+const breathe = FLOOR + (1 - FLOOR) * (0.5 - 0.5 * Math.cos(t / PERIOD_MS * TAU))
+engine.setMorph(pull * breathe, grip * breathe, blend)
+// PERIOD_MS 7000 / FLOOR 0.18
+```
+
+- 鬆的半週期：力場贏，構圖鬆開、粒子照自己的規則流動
+- 緊的半週期：seek 贏，粒子被帶回自己的構圖原點
+
+構圖跑不掉（每輪都拉回原點），但畫面**全程**在動。零 buffer 上傳，每幀只多算一個 `cos`。
+
+實測（#3 標本切片，跨整個呼吸週期取樣）：
+
+| grip | 31.8 | 16.1 | 6.3 | 23.0 | 31.1 |
+| --- | --- | --- | --- | --- | --- |
+| speed | 99.4 | 63.2 | 79.8 | 77.8 | 86.2 |
+| fill | 0.42 | 0.42 | 0.46 | 0.48 | 0.41 |
+
+**❌ 不要只做「每隔幾秒換一組隨機目標偏移」而不擺盪。** 我先試過：粒子約 0.2 秒就
+追到新位置，剩下 2.2 秒還是靜止，平均速率只有 0.7 px/s。要嘛 A 的連續擺盪，要嘛 B。
+
+### 10.4 實作要點
+
+- 用 `useParticleMorph` 的 `buildSeedTargets(name, N, T, W, H)` 把 seed 產生器
+  **當成目標點**再跑一次，產出的 `{tx, ty, tt}` 可以直接餵給 `buildSlotTargets`。
+- ⚠️ seed 產生器內部用 `Math.random()`，**每次呼叫結果都不同**。一組 targets 只能算一次，
+  重算會讓構圖跳掉。也因此它是「一份新的同款構圖」而不是粒子生成時那一份 ——
+  讀起來像「粒子聚攏成形」，這是預期行為。
+- 呼吸要乘在**最終的 `setMorph` 上**，不要乘進平滑器的目標值。
+  `LOCK_RELEASE` 只有 0.012（約 1.4 秒時間常數），呼吸走那條路會被削掉大半振幅。
+- 只讓呼吸作用在「自由場」影格。收攏成圖片／人像的影格需要**穩定**的握力，
+  跟著呼吸會忽清忽糊。一鏡到底版是用 `freeWeight`（A/B 兩格裡自由場的權重）當閘門。
+- `jitter` 要寫進 scratch buffer。48000 顆是一份 384KB 的 `Float32Array`，
+  每 2 秒配一份純粹是餵 GC。
+
+---
+
+## 11. 效果目錄（`app/utils/particleFieldLooks.js`）
+
+5 組效果的完整參數（色盤、力矩陣、開場種子、物理、點大小、光暈、相機、點數預算、
+模擬速度、環境擾動、`hold`）集中在這張表，兩張首頁 canvas 共用。要加第 6 組就照那裡的
+換算規則加一筆。
+
+| 網址 | 行為 |
+| --- | --- |
+| （不帶參數） | 每次進站隨機抽一組 |
+| `?hero-animation=1`～`5` | 指定一組（也認 id） |
+| `?mode=tool` | 右側開切換面板，可即時換效果＋拉「維持開場構圖」的力度 |
+
+dev console：`__fieldLook(3)` / `__fieldHold(60)` / `__fieldDbg()`
+（一鏡到底版是 `__sameLook` / `__sameHold` / `__sameDbg`）。
+
+**把 sandbox 參數搬到站上的換算規則**（sandbox 是滿版單一 canvas、沒有別的東西在跑，
+站上要跟版面與行動裝置共存，所以三個欄位是等比縮到站上基準而不是照抄）：
+
+```
+基準 = 深海流光（線上 hero），sandbox 原值 count 80000 / simSpeed 0.3 / zoom 1.2
+       對應站上的 48000 / 0.16 / 1.35
+
+density = 0.037 × (該組 count ÷ 80000)
+idle / max = 0.16 / 0.6 × (該組 simSpeed ÷ 0.3)
+zoom = 1.35 × (該組 cameraZoom ÷ 1.2)
+```
+
+其餘欄位（species / 物理 / pointSize / 透明度 / 光暈）是絕對值，直接照 JSON。
+
+---
+
+## 12. 做新效果時的檢查順序
+
+1. 先選 preset：**對稱嗎？self 正負？非鄰居給 0 還是負值？**（§1.1）這決定 80% 的觀感
+2. 量一次 `fill` / `clump` / `speed`（§7）確認沒塌沒定住 —— **在調任何參數之前**
+3. `simSpeed` 分段（開場／待機／互動），所有跟隨都攻擊快、釋放慢
+4. 相機加緩慢漂移
+5. `PLAmbient` 當底噪，`intensity` 0.5 左右
+6. 要變形 → 走路線 C，別走 B
+7. 目標點記得處理**失效**（`setCount`／`respawn`／resize）與**回程**（兩組 target ＋ 釋放延遲）
+8. 要留住開場構圖 → §10，並且**先確認你還有沒有空的目標槽**（決定用解法 A 還是 B）
+9. 每一步都用 `readParticles()` 量，別只靠肉眼；改完參數**重新整理**再判斷
+10. 拉長到 4 分鐘再量一次 —— 有些矩陣短期健康、長期會退化
