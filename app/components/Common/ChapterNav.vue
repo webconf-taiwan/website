@@ -7,8 +7,7 @@
 //   · 全程停在畫面左側，隨時看得出現在在第幾卷
 //   · 可以點，點了直接捲過去（有 Lenis 就交給它，維持整站一致的緩動）
 //
-// 亮哪一顆是「最後一個頂邊已經越過視窗 45% 的區塊」。用比視窗中線再高一點的位置
-// 判斷，捲到區塊標題露出來時指示器就跟著換，讀起來比等到正中央才換自然。
+// 亮哪一顆是「最後一個頂邊已經越過 SWITCH_AT 的區塊」。
 
 const props = defineProps({
   // 每一項：{ id: 區塊的 DOM id, code: 'PL. I', label: 'HERO' }
@@ -31,6 +30,13 @@ const props = defineProps({
   }
 })
 
+// 切換門檻：區塊頂邊捲到視窗高度的百分之多少時換下一顆。
+// ⚠️ 這個值是設計師定的，別憑手感改回中線。
+// 0.45（原本）＝ 快到視窗中線才換，捲到一半還亮著上一卷；
+// 0.15（現在）＝ 區塊頂邊一進畫面上緣附近就換，指示器跟著標題走。
+// 這支是 /index 與 /index-same 共用的，兩頁的行為會一起變。
+const SWITCH_AT = 0.15
+
 const active = ref(0)
 // ⚠️ 要在 setup 期間取，不能等到 click handler 裡才呼叫 ——
 // useLenis 內部是 useNuxtApp()，在事件處理器裡拿不到 Nuxt instance。
@@ -39,11 +45,11 @@ let raf = 0
 let onScroll = null
 
 function update () {
-  const mid = window.innerHeight * 0.45
+  const line = window.innerHeight * SWITCH_AT
   let idx = 0
   props.items.forEach((item, i) => {
     const el = document.getElementById(item.id)
-    if (el && el.getBoundingClientRect().top <= mid) idx = i
+    if (el && el.getBoundingClientRect().top <= line) idx = i
   })
   active.value = idx
 }

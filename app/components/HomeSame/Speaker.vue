@@ -50,11 +50,20 @@ function nameRuns (name) {
 // 綁在一起的話版面動畫會被它卡住，反而更難對齊。
 const LEADER_OUT_MS = 260
 const LEADER_IN_MS = 420
-const FRAME_GROW_MS = 460
-// 框線從幾倍大開始長。0.1 = 從中央一個小點放射出來（設計師要的感覺）。
-// ⚠️ transform: scale 連框線本身的粗細一起縮，所以起點那一格幾乎看不見邊 ——
-// 這正好，看起來就是「從中心長出來」而不是「一個小方塊突然出現」。
-const FRAME_FROM = 0.1
+// ⚠️ 這一段是「為什麼調小起始值卻看不出差別」的答案，改之前先讀：
+//
+// 1. 框線的大小是動 width / height，不是 transform: scale。
+//    scale 會把 1px 的邊框一起縮 —— 起始 2% 時邊框是 0.02px，瀏覽器根本畫不出來，
+//    所以小的時候畫面上是「什麼都沒有」，框線要到三成大才浮現。那才是 0.1 與 0.02
+//    看起來一樣的真正原因，不是幅度不夠小。改動尺寸則邊框全程都是 1px。
+// 2. ease 要選前段慢的。power3.out 前 10% 的時間就衝到 27% 大小，那個「點」只存在
+//    一兩幀。power2.out 前 10% 是 19%，再配下面的「停一下」才看得出是從點放射開。
+const FRAME_DOT_MS = 130       // 小方點先停這麼久，讓眼睛跟得上
+const FRAME_GROW_MS = 520
+// 框線從幾倍大開始長。0.02 = 300px 的框從 6px 開始，等於從中央一個點放射出來。
+// ⚠️ transform: scale 連框線本身的粗細一起縮（1px 邊 → 0.02px），所以最初那幾格
+// 根本畫不出來 —— 看起來就是「從無到有長出來」，而不是「一個小方塊突然出現」。
+const FRAME_FROM = 0.3
 const TYPE_MS = 560            // 打字全長（實際步進數 = 字數，見 playSwap）
 
 const sectionRef = ref(null)
@@ -162,16 +171,19 @@ async function playSwap () {
   })
 
   // 2) 框線由小放到大。文字這時是「透明度已經回來、但還沒打出來」的狀態。
-  const grow = { s: FRAME_FROM, fade: 0 }
   frameScale.value = FRAME_FROM
   frameFade.value = 0
   typeTop.value = 0
   typeBottom.value = 0
   leaderFade.value = 1
-  await tween(grow, { s: 1, fade: 1 }, FRAME_GROW_MS, 'power3.out', () => {
-    frameScale.value = grow.s
-    frameFade.value = grow.fade
-  })
+
+  // 2a) 中央那個小方點先亮起來、停一下 —— 少了這拍，放射的起點看不見（見上面註解）
+  const dot = { fade: 0 }
+  await tween(dot, { fade: 1 }, FRAME_DOT_MS, 'none', () => { frameFade.value = dot.fade })
+
+  // 2b) 放射長大
+  const grow = { s: FRAME_FROM }
+  await tween(grow, { s: 1 }, FRAME_GROW_MS, 'power2.out', () => { frameScale.value = grow.s })
 
   // 3) 框線到定位之後才量引線的終點 —— 早一步量到的是「放大中」的框，位置會偏。
   await nextTick()
@@ -308,13 +320,20 @@ onBeforeUnmount(() => {
           <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
           <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
         </div>
-        <!-- ⚠️ 縮放要放在「外面這層」而不是框線本身：框線是 grid 的一格，
-             直接 transform 它會連帶影響引線量到的位置與上下文字的間距。 -->
-        <div class="flex justify-center">
+        <!-- 外層是固定尺寸的佔位（版面不能跟著動畫抖），框線本身絕對定位在正中央、
+             用 width/height 百分比放大。
+             ⚠️ 不要改回 transform: scale —— 那會把 1px 的邊框一起縮，起始 2% 時邊框
+             是 0.02px，瀏覽器畫不出來，於是「從小點放射」的前半段整段是空白的
+             （見 script 裡 FRAME_DOT_MS 那段註解）。動 width/height 則邊框全程 1px。 -->
+        <div class="relative aspect-square w-full lg:size-[300px]">
           <div
             ref="frameRef"
-            class="aspect-square w-full origin-center border border-pre-800/80 lg:size-[300px]"
-            :style="{ transform: `scale(${frameScale})`, opacity: frameFade }"
+            class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-pre-800/80"
+            :style="{
+              width: `${frameScale * 100}%`,
+              height: `${frameScale * 100}%`,
+              opacity: frameFade,
+            }"
           />
         </div>
         <div
