@@ -65,20 +65,48 @@ const backend = ref('')
 //       實測可用區間 pull 8–12 / grip 55–85；grip 再高就變成死的貼圖。
 // shift / shiftY  內容往左 / 往上推的「視窗寬（高）比例」，靠相機位移做出
 //       「圖片被畫面邊緣切掉」的構圖，而不是裁圖（裁出來的硬邊很醜）。
+// lumaBias  取樣密度跟著亮度走的程度（PLImage.prepare 的參數，預設 0.6）。
+//       1 = 只有亮的地方有粒子，0 = 整片輪廓內均勻取樣，色調完全交給色盤表現。
+//       ⚠️ 人像一定要 0，這是「人不像人」的主因之一，見 PORTRAIT_LUMA_BIAS。
 const SIDE_IMAGE = '/source_images/side.png'
 const VENUE_IMAGE = '/source_images/venue.png'
 const FAQ_IMAGE = '/source_images/faq.png'
 
+// PLImage.prepare 的預設值。標本那兩張（venue / faq）本來就是「黑底上的亮物體」，
+// 調它幾乎沒差（實測 0.6 / 0.25 / 0 三種取樣，輪廓與尖刺一模一樣），所以照舊。
+const DEFAULT_LUMA_BIAS = 0.6
+
+// 人像維持 0.6 —— 這條是「試過才知道」的，留紀錄免得有人再走一次：
+// 直覺會想調到 0（均勻取樣、明暗交給色盤表現），把 spec 的取樣點直接畫成 2D 圖看，
+// 0 確實比 0.6 漂亮（眼窩不空、額頭不死白）。但站上不是那樣畫的 —— 引擎是 HDR
+// 加法混色，一格越多粒子越亮，也就是「明暗其實是靠密度表現的」。lumaBias 一降，
+// 密度平掉，臉就跟著平掉：實測 0 與 0.25 在站上都比 0.6 更沒有立體感、更像一團霧。
+// ⚠️ 所以要改這個值，一定要看站上的實際畫面，不能只看取樣點的 2D 預覽。
+// ⚠️ 這跟色數（look.rules.species，5～7）幾乎無關 —— 掃過 5/6/7/8 色都一樣，
+//    所以不必為了人像去動 species（那會連 hero 的效果一起改掉）。
+// 真正讓臉「不像人」的是另外兩件事，都已經修掉了：點雲被視窗撐太大（PORTRAIT_MAX_PX）
+// 與過曝（這一格的 opacity）。
+const PORTRAIT_LUMA_BIAS = 0.6
+
+// 人像在畫面上最多幾 px（短邊）。見 fitInto() 的長註解 —— 點數有上限，點雲卻會
+// 跟著視窗長大，所以要壓一個天花板，否則大視窗上的臉會稀到看不出是人。
+// 612 = 基準視窗 1440×900 下現在的實際大小（0.68 × 900），所以基準視窗完全不變，
+// 只有比它更大的視窗會被壓回來。
+const PORTRAIT_MAX_PX = 612
+
 const KEYS = [
-  { id: 'hero', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.55 },
-  { id: 'about', src: SIDE_IMAGE, fit: 0.86, pull: 10, grip: 68, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.75 },
-  // 人像：這一版唯一「明顯不如原版」的地方。原版那張獨立 canvas 可以把 grip 拉到
-  // 82 又完全關掉互動力場；這裡的粒子前後都還要變成別的東西，force 全程開著，
-  // 所以五官會比原版鬆一點。要更銳利就把 grip 往上加，代價是前後兩段的流動感變差。
-  { id: 'speaker', src: null, fit: 0.68, pull: 11, grip: 82, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.95 },
-  { id: 'venue', src: VENUE_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.0, shift: 0.26, shiftY: 0.10, opacity: 0.85 },
-  { id: 'faq', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80 },
-  { id: 'outro', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60 },
+  { id: 'hero', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.55, lumaBias: DEFAULT_LUMA_BIAS },
+  { id: 'about', src: SIDE_IMAGE, fit: 0.86, pull: 10, grip: 68, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.75, lumaBias: DEFAULT_LUMA_BIAS },
+  // 人像：原版那張獨立 canvas 可以把 grip 拉到 82 又完全關掉互動力場。這裡做不到
+  // 「關掉」（前後兩格還要靠力場活著），但收攏成圖片的影格會把 force 降到引擎下限
+  // ——見上面 LOCK_FORCE。要更銳利就把 grip 往上加，代價是前後兩段的流動感變差。
+  // ⚠️ opacity 不要調回 0.95。渲染是 HDR 加法混色，臉的膚色本來就是整張圖裡面積最大、
+  // 密度最高的一塊 —— 0.95 會讓它整片過曝糊成一坨橘色，眼窩、眼鏡、鼻樑這些暗部細節
+  // 全被蓋掉（戴眼鏡那位最明顯，實測 0.95 完全看不到眼鏡、0.72 就看得到了）。
+  { id: 'speaker', src: null, fit: 0.68, maxPx: PORTRAIT_MAX_PX, pull: 11, grip: 82, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.72, lumaBias: PORTRAIT_LUMA_BIAS },
+  { id: 'venue', src: VENUE_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.0, shift: 0.26, shiftY: 0.10, opacity: 0.85, lumaBias: DEFAULT_LUMA_BIAS },
+  { id: 'faq', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
+  { id: 'outro', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
 
@@ -101,9 +129,16 @@ const SEGMENTS = [
 //
 // 依 canvas 面積算而不是寫死 —— 力場成本是 N² / 面積，窄視窗上寫死的數字會爆掉。
 // DENSITY = 桌機的 50000 ÷ 1440×900，所以桌機行為不變（見 useParticleBudget）。
+//
+// ⚠️ 這一版「不」用 look.budget（原版三張 canvas 那邊才用）。各組效果的預算差很多
+// （深海流光 48000、標本切片 27000），而這一版整條時間軸共用同一組粒子 —— 照 look
+// 走的話，抽到哪一組 hero 就決定了人像 / venue / faq 的點數，同一張人像會忽濃忽淡。
+// 這幾格的密度需求跟 hero 跑哪組效果無關，所以取「全頁最吃密度的那一格」當基準。
+// hero 的疏密改由各組自己的 pointSize / opacity 表現，那兩個本來就在 look 裡。
 const COUNT_DENSITY = 0.0386
 const COUNT_MAX = 50000
 const COUNT_MIN = 10000
+const PAGE_BUDGET = { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN }
 // 每張圖的取樣點數。⚠️ 全部必須一致，否則配對會有一撮粒子配不到對。
 // 引擎點數可以大於它（buildImageTargets 會循環重用取樣點），也可以小於它
 // （取樣是重要性採樣、順序隨機，取前 N 個仍是整張圖的均勻子集）。
@@ -149,6 +184,45 @@ const RELEASE = 0.022
 
 const SCROLL_CALM = 0.6               // 捲動中把互動力場壓掉多少，遷移才乾淨
 
+// --- 收攏成圖片時，互動力場要讓開 ------------------------------------------
+// ⚠️ 這是「整頁只有一張 canvas」這一版最重要的一條規則，別把它當成微調。
+//
+// 症狀：抽到不同的 hero 效果，人像 / venue / faq 這幾格的品質就完全不一樣 ——
+// 深海流光（#2）的人像五官清楚，鈷藍細胞（#1）的同一張人像則變成十幾坨孤立的
+// 色塊，看不出是人。設計上這幾格跟「hero 跑哪組效果」無關，不該有這種差異。
+//
+// 原因不是 seek 不夠緊（grip 已經 82），是互動力場「在密處會累加」：
+// 一顆粒子受到的吸引力是 rMax 內所有鄰居的總和，密度越高越強；而 seek 是每顆
+// 固定的 pull × 距離。人像本來就是「亮處密、暗處疏」，所以密處的力場一定會贏，
+// 把該分布在五官上的粒子抽成一坨坨菌落 —— 效果的自吸引越強（#1 的 snake self=1）
+// 塌得越兇。這跟 particleFieldLooks 裡「minR 是唯一有效旋鈕」是同一件事的兩面。
+//
+// 解法：收攏成圖片的影格把互動力場降到引擎下限，畫面交給 seek + 閃動主導。
+// 實測 1440×900、鈷藍細胞、停在人像那格 25 秒（6px 網格）：
+//   force 0.94  佔格率 5.4% ／ 最密 5% 的格子吃掉 31% 的粒子 ／ 單格最多 165 顆
+//   force 0.10  佔格率 11.8% ／ 16.6% ／ 51 顆   ← 與深海流光（17.9% ／ 79）同級
+// 自由場那兩格（hero / outro）完全不受影響，效果的個性留著。
+//
+// ⚠️ 0.1 不是隨便挑的，是引擎 setForce 的下限（clamp 在 [0.1, 2.0]，見
+//    particle-life-gpu.js）。寫 0 只會被夾回 0.1，不如照實寫。
+// ⚠️ 那「粒子不就不動了嗎」——收攏到看得出形狀時本來就不可能有自發運動（seek 是
+//    收斂到固定點的臨界阻尼彈簧，見下面 SHIMMER 那段的長註解）。這幾格的動態
+//    一直都是靠閃動（週期性換一組目標點偏移）在做，不是靠互動力場。
+const LOCK_FORCE = 0.1
+
+// 收攏成圖片時的模擬速度。同樣是「不該被 hero 決定」的一項：待機速度在 look.speed
+// .idle 裡，五組從 0.16 到 0.27 —— 而畫面上「閃動有多快」正比於它，所以同一張人像
+// 在不同 hero 下會閃得不一樣快。這裡收攏時一律換成固定值。
+//
+// ⚠️ 值挑 0.45 的理由（不是憑感覺）：閃動是「每隔 SHIMMER_PERIOD_MS 換一組目標點
+// 偏移，粒子再 seek 過去」，而 seek 的收斂速率是 pull × simSpeed（模擬時間是被
+// simSpeed 縮放的）。simSpeed 0.16 時速率只有 1.76/s，一個 1 秒的週期裡粒子只走了
+// 三分之一就被換到下一個目標，實測平均速率 2.2 px/s —— 看起來是慢慢飄，不是在閃。
+// 0.45 時速率 4.95/s，0.2 秒就走完，顆粒真的「一顆一顆換位置」。
+// ⚠️ 這裡敢把速度拉快，是因為收攏時互動力場已經被壓到 LOCK_FORCE ——
+//    否則加速的會是整個力場，人像照樣被扯散。兩者是配套的。
+const LOCK_SIM_SPEED = 0.45
+
 // 收攏拉力的跟隨速度。ATTACK 快（收攏要跟得上捲動），RELEASE 慢（放手要拖一段）。
 // ⚠️ RELEASE 不能快：回到自由場時若 pull 跟著 u 一起歸零，粒子就沒有力氣被帶回
 // 滿版，會整團留在原地慢慢擴散。慢釋放讓 seek 在 u 歸零後還有約 1.4 秒把粒子
@@ -163,8 +237,19 @@ const LOCK_RELEASE = 0.012
 // 有效的作法是「讓目標點自己會動」：每隔一段時間換一組新的隨機偏移，粒子就會平滑
 // 地滑向新位置。⚠️ 這一版 blend 已經被捲動進度佔用，所以只能把抖動烘進目標點，
 // 不能像 SpeakerField 那樣讓 blend 在 1↔0 之間震盪。
-const SHIMMER_AMP = 7                 // 人像的五官在模擬空間只有 20–40px 寬，超過 ~10 就糊掉
-const SHIMMER_PERIOD_MS = 2200
+// ⚠️ AMP 要跟 LOCK_SIM_SPEED 一起看，這是最容易踩的坑：粒子「實際走到的距離」不是
+// AMP，是 AMP × 這個週期內 seek 收斂掉的比例。原本 simSpeed 0.16 / 週期 2200ms 時
+// 只收斂三分之一，所以 AMP 寫 7、看起來其實只抖 2px；現在 simSpeed 0.45 收斂到八成，
+// 同樣寫 7 就真的抖 6px —— 眼鏡框、眼睛在模擬空間只有 5～10px 寬，直接被抹掉。
+// 3 是「加速之後」實際抖幅仍在 2～3px 的值，五官保得住。
+const SHIMMER_AMP = 3
+// 換一組新偏移的週期。⚠️ 這個值是照設計師 demo 影片量出來的，不是憑感覺調的：
+// 把影片裡人像靜止那 1.5 秒切出 380×380 的臉部視窗，量相鄰兩幀的差異（相對亮度）——
+//   間隔 0.03s → 5.7% ／ 0.1s → 14.6% ／ 0.2s → 23.3% ／ 0.5s → 29.4% ／ 1.0s → 30.3%
+// 0.5 秒就飽和了，也就是「整片顆粒約 0.5 秒換過一輪」。原本這裡是 2200ms，
+// 慢了四倍多，看起來是整片在慢慢呼吸而不是在閃。1000ms 是折衷：顆粒感明顯快起來，
+// 又不會變成整張臉在抖（速率正比於 AMP / PERIOD，所以 AMP 同步從 7 降到 3，見上）。
+const SHIMMER_PERIOD_MS = 1000
 
 const AMBIENT_INTENSITY = 0.5
 // 收攏到一定程度就把四層環境擾動關掉 —— tide 那層一發是 16–25 的大脈衝，
@@ -172,12 +257,26 @@ const AMBIENT_INTENSITY = 0.5
 const AMBIENT_OFF_AT = 0.35
 const AMBIENT_ON_AT = 0.20
 
-// 目標點失效（視窗改尺寸、fps 自適應觸發 setCount 整場重生）後要等場域重新散開
-// 才能重建 ——「自由場」那組目標點就是當下的粒子分布，抓太早會記成一團緊湊的
-// 開場構圖，之後就再也回不到滿版。
-const REBUILD_SETTLE_MS = 3000
-// 開場等多久才第一次建目標點（要等 fps 自適應定案 + 場域散開）
-const FIRST_BUILD_MS = 4000
+// 目標點失效（視窗改尺寸、fps 自適應觸發 setCount 整場重生）後多久重建。
+// 兼作 resize 的 debounce，也讓 setCount 重生的粒子先離開生成點再配對。
+// ⚠️ 以前是 3000，因為「自由場」那組目標點抓的是當下的粒子分布，抓太早會記成
+// 一團緊湊的開場構圖。現在那兩格改成一律用 seedPattern 的構圖（見 buildAllShapes），
+// 跟當下分布無關了，所以可以短很多 —— 而這段期間 frame() 是不收攏的，越短越好。
+const REBUILD_SETTLE_MS = 700
+
+// 開場多久之後量 fps、然後「馬上」建目標點。
+//
+// ⚠️ 這個值直接決定「進站第一趟往下捲會不會有反應」，不是效能微調。
+// ready（= 目標點建好）之前 frame() 會在 setMorph 之前 return，也就是捲動完全
+// 不會讓粒子收攏。原本這裡是 4000（fps 不夠還要再加 3000 才建），實測冷啟動用
+// 滾輪往下捲：1.4 秒時 flow 已經 0.15、3.8 秒就整頁捲完到 flow=5，而 ready 到
+// 4.2 秒才 true —— 整趟下去一格都沒觸發，要捲回最上面再下來才對得上。
+// 這就是設計師回報的「第一次往下滾都沒正確觸發」。
+//
+// 900ms 是「getFps 已經有東西可讀」與「使用者還沒捲下去」的交界。順序也很重要：
+// 先量 fps → 要減半就 setCount → 等 REBUILD_SETTLE_MS → 才建目標點。
+// setCount 會重配 targets buffer，順序反了目標點會被清空（等於又回到這個 bug）。
+const FPS_SAMPLE_MS = 900
 
 // --- 讓「被按住的構圖」不要變成死的貼圖 --------------------------------------
 // ⚠️ 機制上的必要，不是裝飾。seek 是「收斂到固定點的臨界阻尼彈簧」：粒子一到定位
@@ -244,6 +343,7 @@ let gripNow = 0
 let lastScrollY = 0
 let lastTime = 0
 let introStart = 0
+let readyAt = 0                       // 目標點第一次建好的時刻（dev 觀測用）
 let lastOpacity = -1
 let lastColorKey = ''
 
@@ -293,27 +393,50 @@ function speakerPortrait (i) {
   return props.speakers[i]?.portrait || null
 }
 
-async function getSpec (src, fit) {
+function specKey (src, fit, lumaBias) { return `${src}@${fit}@${lumaBias}` }
+
+async function getSpec (src, fit, lumaBias = DEFAULT_LUMA_BIAS) {
   if (!src) return null
-  const cacheKey = `${src}@${fit}`
+  const cacheKey = specKey(src, fit, lumaBias)
   if (specs.has(cacheKey)) return specs.get(cacheKey)
   const spec = await window.PLImage.prepare(src, {
     count: SAMPLES,
     colors: look.rules.species,   // 必須等於 species，否則得 setSpecies（會整場重生）
     fit,
+    lumaBias,
   })
   specs.set(cacheKey, spec)
   return spec
 }
 
+// 一個影格要拿的那份 spec（key 自己帶 fit 與 lumaBias）
+function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias) }
+
 // --- 目標點 ----------------------------------------------------------------
 // 用同一份快照把每個影格算成「以 slot 為索引」的目標點。
 // slot 是粒子生成時指定、永不改變的身分（GPU 每幀 spatial sort 會重排陣列，
 // array index 靠不住），shader 用 targets[slot] 查目標點。
-function shapeFromSpec (spec, snap, W, H) {
-  const targets = buildImageTargets(spec, snap.length, W, H)
+function shapeFromSpec (spec, snap, W, H, maxPx = 0) {
+  const targets = buildImageTargets(fitInto(spec, W, H, maxPx), snap.length, W, H)
   const { shape } = buildSlotTargets(snap, targets, spec.palette.length, W)
   return shape
+}
+
+// 把一份 spec 的 fit 壓到「畫面上最多幾 px」以內。
+//
+// ⚠️ 這是人像在大視窗上會變成鬼影的原因，不是效果、不是物理。
+// 點雲的大小是 fit × 視窗短邊，會跟著視窗長大；點數卻卡在 COUNT_MAX（50000，
+// 那是 fps 撐得住的上限）。所以視窗越大，同一張臉就被同樣多的粒子攤得越稀 ——
+// 實測 1440×900 時人像 612px、看得出五官；1590×1400 時人像長到 847×872，
+// 每平方 px 的粒子只剩 0.5 倍，五官就散成一層霧（設計師說的「好可怕」）。
+//
+// buildImageTargets 的實際邊長是 fit × min(W / aspect, H)，所以反解出上限即可。
+// ⚠️ 只縮不放：小視窗仍照 key.fit，1440×900 這個基準視窗完全不受影響。
+function fitInto (spec, W, H, maxPx) {
+  if (!maxPx) return spec
+  const span = Math.min(W / spec.aspect, H)
+  const fit = Math.min(spec.fit, maxPx / span)
+  return fit === spec.fit ? spec : { ...spec, fit }
 }
 
 // 自由場影格的「目標點」就是快照當下的位置。pull 在那裡是 0，平常用不到它 ——
@@ -336,16 +459,20 @@ async function buildAllShapes () {
   // 自由場那兩格（hero / outro）的目標點：seedPattern 畫出來的開場構圖。
   // 那才是每組效果真正好看、也真正互相不同的樣子 —— 規則一接管幾秒內就洗掉了，
   // 所以交給 seek 力去維持（見 particleFieldLooks 的 hold 那段）。
-  // hold.grip = 0 的組（深海流光）沒有底線握力，這組目標點就只在「回程」用得到，
-  // 那時退回 spread（快照當下的滿版分布）才是對的。
+  //
+  // ⚠️ 五組「一律」用開場構圖，包含 hold.grip = 0 的深海流光 —— 別再把它改回
+  // 「grip=0 就退回 spread（快照當下的分布）」。那個版本讓這份目標點的品質綁在
+  // 「建的當下場域散開了沒」，於是開場非得等好幾秒才能建，而在建好之前整個 frame()
+  // 是空轉的 —— 進站第一趟往下捲完全不會收攏（見 init 裡 FPS_SAMPLE_MS 那段）。
+  // 改成一律用構圖之後，什麼時候建都一樣，才有辦法把建立時機提前到 1 秒出頭。
+  // grip=0 那組實際上也沒差：它在 hero 那端 pull/grip 都是 0，這組座標只有「回程」
+  // 那 1.4 秒的收尾會用到，而構圖本來就是張滿版分布。
   let freeShape = spread
-  if (look.hold.grip > 0) {
-    try {
-      const seed = buildSeedTargets(look.rules.seedPattern, snap.length, look.rules.species, W, H)
-      freeShape = buildSlotTargets(snap, seed, look.rules.species, W).shape
-    } catch (err) {
-      console.warn('[HomeSameField] 開場構圖目標點建立失敗，該影格維持自由場', err)
-    }
+  try {
+    const seed = buildSeedTargets(look.rules.seedPattern, snap.length, look.rules.species, W, H)
+    freeShape = buildSlotTargets(snap, seed, look.rules.species, W).shape
+  } catch (err) {
+    console.warn('[HomeSameField] 開場構圖目標點建立失敗，該影格退回當下分布', err)
   }
 
   shapes.length = 0
@@ -357,9 +484,9 @@ async function buildAllShapes () {
       palLin.push(paletteToLinear(heroPal))
       continue
     }
-    const spec = specs.get(`${key.src}@${key.fit}`)
+    const spec = specs.get(specKey(key.src, key.fit, key.lumaBias))
     if (!spec) { shapes.push(freeShape); palLin.push(paletteToLinear(heroPal)); continue }
-    shapes.push(shapeFromSpec(spec, snap, W, H))
+    shapes.push(shapeFromSpec(spec, snap, W, H, key.maxPx))
     palLin.push(paletteToLinear(spec.palette))
   }
 
@@ -373,6 +500,7 @@ async function buildAllShapes () {
   shimmerT0 = performance.now()
   shimmerCycle = -1
   ready = true
+  if (!readyAt) readyAt = performance.now()
   return true
 }
 
@@ -419,6 +547,18 @@ function frame (now) {
     return
   }
 
+  // --- 時間軸 → 影格 --------------------------------------------------------
+  // ⚠️ 要在力場那段之前算：互動力場的強度取決於「這一格是不是圖片」（imgLock）。
+  const last = KEYS.length - 2
+  const k = Math.max(0, Math.min(last, Math.floor(flow)))
+  const u = Math.max(0, Math.min(1, flow - k))
+  const e = u * u * (3 - 2 * u)        // smoothstep，兩端收尾自然
+  const A = KEYS[k]
+  const B = KEYS[k + 1]
+
+  // 這一幀有多少比重落在「收攏成圖片」的影格上。0 = 純自由場（hero / outro）。
+  const imgLock = (A.src ? 1 : 0) * (1 - e) + (B.src ? 1 : 0) * e
+
   // --- 捲動速度 → 模擬速度 -------------------------------------------------
   const dt = lastTime ? Math.min(0.1, (t - lastTime) / 1000) : 0
   if (dt > 0) {
@@ -432,7 +572,9 @@ function frame (now) {
       intro = u * u * (3 - 2 * u)
     }
     const idleSpeed = look.speed.idle
-    const base = idleSpeed + (SIM_SPEED_INTRO - idleSpeed) * intro
+    const introBase = idleSpeed + (SIM_SPEED_INTRO - idleSpeed) * intro
+    // 收攏成圖片的影格用固定速度，閃動快慢才不會跟著 hero 效果變（見 LOCK_SIM_SPEED）
+    const base = introBase + (LOCK_SIM_SPEED - introBase) * imgLock
 
     const heat = Math.min(1, (Math.abs(y - lastScrollY) / dt) / SCROLL_REF)
     const target = base + (look.speed.max - idleSpeed) * heat
@@ -440,7 +582,8 @@ function frame (now) {
     engine.setSimSpeed?.(simSpeed)
 
     scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
-    const wanted = look.physics.forceFactor * (1 - SCROLL_CALM * scrollHeat)
+    const free = look.physics.forceFactor * (1 - SCROLL_CALM * scrollHeat)
+    const wanted = free + (LOCK_FORCE - free) * imgLock
     if (Math.abs(wanted - appliedForce) > 0.01) {
       appliedForce = wanted
       engine.setForce?.(wanted)      // 會重寫 80 bytes 的 options buffer，所以設門檻
@@ -448,14 +591,6 @@ function frame (now) {
   }
   lastTime = t
   lastScrollY = y
-
-  // --- 時間軸 → 影格 --------------------------------------------------------
-  const last = KEYS.length - 2
-  const k = Math.max(0, Math.min(last, Math.floor(flow)))
-  const u = Math.max(0, Math.min(1, flow - k))
-  const e = u * u * (3 - 2 * u)        // smoothstep，兩端收尾自然
-  const A = KEYS[k]
-  const B = KEYS[k + 1]
 
   // --- 相機 -----------------------------------------------------------------
   const { W, H } = engine.size
@@ -521,7 +656,7 @@ function frame (now) {
   // 握力呼吸。只吃「自由場」那兩格的權重 —— 收攏成圖片的影格要穩定的握力。
   // ⚠️ 乘在最後而不是乘進 pullTarget：LOCK_RELEASE 只有 0.012（約 1.4 秒的時間
   // 常數），呼吸若走那條平滑路徑會被削掉大半振幅。
-  const freeWeight = (A.src ? 0 : 1) * (1 - e) + (B.src ? 0 : 1) * e
+  const freeWeight = 1 - imgLock
   const breathe = reducedMotion
     ? 1
     : HOLD_BREATHE_FLOOR + (1 - HOLD_BREATHE_FLOOR) * (0.5 - 0.5 * Math.cos(t / HOLD_BREATHE_MS * TAU))
@@ -572,11 +707,11 @@ function tween (obj, vars, ms, ease, onUpdate) {
 
 async function swapSpeaker (portrait) {
   if (!engine || !portrait) return
-  const spec = await getSpec(portrait, KEYS[SPEAKER_KEY].fit)
+  const spec = await getSpec(portrait, KEYS[SPEAKER_KEY].fit, KEYS[SPEAKER_KEY].lumaBias)
   if (!spec || !ready || !baseSnap) return
 
   const { W, H } = engine.size
-  const nextShape = shapeFromSpec(spec, baseSnap, W, H)
+  const nextShape = shapeFromSpec(spec, baseSnap, W, H, KEYS[SPEAKER_KEY].maxPx)
   const nextPal = paletteToLinear(spec.palette)
 
   // 不在人像那一段就別播動畫 —— 直接換掉，捲回去自然就是新的人
@@ -653,13 +788,13 @@ async function switchLook (idOrIndex) {
   switching.value = true
   applyLookToKeys()
 
-  const count = countFor(canvasRef.value, look.budget)
+  const count = countFor(canvasRef.value, PAGE_BUDGET)
   applyFieldLook(engine, look, { count, allowGlow: !isMobile() })
   appliedForce = look.physics.forceFactor
 
   specs.clear()
-  const jobs = KEYS.filter(key => key.src).map(key => getSpec(key.src, key.fit))
-  jobs.push(getSpec(speakerPortrait(speakerIndex.value), KEYS[SPEAKER_KEY].fit))
+  const jobs = KEYS.filter(key => key.src).map(specOf)
+  jobs.push(specOf({ ...KEYS[SPEAKER_KEY], src: speakerPortrait(speakerIndex.value) }))
   try {
     await Promise.all(jobs)
   } catch (err) {
@@ -695,7 +830,7 @@ async function init () {
   appliedForce = look.physics.forceFactor
 
   const hero = window.PLPalettes.PALETTES[look.palette]
-  const count = countFor(canvas, look.budget)
+  const count = countFor(canvas, PAGE_BUDGET)
 
   engine = await window.makeEngine(canvas, {
     // ⚠️ 力矩陣不再寫死在這裡 —— 5 組效果各自帶一組，而且全都是「非對稱、沒有
@@ -738,8 +873,8 @@ async function init () {
   }
 
   // 取樣所有影格的圖（含目前這位講者）。約 190ms / 張，在開場散開的那幾秒內做完。
-  const jobs = KEYS.filter(key => key.src).map(key => getSpec(key.src, key.fit))
-  jobs.push(getSpec(speakerPortrait(speakerIndex.value), KEYS[SPEAKER_KEY].fit))
+  const jobs = KEYS.filter(key => key.src).map(specOf)
+  jobs.push(specOf({ ...KEYS[SPEAKER_KEY], src: speakerPortrait(speakerIndex.value) }))
   try {
     await Promise.all(jobs)
   } catch (err) {
@@ -766,24 +901,34 @@ async function init () {
       grip: +gripNow.toFixed(2),
       force: +engine.config.forceFactor.toFixed(2),
       ready,
+      // 從開場到「目標點建好」花了多久。捲動對不上時先看這個 ——
+      // 在它之前捲動是不會有任何收攏的（frame() 會直接 return）。
+      readyMs: readyAt ? Math.round(readyAt - introStart) : null,
       swapping,
       paused: engine.config.paused,
     })
+    // 每段 ScrollTrigger 的實際範圍與進度。捲動沒對上時先看這個 ——
+    // start / end 會不會在「捲一輪回來」之後才變成正確值，就是版面還沒穩就 refresh 的徵兆。
+    window.__sameTriggers = () => triggers.map((t, i) => ({
+      seg: SEGMENTS[i].trigger,
+      start: Math.round(t.start),
+      end: Math.round(t.end),
+      progress: +t.progress.toFixed(3),
+    }))
   }
   frame()
 
-  // 先讓開場的 fps 自適應定案，再建目標點 ——
-  // setCount 會重配粒子與 targets buffer，順序反了目標點會被清空。
+  // 量 fps → 需要就減半 → 馬上建目標點。見 FPS_SAMPLE_MS 的長註解：
+  // 在目標點建好之前，捲動不會讓粒子收攏，所以這段越短越好。
   setTimeout(async () => {
     const fps = engine?.getFps ? engine.getFps() : 60
     if (fps > 0 && fps < 45) {
       engine.setCount?.(Math.round(count / 2))
-      // setCount 會整場重生成「開場構圖」（緊湊的螺旋）。要等它散開再建目標點，
-      // 否則「自由場」那組目標會記成那團緊湊的東西，之後就回不到滿版。
+      // setCount 會整場重生成粒子，等它們離開生成點再配對
       await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
     }
     await buildAllShapes()
-  }, FIRST_BUILD_MS)
+  }, FPS_SAMPLE_MS)
 
   // --- 捲動 -----------------------------------------------------------------
   const { $ScrollTrigger } = useNuxtApp()
