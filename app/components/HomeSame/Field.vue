@@ -21,7 +21,7 @@
 // ─── 機制 ──────────────────────────────────────────────────────────────
 // 一條「時間軸」flow ∈ [0, KEYS.length-1]，每個整數是一個關鍵影格：
 //
-//   0 hero    自由場（不收攏）      3 venue   venue.png
+//   0 hero    自由場（不收攏）      3 venue   菌落場（cellular，不是圖片）
 //   1 about   side.png            4 faq     faq.png
 //   2 speaker 講者人像             5 outro   自由場（票券／贊助／CoC）
 //
@@ -58,7 +58,14 @@ const canvasRef = ref(null)
 const backend = ref('')
 
 // --- 關鍵影格 --------------------------------------------------------------
-// src   null = 自由場（不收攏，純 particle-life）
+// mode  這一格的粒子在做什麼。三種行為差很多，是整支檔案的主要分歧點：
+//   'free'      自由場。跑 look 自己的力矩陣，只有很鬆的 hold 按住開場構圖。
+//   'image'     收攏成圖片（side / 人像 / faq）。互動力場降到 LOCK_FORCE、
+//               模擬速度固定 LOCK_SIM_SPEED、高 grip 把粒子釘在輪廓上。
+//   'colonies'  活的菌落場（venue）。⚠️ 跟 'image' 幾乎每一項都相反 ——
+//               力場要「開大」（菌落是力場自己塌出來的，不是圖片取樣來的），
+//               grip 只用來把菌落圈在版面該在的那一塊。見 VENUE_COLONIES。
+// src   圖片路徑，只有 mode 'image' 用得到
 // fit   點雲佔畫布的比例（contain-fit 進 W*fit × H*fit 的框）
 // pull  每單位距離想要的靠攏速度；grip 速度被導引的強度。
 //       grip 大 = 抓得緊、輪廓清楚，但輪廓內剩下的 particle-life 運動就少。
@@ -69,7 +76,8 @@ const backend = ref('')
 //       1 = 只有亮的地方有粒子，0 = 整片輪廓內均勻取樣，色調完全交給色盤表現。
 //       ⚠️ 人像一定要 0，這是「人不像人」的主因之一，見 PORTRAIT_LUMA_BIAS。
 const SIDE_IMAGE = '/source_images/side.png'
-const VENUE_IMAGE = '/source_images/venue.png'
+// ⚠️ venue.png 已經不用了 —— PL.IV 改成活的菌落場（mode 'colonies'），
+// 那張圖當初只是拿來暫代這個效果的。檔案留著沒刪，原版三張 canvas 那頁還在用。
 const FAQ_IMAGE = '/source_images/faq.png'
 
 // PLImage.prepare 的預設值。標本那兩張（venue / faq）本來就是「黑底上的亮物體」，
@@ -95,18 +103,22 @@ const PORTRAIT_LUMA_BIAS = 0.6
 const PORTRAIT_MAX_PX = 612
 
 const KEYS = [
-  { id: 'hero', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.55, lumaBias: DEFAULT_LUMA_BIAS },
-  { id: 'about', src: SIDE_IMAGE, fit: 0.86, pull: 10, grip: 68, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.75, lumaBias: DEFAULT_LUMA_BIAS },
+  { id: 'hero', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.55, lumaBias: DEFAULT_LUMA_BIAS },
+  { id: 'about', mode: 'image', src: SIDE_IMAGE, fit: 0.86, pull: 10, grip: 68, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.75, lumaBias: DEFAULT_LUMA_BIAS },
   // 人像：原版那張獨立 canvas 可以把 grip 拉到 82 又完全關掉互動力場。這裡做不到
   // 「關掉」（前後兩格還要靠力場活著），但收攏成圖片的影格會把 force 降到引擎下限
   // ——見上面 LOCK_FORCE。要更銳利就把 grip 往上加，代價是前後兩段的流動感變差。
   // ⚠️ opacity 不要調回 0.95。渲染是 HDR 加法混色，臉的膚色本來就是整張圖裡面積最大、
   // 密度最高的一塊 —— 0.95 會讓它整片過曝糊成一坨橘色，眼窩、眼鏡、鼻樑這些暗部細節
   // 全被蓋掉（戴眼鏡那位最明顯，實測 0.95 完全看不到眼鏡、0.72 就看得到了）。
-  { id: 'speaker', src: null, fit: 0.68, maxPx: PORTRAIT_MAX_PX, pull: 11, grip: 82, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.72, lumaBias: PORTRAIT_LUMA_BIAS },
-  { id: 'venue', src: VENUE_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.0, shift: 0.26, shiftY: 0.10, opacity: 0.85, lumaBias: DEFAULT_LUMA_BIAS },
-  { id: 'faq', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
-  { id: 'outro', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
+  { id: 'speaker', mode: 'image', src: null, fit: 0.68, maxPx: PORTRAIT_MAX_PX, pull: 11, grip: 82, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.72, lumaBias: PORTRAIT_LUMA_BIAS },
+  // PL.IV 場地：⚠️ 這一格「不是圖片」。設計稿要的是一顆顆散開的菌落（第三組動態），
+  // 那是 cellular 力矩陣自己塌出來的樣子，不是取樣自 venue.png。
+  // venue.png 留在檔案裡沒用到 —— 之前是拿它暫代這個效果的（見 git 記錄）。
+  // pull / grip 在這一格只負責「把菌落圈在版面左半邊」，不負責長相，所以很鬆。
+  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 7, grip: 26, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85 },
+  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
+  { id: 'outro', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
 
@@ -222,6 +234,54 @@ const LOCK_FORCE = 0.1
 // ⚠️ 這裡敢把速度拉快，是因為收攏時互動力場已經被壓到 LOCK_FORCE ——
 //    否則加速的會是整個力場，人像照樣被扯散。兩者是配套的。
 const LOCK_SIM_SPEED = 0.45
+
+// --- PL.IV 場地：活的菌落場 -------------------------------------------------
+// 設計稿（Figma node 40004289-9149）標的「第三組動態」，畫的是一顆顆散開、
+// 帶膜狀紋理的菌落。那正是 cellular 力矩陣的樣子：i===j 給 +0.8（自己抱團）、
+// 其餘一律 -0.55（跟別的物種互斥）—— 完全對稱，所以會收斂成一顆顆互不往來的球。
+//
+// ⚠️ 這在 hero 是「壞掉」的定義（docs/living-particle-motion.md §1.1 拿它當呆板的
+// 反例，particleFieldLooks 也因此把 #1 的矩陣換成 snake）。但在這一區，那個塌陷
+// 就是設計要的東西 —— 差別在「hero 要一直演化，這裡要一群靜靜長著的菌落」。
+// 別把這裡也「修正」成非對稱矩陣，會直接失去這一格存在的理由。
+//
+// force 照設計稿卡片上的 1.6（比自由場的 ~1.0 高）：塌得夠緊才有清楚的顆粒邊界。
+// ⚠️ 收攏成圖片的那幾格是把 force 壓到 0.1，跟這裡剛好相反 —— 所以力場的目標值
+//    改成「每一格自己決定」（見 frame() 的 forceFor），不能再用一個 imgLock 帶過。
+//
+// 卡片上另外兩個數字沒照抄，原因：
+//   SPECIES 5   物種數是建引擎時決定的（setSpecies 會整場重生成粒子、targets 全毀），
+//               而它由 look 決定（5～7）。cellular 產生器吃任意 n，5 或 7 都成立。
+//   COUNT 1300  那是 sandbox 小畫布的點數，站上這張是滿版 canvas，照 PAGE_BUDGET。
+const VENUE_PRESET = 'cellular'
+const VENUE_FORCE = 1.6
+const VENUE_SIM_SPEED = 0.3
+// ⚠️ 沒有這一項，上面兩項就是白調的。minR 是硬核斥力半徑（dist < minR 就互斥），
+// 等於「一顆菌落最多能擠多密」，也就是「菌落有多大」。look 給的是 5（幾乎可以壓成
+// 一個點）—— 實測 cellular + minR 5：50000 顆全部縮成約 30 個 2~3px 的小點，整面
+// 幾乎全黑，跟設計稿的一團團完全不同。這跟 particleFieldLooks 裡鈷藍細胞把 minR
+// 拉到 16 是同一件事、同一個理由。離開這一格要記得換回 look.physics.minR。
+// 實測（1440×900、50000 顆、10 顆菌落）：
+//   minR 5   全部縮成約 30 個 2~3px 的點，畫面幾乎全黑
+//   minR 18  約 35px 的實心小球，還是太小太硬
+//   minR 44  約 70~80px、核心有顆粒、外圈帶暈 ← 最接近設計稿
+//   minR 56  約 150px，但變成同心圓環（洋蔥狀），太有結構、不像菌落
+const VENUE_MIN_R = 44
+
+// 菌落要待的那一塊（sim 座標的比例）。設計稿上點雲佔畫面左半，右半留給
+// Taipei Popop 那段文字。
+// ⚠️ 這一格用「把構圖放在該在的位置」而不是相機位移（其他格的 shift 那套）——
+// 自由場的粒子只存在於 [0,W]×[0,H]，相機推出去會看到場的邊界（一條空白）。
+// ⚠️ x1 要留出右邊那段文字（Taipei Popop 起點約在畫面 35% 處）。菌落中心會再往內
+// 縮一個半徑，所以 0.33 之後菌落最右緣大約在 33%，不會壓到字。
+const VENUE_REGION = { x0: 0.03, x1: 0.33, y0: 0.04, y1: 0.96 }
+// 幾顆菌落、每顆多大（半徑佔畫布短邊的比例）。
+// ⚠️ 這裡不用 PLSeeds 的 softClusters，雖然它也是「一團團圓群落」——
+// 它的團數是從物種數推的（T=7 時只有 3～7 團），而且 cellular 會再把每一團依物種
+// 拆成好幾顆（實測 4 團 × 7 物種 ≈ 25 顆小球，跟設計稿的十來顆大菌落差很多）。
+// 直接寫團數與半徑，才控制得住「幾顆、多大、在哪」。
+const VENUE_COLONIES = 10
+const VENUE_RADIUS = [0.055, 0.095]
 
 // 收攏拉力的跟隨速度。ATTACK 快（收攏要跟得上捲動），RELEASE 慢（放手要拖一段）。
 // ⚠️ RELEASE 不能快：回到自由場時若 pull 跟著 u 一起歸零，粒子就沒有力氣被帶回
@@ -346,6 +406,7 @@ let introStart = 0
 let readyAt = 0                       // 目標點第一次建好的時刻（dev 觀測用）
 let lastOpacity = -1
 let lastColorKey = ''
+let colonyPreset = false              // 目前引擎跑的是不是菌落那組矩陣
 
 let swapping = false                  // 換人動畫進行中 → 捲動不要搶著寫 morph
 let swapTween = null
@@ -412,6 +473,61 @@ async function getSpec (src, fit, lumaBias = DEFAULT_LUMA_BIAS) {
 // 一個影格要拿的那份 spec（key 自己帶 fit 與 lumaBias）
 function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias) }
 
+// PL.IV 的菌落構圖：在版面左半邊撒 VENUE_COLONIES 顆圓形群落，把 N 顆粒子依
+// 面積分給它們。回傳的是 buildImageTargets 那組同樣的 {tx, ty, tt} 介面。
+//
+// 這組座標只決定「菌落長在哪、多大」；顆粒感、膜狀邊界、內部的緩慢蠕動都是
+// cellular 力矩陣自己跑出來的（seek 在這一格是很鬆的，見 KEYS 的 pull/grip）。
+//
+// ⚠️ 物種是「整顆菌落一種」而不是隨機灑：cellular 本來就會把同物種吸在一起、
+// 不同物種推開，隨機灑的話粒子會離開自己的菌落去找同類，構圖就散了。
+// 一顆一色也剛好對上設計稿（每顆菌落是同一個色相的深淺）。
+function colonyTargets (N, T, W, H) {
+  const tx = new Float32Array(N)
+  const ty = new Float32Array(N)
+  const tt = new Uint8Array(N)
+  const m = Math.min(W, H)
+  const r = VENUE_REGION
+  const minX = W * r.x0; const spanX = W * (r.x1 - r.x0)
+  const minY = H * r.y0; const spanY = H * (r.y1 - r.y0)
+
+  // 先擺位置：拒絕取樣，盡量不重疊（重疊的兩顆會被 cellular 推開，構圖就跑掉）
+  const cx = []; const cy = []; const rad = []
+  for (let c = 0; c < VENUE_COLONIES; c++) {
+    const R = (VENUE_RADIUS[0] + Math.random() * (VENUE_RADIUS[1] - VENUE_RADIUS[0])) * m
+    let x = 0; let y = 0
+    for (let att = 0; att < 400; att++) {
+      x = minX + R + Math.random() * Math.max(1, spanX - 2 * R)
+      y = minY + R + Math.random() * Math.max(1, spanY - 2 * R)
+      let ok = true
+      for (let j = 0; j < cx.length; j++) {
+        const dx = x - cx[j]; const dy = y - cy[j]
+        const need = rad[j] + R + 0.02 * m
+        if (dx * dx + dy * dy < need * need) { ok = false; break }
+      }
+      if (ok) break
+    }
+    cx.push(x); cy.push(y); rad.push(R)
+  }
+
+  // 再分粒子：依面積分配，大顆的拿到比較多，密度才會一致
+  let area = 0
+  for (const R of rad) area += R * R
+  let i = 0
+  for (let c = 0; c < rad.length; c++) {
+    const share = c === rad.length - 1 ? N - i : Math.round(N * (rad[c] * rad[c]) / area)
+    for (let n = 0; n < share && i < N; n++, i++) {
+      // sqrt 讓點在圓內均勻分布（不加就會全擠在圓心）
+      const a = Math.random() * TAU
+      const rr = rad[c] * Math.sqrt(Math.random())
+      tx[i] = cx[c] + Math.cos(a) * rr
+      ty[i] = cy[c] + Math.sin(a) * rr
+      tt[i] = c % T
+    }
+  }
+  return { tx, ty, tt }
+}
+
 // --- 目標點 ----------------------------------------------------------------
 // 用同一份快照把每個影格算成「以 slot 為索引」的目標點。
 // slot 是粒子生成時指定、永不改變的身分（GPU 每幀 spatial sort 會重排陣列，
@@ -475,10 +591,29 @@ async function buildAllShapes () {
     console.warn('[HomeSameField] 開場構圖目標點建立失敗，該影格退回當下分布', err)
   }
 
+  // 菌落那一格（venue）的目標點：softClusters 的圓群落，壓進版面左半邊那塊。
+  // 這組座標只負責「菌落長在哪」，長什麼樣是 cellular 力矩陣自己塌出來的。
+  let colonyShape = freeShape
+  try {
+    colonyShape = buildSlotTargets(
+      snap,
+      colonyTargets(snap.length, look.rules.species, W, H),
+      look.rules.species,
+      W,
+    ).shape
+  } catch (err) {
+    console.warn('[HomeSameField] 菌落構圖建立失敗，該影格退回自由場', err)
+  }
+
   shapes.length = 0
   palLin.length = 0
   const heroPal = window.PLPalettes.PALETTES[look.palette].particles
   for (const key of KEYS) {
+    if (key.mode === 'colonies') {
+      shapes.push(colonyShape)
+      palLin.push(paletteToLinear(heroPal))
+      continue
+    }
     if (!key.src) {
       shapes.push(freeShape)
       palLin.push(paletteToLinear(heroPal))
@@ -548,7 +683,7 @@ function frame (now) {
   }
 
   // --- 時間軸 → 影格 --------------------------------------------------------
-  // ⚠️ 要在力場那段之前算：互動力場的強度取決於「這一格是不是圖片」（imgLock）。
+  // ⚠️ 要在力場那段之前算：力場強度與模擬速度都是「每一格自己決定」的（見 modeMix）。
   const last = KEYS.length - 2
   const k = Math.max(0, Math.min(last, Math.floor(flow)))
   const u = Math.max(0, Math.min(1, flow - k))
@@ -556,8 +691,21 @@ function frame (now) {
   const A = KEYS[k]
   const B = KEYS[k + 1]
 
-  // 這一幀有多少比重落在「收攏成圖片」的影格上。0 = 純自由場（hero / outro）。
-  const imgLock = (A.src ? 1 : 0) * (1 - e) + (B.src ? 1 : 0) * e
+  // 這一幀有多少比重落在某個 mode 上。0 = 完全不在，1 = 完全在。
+  const modeMix = (m) => (A.mode === m ? 1 : 0) * (1 - e) + (B.mode === m ? 1 : 0) * e
+  const colonyMix = modeMix('colonies')
+
+  // 菌落那一格要換一組力矩陣（cellular），離開就換回 look 自己的。
+  // ⚠️ setPreset 只重寫互動矩陣，不會重生成粒子、也不會動到 targets buffer —— 這是
+  // 它能在捲動中途換的原因（setSpecies / setCount 就不行，那兩個會整場重來）。
+  // 門檻做遲滯（0.35 / 0.65），避免停在交界處來回抖。矩陣是瞬間換的，但畫面不會跳
+  // ——粒子是被新的力慢慢重新組織，看起來就是菌落長出來 / 化開。
+  const wantColony = colonyPreset ? colonyMix > 0.35 : colonyMix > 0.65
+  if (wantColony !== colonyPreset) {
+    colonyPreset = wantColony
+    engine.setPreset?.(wantColony ? VENUE_PRESET : look.rules.preset)
+    engine.setMinR?.(wantColony ? VENUE_MIN_R : look.physics.minR)
+  }
 
   // --- 捲動速度 → 模擬速度 -------------------------------------------------
   const dt = lastTime ? Math.min(0.1, (t - lastTime) / 1000) : 0
@@ -573,8 +721,12 @@ function frame (now) {
     }
     const idleSpeed = look.speed.idle
     const introBase = idleSpeed + (SIM_SPEED_INTRO - idleSpeed) * intro
-    // 收攏成圖片的影格用固定速度，閃動快慢才不會跟著 hero 效果變（見 LOCK_SIM_SPEED）
-    const base = introBase + (LOCK_SIM_SPEED - introBase) * imgLock
+    // 每一格自己的模擬速度，兩格之間插值。收攏成圖片的用固定值（閃動快慢才不會
+    // 跟著 hero 效果變，見 LOCK_SIM_SPEED），菌落場用自己的，自由場照 look。
+    const speedFor = key => key.mode === 'image'
+      ? LOCK_SIM_SPEED
+      : key.mode === 'colonies' ? VENUE_SIM_SPEED : introBase
+    const base = lerp(speedFor(A), speedFor(B), e)
 
     const heat = Math.min(1, (Math.abs(y - lastScrollY) / dt) / SCROLL_REF)
     const target = base + (look.speed.max - idleSpeed) * heat
@@ -582,8 +734,12 @@ function frame (now) {
     engine.setSimSpeed?.(simSpeed)
 
     scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
+    // 力場同理，而且三種 mode 要的方向完全不同：圖片要壓到下限、菌落要開大。
     const free = look.physics.forceFactor * (1 - SCROLL_CALM * scrollHeat)
-    const wanted = free + (LOCK_FORCE - free) * imgLock
+    const forceFor = key => key.mode === 'image'
+      ? LOCK_FORCE
+      : key.mode === 'colonies' ? VENUE_FORCE : free
+    const wanted = lerp(forceFor(A), forceFor(B), e)
     if (Math.abs(wanted - appliedForce) > 0.01) {
       appliedForce = wanted
       engine.setForce?.(wanted)      // 會重寫 80 bytes 的 options buffer，所以設門檻
@@ -656,7 +812,7 @@ function frame (now) {
   // 握力呼吸。只吃「自由場」那兩格的權重 —— 收攏成圖片的影格要穩定的握力。
   // ⚠️ 乘在最後而不是乘進 pullTarget：LOCK_RELEASE 只有 0.012（約 1.4 秒的時間
   // 常數），呼吸若走那條平滑路徑會被削掉大半振幅。
-  const freeWeight = 1 - imgLock
+  const freeWeight = modeMix('free')
   const breathe = reducedMotion
     ? 1
     : HOLD_BREATHE_FLOOR + (1 - HOLD_BREATHE_FLOOR) * (0.5 - 0.5 * Math.cos(t / HOLD_BREATHE_MS * TAU))
