@@ -102,6 +102,22 @@ const PORTRAIT_LUMA_BIAS = 0.6
 // 只有比它更大的視窗會被壓回來。
 const PORTRAIT_MAX_PX = 612
 
+// 這一格自己的閃動幅度（px）。⚠️ 別跟人像共用 SHIMMER_AMP —— 那邊是 3，因為五官
+// 只有 20~40px 寬，抖過頭就糊掉；這裡一顆菌落 100px 以上、內部亮塊 20px 起跳，
+// 抖 3px 等於沒動。
+//
+// 為什麼需要它：cellular 是對稱矩陣，會收斂 —— 混色 + 收攏雖然把靜止解破壞掉了，
+// 實測穩定後也只剩 1.5 px/s，看起來還是偏死。設計師 demo 的菌落區實測是「相鄰幀
+// 差異 2.3%，但 1 秒累積到 51%」，也就是結構一直在慢慢重組。
+// 目標點週期性換一組偏移，正好給它這個「永遠有下一個目標」的推力。
+// 「電弧感」＝ 小團內部快速閃爍重排，不是整團慢慢漂。
+// 逐幀量設計師 demo 的單顆菌落（0.15 秒一張，放大 1.5 倍看）：菌落本身幾乎不位移，
+// 但內部亮塊每 0.15 秒就明顯換一輪。對照原本這裡的設定（幅度 12px、週期 1000ms）
+// 是「慢慢脹縮」，完全是另一種東西。
+// 所以這一格自己帶「幅度 + 週期」：幅度收小到小團的尺度，週期縮到 1/4。
+const VENUE_SHIMMER = 7
+const VENUE_SHIMMER_MS = 260
+
 const KEYS = [
   { id: 'hero', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.55, lumaBias: DEFAULT_LUMA_BIAS },
   { id: 'about', mode: 'image', src: SIDE_IMAGE, fit: 0.86, pull: 10, grip: 68, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.75, lumaBias: DEFAULT_LUMA_BIAS },
@@ -115,11 +131,15 @@ const KEYS = [
   // PL.IV 場地：⚠️ 這一格「不是圖片」。設計稿要的是一顆顆散開的菌落（第三組動態），
   // 那是 cellular 力矩陣自己塌出來的樣子，不是取樣自 venue.png。
   // venue.png 留在檔案裡沒用到 —— 之前是拿它暫代這個效果的（見 git 記錄）。
-  // pull / grip 在這一格只負責「把菌落圈在版面左半邊」，不負責長相，所以很鬆。
-  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 7, grip: 26, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85 },
+  // ⚠️ grip 55 是「握緊」不是「鬆握」，跟第一版的直覺相反。原因是結構已經寫進目標點
+  // 了（colonyTargets 的小團），握緊才守得住那個構圖；握鬆的話 cellular 的異物種互斥
+  // 會把小團推散，畫面就變成一片均勻的斑點（設計師的說法是「像繡球花」）。
+  // 動態不靠鬆握來，靠的是 shimmer 快速換目標點（shimmerMs 260ms）。
+  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 11, grip: 55, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
   { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
   { id: 'outro', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
+const VENUE_KEY = 3                   // 菌落影格的索引（切光暈時要用）
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
 
 // 各段的捲動範圍。⚠️ 依序、不重疊 —— 重疊不會壞掉（flow 仍然單調），
@@ -254,7 +274,7 @@ const LOCK_SIM_SPEED = 0.45
 //               而它由 look 決定（5～7）。cellular 產生器吃任意 n，5 或 7 都成立。
 //   COUNT 1300  那是 sandbox 小畫布的點數，站上這張是滿版 canvas，照 PAGE_BUDGET。
 const VENUE_PRESET = 'cellular'
-const VENUE_FORCE = 1.6
+const VENUE_FORCE = 1.0
 const VENUE_SIM_SPEED = 0.3
 // ⚠️ 沒有這一項，上面兩項就是白調的。minR 是硬核斥力半徑（dist < minR 就互斥），
 // 等於「一顆菌落最多能擠多密」，也就是「菌落有多大」。look 給的是 5（幾乎可以壓成
@@ -268,6 +288,7 @@ const VENUE_SIM_SPEED = 0.3
 //   minR 56  約 150px，但變成同心圓環（洋蔥狀），太有結構、不像菌落
 const VENUE_MIN_R = 44
 
+
 // 菌落要待的那一塊（sim 座標的比例）。設計稿上點雲佔畫面左半，右半留給
 // Taipei Popop 那段文字。
 // ⚠️ 這一格用「把構圖放在該在的位置」而不是相機位移（其他格的 shift 那套）——
@@ -280,8 +301,19 @@ const VENUE_REGION = { x0: 0.03, x1: 0.33, y0: 0.04, y1: 0.96 }
 // 它的團數是從物種數推的（T=7 時只有 3～7 團），而且 cellular 會再把每一團依物種
 // 拆成好幾顆（實測 4 團 × 7 物種 ≈ 25 顆小球，跟設計稿的十來顆大菌落差很多）。
 // 直接寫團數與半徑，才控制得住「幾顆、多大、在哪」。
-const VENUE_COLONIES = 10
-const VENUE_RADIUS = [0.055, 0.095]
+// ⚠️ 顆數 × 半徑要塞得進 VENUE_REGION 而且彼此留得出黑底空隙，否則菌落會黏成一大團
+// （實測 10 顆 × 半徑 0.095 在 0.03~0.33 這條帶子裡放不下，拒絕取樣放棄後直接重疊，
+// 畫面就變成左半邊一整片連續的細胞紋理，看不出一顆一顆）。
+// 目前 7 顆 × 半徑 0.045~0.065 ≈ 佔那塊區域 15% 的面積，排得開還留得出空隙。
+// ⚠️ 間距要抓得比半徑大方一點：菌落實際會脹得比目標圓盤大（物種互斥推出去的），
+// 照半徑貼著排的話畫面上就是黏成一片。0.05 短邊 ≈ 45px 的黑底空隙。
+const VENUE_GAP = 0.07
+const VENUE_COLONIES = 7
+// 一顆菌落裡切幾個小團、每個小團多大（佔菌落半徑的比例）。
+// 設計稿一顆菌落裡大約十幾坨，大小不一。
+const VENUE_BLOBS = [10, 18]
+const VENUE_BLOB_R = [0.10, 0.24]
+const VENUE_RADIUS = [0.045, 0.065]
 
 // 收攏拉力的跟隨速度。ATTACK 快（收攏要跟得上捲動），RELEASE 慢（放手要拖一段）。
 // ⚠️ RELEASE 不能快：回到自由場時若 pull 跟著 u 一起歸零，粒子就沒有力氣被帶回
@@ -392,6 +424,7 @@ let targetsH = 0
 let curSeg = -1                       // 目前已上傳目標點的段落
 let shimmerT0 = 0
 let shimmerCycle = -1
+let shimmerPeriod = SHIMMER_PERIOD_MS   // 目前生效的閃動週期（每一格可以不同）
 let jitA = null                       // 閃動用的 scratch，避免每 2.2 秒配兩份大陣列
 let jitB = null
 
@@ -479,9 +512,14 @@ function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias) }
 // 這組座標只決定「菌落長在哪、多大」；顆粒感、膜狀邊界、內部的緩慢蠕動都是
 // cellular 力矩陣自己跑出來的（seek 在這一格是很鬆的，見 KEYS 的 pull/grip）。
 //
-// ⚠️ 物種是「整顆菌落一種」而不是隨機灑：cellular 本來就會把同物種吸在一起、
-// 不同物種推開，隨機灑的話粒子會離開自己的菌落去找同類，構圖就散了。
-// 一顆一色也剛好對上設計稿（每顆菌落是同一個色相的深淺）。
+// ⚠️ 物種是「一顆菌落裡各種都有」，不是一顆一種。這是對上設計稿的關鍵：
+// 設計稿裡每顆菌落是十幾坨大小不一的亮塊（白、亮藍、深藍混在一起）而不是一顆平滑
+// 的球 —— 那些亮塊就是 cellular 把同物種吸在一起、不同物種推開的結果，一顆菌落
+// 內部自己分成好幾坨。
+// 附帶效果（也是要的）：seek 把粒子按在菌落裡、cellular 又要把不同物種推開，
+// 兩股力互相牽制 → 這個系統永遠到不了平衡，內部一直在重組。對稱矩陣本來會收斂成
+// 死圖（docs/living-particle-motion.md §1.1），混色 + 收攏正好把那個靜止解破壞掉，
+// 也就是設計師要的「閃動感」的來源。
 function colonyTargets (N, T, W, H) {
   const tx = new Float32Array(N)
   const ty = new Float32Array(N)
@@ -491,8 +529,8 @@ function colonyTargets (N, T, W, H) {
   const minX = W * r.x0; const spanX = W * (r.x1 - r.x0)
   const minY = H * r.y0; const spanY = H * (r.y1 - r.y0)
 
-  // 先擺位置：拒絕取樣，盡量不重疊（重疊的兩顆會被 cellular 推開，構圖就跑掉）
-  const cx = []; const cy = []; const rad = []
+  // 1) 菌落位置。拒絕取樣，彼此留出 VENUE_GAP 的黑底空隙。
+  const col = []
   for (let c = 0; c < VENUE_COLONIES; c++) {
     const R = (VENUE_RADIUS[0] + Math.random() * (VENUE_RADIUS[1] - VENUE_RADIUS[0])) * m
     let x = 0; let y = 0
@@ -500,29 +538,53 @@ function colonyTargets (N, T, W, H) {
       x = minX + R + Math.random() * Math.max(1, spanX - 2 * R)
       y = minY + R + Math.random() * Math.max(1, spanY - 2 * R)
       let ok = true
-      for (let j = 0; j < cx.length; j++) {
-        const dx = x - cx[j]; const dy = y - cy[j]
-        const need = rad[j] + R + 0.02 * m
+      for (const o of col) {
+        const dx = x - o.x; const dy = y - o.y
+        const need = o.R + R + VENUE_GAP * m
         if (dx * dx + dy * dy < need * need) { ok = false; break }
       }
       if (ok) break
     }
-    cx.push(x); cy.push(y); rad.push(R)
+    col.push({ x, y, R })
   }
 
-  // 再分粒子：依面積分配，大顆的拿到比較多，密度才會一致
-  let area = 0
-  for (const R of rad) area += R * R
-  let i = 0
-  for (let c = 0; c < rad.length; c++) {
-    const share = c === rad.length - 1 ? N - i : Math.round(N * (rad[c] * rad[c]) / area)
-    for (let n = 0; n < share && i < N; n++, i++) {
-      // sqrt 讓點在圓內均勻分布（不加就會全擠在圓心）
+  // 2) 每顆菌落再切成一小團一小團（設計稿的關鍵）。
+  // ⚠️ 「小團」一定要寫進目標點，不能指望物理自己長出來。之前的版本是把粒子均勻
+  // 灑滿整顆菌落、讓 cellular 慢慢把同物種吸成小團 —— 結果有兩個問題：
+  //   a. 要十幾秒才成形，而使用者捲到這一區只看得到最初那一兩秒
+  //   b. 就算等到了也是「均勻的斑點球」，設計師的說法是像繡球花
+  // 直接把小團排進目標點，粒子一到位（約 0.5 秒）就是對的結構，
+  // cellular 只是「加強」它：同物種互相吸（小團更緊）、異物種互斥（空隙更黑）。
+  // 物理跟構圖同向，不是互相打架，所以既快又穩。
+  const blobs = []
+  for (const c of col) {
+    const k = VENUE_BLOBS[0] + ((Math.random() * (VENUE_BLOBS[1] - VENUE_BLOBS[0] + 1)) | 0)
+    for (let b = 0; b < k; b++) {
+      // 小團中心撒在菌落圓內（sqrt 讓它均勻分布，不會全擠在中心）
       const a = Math.random() * TAU
-      const rr = rad[c] * Math.sqrt(Math.random())
-      tx[i] = cx[c] + Math.cos(a) * rr
-      ty[i] = cy[c] + Math.sin(a) * rr
-      tt[i] = c % T
+      const rr = c.R * 0.82 * Math.sqrt(Math.random())
+      blobs.push({
+        x: c.x + Math.cos(a) * rr,
+        y: c.y + Math.sin(a) * rr,
+        R: c.R * (VENUE_BLOB_R[0] + Math.random() * (VENUE_BLOB_R[1] - VENUE_BLOB_R[0])),
+        t: (Math.random() * T) | 0,      // 一小團一種顏色 → 亮塊乾淨、團與團之間有色差
+      })
+    }
+  }
+
+  // 3) 分粒子：依小團面積分配，密度才會一致
+  let area = 0
+  for (const b of blobs) area += b.R * b.R
+  let i = 0
+  for (let bi = 0; bi < blobs.length; bi++) {
+    const b = blobs[bi]
+    const share = bi === blobs.length - 1 ? N - i : Math.round(N * (b.R * b.R) / area)
+    for (let n = 0; n < share && i < N; n++, i++) {
+      const a = Math.random() * TAU
+      const rr = b.R * Math.sqrt(Math.random())
+      tx[i] = b.x + Math.cos(a) * rr
+      ty[i] = b.y + Math.sin(a) * rr
+      tt[i] = b.t
     }
   }
   return { tx, ty, tt }
@@ -705,6 +767,11 @@ function frame (now) {
     colonyPreset = wantColony
     engine.setPreset?.(wantColony ? VENUE_PRESET : look.rules.preset)
     engine.setMinR?.(wantColony ? VENUE_MIN_R : look.physics.minR)
+    // 光暈：demo 的菌落核心是會發光的，關著的話只有銳利點、少一半味道。
+    // ⚠️ 手機一律不開（額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比）。
+    engine.setShowGlow?.(wantColony
+      ? (KEYS[VENUE_KEY].glow && !isMobile())
+      : (look.visual.showGlow && !isMobile()))
   }
 
   // --- 捲動速度 → 模擬速度 -------------------------------------------------
@@ -793,14 +860,25 @@ function frame (now) {
   if (!ready || swapping) return
 
   // 段落改變 → 換一組目標點。⚠️ 只在這裡上傳（一次 count*16 bytes），不是每幀。
-  const shimmerNow = Math.floor((t - shimmerT0) / SHIMMER_PERIOD_MS)
+  // 週期也是每一格自己的（菌落那格要快四倍才有電弧感，見 VENUE_SHIMMER_MS）。
+  // 用 e < 0.5 決定聽哪一格的，換週期時把起算點重設，避免 cycle 編號跳號亂閃。
+  const periodMs = (e < 0.5 ? A.shimmerMs : B.shimmerMs) ?? SHIMMER_PERIOD_MS
+  if (periodMs !== shimmerPeriod) {
+    shimmerPeriod = periodMs
+    shimmerT0 = t
+    shimmerCycle = -1
+  }
+  const shimmerNow = Math.floor((t - shimmerT0) / shimmerPeriod)
   if (k !== curSeg || (!reducedMotion && shimmerNow !== shimmerCycle && lockNorm > 0.05)) {
     curSeg = k
     shimmerCycle = shimmerNow
-    const amp = reducedMotion ? 0 : SHIMMER_AMP
+    // 幅度是「每一格自己的」：人像 3px（五官只有 20~40px 寬，抖過頭就糊），
+    // 菌落 12px（一顆 100px 以上，3px 等於沒動）。見 SHIMMER_AMP / VENUE_SHIMMER。
+    const ampA = reducedMotion ? 0 : (A.shimmer ?? SHIMMER_AMP)
+    const ampB = reducedMotion ? 0 : (B.shimmer ?? SHIMMER_AMP)
     engine.setTargets(
-      amp ? jitterInto(jitA, shapes[k], amp) : shapes[k],
-      amp ? jitterInto(jitB, shapes[k + 1], amp) : shapes[k + 1],
+      ampA ? jitterInto(jitA, shapes[k], ampA) : shapes[k],
+      ampB ? jitterInto(jitB, shapes[k + 1], ampB) : shapes[k + 1],
     )
   }
 
