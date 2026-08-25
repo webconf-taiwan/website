@@ -146,7 +146,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
 
           <!-- Skills 框：疊在背景粒子團上的「觀察框」。刻意留大量上方空白，
                讓框落在粒子團中段（設計稿的構圖）。 -->
-          <div class="relative mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
+          <div class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
             <!-- 十字準星 -->
             <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-caption text-white/40">+</span>
             <div class="relative border border-white/25 px-4 py-5">

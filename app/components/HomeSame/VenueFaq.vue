@@ -1,9 +1,17 @@
 <script setup>
 // PL. IV（Venue）+ PL. V（FAQ）（index-same.vue 版本）。
 //
-// 與 Home/VenueFaqField.vue 的差別：這裡「沒有 canvas」，也沒有 sticky 容器、
-// 沒有不透明底色。兩隻標本的點雲由頁面底層那張唯一的 HomeSameField 畫，
+// 與 Home/VenueFaqField.vue 的差別：這裡「沒有 canvas」，也沒有 sticky 容器。
 // 這個元件只剩版面。
+//
+// ⚠️ 底色是 RWD 的：
+//   ≥1024px  半透明壓黑 —— 兩隻標本（菌落場、faq.png）的點雲由頁面底層那張唯一的
+//            HomeSameField 畫，不透明底會把它們整片蓋掉。
+//   <1024px  這兩區「完全沒有粒子」（見 useViewportMode）。設計稿上的標本在窄視窗
+//            的版面裡本來就沒有位置攤開，而它們是全頁最吃密度的兩格（放射狀尖刺，
+//            原版 VenueFaqField 為此用到 52000 顆），在手機上算了也只是被文字蓋掉。
+//            擋住 hero 那張 fixed canvas 定格畫面的不透明底，是頁面在 PL.II～PL.V
+//            外面包的那一層（見 index-same.vue），不在這裡。
 //
 // 原版為了讓同一張 canvas 在捲過兩區時留在畫面上，得包一層 h-0 的 sticky 容器 +
 // 溢出的 h-screen canvas，還要 overflow-clip 避免糊到票券區（而且只能用 clip
@@ -41,9 +49,9 @@ onBeforeUnmount(() => killStaggers())
 </script>
 
 <template>
-  <!-- ⚠️ 底色只能是半透明。點雲畫在背後那張 fixed canvas 上，
-       原版那個不透明的 bg-[#0a0a0c] 在這裡會把自己的標本整片蓋掉。 -->
-  <div class="relative bg-black/25">
+  <!-- ⚠️ 底色見上面檔頭。窄視窗這裡不鋪底 —— 不透明底是頁面在 PL.II～PL.V 外面
+       包的那一層（見 index-same.vue）。 -->
+  <div class="relative lg:bg-black/25">
     <!-- PL. IV — Venue。設計稿是兩欄：左欄固定 484 寬只放卷號，右欄 flex-1 放內容。
          兩欄各自有自己的 border-t（不是同一條線橫貫），右欄再多 24px 內縮。
          data-same-venue 是 HomeSameField 第 3 段（speaker → venue）的觸發器。 -->
@@ -75,7 +83,7 @@ onBeforeUnmount(() => killStaggers())
 
         <!-- 右欄：標題 + 交通方式 + 按鈕 -->
         <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
-          <div class="flex flex-col gap-12 border-t border-pre-800/35 py-8 lg:pl-6">
+          <div class="flex flex-col gap-12 lg:border-t lg:border-pre-800/35 py-8 lg:pl-6">
             <div class="flex flex-col gap-4">
               <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
                 {{ venue.title_en }}

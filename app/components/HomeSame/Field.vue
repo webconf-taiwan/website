@@ -1202,7 +1202,9 @@ onBeforeUnmount(() => {
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
   if (engine) { engine.destroy(); engine = null }
-  resetSpeakerBus()
+  // ⚠️ 帶著自己的實作去核對 —— 跨斷點切換時窄視窗那張（HomeSameSpeakerPortrait）
+  // 可能已經先登記好了，無條件清會把它踢掉。見 useSameFieldBus 的說明。
+  resetSpeakerBus(swapSpeaker)
 })
 
 defineExpose({ backend })
