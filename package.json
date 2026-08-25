@@ -18,6 +18,7 @@
     "@nuxtjs/seo": "^5.3.12",
     "@pinia/nuxt": "^0.11.3",
     "@takumi-rs/core": "^2.10.0",
+    "@takumi-rs/wasm": "^2.10.0",
     "@vueuse/nuxt": "^14.3.0",
     "class-variance-authority": "^0.7.1",
     "gsap": "^3.15.0",
