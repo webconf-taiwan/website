@@ -2824,6 +2824,18 @@
   resolved "https://registry.yarnpkg.com/@takumi-rs/helpers/-/helpers-2.10.0.tgz#ac7284234ef56cb78697cc79c647c21c59d12903"
   integrity sha512-cPQNj/16DASgMaIA07ZrjNQ14Z+7lWiVPZQVz5S1kLAhVlCf9qg2D2vge/+yglHrdaL556U22wDWNUyFId5a+A==
 
+"@takumi-rs/helpers@2.12.0":
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/helpers/-/helpers-2.12.0.tgz#f1ef29df7aecf9eb6bc7dc35e6a25c7137df425e"
+  integrity sha512-3DF+spdZEKvFahc3SXQ3roXL9DzQkPoQ/oqopKT0bcXd3QiROTyYncRgzqUnEfBlFp236m9pSFVRSwW2GvLO9w==
+
+"@takumi-rs/wasm@^2.10.0":
+  version "2.12.0"
+  resolved "https://registry.yarnpkg.com/@takumi-rs/wasm/-/wasm-2.12.0.tgz#9f4861fe532fc3c20f8269d2da15eccb57e8e1d9"
+  integrity sha512-tGwNU96tWZZCqrCogy5nHfablvUW6UtzK52Ydnkld7hnNdzyU3eHrCzxNKmSf+tHYJHHKLgyOpgEnxFBIqriFQ==
+  dependencies:
+    "@takumi-rs/helpers" "2.12.0"
+
 "@tybys/wasm-util@^0.10.3":
   version "0.10.3"
   resolved "https://registry.yarnpkg.com/@tybys/wasm-util/-/wasm-util-0.10.3.tgz#015cba9e9dd47ce14d03d2a8c5d547bfb169665d"
