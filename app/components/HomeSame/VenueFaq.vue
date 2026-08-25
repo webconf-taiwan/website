@@ -75,7 +75,7 @@ onBeforeUnmount(() => killStaggers())
 
         <!-- 右欄：標題 + 交通方式 + 按鈕 -->
         <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
-          <div class="flex flex-col gap-12 border-t border-pre-800/35 py-8 lg:pl-6">
+          <div class="flex flex-col gap-12 lg:border-t lg:border-pre-800/35 py-8 lg:pl-6">
             <div class="flex flex-col gap-4">
               <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
                 {{ venue.title_en }}
