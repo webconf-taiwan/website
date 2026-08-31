@@ -7,13 +7,19 @@
   v-model 綁父層的陣列（例如 section.items）：新增/刪除都是整包陣列
   emit 出去，不在這裡改 props 本身（Vue 的 props 是單向資料流，直接改
   modelValue.value 會在嚴格模式下噴警告）。
+
+  allowAdd / allowRemove：有些清單筆數是固定的（例如選單設定頁的 Header 項目、
+  Footer 分組），不開放使用者自己增減，只讓裡面的欄位可以編輯——把這兩個關掉就好，
+  卡片排版、slot 都還是同一份，不用為了「不能增減的列表」另外刻一個元件。
 -->
 <script setup>
 const props = defineProps({
   modelValue: { type: Array, required: true },
-  newItem: { type: Function, required: true },
+  newItem: { type: Function, default: () => ({}) },
   addLabel: { type: String, default: '新增一筆' },
-  emptyLabel: { type: String, default: '目前沒有任何項目' }
+  emptyLabel: { type: String, default: '目前沒有任何項目' },
+  allowAdd: { type: Boolean, default: true },
+  allowRemove: { type: Boolean, default: true }
 })
 const emit = defineEmits(['update:modelValue'])
 
@@ -40,6 +46,7 @@ function removeItem (index) {
       class="relative border border-gray-200 bg-gray-50 p-4"
     >
       <button
+        v-if="allowRemove"
         type="button"
         class="text-caption absolute right-3 top-3 text-txt-light hover:text-red-600"
         title="刪除這一筆"
@@ -47,12 +54,13 @@ function removeItem (index) {
       >
         刪除 ✕
       </button>
-      <div class="flex flex-col gap-3 pr-16">
+      <div class="flex flex-col gap-3" :class="allowRemove ? 'pr-16' : ''">
         <slot name="item" :item="item" :index="index" />
       </div>
     </div>
 
     <AtomButton
+      v-if="allowAdd"
       intent="outline"
       size="sm"
       rounded="none"

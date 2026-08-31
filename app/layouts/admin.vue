@@ -26,6 +26,7 @@ const isLoginPage = computed(() => route.path === '/admin/login')
 const NAV_ITEMS = [
   { label: 'Dashboard', to: '/admin' },
   { label: '首頁設定', to: '/admin/home-settings' },
+  { label: '選單設定', to: '/admin/menu-settings' },
   { label: '管理者列表', to: '/admin/admins' }
 ]
 

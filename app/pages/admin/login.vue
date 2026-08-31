@@ -98,6 +98,10 @@ const onSubmit = handleSubmit(async (values) => {
         :text="isSubmitting ? '登入中…' : '登入'"
         class="mt-8 w-full"
       />
+
+      <NuxtLink to="/admin/forgot-password" class="text-caption mt-4 block text-center text-txt-light underline hover:text-brand">
+        忘記密碼？
+      </NuxtLink>
     </form>
   </div>
 </template>

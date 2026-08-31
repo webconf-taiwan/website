@@ -1,10 +1,27 @@
-import { Hono } from 'hono'
+import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import type { Bindings } from '../index'
+import { check } from '../controllers/healthController'
 
-// 健康檢查用，順便驗證 D1 binding 有沒有接上（deploy 完先打這支確認環境正常）。
-export const health = new Hono<{ Bindings: Bindings }>()
+export const health = new OpenAPIHono<{ Bindings: Bindings }>()
 
-health.get('/', async (c) => {
-  const { results } = await c.env.DB.prepare('SELECT 1 AS ok').all()
-  return c.json({ status: 'ok', db: results })
+const checkRoute = createRoute({
+  method: 'get',
+  path: '/',
+  tags: ['Health'],
+  summary: '健康檢查，順便驗證 D1 binding 是否正常',
+  responses: {
+    200: {
+      description: '服務正常',
+      content: {
+        'application/json': {
+          schema: z.object({
+            status: z.literal('ok'),
+            db: z.array(z.object({ ok: z.number() }))
+          })
+        }
+      }
+    }
+  }
 })
+
+health.openapi(checkRoute, check)

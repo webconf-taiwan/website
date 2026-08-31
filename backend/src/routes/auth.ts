@@ -1,62 +1,146 @@
-import { Hono } from 'hono'
+import { OpenAPIHono, createRoute, z } from '@hono/zod-openapi'
 import type { Bindings } from '../index'
-import { verifyPassword, generateSessionToken } from '../utils/crypto'
 import { requireAuth, type AuthVariables } from '../middleware/auth'
+import { login, me, logout, changePassword, forgotPassword, resetPassword } from '../controllers/authController'
+import { ErrorSchema } from '../schemas/common'
 
-// session 7 天過期，跟前端 Nuxt server route 設的 cookie maxAge 要對齊
-// （website/server/api/admin/login.post.js）。
-const SESSION_TTL_MS = 1000 * 60 * 60 * 24 * 7
+export const auth = new OpenAPIHono<{ Bindings: Bindings; Variables: AuthVariables }>()
 
-type AdminRow = {
-  id: number
-  email: string
-  password_hash: string
-}
-
-export const auth = new Hono<{ Bindings: Bindings; Variables: AuthVariables }>()
-
-auth.post('/login', async (c) => {
-  const body = await c.req.json().catch(() => null)
-  const email = typeof body?.email === 'string' ? body.email.trim().toLowerCase() : ''
-  const password = typeof body?.password === 'string' ? body.password : ''
-
-  if (!email || !password) {
-    return c.json({ error: 'email 和 password 必填' }, 400)
-  }
-
-  const admin = await c.env.DB
-    .prepare('SELECT id, email, password_hash FROM admins WHERE email = ?')
-    .bind(email)
-    .first<AdminRow>()
-
-  // 帳號不存在跟密碼錯誤回同一句話，不讓對方能用回應內容反推帳號是否存在。
-  if (!admin || !(await verifyPassword(password, admin.password_hash))) {
-    return c.json({ error: '帳號或密碼錯誤' }, 401)
-  }
-
-  const token = generateSessionToken()
-  const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString()
-
-  await c.env.DB
-    .prepare('INSERT INTO sessions (token, admin_id, expires_at) VALUES (?, ?, ?)')
-    .bind(token, admin.id, expiresAt)
-    .run()
-
-  return c.json({
-    token,
-    expiresAt,
-    admin: { id: admin.id, email: admin.email }
-  })
+const AdminSchema = z.object({
+  id: z.number(),
+  email: z.string(),
+  role: z.string()
 })
 
-auth.get('/me', requireAuth, (c) => {
-  return c.json({ admin: c.get('admin') })
+// 注意：body 刻意不接 Zod schema 驗證，理由跟 menu.ts 的 PUT /menu 一樣——
+// login controller 自己手動檢查 email/password 是否為空並回自訂錯誤訊息，
+// 這支是從既有 API 重構過來的，要保持行為不變，驗證邏輯留在 controller 裡。
+const loginRoute = createRoute({
+  method: 'post',
+  path: '/login',
+  tags: ['Auth'],
+  summary: '登入，成功回傳 session token',
+  description: 'Request body：`{ email: string, password: string }`',
+  responses: {
+    200: {
+      description: '登入成功',
+      content: {
+        'application/json': {
+          schema: z.object({
+            token: z.string(),
+            expiresAt: z.string(),
+            admin: AdminSchema
+          })
+        }
+      }
+    },
+    400: {
+      description: 'email 或 password 未填',
+      content: { 'application/json': { schema: ErrorSchema } }
+    },
+    401: {
+      description: '帳號或密碼錯誤',
+      content: { 'application/json': { schema: ErrorSchema } }
+    }
+  }
 })
 
-auth.post('/logout', async (c) => {
-  const token = c.req.header('Authorization')?.replace(/^Bearer\s+/i, '')
-  if (token) {
-    await c.env.DB.prepare('DELETE FROM sessions WHERE token = ?').bind(token).run()
+const meRoute = createRoute({
+  method: 'get',
+  path: '/me',
+  tags: ['Auth'],
+  summary: '取得目前登入者',
+  security: [{ Bearer: [] }],
+  middleware: [requireAuth] as const,
+  responses: {
+    200: {
+      description: '目前登入的管理者',
+      content: { 'application/json': { schema: z.object({ admin: AdminSchema }) } }
+    },
+    401: {
+      description: '未登入或登入已過期',
+      content: { 'application/json': { schema: ErrorSchema } }
+    }
   }
-  return c.json({ ok: true })
 })
+
+const logoutRoute = createRoute({
+  method: 'post',
+  path: '/logout',
+  tags: ['Auth'],
+  summary: '登出，撤銷目前這個 token',
+  security: [{ Bearer: [] }],
+  responses: {
+    200: {
+      description: '一律回成功（沒帶 token 或 token 已經失效也一樣回 ok）',
+      content: { 'application/json': { schema: z.object({ ok: z.literal(true) }) } }
+    }
+  }
+})
+
+const changePasswordRoute = createRoute({
+  method: 'post',
+  path: '/change-password',
+  tags: ['Auth'],
+  summary: '修改自己的密碼（需登入），成功後撤銷其他裝置的既有 session',
+  description: 'Request body：`{ old_password, new_password, new_password_confirm }`',
+  security: [{ Bearer: [] }],
+  middleware: [requireAuth] as const,
+  responses: {
+    200: {
+      description: '修改成功',
+      content: { 'application/json': { schema: z.object({ ok: z.literal(true) }) } }
+    },
+    400: {
+      description: '欄位缺漏、新密碼與確認密碼不一致、或不符合強度規則',
+      content: { 'application/json': { schema: ErrorSchema } }
+    },
+    401: {
+      description: '未登入、登入已過期，或原密碼不正確',
+      content: { 'application/json': { schema: ErrorSchema } }
+    }
+  }
+})
+
+const forgotPasswordRoute = createRoute({
+  method: 'post',
+  path: '/forgot-password',
+  tags: ['Auth'],
+  summary: '忘記密碼－產生重設 Token（寄信這一步尚未實作，見 description）',
+  description: 'Request body：`{ email }`。**注意：目前只會產生 Token 並存進 `password_reset_tokens`，還沒有真的寄出 Email，這段待日後補上 Gmail SMTP client。** 不管 email 是否存在都回同樣的成功訊息。',
+  responses: {
+    200: {
+      description: '一律回成功',
+      content: { 'application/json': { schema: z.object({ ok: z.literal(true) }) } }
+    },
+    400: {
+      description: 'email 未填',
+      content: { 'application/json': { schema: ErrorSchema } }
+    }
+  }
+})
+
+const resetPasswordRoute = createRoute({
+  method: 'post',
+  path: '/reset-password',
+  tags: ['Auth'],
+  summary: '忘記密碼－帶 Token 設定新密碼',
+  description: 'Request body：`{ token, new_password, new_password_confirm }`',
+  responses: {
+    200: {
+      description: '設定成功',
+      content: { 'application/json': { schema: z.object({ ok: z.literal(true) }) } }
+    },
+    400: {
+      description: '欄位缺漏、Token 無效或過期、或新密碼不符合規則',
+      content: { 'application/json': { schema: ErrorSchema } }
+    }
+  }
+})
+
+auth.openapi(loginRoute, login)
+auth.openapi(meRoute, me)
+auth.openapi(logoutRoute, logout)
+auth.openapi(changePasswordRoute, changePassword)
+auth.openapi(forgotPasswordRoute, forgotPassword)
+auth.openapi(resetPasswordRoute, resetPassword)

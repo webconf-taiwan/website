@@ -6,6 +6,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "db:create": "wrangler d1 create webconf-2026-api-db",
     "db:migrations:new": "wrangler d1 migrations create DB",
     "db:migrations:local": "wrangler d1 migrations apply DB --local",
@@ -13,11 +14,16 @@
     "hash-password": "node scripts/hash-password.mjs"
   },
   "dependencies": {
-    "hono": "^4"
+    "@hono/swagger-ui": "^0.6.1",
+    "@hono/zod-openapi": "^1.6.1",
+    "hono": "^4",
+    "zod": "^4.5.4"
   },
   "devDependencies": {
+    "@cloudflare/vitest-plugin": "^1.1.2",
     "@cloudflare/workers-types": "^4",
     "typescript": "^5",
+    "vitest": "^4.1.11",
     "wrangler": "^4"
   }
 }
