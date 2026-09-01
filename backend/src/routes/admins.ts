@@ -43,7 +43,7 @@ const getAdminRoute = createRoute({
   method: 'get',
   path: '/{id}',
   tags: ['Admins'],
-  summary: '查看單筆管理者（需登入）',
+  summary: '查看單筆管理者（需登入；非 Super Admin／總召組只能查自己）',
   security: [{ Bearer: [] }],
   middleware: [requireAuth] as const,
   request: {
@@ -56,6 +56,10 @@ const getAdminRoute = createRoute({
     },
     401: {
       description: '未登入或登入已過期',
+      content: { 'application/json': { schema: ErrorSchema } }
+    },
+    403: {
+      description: '沒有權限查看這個管理者（呼叫者不是 Super Admin／總召組，且 id 不是自己）',
       content: { 'application/json': { schema: ErrorSchema } }
     },
     404: {
@@ -101,8 +105,8 @@ const updateAdminRoute = createRoute({
   method: 'put',
   path: '/{id}',
   tags: ['Admins'],
-  summary: '編輯管理者（name 全員可改，role 僅 Super Admin／總召組可改）',
-  description: 'Request body：`{ name?, role? }`，至少要提供一項。',
+  summary: '編輯管理者（name 限本人／Super Admin／總召組可改，role 僅 Super Admin／總召組可改）',
+  description: 'Request body：`{ name?, role? }`，至少要提供一項。非 Super Admin／總召組的呼叫者只能修改自己的 `name`，不能修改別人的（也不能修改 `role`）。',
   security: [{ Bearer: [] }],
   middleware: [requireAuth] as const,
   request: {
@@ -122,7 +126,7 @@ const updateAdminRoute = createRoute({
       content: { 'application/json': { schema: ErrorSchema } }
     },
     403: {
-      description: '沒有權限調整 role',
+      description: '沒有權限調整 role，或沒有權限修改別人的 name',
       content: { 'application/json': { schema: ErrorSchema } }
     },
     404: {
@@ -140,7 +144,7 @@ const batchDeleteAdminsRoute = createRoute({
   method: 'delete',
   path: '/',
   tags: ['Admins'],
-  summary: '批次刪除管理者（單筆刪除傳一筆 id 即可）',
+  summary: '批次刪除管理者（僅 Super Admin／總召組；單筆刪除傳一筆 id 即可）',
   description: 'Request body：`{ ids: number[] }`',
   security: [{ Bearer: [] }],
   middleware: [requireAuth] as const,
@@ -155,6 +159,10 @@ const batchDeleteAdminsRoute = createRoute({
     },
     401: {
       description: '未登入或登入已過期',
+      content: { 'application/json': { schema: ErrorSchema } }
+    },
+    403: {
+      description: '沒有權限刪除管理者（呼叫者不是 Super Admin／總召組）',
       content: { 'application/json': { schema: ErrorSchema } }
     },
     409: {

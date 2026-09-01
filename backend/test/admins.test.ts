@@ -79,13 +79,40 @@ describe('管理者 CRUD', () => {
     expect(response.status).toBe(409)
   })
 
-  it('編輯管理者：任何登入者都能改自己以外的 name', async () => {
+  it('批次刪除：非 Super Admin／總召組呼叫，回 403（2026-09-01 補的權限檢查；此時 designId 角色仍是 design）', async () => {
+    const { response, body } = await call('/admins', authed(designToken, {
+      method: 'DELETE',
+      body: JSON.stringify({ ids: [superAdminId] })
+    }))
+    expect(response.status).toBe(403)
+    expect(body.error).toBe('沒有權限刪除管理者')
+  })
+
+  it('編輯管理者：非管理者可以改自己的 name', async () => {
     const { response, body } = await call(`/admins/${designId}`, authed(designToken, {
       method: 'PUT',
       body: JSON.stringify({ name: '改過的名字' })
     }))
     expect(response.status).toBe(200)
     expect((body.admin as Record<string, unknown>).name).toBe('改過的名字')
+  })
+
+  it('編輯管理者：非管理者不能改別人的 name，回 403（2026-09-01 補的權限檢查）', async () => {
+    const { response, body } = await call(`/admins/${superAdminId}`, authed(designToken, {
+      method: 'PUT',
+      body: JSON.stringify({ name: '想改超管的名字' })
+    }))
+    expect(response.status).toBe(403)
+    expect(body.error).toBe('沒有權限修改這個管理者的名字')
+  })
+
+  it('編輯管理者：Super Admin／總召組可以改別人的 name', async () => {
+    const { response, body } = await call(`/admins/${designId}`, authed(superAdminToken, {
+      method: 'PUT',
+      body: JSON.stringify({ name: 'Super Admin 幫忙改的名字' })
+    }))
+    expect(response.status).toBe(200)
+    expect((body.admin as Record<string, unknown>).name).toBe('Super Admin 幫忙改的名字')
   })
 
   it('編輯管理者：非 Super Admin／總召組改 role，回 403', async () => {
@@ -122,5 +149,53 @@ describe('管理者 CRUD', () => {
     }))
     expect(response.status).toBe(400)
     expect(body.error).toBe('不能刪除自己的帳號')
+  })
+})
+
+describe('查看單筆管理者（GET /admins/:id）', () => {
+  let superAdminToken: string
+  let designToken: string
+  let designId: number
+  let otherDesignToken: string
+  let otherDesignId: number
+
+  beforeAll(async () => {
+    const superAdminHash = await hashPassword('SuperAdmin#123')
+    await env.DB.prepare("INSERT INTO admins (email, password_hash, role) VALUES (?, ?, 'super_admin')")
+      .bind('super2@webconf.local', superAdminHash)
+      .run()
+    superAdminToken = await login('super2@webconf.local', 'SuperAdmin#123')
+
+    const create = await call('/admins', authed(superAdminToken, {
+      method: 'POST',
+      body: JSON.stringify({ email: 'design2@webconf.local', password: 'Design#123', name: '設計組A', role: 'design' })
+    }))
+    designId = ((create.body.admin as Record<string, unknown>).id) as number
+    designToken = await login('design2@webconf.local', 'Design#123')
+
+    const createOther = await call('/admins', authed(superAdminToken, {
+      method: 'POST',
+      body: JSON.stringify({ email: 'design3@webconf.local', password: 'Design#123', name: '設計組B', role: 'design' })
+    }))
+    otherDesignId = ((createOther.body.admin as Record<string, unknown>).id) as number
+    otherDesignToken = await login('design3@webconf.local', 'Design#123')
+  })
+
+  it('非管理者查自己，成功', async () => {
+    const { response, body } = await call(`/admins/${designId}`, authed(designToken))
+    expect(response.status).toBe(200)
+    expect((body.admin as Record<string, unknown>).id).toBe(designId)
+  })
+
+  it('非管理者查別人，回 403（IDOR 修復，2026-09-01）', async () => {
+    const { response, body } = await call(`/admins/${otherDesignId}`, authed(designToken))
+    expect(response.status).toBe(403)
+    expect(body.error).toBe('沒有權限查看這個管理者')
+  })
+
+  it('Super Admin／總召組查任何人，成功', async () => {
+    const { response, body } = await call(`/admins/${designId}`, authed(superAdminToken))
+    expect(response.status).toBe(200)
+    expect((body.admin as Record<string, unknown>).id).toBe(designId)
   })
 })

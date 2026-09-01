@@ -24,6 +24,16 @@
       "database_name": "webconf-2026-api-db",
       "database_id": "e5230072-16b9-41fe-9bce-bdf028b68be4"
     }
+  ],
+
+  // 登入節流用：記錄同一 email 的失敗次數與鎖定狀態（見 Todolist0901-資安.md 2-1）。
+  // 用 KV 而不是 D1 是因為天生支援 TTL 自動過期，不用自己寫清除機制。
+  // `wrangler dev`（本機）預設會自動用本機模擬的 KV store，不會動到這個正式 namespace。
+  "kv_namespaces": [
+    {
+      "binding": "LOGIN_ATTEMPTS",
+      "id": "040b168476eb48d788139334080f6676"
+    }
   ]
 
   // 自訂網域之後再決定要不要接（例如 api.webconf2026.jordanttc.com）。

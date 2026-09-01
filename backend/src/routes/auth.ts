@@ -41,6 +41,10 @@ const loginRoute = createRoute({
     401: {
       description: '帳號或密碼錯誤',
       content: { 'application/json': { schema: ErrorSchema } }
+    },
+    429: {
+      description: '同一個 email 連續失敗次數過多，鎖定 15 分鐘（見 Todolist0901-資安.md 2-1）',
+      content: { 'application/json': { schema: ErrorSchema } }
     }
   }
 })
@@ -98,6 +102,10 @@ const changePasswordRoute = createRoute({
     401: {
       description: '未登入、登入已過期，或原密碼不正確',
       content: { 'application/json': { schema: ErrorSchema } }
+    },
+    429: {
+      description: '驗證原密碼連續失敗次數過多，鎖定 15 分鐘（見 Todolist0901-資安.md 2-1）',
+      content: { 'application/json': { schema: ErrorSchema } }
     }
   }
 })
@@ -133,6 +141,10 @@ const resetPasswordRoute = createRoute({
     },
     400: {
       description: '欄位缺漏、Token 無效或過期、或新密碼不符合規則',
+      content: { 'application/json': { schema: ErrorSchema } }
+    },
+    429: {
+      description: '同一來源 IP 反覆嘗試無效 Token 次數過多，鎖定 15 分鐘（見 Todolist0901-資安.md 2-1）',
       content: { 'application/json': { schema: ErrorSchema } }
     }
   }

@@ -2,6 +2,7 @@ import type { Context } from 'hono'
 import type { Bindings } from '../index'
 import type { AuthVariables } from '../middleware/auth'
 import { hashPassword } from '../utils/crypto'
+import { writeAuditLog } from '../utils/auditLog'
 
 type Env = { Bindings: Bindings; Variables: AuthVariables }
 
@@ -46,7 +47,16 @@ export async function listAdmins(c: Context<Env>) {
 }
 
 export async function getAdmin(c: Context<Env>) {
+  const caller = c.get('admin')
   const id = Number(c.req.param('id'))
+
+  // 非管理者角色只能查自己（2026-09-01 補，見 Todolist0901-資安.md 1-2）：
+  // 跟 listAdmins 的可見範圍規則一致——原本這支 API 沒做這個檢查，等於用另一支
+  // API 繞過了列表頁刻意做的權限收斂（IDOR）。
+  if (!ROLE_MANAGERS.includes(caller.role as Role) && caller.id !== id) {
+    return c.json({ error: '沒有權限查看這個管理者' }, 403)
+  }
+
   const admin = await c.env.DB
     .prepare(`SELECT ${ADMIN_COLUMNS} FROM admins WHERE id = ?`)
     .bind(id)
@@ -104,6 +114,15 @@ export async function createAdmin(c: Context<Env>) {
     .bind(meta.last_row_id)
     .first<AdminRow>())!
 
+  await writeAuditLog(c.env, {
+    actorId: caller.id,
+    actorEmail: caller.email,
+    action: 'admin.create',
+    targetId: admin.id,
+    targetEmail: admin.email,
+    detail: { role: admin.role }
+  })
+
   return c.json({ admin }, 201)
 }
 
@@ -129,20 +148,29 @@ export async function updateAdmin(c: Context<Env>) {
     return c.json({ error: '找不到這個管理者' }, 404)
   }
 
+  const isManager = ROLE_MANAGERS.includes(caller.role as Role)
   const updates: string[] = []
   const values: unknown[] = []
+  const nameChange: { from: string | null; to?: string } = { from: target.name }
+  let roleChange: { from: Role; to: Role } | undefined
 
   if (body.name !== undefined) {
+    // 非管理者只能改自己的 name（2026-09-01 定案，見 Todolist0901-資安.md 1-3、5）；
+    // Super Admin／總召組維持能改任何人，跟能改 role 是同一組人。
+    if (!isManager && caller.id !== id) {
+      return c.json({ error: '沒有權限修改這個管理者的名字' }, 403)
+    }
     const name = body.name.trim()
     if (!name) {
       return c.json({ error: 'name 不能是空字串' }, 400)
     }
     updates.push('name = ?')
     values.push(name)
+    nameChange.to = name
   }
 
   if (body.role !== undefined) {
-    if (!ROLE_MANAGERS.includes(caller.role as Role)) {
+    if (!isManager) {
       return c.json({ error: '沒有權限調整權限（role）' }, 403)
     }
     if (!VALID_ROLES.includes(body.role)) {
@@ -159,6 +187,7 @@ export async function updateAdmin(c: Context<Env>) {
     }
     updates.push('role = ?')
     values.push(body.role)
+    roleChange = { from: target.role, to: body.role }
   }
 
   values.push(id)
@@ -173,11 +202,40 @@ export async function updateAdmin(c: Context<Env>) {
     .bind(id)
     .first<AdminRow>())!
 
+  if (nameChange?.to !== undefined) {
+    await writeAuditLog(c.env, {
+      actorId: caller.id,
+      actorEmail: caller.email,
+      action: 'admin.update_name',
+      targetId: id,
+      targetEmail: target.email,
+      detail: nameChange
+    })
+  }
+  if (roleChange) {
+    await writeAuditLog(c.env, {
+      actorId: caller.id,
+      actorEmail: caller.email,
+      action: 'admin.update_role',
+      targetId: id,
+      targetEmail: target.email,
+      detail: roleChange
+    })
+  }
+
   return c.json({ admin }, 200)
 }
 
 export async function batchDeleteAdmins(c: Context<Env>) {
   const caller = c.get('admin')
+
+  // 只有 Super Admin／總召組能刪除其他管理者（2026-09-01 補，見
+  // Todolist0901-資安.md 1-1）——這是這波資安補強最先修的洞：改之前任何登入者
+  // 都能刪除任何其他管理者帳號，跟 createAdmin／updateAdmin 的 role 欄位漏掉同一種檢查。
+  if (!ROLE_MANAGERS.includes(caller.role as Role)) {
+    return c.json({ error: '沒有權限刪除管理者' }, 403)
+  }
+
   const body = await c.req.json().catch(() => null) as { ids?: unknown } | null
   const ids = Array.isArray(body?.ids) ? body.ids.filter((id): id is number => typeof id === 'number') : []
 
@@ -193,9 +251,9 @@ export async function batchDeleteAdmins(c: Context<Env>) {
   const { results: totalRows } = await c.env.DB.prepare('SELECT COUNT(*) as count FROM admins').all<{ count: number }>()
   const totalCount = totalRows[0]?.count ?? 0
   const { results: targetRows } = await c.env.DB
-    .prepare(`SELECT id, role FROM admins WHERE id IN (${placeholders})`)
+    .prepare(`SELECT id, email, role FROM admins WHERE id IN (${placeholders})`)
     .bind(...ids)
-    .all<{ id: number; role: string }>()
+    .all<{ id: number; email: string; role: string }>()
 
   if (targetRows.length >= totalCount) {
     return c.json({ error: '不能把管理者刪光，至少要留一位' }, 400)
@@ -214,6 +272,15 @@ export async function batchDeleteAdmins(c: Context<Env>) {
   }
 
   await c.env.DB.prepare(`DELETE FROM admins WHERE id IN (${placeholders})`).bind(...ids).run()
+
+  // 批次刪除一次影響多筆，沒有單一 target_id 可填，把每一筆的 id／email／role
+  // 都存進 detail，事後查紀錄才看得出這次刪的是誰。
+  await writeAuditLog(c.env, {
+    actorId: caller.id,
+    actorEmail: caller.email,
+    action: 'admin.delete',
+    detail: { targets: targetRows.map((row) => ({ id: row.id, email: row.email, role: row.role })) }
+  })
 
   return c.json({ ok: true as const, deleted: targetRows.length }, 200)
 }

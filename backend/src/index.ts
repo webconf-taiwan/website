@@ -5,10 +5,13 @@ import { auth } from './routes/auth'
 import { admins } from './routes/admins'
 import { menu } from './routes/menu'
 
-// D1 binding 型別，要跟 wrangler.jsonc 的 d1_databases[].binding（"DB"）對上。
-// 新增其他 binding（KV、R2、Secrets…）也統一加在這裡，路由檔案共用同一份型別。
+// D1／KV binding 型別，要跟 wrangler.jsonc 的 d1_databases[].binding（"DB"）、
+// kv_namespaces[].binding（"LOGIN_ATTEMPTS"）對上。
+// 新增其他 binding（R2、Secrets…）也統一加在這裡，路由檔案共用同一份型別。
 export type Bindings = {
   DB: D1Database
+  // 登入節流用：記錄同一 email 的失敗次數與鎖定狀態（見 utils/loginThrottle.ts）。
+  LOGIN_ATTEMPTS: KVNamespace
 }
 
 const app = new OpenAPIHono<{ Bindings: Bindings }>()
