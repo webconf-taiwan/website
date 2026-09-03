@@ -137,7 +137,8 @@ export const CPU_FALLBACK_MAX_COUNT = 1800
 // 所以 CPU 路徑要「反過來」用更小的 pointSize，不能套檔位表的亮度補償。
 // ⚠️ 4px 是 sprite 的地板（half 的 max(2,…)），再往下調沒有效果。
 // 人像用地板值換銳利度；hero 是滿版、粒子更稀，給大一級才看得到東西。
-export const CPU_POINT_SIZE_PORTRAIT = 0.4
+// ⚠️ 只有 hero 那張滿版場還走引擎（它需要真的動）。人像那張改成自己畫點雲了，
+// 不再經過這個 sprite 系統 —— 見 Home/SpeakerPortrait.vue 的 drawPointCloud。
 export const CPU_POINT_SIZE_FIELD = 0.5
 
 /**

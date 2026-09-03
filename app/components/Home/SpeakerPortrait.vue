@@ -358,7 +358,9 @@ function tween (obj, vars, ms, ease, onUpdate) {
 }
 
 async function swapPortrait (portrait) {
-  if (!engine || !portrait) return
+  // ⚠️ 不能用 `if (!engine) return` —— CPU 路徑刻意不建引擎（見 init），
+  // 那樣會讓那條路上的換人整個失效。
+  if (!portrait) return
   const fromSpec = specs.get(shownPortrait)
   const spec = await getSpec(portrait)
   if (!spec) return
@@ -372,14 +374,11 @@ async function swapPortrait (portrait) {
   // (config.seedPattern)，且 config 是活物件、CPU 版的 setCount 沒有 early-return。
   // 所以「改 seedPattern 再 setCount」就等於重新撒成新的人像。
   // 代價是沒有炸開／重組的過渡，是硬切 —— 但硬切遠好過完全不動。
-  if (!engine.setTargets) {
-    engine.config.seedPattern = spec.pattern
-    engine.setColors?.(spec.palette)
-    engine.setCount?.(engine.config.count)
-    // 力場關掉，粒子才會停在剛撒好的位置而不是慢慢化開（見 init 的說明）
-    engine.setForce?.(0)
+  // CPU 路徑：沒有引擎，重畫一張就是了（淡入）
+  if (!engine) {
     shownPortrait = portrait
-    syncPause()
+    cpuFadeTo(spec)
+
     return
   }
 
@@ -438,6 +437,113 @@ async function swapPortrait (portrait) {
 }
 
 // --- 初始化 ----------------------------------------------------------------
+// --- CPU 路徑：直接畫點雲，不建引擎 ----------------------------------------
+//
+// ⚠️ 這是 CPU 後端唯一能把人像畫清楚的做法，理由要一起看：
+//
+// particle-life.js 把每顆粒子畫成一張快取的光暈 sprite，而尺寸有地板：
+//     half = max(2, ceil(pointSize × 2.4) + 1)   → 最小 4 CSS px
+// 342² 的觀景區裡，1800 顆 × 16px² 就已經覆蓋 25%；再多顆就糊成一團
+//（3000 顆 41%、6000 顆 82%）。也就是說走引擎的話「顆數越多越清楚」會反轉，
+// 上限大約 3000 顆 —— 遠不足以描出眼睛與眼鏡（五官在 device px 上只有 20~38px 寬）。
+//
+// 但 CPU 路徑的人像本來就是靜態的：沒有 morph（那支引擎沒有 setTargets）、
+// 沒有閃動、力場也被關掉。它需要的不是「模擬」，只是「把一團點畫出來」——
+// 而 PLImage.prepare() 回傳的 spec 裡就有完整的點雲（px/py 是 0..1 正規化座標、
+// types 是每點的配色索引）。自己畫就完全不受 sprite 地板限制：
+//     走引擎   點 8 device px（DPR 2）／上限約 3000 顆
+//     自己畫   點 2 device px      ／16000 顆（取樣本來就有這麼多）
+// 同樣的覆蓋率下點數多約 9 倍、每點面積小 16 倍。
+//
+// 附帶好處：這條路上完全不建 makeEngine —— 少一個引擎實例、少一份記憶體、
+// 少一個 rAF。畫一次就結束，成本是真正的零而不是「pause 之後的零」。
+//
+// ⚠️ 換算數學跟 useParticleMorph.buildImageTargets 是同一套（contain-fit 置中），
+// 改其中一邊要記得對齊另一邊。
+// 每點畫多大（CSS px）。⚠️ 實際落在畫面上是 CPU_DOT_CSS_PX × dpr 個 device px，
+// 也就是 DPR 2 的機器上每點 4 device px —— 相對引擎那條路的 8 device px 小四倍。
+const CPU_DOT_CSS_PX = 2
+const CPU_DRAW_MAX_DPR = 2       // 跟 particle-life.js 的硬上限一致
+const CPU_FADE_MS = 220          // 換人的淡入（沒有炸開重組，用淡入代替硬切）
+
+let cpuCtx = null
+let cpuFadeRaf = 0
+
+/**
+ * 把 spec 的點雲畫到 canvas 上。一次性，畫完就結束。
+ * @param {object} spec  PLImage.prepare 的產物
+ * @param {number} alpha 0..1，換人淡入用
+ */
+function drawPointCloud (spec, alpha = 1) {
+  const canvas = canvasRef.value
+  if (!canvas || !spec) return
+
+  const rect = canvas.getBoundingClientRect()
+  if (!rect.width || !rect.height) return
+
+  const dpr = Math.min(window.devicePixelRatio || 1, CPU_DRAW_MAX_DPR)
+  const W = Math.max(1, Math.round(rect.width * dpr))
+  const H = Math.max(1, Math.round(rect.height * dpr))
+  if (canvas.width !== W || canvas.height !== H) {
+    canvas.width = W
+    canvas.height = H
+    cpuCtx = null                 // 尺寸一變 context 的狀態要重來
+  }
+  if (!cpuCtx) cpuCtx = canvas.getContext('2d')
+  const ctx = cpuCtx
+  if (!ctx) return
+
+  // ⚠️ 底色要塗成不透明黑，不能只 clearRect —— 這張 canvas 疊在頁面的純黑底上，
+  // 留透明會看到底下的東西（而 WebGPU 路徑的 compose pass 本來就是不透明黑，
+  // 兩條路要長得一樣）。
+  ctx.globalCompositeOperation = 'source-over'
+  ctx.fillStyle = '#000'
+  ctx.fillRect(0, 0, W, H)
+
+  // contain-fit 置中，與 buildImageTargets 同一套換算
+  const boxW = W * spec.fit
+  const boxH = H * spec.fit
+  const s = Math.min(boxW / spec.aspect, boxH)
+  const drawW = s * spec.aspect
+  const drawH = s
+  const x0 = (W - drawW) / 2
+  const y0 = (H - drawH) / 2
+
+  const d = Math.max(1, Math.round(CPU_DOT_CSS_PX * dpr))
+  const T = spec.palette.length
+
+  // ⚠️ 加法混色：跟 WebGPU 路徑的 HDR 疊加一致，重疊處才會亮起來 ——
+  // 用預設的 source-over 會讓密處變成一片死板的純色。
+  ctx.globalCompositeOperation = 'lighter'
+  ctx.globalAlpha = alpha
+
+  // 依物種分批，避免每顆都改 fillStyle（改色是 canvas2d 熱迴圈裡最貴的一項）
+  for (let t = 0; t < T; t++) {
+    ctx.fillStyle = spec.palette[t]
+    for (let i = 0; i < spec.count; i++) {
+      if (spec.types[i] % T !== t) continue
+      ctx.fillRect(x0 + spec.px[i] * drawW, y0 + spec.py[i] * drawH, d, d)
+    }
+  }
+
+  ctx.globalAlpha = 1
+  ctx.globalCompositeOperation = 'source-over'
+}
+
+/** 換人：淡入新的一張。沒有炸開重組（那需要引擎的 morph），但比硬切好看。 */
+function cpuFadeTo (spec) {
+  cancelAnimationFrame(cpuFadeRaf)
+  if (reducedMotion) { drawPointCloud(spec, 1); return }
+
+  const t0 = performance.now()
+  const tick = () => {
+    const u = Math.min(1, (performance.now() - t0) / CPU_FADE_MS)
+    drawPointCloud(spec, u * u * (3 - 2 * u))
+    if (u < 1) cpuFadeRaf = requestAnimationFrame(tick)
+  }
+  cpuFadeRaf = requestAnimationFrame(tick)
+}
+
 async function init () {
   const canvas = canvasRef.value
   // 沒有人像可取樣，開了引擎也只會是一片空白的黑
@@ -460,9 +566,23 @@ async function init () {
   if (!spec) return
   shownPortrait = portrait
 
-  let count = countFor(canvas, { density: q.density, max: q.countMax, min: q.countMin })
-  // ⚠️ 沒有 WebGPU 就是完全不同的引擎（CPU 後端），見 particleTiers.js。
-  if (cpuFallback.value) count = Math.min(count, CPU_FALLBACK_MAX_COUNT)
+  // ⚠️ 沒有 WebGPU → 完全不走引擎，自己把點雲畫上去（見 drawPointCloud 的長註解）。
+  // 那條路上沒有 makeEngine、沒有 rAF、沒有 IntersectionObserver 也不需要
+  // markActive —— 畫一次就結束，持續成本是零。
+  if (cpuFallback.value) {
+    drawPointCloud(spec, 1)
+    onResize = () => {
+      clearTimeout(resizeTimer)
+      // canvas 尺寸一變 backing store 會被清空，要重畫
+      resizeTimer = setTimeout(() => drawPointCloud(specs.get(shownPortrait), 1), RESIZE_SETTLE_MS)
+    }
+    window.addEventListener('resize', onResize)
+    swapImpl.value = swapPortrait
+
+    return
+  }
+
+  const count = countFor(canvas, { density: q.density, max: q.countMax, min: q.countMin })
 
   engine = await window.makeEngine(canvas, {
     species: SPECIES,
@@ -501,11 +621,8 @@ async function init () {
     repel: 1.0,
     simSpeed: SIM_SPEED,
     cameraZoom: 1,
-    // ⚠️ CPU 後端要「反過來」用更小的點 —— pointSize 在兩個後端意義完全不同
-    // （CPU 是光暈 sprite 的邊長基準，1.4 會變成 10 CSS px 的大光斑，覆蓋率 154%）。
-    // 檔位表那組亮度補償只對 WebGPU 成立，套到 CPU 上就是實測 S8 那團白斑。
-    // 完整換算見 particleTiers.js 的 CPU_POINT_SIZE_PORTRAIT。
-    pointSize: cpuFallback.value ? CPU_POINT_SIZE_PORTRAIT : q.pointSize,
+    // 這裡一定是 WebGPU —— CPU 路徑在上面就 return 了，不會建引擎。
+    pointSize: q.pointSize,
     particleOpacity: PORTRAIT_OPACITY,
     showGlow: false,
     cellSubdivisions: 2,
@@ -513,12 +630,6 @@ async function init () {
     maxDpr: Math.min(maxDpr(), q.dprCap),
     bgFade: 'rgba(10,10,12,0.18)',  // 只有 CPU fallback 會用到；GPU 路徑是不透明黑
   })
-  // ⚠️ CPU 後端沒有 setTargets / setMorph，所以 buildTargets() 會 return false、
-  // targetsReady 永遠是 false —— 沒有 seek 把粒子按在人像上。而 nebula 帶著
-  // 全域微斥力，人像會慢慢化開成一團噪點。
-  // 把力場也關掉，粒子就停在 seedPattern 撒好的位置：一張靜態但正確的點雲人像。
-  // 這比「會動但爛掉」好，也符合「最低檔也不關掉粒子」的要求。
-  if (!engine.setTargets) engine.setForce?.(0)
   if (showFps()) engine.setShowFps?.(true)
   if (import.meta.dev) {
     window.__samePortrait = engine
@@ -587,6 +698,7 @@ onMounted(() => { init() })
 
 onBeforeUnmount(() => {
   if (liveRaf) cancelAnimationFrame(liveRaf)
+  cancelAnimationFrame(cpuFadeRaf)
   markActive('speakerPortrait', false)
   switchTween?.kill()
   io?.disconnect()
