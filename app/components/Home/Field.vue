@@ -1,8 +1,10 @@
 <script setup>
-// index-same.vue 專用：整頁只有「一張」粒子 canvas 的版本。
+// 首頁專用：整頁只有「一張」粒子 canvas 的版本（桌機路徑）。
+// ⚠️ 同一個目錄裡還有舊版的三個 Field（ParticleField / SpeakerField /
+// VenueFaqField），那三個只服務 pages/index-old.vue。改東西前先確認改的是哪一組。
 //
 // ─── 這一版跟原版首頁差在哪 ────────────────────────────────────────────────
-// 原版（pages/index.vue）有三張 canvas：
+// 被它取代的舊版（pages/index-old.vue）有三張 canvas：
 //   · HomeParticleField  固定背景，服務 PL.I / PL.II
 //   · HomeSpeakerField   PL.III 自己一張（人像要鎖死到看得出五官）
 //   · HomeVenueFaqField  PL.IV + PL.V 共用一張（sticky）
@@ -52,7 +54,7 @@ const { countFor, maxDpr, isMobile } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張 canvas，不需要 claim/release。
 const { idle } = useParticleStage()
-const { speakerIndex, swapImpl, resetSpeakerBus } = useSameFieldBus()
+const { speakerIndex, swapImpl, resetSpeakerBus } = useSpeakerFieldBus()
 
 const canvasRef = ref(null)
 const backend = ref('')
@@ -650,7 +652,7 @@ async function buildAllShapes () {
     const seed = buildSeedTargets(look.rules.seedPattern, snap.length, look.rules.species, W, H)
     freeShape = buildSlotTargets(snap, seed, look.rules.species, W).shape
   } catch (err) {
-    console.warn('[HomeSameField] 開場構圖目標點建立失敗，該影格退回當下分布', err)
+    console.warn('[HomeField] 開場構圖目標點建立失敗，該影格退回當下分布', err)
   }
 
   // 菌落那一格（venue）的目標點：softClusters 的圓群落，壓進版面左半邊那塊。
@@ -664,7 +666,7 @@ async function buildAllShapes () {
       W,
     ).shape
   } catch (err) {
-    console.warn('[HomeSameField] 菌落構圖建立失敗，該影格退回自由場', err)
+    console.warn('[HomeField] 菌落構圖建立失敗，該影格退回自由場', err)
   }
 
   shapes.length = 0
@@ -1032,7 +1034,7 @@ async function switchLook (idOrIndex) {
   try {
     await Promise.all(jobs)
   } catch (err) {
-    console.warn('[HomeSameField] 換效果後重新取樣失敗，該影格維持自由場', err)
+    console.warn('[HomeField] 換效果後重新取樣失敗，該影格維持自由場', err)
   }
 
   if (stopAmbient) { stopAmbient(); stopAmbient = null; ambientOn = false }
@@ -1112,7 +1114,7 @@ async function init () {
   try {
     await Promise.all(jobs)
   } catch (err) {
-    console.warn('[HomeSameField] 圖片點雲取樣失敗，該影格維持自由場', err)
+    console.warn('[HomeField] 圖片點雲取樣失敗，該影格維持自由場', err)
   }
   // 講者影格的圖是資料給的，不在 KEYS 表裡寫死
   KEYS[SPEAKER_KEY].src = speakerPortrait(speakerIndex.value)
@@ -1202,8 +1204,8 @@ onBeforeUnmount(() => {
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
   if (engine) { engine.destroy(); engine = null }
-  // ⚠️ 帶著自己的實作去核對 —— 跨斷點切換時窄視窗那張（HomeSameSpeakerPortrait）
-  // 可能已經先登記好了，無條件清會把它踢掉。見 useSameFieldBus 的說明。
+  // ⚠️ 帶著自己的實作去核對 —— 跨斷點切換時窄視窗那張（HomeSpeakerPortrait）
+  // 可能已經先登記好了，無條件清會把它踢掉。見 useSpeakerFieldBus 的說明。
   resetSpeakerBus(swapSpeaker)
 })
 

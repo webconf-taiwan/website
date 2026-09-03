@@ -12,6 +12,12 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2026-05-19',
 
+  // ⚠️ 這個檔案原本有「兩個」nitro 鍵（這裡一個、檔案末端一個 compressPublicAssets），
+  // 而物件字面量後面的會整個覆蓋前面的 —— 所以下面這些設定一直是被丟掉的。
+  // 症狀：本機 `nuxt build` 印的是 `Nitro preset: node-server`，不是這裡寫的
+  // cloudflare_module，而且 nodeCompat / deployConfig 都沒有生效。
+  // CF CI 上因為平台自己會帶 preset 所以 build 仍然會過，才一直沒被發現。
+  // 已經合併成一個，別再拆開。
   nitro: {
     // Cloudflare Workers（含 static assets）。輸出 .output/server/index.mjs + .output/public
     preset: 'cloudflare_module',
@@ -20,7 +26,11 @@ export default defineNuxtConfig({
       // 根目錄的 wrangler.jsonc 會被讀進來合併。在 CF CI 會自動開啟，這裡寫死是為了本機行為一致。
       deployConfig: true,
       nodeCompat: true
-    }
+    },
+    compressPublicAssets: {
+      gzip: true,
+      brotli: true,
+    },
   },
 
   modules: [
@@ -63,7 +73,13 @@ export default defineNuxtConfig({
   // app/components/OgImage/Default.takumi.vue，並依各頁 title/description 自動產圖。
   // 頁面沒各自呼叫 defineOgImage() 時的保底，用 Default 模板產生通用的 WebConf 卡片圖。
   routeRules: {
-    '/**': { ogImage: {} }
+    '/**': { ogImage: {} },
+    // ⚠️ /index-old 是被一鏡到底版取代的舊首頁（三張 canvas），整頁文案與 /api/home
+    // 的資料跟首頁一模一樣 —— 不擋的話就是一份重複內容。
+    // 用 route rule 而不是頁面裡的 useHead robots meta：只有 route rule 會同時被
+    // nuxt-robots（robots.txt + meta）與 nuxt-sitemap 讀到。實測 useHead 那條
+    // meta 有生效、但 sitemap.xml 仍然收錄了 /index-old。
+    '/index-old': { robots: false }
   },
 
   app: {
@@ -144,12 +160,5 @@ export default defineNuxtConfig({
 
   devtools: {
     enabled: true
-  },
-
-  nitro: {
-    compressPublicAssets: {
-      gzip: true,
-      brotli: true,
-    },
   },
 })

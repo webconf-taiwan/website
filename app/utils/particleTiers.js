@@ -45,7 +45,7 @@ export const TIER_DEFAULT = TIER_COUNT - 1
  * 只是密度低、點大、更新慢。不 destroy、不換靜態圖。
  */
 export const TIER_PROFILES = {
-  // ── HomeSame/MobileField（滿版自由場）─────────────────────────────────
+  // ── Home/MobileField（滿版自由場）─────────────────────────────────
   // 基準是 biolum-drift @390×844（look.budget.density = 0.037 → 12179 顆）。
   // countScale 乘在 look 自己的 density 上，所以五組 look 的相對疏密關係保留。
   mobileField: [
@@ -76,7 +76,7 @@ export const TIER_PROFILES = {
     },
   ],
 
-  // ── HomeSame/SpeakerPortrait（觀景區裡的人像）─────────────────────────
+  // ── Home/SpeakerPortrait（觀景區裡的人像）─────────────────────────
   // ⚠️ 這一區的效能「不從 density 買」。理由：
   //   成本 ∝ d²，但感知細節只 ∝ √d（點畫的解析度就是平均粒距 = 1/√d）。
   //   而這張人像在模擬空間只有約 294px，眼睛與眼鏡框只剩 10~19px 寬

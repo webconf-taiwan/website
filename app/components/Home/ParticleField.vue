@@ -147,7 +147,22 @@ const ABOUT_SHIFT = 0
 
 // 閒置多久就停掉模擬。pause 只是跳過渲染與計算，canvas 會保留最後一幀，
 // 所以畫面不會消失、只是定格 —— 使用者一動就無縫接回去。
-const IDLE_STOP_MS = 5000
+//
+// ⚠️ 觸控裝置要用長很多的門檻，跟 useParticleStage 同一個理由（那邊有完整說明）：
+// 5 秒是照桌機訂的（滑鼠總會抖一下），但手機使用者「停下來看著畫面五秒」是完全
+// 正常的行為 —— 沒有滑鼠、不需要捲動、不產生任何事件，然後動態就直接凍住。
+// 有使用者回報過這個症狀。手機上真正可靠的離開訊號是 visibilitychange，那個下面有接。
+//
+// ⚠️ 這一份是這支元件自己寫的閒置邏輯，跟 useParticleStage 那份是「兩套」。
+// 兩邊的門檻要一起改，不然行為會不一致。
+const IDLE_STOP_DESKTOP_MS = 5000
+const IDLE_STOP_TOUCH_MS = 60000
+
+function idleStopMs () {
+  return window.matchMedia?.('(pointer: fine)').matches
+    ? IDLE_STOP_DESKTOP_MS
+    : IDLE_STOP_TOUCH_MS
+}
 
 // 被別區蓋住時的「追趕時間」。
 // ⚠️ 這段不能省。progress 是捲動位置算出來的，使用者滑多快它都立刻正確；但粒子要
@@ -164,6 +179,10 @@ let engine = null
 let stopAmbient = null
 let onVisibility = null
 let onActivity = null
+let onPointerActivity = null
+// pointermove 去重用的上一個座標（見 init 裡的說明）
+let lastPointerX = -1
+let lastPointerY = -1
 let driftRaf = 0
 let scrollTrigger = null
 let returnTrigger = null
@@ -236,7 +255,7 @@ let resizeTimer = 0
 // 游走用：每顆粒子在自己原點附近的一個隨機小偏移。
 // 半徑取 0.3~1.0 × amp，全部等長的話會變成一圈規則的環。
 // ⚠️ 寫進呼叫端給的 scratch buffer，不要每次配新的 —— 48000 顆是一份 384KB 的
-// Float32Array，每 2.4 秒配一份純粹是餵 GC（HomeSame/Field 為了同樣理由改成 jitA/jitB）。
+// Float32Array，每 2.4 秒配一份純粹是餵 GC（Home/Field 為了同樣理由改成 jitA/jitB）。
 function jitterInto (out, base, amp) {
   for (let i = 0; i < base.length; i += 2) {
     const a = Math.random() * Math.PI * 2
@@ -294,8 +313,8 @@ function driftLoop (now) {
   const t = now || performance.now()
   const y = window.scrollY
 
-  // --- 閒置超過 IDLE_STOP_MS 就停掉模擬 -------------------------------------
-  if (!idlePaused && t - lastActivity > IDLE_STOP_MS) {
+  // --- 閒置超過門檻就停掉模擬（觸控裝置的門檻長很多，見 idleStopMs）----------
+  if (!idlePaused && t - lastActivity > idleStopMs()) {
     idlePaused = true
     syncPause()
   }
@@ -520,7 +539,7 @@ function syncPause () {
 }
 
 // 交棒。⚠️ 拿回台面時要一併重設 lastActivity —— 否則「離開這區的那一刻」
-// 距離上次 pointermove 早就超過 IDLE_STOP_MS，會醒來後立刻又被閒置邏輯停掉。
+// 距離上次 pointermove 早就超過閒置門檻，會醒來後立刻又被閒置邏輯停掉。
 watch(activeStage, (v) => {
   stageActive = v === 'background'
   if (stageActive) {
@@ -691,11 +710,21 @@ async function init () {
   onResize = () => invalidateTargets()
   window.addEventListener('resize', onResize)
 
+  // ⚠️ pointermove 要做座標去重：瀏覽器在「內容自己在動、滑鼠停著」時仍會發合成的
+  // pointermove（useParticleStage 實測靜置 4 秒收到 8 次）。照單全收的話 lastActivity
+  // 會一直被刷新，閒置省電永遠不會觸發 —— 這個機制等於沒做。
+  onPointerActivity = (ev) => {
+    if (ev.clientX === lastPointerX && ev.clientY === lastPointerY) return
+    lastPointerX = ev.clientX
+    lastPointerY = ev.clientY
+    markActivity()
+  }
   onActivity = () => markActivity()
-  window.addEventListener('pointermove', onActivity, { passive: true })
-  window.addEventListener('pointerdown', onActivity, { passive: true })
-  window.addEventListener('scroll', onActivity, { passive: true })
-  window.addEventListener('wheel', onActivity, { passive: true })
+  window.addEventListener('pointermove', onPointerActivity, { passive: true })
+  // ⚠️ touchstart / keydown 原本漏了 —— 手機上只點不滑、或用鍵盤操作時都不算活動。
+  for (const ev of ['pointerdown', 'scroll', 'wheel', 'keydown', 'touchstart']) {
+    window.addEventListener(ev, onActivity, { passive: true })
+  }
 
   lastActivity = performance.now()
   syncPause()
@@ -790,11 +819,14 @@ onBeforeUnmount(() => {
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
+  // ⚠️ 移除時要跟掛上去的是同一個函式參照，而 pointermove 掛的是 onPointerActivity
+  // 不是 onActivity —— 這裡原本兩者都寫 onActivity，所以 pointermove 那個監聽器
+  // 其實從來沒被移除過（元件重掛就多一個）。
+  if (onPointerActivity) window.removeEventListener('pointermove', onPointerActivity)
   if (onActivity) {
-    window.removeEventListener('pointermove', onActivity)
-    window.removeEventListener('pointerdown', onActivity)
-    window.removeEventListener('scroll', onActivity)
-    window.removeEventListener('wheel', onActivity)
+    for (const ev of ['pointerdown', 'scroll', 'wheel', 'keydown', 'touchstart']) {
+      window.removeEventListener(ev, onActivity)
+    }
   }
   if (engine) { engine.destroy(); engine = null }
 })
@@ -809,7 +841,7 @@ defineExpose({ backend })
     class="pointer-events-none fixed inset-0 z-0 block h-full w-full"
   />
 
-  <!-- ?mode=tool 的切換面板。與 index-same 的單張版共用同一個元件。 -->
+  <!-- ?mode=tool 的切換面板。與一鏡到底版（Home/Field.vue）共用同一個元件。 -->
   <HomeFieldLookPanel
     v-if="toolMode"
     :look="activeLook"

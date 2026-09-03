@@ -33,7 +33,7 @@ const { activeStage, idle, claimStage, releaseStage } = useParticleStage()
 const STAGE = 'speaker'
 
 // --- 講者資料 --------------------------------------------------------------
-// 內容由 /api/home 的 speaker 區塊提供（見 pages/index.vue）。
+// 內容由 /api/home 的 speaker 區塊提供（見 pages/index-old.vue）。
 // portrait 是去背 PNG，執行期用 PLImage.prepare 取樣成點雲（與首頁 side.png 同一條路，
 // 不走 people.vue 的預烘 JSON —— prepare 只取樣到 480px，縮圖後檔案大小跟 JSON 一樣，
 // 但換照片只要丟檔案、不用跑 bake.py）。

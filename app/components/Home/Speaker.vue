@@ -1,19 +1,19 @@
 <script setup>
-// PL. III — Speaker（index-same.vue 版本）。
+// PL. III — Speaker（首頁一鏡到底版）。
 //
 // 這個元件只有版面 —— 名單、觀景框、引線、卷號。換人一律是把索引丟給
-// useSameFieldBus，由粒子那一端接手變形，兩條時間軸並行、互不等待。
+// useSpeakerFieldBus，由粒子那一端接手變形，兩條時間軸並行、互不等待。
 //
 // ⚠️ 「粒子那一端」是誰，桌機與窄視窗不一樣（見 useViewportMode）：
 //
-//   ≥1024px  HomeSameField —— 頁面底層那張唯一的 fixed canvas，人像是它時間軸上
+//   ≥1024px  HomeField —— 頁面底層那張唯一的 fixed canvas，人像是它時間軸上
 //            的一個影格。所以這一區「不能」有不透明底色（會把自己的人像整片蓋掉），
 //            只能用半透明壓黑保可讀性；人像的大小／位置由那邊的 speaker 影格
 //            （fit / maxPx）決定，不在這裡調。
 //
-//   <1024px  HomeSameSpeakerPortrait —— 就掛在下面那個觀景框裡的小 canvas。
+//   <1024px  HomeSpeakerPortrait —— 就掛在下面那個觀景框裡的小 canvas。
 //            那一版這一區沒有底色 —— 不透明底是頁面在 PL.II～PL.V 外面包的那一層
-//            （見 index-same.vue，包成一段是為了不要在區塊交界露出縫）。
+//            （見 pages/index.vue，包成一段是為了不要在區塊交界露出縫）。
 //            那個底是純黑，跟 canvas 的不透明黑同色，所以框裡那個方塊的邊界
 //            看不出來。⚠️ 把它改成 #0a0a0c 之類的近黑，方塊就會現形。
 
@@ -24,9 +24,9 @@ const props = defineProps({
   }
 })
 
-const { speakerIndex, speakerBusy, selectSpeaker } = useSameFieldBus()
-// 桌機的人像是頁面底層那張唯一的 canvas 畫的（HomeSameField 的 speaker 影格）；
-// 窄視窗沒有那條時間軸，改由觀景框裡自己那張小 canvas 畫，見 HomeSameSpeakerPortrait。
+const { speakerIndex, speakerBusy, selectSpeaker } = useSpeakerFieldBus()
+// 桌機的人像是頁面底層那張唯一的 canvas 畫的（HomeField 的 speaker 影格）；
+// 窄視窗沒有那條時間軸，改由觀景框裡自己那張小 canvas 畫，見 HomeSpeakerPortrait。
 const { isDesktop, viewportReady } = useViewportMode()
 
 const SPEAKERS = computed(() => props.data?.items || [])
@@ -54,7 +54,7 @@ function nameRuns (name) {
 //   3. 框線到定位之後，引線才從框邊延伸到名字
 //   4. 同時框線上下的文字用打字效果進場
 //
-// ⚠️ 粒子那邊（HomeSameField.swapSpeaker）是另一條時間軸，兩邊「不互相等待」——
+// ⚠️ 粒子那邊（HomeField.swapSpeaker）是另一條時間軸，兩邊「不互相等待」——
 // 那邊是炸開 520ms + 重組 1100ms，這邊全長約 1.2 秒，收尾差不多同時。
 // 刻意不做成一條共用的 timeline：粒子那條要等 readParticles（非同步、時間不定），
 // 綁在一起的話版面動畫會被它卡住，反而更難對齊。
@@ -274,7 +274,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <!-- data-same-speaker 是 HomeSameField 第 2 段（about → speaker）的觸發器。
+  <!-- data-same-speaker 是 HomeField 第 2 段（about → speaker）的觸發器。
        ⚠️ 底色只能是半透明 —— 人像就畫在背後那張 fixed canvas 上，
        給不透明底色會把自己的人像整片蓋掉。 -->
   <section
@@ -315,7 +315,7 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- 章節錨點不在這裡 —— 已經抽成頁面層級的 fixed 元件 CommonChapterNav，
-         全程停在畫面左側、可以點著跳章（見 pages/index-same.vue）。 -->
+         全程停在畫面左側、可以點著跳章（見 pages/index.vue）。 -->
 
     <!-- ═══ 窄視窗（<1024px）：講者輪播 ═══════════════════════════════════
          設計稿在這個尺寸是另一種版面，不是桌機那組加斷點就能長出來的：
@@ -336,7 +336,7 @@ onBeforeUnmount(() => {
         <!-- 人像點雲。桌機不掛（那邊是頁面底層那張唯一的 canvas 畫的）。
              <ClientOnly> 是因為斷點只有 client 量得到，見 useViewportMode。 -->
         <ClientOnly>
-          <HomeSameSpeakerPortrait
+          <HomeSpeakerPortrait
             v-if="viewportReady && !isDesktop"
             :speakers="SPEAKERS"
           />

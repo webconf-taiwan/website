@@ -34,7 +34,7 @@ const props = defineProps({
 // ⚠️ 這個值是設計師定的，別憑手感改回中線。
 // 0.45（原本）＝ 快到視窗中線才換，捲到一半還亮著上一卷；
 // 0.15（現在）＝ 區塊頂邊一進畫面上緣附近就換，指示器跟著標題走。
-// 這支是 /index 與 /index-same 共用的，兩頁的行為會一起變。
+// 這支是首頁（一鏡到底版）與 /index-old（舊的三張 canvas 版）共用的，兩頁會一起變。
 const SWITCH_AT = 0.15
 
 const active = ref(0)

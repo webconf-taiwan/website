@@ -1,7 +1,7 @@
 # 讓粒子場「活起來」— 動態效果實作要領
 
 > 對象：`app/components/Home/ParticleField.vue`（首頁固定背景粒子場）、
-> `app/components/HomeSame/Field.vue`（一鏡到底版）、`app/utils/particleFieldLooks.js`
+> `app/components/Home/Field.vue`（一鏡到底版）、`app/utils/particleFieldLooks.js`
 > （效果目錄）與 `public/particle-kit/`（引擎）。
 > 目的：把 2026-08 這次做首頁 PL.I → PL.II 收攏效果時，**踩過的坑與判斷依據**寫下來，
 > 讓之後做類似效果（其他區塊、其他頁、換圖）能直接照著走，不必重新撞一次。
@@ -538,7 +538,7 @@ dt 與捲動速度，導致相機瞬移＋模擬速度暴衝。
 - ✅ 運動連續、平滑
 - ❌ **需要一個空的目標槽**，而且 `blend` 不能被別人佔用
 
-**解法 B —— 讓「握力自己呼吸」（`ParticleField` / `HomeSame/Field` 用這個）**
+**解法 B —— 讓「握力自己呼吸」（`ParticleField` / `Home/Field` 用這個）**
 
 當兩個槽都被佔用（首頁是 `blend=0` 構圖、`blend=1` side.png，而 `blend` 是捲動位置
 決定的）就不能用 A。改成讓 `grip` 在 `FLOOR ↔ 1` 之間走一個慢週期：
