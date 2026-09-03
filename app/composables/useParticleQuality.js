@@ -54,6 +54,21 @@ const READBACK_SETTLE_MS = 600   // readParticles + buildSlotTargets（呼叫端
 const FAIL_STREAK = 2            // 連續幾個視窗失敗才降檔
 const MAX_DEMOTIONS = 2          // 整個 page view 最多降幾次（= 最多幾次 respawn）
 
+// ⚠️ 開場的快速通道：第一個視窗如果「明顯很糟」就單一視窗直接降，不等連兩次。
+//
+// 為什麼要有它：走正常規則的話，弱機要暖機 1.2s + 兩個視窗（各 1.5s）≈ 開場後
+// 5~6 秒才降到對的檔位 —— 而那 5 秒正好是 hero，第一印象。使用者停留時間可能只有
+// 30 秒，開場卡 5 秒就佔了六分之一。
+//
+// 為什麼門檻要比 TARGET_P50_MS 高很多（1.5 倍）：這一版**不會升回去**，所以誤判
+// 是永久的。勉強過線的情況（例如剛好被一次字型載入拖慢）必須走原本的兩視窗規則，
+// 只有「明顯不是雜訊」才准走快速通道。p50 本身已經對單一尖峰免疫（那只會動 p95），
+// 所以 p50 就超過 1.5 倍代表整個視窗都在掙扎。
+//
+// ⚠️ 只在第一次降檔前有效（demotions === 0）。之後一律回到兩視窗規則 ——
+// 已經降過一次還在掙扎的話，多等 1.5 秒確認不算什麼，而誤判的代價更高。
+const FAST_DEMOTE_MULT = 1.5
+
 // vsync 週期的候選格點（120 / 90 / 60Hz）
 const VSYNC_GRID = [8.333, 11.111, 16.667]
 
@@ -272,6 +287,13 @@ function closeWindow () {
     return
   }
 
+  // 開場快速通道：還沒降過、而且這個視窗明顯很糟 → 不等第二次（見 FAST_DEMOTE_MULT）
+  if (demotions === 0 && p50 > TARGET_P50_MS * FAST_DEMOTE_MULT) {
+    demote()
+
+    return
+  }
+
   // 連續 2 個視窗才動 —— 過濾單一視窗的雜訊（一次 GC、一次圖片解碼、
   // 一次 buildSlotTargets 的 O(N log N) 排序）
   failStreak++
@@ -293,8 +315,16 @@ function tick (now) {
   if (prevTs) deltas.push(now - prevTs)
   prevTs = now
 
-  if (deltas.length >= WINDOW_MAX_FRAMES || (now - windowStart) >= WINDOW_MAX_MS) {
-    if (deltas.length >= WINDOW_MIN_FRAMES) closeWindow()
+  // ⚠️ 時間到了但幀數不夠時要「繼續等」，不能把視窗丟掉。
+  // 這裡原本是「時間到就 resetWindow，不足 WINDOW_MIN_FRAMES 就不關閉」——
+  // 那在 1500ms 內湊不到 20 幀（也就是 13.3fps 以下）的裝置上，視窗永遠不會關閉，
+  // 於是永遠不會降檔。而那正是最需要降檔的那群機器
+  //（docs 裡記的 PL.IV/V 手機實測就是 13fps）。
+  // 改成幀數是硬性條件、時間只是「夠了就別再等」的上限：10fps 的機器會在約
+  // 2 秒時湊滿 20 幀然後關閉視窗。
+  const enough = deltas.length >= WINDOW_MIN_FRAMES
+  if (deltas.length >= WINDOW_MAX_FRAMES || (enough && (now - windowStart) >= WINDOW_MAX_MS)) {
+    closeWindow()
     resetWindow(now)
   }
 }
