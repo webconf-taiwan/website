@@ -331,6 +331,39 @@ export function fieldLookFromLocation () {
   return { look: pinned ? resolveFieldLook(want) : randomFieldLook(), pinned, tool }
 }
 
+// --- 效能診斷用的參數 -------------------------------------------------------
+// 跟上面 ?hero-animation / ?mode=tool 同一套規矩：值有白名單、打錯字就當沒帶、
+// 正式站也可以開著。放在同一支檔案是為了維持「只有一個地方知道網址長什麼樣」。
+//   ?tier=0|1|2|3   強制效能檔位（不做裝置偵測、不做任何升降）
+//   ?tier=auto      明講要自動（= 不帶這個參數）
+//   ?fps=1          打開引擎自帶的 fps overlay（會印 fps · count · backend）
+export const PARTICLE_TIER_QUERY = 'tier'
+export const PARTICLE_FPS_QUERY = 'fps'
+export const PARTICLE_TIER_AUTO = 'auto'
+
+/**
+ * 讀效能診斷參數。
+ *
+ * ⚠️ 只能在 client 呼叫（讀 window.location），跟 fieldLookFromLocation 同樣的限制。
+ *
+ * @returns {{ forcedTier: number|null, showFps: boolean }}
+ *   forcedTier  null = 照裝置偵測走；0~3 = 強制指定
+ *   showFps     true = 打開引擎的 fps overlay
+ */
+export function particleDebugFromLocation () {
+  if (typeof window === 'undefined') return { forcedTier: null, showFps: false }
+
+  const q = new URLSearchParams(window.location.search)
+
+  const raw = q.get(PARTICLE_TIER_QUERY)
+  const n = Number(raw)
+  const forcedTier = raw && raw !== PARTICLE_TIER_AUTO && Number.isInteger(n) && n >= 0 && n <= 3
+    ? n
+    : null
+
+  return { forcedTier, showFps: q.get(PARTICLE_FPS_QUERY) === '1' }
+}
+
 /**
  * 把目前選的效果寫回網址，不留下一堆 history —— 面板切換後重整還是同一組，
  * 網址也可以直接複製給別人看。

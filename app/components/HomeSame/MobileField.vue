@@ -30,6 +30,9 @@ const { countFor, maxDpr } = useParticleBudget()
 const { buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張滿版 canvas，不需要 claim/release。
 const { idle } = useParticleStage()
+// 裝置效能檔位。⚠️ 只會往下鎖，沒有負面訊號時 t3 就是「今天線上的樣子」。
+// 各旋鈕的值與理由在 app/utils/particleTiers.js。
+const { tier, knobs, cpuFallback, showFps } = useParticleQuality()
 
 const canvasRef = ref(null)
 const backend = ref('')
@@ -50,13 +53,11 @@ const OUTRO_OPACITY_RATIO = 0.60 / 0.55
 // COUNT_DENSITY 註解：那邊整條時間軸共用同一組粒子，點數若跟著 hero 效果走，
 // 同一張人像會忽濃忽淡。這裡只有自由場，各組效果本來就該用自己的密度。
 //
-// 再乘一個手機折扣。理由（不是實測，是推算 —— 有實機再回來修這個數字）：
-// useParticleBudget 的密度換算讓「每顆粒子要掃的鄰居數」固定，所以總成本正比於 N，
-// 而 N 已經跟著面積縮了（390×844 約是 1440×900 的 1/4）。但手機 GPU 與桌機的差距
-// 通常不只 4 倍，所以再留一段餘裕。
-// ⚠️ 真的要調的話，先看 window.__mobileDbg() 的 count 與 engine.getFps()，
-// 不要憑感覺 —— 下面 FPS_SAMPLE_MS 那段的自適應減半是保底，不是替代品。
-const MOBILE_COUNT_SCALE = 0.7
+// 再乘一個「手機折扣」，現在由檔位表提供（q.countScale）。
+// t3 的 0.70 就是原本寫在這裡的 MOBILE_COUNT_SCALE —— 沒有負面訊號時行為完全不變。
+// 那個 0.70 的由來（推算不是實測）與各檔的值都搬到 app/utils/particleTiers.js 了。
+// ⚠️ 要調的話先看 window.__mobileDbg() 的 count 與 window.__pq() 的檔位判斷依據，
+// 不要憑感覺。
 
 // --- 模擬速度（與 Home/ParticleField 同一套）--------------------------------
 const SIM_SPEED_INTRO = 1.5
@@ -69,7 +70,9 @@ const SCROLL_CALM = 0.6
 
 // --- 維持開場構圖 ----------------------------------------------------------
 const HOLD_DRIFT_AMP = 22             // 每顆粒子的游走半徑（模擬 px）
-const HOLD_DRIFT_MS = 2400            // 多久換一組新的隨機偏移
+// 多久換一組新的隨機偏移 → 由檔位表提供（q.driftMs）。
+// ⚠️ 低檔位換得慢一點不是為了省算力（那只是一次 setTargets 上傳），是視覺理由：
+// 粒子少的時候換太勤會看起來在閃，而不是在流動。
 const HOLD_BREATHE_MS = 7000          // 握力走完「鬆 → 緊 → 鬆」一輪
 const HOLD_BREATHE_FLOOR = 0.18       // 最鬆的時候還留多少握力
 
@@ -86,6 +89,8 @@ const TAU = Math.PI * 2
 
 // ⚠️ 用 let：frame() 每幀讀它，不需要響應式的開銷。
 let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
+// 目前檔位的旋鈕。init() 取一次；這一階段還沒有執行期換檔，所以之後不會變。
+let q = knobs('mobileField')
 
 let engine = null
 let stopAmbient = null
@@ -136,10 +141,15 @@ function jitterInto (out, base, amp) {
 function zoomNow () {
   return inRegion[0] ? look.camera.zoom : look.camera.zoom * OUTRO_ZOOM_RATIO
 }
+// ⚠️ 這裡一定要把 q.opacityScale 乘進去。frame() 每幀都會呼叫這個函式再
+// setParticleOpacity，所以「只在 makeEngine 時給一次」會被下一幀直接洗掉 ——
+// 低檔位的亮度補償等於沒做（實測過：t0 的 opacity 仍然停在 look 的原值）。
 function opacityNow () {
-  return inRegion[0]
+  const base = inRegion[0]
     ? look.visual.heroOpacity
-    : Math.min(1, look.visual.heroOpacity * OUTRO_OPACITY_RATIO)
+    : look.visual.heroOpacity * OUTRO_OPACITY_RATIO
+
+  return Math.min(1, base * q.opacityScale)
 }
 
 // --- 目標點 ----------------------------------------------------------------
@@ -265,11 +275,11 @@ function frame (now) {
   if (ready && targetsStale()) invalidateTargets()
   if (!ready || !holdBase) return
 
-  // 游走：每 HOLD_DRIFT_MS 換一組新的隨機偏移。
+  // 游走：每 q.driftMs 換一組新的隨機偏移。
   // ⚠️ 兩個目標槽都塞同一組（blend 在這一版永遠是 0，沒有第二個形狀要混）——
   // 這樣 setMorph 的 blend 參數怎麼給都不影響結果，少一個會漂移的狀態。
   if (!reducedMotion) {
-    const cycle = Math.floor(t / HOLD_DRIFT_MS)
+    const cycle = Math.floor(t / q.driftMs)
     if (cycle !== driftCycle) {
       driftCycle = cycle
       const jit = jitterInto(holdJit, holdBase, HOLD_DRIFT_AMP)
@@ -304,11 +314,18 @@ async function init () {
 
   const hero = window.PLPalettes.PALETTES[look.palette]
   const b = look.budget
-  const count = countFor(canvas, {
-    density: b.density * MOBILE_COUNT_SCALE,
-    max: Math.round(b.max * MOBILE_COUNT_SCALE),
-    min: Math.round(b.min * MOBILE_COUNT_SCALE),
+  q = knobs('mobileField')
+  let count = countFor(canvas, {
+    density: b.density * q.countScale,
+    max: Math.round(b.max * q.countScale),
+    min: Math.round(b.min * q.countScale),
   })
+  // ⚠️ 沒有 WebGPU 的話走的是完全不同的引擎（particle-life.js，CPU 後端），
+  // 成本結構也完全不同 —— 空間雜湊與繪圖都在 JS 主執行緒上、canvas2d 逐顆
+  // drawImage。它自己的預設點數是 1400，而我們一直照樣傳 8000+ 顆進去。
+  // 這不是「比較慢」，是量級錯誤，光靠檔位的 countScale 補不回來。
+  // 見 particleTiers.js 的 CPU_FALLBACK_MAX_COUNT。
+  if (cpuFallback.value) count = Math.min(count, CPU_FALLBACK_MAX_COUNT)
 
   engine = await window.makeEngine(canvas, {
     species: look.rules.species,
@@ -321,24 +338,38 @@ async function init () {
     friction: look.physics.friction,
     repel: look.physics.repel,
     minR: look.physics.minR,
-    rMax: look.physics.rMax,
+    rMax: look.physics.rMax * q.rMaxScale,
     simSpeed: SIM_SPEED_INTRO,
     cameraZoom: look.camera.zoom,
-    pointSize: look.visual.pointSize,
-    particleOpacity: look.visual.heroOpacity,
+    // ⚠️ pointSize / opacity 隨檔位放大不是裝飾，是必須的：粒子少了還用同樣的
+    // 點大小，畫面會變暗變薄，看起來像「壞了」而不是「刻意的稀」。
+    // 要維持感知亮度就要維持總覆蓋面積 ≈ N × pointSize²。見 particleTiers.js。
+    pointSize: look.visual.pointSize * q.pointScale,
+    particleOpacity: Math.min(1, look.visual.heroOpacity * q.opacityScale),
     // 光暈一律關：額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比，
     // 而這支元件只會在 < 1024px 掛載。
     showGlow: false,
     glowSize: look.glow.glowSize,
     glowIntensity: look.glow.glowIntensity,
     glowSteepness: look.glow.glowSteepness,
-    cellSubdivisions: 2,
-    maxDpr: maxDpr(),
+    cellSubdivisions: q.cellSub,
+    // ⚠️ 取 min 而不是直接用檔位的值 —— 契約是「只會減、不會加」。
+    // maxDpr() 本身已經分了手機 1.25 / 桌機 1.5（斷點 768），檔位只能再往下壓。
+    // 直接用 q.dprCap 會讓 768~1023 的平板從 1.5 掉到 1.25，那是沒必要的畫質損失。
+    maxDpr: Math.min(maxDpr(), q.dprCap),
   })
   backend.value = engine.backend
+  if (showFps()) engine.setShowFps?.(true)
   if (import.meta.dev) window.__mobileField = engine
 
-  if (!reducedMotion) stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
+  // ⚠️ ambient 不是效能旋鈕（純 setTimeout 排程，每 1.2~18 秒發一次 disturb，
+  // 沒有 per-frame 成本）。低檔位調低 gain 是視覺理由：粒子少的時候一記大脈衝
+  // 會把整片打散得很難看。
+  // ⚠️ 但不能關掉 —— particle-ambient.js 檔頭第一句就是警告：沒有擾動的話
+  // 場幾十秒後會收斂成靜態圖。
+  if (!reducedMotion) {
+    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient * q.ambientGain })
+  }
 
   // --- 區間偵測 -------------------------------------------------------------
   // ⚠️ 要在第一幀之前掛好，否則進站時 running 是 false、frame() 直接空轉，
@@ -369,7 +400,10 @@ async function init () {
   if (import.meta.dev) {
     window.__mobileDbg = () => ({
       look: look.id,
+      tier: tier.value,
+      cpuFallback: cpuFallback.value,
       count: engine.config.count,
+      rMax: engine.config.rMax,
       backend: engine.backend,
       inRegion: [...inRegion],
       running,

@@ -106,6 +106,10 @@ if (!engine?.readParticles || !engine.setTargets) return false
 ⚠️ **待查證**：WebGPU 在 iOS Safari 的出貨版本（我的理解是 Safari 26 / iOS 26，但需確認）。
 若成立，絕大多數還沒升級的 iPhone 全部走這條路 —— 跟「iPhone 17 順、舊手機超卡」完全吻合。
 
+> ✅ **`/index-same` 已處理**（階段 2）：`!navigator.gpu` 在建引擎「之前」就判到底檔，
+> 點數 8525 → 1800，並額外 `setForce(0)` 讓人像停在正確的位置而不是化開。
+> ⚠️ **`/` 與 `/people` 還沒處理** —— 它們的引擎完全沒有這層判斷。
+
 ---
 
 ## 3. 層級二：`SpeakerPortrait` 為一個已停用的力場付全額搜尋成本
@@ -271,17 +275,18 @@ if (!hdrTexture || hdrTexture.width !== cw || hdrTexture.height !== ch) {   // :
 ### 階段 0 —— 讓裝置自己說話（零行為改變）
 
 沒有舊手機就沒有真數字。`app/utils/particleFieldLooks.js` 加 `particleDebugFromLocation()`，
-沿用現有 `fieldLookFromLocation()` 同一套白名單解析：
+沿用現有 `fieldLookFromLocation()` 同一套白名單解析。
 
-- `?fps=1` → 效能 HUD。⚠️ **引擎自帶的 `setShowFps(true)` 站上從來沒開過**（`:1367-1386` 已經會印
-  `fps · count · backend`）
-- `?tier=0|1|2|3` → 強制檔位（階段 2 之後生效）
-- `?stress=N` → density × N，在快機器上重現舊手機的負載形狀
+**`?tier=` 與 `?fps=1` 已經跟著階段 2 一起落地了**（見上面的「驗收工具」）。還沒做的是：
 
-### 階段 2 —— pre-flight 檔位（只往下鎖，不往上猜）
+- `?stress=N` → density × N，在快機器上重現舊手機的負載形狀（見 §9-3）
+- 自訂 HUD（p50 / p95 / vsync / 各引擎的 count）—— 那要等階段 3 的量測器才有東西可顯示
+
+### ✅ 階段 2 —— pre-flight 檔位（只往下鎖，不往上猜）
 
 新增 `useParticleQuality.js`（模組層級單例，同 `useParticleStage` / `useViewportMode`）
 與 `particleTiers.js`（純資料表，同 `particleFieldLooks.js` 的「表與邏輯分離」）。
+**各檔位的實際數值以 `particleTiers.js` 為準**，這裡不重複一份（會腐爛）。
 
 ⚠️ 契約同 `useParticleBudget`：**只會減、不會加**。沒有任何 navigator 訊號能證明「這台很快」：
 
@@ -309,6 +314,72 @@ if (!hdrTexture || hdrTexture.width !== cw || hdrTexture.height !== ch) {   // :
 
 ⚠️ 這一階段第一次讓 `prefers-reduced-motion` **真的降低 GPU 負載**（現在六個元件都只關掉漂移 /
 呼吸 / 閃動，compute + render pass 一個都沒少），補上 `point-cloud-effect.md` 待辦清單最後一條。
+
+#### ⚠️ 預設是滿檔，不是中間檔
+
+`TIER_DEFAULT = 3`（＝今天線上的樣子），不是設計時想的 t2。理由：**目前只有 pre-flight，
+還沒有執行期量測**。若預設就給 t2，等於所有手機（包括跑得很順的）都被無條件降級，而且沒有
+任何機制把它們升回來。等階段 3 上線、能真的把降下去的檔位判斷出來之後，才應該改成 2 並配合
+開場的一次性升檔。
+
+#### 實測（Playwright，390×844）
+
+| 情境 | 檔位 | 粒子數 | rMax | backend |
+|---|---|---|---|---|
+| 無訊號（基準） | t3 | **8525** | 72 | webgpu |
+| `?tier=0` 強制 | t0 | 1620 | 52 | webgpu |
+| `prefers-reduced-motion` | t1 | 3413 | 62 | webgpu |
+| **`navigator.gpu` 拔掉** | **t0 + cpuFallback** | **1800** | 47 | **canvas2d** |
+
+- 基準完全等於階段 2 之前的數值（MobileField 8525、SpeakerPortrait 8772 / rMax 30）——
+  **機制對無訊號裝置是真正的 no-op**，這是「只會減、不會加」契約的驗收條件。
+- 無 WebGPU 那條是 **8525 → 1800，4.7 倍降載**，三個情境都 0 console error / 0 page error。
+
+#### 亮度補償的實測
+
+低檔位放大 `pointSize` / `opacity` 是為了讓「極稀」看起來像刻意的設計而不是壞掉。
+用 `?tier=N&hero-animation=2` 各拍一張，量整張的平均亮度：
+
+| | 粒子數 | pointSize | opacity | 平均亮度 | 亮於 8 的像素 |
+|---|---|---|---|---|---|
+| t3 | 8525 | 0.80 | 0.55 | 8.21 | 7.45% |
+| t2 | 6089 | 0.92 | 0.55 | 7.79 | 7.15% |
+| t1 | 3897 | 1.08 | 0.605 | 8.59 | 7.86% |
+| t0 | 2192 | 1.36 | 0.66 | 8.95 | 8.35% |
+
+粒子數少了 3.9 倍，感知亮度守在 7.8～9.0 —— 視覺上是「顆粒變粗」而不是「變暗」。
+
+#### ⚠️ 兩個實作時才發現的坑
+
+1. **`opacityScale` 只在 `makeEngine` 給一次是沒用的。**
+   `MobileField.frame()` 每幀都會呼叫 `opacityNow()` 再 `setParticleOpacity`，所以建構時
+   給的值下一幀就被洗掉 —— 實測 t0 的 opacity 仍停在 look 的原值 0.55。補償必須寫進
+   `opacityNow()` 裡面。任何「每幀都會被重寫的旋鈕」都有同一個陷阱（camera、morph 同理）。
+
+2. **CPU 路徑要順手把力場也關掉。**
+   `particle-life.js` 沒有 `setTargets` / `setMorph`，所以 seek 完全不存在；而 nebula 帶著
+   全域微斥力，人像會慢慢化開成一團噪點。偵測到之後 `engine.setForce(0)`，粒子就停在
+   `seedPattern` 撒好的位置：**一張靜態但正確的點雲人像**。這比「會動但爛掉」好，也符合
+   「最低檔也不關掉粒子」的要求。判斷用 `if (!engine.setTargets)` 而不是 `backend`，
+   因為真正相關的是能力而不是名字。
+
+#### 驗收工具（已可用）
+
+| 參數 | 作用 |
+|---|---|
+| `?tier=0\|1\|2\|3` | 強制檔位，不做偵測也不做升降。設計師在桌機把視窗縮到 390×844 就能看各檔長相 |
+| `?fps=1` | 打開引擎自帶的 overlay（印 `fps · count · backend`）。⚠️ 它印的是 `fpsSmoothed`，初值硬編 60、EMA 慢、paused 時仍在更新 —— **只能當參考，不要拿它做判斷**（見 §4） |
+| `window.__pq()` | 檔位、是否強制、cpuFallback，以及各訊號的原始值 |
+| `window.__mobileDbg()` / `__samePortraitDbg()` | 多了 `tier` / `cpuFallback` / `rMax` |
+| `window.__pqAdapter` | dev only，`adapter.info` 的原始字串。**只記錄不採用** —— 先在真實裝置上收集長什麼樣，之後再決定要不要拿它分檔 |
+
+#### 這一階段接不住的兩種情況
+
+**都是靜態判斷的先天限制**，要階段 3 才處理：
+
+1. **跑久了發熱降頻** —— 開場量不到，而且 iPhone 17 也會
+2. **有 WebGPU 但 GPU 很弱的 iPhone** —— iPhone 11 到 17 差 5~8 倍，Safari 沒有任何 API
+   分得出來。**這是最大的盲區**
 
 ### 階段 3 —— 執行期監看 + 降檔（🔎 先看階段 0 的數字）
 
