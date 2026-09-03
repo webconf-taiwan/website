@@ -32,7 +32,10 @@ const { buildSeedTargets, buildSlotTargets } = useParticleMorph()
 const { idle } = useParticleStage()
 // 裝置效能檔位。⚠️ 只會往下鎖，沒有負面訊號時 t3 就是「今天線上的樣子」。
 // 各旋鈕的值與理由在 app/utils/particleTiers.js。
-const { tier, knobs, cpuFallback, showFps } = useParticleQuality()
+const {
+  tier, knobs, cpuFallback, showFps,
+  onTierChange, markActive, suspendReadback, noteRespawn,
+} = useParticleQuality()
 
 const canvasRef = ref(null)
 const backend = ref('')
@@ -79,10 +82,11 @@ const HOLD_BREATHE_FLOOR = 0.18       // 最鬆的時候還留多少握力
 // 目標點失效（視窗轉向、fps 自適應觸發 setCount）後多久重建。
 // 兼作 resize 的 debounce —— 手機轉向會連續發好幾個 resize。
 const REBUILD_SETTLE_MS = 700
-// 開場多久之後量 fps。⚠️ 要在建目標點「之前」量並且先 setCount：setCount 會重配
-// targets buffer，順序反了目標點會被清空（桌機版 FPS_SAMPLE_MS 有完整說明）。
-const FPS_SAMPLE_MS = 900
-const FPS_FLOOR = 45
+// 開場多久之後建目標點。
+// ⚠️ 這個值直接決定「進站第一趟往下捲會不會有反應」，不是效能微調 ——
+// ready（= 目標點建好）之前 frame() 不會收攏。越短越好，但要讓 setCount 重生的
+// 粒子先離開生成點。900ms 是「粒子散開了」與「使用者還沒捲下去」的交界。
+const BUILD_DELAY_MS = 900
 
 const TAU = Math.PI * 2
 // --------------------------------------------------------------------------
@@ -99,7 +103,8 @@ let io = null
 let onVisibility = null
 let onResize = null
 let resizeTimer = 0
-let fpsTimer = 0
+let buildTimer = 0
+let unsubTier = null
 let reducedMotion = false
 
 // 目前有哪些區間在畫面上。two-bit 的狀態，決定「跑不跑」與「用哪一組取景」。
@@ -159,6 +164,10 @@ function opacityNow () {
 // 會重排陣列，array index 靠不住，只有生成時指定的 slot 是穩定身分）。
 async function buildHold () {
   if (!engine?.readParticles || !engine.setTargets) return false
+  // ⚠️ readParticles 是 GPU→CPU 的 mapAsync 硬同步，接著 buildSlotTargets 還有
+  // 兩組帶閉包比較器的 sort（O(N log N)，8500 顆下是幾十毫秒的主執行緒工作）。
+  // 這段的幀時間不代表渲染負載，不能拿去做檔位判斷。
+  suspendReadback()
   const snap = await engine.readParticles()
   const { W, H } = engine.size
   try {
@@ -199,6 +208,9 @@ function syncRunning () {
   if (want === running) return
   running = want
   engine?.pause(!want)
+  // ⚠️ 一定要誠實回報 —— 量測器靠這個知道「畫面上真的有東西在算」。
+  // 漏報的話它會量到瀏覽器空轉的假順暢讀數。
+  markActive('mobileField', want)
   if (want) {
     // 喚醒那一幀不要算出爆炸的 dt 與捲動速度
     lastTime = 0
@@ -414,17 +426,44 @@ async function init () {
   }
   frame()
 
-  // 量 fps → 需要就減半 → 馬上建目標點。
-  // ⚠️ 順序不能反：setCount 會重配 targets buffer，先建目標點的話會被清空。
-  fpsTimer = setTimeout(async () => {
-    const fps = engine?.getFps ? engine.getFps() : 60
-    if (fps > 0 && fps < FPS_FLOOR) {
-      engine.setCount?.(Math.round(count / 2))
-      // setCount 會整場重生成粒子，等它們離開生成點再配對
-      await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
-    }
-    await buildHold()
-  }, FPS_SAMPLE_MS)
+  // 目標點要等粒子離開生成點再配對，所以慢一拍建。
+  // ⚠️ 這裡原本還夾著一段「量一次 fps，低於 45 就 setCount(count/2)」。已經拿掉，
+  // 換成 useParticleQuality 的持續量測（下面的 onTierChange）。舊那段的問題：
+  //   · engine.getFps() 的 fpsSmoothed 初值硬編 60、EMA α=0.08 要約 40 幀才收斂
+  //     —— 900ms 讀到的有一半以上還是初值，所以它幾乎不會觸發
+  //   · 一次性、單級、無回升：發熱降頻是幾十秒後才發生的，那時早就沒人在量了
+  //   · 直接動 setCount 是最破壞性的手段（見下面 onTierChange 的說明）
+  buildTimer = setTimeout(() => { buildHold() }, BUILD_DELAY_MS)
+
+  // 檔位被量測器降下來 → 套新旋鈕。
+  // ⚠️ setCount 先做：它會重配 targets buffer 並推進 targetsGeneration，
+  //    順序反了目標點會被清空。
+  // ⚠️ 但「不需要」自己重建目標點 —— 現有機制已經完整處理：
+  //    setCount → allocParticleBuffers 把 morphPull/morphGrip 歸零並
+  //    targetsGeneration++ → 下一幀 frame() 的 targetsStale() 抓到世代跳號 →
+  //    invalidateTargets() → REBUILD_SETTLE_MS 後 buildHold()。
+  //    中間那 700ms 因為 ready=false 不寫 targets、不寫 morph，粒子純靠力場
+  //    自由演化，不會被 seek 吸到 (0,0)。
+  // ⚠️ 換檔若落在 canvas 被暫停期間（捲到 PL.II~V），frame() 會直接 return、
+  //    重建不會排 —— 這是對的，捲回來的第一幀 targetsStale() 照樣會抓到。
+  unsubTier = onTierChange(() => {
+    if (!engine) return
+    q = knobs('mobileField')
+
+    engine.setCount?.(countFor(canvas, {
+      density: b.density * q.countScale,
+      max: Math.round(b.max * q.countScale),
+      min: Math.round(b.min * q.countScale),
+    }))
+    noteRespawn()
+
+    engine.setRMax?.(look.physics.rMax * q.rMaxScale)
+    engine.setPointSize?.(look.visual.pointSize * q.pointScale)
+    // 透明度不用在這裡寫 —— frame() 每幀從 opacityNow() 讀 q，改 q 就生效了。
+    // ⚠️ cellSubdivisions / maxDpr 沒有 setter，執行期改不了；表裡那兩欄只在
+    //    pre-flight 就判到低檔時（也就是建引擎當下）才生效。
+    lastOpacity = -1
+  })
 }
 
 onMounted(() => { init() })
@@ -432,7 +471,9 @@ onMounted(() => { init() })
 onBeforeUnmount(() => {
   if (raf) cancelAnimationFrame(raf)
   clearTimeout(resizeTimer)
-  clearTimeout(fpsTimer)
+  clearTimeout(buildTimer)
+  unsubTier?.()
+  markActive('mobileField', false)
   io?.disconnect()
   stopAmbient?.()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)

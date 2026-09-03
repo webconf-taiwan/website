@@ -62,7 +62,10 @@ const { speakerIndex, swapImpl, resetSpeakerBus } = useSameFieldBus()
 // 重新點畫」，非常顯眼。而且這支的閃動迴圈（liveLoop）不像 MobileField 的 frame()
 // 有查 targetsStale()，只有 resize handler 查 —— 真要中途換檔還得補一段手動重建。
 // 靠等就好：這支掛載時使用者還在 hero，canvas 在畫面外、引擎是 paused 的。
-const { tier, whenTierReady, knobs, cpuFallback, showFps } = useParticleQuality()
+const {
+  tier, whenTierReady, knobs, cpuFallback, showFps,
+  markActive, suspend, suspendReadback,
+} = useParticleQuality()
 
 const canvasRef = ref(null)
 
@@ -222,6 +225,9 @@ function explodeXY (base, W, H) {
 // 配對只決定「誰去哪個點」，同物種內就近配對 —— 每顆粒子去「自己顏色」的目標點，
 // 重組出來的配色才會跟原圖一致。
 async function resolveShape (spec) {
+  // ⚠️ readParticles 是 GPU→CPU 的 mapAsync 硬同步，接著 buildSlotTargets 是
+  // O(N log N) 的主執行緒排序。這段的幀時間不代表渲染負載。
+  suspendReadback()
   const snap = await engine.readParticles()
   const { W, H } = engine.size
   const targets = buildImageTargets(spec, snap.length, W, H)
@@ -294,6 +300,8 @@ function syncPause () {
   // 停在哪一幀都是那張臉。
   const running = (live || switching) && !document.hidden && !idle.value
   engine.pause(!running)
+  // ⚠️ 一定要誠實回報 —— 量測器靠這個知道畫面上真的有東西在算。
+  markActive('speakerPortrait', running)
 }
 
 async function goLive () {
@@ -362,6 +370,9 @@ async function swapPortrait (portrait) {
   }
 
   switching = true
+  // 換人是刻意的一次性高成本演出（GSAP tween + 每幀 setColors 重寫整個色盤 buffer
+  // + 兩次大 Float32Array 配置），不該拿來當常態的效能判斷依據。
+  suspend(EXPLODE_MS + REFORM_MS + 800)
   switchTween?.kill()
   syncPause()
   try {
@@ -554,6 +565,7 @@ onMounted(() => { init() })
 
 onBeforeUnmount(() => {
   if (liveRaf) cancelAnimationFrame(liveRaf)
+  markActive('speakerPortrait', false)
   switchTween?.kill()
   io?.disconnect()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)

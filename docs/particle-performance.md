@@ -179,6 +179,11 @@ setTimeout(() => { if (engine.getFps() < 45) engine.setCount(count / 2) }, 900)
 | **用了最破壞性的手段** | `setCount` → `allocParticleBuffers`（`:943-956`）destroy targets buffer、`morphPull/morphGrip` 歸零、`targetsGeneration++`。`living-particle-motion.md:312-318` 把它記為「只在低效能機器才觸發、開發機重現不出來」的陰險 bug |
 | **最貴的那塊沒有** | `SpeakerPortrait` 完全沒有這段 |
 
+> ✅ **已在階段 3 換掉**：`MobileField` 那段一次性減半已移除，改成
+> `useParticleQuality` 的持續量測（連 2 個視窗失敗才降、4 秒冷卻、最多降 2 次）。
+> ⚠️ `Home/ParticleField.vue`（4000ms 版）與 `HomeSame/Field.vue` 的那兩份**還在** ——
+> 那是桌機路徑，本次範圍外。
+
 `getFps()` 還有三個不適合當判準的性質：
 
 - `instFps` 用**未 clamp** 的 real dt（`:1397`）→ 切分頁回來會被一個 5 秒的 dt 拉出假低點
@@ -381,7 +386,7 @@ if (!hdrTexture || hdrTexture.width !== cw || hdrTexture.height !== ch) {   // :
 2. **有 WebGPU 但 GPU 很弱的 iPhone** —— iPhone 11 到 17 差 5~8 倍，Safari 沒有任何 API
    分得出來。**這是最大的盲區**
 
-### 階段 3 —— 執行期監看 + 降檔（🔎 先看階段 0 的數字）
+### ✅ 階段 3 —— 執行期監看 + 降檔
 
 一個共用 rAF 量整頁的交幀節奏（**不用 `engine.getFps()`**，理由見 §4）：
 
@@ -402,6 +407,35 @@ if (!hdrTexture || hdrTexture.width !== cw || hdrTexture.height !== ch) {   // :
 `SpeakerPortrait` **刻意不訂閱換檔**，改成 `await whenTierReady()` 才建引擎 —— 換檔要走 `setCount`，
 在人像上那是「整張臉重新點畫」。順帶解掉一個現有的隱形開銷：它建完引擎後 `config.paused` 預設 false，
 要跑完 8 幀暖機 + 一次 `readParticles` 才 `syncPause()`，那十幾幀剛好疊在 `MobileField` 開場最忙的時刻。
+
+#### 實測（Playwright 390×844，注入每幀 45ms 的忙碌迴圈）
+
+**健康路徑（無負載，12 個視窗）**：p50 16.7ms、p95 17.3~17.6ms、vsync 正確辨識為
+16.67（60Hz）、drop 0、每個視窗 90 個樣本。**tier 全程維持 3、failStreak 0、降檔 0。**
+—— 跑得順的裝置不會被誤降，這是這個機制最重要的驗收條件。
+
+**負載路徑**：
+
+| 時間 | p50 | failStreak | 動作 | 粒子數 |
+|---|---|---|---|---|
+| 注入負載 | 16.7 → 50 | 0 → 1 | **不動**（要連 2 個視窗） | 8525 |
+| 下一個視窗 | 50 | 2 | **t3 → t2** | 8525 → **6089** |
+| 之後 ~5 秒 | 50 | 0 | 冷卻中，`windows` 不增加 | 6089 |
+| 冷卻結束 + 2 視窗 | 50 | 2 | **t2 → t1** | 6089 → **3897** |
+| 再撐下去 | 50 | — | **`stop()`**（達 MAX_DEMOTIONS） | 3897 |
+| **移除負載** | 回到 16.7 | — | **不升回去** | 3897 |
+
+`FAIL_STREAK`、`COOLDOWN_MS`、`MAX_DEMOTIONS`、`stop()`、以及「刻意不升檔」
+全部照設計運作。
+
+**⚠️ 最關鍵的正確性條件：`markActive` 的假順暢防護。**
+捲到 PL.IV（兩張 canvas 都離屏 → 都 `pause`），持續動滑鼠 6 秒（所以不是 idle）：
+`active: []`、兩顆引擎 `paused: true`、**累積視窗數 0**。
+沒有這條的話，量測器會在瀏覽器空轉時讀到「超級順」，然後（在未來有升檔時）錯誤地升檔。
+
+**回歸**：`?tier=1` 強制時 `monitoring: false`（不啟動量測）；桌機 `/index-same`
+仍是 1 張 canvas / 50000 顆、`__pq` 根本沒被建立（Field.vue 沒接這套）；
+平板 t3 / 17836 顆。全部 0 console error / 0 page error。
 
 ### 階段 4 —— 執行期 DPR（🔎 先做 §7 那個 5 分鐘驗證）
 
