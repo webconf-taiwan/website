@@ -56,9 +56,16 @@ export function useParticleBudget () {
    */
   function countFor (el, { density, max, min = 8000 }) {
     const rect = el?.getBoundingClientRect?.()
-    // 拿不到尺寸就退回視窗大小，至少不會算出 0
-    const w = Math.max(1, Math.round(rect?.width || window.innerWidth))
-    const h = Math.max(1, Math.round(rect?.height || window.innerHeight))
+    const w = Math.round(rect?.width || 0)
+    const h = Math.round(rect?.height || 0)
+    // ⚠️ 量不到尺寸就退回 min，不要退回視窗大小。
+    // 這裡以前是 `rect?.width || window.innerWidth` —— 方向反了，違反這個 helper
+    // 自己的契約（「只會減、不會加」）。小 canvas 遇到佈局競態時會拿到「整個視窗」
+    // 的預算再被 max 夾住，也就是拿到最壞情況：PL.III 的 342² 觀景區會算成
+    // 390×844×0.075 = 24685 → 夾到 max 13000，是正確值 8772 的 1.48 倍點數
+    // （成本 ∝ N²，等於 2.2 倍算力），而且完全靜默。
+    // 退回 min 則最壞情況是「這一次開得比較稀」，下一次 resize 就會修正回來。
+    if (!w || !h) return min
     return Math.max(min, Math.min(max, Math.round(w * h * density)))
   }
 

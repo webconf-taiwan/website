@@ -42,6 +42,13 @@ const PEOPLE = [
 const NEBULA_FORCE = 0.3          // 擴散時的力度（倒帶時會暫時歸零）
 const REWIND_MS = 2200            // 倒帶動畫時長
 
+// ⚠️ 這一頁的三顆引擎原本完全沒傳 maxDpr，等於吃引擎預設的 2 ——
+// 手機上就是 DPR 2，而 HDR target 是 rgba16float、circle 與 compose 兩個 pass
+// 各要填一次全螢幕，成本是 DPR 的平方（1.25 相對 2 省 2.56 倍填充）。
+// 這一頁的粒子數也是硬寫的、沒走 countFor —— 那件事還沒處理，見
+// docs/particle-performance.md §2-5。
+const { maxDpr } = useParticleBudget()
+
 function loadScript(src) {
   return new Promise((resolve, reject) => {
     const existing = document.querySelector(`script[src="${src}"]`)
@@ -321,7 +328,12 @@ async function initSticky() {
     forceFactor: 0,                 // 無演化力：位置完全由 scrub 插值決定
     friction: 0.4,
     minR: 4,
-    rMax: 55,
+    // ⚠️ 20 而不是 55 —— 這顆引擎的 forceFactor 是 0，力場整個關掉。
+    // rMax 是「互動力場的作用半徑」，決定空間雜湊的搜尋窗大小（成本 ∝ rMax²），
+    // 所以 computeForces pass 每幀掃完 25 個格子、算完所有鄰居，結果全部乘 0。
+    // 純粹的浪費：55 → 20 是算力剩 0.13 倍，畫面完全不變。
+    // 見 docs/particle-performance.md §1 的成本模型。
+    rMax: 20,
     repel: 1.0,
     simSpeed: 0.3,
     cameraZoom: 1,
@@ -329,6 +341,10 @@ async function initSticky() {
     particleOpacity: 1,
     showGlow: false,
     cellSubdivisions: 2,
+    // ⚠️ 沒給的話吃引擎預設的 2（particle-life-gpu.js 的 `opts.maxDpr ?? 2`），
+    // 手機上就是 DPR 2 —— 而 HDR target 是 rgba16float、circle 與 compose 兩個
+    // pass 各要填一次全螢幕，成本是 DPR 的平方。1.25 相對 2 省 2.56 倍填充。
+    maxDpr: maxDpr(),
     bgFade: 'rgba(0,0,0,0.18)',
   })
   if (!backend.value) backend.value = stickyEngine.backend
@@ -407,6 +423,7 @@ async function initDemo() {
     particleOpacity: 1,
     showGlow: false,
     cellSubdivisions: 2,
+    maxDpr: maxDpr(),
     bgFade: 'rgba(10,10,12,0.18)',
   })
   backend.value = engine.backend
@@ -587,7 +604,7 @@ async function mountCardEngine(count) {
     forceFactor: NEBULA_FORCE,
     friction: 0.4, minR: 4, rMax: 55, repel: 1.0,
     simSpeed: 0.3, cameraZoom: 1, pointSize: 0.9,
-    particleOpacity: 1, showGlow: false, cellSubdivisions: 2,
+    particleOpacity: 1, showGlow: false, cellSubdivisions: 2, maxDpr: maxDpr(),
     bgFade: 'rgba(10,10,12,0.18)',
   })
   if (!backend.value) backend.value = cardEngine.backend
