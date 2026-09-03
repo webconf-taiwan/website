@@ -18,7 +18,7 @@
 const activeStage = ref('background')
 
 // --- 閒置暫停 --------------------------------------------------------------
-// 使用者停止操作超過 IDLE_STOP_MS 就把所有粒子場停掉。
+// 使用者停止操作超過一段時間就把所有粒子場停掉（門檻見下面 idleStopMs）。
 // ⚠️ 這不是可有可無的優化：幾萬顆粒子的 compute pass 全速跑會讓筆電發燙、耗電，
 // 而使用者沒在看的時候完全沒有理由繼續算。
 //
@@ -28,7 +28,35 @@ const activeStage = ref('background')
 //
 // 除了滑鼠移動，捲動與觸控也算 —— 否則用觸控板捲頁時（不會發 pointermove）
 // 場域會直接定格，看起來像壞掉。
-const IDLE_STOP_MS = 5000
+//
+// ─── ⚠️ 觸控裝置要用長很多的門檻 ──────────────────────────────────────────
+// 5 秒這個值是照桌機的行為訂的：滑鼠總會抖一下，所以「連續 5 秒完全沒有座標變化」
+// 確實代表使用者離開了。**但這個推論在手機上是錯的。**
+//
+// 手機使用者「停下來看著 hero 五秒」是完全正常的行為 —— 沒有滑鼠、不需要捲動、
+// 不會產生任何事件。實測（390×844，載入後完全不碰螢幕）：
+//   3 秒    idle false / paused false
+//   6.5 秒  idle true  / paused true   ← 動態直接停住
+//   11.5 秒 idle true  / paused true
+//   碰一下  idle false / paused false  ← 又活過來
+// 有使用者回報「手機打開動態會直接停住」，就是這個。跟裝置效能完全無關。
+//
+// 手機上真正可靠的「使用者離開了」訊號是 visibilitychange（切 App、鎖螢幕），
+// 那個各元件都已經接了。所以觸控裝置這條只留著當「電池保底」，不當在場判斷。
+//
+// ⚠️ 用 (pointer: fine) 而不是視窗寬度：這裡問的是「有沒有一個會一直抖的指標
+// 裝置」，不是「螢幕多大」。觸控筆電（寬螢幕但主要用觸控）也該走長門檻。
+const IDLE_STOP_DESKTOP_MS = 5000
+const IDLE_STOP_TOUCH_MS = 60000
+
+function idleStopMs () {
+  if (typeof window === 'undefined') return IDLE_STOP_DESKTOP_MS
+
+  return window.matchMedia?.('(pointer: fine)').matches
+    ? IDLE_STOP_DESKTOP_MS
+    : IDLE_STOP_TOUCH_MS
+}
+
 const idle = ref(false)
 
 let idleTimer = 0
@@ -39,7 +67,9 @@ let lastY = -1
 function poke () {
   if (idle.value) idle.value = false
   clearTimeout(idleTimer)
-  idleTimer = setTimeout(() => { idle.value = true }, IDLE_STOP_MS)
+  // ⚠️ 每次都重新問一次而不是在模組載入時算好：使用者可能中途插上滑鼠、
+  // 或把可翻轉筆電從平板模式切回筆電模式，(pointer: fine) 會跟著變。
+  idleTimer = setTimeout(() => { idle.value = true }, idleStopMs())
 }
 
 // ⚠️ 座標沒變的 pointermove 不算活動。

@@ -30,6 +30,12 @@ const { countFor, maxDpr } = useParticleBudget()
 const { buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張滿版 canvas，不需要 claim/release。
 const { idle } = useParticleStage()
+// 裝置效能檔位。⚠️ 只會往下鎖，沒有負面訊號時 t3 就是「今天線上的樣子」。
+// 各旋鈕的值與理由在 app/utils/particleTiers.js。
+const {
+  tier, knobs, cpuFallback, showFps,
+  onTierChange, markActive, suspendReadback, noteRespawn,
+} = useParticleQuality()
 
 const canvasRef = ref(null)
 const backend = ref('')
@@ -50,13 +56,11 @@ const OUTRO_OPACITY_RATIO = 0.60 / 0.55
 // COUNT_DENSITY 註解：那邊整條時間軸共用同一組粒子，點數若跟著 hero 效果走，
 // 同一張人像會忽濃忽淡。這裡只有自由場，各組效果本來就該用自己的密度。
 //
-// 再乘一個手機折扣。理由（不是實測，是推算 —— 有實機再回來修這個數字）：
-// useParticleBudget 的密度換算讓「每顆粒子要掃的鄰居數」固定，所以總成本正比於 N，
-// 而 N 已經跟著面積縮了（390×844 約是 1440×900 的 1/4）。但手機 GPU 與桌機的差距
-// 通常不只 4 倍，所以再留一段餘裕。
-// ⚠️ 真的要調的話，先看 window.__mobileDbg() 的 count 與 engine.getFps()，
-// 不要憑感覺 —— 下面 FPS_SAMPLE_MS 那段的自適應減半是保底，不是替代品。
-const MOBILE_COUNT_SCALE = 0.7
+// 再乘一個「手機折扣」，現在由檔位表提供（q.countScale）。
+// t3 的 0.70 就是原本寫在這裡的 MOBILE_COUNT_SCALE —— 沒有負面訊號時行為完全不變。
+// 那個 0.70 的由來（推算不是實測）與各檔的值都搬到 app/utils/particleTiers.js 了。
+// ⚠️ 要調的話先看 window.__mobileDbg() 的 count 與 window.__pq() 的檔位判斷依據，
+// 不要憑感覺。
 
 // --- 模擬速度（與 Home/ParticleField 同一套）--------------------------------
 const SIM_SPEED_INTRO = 1.5
@@ -69,23 +73,28 @@ const SCROLL_CALM = 0.6
 
 // --- 維持開場構圖 ----------------------------------------------------------
 const HOLD_DRIFT_AMP = 22             // 每顆粒子的游走半徑（模擬 px）
-const HOLD_DRIFT_MS = 2400            // 多久換一組新的隨機偏移
+// 多久換一組新的隨機偏移 → 由檔位表提供（q.driftMs）。
+// ⚠️ 低檔位換得慢一點不是為了省算力（那只是一次 setTargets 上傳），是視覺理由：
+// 粒子少的時候換太勤會看起來在閃，而不是在流動。
 const HOLD_BREATHE_MS = 7000          // 握力走完「鬆 → 緊 → 鬆」一輪
 const HOLD_BREATHE_FLOOR = 0.18       // 最鬆的時候還留多少握力
 
 // 目標點失效（視窗轉向、fps 自適應觸發 setCount）後多久重建。
 // 兼作 resize 的 debounce —— 手機轉向會連續發好幾個 resize。
 const REBUILD_SETTLE_MS = 700
-// 開場多久之後量 fps。⚠️ 要在建目標點「之前」量並且先 setCount：setCount 會重配
-// targets buffer，順序反了目標點會被清空（桌機版 FPS_SAMPLE_MS 有完整說明）。
-const FPS_SAMPLE_MS = 900
-const FPS_FLOOR = 45
+// 開場多久之後建目標點。
+// ⚠️ 這個值直接決定「進站第一趟往下捲會不會有反應」，不是效能微調 ——
+// ready（= 目標點建好）之前 frame() 不會收攏。越短越好，但要讓 setCount 重生的
+// 粒子先離開生成點。900ms 是「粒子散開了」與「使用者還沒捲下去」的交界。
+const BUILD_DELAY_MS = 900
 
 const TAU = Math.PI * 2
 // --------------------------------------------------------------------------
 
 // ⚠️ 用 let：frame() 每幀讀它，不需要響應式的開銷。
 let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
+// 目前檔位的旋鈕。init() 取一次；這一階段還沒有執行期換檔，所以之後不會變。
+let q = knobs('mobileField')
 
 let engine = null
 let stopAmbient = null
@@ -94,7 +103,8 @@ let io = null
 let onVisibility = null
 let onResize = null
 let resizeTimer = 0
-let fpsTimer = 0
+let buildTimer = 0
+let unsubTier = null
 let reducedMotion = false
 
 // 目前有哪些區間在畫面上。two-bit 的狀態，決定「跑不跑」與「用哪一組取景」。
@@ -136,10 +146,15 @@ function jitterInto (out, base, amp) {
 function zoomNow () {
   return inRegion[0] ? look.camera.zoom : look.camera.zoom * OUTRO_ZOOM_RATIO
 }
+// ⚠️ 這裡一定要把 q.opacityScale 乘進去。frame() 每幀都會呼叫這個函式再
+// setParticleOpacity，所以「只在 makeEngine 時給一次」會被下一幀直接洗掉 ——
+// 低檔位的亮度補償等於沒做（實測過：t0 的 opacity 仍然停在 look 的原值）。
 function opacityNow () {
-  return inRegion[0]
+  const base = inRegion[0]
     ? look.visual.heroOpacity
-    : Math.min(1, look.visual.heroOpacity * OUTRO_OPACITY_RATIO)
+    : look.visual.heroOpacity * OUTRO_OPACITY_RATIO
+
+  return Math.min(1, base * q.opacityScale)
 }
 
 // --- 目標點 ----------------------------------------------------------------
@@ -149,6 +164,10 @@ function opacityNow () {
 // 會重排陣列，array index 靠不住，只有生成時指定的 slot 是穩定身分）。
 async function buildHold () {
   if (!engine?.readParticles || !engine.setTargets) return false
+  // ⚠️ readParticles 是 GPU→CPU 的 mapAsync 硬同步，接著 buildSlotTargets 還有
+  // 兩組帶閉包比較器的 sort（O(N log N)，8500 顆下是幾十毫秒的主執行緒工作）。
+  // 這段的幀時間不代表渲染負載，不能拿去做檔位判斷。
+  suspendReadback()
   const snap = await engine.readParticles()
   const { W, H } = engine.size
   try {
@@ -189,6 +208,9 @@ function syncRunning () {
   if (want === running) return
   running = want
   engine?.pause(!want)
+  // ⚠️ 一定要誠實回報 —— 量測器靠這個知道「畫面上真的有東西在算」。
+  // 漏報的話它會量到瀏覽器空轉的假順暢讀數。
+  markActive('mobileField', want)
   if (want) {
     // 喚醒那一幀不要算出爆炸的 dt 與捲動速度
     lastTime = 0
@@ -265,11 +287,11 @@ function frame (now) {
   if (ready && targetsStale()) invalidateTargets()
   if (!ready || !holdBase) return
 
-  // 游走：每 HOLD_DRIFT_MS 換一組新的隨機偏移。
+  // 游走：每 q.driftMs 換一組新的隨機偏移。
   // ⚠️ 兩個目標槽都塞同一組（blend 在這一版永遠是 0，沒有第二個形狀要混）——
   // 這樣 setMorph 的 blend 參數怎麼給都不影響結果，少一個會漂移的狀態。
   if (!reducedMotion) {
-    const cycle = Math.floor(t / HOLD_DRIFT_MS)
+    const cycle = Math.floor(t / q.driftMs)
     if (cycle !== driftCycle) {
       driftCycle = cycle
       const jit = jitterInto(holdJit, holdBase, HOLD_DRIFT_AMP)
@@ -304,11 +326,18 @@ async function init () {
 
   const hero = window.PLPalettes.PALETTES[look.palette]
   const b = look.budget
-  const count = countFor(canvas, {
-    density: b.density * MOBILE_COUNT_SCALE,
-    max: Math.round(b.max * MOBILE_COUNT_SCALE),
-    min: Math.round(b.min * MOBILE_COUNT_SCALE),
+  q = knobs('mobileField')
+  let count = countFor(canvas, {
+    density: b.density * q.countScale,
+    max: Math.round(b.max * q.countScale),
+    min: Math.round(b.min * q.countScale),
   })
+  // ⚠️ 沒有 WebGPU 的話走的是完全不同的引擎（particle-life.js，CPU 後端），
+  // 成本結構也完全不同 —— 空間雜湊與繪圖都在 JS 主執行緒上、canvas2d 逐顆
+  // drawImage。它自己的預設點數是 1400，而我們一直照樣傳 8000+ 顆進去。
+  // 這不是「比較慢」，是量級錯誤，光靠檔位的 countScale 補不回來。
+  // 見 particleTiers.js 的 CPU_FALLBACK_MAX_COUNT。
+  if (cpuFallback.value) count = Math.min(count, CPU_FALLBACK_MAX_COUNT)
 
   engine = await window.makeEngine(canvas, {
     species: look.rules.species,
@@ -321,24 +350,38 @@ async function init () {
     friction: look.physics.friction,
     repel: look.physics.repel,
     minR: look.physics.minR,
-    rMax: look.physics.rMax,
+    rMax: look.physics.rMax * q.rMaxScale,
     simSpeed: SIM_SPEED_INTRO,
     cameraZoom: look.camera.zoom,
-    pointSize: look.visual.pointSize,
-    particleOpacity: look.visual.heroOpacity,
+    // ⚠️ pointSize / opacity 隨檔位放大不是裝飾，是必須的：粒子少了還用同樣的
+    // 點大小，畫面會變暗變薄，看起來像「壞了」而不是「刻意的稀」。
+    // 要維持感知亮度就要維持總覆蓋面積 ≈ N × pointSize²。見 particleTiers.js。
+    pointSize: look.visual.pointSize * q.pointScale,
+    particleOpacity: Math.min(1, look.visual.heroOpacity * q.opacityScale),
     // 光暈一律關：額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比，
     // 而這支元件只會在 < 1024px 掛載。
     showGlow: false,
     glowSize: look.glow.glowSize,
     glowIntensity: look.glow.glowIntensity,
     glowSteepness: look.glow.glowSteepness,
-    cellSubdivisions: 2,
-    maxDpr: maxDpr(),
+    cellSubdivisions: q.cellSub,
+    // ⚠️ 取 min 而不是直接用檔位的值 —— 契約是「只會減、不會加」。
+    // maxDpr() 本身已經分了手機 1.25 / 桌機 1.5（斷點 768），檔位只能再往下壓。
+    // 直接用 q.dprCap 會讓 768~1023 的平板從 1.5 掉到 1.25，那是沒必要的畫質損失。
+    maxDpr: Math.min(maxDpr(), q.dprCap),
   })
   backend.value = engine.backend
+  if (showFps()) engine.setShowFps?.(true)
   if (import.meta.dev) window.__mobileField = engine
 
-  if (!reducedMotion) stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
+  // ⚠️ ambient 不是效能旋鈕（純 setTimeout 排程，每 1.2~18 秒發一次 disturb，
+  // 沒有 per-frame 成本）。低檔位調低 gain 是視覺理由：粒子少的時候一記大脈衝
+  // 會把整片打散得很難看。
+  // ⚠️ 但不能關掉 —— particle-ambient.js 檔頭第一句就是警告：沒有擾動的話
+  // 場幾十秒後會收斂成靜態圖。
+  if (!reducedMotion) {
+    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient * q.ambientGain })
+  }
 
   // --- 區間偵測 -------------------------------------------------------------
   // ⚠️ 要在第一幀之前掛好，否則進站時 running 是 false、frame() 直接空轉，
@@ -369,7 +412,10 @@ async function init () {
   if (import.meta.dev) {
     window.__mobileDbg = () => ({
       look: look.id,
+      tier: tier.value,
+      cpuFallback: cpuFallback.value,
       count: engine.config.count,
+      rMax: engine.config.rMax,
       backend: engine.backend,
       inRegion: [...inRegion],
       running,
@@ -380,17 +426,44 @@ async function init () {
   }
   frame()
 
-  // 量 fps → 需要就減半 → 馬上建目標點。
-  // ⚠️ 順序不能反：setCount 會重配 targets buffer，先建目標點的話會被清空。
-  fpsTimer = setTimeout(async () => {
-    const fps = engine?.getFps ? engine.getFps() : 60
-    if (fps > 0 && fps < FPS_FLOOR) {
-      engine.setCount?.(Math.round(count / 2))
-      // setCount 會整場重生成粒子，等它們離開生成點再配對
-      await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
-    }
-    await buildHold()
-  }, FPS_SAMPLE_MS)
+  // 目標點要等粒子離開生成點再配對，所以慢一拍建。
+  // ⚠️ 這裡原本還夾著一段「量一次 fps，低於 45 就 setCount(count/2)」。已經拿掉，
+  // 換成 useParticleQuality 的持續量測（下面的 onTierChange）。舊那段的問題：
+  //   · engine.getFps() 的 fpsSmoothed 初值硬編 60、EMA α=0.08 要約 40 幀才收斂
+  //     —— 900ms 讀到的有一半以上還是初值，所以它幾乎不會觸發
+  //   · 一次性、單級、無回升：發熱降頻是幾十秒後才發生的，那時早就沒人在量了
+  //   · 直接動 setCount 是最破壞性的手段（見下面 onTierChange 的說明）
+  buildTimer = setTimeout(() => { buildHold() }, BUILD_DELAY_MS)
+
+  // 檔位被量測器降下來 → 套新旋鈕。
+  // ⚠️ setCount 先做：它會重配 targets buffer 並推進 targetsGeneration，
+  //    順序反了目標點會被清空。
+  // ⚠️ 但「不需要」自己重建目標點 —— 現有機制已經完整處理：
+  //    setCount → allocParticleBuffers 把 morphPull/morphGrip 歸零並
+  //    targetsGeneration++ → 下一幀 frame() 的 targetsStale() 抓到世代跳號 →
+  //    invalidateTargets() → REBUILD_SETTLE_MS 後 buildHold()。
+  //    中間那 700ms 因為 ready=false 不寫 targets、不寫 morph，粒子純靠力場
+  //    自由演化，不會被 seek 吸到 (0,0)。
+  // ⚠️ 換檔若落在 canvas 被暫停期間（捲到 PL.II~V），frame() 會直接 return、
+  //    重建不會排 —— 這是對的，捲回來的第一幀 targetsStale() 照樣會抓到。
+  unsubTier = onTierChange(() => {
+    if (!engine) return
+    q = knobs('mobileField')
+
+    engine.setCount?.(countFor(canvas, {
+      density: b.density * q.countScale,
+      max: Math.round(b.max * q.countScale),
+      min: Math.round(b.min * q.countScale),
+    }))
+    noteRespawn()
+
+    engine.setRMax?.(look.physics.rMax * q.rMaxScale)
+    engine.setPointSize?.(look.visual.pointSize * q.pointScale)
+    // 透明度不用在這裡寫 —— frame() 每幀從 opacityNow() 讀 q，改 q 就生效了。
+    // ⚠️ cellSubdivisions / maxDpr 沒有 setter，執行期改不了；表裡那兩欄只在
+    //    pre-flight 就判到低檔時（也就是建引擎當下）才生效。
+    lastOpacity = -1
+  })
 }
 
 onMounted(() => { init() })
@@ -398,7 +471,9 @@ onMounted(() => { init() })
 onBeforeUnmount(() => {
   if (raf) cancelAnimationFrame(raf)
   clearTimeout(resizeTimer)
-  clearTimeout(fpsTimer)
+  clearTimeout(buildTimer)
+  unsubTier?.()
+  markActive('mobileField', false)
   io?.disconnect()
   stopAmbient?.()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)

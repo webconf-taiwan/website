@@ -56,21 +56,29 @@ const { countFor, maxDpr } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { idle } = useParticleStage()
 const { speakerIndex, swapImpl, resetSpeakerBus } = useSameFieldBus()
+// 裝置效能檔位。
+// ⚠️ 這支「不」在執行期換檔，而是 await 到檔位定案才建引擎 —— 換檔要走 setCount，
+// 而 setCount 會 respawn 整場粒子並推進 targetsGeneration，在人像上那是「整張臉
+// 重新點畫」，非常顯眼。而且這支的閃動迴圈（liveLoop）不像 MobileField 的 frame()
+// 有查 targetsStale()，只有 resize handler 查 —— 真要中途換檔還得補一段手動重建。
+// 靠等就好：這支掛載時使用者還在 hero，canvas 在畫面外、引擎是 paused 的。
+const {
+  tier, whenTierReady, knobs, cpuFallback, showFps,
+  markActive, suspend, suspendReadback,
+} = useParticleQuality()
 
 const canvasRef = ref(null)
 
 // --- 可調參數 --------------------------------------------------------------
-// ⚠️ 每張圖都要同一個取樣點數，否則換人配對會有一撮粒子配不到對。
-// 桌機那張是 32000；這裡的 canvas 面積只有它的 1/5 左右，取樣多也攤不開。
-const SAMPLES = 16000
-// 引擎點數。density 是「顆 / canvas CSS px²」——
-// 桌機 SpeakerField 是 32000 顆攤在 547px 的人像上（bbox 約 0.107 顆/px²），
-// 這裡 canvas 幾乎就是人像的外框，所以密度對齊那個數字才會一樣清楚。
-// ⚠️ max 是給平板的（觀景區被 max-w-[420px] 夾住 → 420² × 0.075 ≈ 13200），
-// min 是給極窄手機的（320px 的觀景區只算得出 7680，再往下五官的密度就不夠了）。
-const COUNT_DENSITY = 0.075
-const COUNT_MAX = 13000
-const COUNT_MIN = 7000
+// ⚠️ 取樣點數、密度、rMax、pointSize、閃動幅度與週期都由檔位表提供（見
+// app/utils/particleTiers.js 的 speakerPortrait），滿檔 t3 的值就是今天線上的樣子。
+// 那張表的檔頭記著這幾個數字為什麼是這樣（特別是「效能不從 density 買、從 rMax 買」
+// 那一段），改之前先讀。
+//
+// ⚠️ 「每張圖都要同一個取樣點數」這條規則仍然成立 —— 因為檔位在第一次
+// PLImage.prepare() 之前就定案且此後不變，specs Map 裡所有 spec 必然同數。
+let q = null
+
 const SPECIES = 7           // 色盤長度，必須與 species 一致（morph 中不能改 species）
 // 點雲佔 canvas 短邊的比例。
 // ⚠️ canvas 是「整塊正方形觀景區」，不是框線那一格 —— 框線只佔它的 62%（見
@@ -104,8 +112,7 @@ const SIM_SPEED = 0.45
 // 寬）會被抹掉。
 // ⚠️ 週期是照設計師 demo 影片量出來的（相鄰幀差異 0.5 秒就飽和 = 整片顆粒約 0.5 秒
 // 換過一輪），別憑感覺調 —— 運動速率正比於 AMP / PERIOD。
-const SHIMMER_AMP = 1.5
-const SHIMMER_PERIOD_MS = 1000
+// 值在檔位表裡（q.shimmerAmp / q.shimmerMs），t3 就是上面說的 1.5 / 1000ms。
 
 // ⚠️ 不要調回 0.9 以上。渲染是 HDR 加法混色，臉的膚色是整張圖裡面積最大、密度最高
 // 的一塊 —— 高透明度會讓它整片過曝糊成一坨橘色，眼窩、眼鏡、鼻樑這些暗部細節全被
@@ -167,7 +174,7 @@ async function getSpec (portrait) {
   if (!portrait) return null
   if (specs.has(portrait)) return specs.get(portrait)
   const spec = await window.PLImage.prepare(portrait, {
-    count: SAMPLES,
+    count: q.samples,
     colors: SPECIES,
     fit: FIT,
   })
@@ -218,6 +225,9 @@ function explodeXY (base, W, H) {
 // 配對只決定「誰去哪個點」，同物種內就近配對 —— 每顆粒子去「自己顏色」的目標點，
 // 重組出來的配色才會跟原圖一致。
 async function resolveShape (spec) {
+  // ⚠️ readParticles 是 GPU→CPU 的 mapAsync 硬同步，接著 buildSlotTargets 是
+  // O(N log N) 的主執行緒排序。這段的幀時間不代表渲染負載。
+  suspendReadback()
   const snap = await engine.readParticles()
   const { W, H } = engine.size
   const targets = buildImageTargets(spec, snap.length, W, H)
@@ -232,7 +242,7 @@ async function buildTargets (spec) {
   if (!engine?.readParticles || !engine.setTargets || !spec) return false
   const { shape, W, H } = await resolveShape(spec)
   shapeXY = shape
-  const jit = reducedMotion ? shape : jitterXY(shape, SHIMMER_AMP)
+  const jit = reducedMotion ? shape : jitterXY(shape, q.shimmerAmp)
   engine.setTargets(jit, jit)
   targetsGen = engine.targetsGeneration
   targetsW = W
@@ -250,7 +260,7 @@ function targetsStale () {
 }
 
 // --- 閃動迴圈 --------------------------------------------------------------
-// 這個迴圈唯一的工作是「每 SHIMMER_PERIOD_MS 換一組目標點」。力場與透明度都是
+// 這個迴圈唯一的工作是「每 q.shimmerMs 換一組目標點」。力場與透明度都是
 // 常數（見檔頭），不需要逐幀寫。
 //
 // ⚠️ 離場／閒置就整個收工，不是只靠 engine.pause() —— 這裡每秒會配一份大的
@@ -269,10 +279,10 @@ function liveLoop (now) {
   if (switching || reducedMotion || !targetsReady || !shapeXY) return
 
   const t = now || performance.now()
-  const cycle = Math.floor((t - shimmerT0) / SHIMMER_PERIOD_MS)
+  const cycle = Math.floor((t - shimmerT0) / q.shimmerMs)
   if (cycle !== shimmerCycle) {
     shimmerCycle = cycle
-    const jit = jitterXY(shapeXY, SHIMMER_AMP)
+    const jit = jitterXY(shapeXY, q.shimmerAmp)
     engine.setTargets(jit, jit)
   }
 }
@@ -290,6 +300,8 @@ function syncPause () {
   // 停在哪一幀都是那張臉。
   const running = (live || switching) && !document.hidden && !idle.value
   engine.pause(!running)
+  // ⚠️ 一定要誠實回報 —— 量測器靠這個知道畫面上真的有東西在算。
+  markActive('speakerPortrait', running)
 }
 
 async function goLive () {
@@ -314,7 +326,7 @@ async function goLive () {
 function goIdle () {
   if (!live) return
   live = false
-  // 目標點收回沒抖過的原版：定格那一幀最多只差 SHIMMER_AMP（1.5px），
+  // 目標點收回沒抖過的原版：定格那一幀最多只差一個閃動幅度（滿檔 1.5px），
   // 而下次進場時是從乾淨的形狀開始追，不會沿用上一輪的隨機偏移。
   if (shapeXY) engine?.setTargets?.(shapeXY, shapeXY)
   blend = 1
@@ -358,6 +370,9 @@ async function swapPortrait (portrait) {
   }
 
   switching = true
+  // 換人是刻意的一次性高成本演出（GSAP tween + 每幀 setColors 重寫整個色盤 buffer
+  // + 兩次大 Float32Array 配置），不該拿來當常態的效能判斷依據。
+  suspend(EXPLODE_MS + REFORM_MS + 800)
   switchTween?.kill()
   syncPause()
   try {
@@ -390,7 +405,7 @@ async function swapPortrait (portrait) {
     blend = 1
     // 交回給閃動：以新人像為基準重新掛 spread/shape
     shapeXY = shape
-    const jit = reducedMotion ? shape : jitterXY(shape, SHIMMER_AMP)
+    const jit = reducedMotion ? shape : jitterXY(shape, q.shimmerAmp)
     engine.setTargets(jit, jit)
     shimmerT0 = performance.now()
     shimmerCycle = -1
@@ -413,13 +428,25 @@ async function init () {
   registerNebula()
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+  // ⚠️ 必須在第一次 getSpec() 之前 —— q.samples 決定取樣點數，而那要全圖一致。
+  // 目前 pre-flight 是同步就緒的，所以這一行實際上不會等；等執行期量測上線之後
+  // 它才會真的等一個量測視窗，而那正好也解掉「開場兩顆引擎同時全速」——
+  // 這支建完引擎後 config.paused 預設是 false，要跑完 8 幀暖機 + 一次
+  // readParticles 才 syncPause()，那十幾幀剛好疊在 MobileField 開場最忙的時刻。
+  await whenTierReady()
+  q = knobs('speakerPortrait')
+
   const spec = await getSpec(portrait)
   if (!spec) return
   shownPortrait = portrait
 
+  let count = countFor(canvas, { density: q.density, max: q.countMax, min: q.countMin })
+  // ⚠️ 沒有 WebGPU 就是完全不同的引擎（CPU 後端），見 particleTiers.js。
+  if (cpuFallback.value) count = Math.min(count, CPU_FALLBACK_MAX_COUNT)
+
   engine = await window.makeEngine(canvas, {
     species: SPECIES,
-    count: countFor(canvas, { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN }),
+    count,
     palette: spec.palette,
     seedPattern: spec.pattern,      // 開場就直接長在人像上，不需要任何進場動畫
     preset: 'nebula',
@@ -428,25 +455,60 @@ async function init () {
     forceFactor: LOCK_FORCE,
     friction: 0.4,
     minR: 4,
-    rMax: 55,
+    // ⚠️ 30，不是抄桌機那套的 55。這是這一區最大的單點效能收益，理由要一起看：
+    //
+    // 引擎的力場計算是空間雜湊，每顆粒子掃自己周圍 (2·cellSub+1)² 個格子，
+    // 格子邊長 = max(8, rMax / cellSub) —— 所以搜尋成本 ∝ rMax²。
+    // 在這張 342² 的觀景區上：
+    //   rMax 55 → cellSize 27.5 → 搜尋窗 137.5²，佔整張畫布的 16.2%，
+    //             每顆粒子每幀跟全場約 1420 顆算力
+    //   rMax 30 → cellSize 15   → 搜尋窗 75²，佔 4.8%，約 420 顆 → 算力剩 0.30 倍
+    //
+    // 為什麼砍得下去而且畫面不變：rMax 是「互動力場的作用半徑」，而這一區的
+    // forceFactor 全程鎖在 LOCK_FORCE（0.1 = 引擎下限，見上面那段長註解）——
+    // 力場本來就被刻意停用、畫面完全由 seek 主導。我們一直在為一個關掉的東西
+    // 付全額搜尋成本。密度、平均粒距、五官清晰度都不受影響。
+    //
+    // ⚠️ 不要改成從 density 買效能：成本 ∝ d²，但感知細節只 ∝ √d（點畫的解析度
+    // 就是平均粒距 = 1/√d）。這張人像在模擬空間只有約 294px，眼睛與眼鏡框只剩
+    // 10~19px 寬 —— d = 0.075 的粒距 3.65px 已經卡在「約 3 顆粒子橫跨一條眼鏡框」
+    // 那條線上。砍 density 就是拿眼鏡框換算力。
+    //
+    // ⚠️ 唯一的風險是 nebula 那組矩陣負責的「氣體感」（緩慢環流）會變弱。
+    // 完整的取捨與量測方式見 docs/particle-performance.md §3。
+    // 低檔位會再往下（見 particleTiers.js 的 speakerPortrait）。
+    rMax: q.rMax,
     repel: 1.0,
     simSpeed: SIM_SPEED,
     cameraZoom: 1,
-    pointSize: 0.9,
+    // ⚠️ 低檔位把點放大不是裝飾：粒子少了還用同樣點大小，畫面會變暗變薄，
+    // 看起來像壞了而不是刻意的稀。要維持感知亮度就要維持 N × pointSize²。
+    pointSize: q.pointSize,
     particleOpacity: PORTRAIT_OPACITY,
     showGlow: false,
     cellSubdivisions: 2,
-    maxDpr: maxDpr(),
+    // ⚠️ 取 min 而不是直接用檔位值 —— 契約是「只會減、不會加」。
+    maxDpr: Math.min(maxDpr(), q.dprCap),
     bgFade: 'rgba(10,10,12,0.18)',  // 只有 CPU fallback 會用到；GPU 路徑是不透明黑
   })
+  // ⚠️ CPU 後端沒有 setTargets / setMorph，所以 buildTargets() 會 return false、
+  // targetsReady 永遠是 false —— 沒有 seek 把粒子按在人像上。而 nebula 帶著
+  // 全域微斥力，人像會慢慢化開成一團噪點。
+  // 把力場也關掉，粒子就停在 seedPattern 撒好的位置：一張靜態但正確的點雲人像。
+  // 這比「會動但爛掉」好，也符合「最低檔也不關掉粒子」的要求。
+  if (!engine.setTargets) engine.setForce?.(0)
+  if (showFps()) engine.setShowFps?.(true)
   if (import.meta.dev) {
     window.__samePortrait = engine
     // 換人對不上時先看這個：shown 是「畫面上實際是哪一張」，跟 speakerIndex 不同步
     // 是正常的（換人動畫跑完才會對上），但停下來之後兩者必須一致。
     window.__samePortraitDbg = () => ({
       shown: shownPortrait,
+      tier: tier.value,
+      cpuFallback: cpuFallback.value,
       index: speakerIndex.value,
       count: engine.config.count,
+      rMax: engine.config.rMax,
       inView,
       live,
       switching,
@@ -503,6 +565,7 @@ onMounted(() => { init() })
 
 onBeforeUnmount(() => {
   if (liveRaf) cancelAnimationFrame(liveRaf)
+  markActive('speakerPortrait', false)
   switchTween?.kill()
   io?.disconnect()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
