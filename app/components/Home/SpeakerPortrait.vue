@@ -363,6 +363,26 @@ async function swapPortrait (portrait) {
   const spec = await getSpec(portrait)
   if (!spec) return
 
+  // ⚠️ CPU 後端（沒有 setTargets / setMorph）走完全不同的一條路。
+  // 實測 S8：這裡原本會因為 targetsReady 永遠是 false 而直接 return，
+  // 結果是「點了其他人，名字換了但人像完全沒變」—— 那是功能壞掉，不是效能問題。
+  //
+  // 那支引擎沒有 morph，但有一條可用的路：spec.pattern 是註冊在
+  // PLSeeds.PATTERNS 裡的名字，而 setCount() 會走 seedParticles → seedByPattern
+  // (config.seedPattern)，且 config 是活物件、CPU 版的 setCount 沒有 early-return。
+  // 所以「改 seedPattern 再 setCount」就等於重新撒成新的人像。
+  // 代價是沒有炸開／重組的過渡，是硬切 —— 但硬切遠好過完全不動。
+  if (!engine.setTargets) {
+    engine.config.seedPattern = spec.pattern
+    engine.setColors?.(spec.palette)
+    engine.setCount?.(engine.config.count)
+    // 力場關掉，粒子才會停在剛撒好的位置而不是慢慢化開（見 init 的說明）
+    engine.setForce?.(0)
+    shownPortrait = portrait
+    syncPause()
+    return
+  }
+
   // 八個人目前輪流共用兩張臨時頭像 —— 同一張就沒有形狀要變，不做爆炸
   if (!targetsReady || !fromSpec || spec === fromSpec) {
     shownPortrait = portrait
@@ -481,9 +501,11 @@ async function init () {
     repel: 1.0,
     simSpeed: SIM_SPEED,
     cameraZoom: 1,
-    // ⚠️ 低檔位把點放大不是裝飾：粒子少了還用同樣點大小，畫面會變暗變薄，
-    // 看起來像壞了而不是刻意的稀。要維持感知亮度就要維持 N × pointSize²。
-    pointSize: q.pointSize,
+    // ⚠️ CPU 後端要「反過來」用更小的點 —— pointSize 在兩個後端意義完全不同
+    // （CPU 是光暈 sprite 的邊長基準，1.4 會變成 10 CSS px 的大光斑，覆蓋率 154%）。
+    // 檔位表那組亮度補償只對 WebGPU 成立，套到 CPU 上就是實測 S8 那團白斑。
+    // 完整換算見 particleTiers.js 的 CPU_POINT_SIZE_PORTRAIT。
+    pointSize: cpuFallback.value ? CPU_POINT_SIZE_PORTRAIT : q.pointSize,
     particleOpacity: PORTRAIT_OPACITY,
     showGlow: false,
     cellSubdivisions: 2,
