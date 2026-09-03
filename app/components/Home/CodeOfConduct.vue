@@ -17,7 +17,7 @@ const props = defineProps({
     default: () => ({})
   },
   // 區塊內建的那串章節錨點。頁面已經有 fixed 的 CommonChapterNav 時要關掉，
-  // 否則兩串會疊在同一個位置（index-same.vue 就是這個情況）。
+  // 否則兩串會疊在同一個位置（一鏡到底版的首頁就是這個情況）。
   showChapterDots: {
     type: Boolean,
     default: true

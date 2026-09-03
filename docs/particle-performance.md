@@ -1,6 +1,10 @@
 # 手機端粒子效能：分級降載
 
-> 起因：`/index-same` 在 iPhone 17 上跑得順，但比較舊的手機「超卡」。
+> 起因：首頁在 iPhone 17 上跑得順，但比較舊的手機「超卡」。
+>
+> ⚠️ 這份文件寫的時候首頁還叫 `/index-same`（跟舊的三張 canvas 版並排比較用），
+> 後來它取代了舊版成為 `/`，舊版搬到 `/index-old`。下面提到 `/index-same` 的地方
+> 指的都是**現在的首頁**。
 > 這份文件記錄查到的原因、可用的旋鈕、以及分階段的處理方式。
 >
 > 相關文件：[`point-cloud-effect.md` §10 效能陷阱](./point-cloud-effect.md)、
@@ -106,9 +110,9 @@ if (!engine?.readParticles || !engine.setTargets) return false
 ⚠️ **待查證**：WebGPU 在 iOS Safari 的出貨版本（我的理解是 Safari 26 / iOS 26，但需確認）。
 若成立，絕大多數還沒升級的 iPhone 全部走這條路 —— 跟「iPhone 17 順、舊手機超卡」完全吻合。
 
-> ✅ **`/index-same` 已處理**（階段 2）：`!navigator.gpu` 在建引擎「之前」就判到底檔，
+> ✅ **首頁已處理**（階段 2）：`!navigator.gpu` 在建引擎「之前」就判到底檔，
 > 點數 8525 → 1800，並額外 `setForce(0)` 讓人像停在正確的位置而不是化開。
-> ⚠️ **`/` 與 `/people` 還沒處理** —— 它們的引擎完全沒有這層判斷。
+> ⚠️ **`/index-old`（舊的三張 canvas 版）與 `/people` 還沒處理** —— 它們的引擎完全沒有這層判斷。
 
 ---
 
@@ -138,7 +142,7 @@ rMax 是「互動力場的作用半徑」。在 342² 的觀景區上：
 
 ### 視覺等價的實測
 
-「清晰度不變」這件事是量過的，不是推的。方法：在 390×844 的 `/index-same` 上停在 PL.III，
+「清晰度不變」這件事是量過的，不是推的。方法：在 390×844 的首頁上停在 PL.III，
 用 `engine.setRMax()` 逐一切到 55 / 40 / 30 / 24（`setRMax` 只重配 bin buffer，**不 respawn、
 不動 targets**，所以是乾淨的對照），各等 5.5 秒後截圖，把觀景區切成 6px 網格比亮度分布。
 
@@ -166,7 +170,7 @@ rMax 是「互動力場的作用半徑」。在 342² 的觀景區上：
 
 ## 4. 層級三：現有的 fps 自適應幾乎不會觸發
 
-`MobileField.vue`、`HomeSame/Field.vue`、`Home/ParticleField.vue` 三處同一個 pattern：
+`MobileField.vue`、`Home/Field.vue`、`Home/ParticleField.vue`（`/index-old`）三處同一個 pattern：
 
 ```js
 setTimeout(() => { if (engine.getFps() < 45) engine.setCount(count / 2) }, 900)
@@ -181,7 +185,7 @@ setTimeout(() => { if (engine.getFps() < 45) engine.setCount(count / 2) }, 900)
 
 > ✅ **已在階段 3 換掉**：`MobileField` 那段一次性減半已移除，改成
 > `useParticleQuality` 的持續量測（連 2 個視窗失敗才降、4 秒冷卻、最多降 2 次）。
-> ⚠️ `Home/ParticleField.vue`（4000ms 版）與 `HomeSame/Field.vue` 的那兩份**還在** ——
+> ⚠️ `Home/ParticleField.vue`（4000ms 版）與 `Home/Field.vue` 的那兩份**還在** ——
 > 那是桌機路徑，本次範圍外。
 
 `getFps()` 還有三個不適合當判準的性質：
@@ -272,7 +276,7 @@ if (!hdrTexture || hdrTexture.width !== cw || hdrTexture.height !== ch) {   // :
 
 | 檔案 | 改動 | 效果 |
 |---|---|---|
-| `HomeSame/SpeakerPortrait.vue` | `rMax: 55 → 30` | 候選對 7.3M → 2.2M（推算）。密度與清晰度不變 |
+| `Home/SpeakerPortrait.vue` | `rMax: 55 → 30` | 候選對 7.3M → 2.2M（推算）。密度與清晰度不變 |
 | `useParticleBudget.js` | `countFor()` 的 rect fallback 退回 `min`，不要退回視窗尺寸 | 修掉佈局競態拿到 1.48 倍點數 |
 | `people.vue` ×3 | 補 `maxDpr: maxDpr()` | 手機 DPR 2 → 1.25，填充省 2.56 倍 |
 | `people.vue`（sticky 那顆） | `rMax: 55 → 20`（它是 `forceFactor: 0`） | 算力剩 0.13 倍，零視覺風險 |
@@ -433,7 +437,7 @@ if (!hdrTexture || hdrTexture.width !== cw || hdrTexture.height !== ch) {   // :
 `active: []`、兩顆引擎 `paused: true`、**累積視窗數 0**。
 沒有這條的話，量測器會在瀏覽器空轉時讀到「超級順」，然後（在未來有升檔時）錯誤地升檔。
 
-**回歸**：`?tier=1` 強制時 `monitoring: false`（不啟動量測）；桌機 `/index-same`
+**回歸**：`?tier=1` 強制時 `monitoring: false`（不啟動量測）；桌機首頁
 仍是 1 張 canvas / 50000 顆、`__pq` 根本沒被建立（Field.vue 沒接這套）；
 平板 t3 / 17836 顆。全部 0 console error / 0 page error。
 

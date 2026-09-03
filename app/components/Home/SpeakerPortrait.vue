@@ -3,7 +3,7 @@
 //
 // ─── 為什麼跟桌機不一樣 ────────────────────────────────────────────────────
 // 桌機是「整頁一張 canvas」：人像是同一群粒子沿捲動從 side.png 變過來、再變去菌落場
-//（HomeSame/Field.vue 的 speaker 影格）。那條時間軸要求 canvas 全程都在算，而且點數
+//（Home/Field.vue 的 speaker 影格）。那條時間軸要求 canvas 全程都在算，而且點數
 // 得取全頁最吃密度的那一格當基準（50000 顆）。
 //
 // 窄視窗上那些都不需要：這一區的前後（PL.II / PL.IV）在手機版底色是不透明的，
@@ -14,7 +14,7 @@
 // Home/SpeakerField 那張是鋪滿整個 section 的，理由是 WebGPU 的 compose pass 是
 // clearValue{a:1} 的不透明黑，做成小方塊會有一塊硬邊壓在背景粒子上。
 // 這裡沒有那個問題 —— 窄視窗的 PL.II～PL.V 是包在一層不透明「純黑」底上的
-//（見 index-same.vue），canvas 這個黑方塊跟它完全同色，邊界看不出來。
+//（見 pages/index.vue），canvas 這個黑方塊跟它完全同色，邊界看不出來。
 // ⚠️ 那層底色一定要是純黑。改成 #0a0a0c 之類的近黑，這個方塊就會現形
 //（實測 canvas (0,0,0) vs 底 (10,10,12)）。
 // 好處很大：canvas 只有觀景框那麼大（手機約 342²、平板被 max-w 夾在 420² 以內），
@@ -28,7 +28,7 @@
 //     閃動靠 blend 在 spread(抖動版) ↔ shape 之間來回擺盪
 //     → 粒子晃得比較大，看起來比較「像一團會動的沙」
 //
-//   HomeSame/Field.vue 的 speaker 影格（桌機現在跑的這一版）★ 這裡抄它
+//   Home/Field.vue 的 speaker 影格（桌機現在跑的這一版）★ 這裡抄它
 //     force 0.1（引擎下限）／ grip 82 ／ simSpeed 0.45 ／ opacity 0.72 固定
 //     閃動直接烘進目標點（每 1 秒換一組小偏移），blend 不參與
 //     → 幅度小很多、更接近真實照片
@@ -38,7 +38,7 @@
 // 攤在五官上的粒子抽成一坨坨菌落。把它壓到引擎下限（0.1）之後畫面才交給 seek 主導，
 // 五官才守得住。那也是為什麼這裡敢把 simSpeed 拉到 0.45：加速的只有 seek 的收斂，
 // 不是整個力場。兩者是配套的，別只改其中一個。
-// 完整的實測數據（佔格率 5.4% → 11.8%）在 HomeSame/Field.vue 的 LOCK_FORCE 註解。
+// 完整的實測數據（佔格率 5.4% → 11.8%）在 Home/Field.vue 的 LOCK_FORCE 註解。
 //
 // 位置全部在 GPU 上算，JS 每幀只寫 16 bytes 的 morph uniform（路線 C · shader
 // seek 力，見 docs/point-cloud-effect.md §8）。
@@ -55,7 +55,7 @@ const { loadParticleKit, registerNebula } = useParticleKit()
 const { countFor, maxDpr } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { idle } = useParticleStage()
-const { speakerIndex, swapImpl, resetSpeakerBus } = useSameFieldBus()
+const { speakerIndex, swapImpl, resetSpeakerBus } = useSpeakerFieldBus()
 // 裝置效能檔位。
 // ⚠️ 這支「不」在執行期換檔，而是 await 到檔位定案才建引擎 —— 換檔要走 setCount，
 // 而 setCount 會 respawn 整場粒子並推進 targetsGeneration，在人像上那是「整張臉
@@ -82,7 +82,7 @@ let q = null
 const SPECIES = 7           // 色盤長度，必須與 species 一致（morph 中不能改 species）
 // 點雲佔 canvas 短邊的比例。
 // ⚠️ canvas 是「整塊正方形觀景區」，不是框線那一格 —— 框線只佔它的 62%（見
-// HomeSameSpeaker 的窄視窗版面）。設計稿的人像比框大、頭肩會溢出框線，跟桌機的
+// HomeSpeaker 的窄視窗版面）。設計稿的人像比框大、頭肩會溢出框線，跟桌機的
 // 構圖一致，所以這個值要明顯大於 0.62：0.86 / 0.62 ≈ 1.4 倍框寬。
 // ⚠️ 但也不能貼到 1.0：換人時粒子要往外炸開，沒有邊界留白的話整圈會壓在牆上
 // （引擎的 wall repel 會把它們彈回來，看起來像撞到看不見的東西）。
@@ -90,7 +90,7 @@ const SPECIES = 7           // 色盤長度，必須與 species 一致（morph �
 const FIT = 0.86
 
 // 鎖形的兩顆旋鈕：PULL = 每單位距離想要的靠攏速度；GRIP = 速度被導引的強度。
-// 與 HomeSame/Field.vue 的 speaker 影格同值。
+// 與 Home/Field.vue 的 speaker 影格同值。
 const LOCK_PULL = 11
 const LOCK_GRIP = 82
 
@@ -163,7 +163,7 @@ let shimmerT0 = 0
 let shimmerCycle = -1
 
 // ⚠️ 「目前畫在畫面上的是哪一張」要自己記，不能從 speakerIndex 回推 ——
-// useSameFieldBus.selectSpeaker 是先把 speakerIndex 寫成新的、才 await swapImpl，
+// useSpeakerFieldBus.selectSpeaker 是先把 speakerIndex 寫成新的、才 await swapImpl，
 // 所以進到 swapPortrait 的當下 speakerIndex 已經是「下一位」了。拿它去查 fromSpec
 // 會查到目標那張，炸開／重組的起點與配色就全錯（而且 spec === fromSpec 會讓整段
 // 動畫被當成「同一張圖」直接略過）。
@@ -237,7 +237,7 @@ async function resolveShape (spec) {
 
 // ⚠️ 兩個目標槽塞同一組「已經抖過的」座標，而不是舊版的 (抖動版, 原版) + blend 擺盪。
 // 這一版的閃動是「換一組目標點」，不是「在兩組之間來回」—— 幅度小得多，也不會有
-// blend 走完一輪時整張臉同步縮放的呼吸感。與 HomeSame/Field.vue 的做法一致。
+// blend 走完一輪時整張臉同步縮放的呼吸感。與 Home/Field.vue 的做法一致。
 async function buildTargets (spec) {
   if (!engine?.readParticles || !engine.setTargets || !spec) return false
   const { shape, W, H } = await resolveShape(spec)
@@ -342,7 +342,7 @@ watch(idle, (v) => {
 })
 
 // --- 換人 ------------------------------------------------------------------
-// 由 useSameFieldBus 呼叫（名單在兄弟元件 HomeSameSpeaker 裡）。
+// 由 useSpeakerFieldBus 呼叫（名單在兄弟元件 HomeSpeaker 裡）。
 // 版面那條時間軸（框線放射、引線延伸、打字）與這裡並行、彼此不等待。
 function tween (obj, vars, ms, ease, onUpdate) {
   const { $gsap } = useNuxtApp()

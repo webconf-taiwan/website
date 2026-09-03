@@ -1,7 +1,7 @@
 <script setup>
 // 手機／平板（< 1024px）的粒子場 —— 桌機那條「一鏡到底」的時間軸在這裡是關掉的。
 //
-// ─── 跟桌機版（HomeSame/Field.vue）差在哪 ─────────────────────────────────
+// ─── 跟桌機版（Home/Field.vue）差在哪 ─────────────────────────────────
 // 桌機版是一條 flow ∈ [0,5] 的時間軸，六個關鍵影格（自由場 → side.png → 人像 →
 // 菌落場 → faq.png → 自由場）沿捲動連續變形，全程都在算。
 //
@@ -174,7 +174,7 @@ async function buildHold () {
     const seed = buildSeedTargets(look.rules.seedPattern, snap.length, look.rules.species, W, H)
     holdBase = buildSlotTargets(snap, seed, look.rules.species, W).shape
   } catch (err) {
-    console.warn('[HomeSameMobileField] 開場構圖目標點建立失敗，改成完全放手', err)
+    console.warn('[HomeMobileField] 開場構圖目標點建立失敗，改成完全放手', err)
     holdBase = null
     return false
   }

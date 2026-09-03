@@ -26,7 +26,7 @@ const { staggerIn, killStaggers } = useStaggerIn()
 
 const STAGE = 'venue-faq'
 
-// 內容由 /api/home 的 venue / faq 兩個區塊提供（見 pages/index.vue）。
+// 內容由 /api/home 的 venue / faq 兩個區塊提供（見 pages/index-old.vue）。
 // ⚠️ PL.IV「更多資訊」的 href 設計稿沒標，資料裡先放 '#'，需要確認要連到
 // 場地官網、Google Maps 還是站內的交通頁；若填外部網址記得一併把 target 改成 _blank。
 const props = defineProps({
