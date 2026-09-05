@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  // /api/home 的 sponsor 區塊
+  // 首頁資料的 sponsor 區塊（已經在 useHomeData 濾成 show_on_home 的那幾家）
   data: {
     type: Object,
     default: () => ({})
@@ -57,29 +57,31 @@ onBeforeUnmount(() => {
     class="relative z-10 overflow-hidden py-10"
   >
     <div ref="trackRef" class="flex w-max">
-      <div
+      <!-- 每一格是連到贊助商官網的連結。
+           ⚠️ loopList 是同一份名單重複四份，只有第一份對輔助技術與鍵盤公開 ——
+           不然一排 5 家會變成 20 個連結，tab 要按 20 次才走得完跑馬燈。 -->
+      <a
         v-for="(s, i) in loopList"
         :key="i"
-        class="flex w-[200px] shrink-0 flex-col items-center justify-center gap-2 px-8"
+        :href="s.link?.href"
+        :target="s.link?.target"
+        :rel="linkRel(s.link?.target)"
+        :aria-hidden="i >= sponsors.length ? 'true' : undefined"
+        :tabindex="i >= sponsors.length ? -1 : undefined"
+        class="flex shrink-0 items-center justify-center px-8 transition-opacity hover:opacity-70"
       >
-        <!-- 高度由資料給數字、走 inline style。
-             ⚠️ 不要改成 :class="`h-${s.logo_height}`" —— Tailwind 掃的是原始碼字串，
-             拼出來的 class 它看不到，產不出 CSS。 -->
+        <!-- 現在的 logo 是設計稿直接切出來的 175px 寬圖磚：留白、字級、
+             「連續 4 年贊助」那種標籤全都畫在圖裡了，所以這裡一律等寬顯示。
+             ⚠️ 別再回頭讓資料給 logo_height 逐張調高度 —— 圖磚本來就對齊好了，
+             逐張調反而會讓每個 logo 的視覺大小不一致。 -->
         <img
           :src="assetUrl(s.logo)"
           :alt="s.name"
-          class="w-auto object-contain"
-          :style="{ height: `${s.logo_height}px` }"
+          class="w-[175px] max-w-none object-contain"
           loading="lazy"
           draggable="false"
         >
-        <span
-          v-if="s.badge"
-          class="bg-white px-2 py-0.5 font-mono text-[10px] font-semibold tracking-[0.02em] text-[#002eff]"
-        >
-          {{ s.badge }}
-        </span>
-      </div>
+      </a>
     </div>
   </section>
 </template>

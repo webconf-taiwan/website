@@ -74,8 +74,8 @@ export default defineNuxtConfig({
   // 頁面沒各自呼叫 defineOgImage() 時的保底，用 Default 模板產生通用的 WebConf 卡片圖。
   routeRules: {
     '/**': { ogImage: {} },
-    // ⚠️ /index-old 是被一鏡到底版取代的舊首頁（三張 canvas），整頁文案與 /api/home
-    // 的資料跟首頁一模一樣 —— 不擋的話就是一份重複內容。
+    // ⚠️ /index-old 是被一鏡到底版取代的舊首頁（三張 canvas），整頁文案與首頁
+    // 的資料一模一樣 —— 不擋的話就是一份重複內容。
     // 用 route rule 而不是頁面裡的 useHead robots meta：只有 route rule 會同時被
     // nuxt-robots（robots.txt + meta）與 nuxt-sitemap 讀到。實測 useHead 那條
     // meta 有生效、但 sitemap.xml 仍然收錄了 /index-old。

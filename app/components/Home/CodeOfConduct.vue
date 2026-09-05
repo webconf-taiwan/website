@@ -11,7 +11,7 @@
 // 它一直在動，只有 backdrop-filter 才會跟著糊。
 
 const props = defineProps({
-  // /api/home 的 code_of_conduct 區塊
+  // 首頁資料的 code_of_conduct 區塊
   data: {
     type: Object,
     default: () => ({})

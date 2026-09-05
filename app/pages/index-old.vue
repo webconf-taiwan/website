@@ -5,49 +5,47 @@ import TicketCard from '~/components/Common/Card/TicketCard.vue';
 // 背景是一張固定的粒子場 canvas（HomeParticleField），兩個區塊都疊在它上面 ——
 // 捲動時是「相機」在移動、色盤在過渡，粒子模擬全程沒有停過。
 //
-// 內容資料統一由 /api/home 取得（見 useSiteData / server/api/home.get.js），
+// 內容資料統一由 useHomeData 取得（見 app/composables/useSiteData.js），
 // 這一頁是唯一的取資料點，各區塊元件一律用 props 拿，不各自打 API。
 
 const home = await useHomeData()
 
 // ⚠️ 這一頁已經不是站上的首頁了（一鏡到底版取代了它，見 pages/index.vue），
-// 但整頁文案與 /api/home 的資料跟首頁一模一樣 —— 留著不擋的話就是一份重複內容。
+// 但整頁文案與資料跟首頁一模一樣 —— 留著不擋的話就是一份重複內容。
 // 擋在 nuxt.config 的 routeRules（`'/index-old': { robots: false }`）而不是這裡的
 // useHead：只有 route rule 會同時被 nuxt-robots 與 nuxt-sitemap 讀到。
 // 保留這頁是為了還能並排比較兩種粒子做法；確定不再需要對照就整頁刪掉。
 const config = useRuntimeConfig()
 
-const homeData = home.value
-
-const pageTitle = `${homeData.hero.title} — ${homeData.hero.subtitle}`
+const pageTitle = `${home.hero.title} — ${home.hero.subtitle}`
 
 useSeoMeta({
   title: pageTitle,
-  description: homeData.about.body_zh,
+  description: home.about.body_zh,
   ogTitle: pageTitle,
-  ogDescription: homeData.about.body_zh,
+  ogDescription: home.about.body_zh,
   twitterTitle: pageTitle,
-  twitterDescription: homeData.about.body_zh
+  twitterDescription: home.about.body_zh
 })
 
-defineOgImage('Default', { title: pageTitle, description: homeData.about.body_zh })
+defineOgImage('Default', { title: pageTitle, description: home.about.body_zh })
 
 // 首頁掛 Event 結構化資料，讓 Google 搜尋結果能顯示活動時間、地點、票價卡片。
-// 票價/場地取自 server/assets/data/home.json 的 venue、ticket 區塊，日期待實際確認後再校正。
+// 票價/場地取自 app/constants/data/index.json 的 venue、ticket 區塊，日期待實際確認後再校正。
 useSchemaOrg([
   defineEvent({
     name: pageTitle,
-    description: homeData.about.body_zh,
+    description: home.about.body_zh,
     startDate: '2026-12-11',
     endDate: '2026-12-12',
     eventAttendanceMode: 'OfflineEventAttendanceMode',
     eventStatus: 'EventScheduled',
     location: {
       '@type': 'Place',
-      name: `${homeData.venue.title_zh} ${homeData.venue.title_en}`,
+      name: `${home.venue.title_zh} ${home.venue.title_en}`,
       address: '台北市南港區南港路二段13號'
     },
-    offers: homeData.ticket.items.map(item => ({
+    offers: home.ticket.items.map(item => ({
       '@type': 'Offer',
       name: item.title,
       price: item.price.replace(/,/g, ''),

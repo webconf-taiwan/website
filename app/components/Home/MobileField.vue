@@ -356,7 +356,9 @@ async function init () {
     // ⚠️ pointSize / opacity 隨檔位放大不是裝飾，是必須的：粒子少了還用同樣的
     // 點大小，畫面會變暗變薄，看起來像「壞了」而不是「刻意的稀」。
     // 要維持感知亮度就要維持總覆蓋面積 ≈ N × pointSize²。見 particleTiers.js。
-    pointSize: look.visual.pointSize * q.pointScale,
+    // ⚠️ CPU 後端的 pointSize 是光暈 sprite 的邊長基準，不是點半徑 ——
+    // 套檔位表的亮度補償會變成一團大光斑。見 particleTiers.js。
+    pointSize: cpuFallback.value ? CPU_POINT_SIZE_FIELD : look.visual.pointSize * q.pointScale,
     particleOpacity: Math.min(1, look.visual.heroOpacity * q.opacityScale),
     // 光暈一律關：額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比，
     // 而這支元件只會在 < 1024px 掛載。

@@ -18,8 +18,8 @@
   "about": {
     "plate": { "code": "PL. II", "number": "II.", "label": "About" },
     "skills_box_label": "Skills",
-    "skills": ["UI · UX", "Frontend", "AI Agent", "Backend", "Agile"],
-    "heading": "An emergent gathering of the Web.",
+    "skills": ["UI · UX", "AI Agent", "Frontend", "Backend", "DevOps", "Security", "Agile"],
+    "heading": "An emergent\ngathering of the Web.",
     "lede_runs": [
       { "text": "WebConf Taiwan is a two-day field study of the living web — where " },
       { "text": "agents", "is_accent": true },
@@ -35,85 +35,12 @@
 
   "speaker": {
     "plate": { "code": "PL. III", "number": "III.", "label": "SPEAKER" },
-    "more_link": { "label": "更多講者", "href": "/people", "target": "_self" },
-    "items": [
-      {
-        "id": "gipi",
-        "name": "Gipi",
-        "org": "商業思維學院",
-        "role": "院長",
-        "tag": "Keynote Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-01.png"
-      },
-      {
-        "id": "will",
-        "name": "保哥 Will",
-        "org": "多奇數位創意有限公司",
-        "role": "技術總監",
-        "tag": "Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-02.png"
-      },
-      {
-        "id": "che-yu-wu",
-        "name": "吳哲宇",
-        "org": "墨雨互動設計有限公司",
-        "role": "藝術家",
-        "tag": "Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-01.png"
-      },
-      {
-        "id": "tonyq",
-        "name": "TonyQ",
-        "org": "商業思維學院",
-        "role": "院長",
-        "tag": "Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-02.png"
-      },
-      {
-        "id": "thomas-yin",
-        "name": "Thomas Yin",
-        "org": "商業思維學院",
-        "role": "院長",
-        "tag": "Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-01.png"
-      },
-      {
-        "id": "summer",
-        "name": "Summer",
-        "org": "商業思維學院",
-        "role": "院長",
-        "tag": "Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-02.png"
-      },
-      {
-        "id": "bo-yi-wu",
-        "name": "Bo-Yi Wu",
-        "org": "商業思維學院",
-        "role": "院長",
-        "tag": "Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-01.png"
-      },
-      {
-        "id": "happy",
-        "name": "Happy",
-        "org": "商業思維學院",
-        "role": "院長",
-        "tag": "Speaker",
-        "skills": ["AI", "軟體設計", "產品思維"],
-        "portrait": "/speakers/speaker-02.png"
-      }
-    ]
+    "more_link": { "label": "更多講者", "href": "/people", "target": "_self" }
   },
 
   "venue": {
     "plate": { "code": "PL. IV", "number": "IV.", "label": "VENUE" },
+    "heading": "The place we gather.",
     "title_en": "Taipei Popop",
     "title_zh": "瓶蓋工廠台北製造所",
     "transports": [
@@ -133,25 +60,11 @@
     "plate": { "code": "PL. V", "number": "V.", "label": "FAQ" },
     "title_en": "FAQ",
     "title_zh": "常見問答",
-    "total_pages": 10,
-    "items": [
-      {
-        "question": "大會有提供 Wi-Fi 嗎？",
-        "answer": "僅提供瓶蓋工廠台北製造所原場地的 Wi-Fi，因同時會有 700 位以上裝置，若臨時流量壅塞，建議專注聆聽議程。"
-      },
-      {
-        "question": "場地有插可以充電的地方嗎？",
-        "answer": "B 棟休息區，以及議程廳內後方皆設有充電區可以充電喔！"
-      },
-      {
-        "question": "這次大會有錄影嗎？",
-        "answer": "沒有，我們希望大家可以專注在現場的演講！有提供大會共筆文件。"
-      }
-    ]
+    "per_page": 3
   },
 
   "ticket": {
-    "heading_lines": ["Two ways", "to enter the field."],
+    "heading_lines": ["Four ways", "to enter the field."],
     "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "items": [
       {
@@ -160,6 +73,7 @@
         "price": "4,980",
         "unit": "元 / 人",
         "category": "FIELD NOTES · General Admission",
+        "reserve_link": { "label": "reserve", "href": "https://google.com", "target": "_blank" },
         "is_highlighted": false,
         "features": [
           { "en": "Programme", "zh": "兩日完整議程" },
@@ -174,6 +88,38 @@
         "price": "4,400",
         "unit": "元 / 人",
         "category": "Field Group · Group Admission",
+        "reserve_link": { "label": "reserve", "href": "https://google.com", "target": "_blank" },
+        "is_highlighted": false,
+        "features": [
+          { "en": "Three-Person Group Offer", "zh": "三人同行限定優惠" },
+          { "en": "Programme", "zh": "兩日完整議程" },
+          { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
+          { "en": "Annual Edition", "zh": "年度紀念品" },
+          { "en": "Interactive Area", "zh": "攤位互動體驗" }
+        ]
+      },
+      {
+        "code": "PL. VI · 03",
+        "title": "熱情贊助票",
+        "price": "4,400",
+        "unit": "元 / 人",
+        "category": "Field Group · Group Admission",
+        "reserve_link": { "label": "reserve", "href": "https://google.com", "target": "_blank" },
+        "is_highlighted": true,
+        "features": [
+          { "en": "Programme", "zh": "兩日完整議程" },
+          { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
+          { "en": "Annual Edition", "zh": "年度紀念品" },
+          { "en": "Interactive Area", "zh": "攤位互動體驗" }
+        ]
+      },
+      {
+        "code": "PL. VI · 04",
+        "title": "企業支持票",
+        "price": "4,400",
+        "unit": "元 / 人",
+        "category": "Field Group · Group Admission",
+        "reserve_link": { "label": "reserve", "href": "https://google.com", "target": "_blank" },
         "is_highlighted": true,
         "features": [
           { "en": "Three-Person Group Offer", "zh": "三人同行限定優惠" },
@@ -183,16 +129,6 @@
           { "en": "Interactive Area", "zh": "攤位互動體驗" }
         ]
       }
-    ]
-  },
-
-  "sponsor": {
-    "items": [
-      { "name": "五倍學院", "logo": "/sponsors/wubei.svg", "logo_height": 32, "badge": "" },
-      { "name": "六角學院", "logo": "/sponsors/liuchiao.svg", "logo_height": 32, "badge": "" },
-      { "name": "悠識學院 userxper", "logo": "/sponsors/yushi.svg", "logo_height": 32, "badge": "" },
-      { "name": "鈦坦科技 TITANSOFT", "logo": "/sponsors/titansoft.png", "logo_height": 80, "badge": "連續 3 年贊助" },
-      { "name": "昇新科技 AscentisTech", "logo": "/sponsors/ascentis.svg", "logo_height": 56, "badge": "" }
     ]
   },
 

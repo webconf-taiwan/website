@@ -5,9 +5,8 @@ function scrollToTop() {
   lenis.scrollTo(0)
 }
 
-// 資料來自 /api/global（與 Header 共用同一次請求，見 useSiteData）
-const globalData = await useGlobalData()
-const footer = computed(() => globalData.value.footer)
+// 資料來自 app/constants/data/global.json（靜態，見 useSiteData）
+const { footer } = useGlobalData()
 </script>
 
 <template>

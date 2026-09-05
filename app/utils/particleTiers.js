@@ -118,6 +118,29 @@ export const TIER_PROFILES = {
 // 1800 是「比它的預設稍寬、但仍在同一個量級」。⚠️ 需要實機驗證再調。
 export const CPU_FALLBACK_MAX_COUNT = 1800
 
+// ⚠️ pointSize 在兩個後端「意義完全不同」，這是實測 S8（Android 9、無 WebGPU）
+// 人像變成一團白斑的根本原因。
+//
+// WebGPU：pointSize 就是點的半徑（sim px），1.4 是很小的銳利點。
+// CPU（particle-life.js 的 rebuildSprites）：
+//     haloR = pointSize × 2.4
+//     half  = max(2, ceil(haloR) + 1)
+//     每顆畫成 half×2 CSS px 的光暈 sprite
+//   → pointSize 1.4 變成 **10 CSS px** 的大光斑，是 WebGPU 的 7 倍。
+//
+// 而低檔位為了補償亮度還會把 pointSize 從 0.9 加大到 1.40 —— 在 CPU 上等於雪上加霜。
+// 算一下覆蓋率就知道有多誇張（342² 的觀景區、1800 顆）：
+//     pointSize 1.4 → 10px sprite → 1800 × 100 = 180000 px²，是畫布面積的 154%
+//     pointSize 0.4 →  4px sprite → 1800 ×  16 =  28800 px²，約 25%
+// 前者必然糊成一片，後者才看得出五官。
+//
+// 所以 CPU 路徑要「反過來」用更小的 pointSize，不能套檔位表的亮度補償。
+// ⚠️ 4px 是 sprite 的地板（half 的 max(2,…)），再往下調沒有效果。
+// 人像用地板值換銳利度；hero 是滿版、粒子更稀，給大一級才看得到東西。
+// ⚠️ 只有 hero 那張滿版場還走引擎（它需要真的動）。人像那張改成自己畫點雲了，
+// 不再經過這個 sprite 系統 —— 見 Home/SpeakerPortrait.vue 的 drawPointCloud。
+export const CPU_POINT_SIZE_FIELD = 0.5
+
 /**
  * 取某個 profile 在某一檔的旋鈕值。
  *

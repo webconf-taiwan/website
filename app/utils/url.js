@@ -5,7 +5,7 @@
  * protocol-relative URL，瀏覽器會當成 https://logo.svg 這個主機去抓。
  * 所以最後要把重複的斜線收掉。
  *
- * @param {string} path 資源路徑，例如 '/sponsors/wubei.svg'
+ * @param {string} path 資源路徑，例如 '/sponsors/tsmc.svg'
  * @returns {string} 可直接放進 src 的網址
  */
 export const assetUrl = (path = '') => {

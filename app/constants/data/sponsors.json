@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "name": "台積電 TSMC",
+      "logo": "/sponsors/tsmc.svg",
+      "link": { "href": "https://www.tsmc.com/chinese", "target": "_blank" },
+      "show_on_home": true
+    },
+    {
+      "name": "五倍學院",
+      "logo": "/sponsors/五倍學院.svg",
+      "link": { "href": "https://5xcampus.com/", "target": "_blank" },
+      "show_on_home": true
+    },
+    {
+      "name": "六角學院",
+      "logo": "/sponsors/六角學院.svg",
+      "link": { "href": "https://www.hexschool.com/", "target": "_blank" },
+      "show_on_home": true
+    },
+    {
+      "name": "悠識學院 Userxper",
+      "logo": "/sponsors/悠識學院.svg",
+      "link": { "href": "https://www.userxper.com/", "target": "_blank" },
+      "show_on_home": true
+    },
+    {
+      "name": "鈦坦科技 TITANSOFT",
+      "logo": "/sponsors/鈦坦科技.svg",
+      "link": { "href": "https://titansoft.com/tw", "target": "_blank" },
+      "show_on_home": true
+    }
+  ]
+}
