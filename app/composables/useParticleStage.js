@@ -113,5 +113,7 @@ export function useParticleStage () {
     if (activeStage.value === name) activeStage.value = fallback
   }
 
-  return { activeStage, idle, claimStage, releaseStage }
+  // poke 對外開放：互動模式（手勢）不會產生任何滑鼠／捲動事件，
+  // 但手在動就是「使用者在場」，得讓它自己來重設閒置計時。
+  return { activeStage, idle, claimStage, releaseStage, poke }
 }

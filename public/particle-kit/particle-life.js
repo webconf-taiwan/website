@@ -396,7 +396,8 @@
             }
           }
           // Disturb impulse
-          if (uDisturb.w > 0.0) {
+          // w > 0 推開、w < 0 往圓心吸 —— 兩者走同一段，靠 w 的正負決定方向
+          if (uDisturb.w != 0.0) {
             vec2 dd = pos - uDisturb.xy;
             float dd2 = dot(dd, dd);
             float dr = uDisturb.z;

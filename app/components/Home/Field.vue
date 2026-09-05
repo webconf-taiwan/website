@@ -54,6 +54,8 @@ const { countFor, maxDpr, isMobile } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張 canvas，不需要 claim/release。
 const { idle } = useParticleStage()
+// 互動模式（Ctrl+2+6 的彩蛋）開著時，滑鼠推擠要讓位給手勢
+const { isOn: interactiveOn } = useInteractiveMode()
 const { speakerIndex, swapImpl, resetSpeakerBus } = useSpeakerFieldBus()
 
 const canvasRef = ref(null)
@@ -410,6 +412,113 @@ let onResize = null
 let resizeTimer = 0
 let reducedMotion = false
 
+// --- 滑鼠推擠 --------------------------------------------------------------
+// 引擎本來就有 disturb(x, y, radius, strength)（環境脈衝 PLAmbient 也是用它），
+// 這裡只是把指標的位置餵進去，讓粒子被滑過的地方稍微被推開。
+//
+// ⚠️ 只給 (pointer: fine) 的裝置。觸控沒有 hover、手指按下去就是要捲頁，
+// 在 touchmove 上推粒子會跟捲動搶事件。
+//
+// ⚠️ 每幀最多推一次，在 frame() 裡消費 —— pointermove 一秒可以噴上百次，
+// 每次都 disturb 會把 pendingDisturb 疊到上限（引擎自己 clamp 在 40），
+// 變成整片被掀開，不是「稍微推擠」。
+// 量級參考：shader 是「速度 += falloff × strength」，falloff 從圓心的 1 線性掉到邊緣的 0，
+// 引擎每幀再把 strength 乘 0.85 衰減。PLAmbient 的 breath 用 radius 200~400 / strength 7~13，
+// 那是「明顯看得出來」的等級；一開始給 110/3.2 太保守，圈太小、涵蓋的粒子太少，滑過去沒感覺。
+// 粒子被推開多遠 ≈ 初速 / 摩擦，所以「推得更遠」要調的是 MAX_PUSH（給的初速），
+// 不是半徑（半徑只決定影響到多大一圈）。
+const POINTER_RADIUS = 260      // 影響半徑（sim px，= canvas CSS px）
+// ⚠️ 13 不是隨便訂的：引擎每幀把新脈衝併進舊的再衰減，穩態大約是這個值的三倍，
+// 剛好落在原本的 40 附近 —— 也就是維持放寬 clamp 之前調好的手感。
+const POINTER_MAX_PUSH = 13     // 滑動時的單幀最大推力
+const POINTER_SPEED_GAIN = 2  // 這一幀滑了多少 px → 推力（慢慢滑也要推得動）
+// 游標停著時也要持續輕推，粒子才會在游標周圍讓出一塊。只在移動時推的話，
+// 手一停下來粒子立刻填回去，等於游標本身沒有存在感 —— 那就是「沒感覺」的來源。
+//
+// ⚠️ 這個值要很小。引擎每幀把新脈衝併進舊的（s += new * 0.45）再乘 0.85 衰減，
+// 所以持續推的穩態強度是 idlePush * 3 左右 —— 給 2.5 實測會在 2.5 秒內把整個
+// 半徑內的粒子清空，變成一個跟著游標的大洞，不是「稍微推擠」。
+const POINTER_IDLE_PUSH = 0.8
+
+// --- 互動模式：把粒子「吸過去」-------------------------------------------
+// disturb 是速度脈衝，粒子被推向圓心後會直接衝過去再散開 —— 做不出「聚成一團」。
+// 真正把粒子帶到某個位置的是引擎的 morph：每顆粒子各有一個目標點，靠 spring 拉過去
+// （人像、菌落那幾格用的就是這套）。捏合時就把所有粒子的目標改成手指周圍的圓盤。
+const GATHER_PULL = 42        // 拉力（morph pull）
+const GATHER_GRIP = 26        // 握力：到位之後把粒子按在那裡，不然會彈開
+const GATHER_IN = 0.09        // 捏住時 blend 往 1 靠的速度
+const GATHER_OUT = 0.05       // 放開時回到原本形狀的速度
+// ⚠️ 只吸「手附近」的粒子。全部五萬顆一起拉過來的話會變成一顆很密的球，
+// 那不像撥動場域，像把整個宇宙塞進手裡。
+const GATHER_REACH = 460      // 這個半徑外的粒子留在原地不參與
+// 每顆粒子各自的跟隨速度。全部同步到位就是「啪」一下變成球；
+// 讓快慢散開，手一移動就會拉出一條尾巴。
+const GATHER_LAG_MIN = 0.03
+const GATHER_LAG_MAX = 0.17
+let gatherBuf = null          // Float32Array(count*2)：每顆粒子當下的目標座標
+let gatherDisk = null         // 圓盤內的固定分佈（相對圓心，單位圓）
+let gatherLag = null          // 每顆粒子的跟隨係數
+let gatherOn = false          // 這一幀手是不是捏著
+let gatherBlend = 0           // 0 = 原本的形狀，1 = 完全聚到手上
+let gatherX = 0, gatherY = 0, gatherR = 0
+let gatherSeeded = false
+
+// --- 互動模式：把場靜下來 -------------------------------------------------
+// hero 是自由場，粒子本來就在高速流動 —— 手推一下的位移比它自己亂跑的幅度還小，
+// 所以互動看起來「沒效果」。互動模式時把模擬速度壓到很低、環境脈衝也關掉，
+// 粒子幾乎定住，手一動就只剩下手造成的變化。
+//
+// 🔧 想比較開關前後的差別，把這個改成 false（改完存檔 HMR 會直接生效）。
+const INTERACTIVE_CALM = true
+const CALM_SIM_SPEED = 0.12   // 平常自由場大約 0.5~1.4；0.12 幾乎是靜止但還在呼吸
+let calmNow = false           // 這一幀有沒有在安靜模式（給 __sameDbg 看）
+let pointerOn = false
+let pointerX = 0, pointerY = 0
+let pointerPrevX = 0, pointerPrevY = 0
+let pointerSeen = false
+let onPointerMove = null
+const pointerPushes = []   // 只有 dev 會塞東西進來，給 __sameDbg 看（只留最近 20 筆）
+let pointerPushCount = 0
+
+// 螢幕座標 → 模擬座標。sim space 就是 canvas 的 CSS 像素，但畫面有相機
+// （setCameraZoom / setCameraOffset 在捲動時一直在動），要把它反轉掉，
+// 否則放大時推的位置會跟看到的差一截。
+function toSim (px, py) {
+  const { W, H } = engine.size
+  const zoom = engine.config?.cameraZoom ?? 1
+  const cx = engine.config?.cameraX ?? 0
+  const cy = engine.config?.cameraY ?? 0
+  return {
+    x: (px - W * 0.5) / zoom + W * 0.5 + cx,
+    y: (py - H * 0.5) / zoom + H * 0.5 + cy,
+  }
+}
+
+// 在每幀裡消費指標位置。回傳 void。
+function applyPointerPush () {
+  // ⚠️ 不看 pointerFresh：游標停著時 pointermove 不會再觸發，但排斥圈要一直在。
+  // 只要指標曾經進過畫面（pointerSeen）就每幀推一次。
+  // 互動模式（彩蛋）開著時交給手勢，兩個一起推會打架。
+  if (!pointerOn || !pointerSeen || !engine || interactiveOn.value) return
+
+  const dx = pointerX - pointerPrevX
+  const dy = pointerY - pointerPrevY
+  pointerPrevX = pointerX
+  pointerPrevY = pointerY
+
+  // 底噪 + 速度加成：停著是穩定的排斥圈，滑動時按這一幀的位移加大
+  const speed = Math.hypot(dx, dy)
+  const push = Math.min(POINTER_MAX_PUSH, POINTER_IDLE_PUSH + speed * POINTER_SPEED_GAIN)
+
+  const { x, y } = toSim(pointerX, pointerY)
+  engine.disturb?.(x, y, POINTER_RADIUS, push)
+  if (import.meta.dev) {
+    pointerPushCount++
+    pointerPushes.push({ x: Math.round(x), y: Math.round(y), push: +push.toFixed(2) })
+    if (pointerPushes.length > 20) pointerPushes.shift()   // 只留最近幾筆，別讓它一直長
+  }
+}
+
 // 每段的 scrub 進度，加總 = flow
 const segProgress = new Array(SEGMENTS.length).fill(0)
 let flow = 0
@@ -746,6 +855,13 @@ function frame (now) {
     return
   }
 
+  // 這一幀要不要進入「安靜模式」（互動模式專用）
+  calmNow = INTERACTIVE_CALM && interactiveOn.value
+
+  // 滑鼠推擠。放在最前面：它只是往引擎丟一個脈衝，跟下面的影格 / 力場計算無關，
+  // 而且要在 pause 的早退之後 —— 停住的時候推了也不會有動靜。
+  applyPointerPush()
+
   // --- 時間軸 → 影格 --------------------------------------------------------
   // ⚠️ 要在力場那段之前算：力場強度與模擬速度都是「每一格自己決定」的（見 modeMix）。
   const last = KEYS.length - 2
@@ -800,7 +916,14 @@ function frame (now) {
     const heat = Math.min(1, (Math.abs(y - lastScrollY) / dt) / SCROLL_REF)
     const target = base + (look.speed.max - idleSpeed) * heat
     simSpeed += (target - simSpeed) * (target > simSpeed ? ATTACK : RELEASE)
-    engine.setSimSpeed?.(simSpeed)
+
+    // 互動模式把場壓慢，讓手勢造成的變化看得出來（見 INTERACTIVE_CALM）。
+    // ⚠️ 只壓「自由場」那幾格。morph 收攏（粒子聚成人像／菌落）的速度也吃 simSpeed，
+    // 整個壓下去的話捲到 PL.III 要等很久人像才長得出來 —— 而那幾格的粒子本來就
+    // 被 morph 按在形狀上、幾乎不亂跑，本來就不需要再壓。
+    const freeNow = modeMix('free')
+    const calmSpeed = CALM_SIM_SPEED + (simSpeed - CALM_SIM_SPEED) * (1 - freeNow)
+    engine.setSimSpeed?.(calmNow ? calmSpeed : simSpeed)
 
     scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
     // 力場同理，而且三種 mode 要的方向完全不同：圖片要壓到下限、菌落要開大。
@@ -855,7 +978,9 @@ function frame (now) {
     }
   }
 
-  syncAmbient(lockNorm)
+  // 互動模式下連環境脈衝也要關 —— 那個是「讓場永遠不靜止」用的，
+  // 正好跟「靜下來看手勢」相反。
+  syncAmbient(calmNow ? 1 : lockNorm)
 
   // --- 收攏 -----------------------------------------------------------------
   if (ready && targetsStale()) invalidateTargets()
@@ -897,6 +1022,23 @@ function frame (now) {
     ? 1
     : HOLD_BREATHE_FLOOR + (1 - HOLD_BREATHE_FLOOR) * (0.5 - 0.5 * Math.cos(t / HOLD_BREATHE_MS * TAU))
   const b = (1 - freeWeight) + freeWeight * breathe * holdScale
+
+  // 互動模式的「吸過去」接管 morph：blend 由捏合狀態推向 1（聚到手上）或 0（回原形）。
+  // ⚠️ 要放在原本的 setMorph 之後覆蓋掉它，而不是散在上面 —— 上面那段還負責
+  // shimmer 與影格切換，跳過的話捏放一次之後粒子就回不到正確的形狀了。
+  gatherBlend += ((gatherOn ? 1 : 0) - gatherBlend) * (gatherOn ? GATHER_IN : GATHER_OUT)
+  if (gatherBlend < 0.002) gatherBlend = 0
+  gatherOn = false          // 呼叫端每一幀都要重新宣告「還捏著」
+
+  if (gatherBlend > 0 && updateGatherTargets(shapes[k])) {
+    // A = 這一格原本的形狀，B = 被手帶著跑的那批目標，blend 在兩者之間過渡
+    engine.setTargets(shapes[k], gatherBuf)
+    engine.setMorph?.(GATHER_PULL, GATHER_GRIP, gatherBlend)
+    curSeg = -1             // 放開之後強制重上傳這一格的目標點
+    return
+  }
+  if (gatherBlend === 0) gatherSeeded = false
+
   engine.setMorph?.(pullNow * b, gripNow * b, e)
 }
 
@@ -1124,12 +1266,34 @@ async function init () {
   onResize = () => invalidateTargets()
   window.addEventListener('resize', onResize)
 
+  // canvas 自己是 pointer-events-none（整頁的點擊都要能穿過去），所以聽 window。
+  pointerOn = !reducedMotion && window.matchMedia?.('(pointer: fine)').matches
+  if (pointerOn) {
+    onPointerMove = (e) => {
+      // 第一次進來先對齊，不然 prev 還停在 (0,0)，會算出一整個螢幕的位移
+      if (!pointerSeen) {
+        pointerPrevX = e.clientX
+        pointerPrevY = e.clientY
+        pointerSeen = true
+      }
+      pointerX = e.clientX
+      pointerY = e.clientY
+    }
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+  }
+
   introStart = performance.now()
   lastScrollY = window.scrollY
   syncPause()
 
   if (import.meta.dev) {
     window.__sameDbg = () => ({
+      // 滑鼠推擠：最近幾次真的送進引擎的脈衝（座標是模擬空間）
+      pointerPushCount,
+      calm: calmNow,
+      engineSimSpeed: +(engine?.config?.simSpeed ?? 0).toFixed(3),
+      gatherBlend: +gatherBlend.toFixed(3),
+      lastPushes: pointerPushes.slice(-3),
       flow: +flow.toFixed(3),
       seg: curSeg,
       simSpeed: +simSpeed.toFixed(3),
@@ -1203,13 +1367,89 @@ onBeforeUnmount(() => {
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
+  if (onPointerMove) window.removeEventListener('pointermove', onPointerMove)
   if (engine) { engine.destroy(); engine = null }
   // ⚠️ 帶著自己的實作去核對 —— 跨斷點切換時窄視窗那張（HomeSpeakerPortrait）
   // 可能已經先登記好了，無條件清會把它踢掉。見 useSpeakerFieldBus 的說明。
   resetSpeakerBus(swapSpeaker)
 })
 
-defineExpose({ backend })
+// 給互動模式（HomeHandField）用的施力入口。
+// 傳進來的是「螢幕座標」，相機變換由這裡統一處理 —— 呼叫端不需要知道 zoom / offset。
+// strength 正值往外推、負值往內吸（shader 是 v += dir * falloff * strength）。
+function pushAt (screenX, screenY, radius, strength) {
+  if (!engine || document.hidden || idle.value) return
+  const { x, y } = toSim(screenX, screenY)
+  engine.disturb?.(x, y, radius, strength)
+}
+
+// 互動模式的「吸過去」。amount 0 = 放開（粒子回到這一格原本的形狀）。
+// ⚠️ 這支只記錄「手在哪、還捏著沒」——實際的目標點在 frame() 裡算，
+// 因為那裡才知道這一格原本的形狀（shapes[k]），才有辦法讓範圍外的粒子留在原位。
+function gatherAt (screenX, screenY, radius, amount) {
+  if (!engine || !ready) return
+  if (!amount) { gatherOn = false; return }
+  const { x, y } = toSim(screenX, screenY)
+  gatherX = x
+  gatherY = y
+  gatherR = radius
+  gatherOn = true
+}
+
+// 每幀更新目標點。home 是這一格原本的形狀（Float32Array，x,y 交錯）。
+function updateGatherTargets (home) {
+  const count = engine.config.count
+  if (!home || home.length < count * 2) return false
+
+  if (!gatherBuf || gatherBuf.length !== count * 2) {
+    gatherBuf = new Float32Array(count * 2)
+    gatherDisk = new Float32Array(count * 2)
+    gatherLag = new Float32Array(count)
+    gatherSeeded = false
+    // 圓盤內的均勻分佈與跟隨係數都只擲一次亂數。
+    // ⚠️ 每幀重擲的話粒子會在團裡瘋狂抖動。sqrt 是為了面積均勻，不然點會擠在圓心。
+    for (let i = 0; i < count; i++) {
+      const a = Math.random() * Math.PI * 2
+      const r = Math.sqrt(Math.random())
+      gatherDisk[i * 2] = Math.cos(a) * r
+      gatherDisk[i * 2 + 1] = Math.sin(a) * r
+      gatherLag[i] = GATHER_LAG_MIN + Math.random() * (GATHER_LAG_MAX - GATHER_LAG_MIN)
+    }
+  }
+
+  // 第一次要從「原本的位置」開始追，不然目標會從 (0,0) 一路飛過來
+  if (!gatherSeeded) {
+    gatherBuf.set(home.subarray(0, count * 2))
+    gatherSeeded = true
+  }
+
+  const reach2 = GATHER_REACH * GATHER_REACH
+  for (let i = 0; i < count; i++) {
+    const ix = i * 2
+    const hx = home[ix]
+    const hy = home[ix + 1]
+    const dx = hx - gatherX
+    const dy = hy - gatherY
+
+    let tx, ty
+    if (dx * dx + dy * dy > reach2) {
+      // 範圍外：目標就是原本的位置，等於不參與這次聚集
+      tx = hx
+      ty = hy
+    } else {
+      tx = gatherX + gatherDisk[ix] * gatherR
+      ty = gatherY + gatherDisk[ix + 1] * gatherR
+    }
+
+    // 各自的跟隨速度 → 手一移動就拉出參差的尾巴
+    const lag = gatherLag[i]
+    gatherBuf[ix] += (tx - gatherBuf[ix]) * lag
+    gatherBuf[ix + 1] += (ty - gatherBuf[ix + 1]) * lag
+  }
+  return true
+}
+
+defineExpose({ backend, pushAt, gatherAt })
 </script>
 
 <template>

@@ -322,7 +322,9 @@
       particle.vy *= (1.0 - options.frictionFactor);
 
       // Hero disturb impulse: radial push from disturb origin, linear falloff.
-      if (disturb.w > 0.0) {
+      // w > 0 pushes outward, w < 0 pulls toward the origin. Both go through
+      // the same code path — the sign of w flips the direction of the impulse.
+      if (disturb.w != 0.0) {
         let dx = particle.x - disturb.x;
         let dy = particle.y - disturb.y;
         let d2 = dx * dx + dy * dy;
@@ -1149,7 +1151,9 @@
       if (d) {
         device.queue.writeBuffer(disturbBuffer, 0, new Float32Array([d.x, d.y, d.r, d.s]));
         d.s *= 0.85;
-        if (d.s < 0.05) pendingDisturb = null;
+        // ⚠️ 用絕對值判斷：吸力是負的 s，直接比 < 0.05 的話負脈衝永遠成立，
+        // 寫進 buffer 的下一刻就被清掉 —— 吸力等於只作用一幀，看起來像沒反應。
+        if (Math.abs(d.s) < 0.05) pendingDisturb = null;
       } else {
         device.queue.writeBuffer(disturbBuffer, 0, new Float32Array([0, 0, 0, 0]));
       }
@@ -1663,7 +1667,12 @@
         pendingDisturb.x = x;
         pendingDisturb.y = y;
         pendingDisturb.r = Math.max(pendingDisturb.r, r);
-        pendingDisturb.s = Math.min(40, pendingDisturb.s + s * 0.45);
+        // 兩端都要夾。推(+)與吸(-)相加會互相抵消，那是合理的物理，
+        // 但沒有下限的話連續吸引會一路累加到負無限大。
+        // ⚠️ 上限從 40 放寬到 100：每幀持續施力時穩態約是單次 s 的三倍
+        // （s += new*0.45 對上每幀 *0.85 的衰減），卡在 40 的話 s 超過 13 就再也
+        // 推不動了 —— 手勢互動想要更強的吸／推會完全沒感覺。
+        pendingDisturb.s = Math.max(-100, Math.min(100, pendingDisturb.s + s * 0.45));
       } else {
         pendingDisturb = { x, y, r, s };
       }

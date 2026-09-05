@@ -28,6 +28,12 @@ const fieldRef = ref(null)
 // 右下角的狀態列會顯示實際跑起來的後端（webgpu / webgl2 / canvas2d）
 const backend = computed(() => fieldRef.value?.backend || '')
 
+// 互動模式（彩蛋）。手勢那邊算出螢幕座標與力道，這裡轉交給粒子場 ——
+// 相機變換（zoom / offset）由 HomeField.pushAt 自己處理。
+const { isOn: interactiveOn } = useInteractiveMode()
+const handPush = (x, y, radius, strength) => fieldRef.value?.pushAt?.(x, y, radius, strength)
+const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, radius, amount)
+
 </script>
 
 <template>
@@ -51,6 +57,18 @@ const backend = computed(() => fieldRef.value?.backend || '')
     <!-- 側邊章節指示器。fixed 在畫面左側，捲到哪一卷就亮哪一顆，點了直接跳過去。
          原本這串點是 PL.III 與 PL.VII 各自畫一份靜態的，會跟著區塊捲走也點不了。 -->
     <CommonChapterNav />
+
+    <!-- 互動模式（彩蛋）：Ctrl + 2 + 6 叫出確認窗，確認後開相機用手勢推粒子。
+         ⚠️ 只有桌機那張 canvas 有 pushAt —— 窄視窗是另一支 HomeMobileField，
+         而且手舉在手機鏡頭前也擺不出這些手勢，所以整組只在 isDesktop 掛載。 -->
+    <ClientOnly>
+      <HomeInteractiveGate v-if="isDesktop" />
+      <HomeHandField
+        v-if="isDesktop && interactiveOn"
+        :on-push="handPush"
+        :on-gather="handGather"
+      />
+    </ClientOnly>
 
     <!-- ===================================================================
          PL. I — Hero
