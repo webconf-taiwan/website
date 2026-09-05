@@ -26,7 +26,7 @@ const { staggerIn, killStaggers } = useStaggerIn()
 
 const STAGE = 'venue-faq'
 
-// 內容由 /api/home 的 venue / faq 兩個區塊提供（見 pages/index-old.vue）。
+// 內容由首頁資料的 venue / faq 兩個區塊提供（見 pages/index-old.vue）。
 // ⚠️ PL.IV「更多資訊」的 href 設計稿沒標，資料裡先放 '#'，需要確認要連到
 // 場地官網、Google Maps 還是站內的交通頁；若填外部網址記得一併把 target 改成 _blank。
 const props = defineProps({
@@ -41,10 +41,16 @@ const props = defineProps({
 })
 
 // ⚠️ 設計稿的分頁是 1 2 3 … 10，代表實際題數遠多於目前這三題 —— 其餘待補。
-// total_pages 現在由資料給，接了真正的分頁 API 之後改成後端算出來的總頁數。
+// 分頁在前端切：資料一次把題目全給，per_page（一次顯示幾題）由資料決定，
+// 總頁數用實際題數算 —— 別再讓資料寫死頁數，題目一加一減就會對不起來。
 const faqPage = ref(1)
-const FAQS = computed(() => props.faq?.items || [])
-const FAQ_TOTAL_PAGES = computed(() => props.faq?.total_pages || 1)
+const FAQS = computed(() => props.faq?.items || [])            // 完整題庫（結構化資料要用全部）
+const FAQ_PER_PAGE = computed(() => props.faq?.per_page || 3)
+const FAQ_TOTAL_PAGES = computed(() => Math.max(1, Math.ceil(FAQS.value.length / FAQ_PER_PAGE.value)))
+// per_page 改小／題目變少時，停在最後一頁的頁碼會超出範圍，這裡夾回來才不會整頁空白
+const FAQ_PAGE = computed(() => Math.min(faqPage.value, FAQ_TOTAL_PAGES.value))
+const FAQ_OFFSET = computed(() => (FAQ_PAGE.value - 1) * FAQ_PER_PAGE.value)
+const FAQ_PAGE_ITEMS = computed(() => FAQS.value.slice(FAQ_OFFSET.value, FAQ_OFFSET.value + FAQ_PER_PAGE.value))
 
 // FAQPage 結構化資料：讓搜尋引擎／AI 摘要能直接讀到問答內容，而不必等
 // canvas 動畫或捲動觸發 —— JSON-LD 與畫面顯示無關，SSR 階段就會輸出。
@@ -460,7 +466,7 @@ defineExpose({ backend })
           <div class="flex flex-col gap-12 lg:border-t lg:border-pre-800/35 py-8 lg:pl-6">
             <div class="flex flex-col gap-4">
               <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
-                {{ venue.title_en }}
+                {{ venue.heading }}
               </h2>
               <p data-stagger class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
                 {{ venue.title_zh }}
@@ -543,14 +549,14 @@ defineExpose({ backend })
 
             <ul class="flex flex-col">
               <li
-                v-for="(item, i) in FAQS"
+                v-for="(item, i) in FAQ_PAGE_ITEMS"
                 :key="item.question"
                 data-stagger
                 class="flex gap-x-4 border-b border-dashed border-pre-800/35 py-6 lg:gap-x-6"
                 :class="i === 0 ? 'border-t border-dashed' : ''"
               >
                 <span class="shrink-0 font-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
-                  Q{{ i + 1 }}
+                  Q{{ FAQ_OFFSET + i + 1 }}
                 </span>
                 <div class="flex min-w-0 flex-col gap-3">
                   <p class="font-zh text-[18px] font-bold leading-[1.4] text-pre-800">
@@ -564,9 +570,6 @@ defineExpose({ backend })
               </li>
             </ul>
 
-            <!-- ⚠️ 換頁目前只會改 faqPage，還不會換題目 —— /api/home 一次把 items
-                 全給，沒有分頁參數。之後 FAQ 改成獨立的分頁 API 時，這裡改成
-                 watch(faqPage) 重打即可。 -->
             <div data-stagger>
               <CommonControlPagination
                 v-model:page="faqPage"

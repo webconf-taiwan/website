@@ -44,7 +44,7 @@
 // seek 力，見 docs/point-cloud-effect.md §8）。
 
 const props = defineProps({
-  // /api/home 的 speaker.items，只用來拿 portrait 路徑
+  // 首頁資料的 speaker.items，只用來拿 portrait 路徑
   speakers: {
     type: Array,
     default: () => []

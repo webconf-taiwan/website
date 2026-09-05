@@ -1,0 +1,84 @@
+{
+  "items": [
+    {
+      "id": "gipi",
+      "name": "Gipi",
+      "org": "商業思維學院",
+      "role": "院長",
+      "tag": "Keynote Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-01.png",
+      "show_on_home": true
+    },
+    {
+      "id": "will",
+      "name": "保哥 Will",
+      "org": "多奇數位創意有限公司",
+      "role": "技術總監",
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-02.png",
+      "show_on_home": true
+    },
+    {
+      "id": "che-yu-wu",
+      "name": "吳哲宇",
+      "org": "墨雨互動設計有限公司",
+      "role": "藝術家",
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-01.png",
+      "show_on_home": true
+    },
+    {
+      "id": "tonyq",
+      "name": "TonyQ",
+      "org": "商業思維學院",
+      "role": "院長",
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-02.png",
+      "show_on_home": true
+    },
+    {
+      "id": "thomas-yin",
+      "name": "Thomas Yin",
+      "org": "商業思維學院",
+      "role": "院長",
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-01.png",
+      "show_on_home": true
+    },
+    {
+      "id": "summer",
+      "name": "Summer",
+      "org": "商業思維學院",
+      "role": "院長",
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-02.png",
+      "show_on_home": true
+    },
+    {
+      "id": "bo-yi-wu",
+      "name": "Bo-Yi Wu",
+      "org": "商業思維學院",
+      "role": "院長",
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-01.png",
+      "show_on_home": true
+    },
+    {
+      "id": "happy",
+      "name": "Happy",
+      "org": "商業思維學院",
+      "role": "院長",
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "portrait": "/speakers/speaker-02.png",
+      "show_on_home": true
+    }
+  ]
+}

@@ -1,6 +1,11 @@
 <script setup>
 // 分頁控制。目前用於 PL.V 常見問答，但刻意做成與內容無關的通用元件。
 //
+// ⚠️ 每一顆的可點範圍是「h-11 + px-2.5」，不是那個數字本身 —— 純數字的命中區
+// 只有 8×17px，手機上幾乎按不到。間距刻意不用 nav 的 gap，改成由每顆自己的
+// 左右內距撐出來（10 + 10 = 設計稿的 20px），這樣相鄰兩顆的命中區會貼齊、
+// 中間不會留一條按了沒反應的死縫。改間距時記得改的是 px-2.5，不是加 gap。
+//
 // 用法：
 //   <CommonControlPagination v-model:page="page" :total="10" />
 //
@@ -68,13 +73,13 @@ function go (p) {
   <nav
     v-if="total > 1"
     aria-label="分頁"
-    class="flex items-center justify-center gap-x-5 font-mono text-[14px] text-pre-800/[62%]"
+    class="flex items-center justify-center font-mono text-[14px] text-pre-800/[62%]"
   >
     <button
       type="button"
       aria-label="上一頁"
       :disabled="!canPrev"
-      class="transition-colors hover:text-pre-800 disabled:pointer-events-none disabled:opacity-30"
+      class="flex h-11 min-w-4 items-center justify-center px-2.5 transition-colors hover:text-pre-800 disabled:pointer-events-none disabled:opacity-30"
       @click="go(page - 1)"
     >
       ←
@@ -82,13 +87,13 @@ function go (p) {
 
     <template v-for="(item, i) in items" :key="item === null ? `gap-${i}` : item">
       <!-- 省略號不是按鈕，也不該被讀出來 -->
-      <span v-if="item === null" aria-hidden="true">…</span>
+      <span v-if="item === null" aria-hidden="true" class="px-2.5">…</span>
       <button
         v-else
         type="button"
         :aria-label="`第 ${item} 頁`"
         :aria-current="item === page ? 'page' : undefined"
-        class="transition-colors hover:text-pre-800"
+        class="flex h-11 min-w-4 items-center justify-center px-2.5 transition-colors hover:text-pre-800"
         :class="item === page ? 'text-pre-800' : ''"
         @click="go(item)"
       >
@@ -100,7 +105,7 @@ function go (p) {
       type="button"
       aria-label="下一頁"
       :disabled="!canNext"
-      class="transition-colors hover:text-pre-800 disabled:pointer-events-none disabled:opacity-30"
+      class="flex h-11 min-w-4 items-center justify-center px-2.5 transition-colors hover:text-pre-800 disabled:pointer-events-none disabled:opacity-30"
       @click="go(page + 1)"
     >
       →

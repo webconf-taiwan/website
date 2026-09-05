@@ -48,7 +48,7 @@ const isExpanded = ref(false)
       </div>
       <button
         type="button"
-        class="flex items-center justify-center gap-x-2 border-dashed border-pre-800/35 pt-4 font-zh text-fs-btn font-bold text-pre-800/[62%] md:hidden"
+        class="relative z-1 flex items-center justify-center gap-x-2 border-dashed border-pre-800/35 pt-4 font-zh text-fs-btn font-bold text-pre-800/[62%] md:hidden"
         :class="isExpanded ? '' : 'border-t'"
         :aria-expanded="isExpanded"
         @click="isExpanded = !isExpanded"
@@ -56,17 +56,39 @@ const isExpanded = ref(false)
         <span>{{ isExpanded ? '收合票券內容' : '展開票券內容' }}</span>
         <span class="font-mono">{{ isExpanded ? '-' : '+' }}</span>
       </button>
-      <!-- 電腦版才顯示 -->
-      <div class="hidden md:flex justify-between items-center">
-        <span>reserve</span>
-        <button
-          type="button"
-          class="flex size-6 items-center justify-center transition-colors"
+      <!-- 購票連結（電腦版才顯示）。
+           ⚠️ 整條都是連結，不是只有箭頭 —— 原本箭頭是個沒綁事件的 <button>，
+           點了不會有任何反應，而且命中區只有那顆 24px 的圖示。
+           負 margin 是讓 hover 的底色鋪到卡片內距的邊緣，文字位置不變。 -->
+      <a
+        v-if="data.reserve_link?.href"
+        :href="data.reserve_link.href"
+        :target="data.reserve_link.target"
+        :rel="linkRel(data.reserve_link.target)"
+        class="group -mx-2 hidden items-center justify-between gap-x-2 rounded px-2 py-2 transition-colors hover:bg-pre-800/5 hover:text-pre-800 md:flex"
+      >
+        <span>{{ data.reserve_link.label }}</span>
+        <span
+          class="flex size-6 items-center justify-center transition-transform group-hover:translate-x-1"
           :class="data.is_highlighted ? 'text-accent-1' : 'text-pre-800/[62%]'"
         >
           <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-        </button>
-      </div>
+        </span>
+      </a>
     </div>
+
+    <!-- 手機版：整張卡就是購票連結。
+         桌機不需要（上面那條 reserve 已經夠好按），所以 md 以上收起來。
+         ⚠️ 這層鋪滿整張卡，所以「展開票券內容」那顆要 relative z-1 浮在它上面，
+         不然點展開會變成跳去購票頁。順序也有關係：這層放在最後，同層沒設
+         z-index 的元素是後者在上，往前搬就會被卡片內容蓋掉、整層失效。 -->
+    <a
+      v-if="data.reserve_link?.href"
+      :href="data.reserve_link.href"
+      :target="data.reserve_link.target"
+      :rel="linkRel(data.reserve_link.target)"
+      :aria-label="`${data.title} — ${data.reserve_link.label}`"
+      class="absolute inset-0 md:hidden"
+    ></a>
   </div>
 </template>

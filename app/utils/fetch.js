@@ -1,6 +1,9 @@
 /**
  * API 請求工具
  *
+ * ⚠️ 全站資料改成靜態 json 之後（見 useSiteData），這支目前沒有任何呼叫者。
+ * 留著是給之後真的接後端時用的入口，確定不接的話可以整支刪掉。
+ *
  * @param {object}  options
  * @param {string}  options.apiPath      相對路徑，例如 '/api/global'
  * @param {string}  [options.method]     HTTP method，預設 GET
@@ -48,23 +51,11 @@ const fetchFn = async ({
     headers.Authorization = `Bearer ${token}`
   }
 
-  const fetchQuery = { ...query }
-
-  try {
-    const route = useRoute()
-
-    if (route.query?.preview_id) {
-      fetchQuery.preview_id = route.query.preview_id
-    }
-  } catch {
-    // 不在 Nuxt 執行環境時略過 preview_id
-  }
-
   const response = await $fetch(apiUrl, {
     method,
     headers,
     body: body && method !== 'GET' ? body : undefined,
-    query: fetchQuery
+    query
   })
 
   return response?.data ?? response

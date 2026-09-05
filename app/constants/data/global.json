@@ -1,0 +1,65 @@
+{
+  "header": {
+    "logo": {
+      "src": "/logo-webconf.svg",
+      "alt": "WebConf",
+      "width": 112,
+      "height": 28,
+      "suffix": ["tw", "·", "26"]
+    },
+    "nav_items": [
+      { "id": "agenda", "label": "議程資訊", "href": "#agenda", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "speaker", "label": "講者陣容", "href": "#speaker", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "venue", "label": "場域介紹", "href": "#venue", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "sponsors", "label": "贊助廠商", "href": "#sponsors", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "team", "label": "主辦團隊", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
+      { "id": "history", "label": "歷屆回顧", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
+      { "id": "wall", "label": "簽到牆", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
+      { "id": "ticket", "label": "前往購票", "href": "#ticket", "target": "_self", "side": "right", "is_highlight": true }
+    ],
+    "menu_open_label": "開啟選單",
+    "menu_close_label": "關閉選單"
+  },
+
+  "footer": {
+    "logo": {
+      "src": "/logo-webconf.svg",
+      "alt": "WebConf"
+    },
+    "tagline": "Taiwan · 2026",
+    "paragraphs": [
+      ["A field study of the living web. Held at", "POPOP Taipei, Dec. 11–12, 2026."],
+      ["Visual identity by MonoLab.", "WebConf Taiwan 2026 All Rights Reserved."]
+    ],
+    "menu_groups": [
+      {
+        "title": "Programme",
+        "links": [
+          { "label": "議程資訊", "href": "#agenda", "target": "_self" },
+          { "label": "講者陣容", "href": "#speaker", "target": "_self" },
+          { "label": "場域介紹", "href": "#venue", "target": "_self" },
+          { "label": "前往購票", "href": "#ticket", "target": "_self" }
+        ]
+      },
+      {
+        "title": "Codex",
+        "links": [
+          { "label": "贊助廠商", "href": "#sponsors", "target": "_self" },
+          { "label": "主辦團隊", "href": "#", "target": "_self" },
+          { "label": "歷史回顧", "href": "#", "target": "_self" },
+          { "label": "簽到牆", "href": "#", "target": "_self" }
+        ]
+      },
+      {
+        "title": "Connect",
+        "links": [
+          { "label": "MAIL", "href": "mailto:hi@webconf.tw", "target": "_self" },
+          { "label": "FACEBOOK", "href": "https://www.facebook.com/WebConfTaiwan/", "target": "_blank" },
+          { "label": "INSTAGRAM", "href": "https://instagram.com/webconftw/", "target": "_blank" },
+          { "label": "THREADS", "href": "https://www.threads.com/@webconftw", "target": "_blank" }
+        ]
+      }
+    ],
+    "back_to_top_label": "回到頁面頂端"
+  }
+}

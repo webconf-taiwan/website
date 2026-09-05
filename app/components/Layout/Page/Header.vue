@@ -1,25 +1,24 @@
 <script setup>
 const route = useRoute()
 
-// 資料來自 /api/global（與 Footer 共用同一次請求，見 useSiteData）
-const globalData = await useGlobalData()
-const header = computed(() => globalData.value.header)
-const navItems = computed(() => header.value.nav_items || [])
-const logoSrc = computed(() => assetUrl(header.value.logo?.src))
+// 資料來自 app/constants/data/global.json（靜態，見 useSiteData）
+const { header } = useGlobalData()
+const navItems = header.nav_items || []
+const logoSrc = assetUrl(header.logo?.src)
 
-// API 只給語意（side / is_highlight），「哪個斷點顯示哪些」是版面規則，留在元件裡。
+// 資料只給語意（side / is_highlight），「哪個斷點顯示哪些」是版面規則，留在元件裡。
 const EXPOSED_ON_MOBILE = 'ticket'   // 一律外露、不收進漢堡
 const EXPOSED_ON_MD = 'agenda'       // md 才外露，所以漢堡裡的那顆要在 md 以上藏起來
 
-const leftMenu = computed(() => navItems.value.filter(item => item.side === 'left'))
-const rightMenu = computed(() => navItems.value.filter(item => item.side === 'right'))
-const agenda = computed(() => navItems.value.find(item => item.id === EXPOSED_ON_MD))
-const ticket = computed(() => navItems.value.find(item => item.id === EXPOSED_ON_MOBILE))
+const leftMenu = navItems.filter(item => item.side === 'left')
+const rightMenu = navItems.filter(item => item.side === 'right')
+const agenda = navItems.find(item => item.id === EXPOSED_ON_MD)
+const ticket = navItems.find(item => item.id === EXPOSED_ON_MOBILE)
 
 // 漢堡選單內容：TICKET 永遠外露不收；AGENDA 在 md 已外露，故 md 以上隱藏
-const dropdownMenu = computed(() => navItems.value
+const dropdownMenu = navItems
   .filter(item => item.id !== EXPOSED_ON_MOBILE)
-  .map(item => ({ ...item, cls: item.id === EXPOSED_ON_MD ? 'md:hidden' : '' })))
+  .map(item => ({ ...item, cls: item.id === EXPOSED_ON_MD ? 'md:hidden' : '' }))
 
 const open = ref(false)
 const rootRef = ref(null)
@@ -60,9 +59,9 @@ onMounted(() => {
     ref="rootRef"
     class="fixed top-0 z-50 bg-black/80 left-0 w-full backdrop-blur-[8px]"
   >
-    <div class="flex items-center justify-between gap-6 px-6 py-3 lg:justify-center lg:gap-[60px]">
-      <!-- 左側選單（僅桌機 lg+） -->
-      <nav class="hidden w-[360px] items-center justify-end gap-4 lg:flex">
+    <div class="flex items-center justify-between gap-6 px-6 py-3 xl:justify-center xl:gap-[60px]">
+      <!-- 左側選單（僅桌機 xl+：8 顆中文項在 lg 排不下） -->
+      <nav class="hidden flex-1 basis-0 items-center justify-end gap-4 xl:flex">
         <a
           v-for="link in leftMenu"
           :key="link.id"
@@ -70,7 +69,7 @@ onMounted(() => {
           :href="link.href"
           :target="link.target"
           :rel="linkRel(link.target)"
-          class="px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0]"
+          class="shrink-0 whitespace-nowrap px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0]"
         >
           {{ link.label }}
         </a>
@@ -90,8 +89,8 @@ onMounted(() => {
         </span>
       </NuxtLink>
 
-      <!-- 右側選單（僅桌機 lg+） -->
-      <nav class="hidden w-[360px] items-center gap-4 lg:flex">
+      <!-- 右側選單（僅桌機 xl+） -->
+      <nav class="hidden flex-1 basis-0 items-center gap-4 xl:flex">
         <a
           v-for="link in rightMenu"
           :key="link.id"
@@ -99,7 +98,7 @@ onMounted(() => {
           :href="link.href"
           :target="link.target"
           :rel="linkRel(link.target)"
-          class="px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] opacity-0 transition-colors hover:text-[#71c1f0]"
+          class="shrink-0 whitespace-nowrap px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] opacity-0 transition-colors hover:text-[#71c1f0]"
           :class="link.is_highlight ? 'text-[#71c1f0]' : 'text-[#efe6d2]'"
         >
           {{ link.label }}
@@ -107,7 +106,7 @@ onMounted(() => {
       </nav>
 
       <!-- 平板以下：外露項目 + 漢堡鈕 -->
-      <div class="flex items-center gap-2 lg:hidden">
+      <div class="flex items-center gap-2 xl:hidden">
         <!-- AGENDA：md 才外露 -->
         <a
           v-if="agenda"
@@ -115,7 +114,7 @@ onMounted(() => {
           :target="agenda.target"
           :rel="linkRel(agenda.target)"
           data-nav-item
-          class="hidden px-3 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0] md:block"
+          class="hidden whitespace-nowrap px-3 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0] md:block"
         >
           {{ agenda.label }}
         </a>
@@ -126,7 +125,7 @@ onMounted(() => {
           :target="ticket.target"
           :rel="linkRel(ticket.target)"
           data-nav-item
-          class="px-3 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#71c1f0] opacity-0 transition-colors"
+          class="whitespace-nowrap px-3 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#71c1f0] opacity-0 transition-colors"
         >
           {{ ticket.label }}
         </a>
@@ -148,14 +147,14 @@ onMounted(() => {
 
     <!-- 行動選單：右側滑出抽屜 -->
     <div
-      class="fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 lg:hidden"
+      class="fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 xl:hidden"
       :class="open ? 'opacity-100' : 'pointer-events-none opacity-0'"
       @click="open = false"
     ></div>
     <!-- 抽屜關閉時用 translate-x-full 收在畫面右外側，會把頁面捲動範圍撐寬
          （390px 視窗實測被撐成 678px、可以橫捲）。外面包一層會裁切的固定容器
          擋掉；容器本身不吃事件，抽屜再把 pointer-events 收回來。 -->
-    <div class="pointer-events-none fixed inset-0 z-50 overflow-x-hidden lg:hidden">
+    <div class="pointer-events-none fixed inset-0 z-50 overflow-x-hidden xl:hidden">
       <aside
         class="pointer-events-auto absolute right-0 top-0 flex h-dvh w-72 max-w-[80vw] flex-col bg-[#0a0a0b] transition-transform duration-300 ease-out"
         :class="open ? 'translate-x-0' : 'translate-x-full'"
