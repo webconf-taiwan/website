@@ -27,10 +27,10 @@ const props = defineProps({
 const content = computed(() => props.data || {})
 
 const sectionRef = ref(null)
-const { staggerIn, killStaggers } = useStaggerIn()
+const { fadeIn, killFadeIns } = useFadeIn()
 
-onMounted(() => staggerIn(sectionRef.value))
-onBeforeUnmount(() => killStaggers())
+onMounted(() => fadeIn(sectionRef.value))
+onBeforeUnmount(() => killFadeIns())
 </script>
 
 <template>
@@ -50,28 +50,28 @@ onBeforeUnmount(() => killStaggers())
     />
 
     <div class="relative z-1 mx-auto max-w-[872px] px-6 py-16 lg:py-[92px]">
-      <p data-stagger class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
+      <p data-fade="in" class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
         {{ content.plate?.code }}
       </p>
 
       <!-- ⚠️ 這裡的藍是 #71c1f0，與 PL.IV 的 By MRT / By Train 同一支，
            不是 token 的 accent-1 (#7cc8f2)。設計稿兩種藍並存。 -->
       <h2
-        data-stagger
+        data-fade="in"
         class="mt-6 font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]"
       >
         {{ content.title }}
       </h2>
 
       <p
-        data-stagger
+        data-fade="in"
         class="mt-8 font-Noto text-[15px] leading-[1.75] tracking-[0.04em] text-pre-800/[85%] lg:text-[16px]"
       >
         {{ content.body_zh }}
       </p>
 
       <p
-        data-stagger
+        data-fade="in"
         class="mt-6 font-serif text-[13px] leading-[1.7] tracking-[0.06em] text-pre-800/[50%] lg:text-[14px]"
       >
         {{ content.body_en }}

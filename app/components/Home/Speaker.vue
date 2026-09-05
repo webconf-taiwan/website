@@ -77,6 +77,11 @@ const FRAME_FROM = 0.3
 const TYPE_MS = 560            // 打字全長（實際步進數 = 字數，見 playSwap）
 
 const sectionRef = ref(null)
+
+// 進場：卷號 → 兩側名單 → 更多講者。
+// ⚠️ 只標「沒有 frameFade 的東西」—— 觀景框那幾層的 opacity 是換人動畫用 :style
+// 逐幀寫的，gsap 也去動同一個屬性的話兩邊會互相蓋掉。
+useFadeIn(sectionRef, { step: 0.06 })
 const frameRef = ref(null)          // 中央 300×300 觀景框（引線的終點）
 const nameRefs = ref([])            // 八個名字按鈕（引線的起點）
 
@@ -302,17 +307,11 @@ onBeforeUnmount(() => {
     </svg>
 
     <!-- 卷號標籤。窄視窗是橫排一行（設計稿），桌機是直排、絕對定位在左上角。 -->
-    <div class="relative z-2 flex flex-row items-baseline gap-x-4 border-t border-pre-800/35 py-8 lg:absolute lg:inset-x-[60px] lg:top-[60px] lg:flex-col lg:gap-x-0">
-      <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-        {{ plate.code }}
-      </p>
-      <p class="font-serif text-[32px] italic leading-none tracking-[0.02em] text-pre-800 lg:text-[56px]">
-        {{ plate.number }}
-      </p>
-      <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-        {{ plate.label }}
-      </p>
-    </div>
+    <CommonPlate
+      :data="plate"
+      data-fade="in"
+      class="relative z-2 lg:absolute lg:inset-x-[60px] lg:top-[60px]"
+    />
 
     <!-- 章節錨點不在這裡 —— 已經抽成頁面層級的 fixed 元件 CommonChapterNav，
          全程停在畫面左側、可以點著跳章（見 pages/index.vue）。 -->
@@ -431,6 +430,7 @@ onBeforeUnmount(() => {
       <button
         v-for="(s, i) in LEFT"
         :key="s.name"
+        data-fade="in"
         type="button"
         :aria-current="current === i ? 'true' : undefined"
         class="group flex lg:col-start-1 lg:pl-[23.5%]"
@@ -503,6 +503,7 @@ onBeforeUnmount(() => {
       <button
         v-for="(s, i) in RIGHT"
         :key="s.name"
+        data-fade="in"
         type="button"
         :aria-current="current === i + LEFT.length ? 'true' : undefined"
         class="group flex lg:col-start-3 lg:pl-[25.7%]"
@@ -534,7 +535,7 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- 更多講者 -->
-    <div class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[60px] lg:mt-0">
+    <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[60px] lg:mt-0">
       <NuxtLink
         v-if="moreLink.href"
         :to="moreLink.href"

@@ -20,31 +20,38 @@ const props = defineProps({
 })
 
 const content = computed(() => props.data || {})
+
+// 進場：hero 在首屏，ScrollTrigger 的 start 一載入就已經越過，等同「載入即播」。
+// 位移給大一點（預設 16 太含蓄，壓不住背後一直在動的粒子場）。
+const heroRef = ref(null)
+useFadeIn(heroRef, { y: 28, step: 0.12 })
 </script>
 
 <template>
   <section
     id="hero"
+    ref="heroRef"
     data-same-hero
     class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center bg-black/30 px-6 py-20 text-center"
   >
-    <p class="font-mono mb-6 text-fs-micro uppercase text-white/55">
+    <p data-fade="in" class="font-mono mb-6 text-fs-micro uppercase text-white/55">
       {{ content.plate_label }}
     </p>
 
-    <h1 class="mb-6 font-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
+    <h1 data-fade="in" class="mb-6 font-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
       {{ content.title }}
     </h1>
 
-    <p class="mb-3 font-serif text-[clamp(18px,2.2vw,30px)] italic leading-snug">
+    <p data-fade="in" class="mb-3 font-serif text-[clamp(18px,2.2vw,30px)] italic leading-snug">
       {{ content.subtitle }}
     </p>
 
-    <p class="mb-10 font-mono text-fs-micro uppercase text-white/55">
+    <p data-fade="in" class="mb-10 font-mono text-fs-micro uppercase text-white/55">
       {{ content.keywords }}
     </p>
 
     <a
+      data-fade="in"
       :href="content.cta?.href"
       :target="content.cta?.target"
       :rel="linkRel(content.cta?.target)"
@@ -55,7 +62,7 @@ const content = computed(() => props.data || {})
 
     <!-- 四角的「標本標籤」：科學紀錄語彙，桌機才出現 -->
     <div class="pointer-events-none absolute inset-x-6 bottom-8 hidden items-end justify-between lg:flex">
-      <div class="text-left">
+      <div data-fade="in" class="text-left">
         <p class="font-mono text-fs-micro uppercase text-white/55">
           {{ content.corner_left?.label }}
         </p>
@@ -63,7 +70,7 @@ const content = computed(() => props.data || {})
           {{ content.corner_left?.note }}
         </p>
       </div>
-      <div class="text-right">
+      <div data-fade="in" class="text-right">
         <p class="font-mono text-fs-micro uppercase text-white/55">
           {{ content.corner_right?.label }}
         </p>

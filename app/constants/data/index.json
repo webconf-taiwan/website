@@ -16,7 +16,7 @@
   },
 
   "about": {
-    "plate": { "code": "PL. II", "number": "II.", "label": "About" },
+    "plate": { "code": "PL. II", "number": "II.", "label": "ABOUT" },
     "skills_box_label": "Skills",
     "skills": ["UI · UX", "AI Agent", "Frontend", "Backend", "DevOps", "Security", "Agile"],
     "heading": "An emergent\ngathering of the Web.",
@@ -58,12 +58,13 @@
 
   "faq": {
     "plate": { "code": "PL. V", "number": "V.", "label": "FAQ" },
-    "title_en": "FAQ",
+    "title_en": "A field guide to questions.",
     "title_zh": "常見問答",
     "per_page": 3
   },
 
   "ticket": {
+    "plate": { "code": "PL. VI", "number": "VI.", "label": "TICKET" },
     "heading_lines": ["Four ways", "to enter the field."],
     "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "items": [
