@@ -29,11 +29,19 @@ const props = defineProps({
   }
 })
 
-const { staggerIn, killStaggers } = useStaggerIn()
+const { fadeIn, fadeInNow, killFadeIns } = useFadeIn()
 
 // 分頁在前端切：資料一次把題目全給，per_page（一次顯示幾題）由資料決定，
 // 總頁數用實際題數算 —— 別再讓資料寫死頁數，題目一加一減就會對不起來。
 const faqPage = ref(1)
+const faqListRef = ref(null)
+
+// 換頁時題目是整批換掉的新 DOM（v-for 的 key 跟著題目走），
+// 不補這一下新題目會直接硬跳出來。
+watch(faqPage, async () => {
+  await nextTick()
+  fadeInNow(faqListRef.value, { step: 0.06, duration: 0.5 })
+})
 const FAQS = computed(() => props.faq?.items || [])            // 完整題庫（結構化資料要用全部）
 const FAQ_PER_PAGE = computed(() => props.faq?.per_page || 3)
 const FAQ_TOTAL_PAGES = computed(() => Math.max(1, Math.ceil(FAQS.value.length / FAQ_PER_PAGE.value)))
@@ -46,11 +54,11 @@ const venueRef = ref(null)
 const faqRef = ref(null)
 
 onMounted(() => {
-  staggerIn(venueRef.value)
-  staggerIn(faqRef.value)
+  fadeIn(venueRef.value)
+  fadeIn(faqRef.value)
 })
 
-onBeforeUnmount(() => killStaggers())
+onBeforeUnmount(() => killFadeIns())
 </script>
 
 <template>
@@ -68,22 +76,10 @@ onBeforeUnmount(() => killStaggers())
     >
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號。
-             ⚠️ data-stagger 掛在「文字的外層」而不是有 border-t 的那層 ——
+             ⚠️ data-fade="in" 掛在「文字的外層」而不是有 border-t 的那層 ——
              分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。 -->
         <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <div class="flex flex-col border-t border-pre-800/35 py-8">
-            <div data-stagger>
-              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                {{ venue.plate?.code }}
-              </p>
-              <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-                {{ venue.plate?.number }}
-              </p>
-              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                {{ venue.plate?.label }}
-              </p>
-            </div>
-          </div>
+          <CommonPlate :data="venue.plate" data-fade="in" />
         </div>
 
         <!-- 右欄：標題 + 交通方式 + 按鈕 -->
@@ -92,10 +88,10 @@ onBeforeUnmount(() => killStaggers())
             <div class="flex flex-col gap-4">
               <!-- 大標是設計稿的文案（venue.heading），不是場地英文名 ——
                    title_en（Taipei Popop）留給 schema.org 組地點名稱用，別混用。 -->
-              <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
+              <h2 data-fade="in" class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
                 {{ venue.heading }}
               </h2>
-              <p data-stagger class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
+              <p data-fade="in" class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
                 {{ venue.title_zh }}
               </p>
             </div>
@@ -107,7 +103,7 @@ onBeforeUnmount(() => killStaggers())
                 <div
                   v-for="transport in venue.transports"
                   :key="transport.title"
-                  data-stagger
+                  data-fade="in"
                   class="flex flex-col gap-2"
                 >
                   <p class="font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
@@ -120,7 +116,7 @@ onBeforeUnmount(() => killStaggers())
               </div>
 
               <a
-                data-stagger
+                data-fade="in"
                 :href="venue.more_link?.href"
                 :target="venue.more_link?.target"
                 :rel="linkRel(venue.more_link?.target)"
@@ -148,40 +144,28 @@ onBeforeUnmount(() => killStaggers())
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號 -->
         <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <div class="flex flex-col border-t border-pre-800/35 py-8">
-            <div data-stagger>
-              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                {{ faq.plate?.code }}
-              </p>
-              <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-                {{ faq.plate?.number }}
-              </p>
-              <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-                {{ faq.plate?.label }}
-              </p>
-            </div>
-          </div>
+          <CommonPlate :data="faq.plate" data-fade="in" />
         </div>
 
         <!-- 右欄：標題 + 問答 + 分頁 -->
         <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
-          <div class="flex flex-col gap-12 border-t border-pre-800/35 py-8 lg:pl-6">
+          <div class="flex flex-col gap-6 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
             <div class="flex flex-col gap-4">
-              <h2 data-stagger class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
+              <h2 data-fade="in" class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
                 {{ faq.title_en }}
               </h2>
-              <p data-stagger class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
+              <p data-fade="in" class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
                 {{ faq.title_zh }}
               </p>
             </div>
 
-            <ul class="flex flex-col">
+            <ul ref="faqListRef" class="flex flex-col">
               <li
                 v-for="(item, i) in FAQ_PAGE_ITEMS"
                 :key="item.question"
-                data-stagger
-                class="flex gap-x-4 border-b border-dashed border-pre-800/35 py-6 lg:gap-x-6"
-                :class="i === 0 ? 'border-t border-dashed' : ''"
+                data-fade="in"
+                class="flex gap-x-4 py-6 lg:gap-x-6"
+                :class="i < FAQ_PAGE_ITEMS.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
               >
                 <span class="shrink-0 font-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
                   Q{{ FAQ_OFFSET + i + 1 }}
@@ -198,7 +182,7 @@ onBeforeUnmount(() => killStaggers())
               </li>
             </ul>
 
-            <div data-stagger>
+            <div data-fade="in">
               <CommonControlPagination
                 v-model:page="faqPage"
                 :total="FAQ_TOTAL_PAGES"

@@ -14,29 +14,27 @@ const props = defineProps({
 })
 
 const content = computed(() => props.data || {})
+
+// 進場：左欄卷號 → Skills 框 → 右欄標題 → 導言 → 中文 → 按鈕
+const sectionRef = ref(null)
+useFadeIn(sectionRef)
 </script>
 
 <template>
   <section
     id="about"
+    ref="sectionRef"
     class="relative z-10 px-6 lg:bg-black/30 lg:px-12 2xl:px-20"
   >
-    <div class="mx-auto grid max-w-[1680px] grid-cols-1 gap-12 border-t border-pre-800/35 pb-16 pt-8 md:pb-24 lg:grid-cols-12 lg:gap-10">
+    <div class="mx-auto grid max-w-[1680px] grid-cols-1 gap-12 border-t border-pre-800/35 pt-8 pb-[120px] lg:grid-cols-12 lg:gap-10">
       <!-- 左欄：卷號 + Skills 標本框 -->
       <div class="lg:col-span-4">
-        <p class="font-mono text-fs-micro uppercase text-[#71c1f0]/70">
-          {{ content.plate?.code }}
-        </p>
-        <p class="mt-2 font-serif text-fs-h2 italic leading-none">
-          {{ content.plate?.number }}
-        </p>
-        <p class="mt-2 font-mono text-fs-micro uppercase text-white/55">
-          {{ content.plate?.label }}
-        </p>
+        <!-- divider 關掉：這一區的分隔線畫在外層 grid 容器上（要橫貫左右兩欄） -->
+        <CommonPlate :data="content.plate" :divider="false" data-fade="in" />
 
         <!-- Skills 框：疊在背景粒子團上的「觀察框」。刻意留大量上方空白，
              讓框落在粒子團中段（設計稿的構圖）。 -->
-        <div class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
+        <div data-fade="in" class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
           <!-- 十字準星 -->
           <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-caption text-white/40">+</span>
           <div class="relative border border-white/25 px-4 py-5">
@@ -53,23 +51,24 @@ const content = computed(() => props.data || {})
       </div>
 
       <!-- 右欄：主文案 -->
-      <div class="lg:col-span-8 xl:col-span-7">
-        <h2 class="font-serif mb-8 text-[clamp(40px,5.2vw,88px)] whitespace-pre-line leading-[1.08] tracking-[-0.02em]">
+      <div class="lg:col-span-8 xl:col-span-7 lg:pb-6">
+        <h2 data-fade="in" class="font-serif mb-8 text-[clamp(40px,5.2vw,88px)] whitespace-pre-line leading-[1.08] tracking-[-0.02em]">
           {{ content.heading }}
         </h2>
 
-        <p class="mb-8 font-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
+        <p data-fade="in" class="mb-8 font-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
           <template v-for="(run, i) in content.lede_runs" :key="i">
             <span v-if="run.is_accent" class="text-[#71c1f0]">{{ run.text }}</span>
             <template v-else>{{ run.text }}</template>
           </template>
         </p>
 
-        <p class="mb-10 font-zh text-fs-body-lg text-[#efe6d2]/75">
+        <p data-fade="in" class="mb-10 font-zh text-fs-body-lg text-[#efe6d2]/75">
           {{ content.body_zh }}
         </p>
 
         <a
+          data-fade="in"
           :href="content.cta?.href"
           :target="content.cta?.target"
           :rel="linkRel(content.cta?.target)"

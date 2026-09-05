@@ -10,7 +10,7 @@ const isExpanded = ref(false)
 
 <template>
   <div
-    class="relative w-full rounded p-4 backdrop-blur-md md:w-auto md:p-8"
+    class="relative w-full rounded p-4 backdrop-blur-md md:p-8"
     :class="data.is_highlighted
       ? 'border-[1.5px] border-accent-1 bg-gradient-to-b from-[#0f1d4e] to-[#0f1d4e]/30'
       : 'border border-pre-500/50 bg-pre-800/10'"

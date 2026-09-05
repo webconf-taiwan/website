@@ -8,14 +8,14 @@
       "suffix": ["tw", "·", "26"]
     },
     "nav_items": [
-      { "id": "agenda", "label": "議程資訊", "href": "#agenda", "target": "_self", "side": "left", "is_highlight": false },
-      { "id": "speaker", "label": "講者陣容", "href": "#speaker", "target": "_self", "side": "left", "is_highlight": false },
-      { "id": "venue", "label": "場域介紹", "href": "#venue", "target": "_self", "side": "left", "is_highlight": false },
-      { "id": "sponsors", "label": "贊助廠商", "href": "#sponsors", "target": "_self", "side": "left", "is_highlight": false },
-      { "id": "team", "label": "主辦團隊", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
-      { "id": "history", "label": "歷屆回顧", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
-      { "id": "wall", "label": "簽到牆", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
-      { "id": "ticket", "label": "前往購票", "href": "#ticket", "target": "_self", "side": "right", "is_highlight": true }
+      { "id": "agenda", "label_en": "Agenda", "label": "議程資訊", "href": "#agenda", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "speaker", "label_en": "Speakers", "label": "講者陣容", "href": "#speaker", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "venue", "label_en": "Venue", "label": "場域介紹", "href": "#venue", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "sponsors", "label_en": "Sponsors", "label": "贊助廠商", "href": "#sponsors", "target": "_self", "side": "left", "is_highlight": false },
+      { "id": "team", "label_en": "Staff", "label": "主辦團隊", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
+      { "id": "history", "label_en": "History", "label": "歷屆回顧", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
+      { "id": "wall", "label_en": "Logbook", "label": "簽到牆", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
+      { "id": "ticket", "label_en": "Ticket", "label": "前往購票", "href": "#ticket", "target": "_self", "side": "right", "is_highlight": true }
     ],
     "menu_open_label": "開啟選單",
     "menu_close_label": "關閉選單"

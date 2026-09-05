@@ -683,17 +683,7 @@ defineExpose({ backend })
     </svg>
 
     <!-- 卷號標籤 -->
-    <div class="relative z-2 flex flex-col border-t border-pre-800/35 py-8 lg:absolute lg:inset-x-[60px] lg:top-[60px]">
-      <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-        {{ plate.code }}
-      </p>
-      <p class="font-serif text-[56px] italic leading-none tracking-[0.02em] text-pre-800">
-        {{ plate.number }}
-      </p>
-      <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
-        {{ plate.label }}
-      </p>
-    </div>
+    <CommonPlate :data="plate" class="relative z-2 lg:absolute lg:inset-x-[60px] lg:top-[60px]" />
 
     <!-- 章節錨點不在這裡 —— 已經抽成頁面層級的 fixed 元件 CommonChapterNav，
          全程停在畫面左側、由捲動位置決定亮哪顆、可以點著跳章。 -->
