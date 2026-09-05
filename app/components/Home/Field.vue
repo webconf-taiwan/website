@@ -410,6 +410,77 @@ let onResize = null
 let resizeTimer = 0
 let reducedMotion = false
 
+// --- 滑鼠推擠 --------------------------------------------------------------
+// 引擎本來就有 disturb(x, y, radius, strength)（環境脈衝 PLAmbient 也是用它），
+// 這裡只是把指標的位置餵進去，讓粒子被滑過的地方稍微被推開。
+//
+// ⚠️ 只給 (pointer: fine) 的裝置。觸控沒有 hover、手指按下去就是要捲頁，
+// 在 touchmove 上推粒子會跟捲動搶事件。
+//
+// ⚠️ 每幀最多推一次，在 frame() 裡消費 —— pointermove 一秒可以噴上百次，
+// 每次都 disturb 會把 pendingDisturb 疊到上限（引擎自己 clamp 在 40），
+// 變成整片被掀開，不是「稍微推擠」。
+// 量級參考：shader 是「速度 += falloff × strength」，falloff 從圓心的 1 線性掉到邊緣的 0，
+// 引擎每幀再把 strength 乘 0.85 衰減。PLAmbient 的 breath 用 radius 200~400 / strength 7~13，
+// 那是「明顯看得出來」的等級；一開始給 110/3.2 太保守，圈太小、涵蓋的粒子太少，滑過去沒感覺。
+// 粒子被推開多遠 ≈ 初速 / 摩擦，所以「推得更遠」要調的是 MAX_PUSH（給的初速），
+// 不是半徑（半徑只決定影響到多大一圈）。
+const POINTER_RADIUS = 260      // 影響半徑（sim px，= canvas CSS px）
+const POINTER_MAX_PUSH = 18     // 滑動時的單幀最大推力，比 PLAmbient 的 breath(7~13) 再重一點
+const POINTER_SPEED_GAIN = 2  // 這一幀滑了多少 px → 推力（慢慢滑也要推得動）
+// 游標停著時也要持續輕推，粒子才會在游標周圍讓出一塊。只在移動時推的話，
+// 手一停下來粒子立刻填回去，等於游標本身沒有存在感 —— 那就是「沒感覺」的來源。
+//
+// ⚠️ 這個值要很小。引擎每幀把新脈衝併進舊的（s += new * 0.45）再乘 0.85 衰減，
+// 所以持續推的穩態強度是 idlePush * 3 左右 —— 給 2.5 實測會在 2.5 秒內把整個
+// 半徑內的粒子清空，變成一個跟著游標的大洞，不是「稍微推擠」。
+const POINTER_IDLE_PUSH = 0.8
+let pointerOn = false
+let pointerX = 0, pointerY = 0
+let pointerPrevX = 0, pointerPrevY = 0
+let pointerSeen = false
+let onPointerMove = null
+const pointerPushes = []   // 只有 dev 會塞東西進來，給 __sameDbg 看（只留最近 20 筆）
+let pointerPushCount = 0
+
+// 螢幕座標 → 模擬座標。sim space 就是 canvas 的 CSS 像素，但畫面有相機
+// （setCameraZoom / setCameraOffset 在捲動時一直在動），要把它反轉掉，
+// 否則放大時推的位置會跟看到的差一截。
+function toSim (px, py) {
+  const { W, H } = engine.size
+  const zoom = engine.config?.cameraZoom ?? 1
+  const cx = engine.config?.cameraX ?? 0
+  const cy = engine.config?.cameraY ?? 0
+  return {
+    x: (px - W * 0.5) / zoom + W * 0.5 + cx,
+    y: (py - H * 0.5) / zoom + H * 0.5 + cy,
+  }
+}
+
+// 在每幀裡消費指標位置。回傳 void。
+function applyPointerPush () {
+  // ⚠️ 不看 pointerFresh：游標停著時 pointermove 不會再觸發，但排斥圈要一直在。
+  // 只要指標曾經進過畫面（pointerSeen）就每幀推一次。
+  if (!pointerOn || !pointerSeen || !engine) return
+
+  const dx = pointerX - pointerPrevX
+  const dy = pointerY - pointerPrevY
+  pointerPrevX = pointerX
+  pointerPrevY = pointerY
+
+  // 底噪 + 速度加成：停著是穩定的排斥圈，滑動時按這一幀的位移加大
+  const speed = Math.hypot(dx, dy)
+  const push = Math.min(POINTER_MAX_PUSH, POINTER_IDLE_PUSH + speed * POINTER_SPEED_GAIN)
+
+  const { x, y } = toSim(pointerX, pointerY)
+  engine.disturb?.(x, y, POINTER_RADIUS, push)
+  if (import.meta.dev) {
+    pointerPushCount++
+    pointerPushes.push({ x: Math.round(x), y: Math.round(y), push: +push.toFixed(2) })
+    if (pointerPushes.length > 20) pointerPushes.shift()   // 只留最近幾筆，別讓它一直長
+  }
+}
+
 // 每段的 scrub 進度，加總 = flow
 const segProgress = new Array(SEGMENTS.length).fill(0)
 let flow = 0
@@ -745,6 +816,10 @@ function frame (now) {
     lastScrollY = y
     return
   }
+
+  // 滑鼠推擠。放在最前面：它只是往引擎丟一個脈衝，跟下面的影格 / 力場計算無關，
+  // 而且要在 pause 的早退之後 —— 停住的時候推了也不會有動靜。
+  applyPointerPush()
 
   // --- 時間軸 → 影格 --------------------------------------------------------
   // ⚠️ 要在力場那段之前算：力場強度與模擬速度都是「每一格自己決定」的（見 modeMix）。
@@ -1124,12 +1199,31 @@ async function init () {
   onResize = () => invalidateTargets()
   window.addEventListener('resize', onResize)
 
+  // canvas 自己是 pointer-events-none（整頁的點擊都要能穿過去），所以聽 window。
+  pointerOn = !reducedMotion && window.matchMedia?.('(pointer: fine)').matches
+  if (pointerOn) {
+    onPointerMove = (e) => {
+      // 第一次進來先對齊，不然 prev 還停在 (0,0)，會算出一整個螢幕的位移
+      if (!pointerSeen) {
+        pointerPrevX = e.clientX
+        pointerPrevY = e.clientY
+        pointerSeen = true
+      }
+      pointerX = e.clientX
+      pointerY = e.clientY
+    }
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+  }
+
   introStart = performance.now()
   lastScrollY = window.scrollY
   syncPause()
 
   if (import.meta.dev) {
     window.__sameDbg = () => ({
+      // 滑鼠推擠：最近幾次真的送進引擎的脈衝（座標是模擬空間）
+      pointerPushCount,
+      lastPushes: pointerPushes.slice(-3),
       flow: +flow.toFixed(3),
       seg: curSeg,
       simSpeed: +simSpeed.toFixed(3),
@@ -1203,6 +1297,7 @@ onBeforeUnmount(() => {
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
+  if (onPointerMove) window.removeEventListener('pointermove', onPointerMove)
   if (engine) { engine.destroy(); engine = null }
   // ⚠️ 帶著自己的實作去核對 —— 跨斷點切換時窄視窗那張（HomeSpeakerPortrait）
   // 可能已經先登記好了，無條件清會把它踢掉。見 useSpeakerFieldBus 的說明。

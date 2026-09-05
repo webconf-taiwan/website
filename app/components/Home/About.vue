@@ -37,7 +37,12 @@ useFadeIn(sectionRef)
         <div data-fade="in" class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
           <!-- 十字準星 -->
           <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-caption text-white/40">+</span>
-          <div class="relative border border-white/25 px-4 py-5">
+          <!-- 底色與模糊跟票券卡同一組（TicketCard 的非 highlight 樣式），
+               讓背後的粒子糊掉、字才讀得出來。
+               ⚠️ 邊框維持原本的 white/25 —— 票券卡用的 border-pre-500/50 那個 /50
+               不會生效（pre-500 不是 rgb 格式，opacity modifier 吃不到），
+               線會變成不透明的淺灰，在這個框上太搶。 -->
+          <div class="relative border border-white/25 bg-pre-800/10 px-4 py-5 backdrop-blur-md">
             <span class="absolute -top-2.5 left-3 bg-black px-1 font-mono text-fs-caption text-white/60">
               {{ content.skills_box_label }}
             </span>
