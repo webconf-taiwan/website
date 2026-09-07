@@ -19,6 +19,7 @@
  * Engine instance surface:
  *   destroy, setPalette, setPreset, setSpecies, setBgFade, setCount,
  *   setPointSize, setGlow, setForce, setRMax, setMinR, disturb, pause,
+ *   setShapeTypes, setMaxDpr,
  *   get size, get config, get backend ('webgpu'), get particles ([]),
  *   get matrix (null — GPU-resident)
  *
@@ -386,6 +387,14 @@
 
     @group(0) @binding(0) var<storage, read> particles: array<Particle>;
     @group(0) @binding(1) var<storage, read> colors: array<vec4<f32>>;
+    // Per-slot palette indices for the two morph target sets — .x goes with
+    // targets[].xy, .y with targets[].zw. Lets the DISPLAYED colour of a
+    // particle follow the point it is morphing onto, instead of being locked
+    // to its species for life. See setShapeTypes.
+    @group(0) @binding(2) var<storage, read> shapeTypes: array<vec2<f32>>;
+    // morph.z (blend) and morph.w (shape-colour enable). Same buffer the
+    // compute pass reads, so colour and position cross-fade in lockstep.
+    @group(0) @binding(3) var<uniform> renderMorph: vec4<f32>;
     @group(1) @binding(0) var<uniform> options: SimOptions;
     @group(2) @binding(0) var<uniform> camera: Camera;
     @group(3) @binding(0) var<uniform> glowOptions: GlowOptions;
@@ -410,7 +419,14 @@
         return VertexOutput(vec4f(0.0), vec2f(0.0), vec4f(0.0));
       }
       let particle = particles[instanceIndex];
-      let color = colors[u32(particle.particleType)];
+      // Default: colour == species, exactly as before. Only when
+      // setShapeTypes() has been called (renderMorph.w = 1) does the colour
+      // come from the per-slot target indices instead.
+      var color = colors[u32(particle.particleType)];
+      if (renderMorph.w > 0.5) {
+        let st = shapeTypes[u32(particle.slot)];
+        color = mix(colors[u32(st.x)], colors[u32(st.y)], renderMorph.z);
+      }
       let particleCenterPos = vec2f(particle.x, particle.y);
 
       let cameraScale = vec2f(camera.scaleX, -camera.scaleY);
@@ -680,6 +696,9 @@
       morphPull: opts.morphPull ?? 0,
       morphGrip: opts.morphGrip ?? 0,
       morphBlend: opts.morphBlend ?? 0,
+      // 0 = colour follows species (the only behaviour before setShapeTypes
+      // existed). 1 = colour follows the per-slot morph target indices.
+      morphShapeColor: 0,
       maxDpr: opts.maxDpr ?? 2,
       cameraX: opts.cameraX ?? 0,
       cameraY: opts.cameraY ?? 0,
@@ -721,6 +740,7 @@
     let disturbBuffer = null;         // vec4<f32>; xyzw = x,y,radius,strength
     let morphBuffer = null;           // vec4<f32>; x = seek strength, y = seek damping
     let targetsBuffer = null;         // array<vec4<f32>>; indexed by particle.slot
+    let shapeTypesBuffer = null;      // array<vec2<f32>>; indexed by particle.slot
     let targetsGeneration = 0;        // bumped whenever targetsBuffer is reallocated
     let pendingDisturb = null;
 
@@ -820,6 +840,8 @@
       entries: [
         { binding: 0, visibility: GPUShaderStage.VERTEX, buffer: { type: 'read-only-storage' } },
         { binding: 1, visibility: GPUShaderStage.VERTEX, buffer: { type: 'read-only-storage' } },
+        { binding: 2, visibility: GPUShaderStage.VERTEX, buffer: { type: 'read-only-storage' } },
+        { binding: 3, visibility: GPUShaderStage.VERTEX, buffer: { type: 'uniform' } },
       ],
     });
     const bglCamera = device.createBindGroupLayout({
@@ -949,6 +971,17 @@
         size: Math.max(16, 16 * n),   // vec4 per slot: spread.xy + shape.zw
         usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
       });
+      // Per-slot palette indices for those same two target sets. Always
+      // allocated so the render bind group is valid; zero-filled and disabled
+      // (morphShapeColor 0) until setShapeTypes is called.
+      if (shapeTypesBuffer) shapeTypesBuffer.destroy();
+      shapeTypesBuffer = device.createBuffer({
+        label: 'morphShapeTypes',
+        size: Math.max(8, 8 * n),     // vec2 per slot
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+      });
+      // Respawn invalidates the old indices along with the old targets.
+      config.morphShapeColor = 0;
       // 粒子重生 → 舊目標失效。關掉 seek，並推進世代編號讓呼叫端知道要重建：
       // 少了這個，setCount / respawn 之後 targets 全是 0，seek 會把整場粒子
       // 吸到座標原點（畫面看起來就是「整個消失」）。
@@ -1104,7 +1137,7 @@
         });
       }
       device.queue.writeBuffer(morphBuffer, 0, new Float32Array([
-        config.morphPull, config.morphGrip, config.morphBlend, 0,
+        config.morphPull, config.morphGrip, config.morphBlend, config.morphShapeColor,
       ]));
     }
 
@@ -1266,6 +1299,8 @@
         entries: [
           { binding: 0, resource: { buffer: particleBufferA } },
           { binding: 1, resource: { buffer: colorsBuffer } },
+          { binding: 2, resource: { buffer: shapeTypesBuffer } },
+          { binding: 3, resource: { buffer: morphBuffer } },
         ],
       });
 
@@ -1578,6 +1613,7 @@
       if (deltaTimeBuffer) deltaTimeBuffer.destroy();
       if (disturbBuffer) disturbBuffer.destroy();
       if (morphBuffer) morphBuffer.destroy();
+      if (shapeTypesBuffer) shapeTypesBuffer.destroy();
       if (targetsBuffer) targetsBuffer.destroy();
       for (const b of prefixStepSizeBuffers) b.destroy();
       prefixStepSizeBuffers.length = 0;
@@ -1716,6 +1752,39 @@
       }
       device.queue.writeBuffer(targetsBuffer, 0, packed, 0, n * 4);
     }
+    // Upload the palette index each slot should display for the two target
+    // sets — typesA pairs with the spread/.xy set, typesB with the shape/.zw
+    // set. The vertex shader mixes colors[typesA] -> colors[typesB] by the same
+    // morph blend that moves the position, so a particle arrives at a point
+    // wearing that point's colour.
+    //
+    // Why this exists: a particle's species is fixed at spawn and drives the
+    // force matrix, so it cannot be changed to match an image. Pairing
+    // particles to image points *within* a species therefore only works when
+    // the two histograms agree — and when the spawn pattern and the image
+    // disagree, the surplus species piles several particles onto one point
+    // while the starved one leaves points empty. Carrying the colour on the
+    // target instead removes that constraint entirely: pair by position, wear
+    // the target's colour, leave the physics species alone.
+    //
+    // Pass null to switch back to species colouring.
+    function setShapeTypes(typesA, typesB) {
+      if (!shapeTypesBuffer) return;
+      if (!typesA || !typesB) {
+        config.morphShapeColor = 0;
+        writeMorph();
+        return;
+      }
+      const n = Math.min(config.count, typesA.length, typesB.length);
+      const packed = new Float32Array(n * 2);
+      for (let i = 0; i < n; i++) {
+        packed[i * 2] = typesA[i];
+        packed[i * 2 + 1] = typesB[i];
+      }
+      device.queue.writeBuffer(shapeTypesBuffer, 0, packed, 0, n * 2);
+      config.morphShapeColor = 1;
+      writeMorph();
+    }
     // pull: desired closing speed per unit distance (1/s). Higher = tighter fit.
     // grip: how hard velocity is steered toward that (1/s). Higher = less of
     //       the particle-life motion survives inside the shape.
@@ -1727,6 +1796,17 @@
       writeMorph();
     }
     function setShowGlow(v) { config.showGlow = !!v; }
+    // Canvas backing-resolution cap. resize() re-reads config.maxDpr every time,
+    // so bumping it and re-running resize is the only live path for DPR — it
+    // reallocates the HDR target and rebuilds the bind groups that touch it.
+    // Cost is quadratic: the rgba16float HDR target is filled once by the circle
+    // pass and once by compose, so 1.5 -> 1.0 saves 2.25x fill rate.
+    function setMaxDpr(v) {
+      const next = Math.max(0.5, Math.min(3, v));
+      if (next === config.maxDpr) return;
+      config.maxDpr = next;
+      resize();
+    }
     // Live control panel setters — clamp to safe ranges so stats-panel
     // slider drags can't blow the engine up (NaN repel → infinite force,
     // negative friction → exponential blowup, etc.).
@@ -1813,7 +1893,7 @@
       setTargets, setMorph,
       // Stats-panel control surface — live-tunable engine internals
       setFriction, setRepel, setGlowSize, setGlowIntensity, setGlowSteepness,
-      setParticleOpacity, setSeedPattern, respawn,
+      setParticleOpacity, setSeedPattern, respawn, setShapeTypes, setMaxDpr,
       readParticles,                   // async — for SVG / vector export
       pause(v) { config.paused = !!v; },
       get size() { return { W, H }; },

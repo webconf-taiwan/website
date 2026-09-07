@@ -64,10 +64,22 @@ const { speakerIndex, swapImpl, resetSpeakerBus } = useSpeakerFieldBus()
 // 靠等就好：這支掛載時使用者還在 hero，canvas 在畫面外、引擎是 paused 的。
 const {
   tier, whenTierReady, knobs, cpuFallback, showFps,
-  markActive, suspend, suspendReadback,
+  markActive, suspend, suspendReadback, noteRespawn,
 } = useParticleQuality()
 
 const canvasRef = ref(null)
+
+// --- ?tool=1 工具面板 -------------------------------------------------------
+// ⚠️ 這一支只「登記」，不掛面板 —— 面板是 HomeMobileField 掛的（那支在窄視窗
+// 一定存在，這支則是捲到 PL.III 才進場）。登記處見 useParticleTool。
+const toolKnobs = reactive({
+  count: 0, samples: 0, rMax: 0, pointSize: 0, dprCap: 0, shimmerAmp: 0, shimmerMs: 0,
+})
+const toolPresets = ref([])
+const toolMeta = reactive({ autoCount: 0, backend: '', note: '' })
+const { register: registerTool } = useParticleTool()
+let unregisterTool = null
+const TOOL_FIELDS = ['count', 'samples', 'rMax', 'pointSize', 'dprCap', 'shimmerAmp', 'shimmerMs']
 
 // --- 可調參數 --------------------------------------------------------------
 // ⚠️ 取樣點數、密度、rMax、pointSize、閃動幅度與週期都由檔位表提供（見
@@ -692,11 +704,106 @@ async function init () {
   // 名單那邊點下另一位時走這條 —— canvas 沒建好前 swapImpl 是 null，
   // 名單本身照常可用（只換文字，不做粒子動畫）。
   swapImpl.value = swapPortrait
+
+  toolMeta.backend = engine.backend
+  toolMeta.autoCount = count
+  syncToolKnobs()
+  rebuildToolPresets()
+  unregisterTool = registerTool({
+    id: 'portrait',
+    label: '人像',
+    fields: TOOL_FIELDS,
+    knobs: toolKnobs,
+    get presets () { return toolPresets.value },
+    meta: toolMeta,
+    apply: applyToolKnobs,
+  })
+}
+
+// --- ?tool=1 面板的三個接口 -------------------------------------------------
+function syncToolKnobs () {
+  if (!engine) return
+  toolKnobs.count = engine.config.count
+  toolKnobs.samples = q.samples
+  toolKnobs.rMax = engine.config.rMax
+  toolKnobs.pointSize = engine.config.pointSize
+  toolKnobs.dprCap = engine.config.maxDpr
+  toolKnobs.shimmerAmp = q.shimmerAmp
+  toolKnobs.shimmerMs = q.shimmerMs
+}
+
+function rebuildToolPresets () {
+  const canvas = canvasRef.value
+  if (!canvas) return
+  toolPresets.value = Array.from({ length: TIER_COUNT }, (_, t) => {
+    const k = tierKnobs('speakerPortrait', t)
+
+    return {
+      tier: t,
+      values: {
+        count: countFor(canvas, { density: k.density, max: k.countMax, min: k.countMin }),
+        samples: k.samples,
+        rMax: k.rMax,
+        pointSize: k.pointSize,
+        // 跟建引擎時同一條規則：只會減、不會加
+        dprCap: Math.min(maxDpr(), k.dprCap),
+        shimmerAmp: k.shimmerAmp,
+        shimmerMs: k.shimmerMs,
+      },
+    }
+  })
+}
+
+// ⚠️ q 是 tierKnobs 回傳的物件，而閃動迴圈每一輪都重讀 q.shimmerAmp / q.shimmerMs
+// —— 所以改 q 就等於改行為，不需要另外一組覆寫變數（跟 MobileField 不同，
+// 那邊的 opacity / drift 是被算式包住的，才需要覆寫變數）。
+async function applyToolKnobs (next) {
+  if (!engine || !next) return
+
+  if (Number.isFinite(next.rMax)) engine.setRMax?.(next.rMax)
+  if (Number.isFinite(next.pointSize)) engine.setPointSize?.(next.pointSize)
+  if (Number.isFinite(next.dprCap)) engine.setMaxDpr?.(next.dprCap)
+  if (Number.isFinite(next.shimmerAmp)) q.shimmerAmp = next.shimmerAmp
+  if (Number.isFinite(next.shimmerMs)) q.shimmerMs = next.shimmerMs
+
+  let needRebuild = false
+
+  if (Number.isFinite(next.count) && Math.round(next.count) !== toolKnobs.count) {
+    // ⚠️ setCount 會 respawn 並推進 targetsGeneration —— 這一支的閃動迴圈不像
+    // MobileField 的 frame() 有查 targetsStale()，所以目標點得自己重建。
+    engine.setCount?.(Math.round(next.count))
+    noteRespawn()
+    needRebuild = true
+  }
+
+  if (Number.isFinite(next.samples) && Math.round(next.samples) !== q.samples) {
+    // ⚠️ 「每張圖都要同一個取樣點數」——改了就得把快取整個丟掉重取樣。
+    q.samples = Math.round(next.samples)
+    specs.clear()
+    try {
+      await getSpec(shownPortrait)
+    } catch (err) {
+      console.warn('[SpeakerPortrait] 改取樣點數後重新取樣失敗', err)
+    }
+    needRebuild = true
+  }
+
+  if (needRebuild) {
+    // ⚠️ readParticles 是 GPU→CPU 的硬同步點，量測器要先閉嘴一段時間
+    suspendReadback()
+    try {
+      await buildTargets(specs.get(shownPortrait))
+    } catch (err) {
+      console.warn('[SpeakerPortrait] 套用面板數值後重建目標點失敗', err)
+    }
+  }
+  syncToolKnobs()
 }
 
 onMounted(() => { init() })
 
 onBeforeUnmount(() => {
+  unregisterTool?.()
   if (liveRaf) cancelAnimationFrame(liveRaf)
   cancelAnimationFrame(cpuFadeRaf)
   markActive('speakerPortrait', false)

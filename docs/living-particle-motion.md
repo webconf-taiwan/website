@@ -590,7 +590,7 @@ engine.setMorph(pull * breathe, grip * breathe, blend)
 | --- | --- |
 | （不帶參數） | 每次進站隨機抽一組 |
 | `?hero-animation=1`～`5` | 指定一組（也認 id） |
-| `?mode=tool` | 右側開切換面板，可即時換效果＋拉「維持開場構圖」的力度 |
+| `?tool=1` | 右下角開工具面板：即時換效果、拉「維持開場構圖」的力度、直接輸入粒子數量、強制清晰度檔位 |
 
 dev console：`__fieldLook(3)` / `__fieldHold(60)` / `__fieldDbg()`
 （一鏡到底版是 `__sameLook` / `__sameHold` / `__sameDbg`）。

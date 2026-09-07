@@ -104,6 +104,38 @@ export const TIER_PROFILES = {
     { density: 0.075, countMin: 7000, countMax: 13000, samples: 16000,
       rMax: 30, pointSize: 0.90, dprCap: 1.5, shimmerMs: 1000, shimmerAmp: 1.5 },
   ],
+
+  // ── Home/Field（桌機一鏡到底的滿版場）────────────────────────────
+  // ⚠️ 這一組「不是」自動偵測用的 —— 桌機沒有接 useParticleQuality，也不需要
+  // （桌機 GPU 沒有手機那種 5~8 倍又量不出來的落差）。它存在的唯一理由是
+  // ?tool=1 面板要有「一鍵載入一組合理起點」的按鈕，載進去之後人可以再逐項微調。
+  //
+  // ⚠️ 這些是用成本模型**推算**的起點，不是實機量測值。t3 那一排必須等於今天
+  // 線上的實際值，其餘三排是照 mobileField 的 countScale 比例（0.257 / 0.457 /
+  // 0.714 / 1）等比縮下來的，pointSize 再用亮度補償公式 pointScale ≈
+  // √(N_t3 / N_該檔) 補回去（見 docs/particle-performance.md）。
+  //
+  // ⚠️ density 的單位是「顆 / CSS px²」，跟 mobileField 的 countScale 不同 ——
+  // 那邊是乘在 look.budget.density 上的倍率，這邊是絕對密度（因為桌機這一版
+  // 刻意不用 look.budget，見 Field.vue 的 COUNT_DENSITY 註解）。
+  //
+  // rMax 給 0 代表「照 look 自己的」（五組是 70~80）—— 那是效果的個性，滿檔
+  // 不該把它壓成同一個數字。
+  desktopField: [
+    { density: 0.0099, countMin: 6000, countMax: 14000, samples: 14000,
+      rMax: 56, pointSize: 1.60, dprCap: 1.0, shimmerMs: 1600, shimmerAmp: 4.0 },
+    { density: 0.0176, countMin: 8000, countMax: 24000, samples: 24000,
+      rMax: 64, pointSize: 1.20, dprCap: 1.0, shimmerMs: 1300, shimmerAmp: 3.5 },
+    { density: 0.0276, countMin: 10000, countMax: 36000, samples: 36000,
+      rMax: 72, pointSize: 0.95, dprCap: 1.25, shimmerMs: 1000, shimmerAmp: 3.0 },
+    // t3 = 今天線上的值。COUNT_DENSITY / COUNT_MAX / SAMPLES / LOCK_POINT_SIZE /
+    // DPR_DESKTOP / SHIMMER_PERIOD_MS / SHIMMER_AMP 各自的出處見 Field.vue。
+    // ⚠️ samples 36000 < countMax 50000 是「現況」不是「對的值」：buildImageTargets
+    // 用 i % spec.count 取點，所以滿檔時有 14000 個取樣點會被兩顆粒子共用。
+    // 想試「完全不重複」就把 samples 拉到 50000，代價是每張圖的 prepare 變慢約 4 成。
+    { density: 0.0386, countMin: 10000, countMax: 50000, samples: 36000,
+      rMax: 0, pointSize: 0.80, dprCap: 1.5, shimmerMs: 1000, shimmerAmp: 3.0 },
+  ],
 }
 
 // ⚠️ 沒有 WebGPU 時的硬上限。
@@ -144,7 +176,7 @@ export const CPU_POINT_SIZE_FIELD = 0.5
 /**
  * 取某個 profile 在某一檔的旋鈕值。
  *
- * @param {'mobileField'|'speakerPortrait'} profile
+ * @param {'mobileField'|'speakerPortrait'|'desktopField'} profile
  * @param {number} tier 0..3，超出範圍會被夾住
  * @returns {object|null}
  */

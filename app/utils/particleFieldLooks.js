@@ -83,12 +83,12 @@
 //           55~85    近乎鎖死（PL.II 鎖圖片用的區間），內部運動幾乎沒了
 // ⚠️ grip 要跟 physics.forceFactor 一起看：力矩陣越想把粒子塌成球，就要越大的
 //    grip 才守得住。swappedFrom 那四組已經換成不塌的矩陣，所以鬆握就夠。
-// ⚠️ 這個值可以在 ?mode=tool 面板上即時拉，找到滿意的再寫回這裡。
+// ⚠️ 這個值可以在 ?tool=1 面板上即時拉，找到滿意的再寫回這裡。
 //
 // ─── 怎麼換 ────────────────────────────────────────────────────────────────
 //   1. 預設      不帶 query 就是「每次進站隨機抽一組」
 //   2. 指定一組  ?hero-animation=1 ~ 5（也認 id，例如 ?hero-animation=coral-membrane）
-//   3. 現場比較  ?mode=tool 會在畫面右側開一塊面板，點一下就換，不用重整
+//   3. 現場比較  ?tool=1 會在畫面右下角開一塊面板，點一下就換，不用重整
 //   4. dev 即時  console 打 __fieldLook('fluoro-swarm')
 //
 // 想調出第 6 組：把 sandbox.html 跑起來、右上面板調到滿意、按「⬇ 匯出 .json」，
@@ -258,10 +258,10 @@ export const PARTICLE_FIELD_LOOKS = {
 // 網址上指定效果用的參數名，以及「面板模式」的開關。
 //   ?hero-animation=3      指定第 3 組
 //   ?hero-animation=random 明講要隨機（= 不帶這個參數）
-//   ?mode=tool             右側開切換面板
+//   ?tool=1                右下角開工具面板
 export const FIELD_LOOK_QUERY = 'hero-animation'
-export const FIELD_TOOL_QUERY = 'mode'
-export const FIELD_TOOL_VALUE = 'tool'
+export const FIELD_TOOL_QUERY = 'tool'
+export const FIELD_TOOL_VALUE = '1'
 export const FIELD_LOOK_RANDOM = 'random'
 
 // SSR 與「查不到」時的保底。⚠️ 這不是站上的預設行為 —— 沒帶 query 時是隨機抽
@@ -332,7 +332,7 @@ export function fieldLookFromLocation () {
 }
 
 // --- 效能診斷用的參數 -------------------------------------------------------
-// 跟上面 ?hero-animation / ?mode=tool 同一套規矩：值有白名單、打錯字就當沒帶、
+// 跟上面 ?hero-animation / ?tool 同一套規矩：值有白名單、打錯字就當沒帶、
 // 正式站也可以開著。放在同一支檔案是為了維持「只有一個地方知道網址長什麼樣」。
 //   ?tier=0|1|2|3   強制效能檔位（不做裝置偵測、不做任何升降）
 //   ?tier=auto      明講要自動（= 不帶這個參數）

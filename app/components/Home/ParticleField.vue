@@ -31,7 +31,7 @@ const backend = ref('')
 //
 //   （不帶參數）              每次進站隨機抽一組
 //   ?hero-animation=1 ~ 5     指定一組（也認 id，例如 coral-membrane）
-//   ?mode=tool                右側開一塊切換面板，點一下就換、不用重整
+//   ?tool=1                   右下角開一塊切換面板，點一下就換、不用重整
 //   dev console               __fieldLook('fluoro-swarm')
 //
 // ⚠️ 用 let 而不是 ref：driftLoop 每幀都要讀它，不需要響應式的開銷。畫面上要跟著
@@ -46,7 +46,7 @@ let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
 const looks = FIELD_LOOK_LIST
 const activeLook = shallowRef(look)   // 目前這組（shallow 就夠，look 物件不會被改）
 const pinned = ref(false)             // true = 網址指定的，false = 隨機抽到的
-const toolMode = ref(false)           // ?mode=tool
+const toolMode = ref(false)           // ?tool=1
 const switching = ref(false)          // 切換中（重生成粒子要一兩秒）
 // 面板上那支「維持開場構圖」的滑桿。1 = 照 look.hold 的設定，0 = 完全放手（純湧現）。
 // ⚠️ 與 look 一樣是 driftLoop 每幀讀的裸變數，另外用 holdPct 這個 ref 給面板顯示。
@@ -841,7 +841,7 @@ defineExpose({ backend })
     class="pointer-events-none fixed inset-0 z-0 block h-full w-full"
   />
 
-  <!-- ?mode=tool 的切換面板。與一鏡到底版（Home/Field.vue）共用同一個元件。 -->
+  <!-- ?tool=1 的切換面板。與一鏡到底版（Home/Field.vue）共用同一個元件。 -->
   <HomeFieldLookPanel
     v-if="toolMode"
     :look="activeLook"

@@ -14,6 +14,10 @@
 // 粒子順序不必對位：GPU 每幀 spatial sort 會打亂 index，但同色粒子可互換，
 // 所以配對只在「同物種內」以掃描線順序就近配對，粒子走短路徑 → 看起來是
 // 「流動變形」而不是「爆開重組」。
+//
+// ⚠️ 「同物種內配對」有一個前提：粒子的物種直方圖要跟圖片的配色直方圖對得上。
+// 對不上的時候（首頁背景場就是，見 buildSlotTargets 的 recolor 註解）要改走
+// recolor 模式 —— 全域一對一配對 + 顏色掛在目標點上（engine.setShapeTypes）。
 
 // --- 色盤：線性光空間插值 ---------------------------------------------------
 export function srgbToLinear (v) {
@@ -167,22 +171,56 @@ export function pairSnapshotToTargets (snap, targets, T, W) {
 //   shape  —— 配對到的圖片點
 // 兩組都上傳給 shader，捲動時只插值 blend，所以往回捲會「主動把粒子拉回滿版」，
 // 而不是放掉 seek 之後乾等它們慢慢擴散回來。
-export function buildSlotTargets (snap, targets, T, W) {
+export function buildSlotTargets (snap, targets, T, W, opts = {}) {
   const N = snap.length
   const { tx, ty, tt } = targets
-  const snapBy = Array.from({ length: T }, () => [])
-  const tgtBy = Array.from({ length: T }, () => [])
-  for (let i = 0; i < N; i++) snapBy[snap[i].s % T].push(i)
-  for (let i = 0; i < N; i++) tgtBy[tt[i]].push(i)
 
   const orderKey = (x, y) => y * W + x
   const shape = new Float32Array(N * 2)
   const spread = new Float32Array(N * 2)
+  const shapeType = new Float32Array(N)
   for (let i = 0; i < N; i++) {
     const slot = snap[i].slot
     spread[slot * 2] = snap[i].x
     spread[slot * 2 + 1] = snap[i].y
+    shapeType[slot] = snap[i].s % T        // 預設：維持自己的物種色
   }
+
+  // ⚠️ recolor 模式：配對「不」再限制在同物種內，改成全域一對一，並把目標點的
+  // 配色索引一起回傳給呼叫端上傳（engine.setShapeTypes）。
+  //
+  // 為什麼需要它：物種在 spawn 就定死（它同時是力矩陣的索引，改不得），所以
+  // 同物種內配對只有在「粒子的物種直方圖」與「圖片的配色直方圖」對得上時才成立。
+  // 兩邊不合時，多的那一色會把好幾顆粒子疊在同一個點上，少的那一色則整片目標點
+  // 沒人去 —— 而首頁這張是拿 hero 的 seedPattern 生成的，那個直方圖是隨機的
+  //（particle-life-seeds.js 的 rnd = Math.random），所以每次進站的臉都不一樣濃淡。
+  //  實測同一組 look 重整三次，臉的主色從 6.8% / 15.5% / 18.6% 顆，差 2.7 倍。
+  //
+  // 把顏色掛在「目標點」而不是「粒子」上就完全繞開這件事：依位置一對一配對 →
+  // 每個目標點剛好一顆粒子（密度均勻），粒子到站時換上那個點的顏色（配色逐點正確），
+  // 而 species 完全沒動 → 物理不變。
+  // ⚠️ 只有 mode === 'image' 的影格該開。菌落那格的亮塊是「同物種互相吸引」塌出來的，
+  //    顏色一旦不跟著物種走，那個效果在視覺上就消失了。
+  if (opts.recolor) {
+    const a = Array.from({ length: N }, (_, i) => i)
+      .sort((i, j) => orderKey(snap[i].x, snap[i].y) - orderKey(snap[j].x, snap[j].y))
+    const b = Array.from({ length: N }, (_, i) => i)
+      .sort((i, j) => orderKey(tx[i], ty[i]) - orderKey(tx[j], ty[j]))
+    for (let k = 0; k < N; k++) {
+      const slot = snap[a[k]].slot
+      const m = b[k]
+      shape[slot * 2] = tx[m]
+      shape[slot * 2 + 1] = ty[m]
+      shapeType[slot] = tt[m]
+    }
+
+    return { spread, shape, shapeType }
+  }
+
+  const snapBy = Array.from({ length: T }, () => [])
+  const tgtBy = Array.from({ length: T }, () => [])
+  for (let i = 0; i < N; i++) snapBy[snap[i].s % T].push(i)
+  for (let i = 0; i < N; i++) tgtBy[tt[i]].push(i)
 
   for (let t = 0; t < T; t++) {
     const a = snapBy[t].sort((i, j) => orderKey(snap[i].x, snap[i].y) - orderKey(snap[j].x, snap[j].y))
@@ -204,7 +242,7 @@ export function buildSlotTargets (snap, targets, T, W) {
       shape[slot * 2 + 1] = ty[m]
     }
   }
-  return { spread, shape }
+  return { spread, shape, shapeType }
 }
 
 export function useParticleMorph () {

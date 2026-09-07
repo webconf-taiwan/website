@@ -143,7 +143,6 @@ const KEYS = [
   { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
   { id: 'outro', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
-const VENUE_KEY = 3                   // 菌落影格的索引（切光暈時要用）
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
 
 // 各段的捲動範圍。⚠️ 依序、不重疊 —— 重疊不會壞掉（flow 仍然單調），
@@ -187,7 +186,7 @@ const SAMPLES = 36000
 //
 //   （不帶參數）              每次進站隨機抽一組
 //   ?hero-animation=1 ~ 5     指定一組
-//   ?mode=tool                右側開切換面板
+//   ?tool=1                   右下角開工具面板
 //
 // ⚠️ 用 let：frame() 每幀讀它，不需要響應式的開銷。
 // ⚠️ species 由 look 決定，而「所有 spec 的 colors 都必須等於 species」——
@@ -203,6 +202,24 @@ const activeLook = shallowRef(look)
 const pinned = ref(false)
 const toolMode = ref(false)
 const switching = ref(false)
+// 只給 ?tool=1 面板讀的「目前生效值」。⚠️ 引擎的 config 不是響應式的，所以每次
+// 動到旋鈕都要自己同步這裡，不能讓面板直接讀 engine.config。
+const knobs = reactive({
+  count: 0, samples: 0, rMax: 0, pointSize: 0, dprCap: 0, shimmerMs: 0, shimmerAmp: 0,
+})
+// 四個檔位「已經換算成這張 canvas 的絕對值」。面板按 t0~t3 只是把其中一組灌進
+// 草稿，不會直接套用 —— 灌完人可以再逐項微調，按了保存才生效。
+// ⚠️ 要在這裡算而不是面板算：count 得用 canvas 面積換算，那是只有這裡知道的。
+const tierPresets = ref([])
+// 純顯示用的補充資訊（依面積算出來的點數、後端名稱）
+const toolMeta = reactive({ autoCount: 0, backend: '' })
+const { register: registerTool } = useParticleTool()
+let unregisterTool = null
+
+// 這一版開放哪幾個旋鈕。⚠️ 桌機沒有「不透明度」與「游走 / 環境擾動」那幾格 ——
+// 透明度是每一格自己的（KEYS 裡的 opacity，跟著捲動插值），游走則是 hero 專屬的
+// hold 機制、已經有那條滑桿了。
+const TOOL_FIELDS = ['count', 'samples', 'rMax', 'pointSize', 'dprCap', 'shimmerAmp', 'shimmerMs']
 // 「維持開場構圖」的力度。1 = 照 look.hold，0 = 完全放手（純湧現）。
 let holdScale = 1
 const holdPct = ref(100)
@@ -259,6 +276,21 @@ const LOCK_FORCE = 0.1
 //    否則加速的會是整個力場，人像照樣被扯散。兩者是配套的。
 const LOCK_SIM_SPEED = 0.45
 
+// 收攏成圖片 / 菌落時的點大小。第三項「不該被 hero 決定」的參數，跟上面兩條同源。
+//
+// pointSize 是點的銳利核心半徑（sim px），而渲染是 HDR 加法混色 —— 感知亮度正比於
+// N × pointSize²（docs/particle-performance.md §低檔位補償 的公式就是這條反解）。
+// 五組效果從 0.8（深海流光 / 鈷藍細胞是 0.8 / 0.9）到 1.0（標本切片），核心面積與
+// 亮度都差到 1.56 倍。落在滿版 hero 上那是效果的個性；落在同一張人像上就變成
+// 「抽到標本切片的臉比較糊比較亮、抽到深海流光的比較銳比較暗」——
+// 而人像 / venue / faq 這幾格跟 hero 跑哪一組完全無關，不該有這種差異。
+//
+// 值取 0.8 = biolum-drift（DEFAULT_FIELD_LOOK，也是上面 LOCK_FORCE 那段實測裡
+// 「人像五官清楚」的那一組參考）。
+// ⚠️ 純視覺常數：改它只會讓這幾格整體變亮變糊或變暗變銳，不影響物理，也完全不動
+//    到 hero / outro。要調就配 ?hero-animation=1~5 逐組比對同一張人像。
+const LOCK_POINT_SIZE = 0.8
+
 // --- PL.IV 場地：活的菌落場 -------------------------------------------------
 // 設計稿（Figma node 40004289-9149）標的「第三組動態」，畫的是一顆顆散開、
 // 帶膜狀紋理的菌落。那正是 cellular 力矩陣的樣子：i===j 給 +0.8（自己抱團）、
@@ -291,6 +323,14 @@ const VENUE_SIM_SPEED = 0.3
 //   minR 44  約 70~80px、核心有顆粒、外圈帶暈 ← 最接近設計稿
 //   minR 56  約 150px，但變成同心圓環（洋蔥狀），太有結構、不像菌落
 const VENUE_MIN_R = 44
+
+// 菌落的光暈參數。⚠️ 同樣不能照 look 走：五組之間 glowSize 差 1.7 倍（3~5）、
+// glowIntensity 差 2.5 倍（0.012~0.03），而這一格是全站唯一真的把光暈打開的地方
+// （收攏成圖片的那幾格現在一律關掉，見 frame() 的 glowWeight），所以那個差異會被
+// 整片放大成「有時候菌落在發光、有時候只是一堆銳利的點」。
+// 值取兩組本來就 showGlow: true 的效果之間（螢光群飛 4 / 0.022 / 5、
+// 珊瑚薄膜 4.5 / 0.02 / 5）—— 那兩組是站上唯一被實際看過打開光暈的樣子。
+const VENUE_GLOW = { glowSize: 4.2, glowIntensity: 0.021, glowSteepness: 5 }
 
 
 // 菌落要待的那一塊（sim 座標的比例）。設計稿上點雲佔畫面左半，右半留給
@@ -462,6 +502,7 @@ let gatherOn = false          // 這一幀手是不是捏著
 let gatherBlend = 0           // 0 = 原本的形狀，1 = 完全聚到手上
 let gatherX = 0, gatherY = 0, gatherR = 0
 let gatherSeeded = false
+let gatherTypesUp = false             // 這次捏合的配色索引上傳過了沒
 
 // --- 互動模式：把場靜下來 -------------------------------------------------
 // hero 是自由場，粒子本來就在高速流動 —— 手推一下的位移比它自己亂跑的幅度還小，
@@ -526,6 +567,17 @@ let flow = 0
 const specs = new Map()               // 圖片路徑 → PLImage spec（同一張只取樣一次）
 let baseSnap = null                   // 建所有 shapes 的那份粒子快照（換人時要沿用）
 const shapes = []                     // 每個影格的每-slot 目標點 [x,y,x,y,…]
+// 每個影格的每-slot 配色索引（查 palLin 的第幾色）。⚠️ 一定要跟 shapes 同步維護：
+// 兩者都是以 slot 為索引、成對上傳給 shader 的 .xy / .zw 兩組。
+const shapeTypes = []
+// ?tool=1 面板可以覆寫的旋鈕。⚠️ 上面那幾個 const 一律留著當「預設值 / 出處」，
+// 這裡另開一組 let 給面板寫 —— 面板調完覺得好要寫回原始碼時，才知道基準在哪。
+// ⚠️ 用裸變數不是 ref：frame() 每幀讀 lockPointSize / shimmerAmpNow /
+// shimmerMsNow，響應式在那條熱路徑上是白付的開銷（跟 look 同樣的理由）。
+let lockPointSize = LOCK_POINT_SIZE
+let shimmerAmpNow = SHIMMER_AMP
+let shimmerMsNow = SHIMMER_PERIOD_MS
+let samplesNow = SAMPLES
 const palLin = []                     // 每個影格的線性光色盤
 let ready = false
 let targetsGen = -1
@@ -551,6 +603,11 @@ let readyAt = 0                       // 目標點第一次建好的時刻（dev
 let lastOpacity = -1
 let lastColorKey = ''
 let colonyPreset = false              // 目前引擎跑的是不是菌落那組矩陣
+// 點的外觀。⚠️ 兩個都用「不可能的初值」當哨兵，讓第一幀無條件套一次 ——
+// switchLook 走的 applyFieldLook 會把 pointSize / 光暈整組寫回 look 的值，
+// 快取著舊狀態的話，停在人像那一格換效果就不會被改回鎖定值。
+let appliedPointSize = -1
+let glowOn = null                     // true / false / null（還沒套過）
 
 let swapping = false                  // 換人動畫進行中 → 捲動不要搶著寫 morph
 let swapTween = null
@@ -605,7 +662,7 @@ async function getSpec (src, fit, lumaBias = DEFAULT_LUMA_BIAS) {
   const cacheKey = specKey(src, fit, lumaBias)
   if (specs.has(cacheKey)) return specs.get(cacheKey)
   const spec = await window.PLImage.prepare(src, {
-    count: SAMPLES,
+    count: samplesNow,
     colors: look.rules.species,   // 必須等於 species，否則得 setSpecies（會整場重生）
     fit,
     lumaBias,
@@ -705,10 +762,17 @@ function colonyTargets (N, T, W, H) {
 // 用同一份快照把每個影格算成「以 slot 為索引」的目標點。
 // slot 是粒子生成時指定、永不改變的身分（GPU 每幀 spatial sort 會重排陣列，
 // array index 靠不住），shader 用 targets[slot] 查目標點。
+// ⚠️ recolor: true —— 圖片影格的配色掛在「目標點」上，不是粒子的物種上。
+// 完整理由見 useParticleMorph.buildSlotTargets 的長註解：這一版整頁共用一組粒子，
+// 而它們是拿 hero 的 seedPattern 生成的，物種直方圖是隨機的（seeds 用的是沒有種子的
+// Math.random），跟人像的配色直方圖對不上 —— 實測同一組 look 重整三次，臉的主色
+// 從 6.8% / 15.5% / 18.6% 顆，差 2.7 倍，臉就跟著忽濃忽淡。
 function shapeFromSpec (spec, snap, W, H, maxPx = 0) {
   const targets = buildImageTargets(fitInto(spec, W, H, maxPx), snap.length, W, H)
-  const { shape } = buildSlotTargets(snap, targets, spec.palette.length, W)
-  return shape
+  const { shape, shapeType } = buildSlotTargets(
+    snap, targets, spec.palette.length, W, { recolor: true },
+  )
+  return { shape, shapeType }
 }
 
 // 把一份 spec 的 fit 壓到「畫面上最多幾 px」以內。
@@ -756,10 +820,19 @@ async function buildAllShapes () {
   // 改成一律用構圖之後，什麼時候建都一樣，才有辦法把建立時機提前到 1 秒出頭。
   // grip=0 那組實際上也沒差：它在 hero 那端 pull/grip 都是 0，這組座標只有「回程」
   // 那 1.4 秒的收尾會用到，而構圖本來就是張滿版分布。
+  // 自由場與菌落那幾格「不」recolor —— 顏色維持跟著物種走。
+  // ⚠️ 菌落那一格特別不能改：設計要的那些亮塊是 cellular 把同物種吸在一起塌出來的，
+  // 顏色一旦不跟物種綁，同一坨就變成雜色，那個效果在視覺上直接消失。
+  const ownTypes = new Float32Array(snap.length)
+  for (const p of snap) ownTypes[p.slot] = p.s % look.rules.species
+
   let freeShape = spread
+  let freeTypes = ownTypes
   try {
     const seed = buildSeedTargets(look.rules.seedPattern, snap.length, look.rules.species, W, H)
-    freeShape = buildSlotTargets(snap, seed, look.rules.species, W).shape
+    const built = buildSlotTargets(snap, seed, look.rules.species, W)
+    freeShape = built.shape
+    freeTypes = built.shapeType
   } catch (err) {
     console.warn('[HomeField] 開場構圖目標點建立失敗，該影格退回當下分布', err)
   }
@@ -767,34 +840,42 @@ async function buildAllShapes () {
   // 菌落那一格（venue）的目標點：softClusters 的圓群落，壓進版面左半邊那塊。
   // 這組座標只負責「菌落長在哪」，長什麼樣是 cellular 力矩陣自己塌出來的。
   let colonyShape = freeShape
+  let colonyTypes = freeTypes
   try {
-    colonyShape = buildSlotTargets(
+    const built = buildSlotTargets(
       snap,
       colonyTargets(snap.length, look.rules.species, W, H),
       look.rules.species,
       W,
-    ).shape
+    )
+    colonyShape = built.shape
+    colonyTypes = built.shapeType
   } catch (err) {
     console.warn('[HomeField] 菌落構圖建立失敗，該影格退回自由場', err)
   }
 
   shapes.length = 0
+  shapeTypes.length = 0
   palLin.length = 0
   const heroPal = window.PLPalettes.PALETTES[look.palette].particles
+  const pushFree = () => {
+    shapes.push(freeShape)
+    shapeTypes.push(freeTypes)
+    palLin.push(paletteToLinear(heroPal))
+  }
   for (const key of KEYS) {
     if (key.mode === 'colonies') {
       shapes.push(colonyShape)
+      shapeTypes.push(colonyTypes)
       palLin.push(paletteToLinear(heroPal))
       continue
     }
-    if (!key.src) {
-      shapes.push(freeShape)
-      palLin.push(paletteToLinear(heroPal))
-      continue
-    }
+    if (!key.src) { pushFree(); continue }
     const spec = specs.get(specKey(key.src, key.fit, key.lumaBias))
-    if (!spec) { shapes.push(freeShape); palLin.push(paletteToLinear(heroPal)); continue }
-    shapes.push(shapeFromSpec(spec, snap, W, H, key.maxPx))
+    if (!spec) { pushFree(); continue }
+    const built = shapeFromSpec(spec, snap, W, H, key.maxPx)
+    shapes.push(built.shape)
+    shapeTypes.push(built.shapeType)
     palLin.push(paletteToLinear(spec.palette))
   }
 
@@ -838,6 +919,13 @@ function syncAmbient (lockNorm) {
     stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
     ambientOn = true
   }
+}
+
+// 光暈的三個參數一起換。開的時候才需要呼叫（關著的話 shader 根本不跑那一趟 pass）。
+function applyGlow (g) {
+  engine.setGlowSize?.(g.glowSize)
+  engine.setGlowIntensity?.(g.glowIntensity)
+  engine.setGlowSteepness?.(g.glowSteepness)
 }
 
 // --- 每幀 ------------------------------------------------------------------
@@ -885,11 +973,37 @@ function frame (now) {
     colonyPreset = wantColony
     engine.setPreset?.(wantColony ? VENUE_PRESET : look.rules.preset)
     engine.setMinR?.(wantColony ? VENUE_MIN_R : look.physics.minR)
-    // 光暈：demo 的菌落核心是會發光的，關著的話只有銳利點、少一半味道。
-    // ⚠️ 手機一律不開（額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比）。
-    engine.setShowGlow?.(wantColony
-      ? (KEYS[VENUE_KEY].glow && !isMobile())
-      : (look.visual.showGlow && !isMobile()))
+  }
+
+  // --- 點的外觀：每一格自己決定 --------------------------------------------
+  // ⚠️ 跟 forceFor / speedFor 是同一條規則的第三、第四項：hero / outro 照 look
+  // （那是效果的個性），收攏成圖片與菌落的那幾格用固定值。沒有這一段的話，
+  // 「這次進站抽到哪一組 hero」會一路決定人像 / venue / faq 的銳利度與亮度。
+  // 完整理由見 LOCK_POINT_SIZE 與 VENUE_GLOW 的長註解。
+  const pointSizeFor = key => (key.mode === 'free' ? look.visual.pointSize : lockPointSize)
+  const wantPointSize = lerp(pointSizeFor(A), pointSizeFor(B), e)
+  if (Math.abs(wantPointSize - appliedPointSize) > 0.005) {
+    appliedPointSize = wantPointSize
+    engine.setPointSize?.(wantPointSize)   // 重寫 80 bytes 的 options buffer，所以設門檻
+  }
+
+  // 光暈是布林、不能插值 —— 算一個 0/1 的權重再插值，用遲滯（0.35 / 0.65）決定要不要
+  // 翻面，跟上面菌落換矩陣同一套，避免停在交界處來回切。
+  // ⚠️ 收攏成圖片的那幾格一律關掉：光暈是在銳利核心外再疊一張 pointSize × glowSize
+  //    的加法 quad（面積約核心的 100 倍，見 docs/particle-performance.md 的 6a），
+  //    疊在人像上就是把五官糊掉 —— 手機那張獨立人像本來就寫死 showGlow: false。
+  // ⚠️ 手機一律不開（額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比）。
+  const glowWeight = key => (key.mode === 'image'
+    ? 0
+    : key.mode === 'colonies' ? (key.glow ? 1 : 0) : (look.visual.showGlow ? 1 : 0))
+  const glowMix = lerp(glowWeight(A), glowWeight(B), e)
+  const wantGlow = (glowOn ? glowMix > 0.35 : glowMix > 0.65) && !isMobile()
+  if (wantGlow !== glowOn) {
+    glowOn = wantGlow
+    engine.setShowGlow?.(wantGlow)
+    // 開的時候順便換成「這一格該用的那組」參數：菌落用固定值（見 VENUE_GLOW），
+    // hero / outro 照 look —— 那兩格的光暈是效果的個性，不在這條規則的管轄範圍。
+    if (wantGlow) applyGlow(colonyMix > 0.5 ? VENUE_GLOW : look.glow)
   }
 
   // --- 捲動速度 → 模擬速度 -------------------------------------------------
@@ -989,7 +1103,7 @@ function frame (now) {
   // 段落改變 → 換一組目標點。⚠️ 只在這裡上傳（一次 count*16 bytes），不是每幀。
   // 週期也是每一格自己的（菌落那格要快四倍才有電弧感，見 VENUE_SHIMMER_MS）。
   // 用 e < 0.5 決定聽哪一格的，換週期時把起算點重設，避免 cycle 編號跳號亂閃。
-  const periodMs = (e < 0.5 ? A.shimmerMs : B.shimmerMs) ?? SHIMMER_PERIOD_MS
+  const periodMs = (e < 0.5 ? A.shimmerMs : B.shimmerMs) ?? shimmerMsNow
   if (periodMs !== shimmerPeriod) {
     shimmerPeriod = periodMs
     shimmerT0 = t
@@ -1001,12 +1115,16 @@ function frame (now) {
     shimmerCycle = shimmerNow
     // 幅度是「每一格自己的」：人像 3px（五官只有 20~40px 寬，抖過頭就糊），
     // 菌落 12px（一顆 100px 以上，3px 等於沒動）。見 SHIMMER_AMP / VENUE_SHIMMER。
-    const ampA = reducedMotion ? 0 : (A.shimmer ?? SHIMMER_AMP)
-    const ampB = reducedMotion ? 0 : (B.shimmer ?? SHIMMER_AMP)
+    const ampA = reducedMotion ? 0 : (A.shimmer ?? shimmerAmpNow)
+    const ampB = reducedMotion ? 0 : (B.shimmer ?? shimmerAmpNow)
     engine.setTargets(
       ampA ? jitterInto(jitA, shapes[k], ampA) : shapes[k],
       ampB ? jitterInto(jitB, shapes[k + 1], ampB) : shapes[k + 1],
     )
+    // ⚠️ 配色索引一定要跟目標點同一批上傳 —— 兩者都是「以 slot 為索引、對應
+    // .xy / .zw 兩組目標」，分開上傳會有一幀是「舊的顏色配新的位置」。
+    // 閃動只動位置不動顏色，所以這裡吃的是沒有 jitter 的那份。
+    engine.setShapeTypes?.(shapeTypes[k], shapeTypes[k + 1])
   }
 
   const pullTarget = lerp(A.pull, B.pull, e)
@@ -1033,10 +1151,18 @@ function frame (now) {
   if (gatherBlend > 0 && updateGatherTargets(shapes[k])) {
     // A = 這一格原本的形狀，B = 被手帶著跑的那批目標，blend 在兩者之間過渡
     engine.setTargets(shapes[k], gatherBuf)
+    // 兩端都用這一格的配色 —— 被捏走的粒子不該順便變色。
+    // ⚠️ 只在進入捏合時上傳一次：這是一次 count×2 的整份 buffer 寫入，而這段
+    //    每幀都會走到（gatherBuf 逐幀在動），逐幀寫等於白付一份頻寬。
+    if (!gatherTypesUp) {
+      gatherTypesUp = true
+      engine.setShapeTypes?.(shapeTypes[k], shapeTypes[k])
+    }
     engine.setMorph?.(GATHER_PULL, GATHER_GRIP, gatherBlend)
     curSeg = -1             // 放開之後強制重上傳這一格的目標點
     return
   }
+  gatherTypesUp = false
   if (gatherBlend === 0) gatherSeeded = false
 
   engine.setMorph?.(pullNow * b, gripNow * b, e)
@@ -1089,12 +1215,15 @@ async function swapSpeaker (portrait) {
   if (!spec || !ready || !baseSnap) return
 
   const { W, H } = engine.size
-  const nextShape = shapeFromSpec(spec, baseSnap, W, H, KEYS[SPEAKER_KEY].maxPx)
+  const { shape: nextShape, shapeType: nextTypes } = shapeFromSpec(
+    spec, baseSnap, W, H, KEYS[SPEAKER_KEY].maxPx,
+  )
   const nextPal = paletteToLinear(spec.palette)
 
   // 不在人像那一段就別播動畫 —— 直接換掉，捲回去自然就是新的人
   if (flow < SWAP_FLOW_MIN || flow > SWAP_FLOW_MAX) {
     shapes[SPEAKER_KEY] = nextShape
+    shapeTypes[SPEAKER_KEY] = nextTypes
     palLin[SPEAKER_KEY] = nextPal
     curSeg = -1
     lastColorKey = ''
@@ -1108,23 +1237,29 @@ async function swapSpeaker (portrait) {
     const cur = spreadFromSnap(snap, engine.config.count)
     const exploded = explodeXY(cur, W, H)
     const fromPal = palLin[SPEAKER_KEY]
+    const fromTypes = shapeTypes[SPEAKER_KEY]
     const state = { e: 1 }
 
     // 第一段：往外炸開。shape 先維持在「現在的位置」，blend 1→0 把粒子拋去 exploded。
+    // 兩端同色 —— 炸開的過程不變色，變色留給第二段跟著重組一起做。
     engine.setTargets(exploded, cur)
+    engine.setShapeTypes?.(fromTypes, fromTypes)
     engine.setMorph?.(KEYS[SPEAKER_KEY].pull, KEYS[SPEAKER_KEY].grip, 1)
     await tween(state, { e: 0 }, EXPLODE_MS, 'power2.out', () => {
       engine?.setMorph?.(KEYS[SPEAKER_KEY].pull, KEYS[SPEAKER_KEY].grip, state.e)
     })
 
     // 第二段：blend 已在 0 → 無縫把 shape 換成下一個人，再拉回去重組。
+    // .xy 留舊配色、.zw 換新配色，blend 0→1 讓顏色跟著位置一起收攏成新的人。
     engine.setTargets(exploded, nextShape)
+    engine.setShapeTypes?.(fromTypes, nextTypes)
     await tween(state, { e: 1 }, REFORM_MS, 'power2.inOut', () => {
       engine?.setMorph?.(KEYS[SPEAKER_KEY].pull, KEYS[SPEAKER_KEY].grip, state.e)
       engine?.setColors?.(lerpPaletteLinear(fromPal, nextPal, state.e))
     })
   } finally {
     shapes[SPEAKER_KEY] = nextShape
+    shapeTypes[SPEAKER_KEY] = nextTypes
     palLin[SPEAKER_KEY] = nextPal
     // 交還給捲動：強制重新上傳這一段的目標點與色盤
     curSeg = -1
@@ -1137,6 +1272,112 @@ async function swapSpeaker (portrait) {
 // --- 初始化 ----------------------------------------------------------------
 // 面板的滑桿：即時調整「維持開場構圖」的力度。只改一個裸變數，下一幀 frame()
 // 就會用到 —— 不重生成粒子，所以拉的當下就看得到構圖收緊或散開。
+// 把引擎現在的實際值抄進面板的顯示狀態。
+// ⚠️ 每個「會改到這些值的地方」都要叫它：建引擎後、換效果後、fps 減半後。
+function syncKnobs () {
+  if (!engine) return
+  knobs.count = engine.config.count
+  knobs.samples = samplesNow
+  knobs.rMax = engine.config.rMax
+  knobs.pointSize = lockPointSize
+  knobs.dprCap = engine.config.maxDpr
+  knobs.shimmerMs = shimmerMsNow
+  knobs.shimmerAmp = shimmerAmpNow
+}
+
+// 依 canvas 面積把四個檔位換算成絕對值（主要是 density → count）。
+// resize 之後要重算，不然面板顯示的預設點數會停在舊視窗的大小。
+function rebuildTierPresets () {
+  const el = canvasRef.value
+  if (!el) return
+  tierPresets.value = Array.from({ length: TIER_COUNT }, (_, t) => {
+    const k = tierKnobs('desktopField', t)
+
+    return {
+      count: countFor(el, { density: k.density, max: k.countMax, min: k.countMin }),
+      samples: k.samples,
+      // rMax 0 = 「照 look 自己的」（見 particleTiers.js 的 desktopField 註解）
+      rMax: k.rMax || look.physics.rMax,
+      pointSize: k.pointSize,
+      dprCap: k.dprCap,
+      shimmerMs: k.shimmerMs,
+      shimmerAmp: k.shimmerAmp,
+    }
+  })
+}
+
+// 面板：一次套用一整組旋鈕。
+//
+// ⚠️ 刻意做成「按了保存才一次套用」而不是逐項即時：這組裡有兩項非常貴 ——
+//   count    setCount 會 respawn 整場粒子、重配 targets buffer
+//   samples  要把四張圖全部重新取樣（約 190ms / 張，主執行緒同步）
+// 逐項即時等於每動一個數字就付一次那個代價，面板會卡到不能用。
+//
+// ⚠️ 也刻意不寫網址：邊調邊改 query 會讓人以為畫面在重載。要留下來的值請自己
+// 抄回原始碼（各項的出處都在面板的說明區裡）。
+async function applyKnobs (next) {
+  if (!engine || !next) return
+
+  // --- 純變數，下一幀 frame() 自己會讀到 ---------------------------------
+  if (Number.isFinite(next.pointSize)) {
+    lockPointSize = Math.max(0.1, Math.min(8, next.pointSize))
+    knobs.pointSize = lockPointSize
+    appliedPointSize = -1          // 強制下一幀重寫，不要被 0.005 的門檻擋掉
+  }
+  if (Number.isFinite(next.shimmerAmp)) {
+    shimmerAmpNow = Math.max(0, Math.min(40, next.shimmerAmp))
+    knobs.shimmerAmp = shimmerAmpNow
+  }
+  if (Number.isFinite(next.shimmerMs)) {
+    shimmerMsNow = Math.max(120, Math.min(8000, next.shimmerMs))
+    knobs.shimmerMs = shimmerMsNow
+  }
+
+  // --- 引擎的即時 setter（都不會重生粒子）--------------------------------
+  if (Number.isFinite(next.rMax) && next.rMax !== knobs.rMax) {
+    // ⚠️ setRMax 會重配 bin buffer 並重建 bind group（格子邊長是 rMax 算的），
+    // 比其他 setter 貴得多，但不會動到粒子與 targets，所以不用重建目標點。
+    engine.setRMax?.(next.rMax)
+    knobs.rMax = engine.config.rMax
+  }
+  if (Number.isFinite(next.dprCap) && next.dprCap !== knobs.dprCap) {
+    engine.setMaxDpr?.(next.dprCap)
+    knobs.dprCap = engine.config.maxDpr
+  }
+
+  // --- 會重生 / 重取樣的兩項 ---------------------------------------------
+  let needRebuild = false
+
+  if (Number.isFinite(next.count) && Math.round(next.count) !== knobs.count) {
+    // 下限比 COUNT_MIN 低，讓人可以刻意拉到「很稀」看極端；上限 120000 是安全帶
+    //（力場成本 ∝ N²，再往上很容易把分頁鎖死）。
+    engine.setCount?.(Math.max(2000, Math.min(120000, Math.round(next.count))))
+    knobs.count = engine.config.count
+    needRebuild = true
+  }
+
+  if (Number.isFinite(next.samples) && Math.round(next.samples) !== knobs.samples) {
+    // ⚠️ 每張圖的取樣點數必須一致（點數不同會有一撮粒子配不到對），所以改了就得
+    // 把快取整個丟掉重取樣 —— 跟 switchLook 換 species 時同一套流程。
+    samplesNow = Math.max(2000, Math.min(80000, Math.round(next.samples)))
+    knobs.samples = samplesNow
+    specs.clear()
+    switching.value = true
+    const jobs = KEYS.filter(key => key.src).map(specOf)
+    jobs.push(specOf({ ...KEYS[SPEAKER_KEY], src: speakerPortrait(speakerIndex.value) }))
+    try {
+      await Promise.all(jobs)
+    } catch (err) {
+      console.warn('[HomeField] 改取樣點數後重新取樣失敗，該影格維持自由場', err)
+    }
+    switching.value = false
+    needRebuild = true
+  }
+
+  // 目標點是拿舊的粒子數 / 舊的取樣點算的，兩者一動就全部失效
+  if (needRebuild) invalidateTargets()
+}
+
 function setHold (pct) {
   holdPct.value = Math.max(0, Math.min(200, Math.round(pct)))
   holdScale = holdPct.value / 100
@@ -1166,9 +1407,20 @@ async function switchLook (idOrIndex) {
   switching.value = true
   applyLookToKeys()
 
+  // ⚠️ 換效果一律回到自動點數 —— 手動值是「這一組效果下我想看多稀」，
+  // 換組之後那個數字沒有意義了，留著只會讓人以為是新效果的預設。
   const count = countFor(canvasRef.value, PAGE_BUDGET)
+  toolMeta.autoCount = count
   applyFieldLook(engine, look, { count, allowGlow: !isMobile() })
+  // applyFieldLook 剛把 pointSize / rMax 整組寫回新 look 的值，面板要跟著同步；
+  // 檔位預設裡的 rMax 也吃 look，一起重算。
+  syncKnobs()
+  rebuildTierPresets()
   appliedForce = look.physics.forceFactor
+  // ⚠️ applyFieldLook 剛把 pointSize 與光暈整組寫回新 look 的值。如果現在正停在
+  // 人像 / venue 那幾格，下一幀必須把它們改回鎖定值 —— 所以把哨兵清掉強制重套。
+  appliedPointSize = -1
+  glowOn = null
 
   specs.clear()
   const jobs = KEYS.filter(key => key.src).map(specOf)
@@ -1209,6 +1461,7 @@ async function init () {
 
   const hero = window.PLPalettes.PALETTES[look.palette]
   const count = countFor(canvas, PAGE_BUDGET)
+  toolMeta.autoCount = count
 
   engine = await window.makeEngine(canvas, {
     // ⚠️ 力矩陣不再寫死在這裡 —— 5 組效果各自帶一組，而且全都是「非對稱、沒有
@@ -1239,6 +1492,18 @@ async function init () {
     maxDpr: maxDpr(),               // 全螢幕 HDR target，DPR 2 是 4 倍像素、視覺收益極小
   })
   backend.value = engine.backend
+  toolMeta.backend = engine.backend
+  syncKnobs()
+  rebuildTierPresets()
+  unregisterTool = registerTool({
+    id: 'field',
+    label: '滿版場',
+    fields: TOOL_FIELDS,
+    knobs,
+    get presets () { return tierPresets.value },
+    meta: toolMeta,
+    apply: applyKnobs,
+  })
   if (import.meta.dev) {
     window.__sameField = engine
     window.__sameLook = switchLook   // __sameLook('coral-membrane') 或 __sameLook(5)
@@ -1263,7 +1528,12 @@ async function init () {
 
   onVisibility = () => syncPause()
   document.addEventListener('visibilitychange', onVisibility)
-  onResize = () => invalidateTargets()
+  onResize = () => {
+    invalidateTargets()
+    // 檔位預設的 count 是拿 canvas 面積換算的，視窗一變就過期了
+    rebuildTierPresets()
+    toolMeta.autoCount = countFor(canvasRef.value, PAGE_BUDGET)
+  }
   window.addEventListener('resize', onResize)
 
   // canvas 自己是 pointer-events-none（整頁的點擊都要能穿過去），所以聽 window。
@@ -1323,7 +1593,12 @@ async function init () {
   setTimeout(async () => {
     const fps = engine?.getFps ? engine.getFps() : 60
     if (fps > 0 && fps < 45) {
-      engine.setCount?.(Math.round(count / 2))
+      const halved = Math.round(count / 2)
+      engine.setCount?.(halved)
+      // ⚠️ 面板要顯示「引擎現在真的跑幾顆」，不是我們原本想給幾顆 —— 這段減半
+      // 一觸發，knobs.count 就跟引擎對不上了。autoCount 維持幾何算出來的值，
+      // 這樣面板上的對照數字仍然是「依面積算的點數」。
+      knobs.count = halved
       // setCount 會整場重生成粒子，等它們離開生成點再配對
       await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
     }
@@ -1359,6 +1634,7 @@ watch(speakerIndex, (i) => {
 onMounted(() => { init() })
 
 onBeforeUnmount(() => {
+  unregisterTool?.()
   if (raf) cancelAnimationFrame(raf)
   swapTween?.kill()
   triggers.forEach(t => t.kill())
@@ -1459,7 +1735,7 @@ defineExpose({ backend, pushAt, gatherAt })
     class="pointer-events-none fixed inset-0 z-0 block h-full w-full"
   />
 
-  <!-- ?mode=tool 的切換面板。與原版 ParticleField 共用同一個元件。 -->
+  <!-- ?tool=1 的工具面板。與原版 ParticleField 共用同一個元件。 -->
   <HomeFieldLookPanel
     v-if="toolMode"
     :look="activeLook"

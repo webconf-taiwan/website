@@ -40,6 +40,25 @@ const {
 const canvasRef = ref(null)
 const backend = ref('')
 
+// --- ?tool=1 工具面板 -------------------------------------------------------
+// ⚠️ 檔位表給的是「倍率」（countScale / pointScale…），面板要的是「絕對值」——
+// 因為面板是給人看的，"0.32" 沒有意義、"3897 顆" 才有。所以這裡兩邊都留：
+// q 仍然是倍率（onTierChange 那條路要用），knobs 是換算後的絕對值。
+const toolKnobs = reactive({
+  count: 0, rMax: 0, pointSize: 0, dprCap: 0, opacity: 0, driftMs: 0, ambient: 0,
+})
+const toolPresets = ref([])
+const toolMeta = reactive({ autoCount: 0, backend: '', note: '' })
+const { register: registerTool } = useParticleTool()
+let unregisterTool = null
+const toolMode = ref(false)
+// 這一版開放哪幾個旋鈕。沒有「取樣點數」—— 自由場不是從圖片來的，沒有取樣這回事。
+const TOOL_FIELDS = ['count', 'rMax', 'pointSize', 'dprCap', 'opacity', 'driftMs', 'ambient']
+// 面板覆寫值。0 = 沒被覆寫，照原本的算法走。
+let opacityOverride = 0
+let driftMsOverride = 0
+let ambientOverride = 0
+
 // --- 這張 canvas 要在哪些區間跑 --------------------------------------------
 // ⚠️ 順序有意義：索引 0 是 hero、1 是 outro，下面 zoomNow / opacityNow 依索引取參數。
 // 用 IntersectionObserver 而不是 ScrollTrigger —— 這裡只要「有沒有在畫面上」這個
@@ -150,12 +169,21 @@ function zoomNow () {
 // setParticleOpacity，所以「只在 makeEngine 時給一次」會被下一幀直接洗掉 ——
 // 低檔位的亮度補償等於沒做（實測過：t0 的 opacity 仍然停在 look 的原值）。
 function opacityNow () {
+  // 面板的覆寫是「絕對值」，直接取代整條算式 —— 那正是在面板上調它的意思。
+  // ⚠️ outro 那一區仍然照比例縮，不然捲到票券區會突然變亮。
+  if (opacityOverride) {
+    return inRegion[0] ? opacityOverride : Math.min(1, opacityOverride * OUTRO_OPACITY_RATIO)
+  }
+
   const base = inRegion[0]
     ? look.visual.heroOpacity
     : look.visual.heroOpacity * OUTRO_OPACITY_RATIO
 
   return Math.min(1, base * q.opacityScale)
 }
+
+// 游走週期：面板覆寫優先，否則照檔位表。
+function driftMsNow () { return driftMsOverride || q.driftMs }
 
 // --- 目標點 ----------------------------------------------------------------
 // 開場構圖：seedPattern 畫出來的那張圖，才是每組效果真正好看、也真正互相不同的
@@ -291,7 +319,7 @@ function frame (now) {
   // ⚠️ 兩個目標槽都塞同一組（blend 在這一版永遠是 0，沒有第二個形狀要混）——
   // 這樣 setMorph 的 blend 參數怎麼給都不影響結果，少一個會漂移的狀態。
   if (!reducedMotion) {
-    const cycle = Math.floor(t / q.driftMs)
+    const cycle = Math.floor(t / driftMsNow())
     if (cycle !== driftCycle) {
       driftCycle = cycle
       const jit = jitterInto(holdJit, holdBase, HOLD_DRIFT_AMP)
@@ -318,9 +346,11 @@ async function init () {
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
   // 網址決定跑哪一組；沒指定就隨機抽（?hero-animation=1~5，值有白名單）。
-  // ⚠️ ?mode=tool 的切換面板只在桌機版有 —— 那是給設計對照效果用的工具，
-  // 而效果的差異在窄視窗上本來就看不太出來。
+  // ⚠️ 窄視窗「不」提供效果切換清單 —— 效果的差異在這個寬度本來就看不太出來，
+  // 而那份清單很長，在手機上會把真正要調的旋鈕擠到看不見。
+  // ?tool=1 面板在這裡只顯示「參數微調」那一段（見 FieldLookPanel 的 look prop）。
   const fromUrl = fieldLookFromLocation()
+  toolMode.value = fromUrl.tool
   look = fromUrl.look
   appliedForce = look.physics.forceFactor
 
@@ -373,6 +403,9 @@ async function init () {
     maxDpr: Math.min(maxDpr(), q.dprCap),
   })
   backend.value = engine.backend
+  toolMeta.backend = engine.backend
+  toolMeta.autoCount = count
+  toolMeta.note = cpuFallback.value ? '沒有 WebGPU，跑的是 CPU 後端' : ''
   if (showFps()) engine.setShowFps?.(true)
   if (import.meta.dev) window.__mobileField = engine
 
@@ -448,6 +481,18 @@ async function init () {
   //    自由演化，不會被 seek 吸到 (0,0)。
   // ⚠️ 換檔若落在 canvas 被暫停期間（捲到 PL.II~V），frame() 會直接 return、
   //    重建不會排 —— 這是對的，捲回來的第一幀 targetsStale() 照樣會抓到。
+  syncToolKnobs()
+  rebuildToolPresets()
+  unregisterTool = registerTool({
+    id: 'mobileField',
+    label: '滿版場',
+    fields: TOOL_FIELDS,
+    knobs: toolKnobs,
+    get presets () { return toolPresets.value },
+    meta: toolMeta,
+    apply: applyToolKnobs,
+  })
+
   unsubTier = onTierChange(() => {
     if (!engine) return
     q = knobs('mobileField')
@@ -465,12 +510,89 @@ async function init () {
     // ⚠️ cellSubdivisions / maxDpr 沒有 setter，執行期改不了；表裡那兩欄只在
     //    pre-flight 就判到低檔時（也就是建引擎當下）才生效。
     lastOpacity = -1
+    // 量測器降檔之後面板要跟著更新，不然顯示的還是舊值
+    syncToolKnobs()
   })
+}
+
+// 把現在真正生效的值抄進面板的顯示狀態。
+function syncToolKnobs () {
+  if (!engine) return
+  toolKnobs.count = engine.config.count
+  toolKnobs.rMax = engine.config.rMax
+  toolKnobs.pointSize = engine.config.pointSize
+  toolKnobs.dprCap = engine.config.maxDpr
+  toolKnobs.opacity = +opacityNow().toFixed(3)
+  toolKnobs.driftMs = driftMsNow()
+  toolKnobs.ambient = +(ambientOverride || look.ambient * q.ambientGain).toFixed(3)
+}
+
+// 四個檔位換算成這張 canvas 的絕對值，給面板的 t0~t3 按鈕載入。
+function rebuildToolPresets () {
+  const canvas = canvasRef.value
+  if (!canvas || !look) return
+  const b = look.budget
+  toolPresets.value = Array.from({ length: TIER_COUNT }, (_, t) => {
+    const k = tierKnobs('mobileField', t)
+
+    return {
+      tier: t,
+      values: {
+        count: countFor(canvas, {
+          density: b.density * k.countScale,
+          max: Math.round(b.max * k.countScale),
+          min: Math.round(b.min * k.countScale),
+        }),
+        rMax: Math.round(look.physics.rMax * k.rMaxScale),
+        pointSize: +(look.visual.pointSize * k.pointScale).toFixed(2),
+        // ⚠️ 跟建引擎時同一條規則：只會減、不會加（見 maxDpr 那段註解）
+        dprCap: Math.min(maxDpr(), k.dprCap),
+        opacity: +Math.min(1, look.visual.heroOpacity * k.opacityScale).toFixed(3),
+        driftMs: k.driftMs,
+        ambient: +(look.ambient * k.ambientGain).toFixed(3),
+      },
+    }
+  })
+}
+
+// 面板：一次套用一整組。
+// ⚠️ 只有 count 會 respawn（並讓 targetsStale 自己排重建），其餘都是即時 setter
+// 或裸變數，所以這裡不必自己碰目標點。
+function applyToolKnobs (next) {
+  if (!engine || !next) return
+
+  if (Number.isFinite(next.count) && Math.round(next.count) !== toolKnobs.count) {
+    engine.setCount?.(Math.round(next.count))
+    noteRespawn()
+  }
+  if (Number.isFinite(next.rMax)) engine.setRMax?.(next.rMax)
+  if (Number.isFinite(next.pointSize)) engine.setPointSize?.(next.pointSize)
+  if (Number.isFinite(next.dprCap)) engine.setMaxDpr?.(next.dprCap)
+  if (Number.isFinite(next.opacity)) {
+    opacityOverride = next.opacity
+    lastOpacity = -1                 // 強制下一幀重寫，別被變化門檻擋掉
+  }
+  if (Number.isFinite(next.driftMs)) {
+    driftMsOverride = next.driftMs
+    driftCycle = -1                  // 週期一變就馬上換一組目標，不要等舊週期走完
+  }
+  if (Number.isFinite(next.ambient) && next.ambient !== toolKnobs.ambient) {
+    // ⚠️ PLAmbient 沒有「改強度」的 API，只能停掉重開（它就是一串 setTimeout）。
+    ambientOverride = next.ambient
+    stopAmbient?.()
+    stopAmbient = null
+    if (!reducedMotion && ambientOverride > 0) {
+      stopAmbient = window.PLAmbient.start(() => engine, { intensity: ambientOverride })
+    }
+  }
+
+  syncToolKnobs()
 }
 
 onMounted(() => { init() })
 
 onBeforeUnmount(() => {
+  unregisterTool?.()
   if (raf) cancelAnimationFrame(raf)
   clearTimeout(resizeTimer)
   clearTimeout(buildTimer)
@@ -495,4 +617,9 @@ defineExpose({ backend })
     aria-hidden="true"
     class="pointer-events-none fixed inset-0 z-0 block h-full w-full"
   />
+
+  <!-- ?tool=1 的工具面板。⚠️ 窄視窗由這一支掛，因為 HomeField 在這個寬度沒有
+       掛載。面板本身不認得任何 Field 元件 —— 它讀的是 useParticleTool 的登記清單，
+       所以人像那支（HomeSpeakerPortrait）自己登記完就會多長出一個分頁。 -->
+  <HomeFieldLookPanel v-if="toolMode" />
 </template>
