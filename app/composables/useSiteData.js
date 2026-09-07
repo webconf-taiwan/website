@@ -37,6 +37,14 @@ const HOME_FALLBACK = {
   code_of_conduct: {}
 }
 
+const AGENDA_FALLBACK = {
+  plate: {},
+  note_lines: [],
+  heading_lines: [],
+  date: '',
+  items: []
+}
+
 // 講者、贊助商是「名單」，不是首頁專屬的文案：名單本身放整份，
 // 首頁只挑 show_on_home 的出來。要把某一位／某一家從首頁收起來就改那個值，
 // 不用把整筆資料剪下來另存一份（剪一剪就會有兩份名單對不起來）。
@@ -72,5 +80,14 @@ export const useHomeData = async () => {
     speaker: { ...index.default.speaker, items: onHome(speakers.default.items) },
     sponsor: { items: onHome(sponsors.default.items) },
     faq: { ...index.default.faq, items: faq.default.items }
+  }
+}
+
+export const useAgendaData = async () => {
+  const agenda = await import('~/constants/data/agenda.json')
+
+  return {
+    ...AGENDA_FALLBACK,
+    ...agenda.default
   }
 }
