@@ -79,7 +79,9 @@ export default defineNuxtConfig({
     // 用 route rule 而不是頁面裡的 useHead robots meta：只有 route rule 會同時被
     // nuxt-robots（robots.txt + meta）與 nuxt-sitemap 讀到。實測 useHead 那條
     // meta 有生效、但 sitemap.xml 仍然收錄了 /index-old。
-    '/index-old': { robots: false }
+    '/index-old': { robots: false },
+    // /wall 是現場大螢幕的裝置頁（要開相機、沒有頁首頁尾），不是給搜尋的內容頁。
+    '/wall': { robots: false }
   },
 
   app: {
