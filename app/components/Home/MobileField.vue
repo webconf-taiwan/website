@@ -82,9 +82,17 @@ const OUTRO_OPACITY_RATIO = 0.60 / 0.55
 // 不要憑感覺。
 
 // --- 模擬速度（與 Home/ParticleField 同一套）--------------------------------
+// ⚠️ 設計師定案（2026-09）：開場不加速，一進場就照 demo 原本的速度跑。
+// 這支開關留著是因為「開場先散開再降速」在改版過程中反覆進出 —— 想看那一版
+// 把它改成 true 就好，底下三個 INTRO 常數只在它為 true 時生效。
+const INTRO_SPEED_BOOST = false
 const SIM_SPEED_INTRO = 1.5
 const INTRO_HOLD_MS = 1800
 const INTRO_FADE_MS = 5000
+
+// 引擎起手的模擬速度：不加速時直接從待機速度開始（look 會被 __fieldLook 換掉，
+// 所以寫成函式每次現算，不是一次算好的常數）。
+const startSimSpeed = () => (INTRO_SPEED_BOOST ? SIM_SPEED_INTRO : look.speed.idle)
 const SCROLL_REF = 2200
 const ATTACK = 0.14
 const RELEASE = 0.022
@@ -138,7 +146,7 @@ let targetsGen = -1
 let targetsW = 0
 let targetsH = 0
 
-let simSpeed = SIM_SPEED_INTRO
+let simSpeed = startSimSpeed()
 let scrollHeat = 0
 let appliedForce = look.physics.forceFactor
 let lastScrollY = 0
@@ -263,13 +271,16 @@ function frame (now) {
     // 開場包絡：先維持 INTRO 速度，再 smoothstep 降到待機速度，之後恆為 0。
     // ⚠️ 只在進站那一次跑，捲回票券區時不重播 —— 那裡要的是待機的緩慢生態，
     // 不是「又炸開一次」。
+    // INTRO_SPEED_BOOST = false 時整段跳過，intro 恆為 0 → 從第一幀就是待機速度。
     const age = t - introStart
     let intro = 0
-    if (age < INTRO_HOLD_MS) {
-      intro = 1
-    } else if (age < INTRO_HOLD_MS + INTRO_FADE_MS) {
-      const u = 1 - (age - INTRO_HOLD_MS) / INTRO_FADE_MS
-      intro = u * u * (3 - 2 * u)
+    if (INTRO_SPEED_BOOST) {
+      if (age < INTRO_HOLD_MS) {
+        intro = 1
+      } else if (age < INTRO_HOLD_MS + INTRO_FADE_MS) {
+        const u = 1 - (age - INTRO_HOLD_MS) / INTRO_FADE_MS
+        intro = u * u * (3 - 2 * u)
+      }
     }
     const idleSpeed = look.speed.idle
     const base = idleSpeed + (SIM_SPEED_INTRO - idleSpeed) * intro
@@ -381,7 +392,7 @@ async function init () {
     repel: look.physics.repel,
     minR: look.physics.minR,
     rMax: look.physics.rMax * q.rMaxScale,
-    simSpeed: SIM_SPEED_INTRO,
+    simSpeed: startSimSpeed(),
     cameraZoom: look.camera.zoom,
     // ⚠️ pointSize / opacity 隨檔位放大不是裝飾，是必須的：粒子少了還用同樣的
     // 點大小，畫面會變暗變薄，看起來像「壞了」而不是「刻意的稀」。

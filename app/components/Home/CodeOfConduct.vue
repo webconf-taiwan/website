@@ -46,7 +46,7 @@ onBeforeUnmount(() => killFadeIns())
          區塊上下緣會露出一條沒糊到的清晰粒子帶，非常明顯。 -->
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute -inset-x-12 inset-y-0 rounded-[24px] bg-white/[0.03] backdrop-blur-[32px]"
+      class="pointer-events-none absolute -inset-x-12 inset-y-0 rounded-[24px] bg-bg-mid/70 backdrop-blur-[32px]"
     />
 
     <div class="relative z-1 mx-auto max-w-[872px] px-6 py-16 lg:py-[92px]">

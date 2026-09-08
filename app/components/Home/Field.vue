@@ -228,9 +228,17 @@ const holdPct = ref(100)
 // 開場快速散開 → 待機極慢 → 依捲動速度即時加速。與原版 ParticleField 同一套。
 // ⚠️ 只有開場那段是共用的（那是版面編排、不是效果）；待機速度與全速捲動速度
 // 各組效果不同，在 look.speed 裡。
+// ⚠️ 設計師定案（2026-09）：開場不加速，一進場就照 demo 原本的速度跑。
+// 這支開關留著是因為「開場先散開再降速」在改版過程中反覆進出 —— 想看那一版
+// 把它改成 true 就好，底下三個 INTRO 常數只在它為 true 時生效。
+const INTRO_SPEED_BOOST = false
 const SIM_SPEED_INTRO = 1.5
 const INTRO_HOLD_MS = 1800
 const INTRO_FADE_MS = 5000
+
+// 引擎起手的模擬速度：不加速時直接從待機速度開始（look 會被 __fieldLook 換掉，
+// 所以寫成函式每次現算，不是一次算好的常數）。
+const startSimSpeed = () => (INTRO_SPEED_BOOST ? SIM_SPEED_INTRO : look.speed.idle)
 const SCROLL_REF = 2200               // 捲動速度 px/s 到這個值就吃滿加速
 const ATTACK = 0.14
 const RELEASE = 0.022
@@ -591,7 +599,7 @@ let shimmerPeriod = SHIMMER_PERIOD_MS   // 目前生效的閃動週期（每一�
 let jitA = null                       // 閃動用的 scratch，避免每 2.2 秒配兩份大陣列
 let jitB = null
 
-let simSpeed = SIM_SPEED_INTRO
+let simSpeed = startSimSpeed()
 let scrollHeat = 0
 let appliedForce = look.physics.forceFactor
 let pullNow = 0
@@ -1009,14 +1017,17 @@ function frame (now) {
   // --- 捲動速度 → 模擬速度 -------------------------------------------------
   const dt = lastTime ? Math.min(0.1, (t - lastTime) / 1000) : 0
   if (dt > 0) {
-    // 開場包絡：先維持 INTRO 速度，再 smoothstep 降到待機速度，之後恆為 0
+    // 開場包絡：先維持 INTRO 速度，再 smoothstep 降到待機速度，之後恆為 0。
+    // INTRO_SPEED_BOOST = false 時整段跳過，intro 恆為 0 → 從第一幀就是待機速度。
     const age = t - introStart
     let intro = 0
-    if (age < INTRO_HOLD_MS) {
-      intro = 1
-    } else if (age < INTRO_HOLD_MS + INTRO_FADE_MS) {
-      const u = 1 - (age - INTRO_HOLD_MS) / INTRO_FADE_MS
-      intro = u * u * (3 - 2 * u)
+    if (INTRO_SPEED_BOOST) {
+      if (age < INTRO_HOLD_MS) {
+        intro = 1
+      } else if (age < INTRO_HOLD_MS + INTRO_FADE_MS) {
+        const u = 1 - (age - INTRO_HOLD_MS) / INTRO_FADE_MS
+        intro = u * u * (3 - 2 * u)
+      }
     }
     const idleSpeed = look.speed.idle
     const introBase = idleSpeed + (SIM_SPEED_INTRO - idleSpeed) * intro
@@ -1293,15 +1304,20 @@ function rebuildTierPresets () {
   tierPresets.value = Array.from({ length: TIER_COUNT }, (_, t) => {
     const k = tierKnobs('desktopField', t)
 
+    // ⚠️ 形狀是 { tier, values } —— 面板拿 tier 當按鈕標籤、拿 values 灌草稿。
+    // 三個呼叫端（這裡 / MobileField / SpeakerPortrait）必須一致。
     return {
-      count: countFor(el, { density: k.density, max: k.countMax, min: k.countMin }),
-      samples: k.samples,
-      // rMax 0 = 「照 look 自己的」（見 particleTiers.js 的 desktopField 註解）
-      rMax: k.rMax || look.physics.rMax,
-      pointSize: k.pointSize,
-      dprCap: k.dprCap,
-      shimmerMs: k.shimmerMs,
-      shimmerAmp: k.shimmerAmp,
+      tier: t,
+      values: {
+        count: countFor(el, { density: k.density, max: k.countMax, min: k.countMin }),
+        samples: k.samples,
+        // rMax 0 = 「照 look 自己的」（見 particleTiers.js 的 desktopField 註解）
+        rMax: k.rMax || look.physics.rMax,
+        pointSize: k.pointSize,
+        dprCap: k.dprCap,
+        shimmerMs: k.shimmerMs,
+        shimmerAmp: k.shimmerAmp,
+      },
     }
   })
 }
@@ -1478,7 +1494,7 @@ async function init () {
     repel: look.physics.repel,
     minR: look.physics.minR,
     rMax: look.physics.rMax,
-    simSpeed: SIM_SPEED_INTRO,
+    simSpeed: startSimSpeed(),
     cameraZoom: KEYS[0].zoom,
     pointSize: look.visual.pointSize,
     particleOpacity: KEYS[0].opacity,

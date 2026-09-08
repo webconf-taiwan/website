@@ -24,7 +24,7 @@ onMounted(() => {
 
   loop = $gsap.to(trackRef.value, {
     xPercent: -50,
-    duration: 18,
+    duration: 36,
     ease: 'none',
     repeat: -1
   })

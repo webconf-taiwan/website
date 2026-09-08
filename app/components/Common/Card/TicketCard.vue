@@ -13,7 +13,7 @@ const isExpanded = ref(false)
     class="relative w-full rounded p-4 backdrop-blur-md md:p-8"
     :class="data.is_highlighted
       ? 'border-[1.5px] border-accent-1 bg-gradient-to-b from-[#0f1d4e] to-[#0f1d4e]/30'
-      : 'border border-pre-500/50 bg-pre-800/10'"
+      : 'border border-pre-500/50 bg-bg-light/10'"
   >
     <div class="flex flex-col gap-y-6 md:justify-between h-full">
       <div>
