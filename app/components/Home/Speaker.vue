@@ -349,7 +349,7 @@ onBeforeUnmount(() => {
         <div class="absolute left-1/2 top-[3%] z-1 flex w-[62%] -translate-x-1/2 flex-col gap-y-2">
           <!-- 框線上方：tag + 第幾位。與桌機共用同一組動畫狀態（frameFade / typeTop）。 -->
           <div
-            class="flex items-start justify-between font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-pre-800"
+            class="flex items-start justify-between text-en-caption text-pre-800"
             :style="{ opacity: frameFade }"
           >
             <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
@@ -372,7 +372,7 @@ onBeforeUnmount(() => {
 
           <!-- 框線下方：技能。與桌機一樣靠右切齊框線右緣。 -->
           <div
-            class="flex flex-wrap items-center justify-end gap-x-2 font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800"
+            class="flex flex-wrap items-center justify-end gap-x-2 text-meta text-pre-800"
             :style="{ opacity: frameFade, clipPath: `inset(0 ${(1 - typeBottom) * 100}% 0 0)` }"
           >
             <template v-for="(sk, k) in currentSpeaker?.skills" :key="sk">
@@ -399,15 +399,15 @@ onBeforeUnmount(() => {
             <span
               v-for="(r, k) in nameRuns(currentSpeaker?.name || '')"
               :key="k"
-              :class="r.zh ? 'font-zh font-bold' : 'font-serif font-bold italic'"
+              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ currentSpeaker?.org }}
             <span class="text-accent-1">·</span>
             {{ currentSpeaker?.role }}
           </span>
-          <span v-if="currentSpeaker?.extra" class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span v-if="currentSpeaker?.extra" class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ currentSpeaker.extra.org }}
             <span class="text-accent-1">·</span>
             {{ currentSpeaker.extra.role }}
@@ -454,15 +454,15 @@ onBeforeUnmount(() => {
             <span
               v-for="(r, k) in nameRuns(s.name)"
               :key="k"
-              :class="r.zh ? 'font-zh font-bold' : 'font-serif font-bold italic'"
+              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ s.org }}
             <span class="text-accent-1">·</span>
             {{ s.role }}
           </span>
-          <span v-if="s.extra" class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span v-if="s.extra" class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ s.extra.org }}
             <span class="text-accent-1">·</span>
             {{ s.extra.role }}
@@ -477,7 +477,7 @@ onBeforeUnmount(() => {
            而且會讓文字寬度一直變、右對齊的那行會抖。 -->
       <div class="flex flex-col items-stretch gap-y-2 lg:col-start-2 lg:row-span-5 lg:row-start-1">
         <div
-          class="flex items-start justify-between font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-pre-800"
+          class="flex items-start justify-between text-en-caption text-pre-800"
           :style="{ opacity: frameFade }"
         >
           <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
@@ -500,7 +500,7 @@ onBeforeUnmount(() => {
           />
         </div>
         <div
-          class="flex flex-wrap items-center justify-end gap-x-2 font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800"
+          class="flex flex-wrap items-center justify-end gap-x-2 text-meta text-pre-800"
           :style="{ opacity: frameFade, clipPath: `inset(0 ${(1 - typeBottom) * 100}% 0 0)` }"
         >
           <template v-for="(sk, k) in currentSpeaker?.skills" :key="sk">
@@ -532,15 +532,15 @@ onBeforeUnmount(() => {
             <span
               v-for="(r, k) in nameRuns(s.name)"
               :key="k"
-              :class="r.zh ? 'font-zh font-bold' : 'font-serif font-bold italic'"
+              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ s.org }}
             <span class="text-accent-1">·</span>
             {{ s.role }}
           </span>
-          <span v-if="s.extra" class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span v-if="s.extra" class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ s.extra.org }}
             <span class="text-accent-1">·</span>
             {{ s.extra.role }}
@@ -556,7 +556,7 @@ onBeforeUnmount(() => {
         :to="moreLink.href"
         :target="moreLink.target"
         :rel="linkRel(moreLink.target)"
-        class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 font-Noto text-[16px] font-medium leading-none tracking-[0.1em] text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
+        class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 text-zh-btn text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
       >
         {{ moreLink.label }}
         <span class="flex size-6 items-center justify-center">

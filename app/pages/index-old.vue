@@ -85,11 +85,11 @@ const backend = computed(() => fieldRef.value?.backend || '')
         {{ home.hero.plate_label }}
       </p>
 
-      <h1 class="mt-6 font-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
+      <h1 class="mt-6 font-en-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
         {{ home.hero.title }}
       </h1>
 
-      <p class="mt-6 font-serif text-[clamp(18px,2.2vw,30px)] italic leading-snug">
+      <p class="mt-6 font-en-serif text-[clamp(18px,2.2vw,30px)] italic leading-snug">
         {{ home.hero.subtitle }}
       </p>
 
@@ -101,7 +101,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
         :href="home.hero.cta?.href"
         :target="home.hero.cta?.target"
         :rel="linkRel(home.hero.cta?.target)"
-        class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 font-zh text-fs-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
+        class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
       >
         {{ home.hero.cta?.label }}
       </a>
@@ -112,7 +112,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
           <p class="font-mono text-fs-micro uppercase text-white/55">
             {{ home.hero.corner_left?.label }}
           </p>
-          <p class="font-serif text-fs-caption italic text-white/55">
+          <p class="font-en-serif text-fs-en-caption italic text-white/55">
             {{ home.hero.corner_left?.note }}
           </p>
         </div>
@@ -121,7 +121,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
             {{ home.hero.corner_right?.label }}
           </p>
           <!-- note 後面接的是執行期才知道的繪圖後端，不是資料 -->
-          <p class="font-serif text-fs-caption italic text-white/55">
+          <p class="font-en-serif text-fs-en-caption italic text-white/55">
             {{ home.hero.corner_right?.note }}{{ backend ? ` · ${backend}` : '' }}
           </p>
         </div>
@@ -141,7 +141,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
           <p class="font-mono text-fs-micro uppercase text-[#71c1f0]/70">
             {{ home.about.plate?.code }}
           </p>
-          <p class="mt-2 font-serif text-fs-h2 italic leading-none">
+          <p class="mt-2 font-en-serif text-fs-en-h2 italic leading-none">
             {{ home.about.plate?.number }}
           </p>
           <p class="mt-2 font-mono text-fs-micro uppercase text-white/55">
@@ -152,12 +152,12 @@ const backend = computed(() => fieldRef.value?.backend || '')
                讓框落在粒子團中段（設計稿的構圖）。 -->
           <div class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
             <!-- 十字準星 -->
-            <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-caption text-white/40">+</span>
+            <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-micro text-white/40">+</span>
             <div class="relative border border-white/25 px-4 py-5">
-              <span class="absolute top-2.5 left-3 lg:top-5 lg:left-4 px-1 font-mono text-fs-caption text-white/60">
+              <span class="absolute top-2.5 left-3 lg:top-5 lg:left-4 px-1 font-mono text-fs-micro text-white/60">
                 {{ home.about.skills_box_label }}
               </span>
-              <ul class="space-y-1 text-right font-mono text-fs-caption text-white/55">
+              <ul class="space-y-1 text-right font-mono text-fs-micro text-white/55">
                 <li v-for="s in home.about.skills" :key="s">
                   {{ s }}
                 </li>
@@ -168,20 +168,20 @@ const backend = computed(() => fieldRef.value?.backend || '')
 
         <!-- 右欄：主文案 -->
         <div class="lg:col-span-8">
-          <h2 class="font-serif text-[clamp(40px,5.2vw,88px)] leading-[1.08] tracking-[-0.02em]">
+          <h2 class="font-en-serif text-[clamp(40px,5.2vw,88px)] leading-[1.08] tracking-[-0.02em]">
             {{ home.about.heading }}
           </h2>
 
           <!-- 中間要換色的字（agents / connections / code）由資料切成 runs 標 is_accent，
                而不是在 JSON 裡塞 HTML 再 v-html。 -->
-          <p class="mt-8 max-w-[52ch] font-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
+          <p class="mt-8 max-w-[52ch] font-en-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
             <template v-for="(run, i) in home.about.lede_runs" :key="i">
               <span v-if="run.is_accent" class="text-[#71c1f0]">{{ run.text }}</span>
               <template v-else>{{ run.text }}</template>
             </template>
           </p>
 
-          <p class="mt-8 max-w-[46ch] font-zh text-fs-body-lg text-[#efe6d2]/75">
+          <p class="mt-8 max-w-[46ch] text-fs-zh-body-lg font-zh-sans text-[#efe6d2]/75">
             {{ home.about.body_zh }}
           </p>
 
@@ -189,7 +189,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
             :href="home.about.cta?.href"
             :target="home.about.cta?.target"
             :rel="linkRel(home.about.cta?.target)"
-            class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 font-zh text-fs-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
+            class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
           >
             {{ home.about.cta?.label }}
           </a>
@@ -214,7 +214,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
     <!-- ⚠️ 不要加 scroll-mt-*：Lenis 的 scrollTo 會吃 scroll-margin，
          跟 CommonChapterNav 自己的 offset 疊起來會多空一截，跟其他六區對不齊。 -->
     <section id="ticket" class="relative flex flex-col gap-y-6">
-      <h2 class="text-center text-h1">
+      <h2 class="text-center text-en-h1">
         <template v-for="(line, i) in home.ticket.heading_lines" :key="i">
           <br v-if="i > 0">{{ line }}
         </template>

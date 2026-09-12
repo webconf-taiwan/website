@@ -88,10 +88,10 @@ onBeforeUnmount(() => killFadeIns())
             <div class="flex flex-col gap-4">
               <!-- 大標是設計稿的文案（venue.heading），不是場地英文名 ——
                    title_en（Taipei Popop）留給 schema.org 組地點名稱用，別混用。 -->
-              <h2 data-fade="in" class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800">
                 {{ venue.heading }}
               </h2>
-              <p data-fade="in" class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
+              <p data-fade="in" class="text-zh-h5 text-pre-800">
                 {{ venue.title_zh }}
               </p>
             </div>
@@ -106,10 +106,10 @@ onBeforeUnmount(() => killFadeIns())
                   data-fade="in"
                   class="flex flex-col gap-2"
                 >
-                  <p class="font-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
+                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
                     {{ transport.title }}
                   </p>
-                  <p class="font-Noto text-[16px] leading-[1.6] tracking-[0.08em] text-pre-800/[62%] lg:text-[18px]">
+                  <p class="text-zh-body-lg text-pre-800/[62%]">
                     {{ transport.description }}
                   </p>
                 </div>
@@ -120,7 +120,7 @@ onBeforeUnmount(() => killFadeIns())
                 :href="venue.more_link?.href"
                 :target="venue.more_link?.target"
                 :rel="linkRel(venue.more_link?.target)"
-                class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 font-Noto text-[16px] font-medium leading-none tracking-[0.1em] text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
+                class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 text-zh-btn text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
               >
                 {{ venue.more_link?.label }}
                 <span class="flex size-6 items-center justify-center">
@@ -151,10 +151,10 @@ onBeforeUnmount(() => killFadeIns())
         <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
           <div class="flex flex-col gap-6 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
             <div class="flex flex-col gap-4">
-              <h2 data-fade="in" class="font-serif text-[40px] font-bold italic leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[64px]">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800">
                 {{ faq.title_en }}
               </h2>
-              <p data-fade="in" class="font-zh text-[22px] font-bold leading-[1.2] tracking-[0.02em] text-pre-800 lg:text-[28px]">
+              <p data-fade="in" class="text-zh-h5 text-pre-800">
                 {{ faq.title_zh }}
               </p>
             </div>
@@ -167,14 +167,14 @@ onBeforeUnmount(() => killFadeIns())
                 class="flex gap-x-4 py-6 lg:gap-x-6"
                 :class="i < FAQ_PAGE_ITEMS.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
               >
-                <span class="shrink-0 font-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
+                <span class="shrink-0 font-en-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
                   Q{{ FAQ_OFFSET + i + 1 }}
                 </span>
                 <div class="flex min-w-0 flex-col gap-3">
-                  <p class="font-zh text-[18px] font-bold leading-[1.4] text-pre-800">
+                  <p class="font-zh-serif text-[18px] font-bold leading-[1.4] text-pre-800">
                     {{ item.question }}
                   </p>
-                  <p class="flex gap-x-2 font-Noto text-[15px] leading-[1.7] tracking-[0.04em] text-pre-800/[62%]">
+                  <p class="flex gap-x-2 font-zh-sans text-[15px] leading-[1.7] tracking-[0.04em] text-pre-800/[62%]">
                     <span class="shrink-0">→</span>
                     <span>{{ item.answer }}</span>
                   </p>

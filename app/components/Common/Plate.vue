@@ -33,13 +33,13 @@ defineProps({
     class="flex flex-row items-baseline gap-x-4 py-8 lg:flex-col lg:gap-x-0"
     :class="divider ? 'border-t border-pre-800/35' : ''"
   >
-    <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
+    <p class="text-meta text-pre-800/80">
       {{ data.code }}
     </p>
-    <p class="font-serif text-[32px] italic leading-none tracking-[0.02em] text-pre-800 lg:text-[56px]">
+    <p class="text-en-display text-pre-800">
       {{ data.number }}
     </p>
-    <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800/80">
+    <p class="text-meta text-pre-800/80">
       {{ data.label }}
     </p>
   </div>

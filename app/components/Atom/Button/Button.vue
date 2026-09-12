@@ -91,22 +91,20 @@ const button = cva([
       ],
       // WebConf 2026 深色主題。其他 intent 都是舊設計系統的配色（gray-800 / brand /
       // 白底），套在這個站的黑底上完全不對，所以另開一個而不是改既有的。
-      // 字體用 Noto Sans TC 對齊設計 token zh/btn_16px（.text-btn 是襯線體）。
+      // 字體用 Noto Sans TC 對齊設計 token zh/btn_16px（.text-zh-btn 已經是
+      // font-zh-sans，這裡的 !font-zh-sans 是保險，非必要）。
       specimen: [
-        // ⚠️ font / tracking 必須加 ! —— size variant 帶的 .text-btn 是
-        // `@apply font-serif` 且 text-fs-btn 自帶 letter-spacing，兩者與這裡的
-        // utility 同優先權，誰贏只看 CSS 產出順序。不加 ! 會被蓋成襯線體。
-        'border-accent-1 bg-[#0a0a0c] text-pre-800 !font-Noto font-medium !tracking-[0.1em]',
+        'border-accent-1 bg-[#0a0a0c] text-pre-800 font-medium !tracking-[0.1em]',
         'hover:bg-accent-1/10',
         'focus:outline focus:outline-2 focus:outline-accent-1/40',
         'disabled:cursor-not-allowed disabled:border-pre-800/30 disabled:text-pre-800/30'
       ]
     },
     size: {
-      xs: ['text-btn py-0.5'],
-      sm: ['text-btn px-3 py-1 md:px-4 md:py-2'],
-      md: ['text-btn px-5 py-1 md:px-6 md:py-2'],
-      lg: ['text-btn px-7 py-2 md:px-8 md:py-2'],
+      xs: ['text-zh-btn py-0.5'],
+      sm: ['text-zh-btn px-3 py-1 md:px-4 md:py-2'],
+      md: ['text-zh-btn px-5 py-1 md:px-6 md:py-2'],
+      lg: ['text-zh-btn px-7 py-2 md:px-8 md:py-2'],
       link: ['px-1 py-2']
     },
     position: {

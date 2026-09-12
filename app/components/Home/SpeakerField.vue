@@ -716,10 +716,10 @@ defineExpose({ backend })
             <span
               v-for="(r, k) in nameRuns(s.name)"
               :key="k"
-              :class="r.zh ? 'font-zh font-bold' : 'font-serif font-bold italic'"
+              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ s.org }}
             <span class="text-accent-1">·</span>
             {{ s.role }}
@@ -729,7 +729,7 @@ defineExpose({ backend })
 
       <!-- 中央觀景框 -->
       <div class="order-first flex flex-col items-stretch gap-y-2 lg:order-none lg:col-start-2 lg:row-span-4 lg:row-start-1">
-        <div class="flex items-start justify-between font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-pre-800">
+        <div class="flex items-start justify-between text-en-caption text-pre-800">
           <span>{{ currentSpeaker?.tag }}</span>
           <span>{{ current + 1 }}/{{ SPEAKERS.length }}</span>
         </div>
@@ -738,7 +738,7 @@ defineExpose({ backend })
           ref="frameRef"
           class="aspect-square w-full border border-pre-800/80 lg:size-[300px]"
         />
-        <div class="flex flex-wrap items-center justify-end gap-x-2 font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-pre-800">
+        <div class="flex flex-wrap items-center justify-end gap-x-2 text-meta text-pre-800">
           <template v-for="(sk, k) in currentSpeaker?.skills" :key="sk">
             <span v-if="k > 0" class="text-accent-1">·</span>
             <span>{{ sk }}</span>
@@ -768,10 +768,10 @@ defineExpose({ backend })
             <span
               v-for="(r, k) in nameRuns(s.name)"
               :key="k"
-              :class="r.zh ? 'font-zh font-bold' : 'font-serif font-bold italic'"
+              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
             {{ s.org }}
             <span class="text-accent-1">·</span>
             {{ s.role }}
@@ -787,7 +787,7 @@ defineExpose({ backend })
         :to="moreLink.href"
         :target="moreLink.target"
         :rel="linkRel(moreLink.target)"
-        class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 font-Noto text-[16px] font-medium leading-none tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/10"
+        class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
       >
         {{ moreLink.label }}
         <span class="flex size-6 items-center justify-center">

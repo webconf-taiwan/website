@@ -1,73 +1,236 @@
 @layer utilities {
   /* =========================================================================
      WebConf 2026 · 文型（type styles）
-     一組型階十三階，桌機／手機目前共用同一組數值（之後要拆 mb 再加 lg: 前綴）。
-       A · Inria Serif（font-serif）    → 英文標題與內文
-       B · Noto Serif TC（font-zh）     → 中文正文、抒情
-       C · IBM Plex Mono（font-mono）   → 數字、座標、標籤（一律大寫）
-     斜體 Inria 用於強調（emphasis）。
+     命名跟 Figma UI kit（Typography 頁，node 40004306-1928）的變數結構走
+     zh/* · en/* · common/* 三個命名空間 —— 一個角色如果中英文的行高／字重／
+     斜體不一樣（display、body_md、hero、caption），就拆成兩個 class；kit
+     沒有對應那一邊的（zh 沒有 hero/caption，en 沒有 body_lg/btn），就不生
+     造一個出來。h1~h5 中英文數值目前相同，但 Figma 那邊本來就是兩個各自獨立
+     的變數，這裡也拆開，不共用 —— 之後只改一邊也不會悄悄跟代碼對不上。
+       A · Inria Serif（font-en-serif）  → en/* 標題與內文
+       B · Noto Serif TC（font-zh-serif） → zh/* 標題（h1~h5、display）
+       B' · Noto Sans TC（font-zh-sans）  → zh/* 正文與按鈕（body_lg、body_md、btn）
+       C · IBM Plex Mono（font-mono）    → common/*（數字、座標、標籤，一律大寫）
+
+     ⚠️ size/line-height/letter-spacing 一律用純 CSS 寫、外面包 lg 斷點的
+     media query，不透過 `@apply text-fs-zh-h1` 這種自訂 fontSize token ——
+     這批 zh/en 前綴的 token 是全新的、沒有任何元件把它們字面寫進 template，
+     Tailwind 的 @apply 只認得「已經在編譯出的 utility 集合裡」的 class，
+     沒被 content 掃到的自訂 token 在 @apply 裡解析不到，會讓整包 CSS build
+     直接 500（試過用 safelist + pattern 生成，這個 Tailwind 版本的 @apply
+     仍然讀不到，放棄）。font-family / font-weight / italic / uppercase 這些
+     是 Tailwind 內建 utility，不受此限，可以放心 @apply。
      ========================================================================= */
-  .text-hero {
-    @apply font-serif text-fs-hero font-normal;
+
+  /* ----- zh/* ----- */
+  .text-zh-display {
+    font-size: 2rem; /* 32 ← 56-32 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-zh-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-display { font-size: 3.5rem; line-height: 1.2; letter-spacing: 0.02em; }
   }
 
-  .text-h1 {
-    @apply font-serif text-fs-h1 font-normal;
+  .text-zh-h1 {
+    font-size: 2.5rem; /* 40 ← 64-40 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-zh-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-h1 { font-size: 4rem; line-height: 1.2; letter-spacing: 0.02em; }
   }
 
-  .text-display {
-    @apply font-zh text-fs-display font-medium;
+  .text-zh-h2 {
+    font-size: 2.25rem; /* 36 ← 48-36 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-zh-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-h2 { font-size: 3rem; line-height: 1.2; letter-spacing: 0.02em; }
   }
 
-  .text-h2 {
-    @apply font-serif text-fs-h2 font-normal;
+  .text-zh-h3 {
+    font-size: 1.5rem; /* 24 ← 32-24 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-zh-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-h3 { font-size: 2rem; line-height: 1.2; letter-spacing: 0.02em; }
   }
 
-  .text-h3 {
-    @apply font-serif text-fs-h3 font-normal;
+  .text-zh-h4 {
+    font-size: 1.375rem; /* 22 ← 28-22 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-zh-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-h4 { font-size: 1.75rem; line-height: 1.2; letter-spacing: 0.02em; }
   }
 
-  .text-h4 {
-    @apply font-serif text-fs-h4 font-normal;
+  .text-zh-h5 {
+    font-size: 1.125rem; /* 18 ← 22-18 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-zh-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-h5 { font-size: 1.375rem; line-height: 1.2; letter-spacing: 0.02em; }
   }
 
-  .text-h5 {
-    @apply font-serif text-fs-h5 font-normal;
+  .text-zh-body-lg {
+    font-size: 1rem; /* 16 ← 18-16 */
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    @apply font-zh-sans font-normal;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-body-lg { font-size: 1.125rem; line-height: 1.6; letter-spacing: 0.08em; }
   }
 
-  .text-body-lg {
-    @apply font-zh text-fs-body-lg font-normal;
+  .text-zh-body-md {
+    font-size: 0.9375rem; /* 15 ← 16-15 */
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    @apply font-zh-sans font-normal;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-body-md { font-size: 1rem; line-height: 1.6; letter-spacing: 0.08em; }
   }
 
-  .text-body {
-    @apply font-zh text-fs-body font-normal;
+  /* 按鈕：zh/btn，Noto Sans TC Medium，100% 行高 / 10% 字距 —— kit 沒有
+     en/btn，按鈕文字不論中英一律套這個。 */
+  .text-zh-btn {
+    font-size: 0.9375rem; /* 15 ← 16-15 */
+    line-height: 1;
+    letter-spacing: 0.1em;
+    @apply font-zh-sans font-medium;
+  }
+  @media (min-width: 1024px) {
+    .text-zh-btn { font-size: 1rem; line-height: 1; letter-spacing: 0.1em; }
   }
 
+  /* ----- en/* ----- */
+  .text-en-display {
+    font-size: 2rem; /* 32 ← 56-32 */
+    line-height: 1;
+    letter-spacing: 0.02em;
+    @apply font-en-serif font-normal italic;
+  }
+  @media (min-width: 1024px) {
+    .text-en-display { font-size: 3.5rem; line-height: 1; letter-spacing: 0.02em; }
+  }
+
+  /* kit 沒有 zh/hero —— 英文專屬，Bold Italic。 */
+  .text-en-hero {
+    font-size: 4rem; /* 64 ← 72-64 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-en-serif font-bold italic;
+  }
+  @media (min-width: 1024px) {
+    .text-en-hero { font-size: 4.5rem; line-height: 1.2; letter-spacing: 0.02em; }
+  }
+
+  .text-en-h1 {
+    font-size: 2.5rem; /* 40 ← 64-40 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-en-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-en-h1 { font-size: 4rem; line-height: 1.2; letter-spacing: 0.02em; }
+  }
+
+  .text-en-h2 {
+    font-size: 2.25rem; /* 36 ← 48-36 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-en-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-en-h2 { font-size: 3rem; line-height: 1.2; letter-spacing: 0.02em; }
+  }
+
+  .text-en-h3 {
+    font-size: 1.5rem; /* 24 ← 32-24 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-en-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-en-h3 { font-size: 2rem; line-height: 1.2; letter-spacing: 0.02em; }
+  }
+
+  .text-en-h4 {
+    font-size: 1.375rem; /* 22 ← 28-22 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-en-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-en-h4 { font-size: 1.75rem; line-height: 1.2; letter-spacing: 0.02em; }
+  }
+
+  .text-en-h5 {
+    font-size: 1.125rem; /* 18 ← 22-18 */
+    line-height: 1.2;
+    letter-spacing: 0.02em;
+    @apply font-en-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-en-h5 { font-size: 1.375rem; line-height: 1.2; letter-spacing: 0.02em; }
+  }
+
+  .text-en-body-md {
+    font-size: 0.9375rem; /* 15 ← 16-15 */
+    line-height: 1.6;
+    letter-spacing: 0.08em;
+    @apply font-en-serif font-bold;
+  }
+  @media (min-width: 1024px) {
+    .text-en-body-md { font-size: 1rem; line-height: 1.6; letter-spacing: 0.08em; }
+  }
+
+  /* kit 沒有 zh/caption —— 英文專屬，14-14 兩端相同，無手機階。 */
+  .text-en-caption {
+    font-size: 0.875rem;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+    @apply font-en-serif font-bold;
+  }
+
+  /* ----- common/*（mono，桌機／手機共用同一個值，無 zh/en 之分）----- */
   .text-body-sm {
-    @apply font-zh text-fs-body-sm font-normal;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    letter-spacing: 0.06em;
+    @apply font-mono font-normal;
   }
 
-  .text-caption {
-    @apply font-zh text-fs-caption font-normal;
-  }
-
-  /* ⚠️ 設計稿的 common/meta_12px 是 Regular 400，不是 500 —— IBM Plex Mono 的
+  /* ⚠️ 設計稿的 common/meta 是 Regular 400，不是 500 —— IBM Plex Mono 的
      Medium 在 0.2em 字距下會明顯比設計稿重。 */
   .text-meta {
-    @apply font-mono text-fs-meta font-normal uppercase;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: 0.2em;
+    @apply font-mono font-normal uppercase;
   }
 
   .text-micro {
-    @apply font-mono text-fs-micro font-normal uppercase;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    letter-spacing: 0.04em;
+    @apply font-mono font-normal uppercase;
   }
 
-  /* 按鈕：襯線 16/160，各尺寸共用同一型 */
-  .text-btn {
-    @apply font-serif text-fs-btn font-medium;
-  }
-
-  /* 強調：斜體 Inria Serif */
+  /* 強調：斜體 Inria Serif（不是 kit 命名樣式，泛用的行內強調） */
   .text-emphasis {
-    @apply font-serif italic;
+    @apply font-en-serif italic;
   }
 }

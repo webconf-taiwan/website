@@ -786,14 +786,14 @@ onBeforeUnmount(() => {
       v-if="state !== 'live'"
       class="absolute inset-0 z-20 flex flex-col items-center justify-center gap-6 px-8 text-center"
     >
-      <h1 class="font-serif text-[clamp(56px,9vw,160px)] italic leading-[0.95]">
+      <h1 class="font-en-serif text-[clamp(56px,9vw,160px)] italic leading-[0.95]">
         顯影牆
       </h1>
-      <p class="max-w-md font-zh text-fs-btn text-white/70">
+      <p class="max-w-md text-fs-zh-body-md font-zh-sans text-white/70">
         站到鏡頭前，粒子會凝聚成你的人形。影像只在這台機器上運算，不會上傳、不會留存。
       </p>
       <button
-        class="border border-[#71c1f0]/60 px-8 py-3 font-zh text-fs-btn transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10 disabled:opacity-40"
+        class="border border-[#71c1f0]/60 px-8 py-3 text-zh-btn transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10 disabled:opacity-40"
         :disabled="state === 'starting'"
         @click="startCamera"
       >
@@ -811,7 +811,7 @@ onBeforeUnmount(() => {
       :class="showUi && !present ? 'opacity-100' : 'opacity-0'"
     >
       <div class="absolute inset-x-0 top-1/2 -translate-y-1/2 text-center">
-        <p class="font-serif text-[clamp(28px,4vw,64px)] italic leading-tight">
+        <p class="font-en-serif text-[clamp(28px,4vw,64px)] italic leading-tight">
           站到鏡頭前
         </p>
         <p class="mt-3 font-mono text-fs-micro uppercase tracking-[0.3em] text-white/55">
@@ -853,12 +853,12 @@ onBeforeUnmount(() => {
             <span class="inline-block h-[0.5em] w-[0.5em] rounded-full bg-[#71c1f0] motion-safe:animate-pulse" />
             Live · Emergence Wall
           </p>
-          <p class="mt-[0.35em] font-serif text-[clamp(12px,1vw,20px)] italic text-[#efe6d2]/50">
+          <p class="mt-[0.35em] font-en-serif text-[clamp(12px,1vw,20px)] italic text-[#efe6d2]/50">
             pl. w · particles, not pixels
           </p>
         </div>
 
-        <p class="text-right font-serif text-[clamp(15px,1.5vw,30px)] italic text-[#efe6d2]/75">
+        <p class="text-right font-en-serif text-[clamp(15px,1.5vw,30px)] italic text-[#efe6d2]/75">
           #webconf2026
         </p>
       </div>

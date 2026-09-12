@@ -36,17 +36,17 @@ useFadeIn(sectionRef)
              讓框落在粒子團中段（設計稿的構圖）。 -->
         <div data-fade="in" class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
           <!-- 十字準星 -->
-          <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-caption text-white/40">+</span>
+          <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-micro text-white/40">+</span>
           <!-- 底色與模糊跟票券卡同一組（TicketCard 的非 highlight 樣式），
                讓背後的粒子糊掉、字才讀得出來。
                ⚠️ 邊框維持原本的 white/25 —— 票券卡用的 border-pre-500/50 那個 /50
                不會生效（pre-500 不是 rgb 格式，opacity modifier 吃不到），
                線會變成不透明的淺灰，在這個框上太搶。 -->
           <div class="relative border border-white/25 bg-pre-800/10 px-4 py-5 backdrop-blur-md">
-            <span class="absolute top-2.5 left-3 px-1 font-mono text-fs-caption text-white/60">
+            <span class="absolute top-2.5 left-3 px-1 font-mono text-fs-micro text-white/60">
               {{ content.skills_box_label }}
             </span>
-            <ul class="space-y-1 text-right font-mono text-fs-caption text-white/55">
+            <ul class="space-y-1 text-right font-mono text-fs-micro text-white/55">
               <li v-for="s in content.skills" :key="s">
                 {{ s }}
               </li>
@@ -57,18 +57,18 @@ useFadeIn(sectionRef)
 
       <!-- 右欄：主文案 -->
       <div class="lg:col-span-8 xl:col-span-7 lg:pb-6">
-        <h2 data-fade="in" class="font-serif mb-8 text-[clamp(40px,5.2vw,88px)] whitespace-pre-line leading-[1.08] tracking-[-0.02em]">
+        <h2 data-fade="in" class="font-en-serif mb-8 text-[clamp(40px,5.2vw,88px)] whitespace-pre-line leading-[1.08] tracking-[-0.02em]">
           {{ content.heading }}
         </h2>
 
-        <p data-fade="in" class="mb-8 font-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
+        <p data-fade="in" class="mb-8 font-en-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
           <template v-for="(run, i) in content.lede_runs" :key="i">
             <span v-if="run.is_accent" class="text-[#71c1f0]">{{ run.text }}</span>
             <template v-else>{{ run.text }}</template>
           </template>
         </p>
 
-        <p data-fade="in" class="mb-10 font-zh text-fs-body-lg text-[#efe6d2]/75">
+        <p data-fade="in" class="mb-10 text-fs-zh-body-lg font-zh-sans text-[#efe6d2]/75">
           {{ content.body_zh }}
         </p>
 
@@ -77,7 +77,7 @@ useFadeIn(sectionRef)
           :href="content.cta?.href"
           :target="content.cta?.target"
           :rel="linkRel(content.cta?.target)"
-          class="inline-block border border-[#71c1f0]/60 px-8 py-3 font-zh text-fs-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
+          class="inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
         >
           {{ content.cta?.label }}
         </a>

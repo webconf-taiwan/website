@@ -31,30 +31,30 @@ function start () {
       @click.self="close"
     >
       <div class="w-full max-w-[420px] border border-accent-1/60 bg-[#0a0a0c]/90 p-8 backdrop-blur-md">
-        <p class="font-mono text-[12px] leading-[1.2] tracking-[0.2em] text-accent-1">
+        <p class="text-meta text-accent-1">
           EASTER EGG
         </p>
 
         <h2
           id="interactive-gate-title"
-          class="mt-3 font-serif text-[32px] font-bold italic leading-[1.2] text-pre-800"
+          class="mt-3 font-en-serif text-[32px] font-bold italic leading-[1.2] text-pre-800"
         >
           啟動互動模式
         </h2>
 
-        <div class="mt-5 flex flex-col gap-3 font-Noto text-[15px] leading-[1.7] text-pre-800/80">
+        <div class="mt-5 flex flex-col gap-3 font-zh-sans text-[15px] leading-[1.7] text-pre-800/80">
           <p>開啟相機後，可以用手勢直接撥動畫面上的粒子。畫面會先回到頂端 —— 那裡的粒子是滿版的，推起來最明顯。</p>
           <ul class="flex flex-col gap-2 border-y border-dashed border-pre-800/35 py-4">
             <li class="flex gap-x-3">
-              <span class="shrink-0 font-serif italic text-accent-1">張開手掌</span>
+              <span class="shrink-0 font-en-serif italic text-accent-1">張開手掌</span>
               <span class="text-pre-800/70">推開粒子，張得越開推得越遠</span>
             </li>
             <li class="flex gap-x-3">
-              <span class="shrink-0 font-serif italic text-accent-1">捏合手指</span>
+              <span class="shrink-0 font-en-serif italic text-accent-1">捏合手指</span>
               <span class="text-pre-800/70">把粒子吸過來，捏越緊吸力越強</span>
             </li>
             <li class="flex gap-x-3">
-              <span class="shrink-0 font-serif italic text-accent-1">握拳</span>
+              <span class="shrink-0 font-en-serif italic text-accent-1">握拳</span>
               <span class="text-pre-800/70">放手，可以換個位置再來</span>
             </li>
           </ul>
@@ -70,14 +70,14 @@ function start () {
         <div class="mt-7 flex items-center justify-end gap-3">
           <button
             type="button"
-            class="px-4 py-2 font-Noto text-[15px] text-pre-800/60 transition-colors hover:text-pre-800"
+            class="px-4 py-2 font-zh-sans text-[15px] text-pre-800/60 transition-colors hover:text-pre-800"
             @click="close"
           >
             取消
           </button>
           <button
             type="button"
-            class="border border-accent-1 bg-accent-1/10 px-6 py-2 font-Noto text-[15px] font-medium tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/20"
+            class="border border-accent-1 bg-accent-1/10 px-6 py-2 font-zh-sans text-[15px] font-medium tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/20"
             @click="start"
           >
             開啟相機

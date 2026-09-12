@@ -40,7 +40,7 @@ const hasError = ref(false)
       v-if="hasError"
       class="absolute inset-0 flex items-center justify-center bg-gray-100"
     >
-      <span class="text-body-sm text-gray-400">圖片載入失敗</span>
+      <span class="text-zh-body-md text-gray-400">圖片載入失敗</span>
     </div>
 
     <img

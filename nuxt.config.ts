@@ -83,7 +83,9 @@ export default defineNuxtConfig({
     // /wall、/echo 是現場大螢幕的裝置頁（要開相機 / 麥克風、沒有頁首頁尾），
     // 不是給搜尋的內容頁。
     '/wall': { robots: false },
-    '/echo': { robots: false }
+    '/echo': { robots: false },
+    // /particle-studio 是內部工具（把照片轉成粒子靜態圖），不是給搜尋的內容頁。
+    '/particle-studio': { robots: false }
   },
 
   app: {

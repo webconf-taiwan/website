@@ -333,10 +333,10 @@ onBeforeUnmount(() => {
 <template>
   <div class="min-h-screen bg-black text-txt-white">
     <section class="container py-16 md:py-24">
-      <h1 class="text-h2 mb-2">
+      <h1 class="text-zh-h2 mb-2">
         虛擬綠幕
       </h1>
-      <p class="text-body-lg mb-8 max-w-2xl text-neutral-400">
+      <p class="text-zh-body-lg mb-8 max-w-2xl text-neutral-400">
         開相機，瀏覽器即時把你去背並換到選定的背景上——不用實體綠幕。可拍照下載，或錄影下載影片。全程在你的裝置上完成，影像不上傳伺服器。
       </p>
 
@@ -354,7 +354,7 @@ onBeforeUnmount(() => {
           class="absolute inset-0 flex flex-col items-center justify-center gap-4 p-6 text-center"
         >
           <template v-if="state === 'idle'">
-            <button class="rounded-full bg-white px-6 py-3 text-body text-black transition hover:bg-neutral-200" @click="start">
+            <button class="rounded-full bg-white px-6 py-3 text-zh-body-md text-black transition hover:bg-neutral-200" @click="start">
               開啟相機
             </button>
             <label class="flex cursor-pointer items-center gap-2 font-mono text-xs tracking-widest text-neutral-400">
@@ -362,7 +362,7 @@ onBeforeUnmount(() => {
             </label>
           </template>
           <template v-else-if="state === 'starting'">
-            <p class="text-body">
+            <p class="text-zh-body-md">
               啟動相機與分割模型中…
             </p>
             <p class="max-w-sm font-mono text-xs tracking-widest text-neutral-500">
@@ -370,7 +370,7 @@ onBeforeUnmount(() => {
             </p>
           </template>
           <template v-else-if="state === 'error'">
-            <p class="text-body text-red-400">
+            <p class="text-zh-body-md text-red-400">
               {{ errorMsg }}
             </p>
             <button class="rounded-full border border-neutral-600 px-6 py-3 transition hover:bg-white/5" @click="start">

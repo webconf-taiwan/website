@@ -19,13 +19,13 @@ const isExpanded = ref(false)
       <div>
         <div class="flex flex-col gap-y-4 md:mb-8">
           <span class="text-pre-800/[62%] text-fs-meta">{{ data.code }}</span>
-          <h3 class="text-pre-800 text-fs-h3-m lg:text-fs-h3">{{ data.title }}</h3>
-          <div class="flex gap-x-4 items-baseline text-fs-h5 leading-[18px]">
+          <h3 class="text-pre-800 text-fs-zh-h3-m lg:text-fs-zh-h3">{{ data.title }}</h3>
+          <div class="flex gap-x-4 items-baseline text-fs-zh-h5 leading-[18px]">
             <span>NT$</span>
-            <span class="text-fs-h1-m leading-none lg:text-fs-h1 lg:leading-10">{{ data.price }}</span>
+            <span class="text-fs-zh-h1-m leading-none lg:text-fs-zh-h1 lg:leading-10">{{ data.price }}</span>
             <span>{{ data.unit }}</span>
           </div>
-          <p class="text-pre-800/[62%] font-serif text-fs-meta">{{ data.category }}</p>
+          <p class="text-pre-800/[62%] font-en-serif text-fs-meta">{{ data.category }}</p>
         </div>
         <div
           class="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"
@@ -38,7 +38,7 @@ const isExpanded = ref(false)
               class="grid grid-cols-[20px_1fr] gap-x-1 border-b border-dashed border-pre-800/35 py-4"
             >
               <span class="font-mono leading-[1.4] text-accent-1">+</span>
-              <div class="font-serif font-bold">
+              <div class="font-en-serif font-bold">
                 <p class="text-fs-body-sm italic">{{ feature.en }}</p>
                 <p class="">{{ feature.zh }}</p>
               </div>
@@ -48,7 +48,7 @@ const isExpanded = ref(false)
       </div>
       <button
         type="button"
-        class="relative z-1 flex items-center justify-center gap-x-2 border-dashed border-pre-800/35 pt-4 font-zh text-fs-btn font-bold text-pre-800/[62%] md:hidden"
+        class="relative z-1 flex items-center justify-center gap-x-2 border-dashed border-pre-800/35 pt-4 text-zh-btn text-pre-800/[62%] md:hidden"
         :class="isExpanded ? '' : 'border-t'"
         :aria-expanded="isExpanded"
         @click="isExpanded = !isExpanded"

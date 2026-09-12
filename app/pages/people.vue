@@ -698,7 +698,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="bg-black text-txt-white">
     <section class="text-center container h-screen flex items-center justify-center">
-      <h1 class="text-h2 text-txt-white">
+      <h1 class="text-en-h2 text-txt-white">
         People
       </h1>
     </section>
@@ -714,10 +714,10 @@ onBeforeUnmount(() => {
           v-for="(p, i) in PEOPLE"
           :key="i"
           :ref="el => { if (el) blockEls[i] = el }"
-          class="flex flex-col min-h-screen justify-center text-body gap-4"
+          class="flex flex-col min-h-screen justify-center text-zh-body-md gap-4"
         >
-          <h2 class="text-h2">{{ p.title }}</h2>
-          <p class="text-body">{{ p.body }}</p>
+          <h2 class="text-zh-h2">{{ p.title }}</h2>
+          <p class="text-zh-body-md">{{ p.body }}</p>
         </div>
       </div>
     </section>
@@ -736,10 +736,10 @@ onBeforeUnmount(() => {
 
     <!-- 使用者自製粒子卡片 -->
     <section class="mx-auto mt-20 max-w-3xl md:mt-28">
-      <h2 class="text-h2 mb-2">
+      <h2 class="text-zh-h2 mb-2">
         做你自己的粒子卡片
       </h2>
-      <p class="text-body-lg mb-4 text-neutral-400">
+      <p class="text-zh-body-lg mb-4 text-neutral-400">
         上傳一張人像照，瀏覽器會自動去背、轉成粒子點雲，可下載成 JSON 卡片資料。全程在你的裝置上完成，照片不會上傳伺服器。
       </p>
       <div class="relative overflow-hidden rounded-2xl bg-[#0a0a0c]">
@@ -766,11 +766,11 @@ onBeforeUnmount(() => {
         >
           <template v-if="cardState === 'idle'">
             <div class="flex flex-wrap items-center justify-center gap-3">
-              <label class="cursor-pointer rounded-full border border-neutral-600 px-6 py-3 text-body transition hover:bg-white/5">
+              <label class="cursor-pointer rounded-full border border-neutral-600 px-6 py-3 text-zh-body-md transition hover:bg-white/5">
                 選擇照片
                 <input type="file" accept="image/*" class="hidden" @change="onCardFile">
               </label>
-              <button class="rounded-full border border-neutral-600 px-6 py-3 text-body transition hover:bg-white/5" @click="startCamera">
+              <button class="rounded-full border border-neutral-600 px-6 py-3 text-zh-body-md transition hover:bg-white/5" @click="startCamera">
                 直接拍照
               </button>
             </div>
@@ -780,16 +780,16 @@ onBeforeUnmount(() => {
           </template>
           <template v-else-if="cardState === 'camera'">
             <div class="flex flex-wrap items-center justify-center gap-3">
-              <button class="rounded-full bg-white px-6 py-3 text-body text-black transition hover:bg-neutral-200" @click="capturePhoto">
+              <button class="rounded-full bg-white px-6 py-3 text-zh-body-md text-black transition hover:bg-neutral-200" @click="capturePhoto">
                 拍攝
               </button>
-              <button class="rounded-full border border-neutral-600 px-6 py-3 text-body transition hover:bg-white/5" @click="cancelCamera">
+              <button class="rounded-full border border-neutral-600 px-6 py-3 text-zh-body-md transition hover:bg-white/5" @click="cancelCamera">
                 取消
               </button>
             </div>
           </template>
           <template v-else-if="cardState === 'removing'">
-            <p class="text-body">
+            <p class="text-zh-body-md">
               AI 去背中… {{ cardProgress ? cardProgress + '%' : '' }}
             </p>
             <p class="max-w-sm font-mono text-xs tracking-widest text-neutral-500">
@@ -797,12 +797,12 @@ onBeforeUnmount(() => {
             </p>
           </template>
           <template v-else-if="cardState === 'sampling'">
-            <p class="text-body">
+            <p class="text-zh-body-md">
               取樣成粒子中…
             </p>
           </template>
           <template v-else-if="cardState === 'error'">
-            <p class="text-body text-red-400">
+            <p class="text-zh-body-md text-red-400">
               處理失敗：{{ cardError }}
             </p>
             <button class="rounded-full border border-neutral-600 px-6 py-3 transition hover:bg-white/5" @click="resetCard">

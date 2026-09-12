@@ -199,10 +199,10 @@ onMounted(() => {
             :rel="linkRel(link.target)"
             class="flex items-end justify-between py-4 text-pre-800 transition-colors hover:text-accent-1"
           >
-            <span class="text-h3">
+            <span class="text-en-h3">
               {{ link.label_en }}
             </span>
-            <span class="px-3 py-1 font-Noto text-btn">
+            <span class="px-3 py-1 text-zh-btn">
               {{ link.label }}
             </span>
           </a>
