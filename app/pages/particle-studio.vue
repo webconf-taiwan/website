@@ -92,8 +92,25 @@ const spec = ref(null)
 const loading = ref(false)
 const error = ref('')
 
+// 顆/px：這套引擎判斷「夠不夠清楚」的實際指標（SpeakerPortrait.vue／VenueFaqField.vue
+// 的長註解都在算這個，不是看點數本身）——點雲面積 ∝ fit²，同樣點數縮小取景密度會飆升。
+const density = computed(() => {
+  if (!spec.value) return '0.000'
+  const { drawW, drawH } = containFit(outW.value, outH.value, fit.value, spec.value.aspect)
+  const area = drawW * drawH
+  return area > 0 ? (spec.value.count / area).toFixed(3) : '0.000'
+})
+
 // --- 繪製：跟 Home/SpeakerPortrait.vue 的 drawPointCloud 同一套 contain-fit +
 // 加法混色（'lighter'）邏輯，差別只在這裡直接吃「輸出像素尺寸」，不用管 DPR。
+// 點雲實際佔的框（跟畫布本身不一樣，中間差了 fit 留白）——渲染與密度讀數共用同一套算法。
+function containFit (W, H, fitRatio, aspect) {
+  const boxW = W * fitRatio
+  const boxH = H * fitRatio
+  const scale = Math.min(boxW / aspect, boxH)
+  return { drawW: scale * aspect, drawH: scale }
+}
+
 function renderSpecToCanvas (s, canvas, { fitRatio, dot, bg }) {
   const W = canvas.width
   const H = canvas.height
@@ -107,11 +124,7 @@ function renderSpecToCanvas (s, canvas, { fitRatio, dot, bg }) {
     ctx.fillRect(0, 0, W, H)
   }
 
-  const boxW = W * fitRatio
-  const boxH = H * fitRatio
-  const scale = Math.min(boxW / s.aspect, boxH)
-  const drawW = scale * s.aspect
-  const drawH = scale
+  const { drawW, drawH } = containFit(W, H, fitRatio, s.aspect)
   const x0 = (W - drawW) / 2
   const y0 = (H - drawH) / 2
 
@@ -297,12 +310,20 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-black text-txt-white">
+  <div class="min-h-screen bg-black font-zh-sans text-txt-white">
     <section class="container py-12 md:py-20">
-      <h1 class="mb-2 text-3xl font-bold md:text-4xl">
+      <!-- 這頁不是正式站敘事裡的一格「PL.」，是做那些 plate 的工作間 ——
+           借同一套卷號語彙（CommonPlate：code / 斜體大字 / label），但用不同的
+           code 跟這頁本身的定位分開，不會讓人誤以為它是公開站台編號序列的一部分。 -->
+      <CommonPlate
+        :data="{ code: 'LAB.', number: 'Studio', label: 'PARTICLE PLATES' }"
+        class="mb-8 max-w-fit"
+      />
+
+      <h1 class="text-zh-h3 mb-2 text-pre-800">
         粒子產生器
       </h1>
-      <p class="mb-8 max-w-2xl text-sm text-neutral-400 md:text-base">
+      <p class="text-zh-body-md mb-10 max-w-2xl text-neutral-400">
         上傳講者照片，即時看到轉成粒子點雲的效果；調整取樣、色彩、光影參數找到最好看的一版，
         再下載成靜態 PNG 帶去手機上比對真實顯示效果。全程在瀏覽器裡處理，圖片不會上傳到伺服器。
       </p>
@@ -318,7 +339,7 @@ onBeforeUnmount(() => {
               :key="key"
               type="button"
               class="rounded-full px-4 py-1.5 text-sm transition"
-              :class="category === key ? 'bg-white text-black' : 'text-neutral-400 hover:text-white'"
+              :class="category === key ? 'bg-accent-1 text-black' : 'text-neutral-400 hover:text-white'"
               @click="setCategory(key)"
             >
               {{ c.label }}
@@ -331,7 +352,7 @@ onBeforeUnmount(() => {
               :key="p.url"
               type="button"
               class="h-14 w-14 overflow-hidden rounded-lg border-2 transition"
-              :class="sourceUrl === p.url ? 'border-white' : 'border-neutral-700 hover:border-neutral-400'"
+              :class="sourceUrl === p.url ? 'border-accent-1' : 'border-neutral-700 hover:border-neutral-400'"
               :title="p.name"
               @click="loadFromUrl(p.url, p.name)"
             >
@@ -343,7 +364,7 @@ onBeforeUnmount(() => {
               :key="u.url"
               type="button"
               class="relative h-14 w-14 overflow-hidden rounded-lg border-2 transition"
-              :class="sourceUrl === u.url ? 'border-white' : 'border-neutral-700 hover:border-neutral-400'"
+              :class="sourceUrl === u.url ? 'border-accent-1' : 'border-neutral-700 hover:border-neutral-400'"
               :title="u.name"
               @click="loadFromUrl(u.url, u.name)"
             >
@@ -375,12 +396,12 @@ onBeforeUnmount(() => {
                內層 div 用 inline-block 讓自己縮到跟 canvas 顯示尺寸一樣大，疊在上面的
                提示文字／loading 徽章才會準確蓋在照片範圍內，不會跟著撐滿整欄寬度。 -->
           <div class="flex justify-center">
-            <div class="relative inline-block max-w-full overflow-hidden rounded-2xl bg-[#0a0a0c]">
+            <div class="relative inline-block max-w-full overflow-hidden rounded-2xl bg-[#0a0a0c] ring-1 ring-white/10">
               <canvas ref="canvasRef" :width="outW" :height="outH" class="block max-h-[70vh] max-w-full" />
               <p v-if="!sourceUrl" class="absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-neutral-500">
                 先選一張講者照片或上傳圖片
               </p>
-              <p v-if="loading" class="absolute right-3 top-3 rounded-full bg-black/60 px-3 py-1 font-mono text-xs tracking-widest text-neutral-300">
+              <p v-if="loading" class="text-meta absolute right-3 top-3 rounded-full bg-black/60 px-3 py-1 text-neutral-300">
                 取樣中…
               </p>
             </div>
@@ -404,36 +425,42 @@ onBeforeUnmount(() => {
             >
               換一批點
             </button>
-            <span v-if="spec" class="font-mono text-xs tracking-widest text-neutral-500">
-              {{ spec.count.toLocaleString() }} 點 · {{ outW }}×{{ outH }}px
+            <!-- 顆/px 密度是這套引擎的核心指標（見 SpeakerPortrait.vue／VenueFaqField.vue
+                 的長註解都在算這個）——放出來比單看點數有意義，太低會糊、太高沒必要。 -->
+            <span v-if="spec" class="font-mono text-xs tracking-wide text-neutral-500">
+              {{ spec.count.toLocaleString() }} 點 · {{ outW }}×{{ outH }}px · {{ density }} 顆/px
             </span>
           </div>
 
           <div v-if="spec" class="mt-3 flex items-center gap-1.5">
-            <span class="mr-1 font-mono text-xs tracking-widest text-neutral-500">配色</span>
+            <span class="text-micro mr-1 text-neutral-500">配色</span>
             <span v-for="c in spec.palette" :key="c" class="h-4 w-4 rounded-full border border-white/10" :style="{ background: c }" />
           </div>
         </div>
 
-        <!-- 右：控制面板 -->
-        <div class="space-y-6 rounded-2xl border border-neutral-800 p-5">
-          <div class="flex items-center justify-between">
-            <span class="font-mono text-xs tracking-widest text-neutral-500">
+        <!-- 右：控制面板。三組用 divide-y 隔開，比純靠間距更看得出「這是三個獨立分組」。 -->
+        <div class="rounded-2xl border border-neutral-800 p-5">
+          <div class="mb-5 flex items-center justify-between border-b border-neutral-800 pb-5">
+            <span class="text-meta text-neutral-500">
               {{ CATEGORIES[category].label }}預設
             </span>
             <button
               type="button"
-              class="rounded-full border border-neutral-700 px-3 py-1 text-xs text-neutral-300 transition hover:bg-white/5"
+              class="rounded-full border border-neutral-700 px-3 py-1 text-xs text-neutral-300 transition hover:border-accent-1 hover:text-white"
               @click="resetPreset"
             >
               恢復預設
             </button>
           </div>
 
+          <div class="divide-y divide-neutral-800">
           <!-- open 預設展開 —— 桌機看起來跟以前一樣全部攤開，手機才用得到收合。 -->
-          <details open class="group">
-            <summary class="mb-3 flex cursor-pointer list-none items-center justify-between font-mono text-xs tracking-widest text-neutral-500 [&::-webkit-details-marker]:hidden">
-              取樣（改了會重新取樣）
+          <details open class="group py-5 first:pt-0 last:pb-0">
+            <summary class="mb-4 flex cursor-pointer list-none items-baseline justify-between [&::-webkit-details-marker]:hidden">
+              <span class="flex items-baseline gap-2">
+                <span class="text-sm text-neutral-200">取樣</span>
+                <span class="text-xs text-neutral-600">改了會重新取樣</span>
+              </span>
               <span class="text-neutral-600 transition-transform group-open:rotate-180">⌄</span>
             </summary>
 
@@ -442,7 +469,7 @@ onBeforeUnmount(() => {
                 <span>取樣點數</span>
                 <span class="font-mono text-xs text-neutral-500">{{ samples.toLocaleString() }}</span>
               </div>
-              <input v-model.number="samples" type="range" min="2000" max="60000" step="500" class="w-full accent-white">
+              <input v-model.number="samples" type="range" min="2000" max="60000" step="500" class="w-full accent-[#7CC8F2]">
             </div>
 
             <div class="mb-4">
@@ -450,7 +477,7 @@ onBeforeUnmount(() => {
                 <span>色彩量化數</span>
                 <span class="font-mono text-xs text-neutral-500">{{ colorsK }}</span>
               </div>
-              <input v-model.number="colorsK" type="range" min="2" max="7" step="1" class="w-full accent-white">
+              <input v-model.number="colorsK" type="range" min="2" max="7" step="1" class="w-full accent-[#7CC8F2]">
             </div>
 
             <div class="mb-4">
@@ -458,7 +485,7 @@ onBeforeUnmount(() => {
                 <span>亮度加權</span>
                 <span class="font-mono text-xs text-neutral-500">{{ lumaBias.toFixed(2) }}</span>
               </div>
-              <input v-model.number="lumaBias" type="range" min="0" max="1" step="0.05" class="w-full accent-white">
+              <input v-model.number="lumaBias" type="range" min="0" max="1" step="0.05" class="w-full accent-[#7CC8F2]">
             </div>
 
             <div>
@@ -466,13 +493,16 @@ onBeforeUnmount(() => {
                 <span>取樣解析度上限</span>
                 <span class="font-mono text-xs text-neutral-500">{{ sampleEdge }}px</span>
               </div>
-              <input v-model.number="sampleEdge" type="range" min="240" max="1440" step="40" class="w-full accent-white">
+              <input v-model.number="sampleEdge" type="range" min="240" max="1440" step="40" class="w-full accent-[#7CC8F2]">
             </div>
           </details>
 
-          <details open class="group">
-            <summary class="mb-3 flex cursor-pointer list-none items-center justify-between font-mono text-xs tracking-widest text-neutral-500 [&::-webkit-details-marker]:hidden">
-              構圖（即時重畫）
+          <details open class="group py-5 first:pt-0 last:pb-0">
+            <summary class="mb-4 flex cursor-pointer list-none items-baseline justify-between [&::-webkit-details-marker]:hidden">
+              <span class="flex items-baseline gap-2">
+                <span class="text-sm text-neutral-200">構圖</span>
+                <span class="text-xs text-neutral-600">即時重畫</span>
+              </span>
               <span class="text-neutral-600 transition-transform group-open:rotate-180">⌄</span>
             </summary>
 
@@ -481,7 +511,7 @@ onBeforeUnmount(() => {
                 <span>取景比例 fit</span>
                 <span class="font-mono text-xs text-neutral-500">{{ fit.toFixed(2) }}</span>
               </div>
-              <input v-model.number="fit" type="range" min="0.5" max="1" step="0.01" class="w-full accent-white">
+              <input v-model.number="fit" type="range" min="0.5" max="1" step="0.01" class="w-full accent-[#7CC8F2]">
             </div>
 
             <label class="mb-4 block text-sm text-neutral-300">
@@ -498,13 +528,16 @@ onBeforeUnmount(() => {
                 <span>輸出長邊</span>
                 <span class="font-mono text-xs text-neutral-500">{{ longEdge }}px</span>
               </div>
-              <input v-model.number="longEdge" type="range" min="360" max="1600" step="20" class="w-full accent-white">
+              <input v-model.number="longEdge" type="range" min="360" max="1600" step="20" class="w-full accent-[#7CC8F2]">
             </div>
           </details>
 
-          <details open class="group">
-            <summary class="mb-3 flex cursor-pointer list-none items-center justify-between font-mono text-xs tracking-widest text-neutral-500 [&::-webkit-details-marker]:hidden">
-              光影（即時重畫）
+          <details open class="group py-5 first:pt-0 last:pb-0">
+            <summary class="mb-4 flex cursor-pointer list-none items-baseline justify-between [&::-webkit-details-marker]:hidden">
+              <span class="flex items-baseline gap-2">
+                <span class="text-sm text-neutral-200">光影</span>
+                <span class="text-xs text-neutral-600">即時重畫</span>
+              </span>
               <span class="text-neutral-600 transition-transform group-open:rotate-180">⌄</span>
             </summary>
 
@@ -513,18 +546,19 @@ onBeforeUnmount(() => {
                 <span>點大小</span>
                 <span class="font-mono text-xs text-neutral-500">{{ dotPx.toFixed(1) }}px</span>
               </div>
-              <input v-model.number="dotPx" type="range" min="0.5" max="6" step="0.1" class="w-full accent-white">
+              <input v-model.number="dotPx" type="range" min="0.5" max="6" step="0.1" class="w-full accent-[#7CC8F2]">
             </div>
 
             <div class="flex items-center gap-4">
               <label class="flex items-center gap-2 text-sm text-neutral-300">
-                <input v-model="bgMode" type="radio" value="black" class="accent-white"> 純黑背景
+                <input v-model="bgMode" type="radio" value="black" class="accent-[#7CC8F2]"> 純黑背景
               </label>
               <label class="flex items-center gap-2 text-sm text-neutral-300">
-                <input v-model="bgMode" type="radio" value="transparent" class="accent-white"> 透明背景
+                <input v-model="bgMode" type="radio" value="transparent" class="accent-[#7CC8F2]"> 透明背景
               </label>
             </div>
           </details>
+          </div>
         </div>
       </div>
     </section>
