@@ -57,18 +57,18 @@ useFadeIn(sectionRef)
 
       <!-- 右欄：主文案 -->
       <div class="lg:col-span-8 xl:col-span-7 lg:pb-6">
-        <h2 data-fade="in" class="font-en-serif mb-8 text-[clamp(40px,5.2vw,88px)] whitespace-pre-line leading-[1.08] tracking-[-0.02em]">
+        <h2 data-fade="in" class="font-en-serif mb-8 text-[clamp(64px,5.2vw,88px)] whitespace-pre-line leading-[1.08] tracking-[-0.02em]">
           {{ content.heading }}
         </h2>
 
         <p data-fade="in" class="mb-8 font-en-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
           <template v-for="(run, i) in content.lede_runs" :key="i">
-            <span v-if="run.is_accent" class="text-[#71c1f0]">{{ run.text }}</span>
+            <span v-if="run.is_accent" class="text-[1.22em] text-[#71c1f0]">{{ run.text }}</span>
             <template v-else>{{ run.text }}</template>
           </template>
         </p>
 
-        <p data-fade="in" class="mb-10 text-fs-zh-body-lg font-zh-sans text-[#efe6d2]/75">
+        <p data-fade="in" class="mb-10 text-zh-body-lg text-[#efe6d2]/75">
           {{ content.body_zh }}
         </p>
 

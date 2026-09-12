@@ -84,7 +84,7 @@ onMounted(() => {
 <template>
   <header
     ref="rootRef"
-    class="fixed top-0 z-50 bg-black/50 left-0 w-full backdrop-blur-[2px]"
+    class="fixed top-0 z-50 bg-[rgba(10,10,12,0.7)] left-0 w-full border-b border-solid border-pre-800/35 backdrop-blur-[8px] xl:border-b-0"
   >
     <div class="flex items-center justify-between gap-6 px-6 py-3 xl:justify-center xl:gap-[60px]">
       <!-- 左側選單（僅桌機 xl+：8 顆中文項在 lg 排不下） -->
@@ -96,7 +96,7 @@ onMounted(() => {
           :href="link.href"
           :target="link.target"
           :rel="linkRel(link.target)"
-          class="shrink-0 whitespace-nowrap px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0]"
+          class="shrink-0 whitespace-nowrap px-4 py-1 text-zh-btn text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0]"
         >
           {{ link.label }}
         </a>
@@ -125,7 +125,7 @@ onMounted(() => {
           :href="link.href"
           :target="link.target"
           :rel="linkRel(link.target)"
-          class="shrink-0 whitespace-nowrap px-4 py-1 font-mono text-[16px] uppercase leading-none tracking-[0.04em] opacity-0 transition-colors hover:text-[#71c1f0]"
+          class="shrink-0 whitespace-nowrap px-4 py-1 text-zh-btn opacity-0 transition-colors hover:text-[#71c1f0]"
           :class="link.is_highlight ? 'text-[#71c1f0]' : 'text-[#efe6d2]'"
         >
           {{ link.label }}
@@ -199,7 +199,7 @@ onMounted(() => {
             :rel="linkRel(link.target)"
             class="flex items-end justify-between py-4 text-pre-800 transition-colors hover:text-accent-1"
           >
-            <span class="text-en-h3">
+            <span class="font-en-serif text-[32px] font-bold italic leading-[1.2] tracking-[0.02em]">
               {{ link.label_en }}
             </span>
             <span class="px-3 py-1 text-zh-btn">
