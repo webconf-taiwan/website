@@ -113,7 +113,16 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: `${assetBase}/manifest.webmanifest` },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Serif+TC:wght@300;400;500;600&display=swap' }
+        // ⚠️ 字重要對齊設計稿的 16 個文字樣式（Figma 變數 en/* zh/* common/*），少一個就會
+        // 變成瀏覽器合成的假粗體 —— CJK 襯線體的合成粗體會把字腔塞死，跟真 Bold 差很多。
+        //   Noto Serif TC 700  zh/h3 zh/h4 zh/h5 都是 Bold（講者名、FAQ 問題、hero 場地日期）
+        //   Noto Sans TC 400   zh/body_lg zh/body_md
+        //   Noto Sans TC 500   zh/btn（按鈕）
+        // ⚠️ Noto Sans TC 原本是 nuxt-fonts 自動解析進來的（只給 400/700），沒有 500，
+        //    所以按鈕的 Medium 也是合成的。這裡明確宣告就拿回控制權。
+        // ⚠️ font-serif 的 stack 是 Inria Serif → Noto Serif TC，Inria 沒有中文字，
+        //    所以「用 font-serif 寫中文」的地方也會掉到 Noto Serif TC 700。
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap' }
       ],
       noscript: [{ innerHTML: '此網站需要開啟 JavaScript' }]
     }

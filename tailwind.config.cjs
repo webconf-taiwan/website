@@ -61,7 +61,8 @@ module.exports = {
       },
       colors: {
         pre: {
-          800: '#EFE6D2'
+          800: '#EFE6D2',
+          default: '#EFE6D2'
         },
         // Figma 變數 theme/accent-1。⚠️ index.vue 目前散落硬寫的 #71c1f0 是舊值，
         // 與設計稿不同色，之後應統一改用這個 token。
@@ -69,13 +70,13 @@ module.exports = {
           1: '#7CC8F2'
         },
         brand: {
-          light: '#A0BEFF',
-          DEFAULT: '#110AFF',
-          dark: '#285388'
+          light: '#7CC8F2',
+          DEFAULT: '#3E8FE0',
+          dark: '#1B3FA8'
         },
         ad: {
           DEFAULT: '#5A78FF',
-          light: '#8CD3F8'
+          light: '#8CD3F8',
         },
         bg: {
           light: '#EFE6D2',
@@ -123,9 +124,24 @@ module.exports = {
         'fs-body': ['1rem', { lineHeight: '1.95', letterSpacing: '0.04em' }], //  16 · base body（中文 行高 1.95）
         'fs-body-sm': ['0.875rem', { lineHeight: '1.8', letterSpacing: '0.04em' }], //  14 · dense paragraph
         'fs-caption': ['0.8125rem', { lineHeight: '1.6', letterSpacing: '0.04em' }], //  13 · caption / footnote
-        'fs-meta': ['0.75rem', { lineHeight: '1.4', letterSpacing: '0.18em' }], //  12 · KV / mono labels
+        // 12 · KV / mono labels。⚠️ 對齊設計稿的 common/meta_12px（1.2 / 0.2em）
+        'fs-meta': ['0.75rem', { lineHeight: '1.2', letterSpacing: '0.2em' }],
         'fs-micro': ['0.6875rem', { lineHeight: '1.4', letterSpacing: '0.24em' }], //  11 · status / tag / corner
-        'fs-btn': ['1rem', { lineHeight: '1.6', letterSpacing: '0.02em' }] //  16/160 · 按鈕
+        'fs-btn': ['1rem', { lineHeight: '1.6', letterSpacing: '0.02em' }], //  16/160 · 按鈕
+
+        // ===== 手機階（Figma 的字級變數本來就是「桌機-手機」成對的）=====
+        // 設計稿把每個字級登記成 `Font Size/64-40` 這種名字，Figma 用 mode 切換，
+        // 所以同一個文字樣式在兩個斷點是兩個值。這裡補上手機那一半，語意 class
+        // 再用 `mobile lg:desktop` 串起來（見 typography.css）。
+        // ⚠️ 純新增，不動任何既有 token —— 沒有人用到就不會有行為改變。
+        // 只列「兩邊不同」的：12-12 / 14-14 兩端相同，不需要手機階。
+        'fs-h1-m': ['2.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  40 ← 64-40
+        'fs-display-m': ['2rem', { lineHeight: '1', letterSpacing: '0.02em' }], //  32 ← 56-32
+        'fs-h3-m': ['1.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  24 ← 32-24
+        'fs-h4-m': ['1.375rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  22 ← 28-22
+        'fs-h5-m': ['1.125rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  18 ← 22-18
+        'fs-body-lg-m': ['1rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  16 ← 18-16
+        'fs-body-m': ['0.9375rem', { lineHeight: '1.6', letterSpacing: '0.08em' }] //  15 ← 16-15
       }
     }
   }

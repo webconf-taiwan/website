@@ -154,7 +154,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
             <!-- 十字準星 -->
             <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-caption text-white/40">+</span>
             <div class="relative border border-white/25 px-4 py-5">
-              <span class="absolute -top-2.5 left-3 bg-black px-1 font-mono text-fs-caption text-white/60">
+              <span class="absolute top-2.5 left-3 lg:top-5 lg:left-4 px-1 font-mono text-fs-caption text-white/60">
                 {{ home.about.skills_box_label }}
               </span>
               <ul class="space-y-1 text-right font-mono text-fs-caption text-white/55">
@@ -210,7 +210,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
     ==================================================================== -->
     <HomeVenueFaqField :venue="home.venue" :faq="home.faq" />
 
-    <!-- PL. VI — Ticket。id 同時是 CommonChapterNav 的錨點與 hero CTA 的 #ticket 目標。 -->
+    <!-- PL. V — Ticket。id 同時是 CommonChapterNav 的錨點與 hero CTA 的 #ticket 目標。 -->
     <!-- ⚠️ 不要加 scroll-mt-*：Lenis 的 scrollTo 會吃 scroll-margin，
          跟 CommonChapterNav 自己的 offset 疊起來會多空一截，跟其他六區對不齊。 -->
     <section id="ticket" class="relative flex flex-col gap-y-6">
@@ -245,7 +245,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
     <HomeSponsorMarquee :data="home.sponsor" />
 
     <!-- ===================================================================
-         PL. VII — Code of Conduct
+         PL. VI — Code of Conduct
          沒有自己的 canvas：視覺主體是把背後的背景粒子場糊掉的那塊毛玻璃。
     ==================================================================== -->
     <!-- 章節錨點交給上面那個 fixed 的 CommonChapterNav，關掉區塊內建的靜態版本 -->

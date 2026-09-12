@@ -34,7 +34,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     data-same-hero
     class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center bg-black/30 px-6 py-20 text-center"
   >
-    <p data-fade="in" class="font-mono mb-6 text-fs-micro uppercase text-white/55">
+    <p data-fade="in" class="font-mono mb-6 text-fs-meta uppercase text-white/55">
       {{ content.plate_label }}
     </p>
 
@@ -46,7 +46,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
       {{ content.subtitle }}
     </p>
 
-    <p data-fade="in" class="mb-10 font-mono text-fs-micro uppercase text-white/55">
+    <p data-fade="in" class="mb-10 font-mono text-fs-meta uppercase text-white/55">
       {{ content.keywords }}
     </p>
 
@@ -55,7 +55,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
       :href="content.cta?.href"
       :target="content.cta?.target"
       :rel="linkRel(content.cta?.target)"
-      class="inline-block border border-[#71c1f0]/60 px-8 py-3 font-zh text-fs-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
+      class="inline-block border border-[#71c1f0]/60 px-8 py-3 font-Noto text-[15px] font-medium leading-none tracking-[0.1em] text-pre-800 transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10 lg:text-[16px]"
     >
       {{ content.cta?.label }}
     </a>
@@ -63,19 +63,19 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     <!-- 四角的「標本標籤」：科學紀錄語彙，桌機才出現 -->
     <div class="pointer-events-none absolute inset-x-6 bottom-8 hidden items-end justify-between lg:flex">
       <div data-fade="in" class="text-left">
-        <p class="font-mono text-fs-micro uppercase text-white/55">
+        <p class="font-mono text-fs-meta uppercase text-white/55">
           {{ content.corner_left?.label }}
         </p>
-        <p class="font-serif text-fs-caption italic text-white/55">
+        <p class="font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-white/55">
           {{ content.corner_left?.note }}
         </p>
       </div>
       <div data-fade="in" class="text-right">
-        <p class="font-mono text-fs-micro uppercase text-white/55">
+        <p class="font-mono text-fs-meta uppercase text-white/55">
           {{ content.corner_right?.label }}
         </p>
         <!-- note 後面接的是執行期才知道的繪圖後端，不是資料 -->
-        <p class="font-serif text-fs-caption italic text-white/55">
+        <p class="font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-white/55">
           {{ content.corner_right?.note }}{{ backend ? ` · ${backend}` : '' }}
         </p>
       </div>

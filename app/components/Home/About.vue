@@ -43,7 +43,7 @@ useFadeIn(sectionRef)
                不會生效（pre-500 不是 rgb 格式，opacity modifier 吃不到），
                線會變成不透明的淺灰，在這個框上太搶。 -->
           <div class="relative border border-white/25 bg-pre-800/10 px-4 py-5 backdrop-blur-md">
-            <span class="absolute -top-2.5 left-3 bg-black px-1 font-mono text-fs-caption text-white/60">
+            <span class="absolute top-2.5 left-3 px-1 font-mono text-fs-caption text-white/60">
               {{ content.skills_box_label }}
             </span>
             <ul class="space-y-1 text-right font-mono text-fs-caption text-white/55">

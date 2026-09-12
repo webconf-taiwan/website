@@ -19,10 +19,10 @@ const isExpanded = ref(false)
       <div>
         <div class="flex flex-col gap-y-4 md:mb-8">
           <span class="text-pre-800/[62%] text-fs-meta">{{ data.code }}</span>
-          <h3 class="text-pre-800 text-h3">{{ data.title }}</h3>
+          <h3 class="text-pre-800 text-fs-h3-m lg:text-fs-h3">{{ data.title }}</h3>
           <div class="flex gap-x-4 items-baseline text-fs-h5 leading-[18px]">
             <span>NT$</span>
-            <span class="text-fs-h1 leading-10">{{ data.price }}</span>
+            <span class="text-fs-h1-m leading-none lg:text-fs-h1 lg:leading-10">{{ data.price }}</span>
             <span>{{ data.unit }}</span>
           </div>
           <p class="text-pre-800/[62%] font-serif text-fs-meta">{{ data.category }}</p>

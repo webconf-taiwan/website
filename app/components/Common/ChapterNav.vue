@@ -20,7 +20,7 @@ const props = defineProps({
       { id: 'venue', code: 'PL. IV', label: 'VENUE' },
       { id: 'faq', code: 'PL. V', label: 'FAQ' },
       { id: 'ticket', code: 'PL. VI', label: 'TICKET' },
-      { id: 'code-of-conduct', code: 'PL. VII', label: 'CODE OF CONDUCT' },
+      { id: 'code-of-conduct', code: 'PL. VI', label: 'CODE OF CONDUCT' },
     ])
   },
   // 捲過去時要空出來的高度（固定 header 的高度）

@@ -14,7 +14,6 @@
       { "id": "sponsors", "label_en": "Sponsors", "label": "贊助廠商", "href": "#sponsors", "target": "_self", "side": "left", "is_highlight": false },
       { "id": "team", "label_en": "Staff", "label": "主辦團隊", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
       { "id": "history", "label_en": "History", "label": "歷屆回顧", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
-      { "id": "wall", "label_en": "Logbook", "label": "簽到牆", "href": "#", "target": "_self", "side": "right", "is_highlight": false },
       { "id": "ticket", "label_en": "Ticket", "label": "前往購票", "href": "#ticket", "target": "_self", "side": "right", "is_highlight": true }
     ],
     "menu_open_label": "開啟選單",
@@ -46,8 +45,7 @@
         "links": [
           { "label": "贊助廠商", "href": "#sponsors", "target": "_self" },
           { "label": "主辦團隊", "href": "#", "target": "_self" },
-          { "label": "歷史回顧", "href": "#", "target": "_self" },
-          { "label": "簽到牆", "href": "#", "target": "_self" }
+          { "label": "歷史回顧", "href": "#", "target": "_self" }
         ]
       },
       {

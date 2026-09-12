@@ -51,8 +51,10 @@
     @apply font-zh text-fs-caption font-normal;
   }
 
+  /* ⚠️ 設計稿的 common/meta_12px 是 Regular 400，不是 500 —— IBM Plex Mono 的
+     Medium 在 0.2em 字距下會明顯比設計稿重。 */
   .text-meta {
-    @apply font-mono text-fs-meta font-medium uppercase;
+    @apply font-mono text-fs-meta font-normal uppercase;
   }
 
   .text-micro {

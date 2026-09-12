@@ -123,7 +123,7 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
     <HomeSponsorMarquee :data="home.sponsor" />
 
     <!-- ===================================================================
-         PL. VII — Code of Conduct
+         PL. VI — Code of Conduct
          毛玻璃把背後的粒子糊掉 —— 這一區在兩個版本裡是完全一樣的。
     ==================================================================== -->
     <!-- 章節錨點交給上面那個 fixed 的 CommonChapterNav，關掉區塊內建的靜態版本 -->

@@ -33,13 +33,13 @@ const SPEAKERS = computed(() => props.data?.items || [])
 const plate = computed(() => props.data?.plate || {})
 const moreLink = computed(() => props.data?.more_link || {})
 
-// 左右各四位（設計稿的構圖：人像置中，名單分列兩側）
-const LEFT = computed(() => SPEAKERS.value.slice(0, 4))
-const RIGHT = computed(() => SPEAKERS.value.slice(4))
+// 左右各五位（設計稿的構圖：人像置中，名單分列兩側）
+const LEFT = computed(() => SPEAKERS.value.slice(0, 5))
+const RIGHT = computed(() => SPEAKERS.value.slice(5))
 
 // grid 列位置要寫成完整 class 字面量 —— Tailwind 是掃原始碼字串的，
 // `lg:row-start-${i}` 這種拼接它看不到，產不出 CSS。
-const ROW = ['lg:row-start-1', 'lg:row-start-2', 'lg:row-start-3', 'lg:row-start-4']
+const ROW = ['lg:row-start-1', 'lg:row-start-2', 'lg:row-start-3', 'lg:row-start-4', 'lg:row-start-5']
 
 // 名字中英混排：中文用 Noto Serif TC Bold（不斜），英文用 Inria Serif Bold Italic。
 const CJK_RUN = /([㐀-鿿豈-﫿]+)/
@@ -395,7 +395,7 @@ onBeforeUnmount(() => {
         </button>
 
         <span class="flex min-w-0 flex-1 flex-col items-center gap-y-2 border-b border-pre-800/80 pb-4 text-center">
-          <span class="text-[28px] leading-[1.2] tracking-[0.02em] text-accent-1">
+          <span class="text-[22px] leading-[1.2] tracking-[0.02em] text-accent-1 lg:text-[28px]">
             <span
               v-for="(r, k) in nameRuns(currentSpeaker?.name || '')"
               :key="k"
@@ -406,6 +406,11 @@ onBeforeUnmount(() => {
             {{ currentSpeaker?.org }}
             <span class="text-accent-1">·</span>
             {{ currentSpeaker?.role }}
+          </span>
+          <span v-if="currentSpeaker?.extra" class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+            {{ currentSpeaker.extra.org }}
+            <span class="text-accent-1">·</span>
+            {{ currentSpeaker.extra.role }}
           </span>
         </span>
 
@@ -457,6 +462,11 @@ onBeforeUnmount(() => {
             <span class="text-accent-1">·</span>
             {{ s.role }}
           </span>
+          <span v-if="s.extra" class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+            {{ s.extra.org }}
+            <span class="text-accent-1">·</span>
+            {{ s.extra.role }}
+          </span>
         </span>
       </button>
 
@@ -465,7 +475,7 @@ onBeforeUnmount(() => {
            上下文字用 clip-path 從左往右揭開（typeTop / typeBottom = 打字）。
            ⚠️ 打字用 clip-path 而不是逐字塞 DOM：後者每格都要動一次 DOM，
            而且會讓文字寬度一直變、右對齊的那行會抖。 -->
-      <div class="flex flex-col items-stretch gap-y-2 lg:col-start-2 lg:row-span-4 lg:row-start-1">
+      <div class="flex flex-col items-stretch gap-y-2 lg:col-start-2 lg:row-span-5 lg:row-start-1">
         <div
           class="flex items-start justify-between font-serif text-[14px] font-bold italic leading-[1.4] tracking-[0.08em] text-pre-800"
           :style="{ opacity: frameFade }"
@@ -529,6 +539,11 @@ onBeforeUnmount(() => {
             {{ s.org }}
             <span class="text-accent-1">·</span>
             {{ s.role }}
+          </span>
+          <span v-if="s.extra" class="flex items-center gap-x-1 font-mono text-[14px] leading-[1.4] tracking-[0.06em] text-pre-800/[62%]">
+            {{ s.extra.org }}
+            <span class="text-accent-1">·</span>
+            {{ s.extra.role }}
           </span>
         </span>
       </button>
