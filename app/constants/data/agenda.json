@@ -1,0 +1,89 @@
+{
+  "plate": { "code": "PL. II", "number": "II.", "label": "AGENDA" },
+  "note_lines": ["The full schedule,", "coming soon."],
+  "heading_lines": ["Sessions,", "across two days."],
+  "date": "Dec. 11-12 , 2026",
+  "items": [
+    {
+      "id": "agenda-01",
+      "code": "PL. II · 01",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    },
+    {
+      "id": "agenda-02",
+      "code": "PL. II · 02",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": true
+    },
+    {
+      "id": "agenda-03",
+      "code": "PL. II · 03",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    },
+    {
+      "id": "agenda-04",
+      "code": "PL. II · 04",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    },
+    {
+      "id": "agenda-05",
+      "code": "PL. II · 05",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    },
+    {
+      "id": "agenda-06",
+      "code": "PL. II · 06",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    },
+    {
+      "id": "agenda-07",
+      "code": "PL. II · 07",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    },
+    {
+      "id": "agenda-08",
+      "code": "PL. II · 08",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    },
+    {
+      "id": "agenda-09",
+      "code": "PL. II · 09",
+      "title": "AI 時代的產品與工程協作",
+      "skills": ["AI", "軟體設計", "產品思維"],
+      "speaker_name": "保哥 Will",
+      "speaker_title": "多奇數位創意 / 技術總監",
+      "is_highlighted": false
+    }
+  ]
+}
