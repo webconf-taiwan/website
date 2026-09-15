@@ -137,15 +137,17 @@ const KEYS = [
   // venue.png 留在檔案裡沒用到 —— 之前是拿它暫代這個效果的（見 git 記錄）。
   // ⚠️ 2026-09 第四版：colonyTargets 的長註解記錄了前三版分別踩的坑（花瓣、
   // 合併、Voronoi 配對失衡）。這版目標點退回第二版的「只給菌落中心」，紋理
-  // 交給 cellular 力矩陣連續跑（demo 錄影裡的紋理本來就是這樣長出來的，不是
-  // 切好的靜態圖案）。pull/grip 是「守住分開」與「留給 cellular 空間長紋理」
-  // 兩者拔河的唯一旋鈕：太鬆（見第二版的 3/14）鄰近菌落會整片黏在一起；
-  // 這裡先試 pull 6 / grip 20 這個中間值，實際效果要看 venue-cellular-lab.vue
-  // 的對照畫面調——這塊區域塞不出遠超力場作用半徑的菌落間距（見上面函式註解），
-  // 分開與否終究是這個力道的比例問題，不是能一次算準的。
+  // 交給力矩陣連續跑（demo 錄影裡的紋理本來就是這樣長出來的，不是切好的靜態
+  // 圖案）。pull/grip 是「守住分開」與「留給力矩陣空間長紋理」兩者拔河的唯一
+  // 旋鈕，cellular/plasma 兩種效果各自的值不同——這裡先寫 cellular 的當預設，
+  // init() 裡的 applyVenueEffectToKeys() 依網址決定要不要換成 plasma 的那組
+  // （見 VENUE_EFFECTS）。
   // 動態靠 shimmer 快速換目標點（shimmerMs 260ms）——這是目標點週期性偏移逼出
   // 的「電弧感」，不是位移本身，這一格要的「電流感」就是它。
-  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 6, grip: 20, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
+  // pull/grip 寫死 9/30（cellular 的預設值，跟下面 VENUE_EFFECTS.cellular 手動
+  // 對齊）——不能直接引用 VENUE_EFFECTS，那個常數宣告在這個陣列後面，模組執行
+  // 順序上還沒 init 完。init() 裡的 applyVenueEffectToKeys() 會依網址覆寫這兩個值。
+  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 9, grip: 30, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
   // shift 0.32 → 0.40：設計回饋標本整體要再往左推一點，離右邊「常見問答」內容更遠。
   // shift 越大＝內容被相機推得越往左（見 shiftToCamera），純粹是這一格自己的構圖，
   // 不影響 venue 那格（各自獨立的 KEYS 常數）。
@@ -326,30 +328,68 @@ const LOCK_POINT_SIZE = 0.8
 //   SPECIES 5   物種數是建引擎時決定的（setSpecies 會整場重生成粒子、targets 全毀），
 //               而它由 look 決定（5～7）。cellular 產生器吃任意 n，5 或 7 都成立。
 //   COUNT 1300  那是 sandbox 小畫布的點數，站上這張是滿版 canvas，照 PAGE_BUDGET。
-const VENUE_PRESET = 'cellular'
+// ⚠️ 2026-09：菌落黏在一起的根本原因抓到了——rMax 是力場的鄰居搜尋半徑，只要
+// 它比菌落間的黑底空隙寬，兩顆菌落邊緣的粒子還是互相看得到，照樣會被同物種
+// 吸過去。原本 rMax 84 配著這裡的排列間距太容易搭橋；改成把 rMax 收到比間距
+// 小（62），minR 等比例一起收（44→30，保住 minR~rMax 之間「真正在互相吸引」
+// 的帶寬，只縮 rMax 不縮 minR 會把這圈帶寬壓到只剩幾 px，整團塌成沒紋理的
+// 實心球——踩過見 venue-cellular-lab.vue 的長註解），分開純粹靠「粒子看不到
+// 隔壁」，不必再跟握力（KEYS 的 pull/grip）拔河。
+//
+// 同時把「兩種效果」做成可切換：對照 sandbox demo 跟 Figma 留言釘反覆調參數
+// 之後，留下兩個候選方向，用 ?venue-effect= 切換，方便給設計師比較（同一套
+// venue-cellular-lab.vue 先驗證過，這裡是搬正式版）：
+//   cellular（預設）力矩陣本身（i===j 自己抱團、其餘互斥，見下面長註解）
+//   plasma          cellular 混 45% 的 vortex（非對稱、沿物種順序連續追逐），
+//                    帶一點流動感，色塊會慢慢變化而不是靜靜長著
+const VENUE_EFFECTS = {
+  cellular: { preset: 'cellular', pull: 9, grip: 30, friction: 0.30, simSpeed: 0.30 },
+  plasma: { preset: 'plasma-blend', pull: 7, grip: 22, friction: 0.30, simSpeed: 0.22 },
+}
+// 哪一組在跑，由 init() 依網址決定（見 venueEffectFromLocation）；模組載入當下
+// 還沒有 window.location，先給 cellular 保底。
+let venueCfg = VENUE_EFFECTS.cellular
+
+// 力矩陣本身：i===j 給 +0.8（自己抱團）、其餘一律 -0.55（跟別的物種互斥）——
+// 完全對稱，所以會收斂成一顆顆互不往來的球，這在 hero 是「壞掉」的定義
+//（docs/living-particle-motion.md §1.1 拿它當呆板的反例），但在這一區，那個
+// 塌陷就是設計要的東西。plasma 是拿它跟 vortex 混出來的，見 registerPlasmaBlend。
 const VENUE_FORCE = 1.0
-const VENUE_SIM_SPEED = 0.3
-// ⚠️ 沒有這一項，上面兩項就是白調的。minR 是硬核斥力半徑（dist < minR 就互斥），
-// 等於「一顆菌落最多能擠多密」，也就是「菌落有多大」。look 給的是 5（幾乎可以壓成
-// 一個點）—— 實測 cellular + minR 5：50000 顆全部縮成約 30 個 2~3px 的小點，整面
-// 幾乎全黑，跟設計稿的一團團完全不同。這跟 particleFieldLooks 裡鈷藍細胞把 minR
-// 拉到 16 是同一件事、同一個理由。離開這一格要記得換回 look.physics.minR。
-// 實測（1440×900、50000 顆、10 顆菌落）：
-//   minR 5   全部縮成約 30 個 2~3px 的點，畫面幾乎全黑
+// simSpeed 現在是 venueCfg.simSpeed（cellular/plasma 各自的值），不再是固定常數。
+// minR 是硬核斥力半徑（dist < minR 就互斥），等於「一顆菌落最多能擠多密」。
+// 實測（1440×900、50000 顆、10 顆菌落，rMax 84 那組舊值）：
+//   minR 5   全部縮成約 30 個 2~3px 的小點，畫面幾乎全黑
 //   minR 18  約 35px 的實心小球，還是太小太硬
-//   minR 44  約 70~80px、核心有顆粒、外圈帶暈 ← 最接近設計稿
+//   minR 44  約 70~80px、核心有顆粒、外圈帶暈 ← 曾經最接近設計稿
 //   minR 56  約 150px，但變成同心圓環（洋蔥狀），太有結構、不像菌落
-const VENUE_MIN_R = 44
-// ⚠️ friction / repel / rMax 跟 minR 是同一組物理參數，卻一直沒有跟著鎖 ——
-// 只有 minR（跟上面的 glow）被鎖成固定值，這三個目前還是吃 look.physics 的，
-// 而那是這次進站隨機抽到哪一組「效果」決定的（5 組看起來都是藍，但物理各不同）。
-// 結果就是「同一格 venue，這次刷新跟下次刷新，菌落擠不擠、散不散可能不一樣」——
-// 跟 VENUE_GLOW 那段註解講的是同一個問題，只是漏了這三個沒補。
-// 數值取自 sandbox demo 卡片上的 Force 0.90 / Friction 0.30 / Repel 1.00 / rMax 84
-//（VENUE_FORCE 目前是 1.0，維持原樣沒有一起改，只補上這三個真正還沒鎖的）。
+// 現在跟 rMax 一起等比例收到 30/62（見上面「黏在一起」那段長註解）。
+const VENUE_MIN_R = 30
 const VENUE_FRICTION = 0.30
 const VENUE_REPEL = 1.00
-const VENUE_RMAX = 84
+const VENUE_RMAX = 62
+
+// registerNebula 那個 composable的同一招：把自訂力矩陣塞進 window.PLRules.PRESETS。
+// 純 vortex 粒子會被非對稱力一直拖著轉，同物種來不及聚成乾淨色塊就被拖走、糊成
+// 一片；混一點 cellular 的自吸/互斥進去，粒子有時間先聚成塊，剩下的非對稱力
+// 再讓這些塊慢慢流動。只能在 client 呼叫（要 window.PLRules 先載入）。
+function registerPlasmaBlend (cellularWeight = 0.55) {
+  if (!window.PLRules || window.PLRules.PRESETS['plasma-blend']) return
+  window.PLRules.PRESETS['plasma-blend'] = (n) => {
+    const a = window.PLRules.get('cellular', n)
+    const b = window.PLRules.get('vortex', n)
+    const out = new Array(n * n)
+    for (let i = 0; i < out.length; i++) out[i] = a[i] * cellularWeight + b[i] * (1 - cellularWeight)
+    return out
+  }
+}
+
+// 網址決定跑哪一組菌落效果；沒指定或打錯字就退回 cellular。只能在 client 呼叫
+//（讀 window.location），跟 fieldLookFromLocation 同一套規矩。
+function venueEffectFromLocation () {
+  if (typeof window === 'undefined') return VENUE_EFFECTS.cellular
+  const want = new URLSearchParams(window.location.search).get('venue-effect')
+  return VENUE_EFFECTS[want] || VENUE_EFFECTS.cellular
+}
 
 // 菌落的光暈參數。⚠️ 同樣不能照 look 走：五組之間 glowSize 差 1.7 倍（3~5）、
 // glowIntensity 差 2.5 倍（0.012~0.03），而這一格是全站唯一真的把光暈打開的地方
@@ -658,6 +698,15 @@ function applyLookToKeys () {
   outro.opacity = Math.min(1, look.visual.heroOpacity * OUTRO_OPACITY_RATIO)
   outro.pull = look.hold.pull
   outro.grip = look.hold.grip
+}
+
+// 依網址決定的 venueCfg（cellular/plasma）覆寫 KEYS 的 venue 那格——跟
+// applyLookToKeys 同一套模式，只是這格不歸 look 管。
+function applyVenueEffectToKeys () {
+  const venue = KEYS.find(k => k.id === 'venue')
+  if (!venue) return
+  venue.pull = venueCfg.pull
+  venue.grip = venueCfg.grip
 }
 
 function shiftToCamera (f, zoom, span) { return (f * span) / zoom }
@@ -970,11 +1019,11 @@ function frame (now) {
   const wantColony = colonyPreset ? colonyMix > 0.35 : colonyMix > 0.65
   if (wantColony !== colonyPreset) {
     colonyPreset = wantColony
-    engine.setPreset?.(wantColony ? VENUE_PRESET : look.rules.preset)
+    engine.setPreset?.(wantColony ? venueCfg.preset : look.rules.preset)
     engine.setMinR?.(wantColony ? VENUE_MIN_R : look.physics.minR)
     // 見 VENUE_FRICTION 的長註解：這三個跟 minR 是同一組「菌落該多擠」的參數，
     // 补上鎖定，離開這一格記得換回 look 自己的（跟 minR 同一套邏輯）。
-    engine.setFriction?.(wantColony ? VENUE_FRICTION : look.physics.friction)
+    engine.setFriction?.(wantColony ? venueCfg.friction : look.physics.friction)
     engine.setRepel?.(wantColony ? VENUE_REPEL : look.physics.repel)
     engine.setRMax?.(wantColony ? VENUE_RMAX : look.physics.rMax)
   }
@@ -1031,7 +1080,7 @@ function frame (now) {
     // 跟著 hero 效果變，見 LOCK_SIM_SPEED），菌落場用自己的，自由場照 look。
     const speedFor = key => key.mode === 'image'
       ? LOCK_SIM_SPEED
-      : key.mode === 'colonies' ? VENUE_SIM_SPEED : introBase
+      : key.mode === 'colonies' ? venueCfg.simSpeed : introBase
     const base = lerp(speedFor(A), speedFor(B), e)
 
     const heat = Math.min(1, (Math.abs(y - lastScrollY) / dt) / SCROLL_REF)
@@ -1461,6 +1510,7 @@ async function init () {
 
   await loadParticleKit()
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  registerPlasmaBlend()
 
   // 網址決定跑哪一組；沒指定就隨機抽（值有白名單，打錯字會退回保底那組）
   const fromUrl = fieldLookFromLocation()
@@ -1470,6 +1520,10 @@ async function init () {
   toolMode.value = fromUrl.tool
   applyLookToKeys()
   appliedForce = look.physics.forceFactor
+
+  // PL.IV 場地要跑 cellular 還是 plasma，同樣由網址決定（?venue-effect=plasma）
+  venueCfg = venueEffectFromLocation()
+  applyVenueEffectToKeys()
 
   const hero = window.PLPalettes.PALETTES[look.palette]
   const count = countFor(canvas, PAGE_BUDGET)
