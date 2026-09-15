@@ -95,7 +95,10 @@ const button = cva([
       // font-zh-sans，這裡的 !font-zh-sans 是保險，非必要）。
       specimen: [
         'border-accent-1 bg-[#0a0a0c] text-pre-800 font-medium !tracking-[0.1em]',
-        'hover:bg-accent-1/10',
+        // 設計稿的 hover 不是把黑底整個換成淡藍（那樣底色會被沖淡、變得快透明），
+        // 是疊一層 20% 透明的 #71c1f0 在原本的黑底「上面」，黑底本身還在、只是被染色。
+        // 單一 bg-color 疊不出這個效果，用兩層 background-image 堆出來。
+        'hover:bg-[linear-gradient(0deg,rgba(113,193,240,0.2),rgba(113,193,240,0.2)),linear-gradient(0deg,#0a0a0c,#0a0a0c)]',
         'focus:outline focus:outline-2 focus:outline-accent-1/40',
         'disabled:cursor-not-allowed disabled:border-pre-800/30 disabled:text-pre-800/30'
       ]

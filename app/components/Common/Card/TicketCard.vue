@@ -10,10 +10,10 @@ const isExpanded = ref(false)
 
 <template>
   <div
-    class="relative w-full rounded p-4 backdrop-blur-md md:p-8"
+    class="group relative w-full rounded p-4 backdrop-blur-md transition-[background-color,background-image] duration-300 md:p-8"
     :class="data.is_highlighted
-      ? 'border-[1.5px] border-accent-1 bg-gradient-to-b from-[#0f1d4e] to-[#0f1d4e]/30'
-      : 'border border-pre-500/50 bg-bg-light/10'"
+      ? 'border-[1.5px] border-accent-1 bg-[#0a0a0c] bg-gradient-to-b from-[#0f1d4e] to-[#0f1d4e]/30 hover:bg-[linear-gradient(180deg,#1d327c_0%,rgba(29,50,124,0.3)_100%),linear-gradient(0deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2))]'
+      : 'border border-pre-800/50 bg-bg-light/10 hover:bg-bg-light/20'"
   >
     <div class="flex flex-col gap-y-6 md:justify-between h-full">
       <div>
@@ -59,19 +59,17 @@ const isExpanded = ref(false)
       <!-- 購票連結（電腦版才顯示）。
            ⚠️ 整條都是連結，不是只有箭頭 —— 原本箭頭是個沒綁事件的 <button>，
            點了不會有任何反應，而且命中區只有那顆 24px 的圖示。
-           負 margin 是讓 hover 的底色鋪到卡片內距的邊緣，文字位置不變。 -->
+           負 margin 是把命中區撐大到卡片內距的邊緣，同時用 px-2 抵銷掉、文字位置不變。
+           hover 的顏色變化交給整張卡的 group（見外層 div），不是這條連結自己。 -->
       <a
         v-if="data.reserve_link?.href"
         :href="data.reserve_link.href"
         :target="data.reserve_link.target"
         :rel="linkRel(data.reserve_link.target)"
-        class="group -mx-2 hidden items-center justify-between gap-x-2 rounded px-2 py-2 transition-colors hover:bg-pre-800/5 hover:text-pre-800 md:flex"
+        class="-mx-2 hidden items-center justify-between gap-x-2 rounded px-2 py-2 md:flex"
       >
-        <span>{{ data.reserve_link.label }}</span>
-        <span
-          class="flex size-6 items-center justify-center transition-transform group-hover:translate-x-1"
-          :class="data.is_highlighted ? 'text-accent-1' : 'text-pre-800/[62%]'"
-        >
+        <span class="transition-colors duration-300 group-hover:text-accent-1">{{ data.reserve_link.label }}</span>
+        <span class="flex size-6 items-center justify-center text-pre-800/[62%] transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-accent-1">
           <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
         </span>
       </a>

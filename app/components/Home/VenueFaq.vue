@@ -168,7 +168,7 @@ onBeforeUnmount(() => killFadeIns())
                 v-for="(item, i) in FAQ_PAGE_ITEMS"
                 :key="item.question"
                 data-fade="in"
-                class="flex gap-x-4 py-6 lg:gap-x-6"
+                class="-mx-2 flex gap-x-4 py-6 pl-2 pr-4 transition-[background-image,padding-left] duration-300 hover:bg-gradient-to-r hover:from-[rgba(15,29,78,0.8)] hover:to-[rgba(15,29,78,0.3)] hover:pl-6 lg:gap-x-6"
                 :class="i < FAQ_PAGE_ITEMS.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
               >
                 <span class="shrink-0 font-en-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
