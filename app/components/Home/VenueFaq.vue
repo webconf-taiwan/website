@@ -77,9 +77,13 @@ onBeforeUnmount(() => killFadeIns())
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號。
              ⚠️ data-fade="in" 掛在「文字的外層」而不是有 border-t 的那層 ——
-             分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。 -->
+             分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。
+             ⚠️ 這一欄下面大半是空的（留給 HomeField 的菌落場飄），只有卷號本身這
+             幾行文字會被點雲穿過去、糊到看不清楚。跟「更多資訊」按鈕同一招：
+             壓一塊半透明黑 + 模糊當底，只包住文字本身，不是整欄——不然點雲在這欄
+             就完全不會透出來，那塊留白的意義就沒了。 -->
         <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <CommonPlate :data="venue.plate" data-fade="in" />
+          <CommonPlate :data="venue.plate" data-fade="in" class="lg:-mx-2 lg:px-2" />
         </div>
 
         <!-- 右欄：標題 + 交通方式 + 按鈕 -->
@@ -120,7 +124,7 @@ onBeforeUnmount(() => killFadeIns())
                 :href="venue.more_link?.href"
                 :target="venue.more_link?.target"
                 :rel="linkRel(venue.more_link?.target)"
-                class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 text-zh-btn text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
+                class="inline-flex w-max items-center gap-x-1 border border-accent-1 py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
               >
                 {{ venue.more_link?.label }}
                 <span class="flex size-6 items-center justify-center">
@@ -142,9 +146,9 @@ onBeforeUnmount(() => killFadeIns())
       class="relative z-10 min-h-[741px]"
     >
       <div class="flex flex-col lg:flex-row lg:items-start">
-        <!-- 左欄：卷號 -->
+        <!-- 左欄：卷號。同 PL.IV，見那邊的長註解。 -->
         <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <CommonPlate :data="faq.plate" data-fade="in" />
+          <CommonPlate :data="faq.plate" data-fade="in" class="lg:-mx-2 lg:px-2" />
         </div>
 
         <!-- 右欄：標題 + 問答 + 分頁 -->

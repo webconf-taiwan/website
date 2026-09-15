@@ -140,7 +140,10 @@ const KEYS = [
   // 會把小團推散，畫面就變成一片均勻的斑點（設計師的說法是「像繡球花」）。
   // 動態不靠鬆握來，靠的是 shimmer 快速換目標點（shimmerMs 260ms）。
   { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 11, grip: 55, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
-  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
+  // shift 0.32 → 0.40：設計回饋標本整體要再往左推一點，離右邊「常見問答」內容更遠。
+  // shift 越大＝內容被相機推得越往左（見 shiftToCamera），純粹是這一格自己的構圖，
+  // 不影響 venue 那格（各自獨立的 KEYS 常數）。
+  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.40, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
   { id: 'outro', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
@@ -331,6 +334,16 @@ const VENUE_SIM_SPEED = 0.3
 //   minR 44  約 70~80px、核心有顆粒、外圈帶暈 ← 最接近設計稿
 //   minR 56  約 150px，但變成同心圓環（洋蔥狀），太有結構、不像菌落
 const VENUE_MIN_R = 44
+// ⚠️ friction / repel / rMax 跟 minR 是同一組物理參數，卻一直沒有跟著鎖 ——
+// 只有 minR（跟上面的 glow）被鎖成固定值，這三個目前還是吃 look.physics 的，
+// 而那是這次進站隨機抽到哪一組「效果」決定的（5 組看起來都是藍，但物理各不同）。
+// 結果就是「同一格 venue，這次刷新跟下次刷新，菌落擠不擠、散不散可能不一樣」——
+// 跟 VENUE_GLOW 那段註解講的是同一個問題，只是漏了這三個沒補。
+// 數值取自 sandbox demo 卡片上的 Force 0.90 / Friction 0.30 / Repel 1.00 / rMax 84
+//（VENUE_FORCE 目前是 1.0，維持原樣沒有一起改，只補上這三個真正還沒鎖的）。
+const VENUE_FRICTION = 0.30
+const VENUE_REPEL = 1.00
+const VENUE_RMAX = 84
 
 // 菌落的光暈參數。⚠️ 同樣不能照 look 走：五組之間 glowSize 差 1.7 倍（3~5）、
 // glowIntensity 差 2.5 倍（0.012~0.03），而這一格是全站唯一真的把光暈打開的地方
@@ -362,9 +375,14 @@ const VENUE_REGION = { x0: 0.03, x1: 0.33, y0: 0.04, y1: 0.96 }
 const VENUE_GAP = 0.07
 const VENUE_COLONIES = 7
 // 一顆菌落裡切幾個小團、每個小團多大（佔菌落半徑的比例）。
-// 設計稿一顆菌落裡大約十幾坨，大小不一。
-const VENUE_BLOBS = [10, 18]
-const VENUE_BLOB_R = [0.10, 0.24]
+// 設計稿一顆菌落裡大約十幾坨，大小不一 —— 但實測（見 2026-09 對照 sandbox demo
+// 的截圖）10~18 坨、每坨到 0.24 倍半徑，畫面上讀起來是「花瓣/風車」：坨與坨之間
+// 縫隙太清楚、太大坨，不是 demo 那種細密、坨與坨融在一起的「細胞」質感。
+// 調小、調多之後坨會互相重疊得更密，才讀得出「同物種細胞黏團」而不是「幾片花瓣」。
+// ⚠️ 這是跟著 sandbox demo 調的，如果跟 Figma 設計稿的「十幾坨」核對有出入，
+// 要請設計師再看一次實際畫面決定要哪一種質感。
+const VENUE_BLOBS = [18, 30]
+const VENUE_BLOB_R = [0.05, 0.11]
 const VENUE_RADIUS = [0.045, 0.065]
 
 // 收攏拉力的跟隨速度。ATTACK 快（收攏要跟得上捲動），RELEASE 慢（放手要拖一段）。
@@ -981,6 +999,11 @@ function frame (now) {
     colonyPreset = wantColony
     engine.setPreset?.(wantColony ? VENUE_PRESET : look.rules.preset)
     engine.setMinR?.(wantColony ? VENUE_MIN_R : look.physics.minR)
+    // 見 VENUE_FRICTION 的長註解：這三個跟 minR 是同一組「菌落該多擠」的參數，
+    // 补上鎖定，離開這一格記得換回 look 自己的（跟 minR 同一套邏輯）。
+    engine.setFriction?.(wantColony ? VENUE_FRICTION : look.physics.friction)
+    engine.setRepel?.(wantColony ? VENUE_REPEL : look.physics.repel)
+    engine.setRMax?.(wantColony ? VENUE_RMAX : look.physics.rMax)
   }
 
   // --- 點的外觀：每一格自己決定 --------------------------------------------

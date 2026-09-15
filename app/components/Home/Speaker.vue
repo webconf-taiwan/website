@@ -556,7 +556,7 @@ onBeforeUnmount(() => {
         :to="moreLink.href"
         :target="moreLink.target"
         :rel="linkRel(moreLink.target)"
-        class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 text-zh-btn text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
+        class="inline-flex items-center gap-x-1 border border-accent-1 py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
       >
         {{ moreLink.label }}
         <span class="flex size-6 items-center justify-center">
