@@ -14,6 +14,16 @@ definePageMeta({
 })
 
 const fieldRef = ref(null)
+const mobileHeroRef = ref(null)
+const desktopHeroRef = ref(null)
+const railRef = ref(null)
+const introRef = ref(null)
+
+useFadeIn(mobileHeroRef, { step: 0.1 })
+useFadeIn(desktopHeroRef, { step: 0.1 })
+useFadeIn(railRef, { step: 0.08 })
+useFadeIn(introRef, { step: 0.1 })
+
 // 桌機 hero 右下角要接在角落標籤 note 後面的繪圖後端（webgpu / webgl2 / canvas2d）
 const backend = computed(() => fieldRef.value?.backend || '')
 
@@ -46,6 +56,7 @@ const heroInfo = computed(() => [
     </ClientOnly>
 
     <section
+      ref="mobileHeroRef"
       data-same-hero
       data-agenda-hero-mobile
       class="relative z-10 h-[550px] overflow-hidden px-5 pt-[52px] lg:hidden"
@@ -56,7 +67,7 @@ const heroInfo = computed(() => [
       </ClientOnly>
       <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
       <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4 drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
-        <p class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-fs-meta leading-[14px] text-pre-800/80">
+        <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-fs-meta leading-[14px] text-pre-800/80">
           <span class="w-14 shrink-0">{{ plate.code }}</span>
           <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
           <span class="w-[94px] shrink-0">WEBCONF.TW</span>
@@ -65,22 +76,23 @@ const heroInfo = computed(() => [
         </p>
 
         <div class="flex h-[107px] w-full flex-col items-center gap-y-2">
-          <h1 class="w-full text-center font-en-serif text-fs-en-hero-m font-bold italic leading-[77px] text-pre-800">
+          <h1 data-fade="in" class="w-full text-center font-en-serif text-fs-en-hero-m font-bold italic leading-[77px] text-pre-800">
             AGENDA
           </h1>
-          <p class="font-zh-serif text-fs-zh-h5-m font-bold leading-[22px] text-pre-800">
+          <p data-fade="in" class="font-zh-serif text-fs-zh-h5-m font-bold leading-[22px] text-pre-800">
             議程資訊
           </p>
         </div>
       </div>
 
       <div data-agenda-mobile-corner class="absolute bottom-5 left-5 flex h-[38px] flex-col gap-1">
-        <p class="font-mono text-fs-meta leading-[14px] text-pre-800/80">{{ agenda.corner_left?.label }}</p>
-        <p class="text-en-caption italic leading-5 text-pre-800">{{ agenda.corner_left?.note }}</p>
+        <p data-fade="in" class="font-mono text-fs-meta leading-[14px] text-pre-800/80">{{ agenda.corner_left?.label }}</p>
+        <p data-fade="in" class="text-en-caption italic leading-5 text-pre-800">{{ agenda.corner_left?.note }}</p>
       </div>
     </section>
 
     <section
+      ref="desktopHeroRef"
       data-agenda-hero-desktop
       data-same-hero
       class="relative z-10 hidden h-[720px] overflow-hidden border-b border-pre-800/35 bg-black/35 lg:flex"
@@ -91,17 +103,17 @@ const heroInfo = computed(() => [
         class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,12,0.08),rgba(10,10,12,0.34)_58%,rgba(10,10,12,0.62)_100%)]"
       />
       <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-[60px] pt-[60px] text-center">
-        <p class="flex items-center justify-center gap-x-4 font-mono text-[14px] leading-none tracking-[0.18em] text-pre-800/80">
+        <p data-fade="in" class="flex items-center justify-center gap-x-4 font-mono text-[14px] leading-none tracking-[0.18em] text-pre-800/80">
           <template v-for="(part, i) in heroInfo" :key="part">
             <span>{{ part }}</span>
             <span v-if="i < heroInfo.length - 1" aria-hidden="true" class="size-1.5 rounded-full bg-pre-800/60" />
           </template>
         </p>
 
-        <h1 class="mt-10 font-serif text-[180px] font-bold italic leading-[0.9] text-pre-800 xl:text-[220px]">
+        <h1 data-fade="in" class="mt-10 font-serif text-[180px] font-bold italic leading-[0.9] text-pre-800 xl:text-[220px]">
           AGENDA
         </h1>
-        <p class="mt-8 font-zh text-[32px] font-bold leading-none text-pre-800/85">
+        <p data-fade="in" class="mt-8 font-zh text-[32px] font-bold leading-none text-pre-800/85">
           議程資訊
         </p>
       </div>
@@ -110,19 +122,19 @@ const heroInfo = computed(() => [
            （left/right 40px、bottom 30px、兩行間 gap 4px），不是沿用首頁的抓法。 -->
       <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 mx-auto hidden w-full max-w-[1440px] justify-between px-10 pb-[30px] lg:flex">
         <div class="flex flex-col gap-1 text-left">
-          <p class="font-mono text-fs-meta uppercase text-pre-800/80">
+          <p data-fade="in" class="font-mono text-fs-meta uppercase text-pre-800/80">
             {{ agenda.corner_left?.label }}
           </p>
-          <p class="text-en-caption italic text-pre-800">
+          <p data-fade="in" class="text-en-caption italic text-pre-800">
             {{ agenda.corner_left?.note }}
           </p>
         </div>
         <div class="flex flex-col gap-1 text-right">
-          <p class="font-mono text-fs-meta uppercase text-pre-800/80">
+          <p data-fade="in" class="font-mono text-fs-meta uppercase text-pre-800/80">
             {{ agenda.corner_right?.label }}
           </p>
           <!-- note 後面接的是執行期才知道的繪圖後端，不是資料（同 Home/Hero.vue 慣例） -->
-          <p class="text-en-caption italic text-pre-800">
+          <p data-fade="in" class="text-en-caption italic text-pre-800">
             {{ agenda.corner_right?.note }}{{ backend ? ` · ${backend}` : '' }}
           </p>
         </div>
@@ -132,25 +144,26 @@ const heroInfo = computed(() => [
     <section class="relative z-10 bg-[#0a0a0c] pb-[120px] lg:bg-transparent lg:pb-0">
       <div aria-hidden="true" class="absolute inset-x-0 bottom-16 border-t border-pre-800/35 lg:hidden" />
       <div data-agenda-body class="mx-auto flex max-w-[1440px] flex-col lg:flex-row lg:justify-center">
-        <aside class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[484px] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+        <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[484px] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
           <div class="relative z-10 flex h-14 flex-col justify-start [text-shadow:0_0_12px_#0a0a0c] lg:h-full lg:min-h-0 lg:justify-between">
             <CommonPlate
+              data-fade="in"
               :data="plate"
               :divider="false"
               class="agenda-plate !flex-row !items-baseline !gap-x-4 !py-0 lg:!flex-col lg:!gap-x-0"
             />
 
             <div data-agenda-rail-note class="hidden shrink-0 flex-col gap-1 lg:flex">
-              <p class="font-mono text-fs-meta leading-[14px] text-pre-800/80">{{ agenda.note_lines?.[0] }}</p>
-              <p class="text-en-caption italic text-pre-800">{{ agenda.note_lines?.[1] }}</p>
+              <p data-fade="in" class="font-mono text-fs-meta leading-[14px] text-pre-800/80">{{ agenda.note_lines?.[0] }}</p>
+              <p data-fade="in" class="text-en-caption italic text-pre-800">{{ agenda.note_lines?.[1] }}</p>
             </div>
           </div>
         </aside>
 
         <div class="agenda-content flex-1 px-0 pb-0 lg:px-0 lg:py-[60px] lg:pr-[60px]">
           <div class="mx-auto flex w-[calc(100%_-_40px)] flex-col pt-8 lg:mx-0 lg:w-full lg:max-w-none lg:gap-y-12 lg:pt-0">
-            <div class="mb-6 flex flex-col gap-y-2 lg:mb-0 lg:gap-y-4">
-              <h2 class="agenda-heading font-serif text-[44px] font-bold italic leading-[1.08] text-pre-800 lg:text-fs-h1">
+            <div ref="introRef" class="mb-6 flex flex-col gap-y-2 lg:mb-0 lg:gap-y-4">
+              <h2 data-fade="in" class="agenda-heading font-serif text-[44px] font-bold italic leading-[1.08] text-pre-800 lg:text-fs-h1">
                 <span class="lg:hidden">{{ agenda.mobile_heading }}</span>
                 <span class="hidden lg:inline">
                   <template v-for="(line, i) in agenda.heading_lines" :key="line">
@@ -158,7 +171,7 @@ const heroInfo = computed(() => [
                   </template>
                 </span>
               </h2>
-              <p class="agenda-date font-serif text-fs-h5 font-bold italic leading-[1.3] text-pre-800/80 lg:text-fs-h4">
+              <p data-fade="in" class="agenda-date font-serif text-fs-h5 font-bold italic leading-[1.3] text-pre-800/80 lg:text-fs-h4">
                 {{ agenda.date }}
               </p>
             </div>

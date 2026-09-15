@@ -2,7 +2,7 @@
 definePageMeta({ layout: false })
 
 useSeoMeta({
-  title: '網站建置中',
+  title: '主辦團隊 - 網站建置中',
   robots: 'noindex, nofollow'
 })
 
