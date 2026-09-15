@@ -121,6 +121,10 @@ const PORTRAIT_MAX_PX = 612
 // 所以這一格自己帶「幅度 + 週期」：幅度收小到小團的尺度，週期縮到 1/4。
 const VENUE_SHIMMER = 7
 const VENUE_SHIMMER_MS = 260
+// plasma 的「整團漂移」振幅要比 cellular 的「單顆粒子閃動」大得多——後者只是
+// 讓小團邊界抖一下，前者是整顆菌落在移動，振幅太小根本看不出來在漂。
+// 數值取自 venue-cellular-lab.vue 調出來的版本。
+const VENUE_PLASMA_DRIFT_AMP = 26
 
 const KEYS = [
   { id: 'hero', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.55, lumaBias: DEFAULT_LUMA_BIAS },
@@ -707,6 +711,11 @@ function applyVenueEffectToKeys () {
   if (!venue) return
   venue.pull = venueCfg.pull
   venue.grip = venueCfg.grip
+  // plasma 用「整顆菌落一起漂」取代預設的「每顆粒子各自重新隨機」（見下面
+  // venueDriftInto 的長註解），週期縮短到 70ms 只是讓離散的更新頻率高到肉眼
+  // 看起來像連續——不是每幀都整批 setTargets（那個成本在滿版 5 萬顆上太貴，
+  // 見 jitterInto 呼叫點原本的節流理由），是用「常換、換得細」逼近連續。
+  venue.shimmerMs = venueCfg.preset === 'plasma-blend' ? 70 : VENUE_SHIMMER_MS
 }
 
 function shiftToCamera (f, zoom, span) { return (f * span) / zoom }
@@ -719,6 +728,64 @@ function jitterInto (out, base, amp) {
     const r = amp * (0.3 + 0.7 * Math.random())
     out[i] = base[i] + Math.cos(a) * r
     out[i + 1] = base[i + 1] + Math.sin(a) * r
+  }
+  return out
+}
+
+// --- plasma 專用：整顆菌落一起漂 --------------------------------------------
+// jitterInto 是「每顆粒子各自重新抽一個隨機偏移」——cellular 用這招閃動很好看
+// （小團快速重排＝電弧感），但 plasma 的 vortex 分量需要時間把粒子拖成流動的
+// 帶狀，每 260ms 就被 jitterInto 打散重排一次，vortex 才剛開始組織結構就被
+// 打斷，肉眼看到的是均勻雜訊（使用者原話「繡球花」，實測見 venue-cellular-lab
+// 那次踩坑）。這裡改成「同一顆菌落的粒子全部加上同一個位移」，vortex 已經長出
+// 來的內部結構完全不受影響，只是整團被平移；位移本身用兩個不同頻率的正弦波
+// 疊加（跟首頁鏡頭漂移、VENUE_SHIMMER 是同一招數學），連續、平滑、永不精確
+// 重複，不是每隔固定時間跳一次新亂數。
+let venueColonyOfSlot = null   // Uint8Array，slot → 第幾顆菌落
+let venueColonyPhase = null    // 每顆菌落各自的漂移相位
+let venueDriftT0 = 0
+
+// 依「同物種內、掃描線順序就近配對」重算一次 slot → 菌落索引——邏輯要跟
+// useParticleMorph.buildSlotTargets 的非 recolor 分支完全一致（同一份 snap、
+// 同一份 targets、同一種排序），這樣配出來的 slot 才會對到正確的菌落，
+// 不會跟位置／顏色那兩份配對兜不起來。
+function buildVenueColonyOfSlot (snap, targets, colonyIdx, T, W) {
+  const N = snap.length
+  const { tx, ty, tt } = targets
+  const out = new Uint8Array(N)
+  const orderKey = (x, y) => y * W + x
+  const snapBy = Array.from({ length: T }, () => [])
+  const tgtBy = Array.from({ length: T }, () => [])
+  for (let i = 0; i < N; i++) snapBy[snap[i].s % T].push(i)
+  for (let i = 0; i < N; i++) tgtBy[tt[i]].push(i)
+  for (let t = 0; t < T; t++) {
+    const a = snapBy[t].sort((i, j) => orderKey(snap[i].x, snap[i].y) - orderKey(snap[j].x, snap[j].y))
+    const b = tgtBy[t].sort((i, j) => orderKey(tx[i], ty[i]) - orderKey(tx[j], ty[j]))
+    if (!b.length) continue
+    for (let k = 0; k < a.length; k++) {
+      const slot = snap[a[k]].slot
+      const m = b[Math.floor(k * b.length / a.length)]
+      out[slot] = colonyIdx[m]
+    }
+  }
+  return out
+}
+
+function venueDriftInto (out, base) {
+  const t = performance.now() - venueDriftT0
+  const K = venueColonyPhase.length
+  const cdx = new Float32Array(K)
+  const cdy = new Float32Array(K)
+  for (let c = 0; c < K; c++) {
+    const ph = venueColonyPhase[c]
+    const s = t * 0.00035
+    cdx[c] = (Math.sin(s * 1.7 + ph) * 0.6 + Math.sin(s * 0.63 + ph * 2.1) * 0.4) * VENUE_PLASMA_DRIFT_AMP
+    cdy[c] = (Math.cos(s * 1.3 + ph * 1.4) * 0.6 + Math.sin(s * 0.81 + ph * 3.2) * 0.4) * VENUE_PLASMA_DRIFT_AMP
+  }
+  for (let i = 0; i < base.length; i += 2) {
+    const c = venueColonyOfSlot[i / 2]
+    out[i] = base[i] + cdx[c]
+    out[i + 1] = base[i + 1] + cdy[c]
   }
   return out
 }
@@ -797,13 +864,18 @@ function colonyTargets (N, T, W, H) {
 
   // 每顆粒子的目標就是它那顆菌落的中心；物種隨機分配，cellular 力矩陣自己把
   // 同物種的粒子吸成小團、不同物種推開——這就是紋理的來源，不用另外排點。
+  // colonyIdx 平行記錄「這個目標點屬於第幾顆菌落」——plasma 的整團漂移
+  //（venueDriftInto）要知道這個，cellular 用不到，但一起算不貴。
+  const colonyIdx = new Uint8Array(N)
   for (let i = 0; i < N; i++) {
-    const c = col[i % col.length]
+    const ci = i % col.length
+    const c = col[ci]
     tx[i] = c.x
     ty[i] = c.y
     tt[i] = (Math.random() * T) | 0
+    colonyIdx[i] = ci
   }
-  return { tx, ty, tt }
+  return { tx, ty, tt, colonyIdx, colonyCount: col.length }
 }
 
 // --- 目標點 ----------------------------------------------------------------
@@ -890,14 +962,15 @@ async function buildAllShapes () {
   let colonyShape = freeShape
   let colonyTypes = freeTypes
   try {
-    const built = buildSlotTargets(
-      snap,
-      colonyTargets(snap.length, look.rules.species, W, H),
-      look.rules.species,
-      W,
-    )
+    const colonyTgt = colonyTargets(snap.length, look.rules.species, W, H)
+    const built = buildSlotTargets(snap, colonyTgt, look.rules.species, W)
     colonyShape = built.shape
     colonyTypes = built.shapeType
+    // plasma 的整團漂移要知道每個 slot 屬於哪顆菌落，見 venueDriftInto 的長註解。
+    venueColonyOfSlot = buildVenueColonyOfSlot(snap, colonyTgt, colonyTgt.colonyIdx, look.rules.species, W)
+    venueColonyPhase = new Float32Array(colonyTgt.colonyCount)
+    for (let c = 0; c < venueColonyPhase.length; c++) venueColonyPhase[c] = Math.random() * TAU
+    venueDriftT0 = performance.now()
   } catch (err) {
     console.warn('[HomeField] 菌落構圖建立失敗，該影格退回自由場', err)
   }
@@ -1173,9 +1246,13 @@ function frame (now) {
     // 菌落 12px（一顆 100px 以上，3px 等於沒動）。見 SHIMMER_AMP / VENUE_SHIMMER。
     const ampA = reducedMotion ? 0 : (A.shimmer ?? shimmerAmpNow)
     const ampB = reducedMotion ? 0 : (B.shimmer ?? shimmerAmpNow)
+    // plasma 用「整顆菌落一起漂」（venueDriftInto）取代「每顆粒子各自重新隨機」
+    //（jitterInto）——見 venueDriftInto 的長註解，兩者的差別是「vortex 長出來的
+    // 結構會不會被打散重排」。只有 venue 這一格、只有 plasma 效果時才走這條路。
+    const isVenuePlasma = key => key.id === 'venue' && venueCfg.preset === 'plasma-blend' && venueColonyOfSlot
     engine.setTargets(
-      ampA ? jitterInto(jitA, shapes[k], ampA) : shapes[k],
-      ampB ? jitterInto(jitB, shapes[k + 1], ampB) : shapes[k + 1],
+      isVenuePlasma(A) ? venueDriftInto(jitA, shapes[k]) : ampA ? jitterInto(jitA, shapes[k], ampA) : shapes[k],
+      isVenuePlasma(B) ? venueDriftInto(jitB, shapes[k + 1]) : ampB ? jitterInto(jitB, shapes[k + 1], ampB) : shapes[k + 1],
     )
     // ⚠️ 配色索引一定要跟目標點同一批上傳 —— 兩者都是「以 slot 為索引、對應
     // .xy / .zw 兩組目標」，分開上傳會有一幀是「舊的顏色配新的位置」。
