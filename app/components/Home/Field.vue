@@ -135,11 +135,18 @@ const KEYS = [
   // PL.IV 場地：⚠️ 這一格「不是圖片」。設計稿要的是一顆顆散開的菌落（第三組動態），
   // 那是 cellular 力矩陣自己塌出來的樣子，不是取樣自 venue.png。
   // venue.png 留在檔案裡沒用到 —— 之前是拿它暫代這個效果的（見 git 記錄）。
-  // ⚠️ grip 55 是「握緊」不是「鬆握」，跟第一版的直覺相反。原因是結構已經寫進目標點
-  // 了（colonyTargets 的小團），握緊才守得住那個構圖；握鬆的話 cellular 的異物種互斥
-  // 會把小團推散，畫面就變成一片均勻的斑點（設計師的說法是「像繡球花」）。
-  // 動態不靠鬆握來，靠的是 shimmer 快速換目標點（shimmerMs 260ms）。
-  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 11, grip: 55, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
+  // ⚠️ 2026-09 改版：grip 從 55（握緊）降到 14、pull 從 11 降到 3（鬆握）——
+  // 跟這段原本寫的直覺相反，是刻意的。舊版把「一顆菌落裡十幾坨」直接寫進目標點
+  // （colonyTargets 的 blob 細分），握緊只是守住那批手動排好的坨；這次拿掉了
+  // blob 細分，目標點只剩「這顆粒子屬於哪顆菌落中心」，紋理完全交給 cellular
+  // 力矩陣自己跑——握緊反而會把那個自然長出來的細胞紋理壓扁成放射狀色塊，
+  // 跟 sandbox demo 的質感對不起來（見 venue-cellular-lab.vue 那頁的左右對照）。
+  // 代價：鬆握之下鄰近菌落的同物種粒子會互相吸過去合併，沒辦法穩定守住
+  // VENUE_COLONIES 顆分開的菌落——目前接受這個代價換質感，之後要是要更清楚的
+  // 「一顆一顆」分隔，可能得把中心拉力再調緊一點或把 VENUE_GAP 加大。
+  // 動態一樣靠 shimmer 快速換目標點（shimmerMs 260ms）——鬆握不代表不需要它，
+  // 純物理穩定後殘餘速度一樣會被看成「死的」，shimmer 才是真正的活感來源。
+  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 3, grip: 14, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
   // shift 0.32 → 0.40：設計回饋標本整體要再往左推一點，離右邊「常見問答」內容更遠。
   // shift 越大＝內容被相機推得越往左（見 shiftToCamera），純粹是這一格自己的構圖，
   // 不影響 venue 那格（各自獨立的 KEYS 常數）。
@@ -374,15 +381,6 @@ const VENUE_REGION = { x0: 0.03, x1: 0.33, y0: 0.04, y1: 0.96 }
 // 照半徑貼著排的話畫面上就是黏成一片。0.05 短邊 ≈ 45px 的黑底空隙。
 const VENUE_GAP = 0.07
 const VENUE_COLONIES = 7
-// 一顆菌落裡切幾個小團、每個小團多大（佔菌落半徑的比例）。
-// 設計稿一顆菌落裡大約十幾坨，大小不一 —— 但實測（見 2026-09 對照 sandbox demo
-// 的截圖）10~18 坨、每坨到 0.24 倍半徑，畫面上讀起來是「花瓣/風車」：坨與坨之間
-// 縫隙太清楚、太大坨，不是 demo 那種細密、坨與坨融在一起的「細胞」質感。
-// 調小、調多之後坨會互相重疊得更密，才讀得出「同物種細胞黏團」而不是「幾片花瓣」。
-// ⚠️ 這是跟著 sandbox demo 調的，如果跟 Figma 設計稿的「十幾坨」核對有出入，
-// 要請設計師再看一次實際畫面決定要哪一種質感。
-const VENUE_BLOBS = [18, 30]
-const VENUE_BLOB_R = [0.05, 0.11]
 const VENUE_RADIUS = [0.045, 0.065]
 
 // 收攏拉力的跟隨速度。ATTACK 快（收攏要跟得上捲動），RELEASE 慢（放手要拖一段）。
@@ -703,17 +701,17 @@ function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias) }
 // PL.IV 的菌落構圖：在版面左半邊撒 VENUE_COLONIES 顆圓形群落，把 N 顆粒子依
 // 面積分給它們。回傳的是 buildImageTargets 那組同樣的 {tx, ty, tt} 介面。
 //
-// 這組座標只決定「菌落長在哪、多大」；顆粒感、膜狀邊界、內部的緩慢蠕動都是
-// cellular 力矩陣自己跑出來的（seek 在這一格是很鬆的，見 KEYS 的 pull/grip）。
-//
-// ⚠️ 物種是「一顆菌落裡各種都有」，不是一顆一種。這是對上設計稿的關鍵：
-// 設計稿裡每顆菌落是十幾坨大小不一的亮塊（白、亮藍、深藍混在一起）而不是一顆平滑
-// 的球 —— 那些亮塊就是 cellular 把同物種吸在一起、不同物種推開的結果，一顆菌落
-// 內部自己分成好幾坨。
-// 附帶效果（也是要的）：seek 把粒子按在菌落裡、cellular 又要把不同物種推開，
-// 兩股力互相牽制 → 這個系統永遠到不了平衡，內部一直在重組。對稱矩陣本來會收斂成
-// 死圖（docs/living-particle-motion.md §1.1），混色 + 收攏正好把那個靜止解破壞掉，
-// 也就是設計師要的「閃動感」的來源。
+// ⚠️ 2026-09 改版：目標點只到「菌落中心」這一層——每顆粒子的目標就是自己那顆
+// 菌落的圓心，物種隨機分配，顆粒感／膜狀邊界／內部紋理全部交給 cellular 力矩陣
+// 自己跑出來（見 KEYS 的 pull/grip，這一格現在是鬆握）。
+// 舊版在這裡還有一步「把每顆菌落切成十幾坨、坨中心當目標點」，讓 seek 力直接
+// 把粒子按在手動排好的坨上——這樣做形狀快（~0.5 秒到位）也穩，但坨與坨之間
+// 邊界太清楚、色塊太大，讀起來像「花瓣」而不是細胞。改成只給中心這一層拉力後，
+// cellular 的同物種自吸／異物種互斥沒有東西跟它打架，紋理明顯更細密、更接近
+// sandbox demo 的質感（對照見 venue-cellular-lab.vue）。
+// ⚠️ 代價：中心拉力很鬆，鄰近菌落的同物種粒子會互相吸過去合併，沒辦法穩定守住
+// VENUE_COLONIES 顆分開的菌落——這是拿「分隔清楚」換「質感細密」，如果之後要
+// 兩者兼顧，得回頭在這裡加一點「留在自己菌落」的力，或把 VENUE_GAP 加大。
 function colonyTargets (N, T, W, H) {
   const tx = new Float32Array(N)
   const ty = new Float32Array(N)
@@ -723,7 +721,7 @@ function colonyTargets (N, T, W, H) {
   const minX = W * r.x0; const spanX = W * (r.x1 - r.x0)
   const minY = H * r.y0; const spanY = H * (r.y1 - r.y0)
 
-  // 1) 菌落位置。拒絕取樣，彼此留出 VENUE_GAP 的黑底空隙。
+  // 菌落位置。拒絕取樣，彼此留出 VENUE_GAP 的黑底空隙。
   const col = []
   for (let c = 0; c < VENUE_COLONIES; c++) {
     const R = (VENUE_RADIUS[0] + Math.random() * (VENUE_RADIUS[1] - VENUE_RADIUS[0])) * m
@@ -742,44 +740,13 @@ function colonyTargets (N, T, W, H) {
     col.push({ x, y, R })
   }
 
-  // 2) 每顆菌落再切成一小團一小團（設計稿的關鍵）。
-  // ⚠️ 「小團」一定要寫進目標點，不能指望物理自己長出來。之前的版本是把粒子均勻
-  // 灑滿整顆菌落、讓 cellular 慢慢把同物種吸成小團 —— 結果有兩個問題：
-  //   a. 要十幾秒才成形，而使用者捲到這一區只看得到最初那一兩秒
-  //   b. 就算等到了也是「均勻的斑點球」，設計師的說法是像繡球花
-  // 直接把小團排進目標點，粒子一到位（約 0.5 秒）就是對的結構，
-  // cellular 只是「加強」它：同物種互相吸（小團更緊）、異物種互斥（空隙更黑）。
-  // 物理跟構圖同向，不是互相打架，所以既快又穩。
-  const blobs = []
-  for (const c of col) {
-    const k = VENUE_BLOBS[0] + ((Math.random() * (VENUE_BLOBS[1] - VENUE_BLOBS[0] + 1)) | 0)
-    for (let b = 0; b < k; b++) {
-      // 小團中心撒在菌落圓內（sqrt 讓它均勻分布，不會全擠在中心）
-      const a = Math.random() * TAU
-      const rr = c.R * 0.82 * Math.sqrt(Math.random())
-      blobs.push({
-        x: c.x + Math.cos(a) * rr,
-        y: c.y + Math.sin(a) * rr,
-        R: c.R * (VENUE_BLOB_R[0] + Math.random() * (VENUE_BLOB_R[1] - VENUE_BLOB_R[0])),
-        t: (Math.random() * T) | 0,      // 一小團一種顏色 → 亮塊乾淨、團與團之間有色差
-      })
-    }
-  }
-
-  // 3) 分粒子：依小團面積分配，密度才會一致
-  let area = 0
-  for (const b of blobs) area += b.R * b.R
-  let i = 0
-  for (let bi = 0; bi < blobs.length; bi++) {
-    const b = blobs[bi]
-    const share = bi === blobs.length - 1 ? N - i : Math.round(N * (b.R * b.R) / area)
-    for (let n = 0; n < share && i < N; n++, i++) {
-      const a = Math.random() * TAU
-      const rr = b.R * Math.sqrt(Math.random())
-      tx[i] = b.x + Math.cos(a) * rr
-      ty[i] = b.y + Math.sin(a) * rr
-      tt[i] = b.t
-    }
+  // 每顆粒子的目標就是它那顆菌落的中心；物種隨機分配，讓 cellular 力矩陣
+  // 自己把同物種的粒子吸成小團——不再預先排點決定小團的位置與大小。
+  for (let i = 0; i < N; i++) {
+    const c = col[i % col.length]
+    tx[i] = c.x
+    ty[i] = c.y
+    tt[i] = (Math.random() * T) | 0
   }
   return { tx, ty, tt }
 }
