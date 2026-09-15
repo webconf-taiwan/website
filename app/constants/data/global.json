@@ -34,7 +34,7 @@
       {
         "title": "Programme",
         "links": [
-          { "label": "議程資訊", "href": "#agenda", "target": "_self" },
+          { "label": "議程資訊", "href": "/agenda", "target": "_self" },
           { "label": "講者陣容", "href": "#speaker", "target": "_self" },
           { "label": "場域介紹", "href": "#venue", "target": "_self" },
           { "label": "前往購票", "href": "#ticket", "target": "_self" }

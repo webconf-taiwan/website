@@ -1,10 +1,16 @@
+<script setup>
+defineProps({
+  mobileLogos: { type: Object, default: () => ({}) },
+})
+</script>
+
 <template>
   <div class="flex min-h-screen flex-col bg-white text-txt">
     <LayoutPageHeader />
     <main class="grow">
       <slot />
     </main>
-    <LayoutPageFooter />
+    <LayoutPageFooter :mobile-logo="mobileLogos.footer" />
     <div id="subField" class="relative z-[500]"></div>
     <div id="cookieField" class="relative z-[1000]"></div>
     <div id="sideField" class="relative z-[1001]"></div>
