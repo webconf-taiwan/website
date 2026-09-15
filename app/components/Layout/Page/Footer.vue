@@ -1,4 +1,5 @@
 <script setup>
+defineProps({ mobileLogo: { type: String, default: '' } })
 // 進場：捲到 footer 時，裡面標了 data-fade="in" 的東西由上而下逐項淡入。
 // ⚠️ step 調得比預設(0.09)小 —— footer 有 20 個項目，照預設會拖到 2.4 秒才播完，
 // 使用者早就捲過去了。
@@ -18,13 +19,16 @@ const { footer } = useGlobalData()
 <template>
   <footer ref="footerRef" class="relative grid grid-cols-1 gap-y-6 bg-[#0a0a0c] border border-pre-800/[35%] px-5 py-8 lg:gap-y-12 lg:px-10 lg:py-12 xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] xl:gap-x-20 2xl:gap-x-34">
     <div class="lg:max-w-96">
-      <div class="flex items-center gap-x-2 mb-6">
+      <div data-footer-wordmark class="flex items-center gap-x-2 mb-6">
         <NuxtLink to="/" data-fade="in">
-          <img class="h-7 w-28" :src="assetUrl(footer.logo.src)" :alt="footer.logo.alt">
+          <picture>
+            <source v-if="mobileLogo" media="(max-width: 1023px)" :srcset="assetUrl(mobileLogo)">
+            <img class="h-7 w-28" :src="assetUrl(footer.logo.src)" :alt="footer.logo.alt">
+          </picture>
         </NuxtLink>
         <p data-fade="in" class="text-fs-meta text-pre-800/80">{{ footer.tagline }}</p>
       </div>
-      <div class="flex flex-col gap-y-6 text-pre-800/[62%] font-en-serif font-bold italic text-fs-en-body-md">
+      <div data-footer-copy class="flex flex-col gap-y-6 text-pre-800/[62%] font-en-serif font-bold italic text-fs-en-body-md">
         <!-- 每段是一個「行」的陣列，行與行之間補 <br>。
              ⚠️ 不要改回把 <br> 寫在字串裡再 v-html —— 那等於讓資料源可以塞任意 HTML。 -->
         <div v-for="(lines, i) in footer.paragraphs" :key="i" data-fade="in">
@@ -35,7 +39,7 @@ const { footer } = useGlobalData()
       </div>
     </div>
     <nav aria-label="Footer" class="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3 lg:gap-x-10 xl:gap-x-10 2xl:gap-x-14">
-      <div v-for="parentMenu in footer.menu_groups" :key="parentMenu.title">
+      <div v-for="parentMenu in footer.menu_groups" :key="parentMenu.title" :data-footer-group="parentMenu.title">
         <h2 data-fade="in" class="text-fs-en-h5 text-pre-800 italic mb-4">{{ parentMenu.title }}</h2>
         <ul class="flex flex-col gap-y-2">
           <li v-for="childMenu in parentMenu.links" :key="childMenu.label" data-fade="in">
