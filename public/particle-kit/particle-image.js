@@ -177,13 +177,17 @@
     const sampleEdge = opts.sampleEdge || 480;
 
     const img = await loadImage(url);
-    const scale = Math.min(1, sampleEdge / Math.max(img.naturalWidth, img.naturalHeight));
-    const w = Math.max(1, Math.round(img.naturalWidth * scale));
-    const h = Math.max(1, Math.round(img.naturalHeight * scale));
+    // Optional normalized source rectangle preserves a designed image crop.
+    const crop = opts.crop || { x: 0, y: 0, width: 1, height: 1 };
+    const sx = crop.x * img.naturalWidth, sy = crop.y * img.naturalHeight;
+    const sw = crop.width * img.naturalWidth, sh = crop.height * img.naturalHeight;
+    const scale = Math.min(1, sampleEdge / Math.max(sw, sh));
+    const w = Math.max(1, Math.round(sw * scale));
+    const h = Math.max(1, Math.round(sh * scale));
     const cv = document.createElement('canvas');
     cv.width = w; cv.height = h;
     const ctx = cv.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0, w, h);
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
     const data = ctx.getImageData(0, 0, w, h).data;
 
     // --- 加權累積分布（alpha 為輪廓、亮度為密度） --------------------------
@@ -194,6 +198,7 @@
       if (a < 0.5) continue;                      // 半透明邊緣不取，避免殘邊色
       const r = data[p * 4], g = data[p * 4 + 1], b = data[p * 4 + 2];
       const luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      if (luma < (opts.minLuma || 0)) continue;
       const wgt = a * ((1 - lumaBias) + lumaBias * Math.pow(luma, 0.85));
       weights[p] = wgt;
       total += wgt;

@@ -85,7 +85,10 @@ export default defineNuxtConfig({
     '/wall': { robots: false },
     '/echo': { robots: false },
     // /particle-studio 是內部工具（把照片轉成粒子靜態圖），不是給搜尋的內容頁。
-    '/particle-studio': { robots: false }
+    '/particle-studio': { robots: false },
+    // 暫時頁只供內部檢視，不進 sitemap 或搜尋索引。
+    '/coming-soon': { robots: false },
+    '/404-demo': { robots: false }
   },
 
   app: {

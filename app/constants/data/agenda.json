@@ -1,7 +1,10 @@
 {
   "plate": { "code": "PL. II", "number": "II.", "label": "AGENDA" },
+  "corner_left": { "label": "CODEX EMERGENCE", "note": "vol. v · plate II" },
+  "corner_right": { "label": "N 25.04° · E 121.56°", "note": "simulation · live" },
   "note_lines": ["The full schedule,", "coming soon."],
   "heading_lines": ["Sessions,", "across two days."],
+  "mobile_heading": "Sessions across two days.",
   "date": "Dec. 11-12 , 2026",
   "items": [
     {
