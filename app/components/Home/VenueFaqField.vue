@@ -461,10 +461,10 @@ defineExpose({ backend })
         <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
           <div class="flex flex-col gap-12 lg:border-t lg:border-pre-800/35 py-8 lg:pl-6">
             <div class="flex flex-col gap-4">
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ venue.heading }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ venue.title_zh }}
               </p>
             </div>
@@ -480,7 +480,7 @@ defineExpose({ backend })
                   data-fade="in"
                   class="flex flex-col gap-2"
                 >
-                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
+                  <p class="text-en-h1 text-pre-800 italic">
                     {{ transport.title }}
                   </p>
                   <p class="text-zh-body-lg text-pre-800/[62%]">
@@ -523,10 +523,10 @@ defineExpose({ backend })
         <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
           <div class="flex flex-col gap-6 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
             <div class="flex flex-col gap-4">
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ faq.title_en }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ faq.title_zh }}
               </p>
             </div>

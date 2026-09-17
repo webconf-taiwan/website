@@ -730,8 +730,8 @@ defineExpose({ backend })
       <!-- 中央觀景框 -->
       <div class="order-first flex flex-col items-stretch gap-y-2 lg:order-none lg:col-start-2 lg:row-span-4 lg:row-start-1">
         <div class="flex items-start justify-between text-en-caption text-pre-800">
-          <span>{{ currentSpeaker?.tag }}</span>
-          <span>{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+          <span class="text-en-caption italic">{{ currentSpeaker?.tag }}</span>
+          <span class="text-en-caption italic">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
         </div>
         <!-- 只有框線 —— 人像是底下那張 canvas，這是「觀察窗」不是圖片容器 -->
         <div

@@ -352,8 +352,8 @@ onBeforeUnmount(() => {
             class="flex items-start justify-between text-en-caption text-pre-800"
             :style="{ opacity: frameFade }"
           >
-            <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
-            <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+            <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
+            <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
           </div>
 
           <!-- 觀景框。外層是固定尺寸的佔位（版面不能跟著動畫抖），框線本身絕對定位
@@ -395,11 +395,11 @@ onBeforeUnmount(() => {
         </button>
 
         <span class="flex min-w-0 flex-1 flex-col items-center gap-y-2 border-b border-pre-800/80 pb-4 text-center">
-          <span class="text-[22px] leading-[1.2] tracking-[0.02em] text-accent-1 lg:text-[28px]">
+          <span class="text-accent-1">
             <span
               v-for="(r, k) in nameRuns(currentSpeaker?.name || '')"
               :key="k"
-              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
+              :class="r.zh ? 'text-zh-h4' : 'text-en-h4 italic'"
             >{{ r.t }}</span>
           </span>
           <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
@@ -480,8 +480,8 @@ onBeforeUnmount(() => {
           class="flex items-start justify-between text-en-caption text-pre-800"
           :style="{ opacity: frameFade }"
         >
-          <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
-          <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+          <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
+          <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
         </div>
         <!-- 外層是固定尺寸的佔位（版面不能跟著動畫抖），框線本身絕對定位在正中央、
              用 width/height 百分比放大。

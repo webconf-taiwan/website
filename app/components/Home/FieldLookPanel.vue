@@ -201,19 +201,19 @@ function reset () {
         :aria-expanded="true"
         @click="toggle"
       >
-        <span class="font-mono text-fs-micro uppercase text-pre-800/45">Particle Tool</span>
-        <span class="ml-auto truncate font-mono text-fs-micro text-pre-800/45">
+        <span class="font-mono text-micro uppercase text-pre-800/45">Particle Tool</span>
+        <span class="ml-auto truncate font-mono text-micro text-pre-800/45">
           <template v-if="look">{{ pinned ? look.index : '↻' }}</template>
           <template v-if="active"> · {{ (active.knobs.count || 0).toLocaleString() }}</template>
         </span>
-        <span class="shrink-0 font-mono text-fs-micro text-pre-800/60">▾</span>
+        <span class="shrink-0 font-mono text-micro text-pre-800/60">▾</span>
       </button>
 
       <!-- ⚠️ min-h-0 是必要的：flex 子項預設 min-height:auto，少了它內層的
            overflow-y-auto 不會生效，整塊會被內容撐爆而不是捲動。 -->
       <div data-lenis-prevent class="min-h-0 flex-1 overflow-y-auto px-3 pb-3">
         <template v-if="look">
-          <p class="px-1 font-mono text-fs-micro uppercase text-pre-800/45">
+          <p class="px-1 font-mono text-micro uppercase text-pre-800/45">
             Hero Animation
           </p>
 
@@ -226,11 +226,11 @@ function reset () {
                 :disabled="switching"
                 @click="emit('pick', null)"
               >
-                <span class="w-3 font-mono text-fs-micro text-pre-800/40">↻</span>
-                <span class="text-fs-body-sm">隨機</span>
+                <span class="w-3 font-mono text-micro text-pre-800/40">↻</span>
+                <span class="text-body-sm">隨機</span>
                 <span
                   v-if="!pinned"
-                  class="ml-auto font-mono text-fs-micro text-pre-800/45"
+                  class="ml-auto font-mono text-micro text-pre-800/45"
                 >{{ look.index }}</span>
               </button>
             </li>
@@ -246,10 +246,10 @@ function reset () {
                 :disabled="switching"
                 @click="emit('pick', item.index)"
               >
-                <span class="mt-0.5 w-3 font-mono text-fs-micro text-pre-800/40">{{ item.index }}</span>
+                <span class="mt-0.5 w-3 font-mono text-micro text-pre-800/40">{{ item.index }}</span>
                 <span class="min-w-0">
-                  <span class="block truncate text-fs-body-sm">{{ item.name }}</span>
-                  <span class="block font-mono text-fs-micro text-pre-800/35">
+                  <span class="block truncate text-body-sm">{{ item.name }}</span>
+                  <span class="block font-mono text-micro text-pre-800/35">
                     {{ item.rules.preset }} · {{ item.rules.seedPattern }}
                   </span>
                 </span>
@@ -261,7 +261,7 @@ function reset () {
                ⚠️ 這個刻意不走草稿 —— 它只改一個裸變數、下一幀就生效、沒有成本，
                即時拖曳才看得出差別。 -->
           <div class="mt-3 border-t border-white/10 px-1 pt-3">
-            <label class="flex items-baseline justify-between font-mono text-fs-micro uppercase text-pre-800/45">
+            <label class="flex items-baseline justify-between font-mono text-micro uppercase text-pre-800/45">
               <span>維持開場構圖</span>
               <span class="text-pre-800/70">{{ holdPct }}%</span>
             </label>
@@ -274,7 +274,7 @@ function reset () {
               class="mt-2 w-full accent-brand-light"
               @input="emit('hold', Number($event.target.value))"
             >
-            <p class="mt-1 font-mono text-fs-micro leading-relaxed text-pre-800/30">
+            <p class="mt-1 font-mono text-micro leading-relaxed text-pre-800/30">
               grip {{ Math.round(look.hold.grip * holdPct / 100) }}
             </p>
           </div>
@@ -290,7 +290,7 @@ function reset () {
               v-for="g in groups"
               :key="g.id"
               type="button"
-              class="flex-1 truncate rounded-lg border px-2 py-1 font-mono text-fs-micro transition-colors hover:bg-white/10"
+              class="flex-1 truncate rounded-lg border px-2 py-1 font-mono text-micro transition-colors hover:bg-white/10"
               :class="g.id === active.id ? 'border-brand-light bg-brand-light/15' : 'border-white/15'"
               @click="activeId = g.id"
             >
@@ -303,7 +303,7 @@ function reset () {
             v-if="active.presets && active.presets.length"
             class="mt-3 border-t border-white/10 px-1 pt-3"
           >
-            <p class="flex items-baseline justify-between font-mono text-fs-micro uppercase text-pre-800/45">
+            <p class="flex items-baseline justify-between font-mono text-micro uppercase text-pre-800/45">
               <span>清晰度檔位</span>
               <span class="text-pre-800/30">載入預設</span>
             </p>
@@ -312,7 +312,7 @@ function reset () {
                 v-for="p in active.presets"
                 :key="p.tier"
                 type="button"
-                class="flex-1 rounded-lg border px-0 py-1 font-mono text-fs-micro transition-colors hover:bg-white/10 disabled:opacity-30"
+                class="flex-1 rounded-lg border px-0 py-1 font-mono text-micro transition-colors hover:bg-white/10 disabled:opacity-30"
                 :class="presetOf[active.id] === p.tier ? 'border-brand-light bg-brand-light/15' : 'border-white/15'"
                 :disabled="switching"
                 @click="loadPreset(p)"
@@ -320,14 +320,14 @@ function reset () {
                 t{{ p.tier }}
               </button>
             </div>
-            <p class="mt-1 font-mono text-fs-micro leading-relaxed text-pre-800/30">
+            <p class="mt-1 font-mono text-micro leading-relaxed text-pre-800/30">
               只填進下面的欄位，按保存才生效。t3 = 目前線上的值。
             </p>
           </div>
 
           <!-- 逐項微調 -->
           <div class="mt-3 border-t border-white/10 px-1 pt-3">
-            <p class="font-mono text-fs-micro uppercase text-pre-800/45">
+            <p class="font-mono text-micro uppercase text-pre-800/45">
               參數微調
             </p>
             <div
@@ -337,11 +337,11 @@ function reset () {
             >
               <label
                 :for="'wc-knob-' + active.id + '-' + f.key"
-                class="min-w-0 flex-1 truncate text-fs-body-sm text-pre-800/70"
+                class="min-w-0 flex-1 truncate text-body-sm text-pre-800/70"
               >{{ f.label }}</label>
               <span
                 v-if="active.knobs[f.key] !== Number(draft[f.key])"
-                class="shrink-0 font-mono text-fs-micro text-pre-800/30 line-through"
+                class="shrink-0 font-mono text-micro text-pre-800/30 line-through"
               >{{ active.knobs[f.key] }}</span>
               <input
                 :id="'wc-knob-' + active.id + '-' + f.key"
@@ -350,13 +350,13 @@ function reset () {
                 :min="f.min"
                 :max="f.max"
                 :step="f.step"
-                class="w-[5.5rem] shrink-0 rounded-lg border border-white/15 bg-white/5 px-2 py-1 text-right font-mono text-fs-body-sm tabular-nums text-pre-800/85 outline-none focus:border-brand-light"
+                class="w-[5.5rem] shrink-0 rounded-lg border border-white/15 bg-white/5 px-2 py-1 text-right font-mono text-body-sm tabular-nums text-pre-800/85 outline-none focus:border-brand-light"
                 @keyup.enter="apply"
               >
             </div>
             <p
               v-if="active.meta"
-              class="mt-2 font-mono text-fs-micro leading-relaxed text-pre-800/30"
+              class="mt-2 font-mono text-micro leading-relaxed text-pre-800/30"
             >
               <template v-if="active.meta.autoCount">依面積算出來是 {{ active.meta.autoCount.toLocaleString() }} 顆</template>
               <template v-if="active.meta.backend"> · {{ active.meta.backend }}</template>
@@ -368,7 +368,7 @@ function reset () {
           <div class="mt-3 border-t border-white/10 px-1 pt-3">
             <button
               type="button"
-              class="flex w-full items-center gap-2 text-left font-mono text-fs-micro uppercase text-pre-800/45 transition-colors hover:text-pre-800/70"
+              class="flex w-full items-center gap-2 text-left font-mono text-micro uppercase text-pre-800/45 transition-colors hover:text-pre-800/70"
               :aria-expanded="helpOpen"
               @click="toggleHelp"
             >
@@ -386,10 +386,10 @@ function reset () {
                 v-for="f in fields"
                 :key="f.key"
               >
-                <dt class="text-fs-body-sm text-pre-800/70">
+                <dt class="text-body-sm text-pre-800/70">
                   {{ f.label }}
                 </dt>
-                <dd class="mt-0.5 text-fs-micro leading-relaxed text-pre-800/40">
+                <dd class="mt-0.5 text-micro leading-relaxed text-pre-800/40">
                   {{ f.help }}
                 </dd>
               </div>
@@ -405,7 +405,7 @@ function reset () {
       >
         <button
           type="button"
-          class="flex-1 rounded-lg border px-2 py-1.5 font-mono text-fs-micro transition-colors disabled:opacity-30"
+          class="flex-1 rounded-lg border px-2 py-1.5 font-mono text-micro transition-colors disabled:opacity-30"
           :class="dirty ? 'border-brand-light bg-brand/40 hover:bg-brand/60' : 'border-white/15'"
           :disabled="!dirty || switching"
           @click="apply"
@@ -414,7 +414,7 @@ function reset () {
         </button>
         <button
           type="button"
-          class="shrink-0 rounded-lg border border-white/15 px-2 py-1.5 font-mono text-fs-micro transition-colors hover:bg-white/10 disabled:opacity-30"
+          class="shrink-0 rounded-lg border border-white/15 px-2 py-1.5 font-mono text-micro transition-colors hover:bg-white/10 disabled:opacity-30"
           :disabled="!dirty || switching"
           @click="reset"
         >

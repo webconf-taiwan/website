@@ -58,21 +58,21 @@ onBeforeUnmount(() => killFadeIns())
            不是 token 的 accent-1 (#7cc8f2)。設計稿兩種藍並存。 -->
       <h2
         data-fade="in"
-        class="mt-6 font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]"
+        class="mt-6 text-en-h3 mb-8 text-brand-light italic"
       >
         {{ content.title }}
       </h2>
 
       <p
         data-fade="in"
-        class="mt-8 font-zh-sans text-[15px] leading-[1.75] tracking-[0.04em] text-pre-800/[85%] lg:text-[16px]"
+        class="mb-4 text-zh-body-md text-pre-800/[85%]"
       >
         {{ content.body_zh }}
       </p>
 
       <p
         data-fade="in"
-        class="mt-6 font-en-serif text-[13px] leading-[1.7] tracking-[0.06em] text-pre-800/[50%] lg:text-[14px]"
+        class="text-en-caption text-pre-800/[50%]"
       >
         {{ content.body_en }}
       </p>
