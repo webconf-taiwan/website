@@ -698,17 +698,19 @@ onBeforeUnmount(() => {
       <h1 class="font-en-serif text-[clamp(56px,9vw,160px)] italic leading-[0.95]">
         回聲牆
       </h1>
-      <p class="max-w-md text-fs-zh-body-md font-zh-sans text-white/70">
+      <p class="max-w-md text-zh-body-md font-zh-sans text-white/70">
         對它說話，粒子會排成你說的字。大聲一點會把字吹散。聲音只在這台機器上運算，辨識由瀏覽器內建的服務處理。
       </p>
-      <button
-        class="border border-[#71c1f0]/60 px-8 py-3 text-zh-btn transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10 disabled:opacity-40"
+      <AtomButton
+        intent="primary"
+        size="md"
+        rounded="none"
         :disabled="state === 'starting'"
         @click="start"
       >
         {{ state === 'starting' ? '啟動中…' : '開始收音 →' }}
-      </button>
-      <p v-if="errorMsg" class="font-mono text-fs-micro text-[#ff8b8b]">
+      </AtomButton>
+      <p v-if="errorMsg" class="font-mono text-micro text-[#ff8b8b]">
         {{ errorMsg }}
       </p>
     </div>
@@ -723,7 +725,7 @@ onBeforeUnmount(() => {
         <p class="font-en-serif text-[clamp(28px,4vw,64px)] italic leading-tight">
           {{ mode === 'ambient' ? '發出聲音' : '說說看' }}
         </p>
-        <p class="mt-3 font-mono text-fs-micro uppercase tracking-[0.3em] text-white/55">
+        <p class="mt-3 font-mono text-micro uppercase tracking-[0.3em] text-white/55">
           speak · the field spells you out
         </p>
       </div>
@@ -780,14 +782,14 @@ onBeforeUnmount(() => {
 
     <p
       v-if="notice"
-      class="pointer-events-none absolute inset-x-0 top-[clamp(120px,18vh,220px)] z-20 text-center font-mono text-fs-micro text-[#71c1f0]/80"
+      class="pointer-events-none absolute inset-x-0 top-[clamp(120px,18vh,220px)] z-20 text-center font-mono text-micro text-[#71c1f0]/80"
     >
       {{ notice }}
     </p>
 
     <pre
       v-if="debugOn"
-      class="pointer-events-none absolute left-6 top-6 z-30 whitespace-pre font-mono text-fs-micro leading-5 text-[#71c1f0]"
+      class="pointer-events-none absolute left-6 top-6 z-30 whitespace-pre font-mono text-micro leading-5 text-[#71c1f0]"
     >{{ dbg }}</pre>
   </div>
 </template>

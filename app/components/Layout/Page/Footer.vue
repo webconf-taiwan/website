@@ -26,9 +26,9 @@ const { footer } = useGlobalData()
             <img class="h-7 w-28" :src="assetUrl(footer.logo.src)" :alt="footer.logo.alt">
           </picture>
         </NuxtLink>
-        <p data-fade="in" class="text-fs-meta text-pre-800/80">{{ footer.tagline }}</p>
+        <p data-fade="in" class="text-meta text-pre-800/80">{{ footer.tagline }}</p>
       </div>
-      <div data-footer-copy class="flex flex-col gap-y-6 text-pre-800/[62%] font-en-serif font-bold italic text-fs-en-body-md">
+      <div data-footer-copy class="flex flex-col gap-y-6 text-pre-800/[62%] italic text-en-body-md">
         <!-- 每段是一個「行」的陣列，行與行之間補 <br>。
              ⚠️ 不要改回把 <br> 寫在字串裡再 v-html —— 那等於讓資料源可以塞任意 HTML。 -->
         <div v-for="(lines, i) in footer.paragraphs" :key="i" data-fade="in">
@@ -40,11 +40,11 @@ const { footer } = useGlobalData()
     </div>
     <nav aria-label="Footer" class="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3 lg:gap-x-10 xl:gap-x-10 2xl:gap-x-14">
       <div v-for="parentMenu in footer.menu_groups" :key="parentMenu.title" :data-footer-group="parentMenu.title">
-        <h2 data-fade="in" class="text-fs-en-h5 text-pre-800 italic mb-4">{{ parentMenu.title }}</h2>
+        <h2 data-fade="in" class="text-en-h5 text-pre-800 italic mb-4">{{ parentMenu.title }}</h2>
         <ul class="flex flex-col gap-y-2">
           <li v-for="childMenu in parentMenu.links" :key="childMenu.label" data-fade="in">
             <a
-              class="text-pre-800/80 transition-colors duration-300 lg:hover:text-brand-light"
+              class="text-pre-800/80 text-zh-body-md transition-colors duration-300 lg:hover:text-brand-light"
               :href="childMenu.href"
               :target="childMenu.target"
               :rel="linkRel(childMenu.target)"

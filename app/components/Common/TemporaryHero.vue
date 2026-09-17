@@ -42,7 +42,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
       <div class="flex flex-col items-center gap-y-4">
         <p
           data-fade="in"
-          class="flex h-[14px] w-[162px] items-center gap-x-3 overflow-hidden font-mono text-fs-meta leading-[14px] uppercase text-pre-800/80"
+          class="flex h-[14px] w-[162px] items-center gap-x-3 overflow-hidden font-mono text-meta leading-[14px] uppercase text-pre-800/80"
         >
           <span class="w-[94px] shrink-0 overflow-hidden text-left">WEBCONF.TW</span>
           <span class="w-2 shrink-0 overflow-hidden text-left text-accent-1" aria-hidden="true">·</span>
@@ -52,7 +52,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
         <div class="flex flex-col items-center gap-y-2 text-pre-800">
           <h1
             data-fade="in"
-            class="font-en-serif text-fs-en-hero-m italic leading-[77px] tracking-[0.02em] lg:text-fs-en-hero lg:leading-[86px]"
+            class="font-en-serif text-en-hero-m italic leading-[77px] tracking-[0.02em] lg:text-en-hero lg:leading-[86px]"
             :class="is404 ? 'w-[252px] text-center lg:w-[121px]' : 'w-[252px] break-words lg:w-auto lg:whitespace-nowrap'"
           >
             {{ title }}
@@ -60,7 +60,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
 
           <p
             data-fade="in"
-            class="whitespace-nowrap font-zh-serif text-fs-zh-h5-m font-bold leading-[22px] tracking-[0.02em] lg:text-fs-zh-h5 lg:leading-[26px]"
+            class="whitespace-nowrap font-zh-serif text-zh-h5-m font-bold leading-[22px] tracking-[0.02em] lg:text-zh-h5 lg:leading-[26px]"
             :class="is404 ? 'lg:w-[314px] lg:text-center' : ''"
           >
             {{ subtitle }}

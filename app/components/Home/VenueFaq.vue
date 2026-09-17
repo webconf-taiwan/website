@@ -92,10 +92,10 @@ onBeforeUnmount(() => killFadeIns())
             <div class="flex flex-col gap-4">
               <!-- 大標是設計稿的文案（venue.heading），不是場地英文名 ——
                    title_en（Taipei Popop）留給 schema.org 組地點名稱用，別混用。 -->
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ venue.heading }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ venue.title_zh }}
               </p>
             </div>
@@ -110,7 +110,7 @@ onBeforeUnmount(() => killFadeIns())
                   data-fade="in"
                   class="flex flex-col gap-2"
                 >
-                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
+                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0]">
                     {{ transport.title }}
                   </p>
                   <p class="text-zh-body-lg text-pre-800/[62%]">
@@ -119,18 +119,21 @@ onBeforeUnmount(() => killFadeIns())
                 </div>
               </div>
 
-              <a
+              <AtomButton
                 data-fade="in"
+                class="w-fit"
+                intent="primary"
+                size="md"
+                rounded="none"
+                icon="arrow-right-thin"
+                :icon-position="'end'"
+                :icon-size="'md'"
                 :href="venue.more_link?.href"
                 :target="venue.more_link?.target"
                 :rel="linkRel(venue.more_link?.target)"
-                class="inline-flex w-max items-center gap-x-1 border border-accent-1 py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
               >
                 {{ venue.more_link?.label }}
-                <span class="flex size-6 items-center justify-center">
-                  <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-                </span>
-              </a>
+              </AtomButton>
             </div>
           </div>
         </div>
@@ -155,10 +158,10 @@ onBeforeUnmount(() => killFadeIns())
         <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
           <div class="flex flex-col gap-6 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
             <div class="flex flex-col gap-4">
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ faq.title_en }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ faq.title_zh }}
               </p>
             </div>
