@@ -489,18 +489,18 @@ defineExpose({ backend })
                 </div>
               </div>
 
-              <a
+              <AtomButton
                 data-fade="in"
+                class="w-fit"
+                intent="primary"
+                size="md"
+                rounded="none"
                 :href="venue.more_link?.href"
                 :target="venue.more_link?.target"
                 :rel="linkRel(venue.more_link?.target)"
-                class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
               >
                 {{ venue.more_link?.label }}
-                <span class="flex size-6 items-center justify-center">
-                  <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-                </span>
-              </a>
+              </AtomButton>
             </div>
           </div>
         </div>

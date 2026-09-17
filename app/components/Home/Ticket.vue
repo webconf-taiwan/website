@@ -56,16 +56,16 @@ useFadeIn(sectionRef, { step: 0.12 })
 
     <div data-fade="in" class="flex justify-center">
       <AtomButton
-        intent="specimen"
+        intent="primary"
         size="md"
         rounded="none"
+        icon="arrow-right-thin"
+        :icon-position="'end'"
+        :icon-size="'md'"
         :href="content.cta?.href"
         :text="content.cta?.label"
       >
         {{ content.cta?.label }}
-        <span class="flex size-6 items-center justify-center">
-          <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-        </span>
       </AtomButton>
     </div>
   </section>

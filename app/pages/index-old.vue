@@ -185,14 +185,16 @@ const backend = computed(() => fieldRef.value?.backend || '')
             {{ home.about.body_zh }}
           </p>
 
-          <a
+          <AtomButton
+            class="mt-10 w-fit"
+            intent="primary"
+            size="md"
+            rounded="none"
             :href="home.about.cta?.href"
             :target="home.about.cta?.target"
             :rel="linkRel(home.about.cta?.target)"
-            class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
-          >
-            {{ home.about.cta?.label }}
-          </a>
+            :text="home.about.cta?.label"
+          />
         </div>
       </div>
     </section>
@@ -227,16 +229,13 @@ const backend = computed(() => fieldRef.value?.backend || '')
       </div>
       <div class="flex justify-center">
         <AtomButton
-          intent="specimen"
+          intent="primary"
           size="md"
           rounded="none"
           :href="home.ticket.cta?.href"
           :text="home.ticket.cta?.label"
         >
           {{ home.ticket.cta?.label }}
-          <span class="flex size-6 items-center justify-center">
-            <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-          </span>
         </AtomButton>
       </div>
     </section>

@@ -50,15 +50,19 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
       {{ content.keywords }}
     </p>
 
-    <a
+    <AtomButton
       data-fade="in"
+      intent="primary"
+      size="md"
+      rounded="none"
+      icon="arrow-right-thin"
+      :icon-position="'end'"
+      :icon-size="'md'"
       :href="content.cta?.href"
       :target="content.cta?.target"
       :rel="linkRel(content.cta?.target)"
-      class="inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-pre-800 transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
-    >
-      {{ content.cta?.label }}
-    </a>
+      :text="content.cta?.label"
+    />
 
     <!-- 四角的「標本標籤」：科學紀錄語彙，桌機才出現 -->
     <div class="pointer-events-none absolute inset-x-6 bottom-8 hidden items-end justify-between lg:flex">

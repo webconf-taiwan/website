@@ -70,7 +70,7 @@ const isExpanded = ref(false)
       >
         <span class="transition-colors duration-300 group-hover:text-accent-1">{{ data.reserve_link.label }}</span>
         <span class="flex size-6 items-center justify-center text-pre-800/[62%] transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-accent-1">
-          <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
+          <AtomIcon name="arrow-right-thin" class="size-6" />
         </span>
       </a>
     </div>

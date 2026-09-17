@@ -72,15 +72,17 @@ useFadeIn(sectionRef)
           {{ content.body_zh }}
         </p>
 
-        <a
+        <AtomButton
           data-fade="in"
+          class="w-fit"
+          intent="primary"
+          size="md"
+          rounded="none"
           :href="content.cta?.href"
           :target="content.cta?.target"
           :rel="linkRel(content.cta?.target)"
-          class="inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
-        >
-          {{ content.cta?.label }}
-        </a>
+          :text="content.cta?.label"
+        />
       </div>
     </div>
   </section>

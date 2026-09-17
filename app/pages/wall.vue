@@ -792,13 +792,15 @@ onBeforeUnmount(() => {
       <p class="max-w-md text-fs-zh-body-md font-zh-sans text-white/70">
         站到鏡頭前，粒子會凝聚成你的人形。影像只在這台機器上運算，不會上傳、不會留存。
       </p>
-      <button
-        class="border border-[#71c1f0]/60 px-8 py-3 text-zh-btn transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10 disabled:opacity-40"
+      <AtomButton
+        intent="primary"
+        size="md"
+        rounded="none"
         :disabled="state === 'starting'"
         @click="startCamera"
       >
         {{ state === 'starting' ? '啟動中…' : (fakeMode ? '播放假人 →' : '啟動鏡頭 →') }}
-      </button>
+      </AtomButton>
       <p v-if="errorMsg" class="font-mono text-fs-micro text-[#ff8b8b]">
         {{ errorMsg }}
       </p>

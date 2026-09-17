@@ -4,7 +4,7 @@
     "title": "WebConf",
     "subtitle": "Taipei Popop · Dec 11-12, 2026",
     "keywords": "Agent · Connections · Code",
-    "cta": { "label": "前往購票 →", "href": "#ticket", "target": "_self" },
+    "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "corner_left": {
       "label": "Code · Emergence",
       "note": "vol. iii · plate i ."
@@ -30,7 +30,7 @@
       { "text": " coalesce into something larger than their parts." }
     ],
     "body_zh": "WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。這些技術如同顯微鏡下的細胞，從簡單規則出發，彼此影響、共同演化，逐步形成新的網頁生態。",
-    "cta": { "label": "議程資訊 →", "href": "#agenda", "target": "_self" }
+    "cta": { "label": "議程資訊", "href": "#agenda", "target": "_self" }
   },
 
   "speaker": {

@@ -551,18 +551,20 @@ onBeforeUnmount(() => {
 
     <!-- 更多講者 -->
     <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[60px] lg:mt-0">
-      <NuxtLink
+      <AtomButton
         v-if="moreLink.href"
-        :to="moreLink.href"
+        intent="primary"
+        size="md"
+        rounded="none"
+        icon="arrow-right-thin"
+        icon-position="end"
+        icon-size="md"
+        :href="moreLink.href"
         :target="moreLink.target"
         :rel="linkRel(moreLink.target)"
-        class="inline-flex items-center gap-x-1 border border-accent-1 py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
       >
         {{ moreLink.label }}
-        <span class="flex size-6 items-center justify-center">
-          <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-        </span>
-      </NuxtLink>
+      </AtomButton>
     </div>
   </section>
 </template>

@@ -701,13 +701,15 @@ onBeforeUnmount(() => {
       <p class="max-w-md text-fs-zh-body-md font-zh-sans text-white/70">
         對它說話，粒子會排成你說的字。大聲一點會把字吹散。聲音只在這台機器上運算，辨識由瀏覽器內建的服務處理。
       </p>
-      <button
-        class="border border-[#71c1f0]/60 px-8 py-3 text-zh-btn transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10 disabled:opacity-40"
+      <AtomButton
+        intent="primary"
+        size="md"
+        rounded="none"
         :disabled="state === 'starting'"
         @click="start"
       >
         {{ state === 'starting' ? '啟動中…' : '開始收音 →' }}
-      </button>
+      </AtomButton>
       <p v-if="errorMsg" class="font-mono text-fs-micro text-[#ff8b8b]">
         {{ errorMsg }}
       </p>
