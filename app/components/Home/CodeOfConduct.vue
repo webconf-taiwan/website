@@ -49,7 +49,7 @@ onBeforeUnmount(() => killFadeIns())
       class="pointer-events-none absolute -inset-x-12 inset-y-0 rounded-[24px] bg-bg-mid/70 backdrop-blur-[32px]"
     />
 
-    <div class="relative z-1 mx-auto max-w-[872px] px-6 py-16 lg:py-[92px]">
+    <div class="relative z-1 mx-auto max-w-[872px] px-6 pt-6 pb-20 lg:py-[92px]">
       <p data-fade="in" class="text-meta text-pre-800/80">
         {{ content.plate?.code }}
       </p>
@@ -58,21 +58,21 @@ onBeforeUnmount(() => killFadeIns())
            不是 token 的 accent-1 (#7cc8f2)。設計稿兩種藍並存。 -->
       <h2
         data-fade="in"
-        class="mt-6 text-en-h3 mb-8 text-brand-light italic"
+        class="mt-2 mb-8 lg:mt-4 text-en-h3 lg:mb-8 text-brand-light italic"
       >
         {{ content.title }}
       </h2>
 
       <p
         data-fade="in"
-        class="mb-4 text-zh-body-md text-pre-800/[85%]"
+        class="mb-4 text-zh-body-md text-pre-800"
       >
         {{ content.body_zh }}
       </p>
 
       <p
         data-fade="in"
-        class="text-en-caption text-pre-800/[50%]"
+        class="text-en-caption text-pre-800/[62%]"
       >
         {{ content.body_en }}
       </p>

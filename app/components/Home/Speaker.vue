@@ -322,7 +322,7 @@ onBeforeUnmount(() => {
          ⚠️ 兩塊版面都留在 DOM 裡、用 CSS 切換（不是 v-if）—— 八位講者的名字是
          內容，要進 SSR 的 HTML 才有 SEO。只有 canvas 那一個元件是 client-only。
     ==================================================================== -->
-    <div class="relative z-2 mt-10 lg:hidden">
+    <div class="relative z-2 mt-2 md:mt-6 lg:mt-10 lg:hidden">
       <!-- 觀景區。⚠️ canvas 是「整塊正方形」而不是只有框線那一格：設計稿的人像
            比框大（頭肩會溢出框線），跟桌機的構圖一致。框線只佔它的 62%。
            touch-pan-y：直向捲動留給瀏覽器，橫向留給下面的滑動切換。 -->

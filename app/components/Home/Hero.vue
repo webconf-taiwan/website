@@ -34,19 +34,19 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     data-same-hero
     class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center bg-black/30 px-6 py-20 text-center"
   >
-    <p data-fade="in" class="font-mono mb-6 text-meta uppercase text-white/55">
+    <p data-fade="in" class="font-mono mb-8 lg:mb-4 text-meta uppercase text-white/55">
       {{ content.plate_label }}
     </p>
 
-    <h1 data-fade="in" class="mb-6 font-en-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
+    <h1 data-fade="in" class="mb-8 lg:mb-4 font-en-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
       {{ content.title }}
     </h1>
 
-    <p data-fade="in" class="mb-3 font-en-serif text-[clamp(18px,2.2vw,30px)] italic leading-snug">
+    <p data-fade="in" class="mb-4 text-zh-h5 italic">
       {{ content.subtitle }}
     </p>
 
-    <p data-fade="in" class="mb-10 font-mono text-meta uppercase text-white/55">
+    <p data-fade="in" class="mb-8 font-mono text-meta uppercase text-white/55">
       {{ content.keywords }}
     </p>
 
@@ -65,21 +65,21 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     />
 
     <!-- 四角的「標本標籤」：科學紀錄語彙，桌機才出現 -->
-    <div class="pointer-events-none absolute inset-x-6 bottom-8 hidden items-end justify-between lg:flex">
+    <div class="pointer-events-none absolute inset-x-6 bottom-8 items-end justify-between flex">
       <div data-fade="in" class="text-left">
         <p class="font-mono text-meta uppercase text-white/55">
           {{ content.corner_left?.label }}
         </p>
-        <p class="text-en-caption text-white/55">
+        <p class="text-en-caption text-white italic">
           {{ content.corner_left?.note }}
         </p>
       </div>
-      <div data-fade="in" class="text-right">
+      <div data-fade="in" class="text-right hidden lg:block">
         <p class="font-mono text-meta uppercase text-white/55">
           {{ content.corner_right?.label }}
         </p>
         <!-- note 後面接的是執行期才知道的繪圖後端，不是資料 -->
-        <p class="text-en-caption text-white/55">
+        <p class="text-en-caption text-white italic">
           {{ content.corner_right?.note }}{{ backend ? ` · ${backend}` : '' }}
         </p>
       </div>

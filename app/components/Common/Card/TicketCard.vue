@@ -18,14 +18,14 @@ const isExpanded = ref(false)
     <div class="flex flex-col gap-y-6 md:justify-between h-full">
       <div>
         <div class="flex flex-col gap-y-4 md:mb-8">
-          <span class="text-pre-800/[62%] text-meta">{{ data.code }}</span>
+          <span class="text-pre-800/[62%] text-micro">{{ data.code }}</span>
           <h3 class="text-pre-800 text-zh-h3">{{ data.title }}</h3>
           <div class="flex gap-x-4 items-baseline">
             <span class="text-zh-h5">NT$</span>
             <span class="text-en-h1 italic">{{ data.price }}</span>
             <span class="text-zh-body-md">{{ data.unit }}</span>
           </div>
-          <p class="text-pre-800/[62%] font-en-serif text-meta">{{ data.category }}</p>
+          <p class="text-pre-800/[80%] font-en-serif text-meta">{{ data.category }}</p>
         </div>
         <div
           class="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"

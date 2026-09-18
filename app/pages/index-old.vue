@@ -154,10 +154,10 @@ const backend = computed(() => fieldRef.value?.backend || '')
             <!-- 十字準星 -->
             <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-micro text-white/40">+</span>
             <div class="relative border border-white/25 px-4 py-5">
-              <span class="absolute top-2.5 left-3 lg:top-5 lg:left-4 px-1 font-mono text-micro text-white/60">
+              <span class="absolute top-2.5 left-3 lg:top-5 lg:left-4 px-1 font-mono text-meta text-pre-800">
                 {{ home.about.skills_box_label }}
               </span>
-              <ul class="space-y-1 text-right font-mono text-micro text-white/55">
+              <ul class="space-y-1 text-right font-mono text-meta text-pre-800">
                 <li v-for="s in home.about.skills" :key="s">
                   {{ s }}
                 </li>

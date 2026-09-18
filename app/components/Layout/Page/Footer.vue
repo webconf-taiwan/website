@@ -17,7 +17,7 @@ const { footer } = useGlobalData()
 </script>
 
 <template>
-  <footer ref="footerRef" class="relative grid grid-cols-1 gap-y-6 bg-[#0a0a0c] border border-pre-800/[35%] px-5 py-8 lg:gap-y-12 lg:px-10 lg:py-12 xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] xl:gap-x-20 2xl:gap-x-34">
+  <footer ref="footerRef" class="relative grid grid-cols-1 gap-y-6 bg-[#0a0a0c] border-t border-pre-800/[35%] px-5 py-8 lg:gap-y-12 lg:px-10 lg:py-12 xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] xl:gap-x-20 2xl:gap-x-34">
     <div class="lg:max-w-96">
       <div data-footer-wordmark class="flex items-center gap-x-2 mb-6">
         <NuxtLink to="/" data-fade="in">
