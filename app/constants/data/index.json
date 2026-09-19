@@ -16,7 +16,7 @@
   },
 
   "about": {
-    "plate": { "code": "vol. v · plate I", "number": "II.", "label": "ABOUT" },
+    "plate": { "code": "plate I", "number": "II.", "label": "ABOUT" },
     "skills_box_label": "Skills",
     "skills": ["UI · UX", "AI Agent", "Frontend", "Backend", "DevOps", "Security", "Agile"],
     "heading": "An emergent\ngathering of the Web.",
@@ -34,12 +34,12 @@
   },
 
   "speaker": {
-    "plate": { "code": "vol. v · plate II", "number": "III.", "label": "SPEAKER" },
+    "plate": { "code": "plate II", "number": "III.", "label": "SPEAKER" },
     "more_link": { "label": "更多講者", "href": "/people", "target": "_self" }
   },
 
   "venue": {
-    "plate": { "code": "vol. v · plate III", "number": "IV.", "label": "VENUE" },
+    "plate": { "code": "plate III", "number": "IV.", "label": "VENUE" },
     "heading": "The place we gather.",
     "title_en": "Taipei Popop",
     "title_zh": "瓶蓋工廠台北製造所",
@@ -57,14 +57,14 @@
   },
 
   "faq": {
-    "plate": { "code": "vol. v · plate V", "number": "V.", "label": "FAQ" },
+    "plate": { "code": "plate V", "number": "V.", "label": "FAQ" },
     "title_en": "A field guide to questions.",
     "title_zh": "常見問答",
     "per_page": 3
   },
 
   "ticket": {
-    "plate": { "code": "vol. v · plate VI", "number": "VI.", "label": "TICKET" },
+    "plate": { "code": "plate VI", "number": "VI.", "label": "TICKET" },
     "heading_lines": ["Four ways", "to enter the field."],
     "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "items": [
