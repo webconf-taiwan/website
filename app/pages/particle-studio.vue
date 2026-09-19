@@ -36,9 +36,9 @@ const category = ref('speaker')
 const speakerPortraits = ref([])   // 既有講者，快速試效果用
 // 既有的裝飾標本（見 Home/VenueFaqField.vue 的 STAGES）。之後有新圖直接加在這裡。
 const DECORATIVE_IMAGES = [
-  { name: 'Venue 標本', url: '/source_images/venue.png' },
-  { name: 'FAQ 標本', url: '/source_images/faq.png' },
-  { name: 'Side 標本', url: '/source_images/side.png' }
+  { name: 'Venue 標本', url: '/source_images/venue.webp' },
+  { name: 'FAQ 標本', url: '/source_images/faq.webp' },
+  { name: 'Side 標本', url: '/source_images/side.webp' }
 ]
 const quickPicks = computed(() => category.value === 'speaker' ? speakerPortraits.value : DECORATIVE_IMAGES)
 const uploaded = ref([])           // [{ url, name }]，session 內的上傳清單

@@ -79,10 +79,10 @@ const backend = ref('')
 // lumaBias  取樣密度跟著亮度走的程度（PLImage.prepare 的參數，預設 0.6）。
 //       1 = 只有亮的地方有粒子，0 = 整片輪廓內均勻取樣，色調完全交給色盤表現。
 //       ⚠️ 人像一定要 0，這是「人不像人」的主因之一，見 PORTRAIT_LUMA_BIAS。
-const SIDE_IMAGE = '/source_images/side.png'
+const SIDE_IMAGE = '/source_images/side.webp'
 // ⚠️ venue.png 已經不用了 —— PL.IV 改成活的菌落場（mode 'colonies'），
 // 那張圖當初只是拿來暫代這個效果的。檔案留著沒刪，原版三張 canvas 那頁還在用。
-const FAQ_IMAGE = '/source_images/faq.png'
+const FAQ_IMAGE = '/source_images/faq.webp'
 
 // PLImage.prepare 的預設值。標本那兩張（venue / faq）本來就是「黑底上的亮物體」，
 // 調它幾乎沒差（實測 0.6 / 0.25 / 0 三種取樣，輪廓與尖刺一模一樣），所以照舊。

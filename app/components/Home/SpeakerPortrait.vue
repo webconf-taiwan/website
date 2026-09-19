@@ -42,6 +42,23 @@
 //
 // 位置全部在 GPU 上算，JS 每幀只寫 16 bytes 的 morph uniform（路線 C · shader
 // seek 力，見 docs/point-cloud-effect.md §8）。
+//
+// ─── 兩種顯示模式：particle（粒子引擎）／ static（靜態圖）─────────────────────
+// 只有「這台手機夠好」才跑上面那套粒子；手機（< 768px）上其餘一律換成事先渲染好的靜態點畫圖
+// （speakers.json 的 portrait_static，/speakers/speaker-particle-NN.webp）：
+//   · 沒有 WebGPU（cpuFallback）
+//   · pre-flight 就有負面訊號（省流量、prefers-reduced-motion、記憶體小）
+//   · 執行期量測發現整頁不順（檔位被降下來）—— 這時會從粒子換成靜態圖，見 toStatic
+// 「夠好」的判斷就是檔位還在滿檔（TIER_DEFAULT）。靜態模式完全不載粒子套件、不取樣、
+// 不建引擎，成本是一張圖。⚠️ 只限手機：平板與窄桌機視窗一律維持粒子。
+// （唯一的例外是 makeEngine 靜默退到沒有 morph 的 CPU 引擎 —— 那時粒子根本不會動，
+// 不管什麼裝置都改用靜態圖，見 init。）
+// ⚠️ 這推翻了 particleTiers.js 早先「最低檔也要留著粒子、不換靜態圖」的設計 ——
+// 那是在沒有這批靜態圖的時候寫的。MobileField（滿版自由場）仍然維持粒子不換圖。
+//
+// 靜態模式的換人動畫要跟框線同一拍（見 Speaker.vue 的 LEADER_OUT_MS / FRAME_DOT_MS /
+// FRAME_GROW_MS）：框線淡出時圖從中心稍微縮小並淡出 → 換圖 → 框線放射長大時圖由中心
+// 放大回來並淡入。
 
 const props = defineProps({
   // 首頁資料的 speaker.items，只用來拿 portrait 路徑
@@ -52,7 +69,7 @@ const props = defineProps({
 })
 
 const { loadParticleKit, registerNebula } = useParticleKit()
-const { countFor, maxDpr } = useParticleBudget()
+const { countFor, maxDpr, isMobile } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { idle } = useParticleStage()
 const { speakerIndex, swapImpl, resetSpeakerBus } = useSpeakerFieldBus()
@@ -63,11 +80,182 @@ const { speakerIndex, swapImpl, resetSpeakerBus } = useSpeakerFieldBus()
 // 有查 targetsStale()，只有 resize handler 查 —— 真要中途換檔還得補一段手動重建。
 // 靠等就好：這支掛載時使用者還在 hero，canvas 在畫面外、引擎是 paused 的。
 const {
-  tier, whenTierReady, knobs, cpuFallback, showFps,
+  tier, whenTierReady, knobs, cpuFallback, showFps, onTierChange,
   markActive, suspend, suspendReadback, noteRespawn,
 } = useParticleQuality()
 
 const canvasRef = ref(null)
+const rootRef = ref(null)
+const imgRef = ref(null)
+
+// --- 顯示模式 ---------------------------------------------------------------
+// ⚠️ 這一段在 setup 同步決定：檔位的 pre-flight 是同步就緒的（見 useParticleQuality.start），
+// 而且這個元件包在 <ClientOnly> 裡、不會在 SSR 跑。沒有靜態圖資料時（不該發生）留在粒子模式。
+const hasStaticImages = props.speakers.some(sp => sp.portrait_static)
+// ⚠️ 只有「手機」（視窗 < 768px，isMobile）才會換成靜態圖。平板與窄桌機視窗維持粒子，
+// 就算檔位被降下來也一樣（那邊只是變稀，見 MobileField / particleTiers）。
+const wantsStatic = () => isMobile() && (cpuFallback.value || tier.value < TIER_DEFAULT)
+const mode = ref(hasStaticImages && wantsStatic() ? 'static' : 'particle')
+// canvas 與 <img> 換手時要重疊一小段，所以 canvas 不是跟著 mode 立刻拿掉
+const showCanvas = ref(mode.value === 'particle')
+const staticSrc = ref('')
+let disposed = false
+let pendingStatic = false           // 換人動畫中被降檔 → 等收完再換成靜態圖
+let unsubTier = null
+let nearIo = null
+let staticTween = null
+
+// 換人動畫的時序。⚠️ 要跟 Speaker.vue 的框線同一拍（LEADER_OUT_MS / FRAME_DOT_MS /
+// FRAME_GROW_MS），改那邊時記得回來對。兩邊是各自跑的時間軸、不互相等待。
+const STATIC_APPEAR_MS = 400        // 第一次出現（與換人無關）
+const SWAP_OUT_MS = 260
+const SWAP_DOT_MS = 130
+const SWAP_GROW_MS = 520
+// 「稍微」縮小：0.92 = 300px 的圖縮到 276px。框線是縮到 0.3，但圖跟著縮那麼多會像
+// 整張臉被吸進一個點；設計要的是輕輕一個呼吸的感覺。
+const SWAP_SCALE_MIN = 0.92
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+const pngOf = url => url.replace(/\.webp(?=$|[?#])/i, '.png')
+const staticSrcOf = portrait => props.speakers.find(sp => sp.portrait === portrait)?.portrait_static || ''
+
+// 載入並解碼，回傳「實際載得到的網址」。⚠️ 不支援 WebP 的裝置會落到同名的 .png
+// （約定：每個 .webp 旁邊都有同名 .png，見 particle-image.js 的 loadImage）。
+// 兩種都失敗回空字串。同一個網址只載一次，預載與換人共用同一份結果。
+const imageCache = new Map()
+function resolveImage (url) {
+  if (!url) return Promise.resolve('')
+  if (imageCache.has(url)) return imageCache.get(url)
+  const tryLoad = (src) => {
+    const im = new Image()
+    im.src = src
+    const done = im.decode
+      ? im.decode()
+      : new Promise((resolve, reject) => { im.onload = resolve; im.onerror = reject })
+
+    return done.then(() => src)
+  }
+  const p = tryLoad(url)
+    .catch(() => (pngOf(url) !== url ? tryLoad(pngOf(url)) : ''))
+    .catch(() => '')
+  imageCache.set(url, p)
+
+  return p
+}
+
+// 前後兩位先載好（輪播是左右滑，下一張幾乎一定是鄰居）。省流量模式不預載。
+function prefetchNeighbors () {
+  if (navigator.connection?.saveData) return
+  const n = props.speakers.length
+  if (n < 2) return
+  const i = speakerIndex.value
+  const run = () => [1, -1].forEach(d => resolveImage(props.speakers[(i + d + n) % n]?.portrait_static))
+  if (window.requestIdleCallback) window.requestIdleCallback(run)
+  else setTimeout(run, 800)
+}
+
+function tweenImg (vars) {
+  const { $gsap } = useNuxtApp()
+
+  return new Promise((done) => {
+    staticTween = $gsap.to(imgRef.value, { ...vars, onComplete: done })
+  })
+}
+
+// 靜態圖第一次（或從粒子換過來時）浮現：只淡入，不縮放。
+function appearStatic () {
+  const el = imgRef.value
+  if (!el) return
+  staticTween?.kill()
+  const { $gsap } = useNuxtApp()
+  if (!$gsap || reducedMotion) { el.style.opacity = '1'; return }
+  staticTween = $gsap.to(el, { opacity: 1, duration: STATIC_APPEAR_MS / 1000, ease: 'power2.out' })
+}
+
+// 把網址掛上 <img> 並等它解碼完 —— 淡入的第一幀不能是空白。
+async function mountStaticSrc (src) {
+  staticSrc.value = src
+  await nextTick()
+  await imgRef.value?.decode?.().catch(() => {})
+}
+
+async function initStatic () {
+  reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  swapImpl.value = swapPortrait
+  shownPortrait = props.speakers[speakerIndex.value]?.portrait || null
+
+  // 框快進畫面才開始載 —— 靜態圖每張約 0.5MB，不要在首屏跟 hero 搶頻寬。
+  await new Promise((resolve) => {
+    if (!rootRef.value || !('IntersectionObserver' in window)) return resolve()
+    nearIo = new IntersectionObserver((entries) => {
+      if (entries.some(en => en.isIntersecting)) { nearIo.disconnect(); resolve() }
+    }, { rootMargin: '100% 0px' })
+    nearIo.observe(rootRef.value)
+  })
+  if (disposed) return
+
+  const src = await resolveImage(staticSrcOf(shownPortrait))
+  if (disposed || !src) return
+  await mountStaticSrc(src)
+  appearStatic()
+  prefetchNeighbors()
+}
+
+// 靜態模式的換人：跟框線同一拍。
+async function swapStatic (portrait) {
+  const url = staticSrcOf(portrait)
+  const el = imgRef.value
+  if (!url || !el) return
+  staticTween?.kill()
+  const loading = resolveImage(url)          // 與淡出並行，載入時間藏在動畫裡
+
+  if (reducedMotion) {
+    const src = await loading
+    if (src) { await mountStaticSrc(src); el.style.opacity = '1' }
+    shownPortrait = portrait
+
+    return
+  }
+
+  // 1) 淡出，同時由中心稍微縮小 —— 與框線 / 文字的淡出同一拍
+  await tweenImg({ opacity: 0, scale: SWAP_SCALE_MIN, duration: SWAP_OUT_MS / 1000, ease: 'power2.in' })
+  // 2) 換圖。圖沒載好就多等一下（框線這時是小方點那一拍）
+  const [src] = await Promise.all([loading, sleep(SWAP_DOT_MS)])
+  if (disposed) return
+  if (src) await mountStaticSrc(src)
+  // 3) 由中心放大回來並淡入 —— 與框線的放射長大同一拍
+  await tweenImg({ opacity: 1, scale: 1, duration: SWAP_GROW_MS / 1000, ease: 'power2.out' })
+  shownPortrait = portrait
+  prefetchNeighbors()
+}
+
+// 執行期降檔：粒子 → 靜態圖。
+// ⚠️ 換人動畫進行中不能拆引擎（tween 會打到 null），等 swapPortrait 收尾再換。
+// ⚠️ 先讓圖蓋上去、粒子淡出，之後才拆引擎 —— 先拆的話中間會有一格黑。
+async function toStatic () {
+  if (mode.value === 'static' || !hasStaticImages) return
+  if (switching) { pendingStatic = true; return }
+  pendingStatic = false
+  swapImpl.value = swapPortrait
+  mode.value = 'static'                      // <img> 進 DOM（class 是 opacity-0，看不到）
+  await nextTick()
+
+  const src = await resolveImage(staticSrcOf(shownPortrait))
+  if (disposed) return
+  // 兩種格式都載不到 → 維持粒子，不能拆了之後留一片空白
+  if (!src) { mode.value = 'particle'; return }
+  await mountStaticSrc(src)
+  appearStatic()
+  const { $gsap } = useNuxtApp()
+  if ($gsap && canvasRef.value && !reducedMotion) {
+    $gsap.to(canvasRef.value, { opacity: 0, duration: STATIC_APPEAR_MS / 1000, ease: 'power2.out' })
+  }
+  await sleep(reducedMotion ? 0 : STATIC_APPEAR_MS)
+  if (disposed) return
+  teardownParticles()
+  showCanvas.value = false
+  prefetchNeighbors()
+}
 
 // --- ?tool=1 工具面板 -------------------------------------------------------
 // ⚠️ 這一支只「登記」，不掛面板 —— 面板是 HomeMobileField 掛的（那支在窄視窗
@@ -370,29 +558,13 @@ function tween (obj, vars, ms, ease, onUpdate) {
 }
 
 async function swapPortrait (portrait) {
-  // ⚠️ 不能用 `if (!engine) return` —— CPU 路徑刻意不建引擎（見 init），
-  // 那樣會讓那條路上的換人整個失效。
   if (!portrait) return
+  // 靜態模式（含粒子被降檔換成靜態圖之後）：換圖，不碰引擎
+  if (mode.value === 'static') return swapStatic(portrait)
+  if (!engine) return
   const fromSpec = specs.get(shownPortrait)
   const spec = await getSpec(portrait)
   if (!spec) return
-
-  // ⚠️ CPU 後端（沒有 setTargets / setMorph）走完全不同的一條路。
-  // 實測 S8：這裡原本會因為 targetsReady 永遠是 false 而直接 return，
-  // 結果是「點了其他人，名字換了但人像完全沒變」—— 那是功能壞掉，不是效能問題。
-  //
-  // 那支引擎沒有 morph，但有一條可用的路：spec.pattern 是註冊在
-  // PLSeeds.PATTERNS 裡的名字，而 setCount() 會走 seedParticles → seedByPattern
-  // (config.seedPattern)，且 config 是活物件、CPU 版的 setCount 沒有 early-return。
-  // 所以「改 seedPattern 再 setCount」就等於重新撒成新的人像。
-  // 代價是沒有炸開／重組的過渡，是硬切 —— 但硬切遠好過完全不動。
-  // CPU 路徑：沒有引擎，重畫一張就是了（淡入）
-  if (!engine) {
-    shownPortrait = portrait
-    cpuFadeTo(spec)
-
-    return
-  }
 
   // 八個人目前輪流共用兩張臨時頭像 —— 同一張就沒有形狀要變，不做爆炸
   if (!targetsReady || !fromSpec || spec === fromSpec) {
@@ -445,122 +617,22 @@ async function swapPortrait (portrait) {
     switching = false
     syncPause()
     startLiveLoop()
+    if (pendingStatic) toStatic()
   }
 }
 
 // --- 初始化 ----------------------------------------------------------------
-// --- CPU 路徑：直接畫點雲，不建引擎 ----------------------------------------
-//
-// ⚠️ 這是 CPU 後端唯一能把人像畫清楚的做法，理由要一起看：
-//
-// particle-life.js 把每顆粒子畫成一張快取的光暈 sprite，而尺寸有地板：
-//     half = max(2, ceil(pointSize × 2.4) + 1)   → 最小 4 CSS px
-// 342² 的觀景區裡，1800 顆 × 16px² 就已經覆蓋 25%；再多顆就糊成一團
-//（3000 顆 41%、6000 顆 82%）。也就是說走引擎的話「顆數越多越清楚」會反轉，
-// 上限大約 3000 顆 —— 遠不足以描出眼睛與眼鏡（五官在 device px 上只有 20~38px 寬）。
-//
-// 但 CPU 路徑的人像本來就是靜態的：沒有 morph（那支引擎沒有 setTargets）、
-// 沒有閃動、力場也被關掉。它需要的不是「模擬」，只是「把一團點畫出來」——
-// 而 PLImage.prepare() 回傳的 spec 裡就有完整的點雲（px/py 是 0..1 正規化座標、
-// types 是每點的配色索引）。自己畫就完全不受 sprite 地板限制：
-//     走引擎   點 8 device px（DPR 2）／上限約 3000 顆
-//     自己畫   點 2 device px      ／16000 顆（取樣本來就有這麼多）
-// 同樣的覆蓋率下點數多約 9 倍、每點面積小 16 倍。
-//
-// 附帶好處：這條路上完全不建 makeEngine —— 少一個引擎實例、少一份記憶體、
-// 少一個 rAF。畫一次就結束，成本是真正的零而不是「pause 之後的零」。
-//
-// ⚠️ 換算數學跟 useParticleMorph.buildImageTargets 是同一套（contain-fit 置中），
-// 改其中一邊要記得對齊另一邊。
-// 每點畫多大（CSS px）。⚠️ 實際落在畫面上是 CPU_DOT_CSS_PX × dpr 個 device px，
-// 也就是 DPR 2 的機器上每點 4 device px —— 相對引擎那條路的 8 device px 小四倍。
-const CPU_DOT_CSS_PX = 2
-const CPU_DRAW_MAX_DPR = 2       // 跟 particle-life.js 的硬上限一致
-const CPU_FADE_MS = 220          // 換人的淡入（沒有炸開重組，用淡入代替硬切）
-
-let cpuCtx = null
-let cpuFadeRaf = 0
-
-/**
- * 把 spec 的點雲畫到 canvas 上。一次性，畫完就結束。
- * @param {object} spec  PLImage.prepare 的產物
- * @param {number} alpha 0..1，換人淡入用
- */
-function drawPointCloud (spec, alpha = 1) {
-  const canvas = canvasRef.value
-  if (!canvas || !spec) return
-
-  const rect = canvas.getBoundingClientRect()
-  if (!rect.width || !rect.height) return
-
-  const dpr = Math.min(window.devicePixelRatio || 1, CPU_DRAW_MAX_DPR)
-  const W = Math.max(1, Math.round(rect.width * dpr))
-  const H = Math.max(1, Math.round(rect.height * dpr))
-  if (canvas.width !== W || canvas.height !== H) {
-    canvas.width = W
-    canvas.height = H
-    cpuCtx = null                 // 尺寸一變 context 的狀態要重來
-  }
-  if (!cpuCtx) cpuCtx = canvas.getContext('2d')
-  const ctx = cpuCtx
-  if (!ctx) return
-
-  // ⚠️ 底色要塗成不透明黑，不能只 clearRect —— 這張 canvas 疊在頁面的純黑底上，
-  // 留透明會看到底下的東西（而 WebGPU 路徑的 compose pass 本來就是不透明黑，
-  // 兩條路要長得一樣）。
-  ctx.globalCompositeOperation = 'source-over'
-  ctx.fillStyle = '#000'
-  ctx.fillRect(0, 0, W, H)
-
-  // contain-fit 置中，與 buildImageTargets 同一套換算
-  const boxW = W * spec.fit
-  const boxH = H * spec.fit
-  const s = Math.min(boxW / spec.aspect, boxH)
-  const drawW = s * spec.aspect
-  const drawH = s
-  const x0 = (W - drawW) / 2
-  const y0 = (H - drawH) / 2
-
-  const d = Math.max(1, Math.round(CPU_DOT_CSS_PX * dpr))
-  const T = spec.palette.length
-
-  // ⚠️ 加法混色：跟 WebGPU 路徑的 HDR 疊加一致，重疊處才會亮起來 ——
-  // 用預設的 source-over 會讓密處變成一片死板的純色。
-  ctx.globalCompositeOperation = 'lighter'
-  ctx.globalAlpha = alpha
-
-  // 依物種分批，避免每顆都改 fillStyle（改色是 canvas2d 熱迴圈裡最貴的一項）
-  for (let t = 0; t < T; t++) {
-    ctx.fillStyle = spec.palette[t]
-    for (let i = 0; i < spec.count; i++) {
-      if (spec.types[i] % T !== t) continue
-      ctx.fillRect(x0 + spec.px[i] * drawW, y0 + spec.py[i] * drawH, d, d)
-    }
-  }
-
-  ctx.globalAlpha = 1
-  ctx.globalCompositeOperation = 'source-over'
-}
-
-/** 換人：淡入新的一張。沒有炸開重組（那需要引擎的 morph），但比硬切好看。 */
-function cpuFadeTo (spec) {
-  cancelAnimationFrame(cpuFadeRaf)
-  if (reducedMotion) { drawPointCloud(spec, 1); return }
-
-  const t0 = performance.now()
-  const tick = () => {
-    const u = Math.min(1, (performance.now() - t0) / CPU_FADE_MS)
-    drawPointCloud(spec, u * u * (3 - 2 * u))
-    if (u < 1) cpuFadeRaf = requestAnimationFrame(tick)
-  }
-  cpuFadeRaf = requestAnimationFrame(tick)
-}
-
 async function init () {
+  // 靜態模式：不載粒子套件、不取樣、不建引擎（見檔頭）
+  if (mode.value === 'static') { initStatic(); return }
+
   const canvas = canvasRef.value
   // 沒有人像可取樣，開了引擎也只會是一片空白的黑
   const portrait = props.speakers[speakerIndex.value]?.portrait || null
   if (!canvas || !portrait) return
+
+  // 一開始就訂閱：建引擎的這段時間裡如果檔位被降下來，不能漏掉。
+  unsubTier = onTierChange((t) => { if (t < TIER_DEFAULT && isMobile()) toStatic() })
 
   await loadParticleKit()
   registerNebula()
@@ -575,24 +647,8 @@ async function init () {
   q = knobs('speakerPortrait')
 
   const spec = await getSpec(portrait)
-  if (!spec) return
+  if (!spec || disposed || mode.value === 'static') return
   shownPortrait = portrait
-
-  // ⚠️ 沒有 WebGPU → 完全不走引擎，自己把點雲畫上去（見 drawPointCloud 的長註解）。
-  // 那條路上沒有 makeEngine、沒有 rAF、沒有 IntersectionObserver 也不需要
-  // markActive —— 畫一次就結束，持續成本是零。
-  if (cpuFallback.value) {
-    drawPointCloud(spec, 1)
-    onResize = () => {
-      clearTimeout(resizeTimer)
-      // canvas 尺寸一變 backing store 會被清空，要重畫
-      resizeTimer = setTimeout(() => drawPointCloud(specs.get(shownPortrait), 1), RESIZE_SETTLE_MS)
-    }
-    window.addEventListener('resize', onResize)
-    swapImpl.value = swapPortrait
-
-    return
-  }
 
   const count = countFor(canvas, { density: q.density, max: q.countMax, min: q.countMin })
 
@@ -633,7 +689,6 @@ async function init () {
     repel: 1.0,
     simSpeed: SIM_SPEED,
     cameraZoom: 1,
-    // 這裡一定是 WebGPU —— CPU 路徑在上面就 return 了，不會建引擎。
     pointSize: q.pointSize,
     particleOpacity: PORTRAIT_OPACITY,
     showGlow: false,
@@ -642,6 +697,17 @@ async function init () {
     maxDpr: Math.min(maxDpr(), q.dprCap),
     bgFade: 'rgba(10,10,12,0.18)',  // 只有 CPU fallback 會用到；GPU 路徑是不透明黑
   })
+  // 建引擎的這段時間裡已經卸載，或被降檔換成靜態圖了 → 這顆引擎沒人要
+  if (disposed || mode.value === 'static') { engine.destroy(); engine = null; return }
+  // makeEngine 在 WebGPU 初始化失敗時會「靜默」退到 CPU 引擎，它沒有 setTargets /
+  // setMorph —— 收攏與換人全都不會動。這種情況直接改用靜態圖（以前是名字換了人像不變）。
+  if (!engine.setTargets) {
+    engine.destroy()
+    engine = null
+    toStatic()
+
+    return
+  }
   if (showFps()) engine.setShowFps?.(true)
   if (import.meta.dev) {
     window.__samePortrait = engine
@@ -802,17 +868,30 @@ async function applyToolKnobs (next) {
 
 onMounted(() => { init() })
 
-onBeforeUnmount(() => {
+// 拆掉粒子那一整套（卸載、或降檔換成靜態圖時共用）
+function teardownParticles () {
   unregisterTool?.()
+  unregisterTool = null
   if (liveRaf) cancelAnimationFrame(liveRaf)
-  cancelAnimationFrame(cpuFadeRaf)
+  liveRaf = 0
   markActive('speakerPortrait', false)
   switchTween?.kill()
   io?.disconnect()
+  io = null
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
+  onVisibility = null
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
+  onResize = null
   if (engine) { engine.destroy(); engine = null }
+}
+
+onBeforeUnmount(() => {
+  disposed = true
+  unsubTier?.()
+  nearIo?.disconnect()
+  staticTween?.kill()
+  teardownParticles()
   // ⚠️ 只在「登記的確實是自己」時才清 —— 跨斷點切換時 Vue 可能先掛好桌機版那張
   // 再卸載這一支，無條件清會把剛登記好的實作踢掉（同 useParticleStage 的 releaseStage）。
   resetSpeakerBus(swapPortrait)
@@ -820,11 +899,32 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <!-- 觀景框裡的人像。它同時也是框內的底色（GPU 路徑必定是不透明純黑），
-       而窄視窗這一段的底也是純黑，所以看不出這裡有個方塊。 -->
-  <canvas
-    ref="canvasRef"
-    aria-hidden="true"
-    class="pointer-events-none absolute inset-0 z-0 block size-full"
-  />
+  <!-- 觀景框裡的人像。粒子模式：canvas 同時也是框內的底色（GPU 路徑必定是不透明純黑），
+       而窄視窗這一段的底也是純黑，所以看不出這裡有個方塊。
+       靜態模式：透明底的 <img>，直接落在那層純黑底上。
+       ⚠️ <img> 的 opacity 一律交給 gsap 寫（class 的 opacity-0 只是起始值）—— 不要放進
+       :style，否則 Vue 每次重繪都會把動畫寫到一半的值蓋回去。大小與 canvas 上的人像
+       一致：都是觀景區的 FIT（0.86），置中。 -->
+  <div
+    ref="rootRef"
+    class="pointer-events-none absolute inset-0 z-0 flex size-full items-center justify-center"
+  >
+    <canvas
+      v-if="showCanvas"
+      ref="canvasRef"
+      aria-hidden="true"
+      class="absolute inset-0 block size-full"
+    />
+    <img
+      v-if="mode === 'static'"
+      ref="imgRef"
+      :src="staticSrc || undefined"
+      alt=""
+      aria-hidden="true"
+      draggable="false"
+      decoding="async"
+      class="relative block select-none object-contain opacity-0"
+      :style="{ width: `${FIT * 100}%`, height: `${FIT * 100}%` }"
+    >
+  </div>
 </template>

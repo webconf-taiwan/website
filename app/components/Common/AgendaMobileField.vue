@@ -5,7 +5,7 @@ const { idle } = useParticleStage()
 const { knobs, markActive, onTierChange, suspendReadback, cpuFallback } = useParticleQuality()
 const { maxDpr } = useParticleBudget()
 
-const SOURCE = '/figma/agenda/mobile-particle-source.png'
+const SOURCE = '/figma/agenda/mobile-particle-source.webp'
 // Figma's 1264 x 640 image box, offset -476px in the 360px frame.
 const ART = { width: 1264 * 1.0914, height: 640 * 1.5412, x: -476 - 1264 * 0.0457, y: -640 * 0.3818 }
 const STAGE = 'mobileField'

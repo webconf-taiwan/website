@@ -11,7 +11,9 @@
 //            只能用半透明壓黑保可讀性；人像的大小／位置由那邊的 speaker 影格
 //            （fit / maxPx）決定，不在這裡調。
 //
-//   <1024px  HomeSpeakerPortrait —— 就掛在下面那個觀景框裡的小 canvas。
+//   <1024px  HomeSpeakerPortrait —— 就掛在下面那個觀景框裡。手機夠好才是小 canvas 的
+//            粒子；其餘是事先渲染好的靜態圖（portrait_static），換人動畫要跟下面
+//            框線的時序對齊（LEADER_OUT_MS / FRAME_DOT_MS / FRAME_GROW_MS 改了要同步）。
 //            那一版這一區沒有底色 —— 不透明底是頁面在 PL.II～PL.V 外面包的那一層
 //            （見 pages/index.vue，包成一段是為了不要在區塊交界露出縫）。
 //            那個底是純黑，跟 canvas 的不透明黑同色，所以框裡那個方塊的邊界
@@ -384,14 +386,14 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 名字 + 左右切換 -->
-      <div class="mt-6 flex items-center gap-x-2">
+      <div class="-mx-2 sm:mx-0 mt-6 flex items-center md:gap-x-2">
         <button
           type="button"
           class="shrink-0 p-3 text-pre-800/70 transition-colors hover:text-accent-1"
           aria-label="上一位講者"
           @click="step(-1)"
         >
-          <AtomIcon name="arrow-right-thin" class="h-[10px] w-6 rotate-180" />
+          <AtomIcon name="arrow-right-thin" class="size-6 rotate-180" />
         </button>
 
         <span class="flex min-w-0 flex-1 flex-col items-center gap-y-2 border-b border-pre-800/80 pb-4 text-center">
@@ -402,15 +404,18 @@ onBeforeUnmount(() => {
               :class="r.zh ? 'text-zh-h4' : 'text-en-h4 italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ currentSpeaker?.org }}
-            <span class="text-accent-1">·</span>
-            {{ currentSpeaker?.role }}
+          <!-- ⚠️ 這兩行「不能」用 flex：flex 會把 org、·、role 各自當成一個項目，窄欄裡各自
+               被壓縮折行 —— 「創辦人」斷成「創辦／人」、「·」還飄在兩行中間（吳哲宇那筆最明顯）。
+               改成一般的文字流：
+               · break-keep：中文詞不從中間斷，只在空白處換行
+               · overflow-wrap:anywhere：單一詞真的比欄寬還長時才允許硬斷，不會撐破版面
+               · text-balance：兩行長短接近，不會出現一行很長、一行只剩一個字
+               · &nbsp; 把 · 黏在前一個詞後面 —— 換行時 · 留在行尾，不會跑到下一行開頭 -->
+          <span class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ currentSpeaker?.org }}&nbsp;<span class="text-accent-1">·</span> {{ currentSpeaker?.role }}
           </span>
-          <span v-if="currentSpeaker?.extra" class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ currentSpeaker.extra.org }}
-            <span class="text-accent-1">·</span>
-            {{ currentSpeaker.extra.role }}
+          <span v-if="currentSpeaker?.extra" class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ currentSpeaker.extra.org }}&nbsp;<span class="text-accent-1">·</span> {{ currentSpeaker.extra.role }}
           </span>
         </span>
 
@@ -420,7 +425,7 @@ onBeforeUnmount(() => {
           aria-label="下一位講者"
           @click="step(1)"
         >
-          <AtomIcon name="arrow-right-thin" class="h-[10px] w-6" />
+          <AtomIcon name="arrow-right-thin" class="size-6" />
         </button>
       </div>
     </div>

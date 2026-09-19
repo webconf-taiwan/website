@@ -95,8 +95,8 @@ useHead(() => ({
 // shiftY = 內容往下推的「視窗高度比例」。設計稿 PL.V 的圖是 y=964（壓在區塊下半、
 // 往下溢出），標籤在 y=60 —— 兩者是垂直錯開的。少了這個位移，點雲會直接蓋住標籤。
 const STAGES = [
-  { image: '/source_images/venue.png', zoom: 1.0, shift: 0.28, shiftY: 0.12, opacity: 0.85 },
-  { image: '/source_images/faq.png', zoom: 1.08, shift: 0.34, shiftY: 0.30, opacity: 0.8 },
+  { image: '/source_images/venue.webp', zoom: 1.0, shift: 0.28, shiftY: 0.12, opacity: 0.85 },
+  { image: '/source_images/faq.webp', zoom: 1.08, shift: 0.34, shiftY: 0.30, opacity: 0.8 },
 ]
 
 // ⚠️ 點數要跟「點雲在螢幕上的面積」一起看，不能只看絕對數字。
