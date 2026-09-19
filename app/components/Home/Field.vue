@@ -481,6 +481,24 @@ const REBUILD_SETTLE_MS = 700
 // setCount 會重配 targets buffer，順序反了目標點會被清空（等於又回到這個 bug）。
 const FPS_SAMPLE_MS = 900
 
+// --- 開場後的自適應降點（只有 WebGPU 引擎的 shrinkTo 走這條）------------------
+// 目標點在 FPS_SAMPLE_MS 一到就照常建，降點是「之後」才獨立進行的，不再卡在前面。
+// 舊寫法在 900ms 讀一次 engine.getFps() 就直接 setCount 減半，兩個問題：
+//   · getFps 是 EMA、初值硬編 60，開場那幾百毫秒讀到的是暖機期的值，任何一次卡頓
+//     （字型、hydration、devtools）就會誤判 —— 而 setCount 會整場重生，畫面就是
+//     「一開始 hero 粒子重置一次」。手機版早就因為同一個原因把這段拿掉了。
+//   · 一次性、沒有回頭路，誤判就是永久的。
+// 現在改成：暖機後量「幀時間中位數」（對單一尖峰免疫），連續兩個視窗都慢才降；
+// 降的時候用 shrinkTo 分批隨機拿掉，畫面上是逐漸變稀、不是重來。
+const ADAPT_WARMUP_MS = 1200     // 目標點建好之後先別量，等引擎暖機
+const ADAPT_WINDOW_MS = 1500     // 一個量測視窗
+const ADAPT_MIN_FRAMES = 20      // 少於這個中位數沒意義，改用平均幀時間（背景 / 暫停另外排除）
+const ADAPT_P50_MS = 22          // 中位幀時間上限（≈ 45fps，跟舊門檻一致）
+const ADAPT_FAIL_STREAK = 2      // 連續幾個視窗超標才降
+const ADAPT_MAX_WINDOWS = 4      // 最多量幾個視窗；過了就當作這台跑得動，不再量
+const SHRINK_STEPS = 10          // 減半分幾批
+const SHRINK_STEP_MS = 200       // 批與批之間的間隔（整段約 2 秒）
+
 // --- 讓「被按住的構圖」不要變成死的貼圖 --------------------------------------
 // ⚠️ 機制上的必要，不是裝飾。seek 是「收斂到固定點的臨界阻尼彈簧」：粒子一到定位
 // desiredV 就是 0，grip 會把速度歸零 —— 構圖守住的代價是畫面靜止（原版 ParticleField
@@ -1581,6 +1599,73 @@ async function switchLook (idOrIndex) {
   return look.name
 }
 
+// --- 開場後的自適應降點 ------------------------------------------------------
+// 常數與為什麼這樣做見 ADAPT_* 那一段的註解。
+let adaptAlive = true
+let adaptRaf = 0
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+// 量一個視窗的「幀時間中位數」。分頁在背景、引擎被暫停（捲到 PL.II~V）、幀數太少
+// 都回 null —— 那種視窗量到的不是引擎的成本，不能拿來下判斷。
+function measureFrameTime () {
+  return new Promise((resolve) => {
+    const deltas = []
+    const t0 = performance.now()
+    let last = 0
+    let invalid = false
+    const tick = (now) => {
+      if (!adaptAlive || !engine) return resolve(null)
+      if (document.hidden || engine.config.paused) invalid = true
+      if (last) deltas.push(now - last)
+      last = now
+      if (now - t0 < ADAPT_WINDOW_MS) {
+        adaptRaf = requestAnimationFrame(tick)
+        return
+      }
+      if (invalid) return resolve(null)
+      // 分頁可見、引擎也沒暫停，幀數卻少 —— 那是「更慢」，不是「無效」。
+      // 幀數太少時中位數沒意義，直接用「視窗長度 / 幀數」當平均幀時間。
+      if (deltas.length < ADAPT_MIN_FRAMES) return resolve(ADAPT_WINDOW_MS / (deltas.length + 1))
+      deltas.sort((a, b) => a - b)
+      resolve(deltas[deltas.length >> 1])
+    }
+    adaptRaf = requestAnimationFrame(tick)
+  })
+}
+
+// 分批隨機拿掉粒子，直到剩 target 顆。每批之後粒子的 slot 會重編，
+// 所以每批都把目標點標成失效 —— invalidateTargets 會把重建往後排 REBUILD_SETTLE_MS，
+// 批與批的間隔比它短，因此只會在「最後一批之後」重建一次。
+// 這段期間 ready = false：粒子純靠力場自由演化、不會被 seek 吸到錯的點。
+async function shrinkGradually (target) {
+  const from = engine.config.count
+  for (let step = 1; step <= SHRINK_STEPS; step++) {
+    if (!adaptAlive || !engine) return
+    await engine.shrinkTo(Math.round(from + (target - from) * step / SHRINK_STEPS))
+    if (!adaptAlive || !engine) return
+    invalidateTargets()
+    if (step < SHRINK_STEPS) await sleep(SHRINK_STEP_MS)
+  }
+  // 面板要顯示「引擎現在真的跑幾顆」，見 init 裡舊做法那段的說明
+  knobs.count = engine.config.count
+}
+
+async function adaptCount () {
+  await sleep(ADAPT_WARMUP_MS)
+  let streak = 0
+  for (let w = 0; w < ADAPT_MAX_WINDOWS; w++) {
+    const p50 = await measureFrameTime()
+    if (!adaptAlive || !engine) return
+    if (p50 === null) continue
+    streak = p50 > ADAPT_P50_MS ? streak + 1 : 0
+    if (streak >= ADAPT_FAIL_STREAK) {
+      await shrinkGradually(Math.round(engine.config.count / 2))
+      return
+    }
+  }
+}
+
 async function init () {
   const canvas = canvasRef.value
   if (!canvas) return
@@ -1731,21 +1816,26 @@ async function init () {
   }
   frame()
 
-  // 量 fps → 需要就減半 → 馬上建目標點。見 FPS_SAMPLE_MS 的長註解：
-  // 在目標點建好之前，捲動不會讓粒子收攏，所以這段越短越好。
+  // 建目標點。見 FPS_SAMPLE_MS 的長註解：在目標點建好之前，捲動不會讓粒子收攏，
+  // 所以這段越短越好 —— 降點的判斷排在它「後面」，不能反過來卡住它。
   setTimeout(async () => {
-    const fps = engine?.getFps ? engine.getFps() : 60
-    if (fps > 0 && fps < 45) {
-      const halved = Math.round(count / 2)
-      engine.setCount?.(halved)
-      // ⚠️ 面板要顯示「引擎現在真的跑幾顆」，不是我們原本想給幾顆 —— 這段減半
-      // 一觸發，knobs.count 就跟引擎對不上了。autoCount 維持幾何算出來的值，
-      // 這樣面板上的對照數字仍然是「依面積算的點數」。
-      knobs.count = halved
-      // setCount 會整場重生成粒子，等它們離開生成點再配對
-      await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
+    // 沒有 shrinkTo 的後端（CPU 引擎）維持舊做法：量一次 fps、慢就 setCount 減半。
+    // 那邊的粒子本來就少、跑不動的機率高，而且沒有能拿來逐漸減量的介面。
+    if (engine && !engine.shrinkTo) {
+      const fps = engine.getFps ? engine.getFps() : 60
+      if (fps > 0 && fps < 45) {
+        const halved = Math.round(count / 2)
+        engine.setCount?.(halved)
+        // ⚠️ 面板要顯示「引擎現在真的跑幾顆」，不是我們原本想給幾顆 —— 這段減半
+        // 一觸發，knobs.count 就跟引擎對不上了。autoCount 維持幾何算出來的值，
+        // 這樣面板上的對照數字仍然是「依面積算的點數」。
+        knobs.count = halved
+        // setCount 會整場重生成粒子，等它們離開生成點再配對
+        await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
+      }
     }
     await buildAllShapes()
+    if (engine?.shrinkTo) adaptCount()
   }, FPS_SAMPLE_MS)
 
   // --- 捲動 -----------------------------------------------------------------
@@ -1777,6 +1867,8 @@ watch(speakerIndex, (i) => {
 onMounted(() => { init() })
 
 onBeforeUnmount(() => {
+  adaptAlive = false
+  if (adaptRaf) cancelAnimationFrame(adaptRaf)
   unregisterTool?.()
   if (raf) cancelAnimationFrame(raf)
   swapTween?.kill()
