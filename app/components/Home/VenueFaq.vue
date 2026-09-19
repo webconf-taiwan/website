@@ -65,6 +65,8 @@ onBeforeUnmount(() => killFadeIns())
   <!-- ⚠️ 底色見上面檔頭。窄視窗這裡不鋪底 —— 不透明底是頁面在 PL.II～PL.V 外面
        包的那一層（見 pages/index.vue）。 -->
   <div class="relative lg:bg-black/25">
+  <div class="absolute bottom-0 left-0 w-full translate-y-full h-8 md:h-12 lg:hidden bg-bg-mid"></div>
+
     <!-- PL. IV — Venue。設計稿是兩欄：左欄固定 484 寬只放卷號，右欄 flex-1 放內容。
          兩欄各自有自己的 border-t（不是同一條線橫貫），右欄再多 24px 內縮。
          data-same-venue 是 HomeField 第 3 段（speaker → venue）的觸發器。 -->
@@ -72,8 +74,20 @@ onBeforeUnmount(() => killFadeIns())
       id="venue"
       ref="venueRef"
       data-same-venue
-      class="relative z-10 min-h-[658px]"
+      class="relative isolate z-10 min-h-[658px]"
     >
+      <!-- 手機／平板的裝飾圖（細胞群），繞在「更多資訊」按鈕旁、從 FAQ 的分隔線後面探出來。
+           桌機沒有。定位與裁切見 Home/Deco.vue。 -->
+      <HomeDeco
+        class="bottom-0"
+        src="/home-deco-2"
+        :width="325"
+        :height="310"
+        :size="0.873"
+        :reveal="0.59"
+        :shift="0.083"
+      />
+
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號。
              ⚠️ data-fade="in" 掛在「文字的外層」而不是有 border-t 的那層 ——
@@ -146,8 +160,21 @@ onBeforeUnmount(() => killFadeIns())
       id="faq"
       ref="faqRef"
       data-same-faq
-      class="relative z-10 min-h-[741px]"
+      class="relative isolate z-10 min-h-[741px]"
     >
+      <!-- 手機／平板的裝飾圖（放射球），置中在分頁下方、從票券區的分隔線後面探出來，進場是從下往上浮起（另外兩張從右邊滑入）。
+           票券區的上內距 md 以上比手機多 16px，所以 bottom 也跟著換。桌機沒有。 -->
+      <HomeDeco
+        class="-bottom-8 z-1 md:-bottom-12"
+        src="/home-deco-3"
+        align="center"
+        from="bottom"
+        :width="522"
+        :height="508"
+        :reveal="0.445"
+        :shift="0.043"
+      />
+
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號。同 PL.IV，見那邊的長註解。 -->
         <div class="shrink-0 px-6 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
@@ -198,6 +225,7 @@ onBeforeUnmount(() => killFadeIns())
           </div>
         </div>
       </div>
+
     </section>
   </div>
 </template>

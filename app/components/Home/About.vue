@@ -24,8 +24,19 @@ useFadeIn(sectionRef)
   <section
     id="about"
     ref="sectionRef"
-    class="relative z-10 px-6 lg:bg-black/30 lg:px-12 2xl:px-20"
+    class="relative isolate z-10 px-6 lg:bg-black/30 lg:px-12 2xl:px-20"
   >
+    <!-- 手機／平板的裝飾圖：從下一區（Speaker）的分隔線後面探出來，靠右、被畫面右緣裁掉。
+         桌機沒有（那邊的粒子是背後那張 canvas 畫的）。定位與裁切見 Home/Deco.vue。 -->
+    <HomeDeco
+      class="-bottom-16"
+      src="/home-deco-1"
+      :width="522"
+      :height="508"
+      :reveal="0.656"
+      :shift="0.165"
+    />
+
     <div class="mx-auto grid max-w-[1680px] grid-cols-1 border-t border-pre-800/35 lg:pt-8 pb-[120px] lg:grid-cols-12 lg:gap-10">
       <!-- 左欄：卷號 + Skills 標本框 -->
       <div class="lg:col-span-4">
@@ -42,7 +53,7 @@ useFadeIn(sectionRef)
                ⚠️ 邊框維持原本的 white/25 —— 票券卡用的 border-pre-500/50 那個 /50
                不會生效（pre-500 不是 rgb 格式，opacity modifier 吃不到），
                線會變成不透明的淺灰，在這個框上太搶。 -->
-          <div class="relative border border-white/25 bg-pre-800/10 px-4 py-5 backdrop-blur-md max-w-[200px]">
+          <div class="relative border border-white/25 bg-pre-800/80 px-4 py-5 max-w-[200px]">
             <span class="absolute top-2.5 left-3 px-1 font-mono text-meta text-pre-800">
               {{ content.skills_box_label }}
             </span>
