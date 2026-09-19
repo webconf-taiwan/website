@@ -206,9 +206,10 @@ export const PARTICLE_FIELD_LOOKS = {
   // predator 把物種 0 設成獵食者：牠追所有人（0.95）、所有人逃離牠（-0.95），
   // 這對數值是相反的 → 永遠追不到、也永遠停不下來，其餘物種之間則弱吸成群。
   // 「群飛」要的就是這個 —— 一群一群被追著跑過整個畫面。
-  // ⚠️ 這組與珊瑚薄膜是 5 組裡唯二開光暈的。光暈是額外一趟全螢幕的加法 pass，
-  //    填充率成本跟 DPR 平方成正比，行動裝置上會明顯掉 fps ——
-  //    ParticleField 因此在手機一律關掉（見那裡的 showGlow 那行）。
+  // ⚠️ 這組與珊瑚薄膜原本是 5 組裡唯二開光暈的，現在也關了（sandbox 原值是 true）。
+  //    光暈是額外一趟全螢幕的加法 pass，填充率成本跟 DPR 平方成正比，拿掉是為了省
+  //    效能；glow 那一列的參數留著，要開回來把 showGlow 改回 true 就好。
+  //    手機一直都是關的（見 ParticleField 的 showGlow 那行）。
   'fluoro-swarm': {
     id: 'fluoro-swarm',
     index: 4,
@@ -218,7 +219,7 @@ export const PARTICLE_FIELD_LOOKS = {
     palette: 'blue',              // sandbox 原案用 fluoro
     rules: { preset: 'predator', seedPattern: 'chaoticBands', species: 5 },
     physics: { forceFactor: 1.0, friction: 0.29, repel: 1.1, minR: 5, rMax: 78 },
-    visual: { pointSize: 0.85, showGlow: true, heroOpacity: 0.6, aboutOpacity: 0.82 },
+    visual: { pointSize: 0.85, showGlow: false, heroOpacity: 0.6, aboutOpacity: 0.82 },
     glow: { glowSize: 4, glowIntensity: 0.022, glowSteepness: 5 },
     camera: { zoom: 1.46 },
     budget: { density: 0.0324, max: 42000, min: 9000 },
@@ -244,7 +245,7 @@ export const PARTICLE_FIELD_LOOKS = {
     palette: 'blue',              // sandbox 原案用 coral + ink-blue 底
     rules: { preset: 'helical', seedPattern: 'linkedClusters', species: 6 },
     physics: { forceFactor: 0.92, friction: 0.31, repel: 1.05, minR: 5, rMax: 80 },
-    visual: { pointSize: 0.9, showGlow: true, heroOpacity: 0.62, aboutOpacity: 0.85 },
+    visual: { pointSize: 0.9, showGlow: false, heroOpacity: 0.62, aboutOpacity: 0.85 },
     glow: { glowSize: 4.5, glowIntensity: 0.02, glowSteepness: 5 },
     camera: { zoom: 1.58 },
     budget: { density: 0.0254, max: 33000, min: 9000 },
