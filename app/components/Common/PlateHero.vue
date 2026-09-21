@@ -51,10 +51,10 @@ const label = computed(() => props.ariaLabel || props.title)
       </p>
 
       <div class="flex h-[107px] w-full flex-col items-center gap-y-2">
-        <h1 data-fade="in" class="w-full text-center font-en-serif text-fs-en-hero-m font-bold italic leading-[77px] text-pre-800">
+        <h1 data-fade="in" class="w-full text-center font-en-serif text-en-hero-m font-bold italic leading-[77px] text-pre-800">
           {{ title }}
         </h1>
-        <p data-fade="in" class="font-zh-serif text-fs-zh-h5-m font-bold leading-[22px] text-pre-800">
+        <p data-fade="in" class="font-zh-serif text-zh-h5-m font-bold leading-[22px] text-pre-800">
           {{ subtitle }}
         </p>
         <slot />

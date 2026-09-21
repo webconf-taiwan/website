@@ -41,7 +41,7 @@ const items = computed(() => agenda.items || [])
   >
     <div class="mx-auto flex w-[calc(100%_-_40px)] flex-col pt-8 lg:mx-0 lg:w-full lg:max-w-none lg:gap-y-12 lg:pt-0">
       <div ref="introRef" class="mb-6 flex flex-col gap-y-2 lg:mb-0 lg:gap-y-4">
-        <h2 data-fade="in" class="agenda-heading font-serif text-[44px] font-bold italic leading-[1.08] text-pre-800 lg:text-fs-h1">
+        <h2 data-fade="in" class="agenda-heading font-serif text-[44px] font-bold italic leading-[1.08] text-pre-800 lg:text-h1">
           <span class="lg:hidden">{{ agenda.mobile_heading }}</span>
           <span class="hidden lg:inline">
             <template v-for="(line, i) in agenda.heading_lines" :key="line">
@@ -49,7 +49,7 @@ const items = computed(() => agenda.items || [])
             </template>
           </span>
         </h2>
-        <p data-fade="in" class="agenda-date font-serif text-fs-h5 font-bold italic leading-[1.3] text-pre-800/80 lg:text-fs-h4">
+        <p data-fade="in" class="agenda-date font-serif text-h5 font-bold italic leading-[1.3] text-pre-800/80 lg:text-h4">
           {{ agenda.date }}
         </p>
       </div>
