@@ -40,11 +40,6 @@ defineOgImage('Default', { title: '議程 · WebConf', description: 'WebConf Tai
 
 const plate = computed(() => agenda.plate || {})
 const items = computed(() => agenda.items || [])
-const heroInfo = computed(() => [
-  plate.value.code,
-  'WEBCONF TW',
-  '2026',
-].filter(Boolean))
 </script>
 
 <template>
@@ -95,25 +90,22 @@ const heroInfo = computed(() => [
       ref="desktopHeroRef"
       data-agenda-hero-desktop
       data-same-hero
-      class="relative z-10 hidden h-[720px] overflow-hidden border-b border-pre-800/35 bg-black/35 lg:flex"
+      class="relative z-10 hidden h-[550px] overflow-hidden lg:flex"
       aria-label="Agenda hero"
     >
-      <div
-        aria-hidden="true"
-        class="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,12,0.08),rgba(10,10,12,0.34)_58%,rgba(10,10,12,0.62)_100%)]"
-      />
-      <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center px-[60px] pt-[60px] text-center">
-        <p data-fade="in" class="flex items-center justify-center gap-x-4 font-mono text-[14px] leading-none tracking-[0.18em] text-pre-800/80">
-          <template v-for="(part, i) in heroInfo" :key="part">
-            <span>{{ part }}</span>
-            <span v-if="i < heroInfo.length - 1" aria-hidden="true" class="size-1.5 rounded-full bg-pre-800/60" />
-          </template>
+      <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
+        <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-[12px] leading-[14px] tracking-normal text-pre-800/80">
+          <span class="w-14 shrink-0">{{ plate.code }}</span>
+          <span aria-hidden="true" class="w-2 shrink-0 text-accent-1">&middot;</span>
+          <span class="w-[94px] shrink-0">WEBCONF.TW</span>
+          <span aria-hidden="true" class="w-2 shrink-0 text-accent-1">&middot;</span>
+          <span class="w-9 shrink-0">2026</span>
         </p>
 
-        <h1 data-fade="in" class="mt-10 font-serif text-[180px] font-bold italic leading-[0.9] text-pre-800 xl:text-[220px]">
+        <h1 data-fade="in" class="mt-4 font-en-serif text-[72px] font-bold italic leading-[86px] tracking-normal text-pre-800">
           AGENDA
         </h1>
-        <p data-fade="in" class="mt-8 font-zh text-[32px] font-bold leading-none text-pre-800/85">
+        <p data-fade="in" class="mt-2 font-zh-serif text-[22px] font-bold leading-[26px] tracking-normal text-pre-800">
           議程資訊
         </p>
       </div>

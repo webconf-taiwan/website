@@ -1752,6 +1752,15 @@
       }
       device.queue.writeBuffer(targetsBuffer, 0, packed, 0, n * 4);
     }
+    // Same upload as setTargets, but the caller keeps ONE persistent
+    // interleaved Float32Array [sx, sy, tx, ty, …] per slot and writes into it
+    // directly — no per-call allocation and no second copy. Meant for callers
+    // that re-upload targets on a timer (jitter / flow animations).
+    function setTargetsPacked(packed) {
+      if (!targetsBuffer || !packed) return;
+      const n = Math.min(config.count, packed.length >> 2);
+      device.queue.writeBuffer(targetsBuffer, 0, packed, 0, n * 4);
+    }
     // Upload the palette index each slot should display for the two target
     // sets — typesA pairs with the spread/.xy set, typesB with the shape/.zw
     // set. The vertex shader mixes colors[typesA] -> colors[typesB] by the same
@@ -1852,6 +1861,28 @@
     // shared SVG export helpers work transparently across backends.
     // Expensive (one mapAsync round-trip ~1-2 frames latency) so download
     // buttons should await it once on click, not poll in a loop.
+    // Raw variant of readParticles: one Float32Array with stride 6
+    // [x, y, vx, vy, species, slot] per particle, no per-particle objects.
+    async function readParticlesRaw() {
+      const n = config.count;
+      const bytes = PARTICLE_STRIDE * n;
+      const staging = device.createBuffer({
+        label: 'particleReadbackRaw',
+        size: bytes,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+      });
+      try {
+        const enc = device.createCommandEncoder({ label: 'snapshotRaw' });
+        enc.copyBufferToBuffer(particleBufferA, 0, staging, 0, bytes);
+        device.queue.submit([enc.finish()]);
+        await staging.mapAsync(GPUMapMode.READ);
+        const raw = new Float32Array(staging.getMappedRange().slice(0));
+        staging.unmap();
+        return raw;
+      } finally {
+        staging.destroy();
+      }
+    }
     async function readParticles() {
       const n = config.count;
       const bytes = PARTICLE_STRIDE * n;
@@ -1890,11 +1921,12 @@
       setPointSize, setGlow, setForce, setRMax, setMinR,
       disturb,
       setShowFps, getFps, setSimSpeed, setCameraZoom, setCameraOffset, setShowGlow,
-      setTargets, setMorph,
+      setTargets, setTargetsPacked, setMorph,
       // Stats-panel control surface — live-tunable engine internals
       setFriction, setRepel, setGlowSize, setGlowIntensity, setGlowSteepness,
       setParticleOpacity, setSeedPattern, respawn, setShapeTypes, setMaxDpr,
       readParticles,                   // async — for SVG / vector export
+      readParticlesRaw,                // async — typed-array snapshot (stride 6)
       pause(v) { config.paused = !!v; },
       get size() { return { W, H }; },
       // Bumped whenever the targets buffer is reallocated (setCount / respawn).
