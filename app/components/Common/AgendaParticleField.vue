@@ -13,7 +13,7 @@ const props = defineProps({
   // 取樣來源圖；換頁面時換一張即可，取樣參數與 rail 聚落設定共用
   source: {
     type: String,
-    default: '/figma/agenda/mobile-particle-source.png',
+    default: '/figma/agenda/mobile-particle-source.webp',
   },
 })
 

@@ -43,6 +43,12 @@ export const TIER_DEFAULT = TIER_COUNT - 1
  * ⚠️ t0 不是「關掉粒子」。設計上明確要求最低檔也要留著粒子，寧可極稀。
  * 所以 t0 仍然有 2000+ 顆、仍然會動、仍然做換人的炸開重組 ——
  * 只是密度低、點大、更新慢。不 destroy、不換靜態圖。
+ *
+ * ⚠️ 例外：PL.III 的人像（speakerPortrait）。它在檔位低於 TIER_DEFAULT（或沒有
+ * WebGPU）時改用事先渲染好的靜態圖（speakers.json 的 portrait_static），不再跑
+ * 粒子 —— 所以下面 speakerPortrait 那張表的 t0~t2 三列只剩 ?tool=1 面板的
+ * 「載入預設值」會用到。滿檔（t3）的值仍然是實際線上的樣子。見 SpeakerPortrait.vue 檔頭。
+ * 其餘（MobileField 等）維持上面這條規則。
  */
 export const TIER_PROFILES = {
   // ── Home/MobileField（滿版自由場）─────────────────────────────────

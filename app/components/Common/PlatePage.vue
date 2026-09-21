@@ -20,7 +20,7 @@ const props = defineProps({
   // 左欄底部兩行註記（桌機才顯示）
   noteLines: { type: Array, default: () => [] },
   // 粒子取樣來源圖（桌機與手機共用）
-  source: { type: String, default: '/figma/agenda/mobile-particle-source.png' },
+  source: { type: String, default: '/figma/agenda/mobile-particle-source.webp' },
   ariaLabel: { type: String, default: '' },
 })
 
@@ -70,7 +70,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
             />
 
             <div data-plate-rail-note class="hidden shrink-0 flex-col gap-1 lg:flex">
-              <p data-fade="in" class="font-mono text-fs-meta leading-[14px] text-pre-800/80">{{ noteLines[0] }}</p>
+              <p data-fade="in" class="font-mono text-meta leading-[14px] text-pre-800/80">{{ noteLines[0] }}</p>
               <p data-fade="in" class="text-en-caption italic text-pre-800">{{ noteLines[1] }}</p>
             </div>
           </div>

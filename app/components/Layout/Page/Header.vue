@@ -1,4 +1,5 @@
 <script setup>
+import { NuxtLink } from '#components'
 const route = useRoute()
 
 // 資料來自 app/constants/data/global.json（靜態，見 useSiteData）
@@ -12,6 +13,14 @@ const EXPOSED_ON_MOBILE = 'ticket'   // 手機版是 header 上那顆購票 icon
 const leftMenu = navItems.filter(item => item.side === 'left')
 const rightMenu = navItems.filter(item => item.side === 'right')
 const ticket = navItems.find(item => item.id === EXPOSED_ON_MOBILE)
+
+// 站內連結一律走 NuxtLink（SPA 導覽）：
+//   · 換路由的（/agenda、/team...）吃得到 LayoutPageTransition 的黑幕轉場
+//   · hash 錨點的（/#speaker...）點下去才會經過 vue-router，讓 lenis.client.js
+//     的 scrollToHash() 接手用 lenis 平滑捲過去 —— 原生 <a> 的話瀏覽器會自己
+//     原生瞬跳，完全不會經過 lenis
+// target="_blank" 的外部連結才維持原生 <a>（目前 nav_items 沒有這種，但資料是動態的）
+const isInternalLink = (target) => target !== '_blank'
 
 // 選單清單：TICKET 已經是 header 上那顆 icon，不重複收進來，其餘七項全列。
 const dropdownMenu = navItems.filter(item => item.id !== EXPOSED_ON_MOBILE)
@@ -89,17 +98,18 @@ onMounted(() => {
     <div class="flex items-center justify-between gap-6 px-6 py-3 xl:justify-center xl:gap-[60px]">
       <!-- 左側選單（僅桌機 xl+：8 顆中文項在 lg 排不下） -->
       <nav class="hidden flex-1 basis-0 items-center justify-end gap-4 xl:flex">
-        <a
+        <component
+          :is="isInternalLink(link.target) ? NuxtLink : 'a'"
           v-for="link in leftMenu"
           :key="link.id"
           data-nav-item
-          :href="link.href"
+          v-bind="isInternalLink(link.target) ? { to: link.href } : { href: link.href }"
           :target="link.target"
           :rel="linkRel(link.target)"
           class="shrink-0 whitespace-nowrap px-4 py-1 text-zh-btn text-[#efe6d2] opacity-0 transition-colors hover:text-[#71c1f0]"
         >
           {{ link.label }}
-        </a>
+        </component>
       </nav>
 
       <!-- 中央 logo（平板以下靠左） -->
@@ -118,26 +128,28 @@ onMounted(() => {
 
       <!-- 右側選單（僅桌機 xl+） -->
       <nav class="hidden flex-1 basis-0 items-center gap-4 xl:flex">
-        <a
+        <component
+          :is="isInternalLink(link.target) ? NuxtLink : 'a'"
           v-for="link in rightMenu"
           :key="link.id"
           data-nav-item
-          :href="link.href"
+          v-bind="isInternalLink(link.target) ? { to: link.href } : { href: link.href }"
           :target="link.target"
           :rel="linkRel(link.target)"
           class="shrink-0 whitespace-nowrap px-4 py-1 text-zh-btn opacity-0 transition-colors hover:text-[#71c1f0]"
           :class="link.is_highlight ? 'text-[#71c1f0]' : 'text-[#efe6d2]'"
         >
           {{ link.label }}
-        </a>
+        </component>
       </nav>
 
       <!-- 平板以下：購票 icon + 漢堡／叉叉。
            設計稿在 360px 寬只放得下兩顆 icon，購票是 icon 不是文字。 -->
       <div class="flex items-center gap-4 xl:hidden">
-        <a
+        <component
+          :is="isInternalLink(ticket.target) ? NuxtLink : 'a'"
           v-if="ticket"
-          :href="ticket.href"
+          v-bind="isInternalLink(ticket.target) ? { to: ticket.href } : { href: ticket.href }"
           :target="ticket.target"
           :rel="linkRel(ticket.target)"
           data-nav-item
@@ -145,7 +157,7 @@ onMounted(() => {
           :aria-label="ticket.label"
         >
           <AtomIcon name="ticket" is-full />
-        </a>
+        </component>
         <!-- 開關同一顆：關著是漢堡、開著是叉叉 -->
         <button
           type="button"
@@ -192,9 +204,10 @@ onMounted(() => {
           :key="link.id"
           :class="i < dropdownMenu.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
         >
-          <a
+          <component
+            :is="isInternalLink(link.target) ? NuxtLink : 'a'"
             data-fade="in"
-            :href="link.href"
+            v-bind="isInternalLink(link.target) ? { to: link.href } : { href: link.href }"
             :target="link.target"
             :rel="linkRel(link.target)"
             class="flex items-end justify-between py-4 text-pre-800 transition-colors hover:text-accent-1"
@@ -205,7 +218,7 @@ onMounted(() => {
             <span class="px-3 py-1 text-zh-btn">
               {{ link.label }}
             </span>
-          </a>
+          </component>
         </li>
       </ul>
     </div>

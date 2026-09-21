@@ -48,12 +48,23 @@
     };
   }
 
+  // 圖片載入。⚠️ 站上的取樣來源都是 .webp（體積約 PNG 的 1/3 ~ 1/5），每一張旁邊
+  // 都留著同名的 .png 當 fallback：不支援 WebP 的瀏覽器（或載入失敗）會自動退回去，
+  // 呼叫端不用知道。約定：/x/foo.webp 一定要有 /x/foo.png。
   function loadImage(url) {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
+      let fell = false;
       img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error('PLImage: cannot load ' + url));
+      img.onerror = () => {
+        if (!fell && /\.webp(?=$|[?#])/i.test(url)) {
+          fell = true;
+          img.src = url.replace(/\.webp(?=$|[?#])/i, '.png');
+          return;
+        }
+        reject(new Error('PLImage: cannot load ' + url));
+      };
       img.src = url;
     });
   }

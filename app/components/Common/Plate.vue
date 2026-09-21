@@ -30,7 +30,7 @@ defineProps({
 
 <template>
   <div
-    class="flex flex-row items-baseline gap-x-4 py-8 lg:flex-col lg:gap-x-0"
+    class="flex flex-row items-baseline gap-x-4 py-6 lg:py-8 lg:flex-col lg:gap-x-0"
     :class="divider ? 'border-t border-pre-800/35' : ''"
   >
     <p class="text-meta text-pre-800/80">

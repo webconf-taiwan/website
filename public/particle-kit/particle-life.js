@@ -119,7 +119,12 @@
     if (!gl) {
       ctx = canvas.getContext('2d', { alpha: true });
     }
-    let dpr = Math.min(window.devicePixelRatio || 1, 2);
+    // DPR 上限尊重呼叫端傳的 opts.maxDpr（沒傳就維持原本的 2）。
+    // ⚠️ 以前這裡寫死 2、完全不看 maxDpr —— 而首頁在手機上傳的是 1.25（見
+    // useParticleBudget），沒有 WebGPU 的手機走到這支引擎時，DPR-3 的機器就會多付
+    // 約 2.56 倍的填充（每幀 bgFade 的全畫面 fillRect 與逐顆 drawImage 都吃 DPR²），
+    // 而且是在主執行緒上。見 docs/particle-performance.md §2。
+    let dpr = Math.min(window.devicePixelRatio || 1, opts.maxDpr ?? 2);
 
     const config = {
       species: opts.species ?? 5,
@@ -199,7 +204,7 @@
       const rect = canvas.getBoundingClientRect();
       W = Math.max(1, Math.floor(rect.width));
       H = Math.max(1, Math.floor(rect.height));
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, opts.maxDpr ?? 2);
       canvas.width = Math.floor(W * dpr);
       canvas.height = Math.floor(H * dpr);
       if (ctx) {

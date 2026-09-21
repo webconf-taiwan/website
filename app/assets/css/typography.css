@@ -12,14 +12,20 @@
        B' · Noto Sans TC（font-zh-sans）  → zh/* 正文與按鈕（body_lg、body_md、btn）
        C · IBM Plex Mono（font-mono）    → common/*（數字、座標、標籤，一律大寫）
 
-     ⚠️ size/line-height/letter-spacing 一律用純 CSS 寫、外面包 lg 斷點的
-     media query，不透過 `@apply text-fs-zh-h1` 這種自訂 fontSize token ——
-     這批 zh/en 前綴的 token 是全新的、沒有任何元件把它們字面寫進 template，
-     Tailwind 的 @apply 只認得「已經在編譯出的 utility 集合裡」的 class，
-     沒被 content 掃到的自訂 token 在 @apply 裡解析不到，會讓整包 CSS build
-     直接 500（試過用 safelist + pattern 生成，這個 Tailwind 版本的 @apply
-     仍然讀不到，放棄）。font-family / font-weight / italic / uppercase 這些
-     是 Tailwind 內建 utility，不受此限，可以放心 @apply。
+     size/line-height/letter-spacing 大部分 class 透過 tailwind.config.cjs 的 fs-*
+     fontSize token 用 @apply 帶進來（手機用 -m 版本，lg: 斷點蓋成桌機版本），數值
+     只在 tailwind.config.cjs 那一份，這裡不重複寫死。
+
+     ⚠️ 但 .text-zh-display / .text-zh-h1 / .text-zh-h4 / .text-en-hero /
+     .text-en-h3 / .text-en-h4 這六個目前「沒有任何 .vue 檔用到」，改成同一種
+     @apply fs-* token 寫法後實測會整條 rule 消失（font-size 掉回瀏覽器預設
+     16px，不會噴錯、不會有 warning，是靜默壞掉）——用乾淨重建（清 .nuxt +
+     node_modules/.cache 重啟）在 /people 頁重複驗證過兩次，同一批 class 每次
+     都壞。原因目前沒有查清楚（懷疑跟這批 fs-* token 在任何模板裡都找不到字面
+     字串、Tailwind 3.4 這版 @apply 對「完全沒被掃到過」的自訂 fontSize token
+     的解析在特定組合下不穩定有關，但無法簡化出最小重現），所以這六個先維持
+     原本的寫死 CSS + media query，其餘已實測正常的維持 @apply 寫法。之後這
+     六個如果要開始被某個元件使用，套用前務必重新實測 computed font-size。
      ========================================================================= */
 
   /* ----- zh/* ----- */
@@ -44,23 +50,11 @@
   }
 
   .text-zh-h2 {
-    font-size: 2.25rem; /* 36 ← 48-36 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-zh-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-h2 { font-size: 3rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-zh-serif font-bold text-fs-zh-h2-m lg:text-fs-zh-h2;
   }
 
   .text-zh-h3 {
-    font-size: 1.5rem; /* 24 ← 32-24 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-zh-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-h3 { font-size: 2rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-zh-serif font-bold text-fs-zh-h3-m lg:text-fs-zh-h3;
   }
 
   .text-zh-h4 {
@@ -74,56 +68,26 @@
   }
 
   .text-zh-h5 {
-    font-size: 1.125rem; /* 18 ← 22-18 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-zh-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-h5 { font-size: 1.375rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-zh-serif font-bold text-fs-zh-h5-m lg:text-fs-zh-h5;
   }
 
   .text-zh-body-lg {
-    font-size: 1rem; /* 16 ← 18-16 */
-    line-height: 1.6;
-    letter-spacing: 0.08em;
-    @apply font-zh-sans font-normal;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-body-lg { font-size: 1.125rem; line-height: 1.6; letter-spacing: 0.08em; }
+    @apply font-zh-sans font-normal text-fs-zh-body-lg-m lg:text-fs-zh-body-lg;
   }
 
   .text-zh-body-md {
-    font-size: 0.9375rem; /* 15 ← 16-15 */
-    line-height: 1.6;
-    letter-spacing: 0.08em;
-    @apply font-zh-sans font-normal;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-body-md { font-size: 1rem; line-height: 1.6; letter-spacing: 0.08em; }
+    @apply font-zh-sans font-normal text-fs-zh-body-md-m lg:text-fs-zh-body-md;
   }
 
   /* 按鈕：zh/btn，Noto Sans TC Medium，100% 行高 / 10% 字距 —— kit 沒有
      en/btn，按鈕文字不論中英一律套這個。 */
   .text-zh-btn {
-    font-size: 0.9375rem; /* 15 ← 16-15 */
-    line-height: 1;
-    letter-spacing: 0.1em;
-    @apply font-zh-sans font-medium;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-btn { font-size: 1rem; line-height: 1; letter-spacing: 0.1em; }
+    @apply font-zh-sans font-medium text-fs-zh-btn-m lg:text-fs-zh-btn;
   }
 
   /* ----- en/* ----- */
   .text-en-display {
-    font-size: 2rem; /* 32 ← 56-32 */
-    line-height: 1;
-    letter-spacing: 0.02em;
-    @apply font-en-serif font-normal italic;
-  }
-  @media (min-width: 1024px) {
-    .text-en-display { font-size: 3.5rem; line-height: 1; letter-spacing: 0.02em; }
+    @apply font-en-serif font-normal italic text-fs-en-display-m lg:text-fs-en-display;
   }
 
   /* kit 沒有 zh/hero —— 英文專屬，Bold Italic。 */
@@ -138,23 +102,11 @@
   }
 
   .text-en-h1 {
-    font-size: 2.5rem; /* 40 ← 64-40 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-en-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-en-h1 { font-size: 4rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-en-serif font-bold text-fs-en-h1-m lg:text-fs-en-h1;
   }
 
   .text-en-h2 {
-    font-size: 2.25rem; /* 36 ← 48-36 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-en-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-en-h2 { font-size: 3rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-en-serif font-bold text-fs-en-h2-m lg:text-fs-en-h2;
   }
 
   .text-en-h3 {
@@ -178,55 +130,31 @@
   }
 
   .text-en-h5 {
-    font-size: 1.125rem; /* 18 ← 22-18 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-en-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-en-h5 { font-size: 1.375rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-en-serif font-bold text-fs-en-h5-m lg:text-fs-en-h5;
   }
 
   .text-en-body-md {
-    font-size: 0.9375rem; /* 15 ← 16-15 */
-    line-height: 1.6;
-    letter-spacing: 0.08em;
-    @apply font-en-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-en-body-md { font-size: 1rem; line-height: 1.6; letter-spacing: 0.08em; }
+    @apply font-en-serif font-bold text-fs-en-body-md-m lg:text-fs-en-body-md;
   }
 
-  /* kit 沒有 zh/caption —— 英文專屬，14-14 兩端相同，無手機階。 */
+  /* kit 沒有 zh/caption —— 英文專屬，14-14 兩端相同，無手機階，所以沒有 -m token。 */
   .text-en-caption {
-    font-size: 0.875rem;
-    line-height: 1.4;
-    letter-spacing: 0.08em;
-    @apply font-en-serif font-bold;
+    @apply font-en-serif font-bold text-fs-en-caption;
   }
 
-  /* ----- common/*（mono，桌機／手機共用同一個值，無 zh/en 之分）----- */
+  /* ----- common/*（mono，桌機／手機共用同一個值，無 zh/en 之分，沒有 -m token）----- */
   .text-body-sm {
-    font-size: 0.875rem;
-    line-height: 1.4;
-    letter-spacing: 0.06em;
-    @apply font-mono font-normal;
+    @apply font-mono font-normal text-fs-body-sm;
   }
 
   /* ⚠️ 設計稿的 common/meta 是 Regular 400，不是 500 —— IBM Plex Mono 的
      Medium 在 0.2em 字距下會明顯比設計稿重。 */
   .text-meta {
-    font-size: 0.75rem;
-    line-height: 1.2;
-    letter-spacing: 0.2em;
-    @apply font-mono font-normal uppercase;
+    @apply font-mono font-normal uppercase text-fs-meta;
   }
 
   .text-micro {
-    font-size: 0.75rem;
-    line-height: 1.2;
-    letter-spacing: 0.04em;
-    @apply font-mono font-normal uppercase;
+    @apply font-mono font-normal uppercase text-fs-micro;
   }
 
   /* 強調：斜體 Inria Serif（不是 kit 命名樣式，泛用的行內強調） */

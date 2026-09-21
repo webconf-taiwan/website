@@ -2,9 +2,9 @@
   "hero": {
     "plate_label": "PL. I · Living Specimen · 2026",
     "title": "WebConf",
-    "subtitle": "Taipei Popop · Dec 11-12, 2026",
+    "subtitle": "瓶蓋工廠台北製造所 · Dec. 11-12, 2026",
     "keywords": "Agent · Connections · Code",
-    "cta": { "label": "前往購票 →", "href": "#ticket", "target": "_self" },
+    "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "corner_left": {
       "label": "Code · Emergence",
       "note": "vol. iii · plate i ."
@@ -16,7 +16,7 @@
   },
 
   "about": {
-    "plate": { "code": "vol. v · plate I", "number": "II.", "label": "ABOUT" },
+    "plate": { "code": "plate I", "number": "II.", "label": "ABOUT" },
     "skills_box_label": "Skills",
     "skills": ["UI · UX", "AI Agent", "Frontend", "Backend", "DevOps", "Security", "Agile"],
     "heading": "An emergent\ngathering of the Web.",
@@ -30,16 +30,16 @@
       { "text": " coalesce into something larger than their parts." }
     ],
     "body_zh": "WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。這些技術如同顯微鏡下的細胞，從簡單規則出發，彼此影響、共同演化，逐步形成新的網頁生態。",
-    "cta": { "label": "議程資訊 →", "href": "#agenda", "target": "_self" }
+    "cta": { "label": "議程資訊", "href": "#agenda", "target": "_self" }
   },
 
   "speaker": {
-    "plate": { "code": "vol. v · plate II", "number": "III.", "label": "SPEAKER" },
+    "plate": { "code": "plate II", "number": "III.", "label": "SPEAKER" },
     "more_link": { "label": "更多講者", "href": "/people", "target": "_self" }
   },
 
   "venue": {
-    "plate": { "code": "vol. v · plate III", "number": "IV.", "label": "VENUE" },
+    "plate": { "code": "plate III", "number": "IV.", "label": "VENUE" },
     "heading": "The place we gather.",
     "title_en": "Taipei Popop",
     "title_zh": "瓶蓋工廠台北製造所",
@@ -57,14 +57,14 @@
   },
 
   "faq": {
-    "plate": { "code": "vol. v · plate V", "number": "V.", "label": "FAQ" },
+    "plate": { "code": "plate V", "number": "V.", "label": "FAQ" },
     "title_en": "A field guide to questions.",
     "title_zh": "常見問答",
     "per_page": 3
   },
 
   "ticket": {
-    "plate": { "code": "vol. v · plate VI", "number": "VI.", "label": "TICKET" },
+    "plate": { "code": "plate VI", "number": "VI.", "label": "TICKET" },
     "heading_lines": ["Four ways", "to enter the field."],
     "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "items": [

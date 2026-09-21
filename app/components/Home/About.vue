@@ -24,9 +24,20 @@ useFadeIn(sectionRef)
   <section
     id="about"
     ref="sectionRef"
-    class="relative z-10 px-6 lg:bg-black/30 lg:px-12 2xl:px-20"
+    class="relative isolate z-10 px-6 lg:bg-black/30 lg:px-12 2xl:px-20"
   >
-    <div class="mx-auto grid max-w-[1680px] grid-cols-1 gap-12 border-t border-pre-800/35 pt-8 pb-[120px] lg:grid-cols-12 lg:gap-10">
+    <!-- 手機／平板的裝飾圖：從下一區（Speaker）的分隔線後面探出來，靠右、被畫面右緣裁掉。
+         桌機沒有（那邊的粒子是背後那張 canvas 畫的）。定位與裁切見 Home/Deco.vue。 -->
+    <HomeDeco
+      class="-bottom-16"
+      src="/home-deco-1"
+      :width="522"
+      :height="508"
+      :reveal="0.656"
+      :shift="0.165"
+    />
+
+    <div class="mx-auto grid max-w-[1680px] grid-cols-1 border-t border-pre-800/35 lg:pt-8 pb-[120px] lg:grid-cols-12 lg:gap-10">
       <!-- 左欄：卷號 + Skills 標本框 -->
       <div class="lg:col-span-4">
         <!-- divider 關掉：這一區的分隔線畫在外層 grid 容器上（要橫貫左右兩欄） -->
@@ -36,17 +47,17 @@ useFadeIn(sectionRef)
              讓框落在粒子團中段（設計稿的構圖）。 -->
         <div data-fade="in" class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
           <!-- 十字準星 -->
-          <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-micro text-white/40">+</span>
+          <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-micro text-white/40">+</span>
           <!-- 底色與模糊跟票券卡同一組（TicketCard 的非 highlight 樣式），
                讓背後的粒子糊掉、字才讀得出來。
                ⚠️ 邊框維持原本的 white/25 —— 票券卡用的 border-pre-500/50 那個 /50
                不會生效（pre-500 不是 rgb 格式，opacity modifier 吃不到），
                線會變成不透明的淺灰，在這個框上太搶。 -->
-          <div class="relative border border-white/25 bg-pre-800/10 px-4 py-5 backdrop-blur-md">
-            <span class="absolute top-2.5 left-3 px-1 font-mono text-fs-micro text-white/60">
+          <div class="relative border border-white/25 bg-pre-800/80 px-4 py-5 max-w-[200px]">
+            <span class="absolute top-2.5 left-3 px-1 font-mono text-meta text-pre-800">
               {{ content.skills_box_label }}
             </span>
-            <ul class="space-y-1 text-right font-mono text-fs-micro text-white/55">
+            <ul class="space-y-1 text-right font-mono text-meta text-pre-800">
               <li v-for="s in content.skills" :key="s">
                 {{ s }}
               </li>
@@ -57,30 +68,32 @@ useFadeIn(sectionRef)
 
       <!-- 右欄：主文案 -->
       <div class="lg:col-span-8 xl:col-span-7 lg:pb-6">
-        <h2 data-fade="in" class="font-en-serif mb-8 text-[clamp(64px,5.2vw,88px)] whitespace-pre-line leading-[1.08] tracking-[-0.02em]">
+        <h2 data-fade="in" class="text-en-h1 italic mb-4 lg:mb-6 whitespace-pre-line">
           {{ content.heading }}
         </h2>
 
-        <p data-fade="in" class="mb-8 font-en-serif text-[clamp(18px,1.6vw,26px)] italic leading-[1.5] text-[#efe6d2]/90">
+        <p data-fade="in" class="mb-6 lg:mb-8 text-en-h5 italic text-[#efe6d2]/90">
           <template v-for="(run, i) in content.lede_runs" :key="i">
-            <span v-if="run.is_accent" class="text-[1.22em] text-[#71c1f0]">{{ run.text }}</span>
+            <span v-if="run.is_accent" class=" text-[#71c1f0]">{{ run.text }}</span>
             <template v-else>{{ run.text }}</template>
           </template>
         </p>
 
-        <p data-fade="in" class="mb-10 text-zh-body-lg text-[#efe6d2]/75">
+        <p data-fade="in" class="mb-6 lg:mb-8 text-zh-body-lg text-pre-800/[62%]">
           {{ content.body_zh }}
         </p>
 
-        <a
+        <AtomButton
           data-fade="in"
+          class="w-fit"
+          intent="primary"
+          size="md"
+          rounded="none"
           :href="content.cta?.href"
           :target="content.cta?.target"
           :rel="linkRel(content.cta?.target)"
-          class="inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
-        >
-          {{ content.cta?.label }}
-        </a>
+          :text="content.cta?.label"
+        />
       </div>
     </div>
   </section>

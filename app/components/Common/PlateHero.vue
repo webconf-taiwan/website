@@ -15,7 +15,7 @@ const props = defineProps({
   // 執行期才知道的繪圖後端（webgpu / webgl2 / canvas2d），接在右下角 note 後面
   backend: { type: String, default: '' },
   // 手機版粒子場的取樣來源圖
-  source: { type: String, default: '/figma/agenda/mobile-particle-source.png' },
+  source: { type: String, default: '/figma/agenda/mobile-particle-source.webp' },
   ariaLabel: { type: String, default: '' },
 })
 
@@ -42,7 +42,7 @@ const label = computed(() => props.ariaLabel || props.title)
     </ClientOnly>
     <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
     <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4 drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
-      <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-fs-meta leading-[14px] text-pre-800/80">
+      <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-meta leading-[14px] text-pre-800/80">
         <span class="w-14 shrink-0">{{ plate.code }}</span>
         <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
         <span class="w-[94px] shrink-0">WEBCONF.TW</span>
@@ -62,7 +62,7 @@ const label = computed(() => props.ariaLabel || props.title)
     </div>
 
     <div data-plate-mobile-corner class="absolute bottom-5 left-5 flex h-[38px] flex-col gap-1">
-      <p data-fade="in" class="font-mono text-fs-meta leading-[14px] text-pre-800/80">{{ cornerLeft?.label }}</p>
+      <p data-fade="in" class="font-mono text-meta leading-[14px] text-pre-800/80">{{ cornerLeft?.label }}</p>
       <p data-fade="in" class="text-en-caption italic leading-5 text-pre-800">{{ cornerLeft?.note }}</p>
     </div>
   </section>
@@ -96,7 +96,7 @@ const label = computed(() => props.ariaLabel || props.title)
          （left/right 40px、bottom 30px、兩行間 gap 4px），不是沿用首頁的抓法。 -->
     <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 mx-auto hidden w-full max-w-[1440px] justify-between px-10 pb-[30px] lg:flex">
       <div class="flex flex-col gap-1 text-left">
-        <p data-fade="in" class="font-mono text-fs-meta uppercase text-pre-800/80">
+        <p data-fade="in" class="font-mono text-meta uppercase text-pre-800/80">
           {{ cornerLeft?.label }}
         </p>
         <p data-fade="in" class="text-en-caption italic text-pre-800">
@@ -104,7 +104,7 @@ const label = computed(() => props.ariaLabel || props.title)
         </p>
       </div>
       <div class="flex flex-col gap-1 text-right">
-        <p data-fade="in" class="font-mono text-fs-meta uppercase text-pre-800/80">
+        <p data-fade="in" class="font-mono text-meta uppercase text-pre-800/80">
           {{ cornerRight?.label }}
         </p>
         <!-- note 後面接的是執行期才知道的繪圖後端，不是資料（同 Home/Hero.vue 慣例） -->

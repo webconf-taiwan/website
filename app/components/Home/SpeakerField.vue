@@ -730,8 +730,8 @@ defineExpose({ backend })
       <!-- 中央觀景框 -->
       <div class="order-first flex flex-col items-stretch gap-y-2 lg:order-none lg:col-start-2 lg:row-span-4 lg:row-start-1">
         <div class="flex items-start justify-between text-en-caption text-pre-800">
-          <span>{{ currentSpeaker?.tag }}</span>
-          <span>{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+          <span class="text-en-caption italic">{{ currentSpeaker?.tag }}</span>
+          <span class="text-en-caption italic">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
         </div>
         <!-- 只有框線 —— 人像是底下那張 canvas，這是「觀察窗」不是圖片容器 -->
         <div
@@ -782,18 +782,20 @@ defineExpose({ backend })
 
     <!-- 更多講者 -->
     <div class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:top-[663px] lg:mt-0 lg:-translate-y-1/2">
-      <NuxtLink
+      <AtomButton
         v-if="moreLink.href"
-        :to="moreLink.href"
+        intent="primary"
+        size="md"
+        rounded="none"
+        icon="arrow-right-thin"
+        :icon-position="'end'"
+        :icon-size="'md'"
+        :href="moreLink.href"
         :target="moreLink.target"
         :rel="linkRel(moreLink.target)"
-        class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
       >
         {{ moreLink.label }}
-        <span class="flex size-6 items-center justify-center">
-          <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-        </span>
-      </NuxtLink>
+      </AtomButton>
     </div>
   </section>
 </template>

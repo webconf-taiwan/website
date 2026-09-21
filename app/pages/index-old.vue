@@ -81,7 +81,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
       data-field-hero
       class="relative z-10 flex bg-black/30 min-h-[calc(100dvh-52px)] flex-col items-center justify-center px-6 py-20 text-center"
     >
-      <p class="font-mono text-fs-micro uppercase text-white/55">
+      <p class="font-mono text-micro uppercase text-white/55">
         {{ home.hero.plate_label }}
       </p>
 
@@ -93,7 +93,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
         {{ home.hero.subtitle }}
       </p>
 
-      <p class="mt-3 font-mono text-fs-micro uppercase text-white/55">
+      <p class="mt-3 font-mono text-micro uppercase text-white/55">
         {{ home.hero.keywords }}
       </p>
 
@@ -109,19 +109,19 @@ const backend = computed(() => fieldRef.value?.backend || '')
       <!-- 四角的「標本標籤」：科學紀錄語彙，桌機才出現 -->
       <div class="pointer-events-none absolute inset-x-6 bottom-8 hidden items-end justify-between lg:flex">
         <div class="text-left">
-          <p class="font-mono text-fs-micro uppercase text-white/55">
+          <p class="font-mono text-micro uppercase text-white/55">
             {{ home.hero.corner_left?.label }}
           </p>
-          <p class="font-en-serif text-fs-en-caption italic text-white/55">
+          <p class="font-en-serif text-en-caption italic text-white/55">
             {{ home.hero.corner_left?.note }}
           </p>
         </div>
         <div class="text-right">
-          <p class="font-mono text-fs-micro uppercase text-white/55">
+          <p class="font-mono text-micro uppercase text-white/55">
             {{ home.hero.corner_right?.label }}
           </p>
           <!-- note 後面接的是執行期才知道的繪圖後端，不是資料 -->
-          <p class="font-en-serif text-fs-en-caption italic text-white/55">
+          <p class="font-en-serif text-en-caption italic text-white/55">
             {{ home.hero.corner_right?.note }}{{ backend ? ` · ${backend}` : '' }}
           </p>
         </div>
@@ -138,13 +138,13 @@ const backend = computed(() => fieldRef.value?.backend || '')
       <div class="mx-auto grid max-w-[1680px] border-t border-pre-800/35 pt-8 pb-16 md:pb-24 grid-cols-1 gap-12 lg:grid-cols-12 lg:gap-10">
         <!-- 左欄：卷號 + Skills 標本框 -->
         <div class="lg:col-span-4">
-          <p class="font-mono text-fs-micro uppercase text-[#71c1f0]/70">
+          <p class="font-mono text-micro uppercase text-[#71c1f0]/70">
             {{ home.about.plate?.code }}
           </p>
-          <p class="mt-2 font-en-serif text-fs-en-h2 italic leading-none">
+          <p class="mt-2 font-en-serif text-en-h2 italic leading-none">
             {{ home.about.plate?.number }}
           </p>
-          <p class="mt-2 font-mono text-fs-micro uppercase text-white/55">
+          <p class="mt-2 font-mono text-micro uppercase text-white/55">
             {{ home.about.plate?.label }}
           </p>
 
@@ -152,12 +152,12 @@ const backend = computed(() => fieldRef.value?.backend || '')
                讓框落在粒子團中段（設計稿的構圖）。 -->
           <div class="relative hidden lg:block mt-24 max-w-[280px] lg:ml-16 lg:mt-40">
             <!-- 十字準星 -->
-            <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-fs-micro text-white/40">+</span>
+            <span class="pointer-events-none absolute -left-4 top-1/2 font-mono text-micro text-white/40">+</span>
             <div class="relative border border-white/25 px-4 py-5">
-              <span class="absolute top-2.5 left-3 lg:top-5 lg:left-4 px-1 font-mono text-fs-micro text-white/60">
+              <span class="absolute top-2.5 left-3 lg:top-5 lg:left-4 px-1 font-mono text-meta text-pre-800">
                 {{ home.about.skills_box_label }}
               </span>
-              <ul class="space-y-1 text-right font-mono text-fs-micro text-white/55">
+              <ul class="space-y-1 text-right font-mono text-meta text-pre-800">
                 <li v-for="s in home.about.skills" :key="s">
                   {{ s }}
                 </li>
@@ -181,18 +181,20 @@ const backend = computed(() => fieldRef.value?.backend || '')
             </template>
           </p>
 
-          <p class="mt-8 max-w-[46ch] text-fs-zh-body-lg font-zh-sans text-[#efe6d2]/75">
+          <p class="mt-8 max-w-[46ch] text-zh-body-lg font-zh-sans text-[#efe6d2]/75">
             {{ home.about.body_zh }}
           </p>
 
-          <a
+          <AtomButton
+            class="mt-10 w-fit"
+            intent="primary"
+            size="md"
+            rounded="none"
             :href="home.about.cta?.href"
             :target="home.about.cta?.target"
             :rel="linkRel(home.about.cta?.target)"
-            class="mt-10 inline-block border border-[#71c1f0]/60 px-8 py-3 text-zh-btn text-[#efe6d2] transition-colors hover:border-[#71c1f0] hover:bg-[#71c1f0]/10"
-          >
-            {{ home.about.cta?.label }}
-          </a>
+            :text="home.about.cta?.label"
+          />
         </div>
       </div>
     </section>
@@ -227,16 +229,13 @@ const backend = computed(() => fieldRef.value?.backend || '')
       </div>
       <div class="flex justify-center">
         <AtomButton
-          intent="specimen"
+          intent="primary"
           size="md"
           rounded="none"
           :href="home.ticket.cta?.href"
           :text="home.ticket.cta?.label"
         >
           {{ home.ticket.cta?.label }}
-          <span class="flex size-6 items-center justify-center">
-            <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-          </span>
         </AtomButton>
       </div>
     </section>

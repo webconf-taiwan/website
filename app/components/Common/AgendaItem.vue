@@ -22,15 +22,15 @@ useFadeIn(itemRef, { step: 0.06 })
   >
     <div class="agenda-item-content flex w-full flex-col gap-y-3 lg:flex-row lg:gap-x-6">
       <div class="flex min-w-0 flex-1 flex-col gap-y-2 lg:gap-y-4">
-        <p data-fade="in" class="hidden font-mono text-fs-meta uppercase text-pre-800/[62%] lg:block">
+        <p data-fade="in" class="hidden font-mono text-meta uppercase text-pre-800/[62%] lg:block">
           {{ item.code }}
         </p>
 
-        <h2 data-fade="in" class="font-zh text-[22px] font-bold leading-[1.25] text-pre-800 lg:text-fs-h3 lg:leading-[1.2]">
+        <h2 data-fade="in" class="font-zh text-[22px] font-bold leading-[1.25] text-pre-800 lg:text-h3 lg:leading-[1.2]">
           {{ item.title }}
         </h2>
 
-        <ul data-fade="in" class="flex h-5 flex-wrap items-center gap-x-3 overflow-hidden font-mono text-fs-meta text-accent-1 lg:h-auto lg:gap-x-4">
+        <ul data-fade="in" class="flex h-5 flex-wrap items-center gap-x-3 overflow-hidden font-mono text-meta text-accent-1 lg:h-auto lg:gap-x-4">
           <li v-for="skill in skills" :key="skill">
             #{{ skill }}
           </li>
@@ -38,10 +38,10 @@ useFadeIn(itemRef, { step: 0.06 })
       </div>
 
       <div class="agenda-item-speaker flex h-10 w-full shrink-0 flex-col justify-end lg:h-auto lg:w-[200px]">
-        <p data-fade="in" class="font-zh text-fs-body font-bold leading-[1.35] text-pre-800 lg:text-fs-h5 lg:leading-[1.35]">
+        <p data-fade="in" class="font-zh text-body font-bold leading-[1.35] text-pre-800 lg:text-h5 lg:leading-[1.35]">
           {{ item.speaker_name }}
         </p>
-        <p data-fade="in" class="font-zh text-fs-caption leading-[1.45] text-pre-800/[62%] lg:text-fs-body-sm">
+        <p data-fade="in" class="font-zh text-en-caption leading-[1.45] text-pre-800/[62%] lg:text-body-sm">
           {{ item.speaker_title }}
         </p>
       </div>

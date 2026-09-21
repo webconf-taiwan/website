@@ -9,7 +9,7 @@ const props = defineProps({
   // 取樣來源圖；桌機場（AgendaParticleField）用同一張
   source: {
     type: String,
-    default: '/figma/agenda/mobile-particle-source.png',
+    default: '/figma/agenda/mobile-particle-source.webp',
   },
 })
 const SOURCE = props.source

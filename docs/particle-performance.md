@@ -527,3 +527,26 @@ p50 本身已經對單一尖峰免疫（那只會動 p95），所以 p50 就超�
 - `navigator.hardwareConcurrency` 在 iOS 的實際回傳值（即使查證了仍不建議用）
 - WebGPU swap chain 在 `canvas.width` 改變後是否自動重配
 - 專案的 Playwright Chromium 有沒有 WebGPU
+
+---
+
+## 11. 人像（PL.III）靜態圖模式與圖片格式
+
+**人像**：`SpeakerPortrait.vue` 有兩種模式。手機「夠好」（檔位在 `TIER_DEFAULT`、有 WebGPU）才跑粒子；
+**只限手機（視窗 < 768px）**，平板與窄桌機視窗一律維持粒子。手機上其餘 —— 沒有 WebGPU、pre-flight 有負面訊號、或執行期量測把檔位降下來 —— 一律換成
+`speakers.json` 的 `portrait_static`（`/speakers/speaker-particle-NN.webp`）。靜態模式不載粒子套件、
+不取樣、不建引擎。換人動畫與框線同一拍（淡出＋由中心縮到 0.92 → 換圖 → 由中心放大回來＋淡入）。
+執行期降檔時會從粒子淡入靜態圖、再拆引擎。⚠️ 這推翻了 `particleTiers.js` 早先「最低檔也要留著粒子」
+的說法，僅限人像；MobileField 仍維持粒子。
+
+**圖片格式**：站上的圖片都是 `.webp`，**每個 `.webp` 旁邊必須有同名 `.png` 當 fallback**
+（不支援 WebP 的裝置）。取樣器（`particle-image.js` 的 `loadImage`）與靜態人像（`resolveImage`）
+都會在 WebP 載入失敗時自動退回 `.png`。新增圖片時兩個檔都要放。
+壓縮設定（`cwebp`，PSNR 是黑底合成後比對）：
+
+| 類型 | 設定 | 為什麼 |
+|---|---|---|
+| 平滑照片（`speaker-NN`、`side`） | `-q 90 -alpha_q 100 -sharp_yuv` | PSNR 43~46dB |
+| 細顆粒的點畫圖（`speaker-particle-NN`、`venue`、`faq`、agenda 來源） | `-near_lossless 40~60 -z 9` | 有損 WebP 的色度取樣會把「黑底上的彩色顆粒」壓到 36dB 以下，提高 q 值也沒用 |
+
+`-alpha_q 100` 一律要給，透明度通道不能有誤差（取樣器靠它判斷主體邊界）。

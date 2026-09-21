@@ -56,7 +56,7 @@ const holdPct = ref(100)
 // PL.II 收攏的目標圖。出圖規則很重要：畫布要留成最終版位的比例、主體放在
 // 要出現的位置（side.png 是 1440×720、主體在左 1/3 且切齊左緣），
 // 因為 registerPattern 是把「整張圖」等比置中，主體的相對位置會被原樣保留。
-const ABOUT_IMAGE = '/source_images/side.png'
+const ABOUT_IMAGE = '/source_images/side.webp'
 const ABOUT_SAMPLES = 32000          // ⚠️ 之後每張圖都要用同一個點數，否則配對會有殘餘
 // 色盤：null = 用圖片自動量化出來的主色；要更接近設計稿就填一組 7 色覆蓋。
 const ABOUT_PALETTE_OVERRIDE = null
