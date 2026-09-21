@@ -10,6 +10,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // 取樣來源圖；換頁面時換一張即可，取樣參數與 rail 聚落設定共用
+  source: {
+    type: String,
+    default: '/figma/agenda/mobile-particle-source.png',
+  },
 })
 
 const wrapRef = ref(null)
@@ -27,7 +32,7 @@ const wrapClass = computed(() => props.fixed
 
 const look = resolveFieldLook(3)
 const STAGE = 'agendaField'
-const SOURCE = '/figma/agenda/mobile-particle-source.png'
+const SOURCE = props.source
 const HERO = {
   height: 550, preset: 'nebula', pull: 12, grip: 58,
   pointSize: 0.85, simSpeed: 0.65,
@@ -113,9 +118,9 @@ const dom = { hero: null, page: null, body: null, aside: null }
 const rects = { hero: null, page: null, aside: null }
 
 function lookupDom () {
-  if (!dom.hero) dom.hero = document.querySelector('[data-agenda-hero-desktop]')
-  if (!dom.page) dom.page = canvasRef.value?.closest('[data-agenda-page]') || null
-  if (!dom.body) dom.body = document.querySelector('[data-agenda-body]')
+  if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
+  if (!dom.page) dom.page = canvasRef.value?.closest('[data-plate-page]') || null
+  if (!dom.body) dom.body = document.querySelector('[data-plate-body]')
   if (!dom.aside && dom.body) dom.aside = dom.body.querySelector(':scope > aside')
 }
 
