@@ -23,19 +23,11 @@ defineProps({
 })
 
 const emit = defineEmits(['mobile-action', 'desktop-action'])
-const { isDesktop, viewportReady } = useViewportMode()
 </script>
 
 <template>
   <div class="relative min-h-screen overflow-hidden bg-black text-pre-800">
     <LayoutPageHeader />
-
-    <ClientOnly>
-      <template v-if="viewportReady">
-        <HomeField v-if="isDesktop" />
-        <HomeMobileField v-else />
-      </template>
-    </ClientOnly>
 
     <CommonTemporaryHero
       :variant="variant"

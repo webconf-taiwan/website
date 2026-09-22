@@ -33,6 +33,7 @@
  *   name       pattern 註冊名（預設 'image:' + url）
  *   sampleEdge 取樣解析度上限（預設 480px，夠細且快）
  *   seed       取樣 PRNG 種子（預設 1926；同圖同種子 → 同標本）
+ *   image      已載入的 HTMLImageElement；給了就不再 loadImage(url)
  */
 (function () {
   'use strict';
@@ -187,7 +188,9 @@
     const name = opts.name || ('image:' + url);
     const sampleEdge = opts.sampleEdge || 480;
 
-    const img = await loadImage(url);
+    // opts.image：呼叫端已載入（且已解碼）的 HTMLImageElement，同一張圖多次取樣
+    // 不同 crop 時可重用，省掉重新載入與解碼。
+    const img = opts.image || await loadImage(url);
     // Optional normalized source rectangle preserves a designed image crop.
     const crop = opts.crop || { x: 0, y: 0, width: 1, height: 1 };
     const sx = crop.x * img.naturalWidth, sy = crop.y * img.naturalHeight;
@@ -278,5 +281,5 @@
     };
   }
 
-  window.PLImage = { prepare, prepareFromData };
+  window.PLImage = { prepare, prepareFromData, loadImage };
 })();

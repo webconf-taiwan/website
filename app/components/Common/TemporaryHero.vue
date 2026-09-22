@@ -1,4 +1,6 @@
 <script setup>
+import TemporaryParticleField from '~/components/Common/TemporaryParticleField.vue'
+
 const props = defineProps({
   variant: {
     type: String,
@@ -37,7 +39,10 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     data-same-hero
     class="relative z-10 flex h-[550px] flex-col items-center justify-center overflow-hidden bg-black/30 text-center lg:h-[720px]"
   >
-    <!-- Figma 的黑底襯墊僅為設計示意，實際背景由首頁粒子元件呈現。 -->
+    <ClientOnly>
+      <TemporaryParticleField />
+    </ClientOnly>
+    <!-- Figma 的黑底襯墊僅為設計示意，實際不使用。 -->
     <div class="relative z-1 flex w-[955.825px] shrink-0 flex-col items-center gap-y-8 pt-8 drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
       <div class="flex flex-col items-center gap-y-4">
         <p

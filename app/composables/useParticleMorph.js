@@ -245,6 +245,80 @@ export function buildSlotTargets (snap, targets, T, W, opts = {}) {
   return { spread, shape, shapeType }
 }
 
+// --- 路線 C 的 typed-array 版：吃 readParticlesRaw() 的 Float32Array --------
+// raw 是 stride 6 的 [x, y, vx, vy, species, slot]（GPU 引擎的 readParticlesRaw；
+// CPU 後端沒有 slot，呼叫端先填 slot = i）。配對邏輯與 buildSlotTargets 完全相同，
+// 差別只在：
+//   1. 不把 N 顆粒子包成物件，排序鍵 y*W+x 事先算進 Float64Array，比較函式
+//      不再每次讀物件屬性。
+//   2. 比較函式明確用 index 當 tie-break（`|| i - j`）。Array.prototype.sort
+//      是穩定排序，index 陣列又是升冪起始，所以這跟原本「穩定排序的平手順序」
+//      逐位元一致 —— 但不再依賴實作的穩定性。
+// ⚠️ 要改配對規則請兩個版本一起改；這裡不能偷偷多做任何事，否則首頁那些
+//    還在用物件版的頁面會跟議程配對出不同結果。
+export function buildSlotTargetsRaw (raw, N, targets, T, W, opts = {}) {
+  const { tx, ty, tt } = targets
+  const shape = new Float32Array(N * 2)
+  const spread = new Float32Array(N * 2)
+  const shapeType = new Float32Array(N)
+  const slotOf = new Int32Array(N)
+  const speciesOf = new Uint8Array(N)
+  const snapKey = new Float64Array(N)
+  const tgtKey = new Float64Array(N)
+  for (let i = 0; i < N; i++) {
+    const x = raw[i * 6]
+    const y = raw[i * 6 + 1]
+    const slot = raw[i * 6 + 5] | 0
+    slotOf[i] = slot
+    speciesOf[i] = (raw[i * 6 + 4] | 0) % T
+    spread[slot * 2] = x
+    spread[slot * 2 + 1] = y
+    shapeType[slot] = speciesOf[i]        // 預設：維持自己的物種色
+    snapKey[i] = y * W + x
+    tgtKey[i] = ty[i] * W + tx[i]
+  }
+  const bySnap = (i, j) => (snapKey[i] - snapKey[j]) || (i - j)
+  const byTgt = (i, j) => (tgtKey[i] - tgtKey[j]) || (i - j)
+
+  if (opts.recolor) {
+    const a = Array.from({ length: N }, (_, i) => i).sort(bySnap)
+    const b = Array.from({ length: N }, (_, i) => i).sort(byTgt)
+    for (let k = 0; k < N; k++) {
+      const slot = slotOf[a[k]]
+      const m = b[k]
+      shape[slot * 2] = tx[m]
+      shape[slot * 2 + 1] = ty[m]
+      shapeType[slot] = tt[m]
+    }
+    return { spread, shape, shapeType }
+  }
+
+  const snapBy = Array.from({ length: T }, () => [])
+  const tgtBy = Array.from({ length: T }, () => [])
+  for (let i = 0; i < N; i++) snapBy[speciesOf[i]].push(i)
+  for (let i = 0; i < N; i++) tgtBy[tt[i]].push(i)
+
+  for (let t = 0; t < T; t++) {
+    const a = snapBy[t].sort(bySnap)
+    const b = tgtBy[t].sort(byTgt)
+    if (!b.length) {
+      for (let k = 0; k < a.length; k++) {
+        const slot = slotOf[a[k]]
+        shape[slot * 2] = raw[a[k] * 6]
+        shape[slot * 2 + 1] = raw[a[k] * 6 + 1]
+      }
+      continue
+    }
+    for (let k = 0; k < a.length; k++) {
+      const slot = slotOf[a[k]]
+      const m = b[Math.floor(k * b.length / a.length)]
+      shape[slot * 2] = tx[m]
+      shape[slot * 2 + 1] = ty[m]
+    }
+  }
+  return { spread, shape, shapeType }
+}
+
 export function useParticleMorph () {
   return {
     paletteToLinear,
@@ -253,5 +327,6 @@ export function useParticleMorph () {
     buildSeedTargets,
     pairSnapshotToTargets,
     buildSlotTargets,
+    buildSlotTargetsRaw,
   }
 }
