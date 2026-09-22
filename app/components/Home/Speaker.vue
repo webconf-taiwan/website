@@ -11,7 +11,9 @@
 //            只能用半透明壓黑保可讀性；人像的大小／位置由那邊的 speaker 影格
 //            （fit / maxPx）決定，不在這裡調。
 //
-//   <1024px  HomeSpeakerPortrait —— 就掛在下面那個觀景框裡的小 canvas。
+//   <1024px  HomeSpeakerPortrait —— 就掛在下面那個觀景框裡。手機夠好才是小 canvas 的
+//            粒子；其餘是事先渲染好的靜態圖（portrait_static），換人動畫要跟下面
+//            框線的時序對齊（LEADER_OUT_MS / FRAME_DOT_MS / FRAME_GROW_MS 改了要同步）。
 //            那一版這一區沒有底色 —— 不透明底是頁面在 PL.II～PL.V 外面包的那一層
 //            （見 pages/index.vue，包成一段是為了不要在區塊交界露出縫）。
 //            那個底是純黑，跟 canvas 的不透明黑同色，所以框裡那個方塊的邊界
@@ -322,7 +324,7 @@ onBeforeUnmount(() => {
          ⚠️ 兩塊版面都留在 DOM 裡、用 CSS 切換（不是 v-if）—— 八位講者的名字是
          內容，要進 SSR 的 HTML 才有 SEO。只有 canvas 那一個元件是 client-only。
     ==================================================================== -->
-    <div class="relative z-2 mt-10 lg:hidden">
+    <div class="relative z-2 mt-2 md:mt-6 lg:mt-10 lg:hidden">
       <!-- 觀景區。⚠️ canvas 是「整塊正方形」而不是只有框線那一格：設計稿的人像
            比框大（頭肩會溢出框線），跟桌機的構圖一致。框線只佔它的 62%。
            touch-pan-y：直向捲動留給瀏覽器，橫向留給下面的滑動切換。 -->
@@ -352,8 +354,8 @@ onBeforeUnmount(() => {
             class="flex items-start justify-between text-en-caption text-pre-800"
             :style="{ opacity: frameFade }"
           >
-            <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
-            <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+            <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
+            <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
           </div>
 
           <!-- 觀景框。外層是固定尺寸的佔位（版面不能跟著動畫抖），框線本身絕對定位
@@ -384,33 +386,36 @@ onBeforeUnmount(() => {
       </div>
 
       <!-- 名字 + 左右切換 -->
-      <div class="mt-6 flex items-center gap-x-2">
+      <div class="-mx-2 sm:mx-0 mt-6 flex items-center md:gap-x-2">
         <button
           type="button"
           class="shrink-0 p-3 text-pre-800/70 transition-colors hover:text-accent-1"
           aria-label="上一位講者"
           @click="step(-1)"
         >
-          <AtomIcon name="arrow-right-thin" class="h-[10px] w-6 rotate-180" />
+          <AtomIcon name="arrow-right-thin" class="size-6 rotate-180" />
         </button>
 
         <span class="flex min-w-0 flex-1 flex-col items-center gap-y-2 border-b border-pre-800/80 pb-4 text-center">
-          <span class="text-[22px] leading-[1.2] tracking-[0.02em] text-accent-1 lg:text-[28px]">
+          <span class="text-accent-1">
             <span
               v-for="(r, k) in nameRuns(currentSpeaker?.name || '')"
               :key="k"
-              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
+              :class="r.zh ? 'text-zh-h4' : 'text-en-h4 italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ currentSpeaker?.org }}
-            <span class="text-accent-1">·</span>
-            {{ currentSpeaker?.role }}
+          <!-- ⚠️ 這兩行「不能」用 flex：flex 會把 org、·、role 各自當成一個項目，窄欄裡各自
+               被壓縮折行 —— 「創辦人」斷成「創辦／人」、「·」還飄在兩行中間（吳哲宇那筆最明顯）。
+               改成一般的文字流：
+               · break-keep：中文詞不從中間斷，只在空白處換行
+               · overflow-wrap:anywhere：單一詞真的比欄寬還長時才允許硬斷，不會撐破版面
+               · text-balance：兩行長短接近，不會出現一行很長、一行只剩一個字
+               · &nbsp; 把 · 黏在前一個詞後面 —— 換行時 · 留在行尾，不會跑到下一行開頭 -->
+          <span class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ currentSpeaker?.org }}&nbsp;<span class="text-accent-1">·</span> {{ currentSpeaker?.role }}
           </span>
-          <span v-if="currentSpeaker?.extra" class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ currentSpeaker.extra.org }}
-            <span class="text-accent-1">·</span>
-            {{ currentSpeaker.extra.role }}
+          <span v-if="currentSpeaker?.extra" class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ currentSpeaker.extra.org }}&nbsp;<span class="text-accent-1">·</span> {{ currentSpeaker.extra.role }}
           </span>
         </span>
 
@@ -420,7 +425,7 @@ onBeforeUnmount(() => {
           aria-label="下一位講者"
           @click="step(1)"
         >
-          <AtomIcon name="arrow-right-thin" class="h-[10px] w-6" />
+          <AtomIcon name="arrow-right-thin" class="size-6" />
         </button>
       </div>
     </div>
@@ -480,8 +485,8 @@ onBeforeUnmount(() => {
           class="flex items-start justify-between text-en-caption text-pre-800"
           :style="{ opacity: frameFade }"
         >
-          <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
-          <span :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
+          <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ currentSpeaker?.tag }}</span>
+          <span class="text-en-caption italic" :style="{ clipPath: `inset(0 ${(1 - typeTop) * 100}% 0 0)` }">{{ current + 1 }}/{{ SPEAKERS.length }}</span>
         </div>
         <!-- 外層是固定尺寸的佔位（版面不能跟著動畫抖），框線本身絕對定位在正中央、
              用 width/height 百分比放大。
@@ -551,18 +556,20 @@ onBeforeUnmount(() => {
 
     <!-- 更多講者 -->
     <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[60px] lg:mt-0">
-      <NuxtLink
+      <AtomButton
         v-if="moreLink.href"
-        :to="moreLink.href"
+        intent="primary"
+        size="md"
+        rounded="none"
+        icon="arrow-right-thin"
+        icon-position="end"
+        icon-size="md"
+        :href="moreLink.href"
         :target="moreLink.target"
         :rel="linkRel(moreLink.target)"
-        class="inline-flex items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 text-zh-btn text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
       >
         {{ moreLink.label }}
-        <span class="flex size-6 items-center justify-center">
-          <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-        </span>
-      </NuxtLink>
+      </AtomButton>
     </div>
   </section>
 </template>

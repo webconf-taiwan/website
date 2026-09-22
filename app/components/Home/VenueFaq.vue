@@ -65,6 +65,8 @@ onBeforeUnmount(() => killFadeIns())
   <!-- ⚠️ 底色見上面檔頭。窄視窗這裡不鋪底 —— 不透明底是頁面在 PL.II～PL.V 外面
        包的那一層（見 pages/index.vue）。 -->
   <div class="relative lg:bg-black/25">
+  <div class="absolute bottom-0 left-0 w-full translate-y-full h-8 md:h-12 lg:hidden bg-bg-mid"></div>
+
     <!-- PL. IV — Venue。設計稿是兩欄：左欄固定 484 寬只放卷號，右欄 flex-1 放內容。
          兩欄各自有自己的 border-t（不是同一條線橫貫），右欄再多 24px 內縮。
          data-same-venue 是 HomeField 第 3 段（speaker → venue）的觸發器。 -->
@@ -72,41 +74,57 @@ onBeforeUnmount(() => killFadeIns())
       id="venue"
       ref="venueRef"
       data-same-venue
-      class="relative z-10 min-h-[658px]"
+      class="relative isolate z-10 min-h-[658px]"
     >
+      <!-- 手機／平板的裝飾圖（細胞群），繞在「更多資訊」按鈕旁、從 FAQ 的分隔線後面探出來。
+           桌機沒有。定位與裁切見 Home/Deco.vue。 -->
+      <HomeDeco
+        class="bottom-0"
+        src="/home-deco-2"
+        :width="325"
+        :height="310"
+        :size="0.873"
+        :reveal="0.59"
+        :shift="0.083"
+      />
+
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號。
              ⚠️ data-fade="in" 掛在「文字的外層」而不是有 border-t 的那層 ——
-             分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。 -->
-        <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <CommonPlate :data="venue.plate" data-fade="in" />
+             分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。
+             ⚠️ 這一欄下面大半是空的（留給 HomeField 的菌落場飄），只有卷號本身這
+             幾行文字會被點雲穿過去、糊到看不清楚。跟「更多資訊」按鈕同一招：
+             壓一塊半透明黑 + 模糊當底，只包住文字本身，不是整欄——不然點雲在這欄
+             就完全不會透出來，那塊留白的意義就沒了。 -->
+        <div class="shrink-0 px-6 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
+          <CommonPlate :data="venue.plate" data-fade="in" class="lg:-mx-2 lg:px-2" />
         </div>
 
         <!-- 右欄：標題 + 交通方式 + 按鈕 -->
-        <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
-          <div class="flex flex-col gap-12 lg:border-t lg:border-pre-800/35 py-8 lg:pl-6">
-            <div class="flex flex-col gap-4">
+        <div class="min-w-0 flex-1 px-6 pb-30 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
+          <div class="flex flex-col gap-6 lg:gap-12 lg:border-t lg:border-pre-800/35 pt-2 lg:py-8 lg:pl-6">
+            <div class="flex flex-col gap-2 lg:gap-4 pt-2 lg:pt-0">
               <!-- 大標是設計稿的文案（venue.heading），不是場地英文名 ——
                    title_en（Taipei Popop）留給 schema.org 組地點名稱用，別混用。 -->
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ venue.heading }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ venue.title_zh }}
               </p>
             </div>
 
-            <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-6 md:gap-8 lg:gap-12">
               <!-- ⚠️ 這裡的藍是 #71c1f0，不是 token 的 accent-1 (#7cc8f2)。
                    設計稿兩種藍並存，不是筆誤。 -->
-              <div class="flex max-w-[650px] flex-col gap-8">
+              <div class="flex max-w-[650px] flex-col gap-6 lg:gap-8">
                 <div
                   v-for="transport in venue.transports"
                   :key="transport.title"
                   data-fade="in"
                   class="flex flex-col gap-2"
                 >
-                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
+                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0]">
                     {{ transport.title }}
                   </p>
                   <p class="text-zh-body-lg text-pre-800/[62%]">
@@ -115,18 +133,21 @@ onBeforeUnmount(() => killFadeIns())
                 </div>
               </div>
 
-              <a
+              <AtomButton
                 data-fade="in"
+                class="w-fit"
+                intent="primary"
+                size="md"
+                rounded="none"
+                icon="arrow-right-thin"
+                :icon-position="'end'"
+                :icon-size="'md'"
                 :href="venue.more_link?.href"
                 :target="venue.more_link?.target"
                 :rel="linkRel(venue.more_link?.target)"
-                class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c]/70 py-2 pl-5 pr-3 text-zh-btn text-pre-800 backdrop-blur-sm transition-colors hover:bg-accent-1/10"
               >
                 {{ venue.more_link?.label }}
-                <span class="flex size-6 items-center justify-center">
-                  <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-                </span>
-              </a>
+              </AtomButton>
             </div>
           </div>
         </div>
@@ -139,42 +160,55 @@ onBeforeUnmount(() => killFadeIns())
       id="faq"
       ref="faqRef"
       data-same-faq
-      class="relative z-10 min-h-[741px]"
+      class="relative isolate z-10 min-h-[741px]"
     >
+      <!-- 手機／平板的裝飾圖（放射球），置中在分頁下方、從票券區的分隔線後面探出來，進場是從下往上浮起（另外兩張從右邊滑入）。
+           票券區的上內距 md 以上比手機多 16px，所以 bottom 也跟著換。桌機沒有。 -->
+      <HomeDeco
+        class="-bottom-8 z-1 md:-bottom-12"
+        src="/home-deco-3"
+        align="center"
+        from="bottom"
+        :width="522"
+        :height="508"
+        :reveal="0.445"
+        :shift="0.043"
+      />
+
       <div class="flex flex-col lg:flex-row lg:items-start">
-        <!-- 左欄：卷號 -->
-        <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <CommonPlate :data="faq.plate" data-fade="in" />
+        <!-- 左欄：卷號。同 PL.IV，見那邊的長註解。 -->
+        <div class="shrink-0 px-6 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
+          <CommonPlate :data="faq.plate" data-fade="in" class="lg:-mx-2 lg:px-2" />
         </div>
 
         <!-- 右欄：標題 + 問答 + 分頁 -->
-        <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
-          <div class="flex flex-col gap-6 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
-            <div class="flex flex-col gap-4">
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+        <div class="min-w-0 flex-1 px-6 pb-30 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
+          <div class="flex flex-col gap-4 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
+            <div class="flex flex-col gap-2 lg:gap-4 pt-2 lg:pt-0">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ faq.title_en }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ faq.title_zh }}
               </p>
             </div>
 
-            <ul ref="faqListRef" class="flex flex-col">
+            <ul ref="faqListRef" class="flex flex-col mb-2 lg:mb-0">
               <li
                 v-for="(item, i) in FAQ_PAGE_ITEMS"
                 :key="item.question"
                 data-fade="in"
-                class="flex gap-x-4 py-6 lg:gap-x-6"
+                class="-mx-2 flex gap-x-4 py-3 lg:py-6 lg:pl-2 lg:pr-4 transition-[background-image,padding-left] duration-300 lg:hover:bg-gradient-to-r lg:hover:from-[rgba(15,29,78,0.8)] lg:hover:to-[rgba(15,29,78,0.3)] lg:hover:pl-6 lg:gap-x-6"
                 :class="i < FAQ_PAGE_ITEMS.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
               >
                 <span class="shrink-0 font-en-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
                   Q{{ FAQ_OFFSET + i + 1 }}
                 </span>
                 <div class="flex min-w-0 flex-col gap-3">
-                  <p class="font-zh-serif text-[18px] font-bold leading-[1.4] text-pre-800">
+                  <p class="text-zh-h5 text-pre-800">
                     {{ item.question }}
                   </p>
-                  <p class="flex gap-x-2 font-zh-sans text-[15px] leading-[1.7] tracking-[0.04em] text-pre-800/[62%]">
+                  <p class="flex gap-x-2 text-zh-body-md text-pre-800/[62%]">
                     <span class="shrink-0">→</span>
                     <span>{{ item.answer }}</span>
                   </p>
@@ -191,6 +225,7 @@ onBeforeUnmount(() => killFadeIns())
           </div>
         </div>
       </div>
+
     </section>
   </div>
 </template>

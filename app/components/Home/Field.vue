@@ -79,10 +79,10 @@ const backend = ref('')
 // lumaBias  取樣密度跟著亮度走的程度（PLImage.prepare 的參數，預設 0.6）。
 //       1 = 只有亮的地方有粒子，0 = 整片輪廓內均勻取樣，色調完全交給色盤表現。
 //       ⚠️ 人像一定要 0，這是「人不像人」的主因之一，見 PORTRAIT_LUMA_BIAS。
-const SIDE_IMAGE = '/source_images/side.png'
+const SIDE_IMAGE = '/source_images/side.webp'
 // ⚠️ venue.png 已經不用了 —— PL.IV 改成活的菌落場（mode 'colonies'），
 // 那張圖當初只是拿來暫代這個效果的。檔案留著沒刪，原版三張 canvas 那頁還在用。
-const FAQ_IMAGE = '/source_images/faq.png'
+const FAQ_IMAGE = '/source_images/faq.webp'
 
 // PLImage.prepare 的預設值。標本那兩張（venue / faq）本來就是「黑底上的亮物體」，
 // 調它幾乎沒差（實測 0.6 / 0.25 / 0 三種取樣，輪廓與尖刺一模一樣），所以照舊。
@@ -121,6 +121,10 @@ const PORTRAIT_MAX_PX = 612
 // 所以這一格自己帶「幅度 + 週期」：幅度收小到小團的尺度，週期縮到 1/4。
 const VENUE_SHIMMER = 7
 const VENUE_SHIMMER_MS = 260
+// plasma 的「整團漂移」振幅要比 cellular 的「單顆粒子閃動」大得多——後者只是
+// 讓小團邊界抖一下，前者是整顆菌落在移動，振幅太小根本看不出來在漂。
+// 數值取自 venue-cellular-lab.vue 調出來的版本。
+const VENUE_PLASMA_DRIFT_AMP = 26
 
 const KEYS = [
   { id: 'hero', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.35, shift: 0, shiftY: 0, opacity: 0.55, lumaBias: DEFAULT_LUMA_BIAS },
@@ -135,12 +139,23 @@ const KEYS = [
   // PL.IV 場地：⚠️ 這一格「不是圖片」。設計稿要的是一顆顆散開的菌落（第三組動態），
   // 那是 cellular 力矩陣自己塌出來的樣子，不是取樣自 venue.png。
   // venue.png 留在檔案裡沒用到 —— 之前是拿它暫代這個效果的（見 git 記錄）。
-  // ⚠️ grip 55 是「握緊」不是「鬆握」，跟第一版的直覺相反。原因是結構已經寫進目標點
-  // 了（colonyTargets 的小團），握緊才守得住那個構圖；握鬆的話 cellular 的異物種互斥
-  // 會把小團推散，畫面就變成一片均勻的斑點（設計師的說法是「像繡球花」）。
-  // 動態不靠鬆握來，靠的是 shimmer 快速換目標點（shimmerMs 260ms）。
-  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 11, grip: 55, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
-  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.32, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
+  // ⚠️ 2026-09 第四版：colonyTargets 的長註解記錄了前三版分別踩的坑（花瓣、
+  // 合併、Voronoi 配對失衡）。這版目標點退回第二版的「只給菌落中心」，紋理
+  // 交給力矩陣連續跑（demo 錄影裡的紋理本來就是這樣長出來的，不是切好的靜態
+  // 圖案）。pull/grip 是「守住分開」與「留給力矩陣空間長紋理」兩者拔河的唯一
+  // 旋鈕，cellular/plasma 兩種效果各自的值不同——這裡先寫 cellular 的當預設，
+  // init() 裡的 applyVenueEffectToKeys() 依網址決定要不要換成 plasma 的那組
+  // （見 VENUE_EFFECTS）。
+  // 動態靠 shimmer 快速換目標點（shimmerMs 260ms）——這是目標點週期性偏移逼出
+  // 的「電弧感」，不是位移本身，這一格要的「電流感」就是它。
+  // pull/grip 寫死 9/30（cellular 的預設值，跟下面 VENUE_EFFECTS.cellular 手動
+  // 對齊）——不能直接引用 VENUE_EFFECTS，那個常數宣告在這個陣列後面，模組執行
+  // 順序上還沒 init 完。init() 裡的 applyVenueEffectToKeys() 會依網址覆寫這兩個值。
+  { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 9, grip: 30, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
+  // shift 0.32 → 0.40：設計回饋標本整體要再往左推一點，離右邊「常見問答」內容更遠。
+  // shift 越大＝內容被相機推得越往左（見 shiftToCamera），純粹是這一格自己的構圖，
+  // 不影響 venue 那格（各自獨立的 KEYS 常數）。
+  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.40, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
   { id: 'outro', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
@@ -317,20 +332,68 @@ const LOCK_POINT_SIZE = 0.8
 //   SPECIES 5   物種數是建引擎時決定的（setSpecies 會整場重生成粒子、targets 全毀），
 //               而它由 look 決定（5～7）。cellular 產生器吃任意 n，5 或 7 都成立。
 //   COUNT 1300  那是 sandbox 小畫布的點數，站上這張是滿版 canvas，照 PAGE_BUDGET。
-const VENUE_PRESET = 'cellular'
+// ⚠️ 2026-09：菌落黏在一起的根本原因抓到了——rMax 是力場的鄰居搜尋半徑，只要
+// 它比菌落間的黑底空隙寬，兩顆菌落邊緣的粒子還是互相看得到，照樣會被同物種
+// 吸過去。原本 rMax 84 配著這裡的排列間距太容易搭橋；改成把 rMax 收到比間距
+// 小（62），minR 等比例一起收（44→30，保住 minR~rMax 之間「真正在互相吸引」
+// 的帶寬，只縮 rMax 不縮 minR 會把這圈帶寬壓到只剩幾 px，整團塌成沒紋理的
+// 實心球——踩過見 venue-cellular-lab.vue 的長註解），分開純粹靠「粒子看不到
+// 隔壁」，不必再跟握力（KEYS 的 pull/grip）拔河。
+//
+// 同時把「兩種效果」做成可切換：對照 sandbox demo 跟 Figma 留言釘反覆調參數
+// 之後，留下兩個候選方向，用 ?venue-effect= 切換，方便給設計師比較（同一套
+// venue-cellular-lab.vue 先驗證過，這裡是搬正式版）：
+//   cellular（預設）力矩陣本身（i===j 自己抱團、其餘互斥，見下面長註解）
+//   plasma          cellular 混 45% 的 vortex（非對稱、沿物種順序連續追逐），
+//                    帶一點流動感，色塊會慢慢變化而不是靜靜長著
+const VENUE_EFFECTS = {
+  cellular: { preset: 'cellular', pull: 9, grip: 30, friction: 0.30, simSpeed: 0.30 },
+  plasma: { preset: 'plasma-blend', pull: 7, grip: 22, friction: 0.30, simSpeed: 0.22 },
+}
+// 哪一組在跑，由 init() 依網址決定（見 venueEffectFromLocation）；模組載入當下
+// 還沒有 window.location，先給 cellular 保底。
+let venueCfg = VENUE_EFFECTS.cellular
+
+// 力矩陣本身：i===j 給 +0.8（自己抱團）、其餘一律 -0.55（跟別的物種互斥）——
+// 完全對稱，所以會收斂成一顆顆互不往來的球，這在 hero 是「壞掉」的定義
+//（docs/living-particle-motion.md §1.1 拿它當呆板的反例），但在這一區，那個
+// 塌陷就是設計要的東西。plasma 是拿它跟 vortex 混出來的，見 registerPlasmaBlend。
 const VENUE_FORCE = 1.0
-const VENUE_SIM_SPEED = 0.3
-// ⚠️ 沒有這一項，上面兩項就是白調的。minR 是硬核斥力半徑（dist < minR 就互斥），
-// 等於「一顆菌落最多能擠多密」，也就是「菌落有多大」。look 給的是 5（幾乎可以壓成
-// 一個點）—— 實測 cellular + minR 5：50000 顆全部縮成約 30 個 2~3px 的小點，整面
-// 幾乎全黑，跟設計稿的一團團完全不同。這跟 particleFieldLooks 裡鈷藍細胞把 minR
-// 拉到 16 是同一件事、同一個理由。離開這一格要記得換回 look.physics.minR。
-// 實測（1440×900、50000 顆、10 顆菌落）：
-//   minR 5   全部縮成約 30 個 2~3px 的點，畫面幾乎全黑
+// simSpeed 現在是 venueCfg.simSpeed（cellular/plasma 各自的值），不再是固定常數。
+// minR 是硬核斥力半徑（dist < minR 就互斥），等於「一顆菌落最多能擠多密」。
+// 實測（1440×900、50000 顆、10 顆菌落，rMax 84 那組舊值）：
+//   minR 5   全部縮成約 30 個 2~3px 的小點，畫面幾乎全黑
 //   minR 18  約 35px 的實心小球，還是太小太硬
-//   minR 44  約 70~80px、核心有顆粒、外圈帶暈 ← 最接近設計稿
+//   minR 44  約 70~80px、核心有顆粒、外圈帶暈 ← 曾經最接近設計稿
 //   minR 56  約 150px，但變成同心圓環（洋蔥狀），太有結構、不像菌落
-const VENUE_MIN_R = 44
+// 現在跟 rMax 一起等比例收到 30/62（見上面「黏在一起」那段長註解）。
+const VENUE_MIN_R = 30
+const VENUE_FRICTION = 0.30
+const VENUE_REPEL = 1.00
+const VENUE_RMAX = 62
+
+// registerNebula 那個 composable的同一招：把自訂力矩陣塞進 window.PLRules.PRESETS。
+// 純 vortex 粒子會被非對稱力一直拖著轉，同物種來不及聚成乾淨色塊就被拖走、糊成
+// 一片；混一點 cellular 的自吸/互斥進去，粒子有時間先聚成塊，剩下的非對稱力
+// 再讓這些塊慢慢流動。只能在 client 呼叫（要 window.PLRules 先載入）。
+function registerPlasmaBlend (cellularWeight = 0.55) {
+  if (!window.PLRules || window.PLRules.PRESETS['plasma-blend']) return
+  window.PLRules.PRESETS['plasma-blend'] = (n) => {
+    const a = window.PLRules.get('cellular', n)
+    const b = window.PLRules.get('vortex', n)
+    const out = new Array(n * n)
+    for (let i = 0; i < out.length; i++) out[i] = a[i] * cellularWeight + b[i] * (1 - cellularWeight)
+    return out
+  }
+}
+
+// 網址決定跑哪一組菌落效果；沒指定或打錯字就退回 cellular。只能在 client 呼叫
+//（讀 window.location），跟 fieldLookFromLocation 同一套規矩。
+function venueEffectFromLocation () {
+  if (typeof window === 'undefined') return VENUE_EFFECTS.cellular
+  const want = new URLSearchParams(window.location.search).get('venue-effect')
+  return VENUE_EFFECTS[want] || VENUE_EFFECTS.cellular
+}
 
 // 菌落的光暈參數。⚠️ 同樣不能照 look 走：五組之間 glowSize 差 1.7 倍（3~5）、
 // glowIntensity 差 2.5 倍（0.012~0.03），而這一格是全站唯一真的把光暈打開的地方
@@ -361,10 +424,6 @@ const VENUE_REGION = { x0: 0.03, x1: 0.33, y0: 0.04, y1: 0.96 }
 // 照半徑貼著排的話畫面上就是黏成一片。0.05 短邊 ≈ 45px 的黑底空隙。
 const VENUE_GAP = 0.07
 const VENUE_COLONIES = 7
-// 一顆菌落裡切幾個小團、每個小團多大（佔菌落半徑的比例）。
-// 設計稿一顆菌落裡大約十幾坨，大小不一。
-const VENUE_BLOBS = [10, 18]
-const VENUE_BLOB_R = [0.10, 0.24]
 const VENUE_RADIUS = [0.045, 0.065]
 
 // 收攏拉力的跟隨速度。ATTACK 快（收攏要跟得上捲動），RELEASE 慢（放手要拖一段）。
@@ -421,6 +480,24 @@ const REBUILD_SETTLE_MS = 700
 // 先量 fps → 要減半就 setCount → 等 REBUILD_SETTLE_MS → 才建目標點。
 // setCount 會重配 targets buffer，順序反了目標點會被清空（等於又回到這個 bug）。
 const FPS_SAMPLE_MS = 900
+
+// --- 開場後的自適應降點（只有 WebGPU 引擎的 shrinkTo 走這條）------------------
+// 目標點在 FPS_SAMPLE_MS 一到就照常建，降點是「之後」才獨立進行的，不再卡在前面。
+// 舊寫法在 900ms 讀一次 engine.getFps() 就直接 setCount 減半，兩個問題：
+//   · getFps 是 EMA、初值硬編 60，開場那幾百毫秒讀到的是暖機期的值，任何一次卡頓
+//     （字型、hydration、devtools）就會誤判 —— 而 setCount 會整場重生，畫面就是
+//     「一開始 hero 粒子重置一次」。手機版早就因為同一個原因把這段拿掉了。
+//   · 一次性、沒有回頭路，誤判就是永久的。
+// 現在改成：暖機後量「幀時間中位數」（對單一尖峰免疫），連續兩個視窗都慢才降；
+// 降的時候用 shrinkTo 分批隨機拿掉，畫面上是逐漸變稀、不是重來。
+const ADAPT_WARMUP_MS = 1200     // 目標點建好之後先別量，等引擎暖機
+const ADAPT_WINDOW_MS = 1500     // 一個量測視窗
+const ADAPT_MIN_FRAMES = 20      // 少於這個中位數沒意義，改用平均幀時間（背景 / 暫停另外排除）
+const ADAPT_P50_MS = 22          // 中位幀時間上限（≈ 45fps，跟舊門檻一致）
+const ADAPT_FAIL_STREAK = 2      // 連續幾個視窗超標才降
+const ADAPT_MAX_WINDOWS = 4      // 最多量幾個視窗；過了就當作這台跑得動，不再量
+const SHRINK_STEPS = 10          // 減半分幾批
+const SHRINK_STEP_MS = 200       // 批與批之間的間隔（整段約 2 秒）
 
 // --- 讓「被按住的構圖」不要變成死的貼圖 --------------------------------------
 // ⚠️ 機制上的必要，不是裝飾。seek 是「收斂到固定點的臨界阻尼彈簧」：粒子一到定位
@@ -645,6 +722,20 @@ function applyLookToKeys () {
   outro.grip = look.hold.grip
 }
 
+// 依網址決定的 venueCfg（cellular/plasma）覆寫 KEYS 的 venue 那格——跟
+// applyLookToKeys 同一套模式，只是這格不歸 look 管。
+function applyVenueEffectToKeys () {
+  const venue = KEYS.find(k => k.id === 'venue')
+  if (!venue) return
+  venue.pull = venueCfg.pull
+  venue.grip = venueCfg.grip
+  // plasma 用「整顆菌落一起漂」取代預設的「每顆粒子各自重新隨機」（見下面
+  // venueDriftInto 的長註解），週期縮短到 70ms 只是讓離散的更新頻率高到肉眼
+  // 看起來像連續——不是每幀都整批 setTargets（那個成本在滿版 5 萬顆上太貴，
+  // 見 jitterInto 呼叫點原本的節流理由），是用「常換、換得細」逼近連續。
+  venue.shimmerMs = venueCfg.preset === 'plasma-blend' ? 70 : VENUE_SHIMMER_MS
+}
+
 function shiftToCamera (f, zoom, span) { return (f * span) / zoom }
 
 function lerp (a, b, e) { return a + (b - a) * e }
@@ -655,6 +746,64 @@ function jitterInto (out, base, amp) {
     const r = amp * (0.3 + 0.7 * Math.random())
     out[i] = base[i] + Math.cos(a) * r
     out[i + 1] = base[i + 1] + Math.sin(a) * r
+  }
+  return out
+}
+
+// --- plasma 專用：整顆菌落一起漂 --------------------------------------------
+// jitterInto 是「每顆粒子各自重新抽一個隨機偏移」——cellular 用這招閃動很好看
+// （小團快速重排＝電弧感），但 plasma 的 vortex 分量需要時間把粒子拖成流動的
+// 帶狀，每 260ms 就被 jitterInto 打散重排一次，vortex 才剛開始組織結構就被
+// 打斷，肉眼看到的是均勻雜訊（使用者原話「繡球花」，實測見 venue-cellular-lab
+// 那次踩坑）。這裡改成「同一顆菌落的粒子全部加上同一個位移」，vortex 已經長出
+// 來的內部結構完全不受影響，只是整團被平移；位移本身用兩個不同頻率的正弦波
+// 疊加（跟首頁鏡頭漂移、VENUE_SHIMMER 是同一招數學），連續、平滑、永不精確
+// 重複，不是每隔固定時間跳一次新亂數。
+let venueColonyOfSlot = null   // Uint8Array，slot → 第幾顆菌落
+let venueColonyPhase = null    // 每顆菌落各自的漂移相位
+let venueDriftT0 = 0
+
+// 依「同物種內、掃描線順序就近配對」重算一次 slot → 菌落索引——邏輯要跟
+// useParticleMorph.buildSlotTargets 的非 recolor 分支完全一致（同一份 snap、
+// 同一份 targets、同一種排序），這樣配出來的 slot 才會對到正確的菌落，
+// 不會跟位置／顏色那兩份配對兜不起來。
+function buildVenueColonyOfSlot (snap, targets, colonyIdx, T, W) {
+  const N = snap.length
+  const { tx, ty, tt } = targets
+  const out = new Uint8Array(N)
+  const orderKey = (x, y) => y * W + x
+  const snapBy = Array.from({ length: T }, () => [])
+  const tgtBy = Array.from({ length: T }, () => [])
+  for (let i = 0; i < N; i++) snapBy[snap[i].s % T].push(i)
+  for (let i = 0; i < N; i++) tgtBy[tt[i]].push(i)
+  for (let t = 0; t < T; t++) {
+    const a = snapBy[t].sort((i, j) => orderKey(snap[i].x, snap[i].y) - orderKey(snap[j].x, snap[j].y))
+    const b = tgtBy[t].sort((i, j) => orderKey(tx[i], ty[i]) - orderKey(tx[j], ty[j]))
+    if (!b.length) continue
+    for (let k = 0; k < a.length; k++) {
+      const slot = snap[a[k]].slot
+      const m = b[Math.floor(k * b.length / a.length)]
+      out[slot] = colonyIdx[m]
+    }
+  }
+  return out
+}
+
+function venueDriftInto (out, base) {
+  const t = performance.now() - venueDriftT0
+  const K = venueColonyPhase.length
+  const cdx = new Float32Array(K)
+  const cdy = new Float32Array(K)
+  for (let c = 0; c < K; c++) {
+    const ph = venueColonyPhase[c]
+    const s = t * 0.00035
+    cdx[c] = (Math.sin(s * 1.7 + ph) * 0.6 + Math.sin(s * 0.63 + ph * 2.1) * 0.4) * VENUE_PLASMA_DRIFT_AMP
+    cdy[c] = (Math.cos(s * 1.3 + ph * 1.4) * 0.6 + Math.sin(s * 0.81 + ph * 3.2) * 0.4) * VENUE_PLASMA_DRIFT_AMP
+  }
+  for (let i = 0; i < base.length; i += 2) {
+    const c = venueColonyOfSlot[i / 2]
+    out[i] = base[i] + cdx[c]
+    out[i + 1] = base[i + 1] + cdy[c]
   }
   return out
 }
@@ -685,17 +834,24 @@ function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias) }
 // PL.IV 的菌落構圖：在版面左半邊撒 VENUE_COLONIES 顆圓形群落，把 N 顆粒子依
 // 面積分給它們。回傳的是 buildImageTargets 那組同樣的 {tx, ty, tt} 介面。
 //
-// 這組座標只決定「菌落長在哪、多大」；顆粒感、膜狀邊界、內部的緩慢蠕動都是
-// cellular 力矩陣自己跑出來的（seek 在這一格是很鬆的，見 KEYS 的 pull/grip）。
-//
-// ⚠️ 物種是「一顆菌落裡各種都有」，不是一顆一種。這是對上設計稿的關鍵：
-// 設計稿裡每顆菌落是十幾坨大小不一的亮塊（白、亮藍、深藍混在一起）而不是一顆平滑
-// 的球 —— 那些亮塊就是 cellular 把同物種吸在一起、不同物種推開的結果，一顆菌落
-// 內部自己分成好幾坨。
-// 附帶效果（也是要的）：seek 把粒子按在菌落裡、cellular 又要把不同物種推開，
-// 兩股力互相牽制 → 這個系統永遠到不了平衡，內部一直在重組。對稱矩陣本來會收斂成
-// 死圖（docs/living-particle-motion.md §1.1），混色 + 收攏正好把那個靜止解破壞掉，
-// 也就是設計師要的「閃動感」的來源。
+// ⚠️ 2026-09 第四版：前三版都試過、都跟參考（sandbox demo 的錄影、Figma PL.V
+// 贊助商那格的留言釘，同一種菌落視覺語言）對不上——
+//   第一版「手動排 10~18 坨、每坨一個顏色」：坨與坨之間有黑底縫隙，讀起來像
+//   花瓣/風車。
+//   第二版「只給菌落中心一個很鬆的拉力，紋理交給 cellular 物理自己長」：質感
+//   對了，但鄰近菌落的同物種粒子會互相吸過去合併，守不住分開的顆數。
+//   第三版「Voronoi 鑲嵌，握緊」：查了 demo 錄影才發現想錯方向——demo 的紋理
+//   本來就是「整個場」的 cellular 物理連續跑出來的，不是切好的靜態多邊形；而且
+//   這版還有一個真正的 bug：Voronoi 種子隨機分配物種，導致每個物種對應到的
+//   目標點數量極不平均，跟粒子物種（人數均勻）配對時嚴重失衡——配到目標點少的
+//   物種，粒子會被壓縮循環配到同一批座標上，擠成一團過曝的亮塊；配到目標點多的
+//   物種則被拉得稀薄，幾乎看不見。這就是為什麼那版看起來要嘛是一整片死藍、要嘛
+//   炸成滿版的彩色碎片。
+// 這版是第二版的修正，不是砍掉重練：目標點仍然只到「菌落中心」這一層，紋理
+// 一樣交給 cellular 力矩陣自己長。demo 錄影裡的菌落彼此其實靠得不遠（有的幾乎
+// 貼在一起），能守住分開全靠中心拉力夠強——所以真正要調的是 KEYS 那格的
+// pull/grip，不是間距（這塊窄長的左側帶狀區域也塞不出遠超力場作用半徑的間距，
+// 算過會發現 7 顆要留這麼寬的間距，需要的面積比整塊區域還大）。
 function colonyTargets (N, T, W, H) {
   const tx = new Float32Array(N)
   const ty = new Float32Array(N)
@@ -705,7 +861,7 @@ function colonyTargets (N, T, W, H) {
   const minX = W * r.x0; const spanX = W * (r.x1 - r.x0)
   const minY = H * r.y0; const spanY = H * (r.y1 - r.y0)
 
-  // 1) 菌落位置。拒絕取樣，彼此留出 VENUE_GAP 的黑底空隙。
+  // 菌落位置。拒絕取樣，彼此留出 VENUE_GAP 的黑底空隙。
   const col = []
   for (let c = 0; c < VENUE_COLONIES; c++) {
     const R = (VENUE_RADIUS[0] + Math.random() * (VENUE_RADIUS[1] - VENUE_RADIUS[0])) * m
@@ -724,46 +880,20 @@ function colonyTargets (N, T, W, H) {
     col.push({ x, y, R })
   }
 
-  // 2) 每顆菌落再切成一小團一小團（設計稿的關鍵）。
-  // ⚠️ 「小團」一定要寫進目標點，不能指望物理自己長出來。之前的版本是把粒子均勻
-  // 灑滿整顆菌落、讓 cellular 慢慢把同物種吸成小團 —— 結果有兩個問題：
-  //   a. 要十幾秒才成形，而使用者捲到這一區只看得到最初那一兩秒
-  //   b. 就算等到了也是「均勻的斑點球」，設計師的說法是像繡球花
-  // 直接把小團排進目標點，粒子一到位（約 0.5 秒）就是對的結構，
-  // cellular 只是「加強」它：同物種互相吸（小團更緊）、異物種互斥（空隙更黑）。
-  // 物理跟構圖同向，不是互相打架，所以既快又穩。
-  const blobs = []
-  for (const c of col) {
-    const k = VENUE_BLOBS[0] + ((Math.random() * (VENUE_BLOBS[1] - VENUE_BLOBS[0] + 1)) | 0)
-    for (let b = 0; b < k; b++) {
-      // 小團中心撒在菌落圓內（sqrt 讓它均勻分布，不會全擠在中心）
-      const a = Math.random() * TAU
-      const rr = c.R * 0.82 * Math.sqrt(Math.random())
-      blobs.push({
-        x: c.x + Math.cos(a) * rr,
-        y: c.y + Math.sin(a) * rr,
-        R: c.R * (VENUE_BLOB_R[0] + Math.random() * (VENUE_BLOB_R[1] - VENUE_BLOB_R[0])),
-        t: (Math.random() * T) | 0,      // 一小團一種顏色 → 亮塊乾淨、團與團之間有色差
-      })
-    }
+  // 每顆粒子的目標就是它那顆菌落的中心；物種隨機分配，cellular 力矩陣自己把
+  // 同物種的粒子吸成小團、不同物種推開——這就是紋理的來源，不用另外排點。
+  // colonyIdx 平行記錄「這個目標點屬於第幾顆菌落」——plasma 的整團漂移
+  //（venueDriftInto）要知道這個，cellular 用不到，但一起算不貴。
+  const colonyIdx = new Uint8Array(N)
+  for (let i = 0; i < N; i++) {
+    const ci = i % col.length
+    const c = col[ci]
+    tx[i] = c.x
+    ty[i] = c.y
+    tt[i] = (Math.random() * T) | 0
+    colonyIdx[i] = ci
   }
-
-  // 3) 分粒子：依小團面積分配，密度才會一致
-  let area = 0
-  for (const b of blobs) area += b.R * b.R
-  let i = 0
-  for (let bi = 0; bi < blobs.length; bi++) {
-    const b = blobs[bi]
-    const share = bi === blobs.length - 1 ? N - i : Math.round(N * (b.R * b.R) / area)
-    for (let n = 0; n < share && i < N; n++, i++) {
-      const a = Math.random() * TAU
-      const rr = b.R * Math.sqrt(Math.random())
-      tx[i] = b.x + Math.cos(a) * rr
-      ty[i] = b.y + Math.sin(a) * rr
-      tt[i] = b.t
-    }
-  }
-  return { tx, ty, tt }
+  return { tx, ty, tt, colonyIdx, colonyCount: col.length }
 }
 
 // --- 目標點 ----------------------------------------------------------------
@@ -850,14 +980,15 @@ async function buildAllShapes () {
   let colonyShape = freeShape
   let colonyTypes = freeTypes
   try {
-    const built = buildSlotTargets(
-      snap,
-      colonyTargets(snap.length, look.rules.species, W, H),
-      look.rules.species,
-      W,
-    )
+    const colonyTgt = colonyTargets(snap.length, look.rules.species, W, H)
+    const built = buildSlotTargets(snap, colonyTgt, look.rules.species, W)
     colonyShape = built.shape
     colonyTypes = built.shapeType
+    // plasma 的整團漂移要知道每個 slot 屬於哪顆菌落，見 venueDriftInto 的長註解。
+    venueColonyOfSlot = buildVenueColonyOfSlot(snap, colonyTgt, colonyTgt.colonyIdx, look.rules.species, W)
+    venueColonyPhase = new Float32Array(colonyTgt.colonyCount)
+    for (let c = 0; c < venueColonyPhase.length; c++) venueColonyPhase[c] = Math.random() * TAU
+    venueDriftT0 = performance.now()
   } catch (err) {
     console.warn('[HomeField] 菌落構圖建立失敗，該影格退回自由場', err)
   }
@@ -979,8 +1110,13 @@ function frame (now) {
   const wantColony = colonyPreset ? colonyMix > 0.35 : colonyMix > 0.65
   if (wantColony !== colonyPreset) {
     colonyPreset = wantColony
-    engine.setPreset?.(wantColony ? VENUE_PRESET : look.rules.preset)
+    engine.setPreset?.(wantColony ? venueCfg.preset : look.rules.preset)
     engine.setMinR?.(wantColony ? VENUE_MIN_R : look.physics.minR)
+    // 見 VENUE_FRICTION 的長註解：這三個跟 minR 是同一組「菌落該多擠」的參數，
+    // 补上鎖定，離開這一格記得換回 look 自己的（跟 minR 同一套邏輯）。
+    engine.setFriction?.(wantColony ? venueCfg.friction : look.physics.friction)
+    engine.setRepel?.(wantColony ? VENUE_REPEL : look.physics.repel)
+    engine.setRMax?.(wantColony ? VENUE_RMAX : look.physics.rMax)
   }
 
   // --- 點的外觀：每一格自己決定 --------------------------------------------
@@ -1035,7 +1171,7 @@ function frame (now) {
     // 跟著 hero 效果變，見 LOCK_SIM_SPEED），菌落場用自己的，自由場照 look。
     const speedFor = key => key.mode === 'image'
       ? LOCK_SIM_SPEED
-      : key.mode === 'colonies' ? VENUE_SIM_SPEED : introBase
+      : key.mode === 'colonies' ? venueCfg.simSpeed : introBase
     const base = lerp(speedFor(A), speedFor(B), e)
 
     const heat = Math.min(1, (Math.abs(y - lastScrollY) / dt) / SCROLL_REF)
@@ -1128,9 +1264,13 @@ function frame (now) {
     // 菌落 12px（一顆 100px 以上，3px 等於沒動）。見 SHIMMER_AMP / VENUE_SHIMMER。
     const ampA = reducedMotion ? 0 : (A.shimmer ?? shimmerAmpNow)
     const ampB = reducedMotion ? 0 : (B.shimmer ?? shimmerAmpNow)
+    // plasma 用「整顆菌落一起漂」（venueDriftInto）取代「每顆粒子各自重新隨機」
+    //（jitterInto）——見 venueDriftInto 的長註解，兩者的差別是「vortex 長出來的
+    // 結構會不會被打散重排」。只有 venue 這一格、只有 plasma 效果時才走這條路。
+    const isVenuePlasma = key => key.id === 'venue' && venueCfg.preset === 'plasma-blend' && venueColonyOfSlot
     engine.setTargets(
-      ampA ? jitterInto(jitA, shapes[k], ampA) : shapes[k],
-      ampB ? jitterInto(jitB, shapes[k + 1], ampB) : shapes[k + 1],
+      isVenuePlasma(A) ? venueDriftInto(jitA, shapes[k]) : ampA ? jitterInto(jitA, shapes[k], ampA) : shapes[k],
+      isVenuePlasma(B) ? venueDriftInto(jitB, shapes[k + 1]) : ampB ? jitterInto(jitB, shapes[k + 1], ampB) : shapes[k + 1],
     )
     // ⚠️ 配色索引一定要跟目標點同一批上傳 —— 兩者都是「以 slot 為索引、對應
     // .xy / .zw 兩組目標」，分開上傳會有一幀是「舊的顏色配新的位置」。
@@ -1459,12 +1599,80 @@ async function switchLook (idOrIndex) {
   return look.name
 }
 
+// --- 開場後的自適應降點 ------------------------------------------------------
+// 常數與為什麼這樣做見 ADAPT_* 那一段的註解。
+let adaptAlive = true
+let adaptRaf = 0
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+// 量一個視窗的「幀時間中位數」。分頁在背景、引擎被暫停（捲到 PL.II~V）、幀數太少
+// 都回 null —— 那種視窗量到的不是引擎的成本，不能拿來下判斷。
+function measureFrameTime () {
+  return new Promise((resolve) => {
+    const deltas = []
+    const t0 = performance.now()
+    let last = 0
+    let invalid = false
+    const tick = (now) => {
+      if (!adaptAlive || !engine) return resolve(null)
+      if (document.hidden || engine.config.paused) invalid = true
+      if (last) deltas.push(now - last)
+      last = now
+      if (now - t0 < ADAPT_WINDOW_MS) {
+        adaptRaf = requestAnimationFrame(tick)
+        return
+      }
+      if (invalid) return resolve(null)
+      // 分頁可見、引擎也沒暫停，幀數卻少 —— 那是「更慢」，不是「無效」。
+      // 幀數太少時中位數沒意義，直接用「視窗長度 / 幀數」當平均幀時間。
+      if (deltas.length < ADAPT_MIN_FRAMES) return resolve(ADAPT_WINDOW_MS / (deltas.length + 1))
+      deltas.sort((a, b) => a - b)
+      resolve(deltas[deltas.length >> 1])
+    }
+    adaptRaf = requestAnimationFrame(tick)
+  })
+}
+
+// 分批隨機拿掉粒子，直到剩 target 顆。每批之後粒子的 slot 會重編，
+// 所以每批都把目標點標成失效 —— invalidateTargets 會把重建往後排 REBUILD_SETTLE_MS，
+// 批與批的間隔比它短，因此只會在「最後一批之後」重建一次。
+// 這段期間 ready = false：粒子純靠力場自由演化、不會被 seek 吸到錯的點。
+async function shrinkGradually (target) {
+  const from = engine.config.count
+  for (let step = 1; step <= SHRINK_STEPS; step++) {
+    if (!adaptAlive || !engine) return
+    await engine.shrinkTo(Math.round(from + (target - from) * step / SHRINK_STEPS))
+    if (!adaptAlive || !engine) return
+    invalidateTargets()
+    if (step < SHRINK_STEPS) await sleep(SHRINK_STEP_MS)
+  }
+  // 面板要顯示「引擎現在真的跑幾顆」，見 init 裡舊做法那段的說明
+  knobs.count = engine.config.count
+}
+
+async function adaptCount () {
+  await sleep(ADAPT_WARMUP_MS)
+  let streak = 0
+  for (let w = 0; w < ADAPT_MAX_WINDOWS; w++) {
+    const p50 = await measureFrameTime()
+    if (!adaptAlive || !engine) return
+    if (p50 === null) continue
+    streak = p50 > ADAPT_P50_MS ? streak + 1 : 0
+    if (streak >= ADAPT_FAIL_STREAK) {
+      await shrinkGradually(Math.round(engine.config.count / 2))
+      return
+    }
+  }
+}
+
 async function init () {
   const canvas = canvasRef.value
   if (!canvas) return
 
   await loadParticleKit()
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  registerPlasmaBlend()
 
   // 網址決定跑哪一組；沒指定就隨機抽（值有白名單，打錯字會退回保底那組）
   const fromUrl = fieldLookFromLocation()
@@ -1474,6 +1682,10 @@ async function init () {
   toolMode.value = fromUrl.tool
   applyLookToKeys()
   appliedForce = look.physics.forceFactor
+
+  // PL.IV 場地要跑 cellular 還是 plasma，同樣由網址決定（?venue-effect=plasma）
+  venueCfg = venueEffectFromLocation()
+  applyVenueEffectToKeys()
 
   const hero = window.PLPalettes.PALETTES[look.palette]
   const count = countFor(canvas, PAGE_BUDGET)
@@ -1604,21 +1816,26 @@ async function init () {
   }
   frame()
 
-  // 量 fps → 需要就減半 → 馬上建目標點。見 FPS_SAMPLE_MS 的長註解：
-  // 在目標點建好之前，捲動不會讓粒子收攏，所以這段越短越好。
+  // 建目標點。見 FPS_SAMPLE_MS 的長註解：在目標點建好之前，捲動不會讓粒子收攏，
+  // 所以這段越短越好 —— 降點的判斷排在它「後面」，不能反過來卡住它。
   setTimeout(async () => {
-    const fps = engine?.getFps ? engine.getFps() : 60
-    if (fps > 0 && fps < 45) {
-      const halved = Math.round(count / 2)
-      engine.setCount?.(halved)
-      // ⚠️ 面板要顯示「引擎現在真的跑幾顆」，不是我們原本想給幾顆 —— 這段減半
-      // 一觸發，knobs.count 就跟引擎對不上了。autoCount 維持幾何算出來的值，
-      // 這樣面板上的對照數字仍然是「依面積算的點數」。
-      knobs.count = halved
-      // setCount 會整場重生成粒子，等它們離開生成點再配對
-      await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
+    // 沒有 shrinkTo 的後端（CPU 引擎）維持舊做法：量一次 fps、慢就 setCount 減半。
+    // 那邊的粒子本來就少、跑不動的機率高，而且沒有能拿來逐漸減量的介面。
+    if (engine && !engine.shrinkTo) {
+      const fps = engine.getFps ? engine.getFps() : 60
+      if (fps > 0 && fps < 45) {
+        const halved = Math.round(count / 2)
+        engine.setCount?.(halved)
+        // ⚠️ 面板要顯示「引擎現在真的跑幾顆」，不是我們原本想給幾顆 —— 這段減半
+        // 一觸發，knobs.count 就跟引擎對不上了。autoCount 維持幾何算出來的值，
+        // 這樣面板上的對照數字仍然是「依面積算的點數」。
+        knobs.count = halved
+        // setCount 會整場重生成粒子，等它們離開生成點再配對
+        await new Promise(r => setTimeout(r, REBUILD_SETTLE_MS))
+      }
     }
     await buildAllShapes()
+    if (engine?.shrinkTo) adaptCount()
   }, FPS_SAMPLE_MS)
 
   // --- 捲動 -----------------------------------------------------------------
@@ -1650,6 +1867,8 @@ watch(speakerIndex, (i) => {
 onMounted(() => { init() })
 
 onBeforeUnmount(() => {
+  adaptAlive = false
+  if (adaptRaf) cancelAnimationFrame(adaptRaf)
   unregisterTool?.()
   if (raf) cancelAnimationFrame(raf)
   swapTween?.kill()

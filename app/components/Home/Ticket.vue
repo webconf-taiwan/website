@@ -33,7 +33,7 @@ useFadeIn(sectionRef, { step: 0.12 })
          border-t 是設計稿橫貫區塊頂端的那條分隔線。 -->
     <CommonPlate :data="content.plate" data-fade="in" class="mx-6 lg:mx-[60px]" />
 
-    <h2 data-fade="in" class="text-center text-en-h1 mb-6 md:mb-8 lg:mb-12">
+    <h2 data-fade="in" class="text-center text-en-h1 italic whitespace-pre-line mt-2 lg:mt-0 mb-6 md:mb-8 lg:mb-12">
       <template v-for="(line, i) in content.heading_lines" :key="i">
         <br v-if="i > 0">{{ line }}
       </template>
@@ -56,16 +56,16 @@ useFadeIn(sectionRef, { step: 0.12 })
 
     <div data-fade="in" class="flex justify-center">
       <AtomButton
-        intent="specimen"
+        intent="primary"
         size="md"
         rounded="none"
+        icon="arrow-right-thin"
+        :icon-position="'end'"
+        :icon-size="'md'"
         :href="content.cta?.href"
         :text="content.cta?.label"
       >
         {{ content.cta?.label }}
-        <span class="flex size-6 items-center justify-center">
-          <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-        </span>
       </AtomButton>
     </div>
   </section>

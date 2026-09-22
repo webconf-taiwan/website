@@ -95,8 +95,8 @@ useHead(() => ({
 // shiftY = 內容往下推的「視窗高度比例」。設計稿 PL.V 的圖是 y=964（壓在區塊下半、
 // 往下溢出），標籤在 y=60 —— 兩者是垂直錯開的。少了這個位移，點雲會直接蓋住標籤。
 const STAGES = [
-  { image: '/source_images/venue.png', zoom: 1.0, shift: 0.28, shiftY: 0.12, opacity: 0.85 },
-  { image: '/source_images/faq.png', zoom: 1.08, shift: 0.34, shiftY: 0.30, opacity: 0.8 },
+  { image: '/source_images/venue.webp', zoom: 1.0, shift: 0.28, shiftY: 0.12, opacity: 0.85 },
+  { image: '/source_images/faq.webp', zoom: 1.08, shift: 0.34, shiftY: 0.30, opacity: 0.8 },
 ]
 
 // ⚠️ 點數要跟「點雲在螢幕上的面積」一起看，不能只看絕對數字。
@@ -453,34 +453,34 @@ defineExpose({ backend })
         <!-- 左欄：卷號。
              ⚠️ data-fade="in" 掛在「文字的外層」而不是有 border-t 的那層 ——
              分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。 -->
-        <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
+        <div class="shrink-0 px-6 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
           <CommonPlate :data="venue.plate" data-fade="in" />
         </div>
 
         <!-- 右欄：標題 + 交通方式 + 按鈕 -->
-        <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
-          <div class="flex flex-col gap-12 lg:border-t lg:border-pre-800/35 py-8 lg:pl-6">
-            <div class="flex flex-col gap-4">
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+        <div class="min-w-0 flex-1 px-6 pb-30 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
+          <div class="flex flex-col gap-6 lg:gap-12 lg:border-t lg:border-pre-800/35 pt-2 lg:py-8 lg:pl-6">
+            <div class="flex flex-col gap-2 lg:gap-4 pt-2 lg:pt-0">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ venue.heading }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ venue.title_zh }}
               </p>
             </div>
 
-            <div class="flex flex-col gap-12">
+            <div class="flex flex-col gap-6 md:gap-8 lg:gap-12">
               <!-- ⚠️ 這裡的藍是 #71c1f0，不是 token 的 accent-1 (#7cc8f2)。
                    設計稿兩種藍並存（按鈕外框用 accent-1、這兩個標題用 #71c1f0），
                    不是筆誤，統一與否要問設計師。 -->
-              <div class="flex max-w-[650px] flex-col gap-8">
+              <div class="flex max-w-[650px] flex-col gap-6 lg:gap-8">
                 <div
                   v-for="transport in venue.transports"
                   :key="transport.title"
                   data-fade="in"
                   class="flex flex-col gap-2"
                 >
-                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0] lg:text-[32px]">
+                  <p class="text-en-h1 text-pre-800 italic">
                     {{ transport.title }}
                   </p>
                   <p class="text-zh-body-lg text-pre-800/[62%]">
@@ -489,18 +489,18 @@ defineExpose({ backend })
                 </div>
               </div>
 
-              <a
+              <AtomButton
                 data-fade="in"
+                class="w-fit"
+                intent="primary"
+                size="md"
+                rounded="none"
                 :href="venue.more_link?.href"
                 :target="venue.more_link?.target"
                 :rel="linkRel(venue.more_link?.target)"
-                class="inline-flex w-max items-center gap-x-1 border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10"
               >
                 {{ venue.more_link?.label }}
-                <span class="flex size-6 items-center justify-center">
-                  <AtomIcon name="arrow-right-thin" class="h-[5px] w-3" />
-                </span>
-              </a>
+              </AtomButton>
             </div>
           </div>
         </div>
@@ -515,38 +515,38 @@ defineExpose({ backend })
     >
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號 -->
-        <div class="shrink-0 px-6 pt-16 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
+        <div class="shrink-0 px-6 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
           <CommonPlate :data="faq.plate" data-fade="in" />
         </div>
 
         <!-- 右欄：標題 + 問答 + 分頁 -->
-        <div class="min-w-0 flex-1 px-6 pb-16 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
-          <div class="flex flex-col gap-6 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
-            <div class="flex flex-col gap-4">
-              <h2 data-fade="in" class="text-en-h1 text-pre-800">
+        <div class="min-w-0 flex-1 px-6 pb-30 lg:py-[60px] lg:pl-0 lg:pr-[60px]">
+          <div class="flex flex-col gap-4 md:gap-8 lg:gap-12 lg:border-t lg:border-pre-800/35 lg:pt-8 lg:pl-6">
+            <div class="flex flex-col gap-2 lg:gap-4 pt-2 lg:pt-0">
+              <h2 data-fade="in" class="text-en-h1 text-pre-800 italic">
                 {{ faq.title_en }}
               </h2>
-              <p data-fade="in" class="text-zh-h5 text-pre-800">
+              <p data-fade="in" class="text-zh-h4 text-pre-800">
                 {{ faq.title_zh }}
               </p>
             </div>
 
-            <ul ref="faqListRef" class="flex flex-col">
+            <ul ref="faqListRef" class="flex flex-col  mb-2 lg:mb-0">
               <li
                 v-for="(item, i) in FAQ_PAGE_ITEMS"
                 :key="item.question"
                 data-fade="in"
-                class="flex gap-x-4 py-6 lg:gap-x-6"
+                class="-mx-2 flex gap-x-4 py-3 lg:py-6 lg:pl-2 lg:pr-4 transition-[background-image,padding-left] duration-300 lg:hover:bg-gradient-to-r lg:hover:from-[rgba(15,29,78,0.8)] lg:hover:to-[rgba(15,29,78,0.3)] lg:hover:pl-6 lg:gap-x-6"
                 :class="i < FAQ_PAGE_ITEMS.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
               >
                 <span class="shrink-0 font-en-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
                   Q{{ FAQ_OFFSET + i + 1 }}
                 </span>
                 <div class="flex min-w-0 flex-col gap-3">
-                  <p class="font-zh-serif text-[18px] font-bold leading-[1.4] text-pre-800">
+                  <p class="text-zh-h5 text-pre-800">
                     {{ item.question }}
                   </p>
-                  <p class="flex gap-x-2 font-zh-sans text-[15px] leading-[1.7] tracking-[0.04em] text-pre-800/[62%]">
+                  <p class="flex gap-x-2 text-zh-body-md text-pre-800/[62%]">
                     <span class="shrink-0">→</span>
                     <span>{{ item.answer }}</span>
                   </p>

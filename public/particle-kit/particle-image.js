@@ -33,6 +33,7 @@
  *   name       pattern 註冊名（預設 'image:' + url）
  *   sampleEdge 取樣解析度上限（預設 480px，夠細且快）
  *   seed       取樣 PRNG 種子（預設 1926；同圖同種子 → 同標本）
+ *   image      已載入的 HTMLImageElement；給了就不再 loadImage(url)
  */
 (function () {
   'use strict';
@@ -47,12 +48,23 @@
     };
   }
 
+  // 圖片載入。⚠️ 站上的取樣來源都是 .webp（體積約 PNG 的 1/3 ~ 1/5），每一張旁邊
+  // 都留著同名的 .png 當 fallback：不支援 WebP 的瀏覽器（或載入失敗）會自動退回去，
+  // 呼叫端不用知道。約定：/x/foo.webp 一定要有 /x/foo.png。
   function loadImage(url) {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.crossOrigin = 'anonymous';
+      let fell = false;
       img.onload = () => resolve(img);
-      img.onerror = () => reject(new Error('PLImage: cannot load ' + url));
+      img.onerror = () => {
+        if (!fell && /\.webp(?=$|[?#])/i.test(url)) {
+          fell = true;
+          img.src = url.replace(/\.webp(?=$|[?#])/i, '.png');
+          return;
+        }
+        reject(new Error('PLImage: cannot load ' + url));
+      };
       img.src = url;
     });
   }
@@ -176,14 +188,20 @@
     const name = opts.name || ('image:' + url);
     const sampleEdge = opts.sampleEdge || 480;
 
-    const img = await loadImage(url);
-    const scale = Math.min(1, sampleEdge / Math.max(img.naturalWidth, img.naturalHeight));
-    const w = Math.max(1, Math.round(img.naturalWidth * scale));
-    const h = Math.max(1, Math.round(img.naturalHeight * scale));
+    // opts.image：呼叫端已載入（且已解碼）的 HTMLImageElement，同一張圖多次取樣
+    // 不同 crop 時可重用，省掉重新載入與解碼。
+    const img = opts.image || await loadImage(url);
+    // Optional normalized source rectangle preserves a designed image crop.
+    const crop = opts.crop || { x: 0, y: 0, width: 1, height: 1 };
+    const sx = crop.x * img.naturalWidth, sy = crop.y * img.naturalHeight;
+    const sw = crop.width * img.naturalWidth, sh = crop.height * img.naturalHeight;
+    const scale = Math.min(1, sampleEdge / Math.max(sw, sh));
+    const w = Math.max(1, Math.round(sw * scale));
+    const h = Math.max(1, Math.round(sh * scale));
     const cv = document.createElement('canvas');
     cv.width = w; cv.height = h;
     const ctx = cv.getContext('2d', { willReadFrequently: true });
-    ctx.drawImage(img, 0, 0, w, h);
+    ctx.drawImage(img, sx, sy, sw, sh, 0, 0, w, h);
     const data = ctx.getImageData(0, 0, w, h).data;
 
     // --- 加權累積分布（alpha 為輪廓、亮度為密度） --------------------------
@@ -194,6 +212,7 @@
       if (a < 0.5) continue;                      // 半透明邊緣不取，避免殘邊色
       const r = data[p * 4], g = data[p * 4 + 1], b = data[p * 4 + 2];
       const luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+      if (luma < (opts.minLuma || 0)) continue;
       const wgt = a * ((1 - lumaBias) + lumaBias * Math.pow(luma, 0.85));
       weights[p] = wgt;
       total += wgt;
@@ -262,5 +281,5 @@
     };
   }
 
-  window.PLImage = { prepare, prepareFromData };
+  window.PLImage = { prepare, prepareFromData, loadImage };
 })();

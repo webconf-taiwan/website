@@ -18,6 +18,7 @@
  *
  * Engine instance surface:
  *   destroy, setPalette, setPreset, setSpecies, setBgFade, setCount,
+ *   shrinkTo (減量但不重生：隨機留下 n 顆),
  *   setPointSize, setGlow, setForce, setRMax, setMinR, disturb, pause,
  *   setShapeTypes, setMaxDpr,
  *   get size, get config, get backend ('webgpu'), get particles ([]),
@@ -969,7 +970,7 @@
       targetsBuffer = device.createBuffer({
         label: 'morphTargets',
         size: Math.max(16, 16 * n),   // vec4 per slot: spread.xy + shape.zw
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
       });
       // Per-slot palette indices for those same two target sets. Always
       // allocated so the render bind group is valid; zero-filled and disabled
@@ -978,7 +979,7 @@
       shapeTypesBuffer = device.createBuffer({
         label: 'morphShapeTypes',
         size: Math.max(8, 8 * n),     // vec2 per slot
-        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST,
+        usage: GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST | GPUBufferUsage.COPY_SRC,
       });
       // Respawn invalidates the old indices along with the old targets.
       config.morphShapeColor = 0;
@@ -1660,6 +1661,75 @@
       seedAndUpload();
       rebuildBindGroups();
     }
+    // 不重生的減量：從現有粒子裡隨機留下 n 顆，其餘拿掉，留下的粒子位置與速度不變。
+    // ⚠️ 不能只把 config.count 調小 —— 粒子陣列每幀都被 particleSort 依 bin 重排，
+    // 陣列尾巴是「空間上最後那幾格」，直接截斷會整片抹掉一塊區域，而不是均勻變稀。
+    // 所以是 readback → 均勻隨機挑 → 壓成連續的 0..n-1 → 寫回。slot 跟著重編，
+    // targets / shapeTypes 是以 slot 為索引，所以也一起壓縮，各自跟著自己的粒子走。
+    // 代價是一次 GPU→CPU 往返（約 1~2 幀）；想要「逐漸變稀」就分批呼叫。
+    // ⚠️ 呼叫端自己存的「每 slot 資料」（形狀、快照…）在這之後全部對不上，要重建。
+    // 回傳實際的粒子數；被別的操作打斷（setCount / respawn）時回傳當下的 count。
+    let shrinking = false;
+    async function readBufferF32(buf, bytes) {
+      const staging = device.createBuffer({
+        label: 'shrinkReadback',
+        size: bytes,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+      });
+      try {
+        const enc = device.createCommandEncoder({ label: 'shrinkReadback' });
+        enc.copyBufferToBuffer(buf, 0, staging, 0, bytes);
+        device.queue.submit([enc.finish()]);
+        await staging.mapAsync(GPUMapMode.READ);
+        const out = new Float32Array(staging.getMappedRange().slice(0));
+        staging.unmap();
+        return out;
+      } finally {
+        staging.destroy();
+      }
+    }
+    async function shrinkTo(n) {
+      const from = config.count;
+      const to = Math.max(200, Math.min(from, n | 0));
+      if (to >= from || shrinking) return from;
+      shrinking = true;
+      const bufA = particleBufferA;
+      try {
+        const [p, t, ty] = await Promise.all([
+          readBufferF32(particleBufferA, from * PARTICLE_STRIDE),
+          readBufferF32(targetsBuffer, from * 16),
+          readBufferF32(shapeTypesBuffer, from * 8),
+        ]);
+        // 等回讀的這段被 setCount / respawn 換掉了 → 手上的資料已作廢
+        if (config.count !== from || particleBufferA !== bufA) return config.count;
+
+        const pOut = new Float32Array(to * 6);
+        const tOut = new Float32Array(to * 4);
+        const tyOut = new Float32Array(to * 2);
+        let j = 0;
+        for (let i = 0; i < from && j < to; i++) {
+          // 選擇取樣：剩 (from-i) 個候選、還缺 (to-j) 個 → 這顆被留下的機率剛好是 缺/剩，
+          // 最後不多不少正好 to 顆，而且每顆被留下的機率相同。
+          if (Math.random() * (from - i) >= to - j) continue;
+          const slot = p[i * 6 + 5] | 0;
+          pOut.set(p.subarray(i * 6, i * 6 + 5), j * 6);
+          pOut[j * 6 + 5] = j;
+          if (slot >= 0 && slot < from) {
+            tOut.set(t.subarray(slot * 4, slot * 4 + 4), j * 4);
+            tyOut.set(ty.subarray(slot * 2, slot * 2 + 2), j * 2);
+          }
+          j++;
+        }
+        device.queue.writeBuffer(particleBufferA, 0, pOut);
+        device.queue.writeBuffer(targetsBuffer, 0, tOut);
+        device.queue.writeBuffer(shapeTypesBuffer, 0, tyOut);
+        config.count = to;
+        writeOptions();
+        return to;
+      } finally {
+        shrinking = false;
+      }
+    }
     function setPointSize(v) {
       config.pointSize = Math.max(0.1, Math.min(8, v));
       writeOptions();
@@ -1750,6 +1820,15 @@
         packed[i * 4 + 2] = shapeXY[i * 2];
         packed[i * 4 + 3] = shapeXY[i * 2 + 1];
       }
+      device.queue.writeBuffer(targetsBuffer, 0, packed, 0, n * 4);
+    }
+    // Same upload as setTargets, but the caller keeps ONE persistent
+    // interleaved Float32Array [sx, sy, tx, ty, …] per slot and writes into it
+    // directly — no per-call allocation and no second copy. Meant for callers
+    // that re-upload targets on a timer (jitter / flow animations).
+    function setTargetsPacked(packed) {
+      if (!targetsBuffer || !packed) return;
+      const n = Math.min(config.count, packed.length >> 2);
       device.queue.writeBuffer(targetsBuffer, 0, packed, 0, n * 4);
     }
     // Upload the palette index each slot should display for the two target
@@ -1852,6 +1931,28 @@
     // shared SVG export helpers work transparently across backends.
     // Expensive (one mapAsync round-trip ~1-2 frames latency) so download
     // buttons should await it once on click, not poll in a loop.
+    // Raw variant of readParticles: one Float32Array with stride 6
+    // [x, y, vx, vy, species, slot] per particle, no per-particle objects.
+    async function readParticlesRaw() {
+      const n = config.count;
+      const bytes = PARTICLE_STRIDE * n;
+      const staging = device.createBuffer({
+        label: 'particleReadbackRaw',
+        size: bytes,
+        usage: GPUBufferUsage.MAP_READ | GPUBufferUsage.COPY_DST,
+      });
+      try {
+        const enc = device.createCommandEncoder({ label: 'snapshotRaw' });
+        enc.copyBufferToBuffer(particleBufferA, 0, staging, 0, bytes);
+        device.queue.submit([enc.finish()]);
+        await staging.mapAsync(GPUMapMode.READ);
+        const raw = new Float32Array(staging.getMappedRange().slice(0));
+        staging.unmap();
+        return raw;
+      } finally {
+        staging.destroy();
+      }
+    }
     async function readParticles() {
       const n = config.count;
       const bytes = PARTICLE_STRIDE * n;
@@ -1886,15 +1987,16 @@
 
     return {
       destroy,
-      setPalette, setColors, setPreset, setSpecies, setBgFade, setCount,
+      setPalette, setColors, setPreset, setSpecies, setBgFade, setCount, shrinkTo,
       setPointSize, setGlow, setForce, setRMax, setMinR,
       disturb,
       setShowFps, getFps, setSimSpeed, setCameraZoom, setCameraOffset, setShowGlow,
-      setTargets, setMorph,
+      setTargets, setTargetsPacked, setMorph,
       // Stats-panel control surface — live-tunable engine internals
       setFriction, setRepel, setGlowSize, setGlowIntensity, setGlowSteepness,
       setParticleOpacity, setSeedPattern, respawn, setShapeTypes, setMaxDpr,
       readParticles,                   // async — for SVG / vector export
+      readParticlesRaw,                // async — typed-array snapshot (stride 6)
       pause(v) { config.paused = !!v; },
       get size() { return { W, H }; },
       // Bumped whenever the targets buffer is reallocated (setCount / respawn).
