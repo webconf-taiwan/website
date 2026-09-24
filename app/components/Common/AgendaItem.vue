@@ -26,22 +26,22 @@ useFadeIn(itemRef, { step: 0.06 })
           {{ item.code }}
         </p>
 
-        <h2 data-fade="in" class="font-zh text-[22px] font-bold leading-[1.25] text-pre-800 lg:text-h3 lg:leading-[1.2]">
+        <h2 data-fade="in" class="text-zh-h3 text-pre-800">
           {{ item.title }}
         </h2>
 
-        <ul data-fade="in" class="flex h-5 flex-wrap items-center gap-x-3 overflow-hidden font-mono text-meta text-accent-1 lg:h-auto lg:gap-x-4">
+        <ul data-fade="in" class="flex min-h-5 flex-wrap items-center gap-x-2 gap-y-1 font-mono text-body-sm text-pre-800/[62%]">
           <li v-for="skill in skills" :key="skill">
             #{{ skill }}
           </li>
         </ul>
       </div>
 
-      <div class="agenda-item-speaker flex h-10 w-full shrink-0 flex-col justify-end lg:h-auto lg:w-[200px]">
-        <p data-fade="in" class="font-zh text-body font-bold leading-[1.35] text-pre-800 lg:text-h5 lg:leading-[1.35]">
+      <div class="agenda-item-speaker flex h-10 w-full shrink-0 flex-col justify-end gap-y-1 lg:h-auto lg:w-[200px] lg:gap-y-2">
+        <p data-fade="in" class="text-zh-h5 text-accent-1">
           {{ item.speaker_name }}
         </p>
-        <p data-fade="in" class="font-zh text-en-caption leading-[1.45] text-pre-800/[62%] lg:text-body-sm">
+        <p data-fade="in" class="font-mono text-[12px] font-normal leading-[1.2] tracking-[0.2em] text-pre-800/[62%]">
           {{ item.speaker_title }}
         </p>
       </div>
@@ -72,10 +72,6 @@ useFadeIn(itemRef, { step: 0.06 })
 
   .agenda-item-content { gap: 16px; }
   .agenda-item h2 {
-    @apply font-zh-serif;
-    font-size: 24px;
-    line-height: 29px;
-    letter-spacing: 0;
     overflow-wrap: anywhere;
   }
 
@@ -84,25 +80,11 @@ useFadeIn(itemRef, { step: 0.06 })
     min-height: 20px;
     gap: 8px;
     overflow: visible;
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0;
-    color: rgb(239 230 210 / 62%);
   }
   .agenda-item li { max-width: 100%; overflow-wrap: anywhere; }
 
-  .agenda-item-speaker { height: auto; min-height: 40px; gap: 4px; }
-  .agenda-item-speaker > p:first-child {
-    @apply font-zh-serif text-accent-1;
-    font-size: 18px;
-    line-height: 22px;
-    letter-spacing: 0;
-  }
+  .agenda-item-speaker { height: auto; min-height: 40px; }
   .agenda-item-speaker > p:last-child {
-    @apply font-mono font-normal;
-    font-size: 12px;
-    line-height: 14px;
-    letter-spacing: 0;
     overflow-wrap: anywhere;
   }
 }

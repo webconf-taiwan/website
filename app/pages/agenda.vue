@@ -41,7 +41,7 @@ const items = computed(() => agenda.items || [])
   >
     <div class="mx-auto flex w-[calc(100%_-_40px)] flex-col pt-8 lg:mx-0 lg:w-full lg:max-w-none lg:gap-y-12 lg:pt-0">
       <div ref="introRef" class="mb-6 flex flex-col gap-y-2 lg:mb-0 lg:gap-y-4">
-        <h2 data-fade="in" class="agenda-heading font-serif text-[44px] font-bold italic leading-[1.08] text-pre-800 lg:text-h1">
+        <h2 data-fade="in" class="agenda-heading font-en-serif text-fs-en-h1-m font-normal italic text-pre-800 lg:text-fs-en-h1">
           <span class="lg:hidden">{{ agenda.mobile_heading }}</span>
           <span class="hidden lg:inline">
             <template v-for="(line, i) in agenda.heading_lines" :key="line">
@@ -49,7 +49,7 @@ const items = computed(() => agenda.items || [])
             </template>
           </span>
         </h2>
-        <p data-fade="in" class="agenda-date font-serif text-h5 font-bold italic leading-[1.3] text-pre-800/80 lg:text-h4">
+        <p data-fade="in" class="agenda-date font-en-serif text-fs-en-h4-m font-normal italic text-pre-800 lg:text-fs-en-h4">
           {{ agenda.date }}
         </p>
       </div>
@@ -61,30 +61,24 @@ const items = computed(() => agenda.items || [])
           :data="item"
         />
       </div>
+
+      <p class="mt-[60px] text-center text-zh-h5 text-pre-800 lg:mt-[80px]">
+        \ 更多精彩議程即將釋出 /
+      </p>
     </div>
   </CommonPlatePage>
 </template>
 
-<style scoped>
-@media (max-width: 1023px) {
-  .agenda-heading {
-    @apply font-en-serif;
-    font-size: 40px;
-    line-height: 48px;
-    letter-spacing: 0;
-  }
-
-  .agenda-date {
-    @apply font-en-serif text-pre-800;
-    font-size: 22px;
-    line-height: 26px;
-    letter-spacing: 0;
-  }
-}
-</style>
-
 <style>
 /* The layout class is supplied by this route, keeping shared pages unchanged. */
+.agenda-layout [data-plate-hero-mobile],
+.agenda-layout [data-plate-hero-desktop] { background: transparent; }
+.agenda-layout [data-plate-hero-mobile] h1,
+.agenda-layout [data-plate-hero-desktop] h1 { font-weight: 400; letter-spacing: 0.02em; }
+.agenda-layout .text-en-caption { font-weight: 400; }
+.agenda-layout [data-plate-body] .plate-page-content { background-color: #0a0a0c; }
+.agenda-layout [data-plate-body] .plate-page-content::before { content: none; }
+
 @media (max-width: 1023px) {
   .agenda-layout footer { border: 0; box-shadow: inset 0 1px rgb(239 230 210 / 35%); }
   .agenda-layout [data-footer-wordmark] { align-items: flex-end; }
