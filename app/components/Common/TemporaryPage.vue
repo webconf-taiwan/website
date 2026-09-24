@@ -26,7 +26,7 @@ const emit = defineEmits(['mobile-action', 'desktop-action'])
 </script>
 
 <template>
-  <div class="relative min-h-screen overflow-hidden bg-black text-pre-800">
+  <div class="relative flex min-h-screen flex-col overflow-hidden bg-black text-pre-800">
     <LayoutPageHeader />
 
     <CommonTemporaryHero

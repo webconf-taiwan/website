@@ -37,7 +37,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     id="temporary-page"
     ref="heroRef"
     data-same-hero
-    class="relative z-10 flex h-[550px] flex-col items-center justify-center overflow-hidden bg-black/30 text-center lg:h-[720px]"
+    class="relative z-10 flex h-[550px] shrink-0 grow flex-col items-center justify-center overflow-hidden bg-black/30 text-center lg:h-[720px]"
   >
     <ClientOnly>
       <TemporaryParticleField />
