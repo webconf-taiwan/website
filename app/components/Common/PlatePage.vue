@@ -22,6 +22,8 @@ const props = defineProps({
   // 粒子取樣來源圖（桌機與手機共用）
   source: { type: String, default: '/figma/agenda/mobile-particle-source.webp' },
   ariaLabel: { type: String, default: '' },
+  // A between slot can delay the rail until its content reaches the hero boundary.
+  railStart: { type: String, default: 'hero' },
 })
 
 const { isDesktop, viewportReady } = useViewportMode()
@@ -38,7 +40,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
   <div data-plate-page class="relative overflow-x-clip bg-[#0a0a0c] text-pre-800">
     <ClientOnly>
       <template v-if="viewportReady">
-        <CommonAgendaParticleField v-if="isDesktop" ref="fieldRef" fixed :source="source" />
+        <CommonAgendaParticleField v-if="isDesktop" ref="fieldRef" fixed :source="source" :rail-start="railStart" />
       </template>
     </ClientOnly>
 
