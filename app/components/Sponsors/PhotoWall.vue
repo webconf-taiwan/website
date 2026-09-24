@@ -1,6 +1,7 @@
 <script setup>
 const props = defineProps({ data: { type: Object, required: true } })
 const { isDesktop, viewportReady } = useViewportMode()
+const wallRef = ref(null)
 const boardRef = ref(null)
 const galleryRef = ref(null)
 const activeId = ref(props.data.active_id)
@@ -11,6 +12,7 @@ let suppressClick = false
 let galleryReady = false
 
 const mobilePhotos = computed(() => props.data.mobile_order.map(id => props.data.photos.find(photo => photo.id === id)).filter(Boolean))
+useFadeIn(wallRef, { y: 20, duration: 0.8 })
 
 function photoStyle(photo, index) {
   const position = positions[photo.id] || photo
@@ -121,8 +123,8 @@ watch([viewportReady, isDesktop, galleryRef], async () => {
 </script>
 
 <template>
-  <section aria-labelledby="sponsors-gallery-heading" class="photo-wall relative z-10 overflow-hidden bg-bg-mid">
-    <div ref="boardRef" class="photo-board relative mx-auto max-w-[1440px]">
+  <section ref="wallRef" aria-labelledby="sponsors-gallery-heading" class="photo-wall relative z-10 overflow-hidden bg-bg-mid">
+    <div ref="boardRef" data-fade="in" class="photo-board relative mx-auto max-w-[1440px]">
       <div class="photo-heading relative z-10 mx-5 flex flex-col gap-4 lg:absolute lg:inset-x-[60px] lg:top-[60px] lg:mx-0">
         <h2 id="sponsors-gallery-heading" class="text-en-h1 italic">
           <span class="block">{{ data.heading_lines[0] }}</span>
@@ -193,6 +195,19 @@ watch([viewportReady, isDesktop, galleryRef], async () => {
 <style scoped>
 .photo-board { padding: 32px 0 120px; }
 .photo-heading { pointer-events: none; }
+@media (max-width: 1023px) {
+  .photo-wall::before {
+    content: '';
+    position: absolute;
+    top: 220px;
+    left: 50%;
+    width: 624px;
+    height: 440px;
+    transform: translateX(-50%);
+    background: url('/figma/sponsors/mobile-orbit.png') center / cover no-repeat;
+    pointer-events: none;
+  }
+}
 .mobile-gallery {
   --card-width: min(300px, calc(100vw - 60px));
   padding-inline: calc((100% - var(--card-width)) / 2);
@@ -203,7 +218,7 @@ watch([viewportReady, isDesktop, galleryRef], async () => {
 .mobile-gallery::-webkit-scrollbar { display: none; }
 .mobile-photo {
   width: var(--card-width);
-  padding: 4px 8px 14px;
+  padding: 4px 8px 12px;
   border: 1px solid rgb(239 230 210 / 35%);
   background: rgb(10 10 12 / 70%);
   scroll-snap-align: center;
@@ -227,6 +242,16 @@ watch([viewportReady, isDesktop, galleryRef], async () => {
   outline-offset: 4px;
 }
 @media (min-width: 1024px) {
+  .photo-wall::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(50% - 372px);
+    width: 1418px;
+    height: 1001px;
+    background: url('/figma/sponsors/mobile-orbit.png') center / cover no-repeat;
+    pointer-events: none;
+  }
   .photo-board { height: clamp(640px, 50vw, 720px); padding: 0; }
   .desktop-photo {
     position: absolute;
