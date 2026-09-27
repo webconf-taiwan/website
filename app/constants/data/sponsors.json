@@ -3,32 +3,176 @@
     {
       "name": "台積電 TSMC",
       "logo": "/sponsors/tsmc.svg",
-      "link": { "href": "https://www.tsmc.com/chinese", "target": "_blank" },
+      "link": {
+        "href": "https://www.tsmc.com/chinese",
+        "target": "_blank"
+      },
       "show_on_home": true
     },
     {
       "name": "五倍學院",
       "logo": "/sponsors/五倍學院.svg",
-      "link": { "href": "https://5xcampus.com/", "target": "_blank" },
+      "link": {
+        "href": "https://5xcampus.com/",
+        "target": "_blank"
+      },
       "show_on_home": true
     },
     {
       "name": "六角學院",
       "logo": "/sponsors/六角學院.svg",
-      "link": { "href": "https://www.hexschool.com/", "target": "_blank" },
+      "link": {
+        "href": "https://www.hexschool.com/",
+        "target": "_blank"
+      },
       "show_on_home": true
     },
     {
       "name": "悠識學院 Userxper",
       "logo": "/sponsors/悠識學院.svg",
-      "link": { "href": "https://www.userxper.com/", "target": "_blank" },
+      "link": {
+        "href": "https://www.userxper.com/",
+        "target": "_blank"
+      },
       "show_on_home": true
     },
     {
       "name": "鈦坦科技 TITANSOFT",
       "logo": "/sponsors/鈦坦科技.svg",
-      "link": { "href": "https://titansoft.com/tw", "target": "_blank" },
+      "link": {
+        "href": "https://titansoft.com/tw",
+        "target": "_blank"
+      },
       "show_on_home": true
+    }
+  ],
+  "plate": {
+    "code": "PL. V",
+    "number": "II.",
+    "label": "SPONSORS"
+  },
+  "corner_left": {
+    "label": "CODEX EMERGENCE",
+    "note": "vol. V · plate V"
+  },
+  "corner_right": {
+    "label": "N 25.04° · E 121.56°",
+    "note": "simulation · live"
+  },
+  "gallery": {
+    "heading_lines": [
+      "Become part of",
+      "what grows the web."
+    ],
+    "subtitle": "成為 WebConf 的合作夥伴",
+    "active_id": "community",
+    "mobile_order": [
+      "venue",
+      "community",
+      "audience",
+      "speaker",
+      "badge"
+    ],
+    "photos": [
+      {
+        "id": "audience",
+        "src": "/figma/sponsors/audience.webp",
+        "alt": "WebConf 會眾參與現場互動",
+        "x": 16.32,
+        "y": 66.04,
+        "width": 350,
+        "rotation": -3
+      },
+      {
+        "id": "speaker",
+        "src": "/figma/sponsors/speaker.webp",
+        "alt": "WebConf 講者分享技術與經驗",
+        "x": 29.72,
+        "y": 77.36,
+        "width": 350,
+        "rotation": 3
+      },
+      {
+        "id": "badge",
+        "src": "/figma/sponsors/badge.webp",
+        "alt": "WebConf 參與者展示活動識別證",
+        "x": 83.68,
+        "y": 78.44,
+        "width": 350,
+        "rotation": -2
+      },
+      {
+        "id": "venue",
+        "src": "/figma/sponsors/venue.webp",
+        "alt": "WebConf 議程現場與參與社群",
+        "x": 73.4,
+        "y": 48.72,
+        "width": 400,
+        "rotation": 3
+      },
+      {
+        "id": "community",
+        "src": "/figma/sponsors/community.webp",
+        "alt": "WebConf 參與者在合作夥伴攤位交流",
+        "x": 50,
+        "y": 61.94,
+        "width": 350,
+        "rotation": 0
+      }
+    ]
+  },
+  "sections": [
+    {
+      "id": "corporate-sponsors",
+      "title": "SPONSORS",
+      "subtitle": "贊助廠商",
+      "description": "WebConf 匯聚來自不同領域的開發者、設計師、產品工作者與產業夥伴。今年，我們將以「Code、Connect、Agent」為主題，從程式技術、社群連結到 AI Agent，探索 Web 技術持續演進下的新機會與可能。誠摯邀請您成為 WebConf 的贊助夥伴，與社群交流、分享實踐，也讓更多參與者認識您的品牌、團隊與正在投入的事。",
+      "features": [
+        {
+          "en": "Programme Sharing",
+          "zh": "參與 WebConf 議程或 Keynote 分享機會。"
+        },
+        {
+          "en": "Event Admission",
+          "zh": "提供活動入場套票，邀請團隊成員一同參與兩日活動。"
+        },
+        {
+          "en": "On-site Engagement",
+          "zh": "設置兩日實體攤位，並可結合大地遊戲與現場互動體驗。"
+        },
+        {
+          "en": "Brand Exposure",
+          "zh": "品牌將露出於官網、報名頁、社群及大會相關宣傳素材。"
+        },
+        {
+          "en": "On-site Visibility",
+          "zh": "於報到區、主題形象牆、講台、旗幟與立牌等活動場域呈現品牌。"
+        }
+      ],
+      "cta": {
+        "label": "成為夥伴",
+        "href": "mailto:hi@webconf.tw"
+      }
+    },
+    {
+      "id": "passion-sponsor",
+      "title": "PASSION SPONSOR",
+      "subtitle": "個人贊助",
+      "description": "如果你喜歡 WebConf，也希望台灣持續有一個讓技術社群相聚、分享與交流的地方，邀請你以「熱情贊助票」成為支持 WebConf 的一份力量。除了取得活動參與席位，原票價以外的金額將投入 WebConf 的籌辦，支持這場年度聚會持續發生。",
+      "features": [
+        {
+          "en": "Digital Exposure",
+          "zh": "可宣傳個人、品牌或專案，與 WebConf 社群分享你正在投入的事。"
+        },
+        {
+          "en": "VIP Seating",
+          "zh": "每場講座皆可進入「VIP 席位區」，享有專屬席位。"
+        }
+      ],
+      "cta": {
+        "label": "成為夥伴",
+        "href": "/#ticket"
+      }
     }
   ]
 }

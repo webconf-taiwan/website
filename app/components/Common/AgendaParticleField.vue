@@ -15,6 +15,7 @@ const props = defineProps({
     type: String,
     default: '/figma/agenda/mobile-particle-source.webp',
   },
+  railStart: { type: String, default: 'hero' },
 })
 
 const wrapRef = ref(null)
@@ -115,7 +116,7 @@ const specCache = new Map()
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
 const dom = { hero: null, page: null, body: null, aside: null }
-const rects = { hero: null, page: null, aside: null }
+const rects = { hero: null, page: null, aside: null, body: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
@@ -129,6 +130,7 @@ function measure () {
   rects.hero = dom.hero?.getBoundingClientRect() || null
   rects.page = dom.page?.getBoundingClientRect() || null
   rects.aside = dom.aside?.getBoundingClientRect() || null
+  if (props.railStart === 'body') rects.body = dom.body?.getBoundingClientRect() || null
 }
 
 // --- CSS 變數：動畫數值直接寫在 wrapper 上，Vue 不參與動畫迴圈 ----------------
@@ -206,7 +208,8 @@ function scrollProgress () {
   if (!props.fixed) return 0
   const hero = rects.hero
   if (!hero?.height) return 0
-  const p = Math.max(0, Math.min(1, (hero.height - 120 - hero.bottom) / (hero.height - 180)))
+  const boundary = props.railStart === 'body' ? (rects.body?.top ?? hero.bottom) : hero.bottom
+  const p = Math.max(0, Math.min(1, (hero.height - 120 - boundary) / (hero.height - 180)))
   return p * p * (3 - 2 * p)
 }
 

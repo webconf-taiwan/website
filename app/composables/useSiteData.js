@@ -91,3 +91,8 @@ export const useAgendaData = async () => {
     ...agenda.default
   }
 }
+
+export const useSponsorsData = async () => {
+  const sponsors = await import('~/constants/data/sponsors.json')
+  return sponsors.default
+}
