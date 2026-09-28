@@ -115,6 +115,19 @@ const REBUILD_SETTLE_MS = 700
 // 粒子先離開生成點。900ms 是「粒子散開了」與「使用者還沒捲下去」的交界。
 const BUILD_DELAY_MS = 900
 
+// --- 觸控推擠 --------------------------------------------------------------
+// 桌機版的滑鼠推擠（Field.vue 的 POINTER_*）搬到手機：手指按著、滑過的地方把粒子推開。
+// ⚠️ 只給滿檔（t3）＋ WebGPU 的手機。每幀多一次 disturb 本身幾乎不花錢（一個 uniform），
+// 但低檔位粒子稀、點又大，一推就是一片空洞，看起來像壞掉；CPU 後端則是主執行緒已經很吃緊。
+// 執行期被量測器降檔的話，frame() 每幀看 tier，會跟著停掉。
+// ⚠️ listener 一律 passive、不 preventDefault —— 手指在手機上主要是用來捲頁的，
+// 推粒子只是順帶，絕對不能跟捲動搶事件。
+// 量級比桌機小：390px 寬的畫面用桌機的 320 半徑等於整片一起動，不是「手指推開」。
+const TOUCH_RADIUS = 170          // 影響半徑（sim px）
+const TOUCH_MAX_PUSH = 20         // 滑動時的單幀最大推力
+const TOUCH_SPEED_GAIN = 3        // 這一幀手指滑了多少 px → 推力
+const TOUCH_HOLD_PUSH = 1.2       // 按著不動時的底噪（讓出一小塊）；放開就不推了
+
 const TAU = Math.PI * 2
 // --------------------------------------------------------------------------
 
@@ -154,6 +167,13 @@ let lastTime = 0
 let introStart = 0
 let lastOpacity = -1
 
+let touchOn = false                   // 這台裝置有沒有開觸控推擠（init 時決定）
+let touchDown = false
+let touchX = 0, touchY = 0
+let touchPrevX = 0, touchPrevY = 0
+let onTouch = null
+let onTouchEnd = null
+
 // --- 小工具 ----------------------------------------------------------------
 // 每顆粒子在自己原點附近的一個隨機小偏移。半徑取 0.3~1.0 × amp，
 // 全部等長的話會變成一圈規則的環。⚠️ 寫進呼叫端給的 scratch，不要每次配新的。
@@ -192,6 +212,31 @@ function opacityNow () {
 
 // 游走週期：面板覆寫優先，否則照檔位表。
 function driftMsNow () { return driftMsOverride || q.driftMs }
+
+// 螢幕座標 → 模擬座標，反轉 frame() 裡設的相機（與 Field.vue 的 toSim 同一條）。
+function toSim (px, py) {
+  const { W, H } = engine.size
+  const zoom = engine.config?.cameraZoom ?? 1
+  const cx = engine.config?.cameraX ?? 0
+  const cy = engine.config?.cameraY ?? 0
+  return {
+    x: (px - W * 0.5) / zoom + W * 0.5 + cx,
+    y: (py - H * 0.5) / zoom + H * 0.5 + cy,
+  }
+}
+
+// 在每幀裡消費手指位置。⚠️ 每幀最多推一次，理由同 Field.vue 的 applyPointerPush。
+function applyTouchPush () {
+  if (!touchOn || !touchDown || tier.value < TIER_COUNT - 1) return
+
+  const speed = Math.hypot(touchX - touchPrevX, touchY - touchPrevY)
+  touchPrevX = touchX
+  touchPrevY = touchY
+  const push = Math.min(TOUCH_MAX_PUSH, TOUCH_HOLD_PUSH + speed * TOUCH_SPEED_GAIN)
+
+  const { x, y } = toSim(touchX, touchY)
+  engine.disturb?.(x, y, TOUCH_RADIUS, push)
+}
 
 // --- 目標點 ----------------------------------------------------------------
 // 開場構圖：seedPattern 畫出來的那張圖，才是每組效果真正好看、也真正互相不同的
@@ -313,6 +358,8 @@ function frame (now) {
   }
   engine.setCameraZoom?.(zoom * dz)
   engine.setCameraOffset?.(dx, dy)
+  // 相機這一幀已經設好，toSim 才對得上
+  applyTouchPush()
 
   // --- 透明度 ---------------------------------------------------------------
   // 會重寫整個 buffer，所以設變化門檻，不要每幀寫。
@@ -444,6 +491,28 @@ async function init () {
     const el = document.querySelector(sel)
     if (el) io.observe(el)
   })
+
+  // canvas 是 pointer-events-none，所以聽 window。
+  touchOn = !reducedMotion && !cpuFallback.value
+  if (touchOn) {
+    onTouch = (e) => {
+      const p = e.touches[0]
+      if (!p) return
+      if (e.type === 'touchstart') {
+        // 新的一次按壓從這裡起算，不要跟上一次放開的位置算出一大段「速度」
+        touchPrevX = p.clientX
+        touchPrevY = p.clientY
+      }
+      touchX = p.clientX
+      touchY = p.clientY
+      touchDown = true
+    }
+    onTouchEnd = (e) => { touchDown = e.touches.length > 0 }
+    window.addEventListener('touchstart', onTouch, { passive: true })
+    window.addEventListener('touchmove', onTouch, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true })
+  }
 
   onVisibility = () => syncRunning()
   document.addEventListener('visibilitychange', onVisibility)
@@ -614,6 +683,12 @@ onBeforeUnmount(() => {
   stopAmbient?.()
   if (onVisibility) document.removeEventListener('visibilitychange', onVisibility)
   if (onResize) window.removeEventListener('resize', onResize)
+  if (onTouch) {
+    window.removeEventListener('touchstart', onTouch)
+    window.removeEventListener('touchmove', onTouch)
+    window.removeEventListener('touchend', onTouchEnd)
+    window.removeEventListener('touchcancel', onTouchEnd)
+  }
   if (engine) { engine.destroy(); engine = null }
 })
 

@@ -557,18 +557,18 @@ let reducedMotion = false
 // 那是「明顯看得出來」的等級；一開始給 110/3.2 太保守，圈太小、涵蓋的粒子太少，滑過去沒感覺。
 // 粒子被推開多遠 ≈ 初速 / 摩擦，所以「推得更遠」要調的是 MAX_PUSH（給的初速），
 // 不是半徑（半徑只決定影響到多大一圈）。
-const POINTER_RADIUS = 260      // 影響半徑（sim px，= canvas CSS px）
-// ⚠️ 13 不是隨便訂的：引擎每幀把新脈衝併進舊的再衰減，穩態大約是這個值的三倍，
-// 剛好落在原本的 40 附近 —— 也就是維持放寬 clamp 之前調好的手感。
-const POINTER_MAX_PUSH = 13     // 滑動時的單幀最大推力
-const POINTER_SPEED_GAIN = 2  // 這一幀滑了多少 px → 推力（慢慢滑也要推得動）
+const POINTER_RADIUS = 320      // 影響半徑（sim px，= canvas CSS px）
+// ⚠️ 引擎每幀把新脈衝併進舊的再衰減，穩態大約是這個值的 2.5 倍。
+// 原本 13（穩態 ~33）滑過去還是太含蓄；24 的穩態 ~60，仍在引擎 ±100 的 clamp 內。
+const POINTER_MAX_PUSH = 24     // 滑動時的單幀最大推力
+const POINTER_SPEED_GAIN = 3.5  // 這一幀滑了多少 px → 推力（慢慢滑也要推得動）
 // 游標停著時也要持續輕推，粒子才會在游標周圍讓出一塊。只在移動時推的話，
 // 手一停下來粒子立刻填回去，等於游標本身沒有存在感 —— 那就是「沒感覺」的來源。
 //
 // ⚠️ 這個值要很小。引擎每幀把新脈衝併進舊的（s += new * 0.45）再乘 0.85 衰減，
 // 所以持續推的穩態強度是 idlePush * 3 左右 —— 給 2.5 實測會在 2.5 秒內把整個
 // 半徑內的粒子清空，變成一個跟著游標的大洞，不是「稍微推擠」。
-const POINTER_IDLE_PUSH = 0.8
+const POINTER_IDLE_PUSH = 2
 
 // --- 互動模式：把粒子「吸過去」-------------------------------------------
 // disturb 是速度脈衝，粒子被推向圓心後會直接衝過去再散開 —— 做不出「聚成一團」。
@@ -608,6 +608,12 @@ let pointerX = 0, pointerY = 0
 let pointerPrevX = 0, pointerPrevY = 0
 let pointerSeen = false
 let onPointerMove = null
+// 觸控（iPad 橫放這類 ≥1024 的平板）：沒有 hover，只在手指按著時推。
+// 滑鼠停著會持續輕推（POINTER_IDLE_PUSH），手指放開後就不該再有一個看不見的排斥圈。
+let touchMode = false
+let touchDown = false
+let onTouch = null
+let onTouchEnd = null
 const pointerPushes = []   // 只有 dev 會塞東西進來，給 __sameDbg 看（只留最近 20 筆）
 let pointerPushCount = 0
 
@@ -631,6 +637,7 @@ function applyPointerPush () {
   // 只要指標曾經進過畫面（pointerSeen）就每幀推一次。
   // 互動模式（彩蛋）開著時交給手勢，兩個一起推會打架。
   if (!pointerOn || !pointerSeen || !engine || interactiveOn.value) return
+  if (touchMode && !touchDown) return
 
   const dx = pointerX - pointerPrevX
   const dy = pointerY - pointerPrevY
@@ -1785,6 +1792,30 @@ async function init () {
       pointerY = e.clientY
     }
     window.addEventListener('pointermove', onPointerMove, { passive: true })
+  } else if (!reducedMotion && engine.backend === 'webgpu' && navigator.maxTouchPoints > 0) {
+    // 觸控平板：手指按著、滑過的地方推開粒子（手機版在 MobileField 的 TOUCH_*）。
+    // ⚠️ 只給 WebGPU —— CPU 後端主執行緒已經很吃緊。
+    // ⚠️ listener 一律 passive、不 preventDefault，絕對不能跟捲動搶事件。
+    pointerOn = true
+    touchMode = true
+    onTouch = (e) => {
+      const p = e.touches[0]
+      if (!p) return
+      // 每次按下都重新對齊，不要跟上一次放開的位置算出一大段「速度」
+      if (e.type === 'touchstart') {
+        pointerPrevX = p.clientX
+        pointerPrevY = p.clientY
+      }
+      pointerX = p.clientX
+      pointerY = p.clientY
+      pointerSeen = true
+      touchDown = true
+    }
+    onTouchEnd = (e) => { touchDown = e.touches.length > 0 }
+    window.addEventListener('touchstart', onTouch, { passive: true })
+    window.addEventListener('touchmove', onTouch, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true })
   }
 
   introStart = performance.now()
@@ -1886,6 +1917,12 @@ onBeforeUnmount(() => {
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
   if (onPointerMove) window.removeEventListener('pointermove', onPointerMove)
+  if (onTouch) {
+    window.removeEventListener('touchstart', onTouch)
+    window.removeEventListener('touchmove', onTouch)
+    window.removeEventListener('touchend', onTouchEnd)
+    window.removeEventListener('touchcancel', onTouchEnd)
+  }
   if (engine) { engine.destroy(); engine = null }
   // ⚠️ 帶著自己的實作去核對 —— 跨斷點切換時窄視窗那張（HomeSpeakerPortrait）
   // 可能已經先登記好了，無條件清會把它踢掉。見 useSpeakerFieldBus 的說明。
