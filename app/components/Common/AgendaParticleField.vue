@@ -3,7 +3,7 @@ const { loadParticleKit, registerNebula } = useParticleKit()
 const { countFor, maxDpr } = useParticleBudget()
 const { idle } = useParticleStage()
 const { markActive, onTierChange, knobs, noteRespawn, suspendReadback } = useParticleQuality()
-const { buildSlotTargetsRaw, paletteToLinear, lerpPaletteLinear } = useParticleMorph()
+const { buildSeedTargets, buildSlotTargetsRaw, paletteToLinear, lerpPaletteLinear } = useParticleMorph()
 
 const props = defineProps({
   fixed: {
@@ -16,6 +16,7 @@ const props = defineProps({
     default: '/figma/agenda/mobile-particle-source.webp',
   },
   railStart: { type: String, default: 'hero' },
+  galleryConfig: { type: Object, default: null },
 })
 
 const wrapRef = ref(null)
@@ -32,6 +33,8 @@ const wrapClass = computed(() => props.fixed
 )
 
 const look = resolveFieldLook(3)
+const galleryConfig = props.galleryConfig
+const species = galleryConfig?.sim.species || look.rules.species
 const STAGE = 'agendaField'
 const SOURCE = props.source
 const HERO = {
@@ -76,6 +79,14 @@ let heroFlow = null
 let heroTypes = null
 let railTypes = null
 let colonies = null
+let flower = null
+let flowerTypes = null
+let flowerBounds = null
+let galleryPalette = null
+let galleryMix = 0
+let flowerMode = false
+let lastGalleryTop = NaN
+let lastGalleryMix = NaN
 // 上傳給 shader 的目標點，一份持久的交錯陣列：每個 slot 佔 4 個 float
 // [heroX, heroY, railX, railY]。jitter 直接寫進這裡，再整包交給 setTargetsPacked，
 // 不再每個週期配置新陣列、也不再讓引擎多做一次交錯拷貝。
@@ -115,14 +126,15 @@ const specCache = new Map()
 // --- DOM：元素只查一次，矩形一幀只量一次 ------------------------------------
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
-const dom = { hero: null, page: null, body: null, aside: null }
-const rects = { hero: null, page: null, aside: null, body: null }
+const dom = { hero: null, page: null, body: null, aside: null, gallery: null }
+const rects = { hero: null, page: null, aside: null, body: null, gallery: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
   if (!dom.page) dom.page = canvasRef.value?.closest('[data-plate-page]') || null
   if (!dom.body) dom.body = document.querySelector('[data-plate-body]')
   if (!dom.aside && dom.body) dom.aside = dom.body.querySelector(':scope > aside')
+  if (galleryConfig && !dom.gallery) dom.gallery = dom.page?.querySelector('[data-plate-gallery]')
 }
 
 function measure () {
@@ -131,6 +143,7 @@ function measure () {
   rects.page = dom.page?.getBoundingClientRect() || null
   rects.aside = dom.aside?.getBoundingClientRect() || null
   if (props.railStart === 'body') rects.body = dom.body?.getBoundingClientRect() || null
+  if (dom.gallery) rects.gallery = dom.gallery.getBoundingClientRect()
 }
 
 // --- CSS 變數：動畫數值直接寫在 wrapper 上，Vue 不參與動畫迴圈 ----------------
@@ -140,14 +153,15 @@ const cssVars = { railMix: NaN, heroOffset: NaN, railOffset: NaN, clipBottom: Na
 function writeCssVars () {
   const el = wrapRef.value
   if (!el) return
-  const clipBottom = Math.max(0, canvasHeight - HERO.height - heroOffset) * (1 - railMix)
+  const clipBottom = Math.max(0, canvasHeight - HERO.height - heroOffset) * (1 - railMix) * (1 - galleryMix)
+  const artworkOffset = (props.fixed ? rects.hero?.top || 0 : 0) * (1 - railMix)
   if (cssVars.railMix !== railMix) {
     cssVars.railMix = railMix
     el.style.setProperty('--rail-mix', String(railMix))
   }
-  if (cssVars.heroOffset !== heroOffset) {
-    cssVars.heroOffset = heroOffset
-    el.style.setProperty('--hero-offset', `${heroOffset}px`)
+  if (cssVars.heroOffset !== artworkOffset) {
+    cssVars.heroOffset = artworkOffset
+    el.style.setProperty('--hero-offset', `${artworkOffset}px`)
   }
   if (cssVars.railOffset !== railOffset) {
     cssVars.railOffset = railOffset
@@ -222,7 +236,7 @@ async function prepareSpec (count, W, art) {
   // 舊版快取的 particle-image.js 沒有 loadImage：退回讓 prepare 自己載圖，只是少了重用。
   if (!sourceImage && window.PLImage.loadImage) sourceImage = await window.PLImage.loadImage(SOURCE)
   const spec = await window.PLImage.prepare(SOURCE, {
-    count, colors: look.rules.species, seed: 2026,
+    count, colors: species, seed: 2026,
     sampleEdge: 1440, lumaBias: 0.75, minLuma: 0.09, fit: 1,
     name: 'agenda-desktop-composition',
     image: sourceImage || undefined,
@@ -283,7 +297,7 @@ async function rebuildTargets () {
       seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0
       return seed / 4294967296
     }
-    const target = buildColonyTargets(N, look.rules.species, W, H, {
+    const target = buildColonyTargets(N, species, W, H, {
       centers: COLONIES.map(([x, y, R]) => ({
         x: left - canvasLeft + x * scale,
         // Distribute centers over the rail height without stretching each colony.
@@ -294,7 +308,7 @@ async function rebuildTargets () {
       blobRadius: [0.10, 0.24],
       random,
     })
-    const railSlots = buildSlotTargetsRaw(raw, N, target, look.rules.species, W)
+    const railSlots = buildSlotTargetsRaw(raw, N, target, species, W)
     colonies = railSlots.shape
     railTypes = railSlots.shapeType
     const imageTarget = { tx: new Float32Array(N), ty: new Float32Array(N), tt: spec.types }
@@ -302,9 +316,32 @@ async function rebuildTargets () {
       imageTarget.tx[i] = spec.px[i] * W
       imageTarget.ty[i] = spec.py[i] * HERO.height
     }
-    const heroSlots = buildSlotTargetsRaw(raw, N, imageTarget, look.rules.species, W, { recolor: true })
+    const heroSlots = buildSlotTargetsRaw(raw, N, imageTarget, species, W, { recolor: true })
     spread = heroSlots.shape
     heroTypes = heroSlots.shapeType
+    if (galleryConfig && dom.gallery) {
+      const board = dom.gallery.querySelector('.photo-board').getBoundingClientRect()
+      const heading = dom.gallery.querySelector('.photo-heading').getBoundingClientRect()
+      // Fit the exported flower below the heading, toward the board's right edge.
+      // Keep the shared device budget: the sandbox's 100k count is an export setting.
+      const top = Math.max(board.height * 0.36, heading.bottom - board.top + 24)
+      const radius = Math.min(board.width * 0.25, (board.height - top - 16) / 2, H * 0.42)
+      const size = radius * 2 / galleryConfig.sim.cameraZoom
+      const seed = buildSeedTargets(galleryConfig.behavior.seedPattern, N, species, size, size)
+      const cx = board.left - canvasLeft + board.width * 0.76
+      const cy = top + radius
+      for (let i = 0; i < N; i++) {
+        seed.tx[i] = cx + (seed.tx[i] - size / 2) * galleryConfig.sim.cameraZoom
+        // Simulate within the viewport; the camera supplies the gallery's scroll offset.
+        // Putting offscreen targets outside the toroidal world would wrap them over the heading.
+        seed.ty[i] = H / 2 + (seed.ty[i] - size / 2) * galleryConfig.sim.cameraZoom
+      }
+      const slots = buildSlotTargetsRaw(raw, N, seed, species, W, { recolor: true })
+      flower = slots.shape
+      flowerTypes = slots.shapeType
+      flowerBounds = { cx, cy, simulationCy: H / 2, radius, top }
+      galleryPalette = paletteToLinear(window.PLPalettes.PALETTES[galleryConfig.look.palette].particles)
+    }
     // Nearby particles share a flow direction so ribbons move together,
     // while their image-derived resting positions preserve the composition.
     heroFlow = new Float32Array(N * 3)
@@ -326,7 +363,7 @@ async function rebuildTargets () {
       packed[i * 4 + 3] = colonies[i * 2 + 1]
     }
     uploadTargets(current)
-    current.setShapeTypes?.(heroTypes, railTypes)
+    current.setShapeTypes?.(flowerMode && flowerTypes ? flowerTypes : heroTypes, railTypes)
     pull = HERO.pull
     grip = HERO.grip
     current.setMorph?.(pull, grip, railMix)
@@ -353,8 +390,9 @@ function syncRunning (fresh = false) {
   const visible = page ? page.bottom > 0 && page.top < window.innerHeight : true
   const hero = rects.hero
   const heroVisible = hero && hero.bottom > 60 && hero.top < window.innerHeight
+  const galleryVisible = rects.gallery && rects.gallery.bottom > 60 && rects.gallery.top < window.innerHeight
   // Reading the Hero without moving the pointer must not freeze its animation.
-  const want = visible && !document.hidden && (!idle.value || heroVisible) && !reducedMotion && !failed
+  const want = visible && !document.hidden && (!idle.value || heroVisible || galleryVisible) && !reducedMotion && !failed
   if (want === running) return
   running = want
   engine?.pause(!want)
@@ -379,8 +417,11 @@ function jitterTargets (now) {
     changed = true
   }
   const nextHeroCycle = Math.floor(now / HERO.flowMs)
-  if (railMix < 1 && nextHeroCycle !== heroCycle) {
+  const galleryTop = rects.gallery?.top || 0
+  if (railMix < 1 && (nextHeroCycle !== heroCycle || lastGalleryTop !== galleryTop || lastGalleryMix !== galleryMix)) {
     heroCycle = nextHeroCycle
+    lastGalleryTop = galleryTop
+    lastGalleryMix = galleryMix
     const t = now * 0.001
     for (let i = 0, n = spread.length / 2; i < n; i++) {
       const nx = heroFlow[i * 3]
@@ -389,8 +430,13 @@ function jitterTargets (now) {
       const flow = Math.sin(t * 0.85 + phase) * HERO.flowDistance
       const ripple = Math.sin(t * 1.1 + phase * 1.7) * HERO.rippleDistance
       const grain = Math.sin(t * 2.4 + i * 2.399963) * 2.5
-      packed[i * 4] = spread[i * 2] - ny * flow + nx * (ripple + grain)
-      packed[i * 4 + 1] = spread[i * 2 + 1] + nx * flow + ny * (ripple + grain)
+      const hx = spread[i * 2] - ny * flow + nx * (ripple + grain)
+      const hy = spread[i * 2 + 1] + nx * flow + ny * (ripple + grain)
+      const breathing = 1 + Math.sin(t * 0.6) * 0.035
+      const fx = flower ? flowerBounds.cx + (flower[i * 2] - flowerBounds.cx) * breathing : hx
+      const fy = flower ? flowerBounds.simulationCy + (flower[i * 2 + 1] - flowerBounds.simulationCy) * breathing : hy
+      packed[i * 4] = hx + (fx - hx) * galleryMix
+      packed[i * 4 + 1] = hy + (fy - hy) * galleryMix
     }
     changed = true
   }
@@ -431,7 +477,7 @@ function seekCpuTargets (dt) {
     const y = hy + (packed[i * 4 + 3] - hy) * railMix + heroOffset
     arrays.pX[i] += (x - arrays.pX[i]) * follow
     arrays.pY[i] += (y - arrays.pY[i]) * follow
-    arrays.pS[i] = railMix < 0.5 ? heroTypes[i] : railTypes[i]
+    arrays.pS[i] = railMix < 0.5 ? (flowerMode && flowerTypes ? flowerTypes[i] : heroTypes[i]) : railTypes[i]
     arrays.pVX[i] *= 1 - follow
     arrays.pVY[i] *= 1 - follow
   }
@@ -465,13 +511,24 @@ function step (dt) {
   // Follow the sticky rail as its containing section releases above the footer.
   railOffset = Math.min(0, (rects.aside?.top ?? 60) - 60) * railMix
   const wantColony = colonyMode ? railMix > 0.35 : railMix > 0.65
-  if (wantColony !== colonyMode) {
+  const wantFlower = !!galleryConfig && galleryMix > 0.5 && !wantColony
+  if (wantColony !== colonyMode || wantFlower !== flowerMode) {
     colonyMode = wantColony
-    engine.setPreset(wantColony ? RAIL.preset : HERO.preset)
+    flowerMode = wantFlower
+    engine.setSeedPattern?.(wantFlower ? galleryConfig.behavior.seedPattern : look.rules.seedPattern)
+    engine.setPreset(wantColony ? RAIL.preset : wantFlower ? galleryConfig.behavior.preset : HERO.preset)
     engine.setShowGlow?.(wantColony)
+    const physics = wantFlower ? galleryConfig.physics : look.physics
+    engine.setForce?.(physics.forceFactor)
+    engine.setFriction?.(physics.friction)
+    engine.setRepel?.(physics.repel)
+    engine.setRMax?.(physics.rMax)
+    engine.setParticleOpacity?.(wantFlower ? galleryConfig.visual.particleOpacity : 0.9)
+    engine.setShapeTypes?.(wantFlower && flowerTypes ? flowerTypes : heroTypes, railTypes)
   }
 
-  const pointSize = heroSize + (RAIL.pointSize - heroSize) * railMix
+  const stageSize = heroSize + ((galleryConfig?.visual.pointSize ?? heroSize) - heroSize) * galleryMix
+  const pointSize = stageSize + (RAIL.pointSize - stageSize) * railMix
   if (Math.abs(pointSize - lastPointSize) > 0.005 || ((railMix === 0 || railMix === 1) && pointSize !== lastPointSize)) {
     engine.setPointSize(pointSize)
     lastPointSize = pointSize
@@ -481,22 +538,26 @@ function step (dt) {
     engine.setMinR?.(minR)
     lastMinR = minR
   }
-  const simSpeed = HERO.simSpeed + (RAIL.simSpeed - HERO.simSpeed) * railMix
+  const stageSpeed = HERO.simSpeed + ((galleryConfig?.sim.simSpeed ?? HERO.simSpeed) - HERO.simSpeed) * galleryMix
+  const simSpeed = stageSpeed + (RAIL.simSpeed - stageSpeed) * railMix
   if (simSpeed !== lastSimSpeed) {
     engine.setSimSpeed?.(simSpeed)
     lastSimSpeed = simSpeed
   }
-  const nextPaletteStep = Math.round(railMix * 100)
+  const nextPaletteStep = `${Math.round(galleryMix * 100)}:${Math.round(railMix * 100)}`
   if (nextPaletteStep !== paletteStep) {
     paletteStep = nextPaletteStep
-    engine.setColors(lerpPaletteLinear(heroPalette, railPalette, nextPaletteStep / 100))
+    const firstPalette = galleryPalette ? paletteToLinear(lerpPaletteLinear(heroPalette, galleryPalette, galleryMix)) : heroPalette
+    engine.setColors(lerpPaletteLinear(firstPalette, railPalette, railMix))
   }
   if (heroOffset !== lastCameraY) {
     engine.setCameraOffset?.(0, -heroOffset)
     lastCameraY = heroOffset
   }
-  pull = HERO.pull + (RAIL.pull - HERO.pull) * railMix
-  grip = HERO.grip + (RAIL.grip - HERO.grip) * railMix
+  const stagePull = HERO.pull + (24 - HERO.pull) * galleryMix
+  const stageGrip = HERO.grip + (90 - HERO.grip) * galleryMix
+  pull = stagePull + (RAIL.pull - stagePull) * railMix
+  grip = stageGrip + (RAIL.grip - stageGrip) * railMix
   jitterTargets(motionTime)
   if (engine.setMorph) {
     if (pull !== lastMorphPull || grip !== lastMorphGrip || railMix !== lastMorphBlend) {
@@ -521,7 +582,10 @@ function frame (now = performance.now()) {
   const progress = scrollProgress()
   railMix += (progress - railMix) * (reducedMotion ? 1 : 1 - Math.exp(-10 * dt))
   if (Math.abs(progress - railMix) < 0.0001) railMix = progress
-  heroOffset = (props.fixed ? rects.hero?.top || 0 : 0) * (1 - railMix)
+  const galleryProgress = galleryConfig ? Math.max(0, Math.min(1, -(rects.hero?.top || 0) / (HERO.height - 120))) : 0
+  galleryMix = galleryProgress * galleryProgress * (3 - 2 * galleryProgress)
+  const galleryOffset = flowerBounds ? (rects.gallery?.top || 0) + flowerBounds.cy - flowerBounds.simulationCy : 0
+  heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryMix) + galleryOffset * galleryMix) * (1 - railMix)
   step(dt)
   writeCssVars()
   if (running || railMix !== progress) schedule()
@@ -560,7 +624,7 @@ async function init () {
   const q = knobs('desktopField') || {}
   heroSize = heroPointSize()
   const nextEngine = await window.makeEngine(canvas, {
-    species: look.rules.species,
+    species,
     count: countFor(canvas, countOptions()),
     preset: HERO.preset,
     seedPattern: look.rules.seedPattern,
@@ -596,7 +660,7 @@ async function init () {
     window.__agendaField = engine
     window.__agendaRailMotion = RAIL
     window.__agendaMotion = () => ({
-      railMix, pull, grip, targetsGeneration, buildingTargets,
+      railMix, galleryMix, flowerMode, flowerBounds, pull, grip, targetsGeneration, buildingTargets,
       ready: ready.value, running, failed, reducedMotion, motionTime, rafPending,
       rail: railBounds(), colonyCount: COLONIES.length, specCache: specCache.size,
     })
@@ -692,11 +756,9 @@ defineExpose({ backend })
 
 .agenda-hero-artwork {
   transform: translateY(var(--hero-offset));
-  mask-image: radial-gradient(ellipse 230px 150px at 50% 268px, transparent 65%, #000 100%);
 }
 
 .agenda-guided-particles {
   clip-path: inset(0 0 var(--clip-bottom) 0);
-  mask-image: radial-gradient(ellipse 230px 150px at 50% calc(268px + var(--hero-offset)), rgb(0 0 0 / var(--rail-mix)) 65%, #000 100%);
 }
 </style>

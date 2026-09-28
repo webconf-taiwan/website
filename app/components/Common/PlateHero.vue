@@ -41,7 +41,7 @@ const label = computed(() => props.ariaLabel || props.title)
       <CommonAgendaMobileField v-if="viewportReady && !isDesktop" :source="source" />
     </ClientOnly>
     <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
-    <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4 drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
+    <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4">
       <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-meta leading-[14px] text-pre-800/80">
         <span class="w-14 shrink-0">{{ plate.code }}</span>
         <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
@@ -51,10 +51,10 @@ const label = computed(() => props.ariaLabel || props.title)
       </p>
 
       <div class="flex h-[107px] w-full flex-col items-center gap-y-2">
-        <h1 data-fade="in" class="w-full text-center font-en-serif text-en-hero-m font-bold italic leading-[77px] text-pre-800">
+        <h1 data-fade="in" class="w-full text-center font-en-serif text-fs-en-hero-m font-normal italic leading-[77px] text-pre-800">
           {{ title }}
         </h1>
-        <p data-fade="in" class="font-zh-serif text-zh-h5-m font-bold leading-[22px] text-pre-800">
+        <p data-fade="in" class="font-zh-serif text-fs-zh-h5-m font-bold leading-[22px] text-pre-800">
           {{ subtitle }}
         </p>
         <slot />
@@ -74,7 +74,7 @@ const label = computed(() => props.ariaLabel || props.title)
     class="relative z-10 hidden h-[550px] overflow-hidden lg:flex"
     :aria-label="`${label} hero`"
   >
-    <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
+    <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center">
       <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-[12px] leading-[14px] tracking-normal text-pre-800/80">
         <span class="w-14 shrink-0">{{ plate.code }}</span>
         <span aria-hidden="true" class="w-2 shrink-0 text-accent-1">&middot;</span>

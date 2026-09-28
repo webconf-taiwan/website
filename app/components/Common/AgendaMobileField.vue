@@ -1,7 +1,6 @@
 <script setup>
 const { loadParticleKit, registerNebula } = useParticleKit()
 const { buildSlotTargets } = useParticleMorph()
-const { idle } = useParticleStage()
 const { knobs, markActive, onTierChange, suspendReadback, cpuFallback } = useParticleQuality()
 const { maxDpr } = useParticleBudget()
 
@@ -37,6 +36,7 @@ let jitter = null
 let cycle = -1
 let lastTime = 0
 let elapsed = 0
+let revealTimer = 0
 
 function countNow() {
   const scale = knobs('mobileField').countScale / 0.7
@@ -44,19 +44,20 @@ function countNow() {
 }
 
 function syncRunning() {
-  const next = visible && !idle.value && !document.hidden && !reduced && !failed
+  // Reading a visible Hero on a touch screen produces no activity events.
+  const next = visible && !document.hidden && !reduced && !failed
   if (running === next) return
   running = next
   engine?.pause(!next)
   markActive(STAGE, next)
   lastTime = 0
 }
-watch(idle, syncRunning)
 
 function useFallback(error) {
   if (disposed) return
   failed = true
   ready.value = false
+  clearTimeout(revealTimer)
   syncRunning()
   console.warn('[AgendaMobileField] using source image:', error)
 }
@@ -64,6 +65,8 @@ function useFallback(error) {
 async function rebuild() {
   if (!engine || building) return
   building = true
+  ready.value = false
+  clearTimeout(revealTimer)
   const current = engine
   const { W, H } = current.size
   const gen = current.targetsGeneration ?? current.config.count
@@ -93,7 +96,7 @@ async function rebuild() {
     current.setColors(spec.palette)
     current.setTargets?.(shape, shape)
     current.setShapeTypes?.(types, types)
-    current.setMorph?.(18, 90, 1)
+    current.setMorph?.(18, 58, 1)
     if (current.particleArrays) {
       const p = current.particleArrays
       for (let i = 0; i < p.count; i++) { p.pX[i] = shape[i * 2]; p.pY[i] = shape[i * 2 + 1]; p.pS[i] = types[i] }
@@ -101,7 +104,8 @@ async function rebuild() {
     generation = gen
     sizeKey = `${W}:${H}`
     cycle = -1
-    ready.value = true
+    clearTimeout(revealTimer)
+    revealTimer = window.setTimeout(() => { if (!disposed) ready.value = true }, 600)
   } finally {
     building = false
   }
@@ -120,17 +124,22 @@ function frame(now) {
     if (!building) rebuild().catch(useFallback)
     return
   }
-  const nextCycle = Math.floor(elapsed / 0.26)
+  const nextCycle = Math.floor(elapsed * 24)
   if (nextCycle !== cycle) {
     cycle = nextCycle
     for (let i = 0; i < shape.length; i += 2) {
-      const phase = i * 2.399963 + elapsed * 1.8
-      jitter[i] = shape[i] + Math.sin(phase) * 1.8
-      jitter[i + 1] = shape[i + 1] + Math.cos(phase * 0.83) * 1.8
+      const dx = shape[i] - engine.size.W / 2
+      const dy = shape[i + 1] - engine.size.H / 2
+      const radius = Math.max(1, Math.hypot(dx, dy))
+      const phase = Math.atan2(dy, dx) * 2 + radius * 0.008
+      const flow = Math.sin(elapsed * 0.85 + phase) * 12
+      const ripple = Math.sin(elapsed * 1.1 + phase * 1.7) * 4
+      jitter[i] = shape[i] - dy / radius * flow + dx / radius * ripple
+      jitter[i + 1] = shape[i + 1] + dx / radius * flow + dy / radius * ripple
     }
     engine.setTargets?.(jitter, jitter)
   }
-  engine.setMorph?.(18, 84 + Math.sin(elapsed * 0.8) * 6, 1)
+  engine.setMorph?.(18, 58, 1)
   if (engine.particleArrays) {
     const p = engine.particleArrays
     const follow = 1 - Math.exp(-16 * dt)
@@ -154,7 +163,7 @@ async function init() {
     palette: ['#E8F7FF', '#7CC8F2', '#2D6ACF', '#A7DCEC', '#FFFFFF', '#7CC8F2', '#2446CC'],
     bgFade: '#0a0a0c', forceFactor: 0.35, friction: 0.85, repel: 0.3,
     minR: 1, rMax: 22, simSpeed: 0.32, cameraZoom: 1,
-    pointSize: 0.55, particleOpacity: 0.5,
+    pointSize: 0.75, particleOpacity: 0.9,
     showGlow: true, glowSize: 3, glowIntensity: 0.01, glowSteepness: 5,
     maxDpr: Math.min(maxDpr(), q.dprCap), cellSubdivisions: q.cellSub,
   })
@@ -166,7 +175,7 @@ async function init() {
   stopTier = onTierChange(() => { engine?.setCount(countNow()) })
   document.addEventListener('visibilitychange', syncRunning)
   if (import.meta.dev) {
-    window.__agendaMobile = () => ({ ready: ready.value, running, failed, generation, size: engine?.size, count: engine?.config.count, backend: engine?.backend })
+    window.__agendaMobile = () => ({ ready: ready.value, running, failed, generation, elapsed, size: engine?.size, count: engine?.config.count, backend: engine?.backend })
     window.__agendaMobileEngine = engine
   }
   syncRunning()
@@ -177,6 +186,7 @@ onMounted(() => init().catch(useFallback))
 onBeforeUnmount(() => {
   disposed = true
   cancelAnimationFrame(raf)
+  clearTimeout(revealTimer)
   observer?.disconnect()
   stopTier?.()
   document.removeEventListener('visibilitychange', syncRunning)
@@ -194,16 +204,10 @@ onBeforeUnmount(() => {
   <div ref="rootRef" data-agenda-mobile-field aria-hidden="true" class="agenda-mobile-field pointer-events-none absolute inset-0 overflow-hidden">
     <img
       :src="SOURCE" alt="" width="2422" height="1710"
-      class="absolute max-w-none"
+      class="absolute max-w-none transition-opacity duration-700"
+      :class="ready ? 'opacity-0' : 'opacity-100'"
       :style="{ width: `${ART.width}px`, height: `${ART.height}px`, left: `calc(50% - 180px + ${ART.x}px)`, top: `${ART.y}px` }"
     >
-    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full mix-blend-screen transition-opacity duration-700" :class="ready ? 'opacity-35' : 'opacity-0'" />
+    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full mix-blend-screen transition-opacity duration-700" :class="ready ? 'opacity-100' : 'opacity-0'" />
   </div>
 </template>
-
-<style scoped>
-.agenda-mobile-field {
-  /* Fade the artwork itself behind the title, without an opaque backing. */
-  mask-image: radial-gradient(ellipse 170px 94px at 50% 276px, transparent 75%, #000 100%);
-}
-</style>
