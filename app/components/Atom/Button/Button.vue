@@ -92,7 +92,7 @@ const button = cva([
       // 字體用 Noto Sans TC 對齊設計 token zh/btn_16px（.text-zh-btn 已經是
       // font-zh-sans，這裡的 !font-zh-sans 是保險，非必要）。
       primary: [
-        'border-accent-1 bg-[#0a0a0c] text-pre-800 font-medium !tracking-[0.1em]',
+        'border-accent-1 bg-[#0a0a0c] text-pre-800 font-normal !tracking-[0.1em]',
         // 設計稿的 hover 是疊一層 20% 透明的 #71c1f0 在黑底 #0a0a0c「上面」（不是直接換成
         // 半透明淡藍，那樣底色會被沖淡）。這裡直接用預先混好的不透明結果色 #1f2f3a：
         // 視覺相同，而且 background-color 能吃 transition；原本用兩層 linear-gradient

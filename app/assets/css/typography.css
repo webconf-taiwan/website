@@ -8,7 +8,7 @@
      造一個出來。h1~h5 中英文數值目前相同，但 Figma 那邊本來就是兩個各自獨立
      的變數，這裡也拆開，不共用 —— 之後只改一邊也不會悄悄跟代碼對不上。
        A · Inria Serif（font-en-serif）  → en/* 標題與內文
-       B · Noto Serif TC（font-zh-serif） → zh/* 標題（h1~h5、display）
+       B · Noto Serif TC（font-zh-serif） → zh/* 標題（h1~h5、display），一律 Medium 500
        B' · Noto Sans TC（font-zh-sans）  → zh/* 正文與按鈕（body_lg、body_md、btn）
        C · IBM Plex Mono（font-mono）    → common/*（數字、座標、標籤，一律大寫）
 
@@ -16,59 +16,39 @@
      fontSize token 用 @apply 帶進來（手機用 -m 版本，lg: 斷點蓋成桌機版本），數值
      只在 tailwind.config.cjs 那一份，這裡不重複寫死。
 
-     ⚠️ 但 .text-zh-display / .text-zh-h1 / .text-zh-h4 / .text-en-hero /
-     .text-en-h3 / .text-en-h4 這六個目前「沒有任何 .vue 檔用到」，改成同一種
-     @apply fs-* token 寫法後實測會整條 rule 消失（font-size 掉回瀏覽器預設
-     16px，不會噴錯、不會有 warning，是靜默壞掉）——用乾淨重建（清 .nuxt +
-     node_modules/.cache 重啟）在 /people 頁重複驗證過兩次，同一批 class 每次
-     都壞。原因目前沒有查清楚（懷疑跟這批 fs-* token 在任何模板裡都找不到字面
-     字串、Tailwind 3.4 這版 @apply 對「完全沒被掃到過」的自訂 fontSize token
-     的解析在特定組合下不穩定有關，但無法簡化出最小重現），所以這六個先維持
-     原本的寫死 CSS + media query，其餘已實測正常的維持 @apply 寫法。之後這
-     六個如果要開始被某個元件使用，套用前務必重新實測 computed font-size。
+     hero / display / h1 / h2 / h3 是伸縮字級：桌機與 -m 兩個 token 指向同一個
+     clamp()（tailwind.config.cjs 的 FLUID），所以 `-m lg:` 的寫法照舊。
+
+     ⚠️ 這裡的 class 都在 @layer utilities 裡 —— Tailwind 只會輸出「模板裡真的有
+     用到」的 class。沒被任何 .vue 用到的（例如目前的 .text-zh-display、
+     .text-zh-h1；.text-en-hero 只有 lg:text-en-hero 被用到，所以只會產出 lg: 那個
+     變體）在最終 CSS 裡根本不存在，用 JS 動態建元素量 computed style 會量到 16px。
+     這不是 @apply 壞掉，模板一用到就會出現。以前這段註解誤判成 @apply 的 bug。
      ========================================================================= */
 
   /* ----- zh/* ----- */
   .text-zh-display {
-    font-size: 2rem; /* 32 ← 56-32 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-zh-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-display { font-size: 3.5rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-zh-serif font-medium text-fs-zh-display-m lg:text-fs-zh-display;
   }
 
   .text-zh-h1 {
-    font-size: 2.5rem; /* 40 ← 64-40 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-zh-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-h1 { font-size: 4rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-zh-serif font-medium text-fs-zh-h1-m lg:text-fs-zh-h1;
   }
 
   .text-zh-h2 {
-    @apply font-zh-serif font-bold text-fs-zh-h2-m lg:text-fs-zh-h2;
+    @apply font-zh-serif font-medium text-fs-zh-h2-m lg:text-fs-zh-h2;
   }
 
   .text-zh-h3 {
-    @apply font-zh-serif font-bold text-fs-zh-h3-m lg:text-fs-zh-h3;
+    @apply font-zh-serif font-medium text-fs-zh-h3-m lg:text-fs-zh-h3;
   }
 
   .text-zh-h4 {
-    font-size: 1.375rem; /* 22 ← 28-22 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-zh-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-zh-h4 { font-size: 1.75rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-zh-serif font-medium text-fs-zh-h4-m lg:text-fs-zh-h4;
   }
 
   .text-zh-h5 {
-    @apply font-zh-serif font-bold text-fs-zh-h5-m lg:text-fs-zh-h5;
+    @apply font-zh-serif font-medium text-fs-zh-h5-m lg:text-fs-zh-h5;
   }
 
   .text-zh-body-lg {
@@ -79,10 +59,10 @@
     @apply font-zh-sans font-normal text-fs-zh-body-md-m lg:text-fs-zh-body-md;
   }
 
-  /* 按鈕：zh/btn，Noto Sans TC Medium，100% 行高 / 10% 字距 —— kit 沒有
+  /* 按鈕：zh/btn，Noto Sans TC Regular，100% 行高 / 10% 字距 —— kit 沒有
      en/btn，按鈕文字不論中英一律套這個。 */
   .text-zh-btn {
-    @apply font-zh-sans font-medium text-fs-zh-btn-m lg:text-fs-zh-btn;
+    @apply font-zh-sans font-normal text-fs-zh-btn-m lg:text-fs-zh-btn;
   }
 
   /* ----- en/* ----- */
@@ -92,13 +72,7 @@
 
   /* kit 沒有 zh/hero —— 英文專屬，Bold Italic。 */
   .text-en-hero {
-    font-size: 4rem; /* 64 ← 72-64 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-en-serif font-bold italic;
-  }
-  @media (min-width: 1024px) {
-    .text-en-hero { font-size: 4.5rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-en-serif font-bold italic text-fs-en-hero-m lg:text-fs-en-hero;
   }
 
   .text-en-h1 {
@@ -110,23 +84,11 @@
   }
 
   .text-en-h3 {
-    font-size: 1.5rem; /* 24 ← 32-24 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-en-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-en-h3 { font-size: 2rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-en-serif font-bold text-fs-en-h3-m lg:text-fs-en-h3;
   }
 
   .text-en-h4 {
-    font-size: 1.375rem; /* 22 ← 28-22 */
-    line-height: 1.2;
-    letter-spacing: 0.02em;
-    @apply font-en-serif font-bold;
-  }
-  @media (min-width: 1024px) {
-    .text-en-h4 { font-size: 1.75rem; line-height: 1.2; letter-spacing: 0.02em; }
+    @apply font-en-serif font-bold text-fs-en-h4-m lg:text-fs-en-h4;
   }
 
   .text-en-h5 {

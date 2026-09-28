@@ -459,7 +459,7 @@ onBeforeUnmount(() => {
             <span
               v-for="(r, k) in nameRuns(s.name)"
               :key="k"
-              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
+              :class="r.zh ? 'font-zh-serif font-medium' : 'font-en-serif font-bold italic'"
             >{{ r.t }}</span>
           </span>
           <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
@@ -537,7 +537,7 @@ onBeforeUnmount(() => {
             <span
               v-for="(r, k) in nameRuns(s.name)"
               :key="k"
-              :class="r.zh ? 'font-zh-serif font-bold' : 'font-en-serif font-bold italic'"
+              :class="r.zh ? 'font-zh-serif font-medium' : 'font-en-serif font-bold italic'"
             >{{ r.t }}</span>
           </span>
           <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
