@@ -37,7 +37,7 @@ function start () {
 
         <h2
           id="interactive-gate-title"
-          class="mt-3 font-en-serif text-[32px] font-bold italic leading-[1.2] text-pre-800"
+          class="mt-3 font-en-serif text-[32px] font-normal italic leading-[1.2] text-pre-800"
         >
           啟動互動模式
         </h2>

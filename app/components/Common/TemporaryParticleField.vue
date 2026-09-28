@@ -1,5 +1,7 @@
 <script setup>
 const { loadParticleKit } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
 const { countFor, maxDpr } = useParticleBudget()
 const { isDesktop } = useViewportMode()
 const { idle } = useParticleStage()
@@ -116,9 +118,9 @@ async function init () {
   syncRunning()
 }
 
-onMounted(() => init().catch(error => {
+onMounted(() => trackIntro(init().catch(error => {
   if (!disposed) console.warn('[TemporaryParticleField] Background initialization failed:', error)
-}))
+})))
 
 onBeforeUnmount(() => {
   disposed = true

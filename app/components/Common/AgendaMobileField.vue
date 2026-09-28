@@ -1,5 +1,7 @@
 <script setup>
 const { loadParticleKit, registerNebula } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
 const { buildSlotTargets } = useParticleMorph()
 const { idle } = useParticleStage()
 const { knobs, markActive, onTierChange, suspendReadback, cpuFallback } = useParticleQuality()
@@ -173,7 +175,7 @@ async function init() {
   frame(performance.now())
 }
 
-onMounted(() => init().catch(useFallback))
+onMounted(() => trackIntro(init().catch(useFallback)))
 onBeforeUnmount(() => {
   disposed = true
   cancelAnimationFrame(raf)

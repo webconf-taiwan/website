@@ -26,6 +26,8 @@
 // 這三件的長註解在 Home/ParticleField.vue，改參數前先讀那邊。
 
 const { loadParticleKit } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
 const { countFor, maxDpr } = useParticleBudget()
 const { buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張滿版 canvas，不需要 claim/release。
@@ -670,7 +672,7 @@ function applyToolKnobs (next) {
   syncToolKnobs()
 }
 
-onMounted(() => { init() })
+onMounted(() => { trackIntro(init()) })
 
 onBeforeUnmount(() => {
   unregisterTool?.()

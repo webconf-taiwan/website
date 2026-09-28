@@ -50,6 +50,12 @@ const props = defineProps({
 })
 
 const { loadParticleKit } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
+// 背景音：推粒子 → blip、收攏程度 → 濾波器（見 plugins/sound.client.js）
+const sound = useSiteSound()
+const SOUND_PUSH_MIN_SPEED = 6     // px／幀，低於這個當成沒在撥
+const SOUND_PUSH_FULL_SPEED = 40
 const { countFor, maxDpr, isMobile } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張 canvas，不需要 claim/release。
@@ -650,6 +656,12 @@ function applyPointerPush () {
 
   const { x, y } = toSim(pointerX, pointerY)
   engine.disturb?.(x, y, POINTER_RADIUS, push)
+
+  // 背景音：真的在「撥」粒子（移動夠快）才出一小串 blip —— 停著的排斥圈每幀都在推，
+  // 不能每幀都響。力道跟著速度、左右跟著游標位置（plugin 那邊還有節流）
+  if (speed > SOUND_PUSH_MIN_SPEED) {
+    sound.particlePush(Math.min(1, speed / SOUND_PUSH_FULL_SPEED), (pointerX / window.innerWidth) * 2 - 1)
+  }
   if (import.meta.dev) {
     pointerPushCount++
     pointerPushes.push({ x: Math.round(x), y: Math.round(y), push: +push.toFixed(2) })
@@ -1886,7 +1898,12 @@ async function init () {
         start: seg.start,
         end: seg.end,
         scrub: true,
-        onUpdate: (self) => { segProgress[i] = self.progress; flow = segProgress.reduce((a, b) => a + b, 0) },
+        onUpdate: (self) => {
+          segProgress[i] = self.progress
+          flow = segProgress.reduce((a, b) => a + b, 0)
+          // 收攏程度：hero → about 收成形狀（0→1），一路維持到票券區散回自由場（1→0）
+          sound.particleGather(Math.min(1, flow) * (1 - Math.min(1, Math.max(0, flow - (SEGMENTS.length - 1)))))
+        },
         onRefresh: (self) => { segProgress[i] = self.progress; flow = segProgress.reduce((a, b) => a + b, 0) },
       }))
     })
@@ -1902,7 +1919,7 @@ watch(speakerIndex, (i) => {
   KEYS[SPEAKER_KEY].src = speakerPortrait(i)
 })
 
-onMounted(() => { init() })
+onMounted(() => { trackIntro(init()) })
 
 onBeforeUnmount(() => {
   adaptAlive = false

@@ -69,6 +69,8 @@ const props = defineProps({
 })
 
 const { loadParticleKit, registerNebula } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
 const { countFor, maxDpr, isMobile } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { idle } = useParticleStage()
@@ -867,7 +869,7 @@ async function applyToolKnobs (next) {
   syncToolKnobs()
 }
 
-onMounted(() => { init() })
+onMounted(() => { trackIntro(init()) })
 
 // 拆掉粒子那一整套（卸載、或降檔換成靜態圖時共用）
 function teardownParticles () {

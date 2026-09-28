@@ -41,6 +41,8 @@ const DEFAULTS = {
 
 export function useFadeIn (rootRef, autoOpts = {}) {
   const triggers = []
+  // 首次進站要等 loading（LayoutPageIntro）淡出才開始建 trigger；站內換頁時早就是 done
+  const { whenIntroDone } = useSiteIntro()
 
   function fadeIn (root, opts = {}) {
     if (!root || typeof window === 'undefined') return
@@ -76,16 +78,21 @@ export function useFadeIn (rootRef, autoOpts = {}) {
       overwrite: true,
     })
 
-    triggers.push(...$ScrollTrigger.batch(els, {
-      start: o.start,
-      end: o.end,
-      once: o.once,
-      onEnter: batch => show(batch),
-      // once:true 時 ScrollTrigger 本來就只會叫一次 onEnter，其餘不必掛
-      onEnterBack: o.once ? undefined : batch => show(batch, o.step * 0.8),
-      onLeave: o.once ? undefined : batch => hide(batch, -o.y),
-      onLeaveBack: o.once ? undefined : batch => hide(batch, o.y),
-    }))
+    // ⚠️ opacity:0 上面已經先設好（藏在 loading 底下），只有「建 trigger、開始播」要等。
+    // 等待期間元件可能已經卸載（使用者在 loading 時就換頁），root 不在 DOM 裡就不建了。
+    whenIntroDone(() => {
+      if (!root.isConnected) return
+      triggers.push(...$ScrollTrigger.batch(els, {
+        start: o.start,
+        end: o.end,
+        once: o.once,
+        onEnter: batch => show(batch),
+        // once:true 時 ScrollTrigger 本來就只會叫一次 onEnter，其餘不必掛
+        onEnterBack: o.once ? undefined : batch => show(batch, o.step * 0.8),
+        onLeave: o.once ? undefined : batch => hide(batch, -o.y),
+        onLeaveBack: o.once ? undefined : batch => hide(batch, o.y),
+      }))
+    })
   }
 
   // 不等捲動、立刻播一次。用在「內容換掉了但區塊沒動」的情況 ——
