@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
     id="speaker"
     ref="sectionRef"
     data-same-speaker
-    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:bg-bg-mid/25 lg:px-[60px] lg:py-0"
+    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:bg-bg-mid/25 lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
   >
     <!-- 引線：被選中的名字 → 中央觀景框 -->
     <svg
@@ -308,11 +308,21 @@ onBeforeUnmount(() => {
       />
     </svg>
 
-    <!-- 卷號標籤。窄視窗是橫排一行（設計稿），桌機是直排、絕對定位在左上角。 -->
+    <!-- 卷號標籤。窄視窗是橫排一行（設計稿），桌機是直排。
+         ≥1440（設計稿寬度）絕對定位浮在左上角，左欄名單用 pl-[23.5%] 讓出位置；
+         1024～1439 左欄只剩約 350px，再讓出那塊名字就擠到斷行（吳哲宇、David Chen），
+         所以這段改成留在文件流、放在名單「上方」，名單欄位整欄可用。
+         ⚠️ 上方 60px 掛在 section 的 pt，不掛在這裡：CommonPlate 自己有 border-t + lg:py-8
+         （線跟字的間距），給它 pt 會蓋掉、字貼到線上；給 mt 則會穿出 section 做 margin 合併。
+         1024～1279 再把觀景框縮到 264、欄距 24、交錯縮成 20：最長的「Gordon Chang 張智翔」
+         要 283px，1024 扣掉捲軸後側欄約 288px 剛好放得下（左邊不能靠縮 padding 擠，會貼到章節錨點）。
+         側欄比 300px 寬時，名單整塊在欄內置中：每一列都給同一個 pl =（欄寬 − 300px）/ 2
+         （grid item 的 % padding 是對 grid area 算的），不然左欄貼齊欄左、右欄貼齊觀景框，
+         右邊會空出一大塊。 -->
     <CommonPlate
       :data="plate"
       data-fade="in"
-      class="relative z-2 lg:absolute lg:inset-x-[60px] lg:top-[60px]"
+      class="relative z-2 min-[1440px]:absolute min-[1440px]:inset-x-[60px] min-[1440px]:top-[60px]"
     />
 
     <!-- 章節錨點不在這裡 —— 已經抽成頁面層級的 fixed 元件 CommonChapterNav，
@@ -435,7 +445,7 @@ onBeforeUnmount(() => {
          ⚠️ 在窄視窗是 display:none（不是 v-if）—— 名字要留在 SSR 的 HTML 裡。
     ==================================================================== -->
     <div
-      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_300px_1fr] lg:content-center lg:gap-y-12"
+      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-12 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:gap-x-0"
     >
       <button
         v-for="(s, i) in LEFT"
@@ -443,13 +453,13 @@ onBeforeUnmount(() => {
         data-fade="in"
         type="button"
         :aria-current="current === i ? 'true' : undefined"
-        class="group flex lg:col-start-1 lg:pl-[23.5%]"
-        :class="[ROW[i], i % 2 === 0 ? 'lg:ml-10' : '']"
+        class="group flex lg:col-start-1 lg:pl-[max(0px,calc((100%_-_300px)/2))] min-[1440px]:pl-[23.5%]"
+        :class="[ROW[i], i % 2 === 0 ? 'lg:ml-5 xl:ml-10' : '']"
         @click="select(i)"
       >
         <span
           :ref="el => { if (el) nameRefs[i] = el }"
-          class="flex w-max flex-col items-start gap-y-2 pb-4 text-left"
+          class="flex w-fit max-w-full flex-col items-start gap-y-2 pb-4 text-left"
           :class="current === i ? 'border-b border-pre-800/80 lg:border-b-0' : ''"
         >
           <span
@@ -462,15 +472,12 @@ onBeforeUnmount(() => {
               :class="r.zh ? 'font-zh-serif font-medium' : 'font-en-serif font-normal italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ s.org }}
-            <span class="text-accent-1">·</span>
-            {{ s.role }}
+          <!-- 不用 flex 的理由同窄視窗輪播那段：flex 會把 org／·／role 各自壓縮折行 -->
+          <span class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ s.org }}&nbsp;<span class="text-accent-1">·</span> {{ s.role }}
           </span>
-          <span v-if="s.extra" class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ s.extra.org }}
-            <span class="text-accent-1">·</span>
-            {{ s.extra.role }}
+          <span v-if="s.extra" class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ s.extra.org }}&nbsp;<span class="text-accent-1">·</span> {{ s.extra.role }}
           </span>
         </span>
       </button>
@@ -493,7 +500,7 @@ onBeforeUnmount(() => {
              ⚠️ 不要改回 transform: scale —— 那會把 1px 的邊框一起縮，起始 2% 時邊框
              是 0.02px，瀏覽器畫不出來，於是「從小點放射」的前半段整段是空白的
              （見 script 裡 FRAME_DOT_MS 那段註解）。動 width/height 則邊框全程 1px。 -->
-        <div class="relative aspect-square w-full lg:size-[300px]">
+        <div class="relative aspect-square w-full lg:size-[264px] xl:size-[300px]">
           <div
             ref="frameRef"
             class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-pre-800/80"
@@ -521,13 +528,13 @@ onBeforeUnmount(() => {
         data-fade="in"
         type="button"
         :aria-current="current === i + LEFT.length ? 'true' : undefined"
-        class="group flex lg:col-start-3 lg:pl-[25.7%]"
-        :class="[ROW[i], i % 2 === 0 ? 'lg:ml-10' : '']"
+        class="group flex lg:col-start-3 lg:pl-[max(0px,calc((100%_-_300px)/2))] min-[1440px]:pl-[25.7%]"
+        :class="[ROW[i], i % 2 === 0 ? 'lg:ml-5 xl:ml-10' : '']"
         @click="select(i + LEFT.length)"
       >
         <span
           :ref="el => { if (el) nameRefs[i + LEFT.length] = el }"
-          class="flex w-max flex-col items-start gap-y-2 pb-4 text-left"
+          class="flex w-fit max-w-full flex-col items-start gap-y-2 pb-4 text-left"
           :class="current === i + LEFT.length ? 'border-b border-pre-800/80 lg:border-b-0' : ''"
         >
           <span
@@ -540,15 +547,12 @@ onBeforeUnmount(() => {
               :class="r.zh ? 'font-zh-serif font-medium' : 'font-en-serif font-normal italic'"
             >{{ r.t }}</span>
           </span>
-          <span class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ s.org }}
-            <span class="text-accent-1">·</span>
-            {{ s.role }}
+          <!-- 不用 flex 的理由同窄視窗輪播那段：flex 會把 org／·／role 各自壓縮折行 -->
+          <span class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ s.org }}&nbsp;<span class="text-accent-1">·</span> {{ s.role }}
           </span>
-          <span v-if="s.extra" class="flex items-center gap-x-1 text-body-sm text-pre-800/[62%]">
-            {{ s.extra.org }}
-            <span class="text-accent-1">·</span>
-            {{ s.extra.role }}
+          <span v-if="s.extra" class="text-body-sm text-pre-800/[62%] text-balance break-keep [overflow-wrap:anywhere]">
+            {{ s.extra.org }}&nbsp;<span class="text-accent-1">·</span> {{ s.extra.role }}
           </span>
         </span>
       </button>
