@@ -200,6 +200,8 @@ function heroPointSize () {
 function applyParticleBudget () {
   heroSize = heroPointSize()
   if (!engine || !canvasRef.value) return
+  const q = knobs('desktopField') || {}
+  engine.setMaxDpr?.(Math.min(maxDpr(), q.dprCap ?? maxDpr()))
   const count = countFor(canvasRef.value, countOptions())
   const nextCount = engine.setTargets ? count : Math.min(count, 3600)
   if (nextCount !== engine.config.count) {
