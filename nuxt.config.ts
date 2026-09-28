@@ -65,7 +65,8 @@ export default defineNuxtConfig({
     identity: {
       type: 'Organization',
       name: process.env.APP_TITLE,
-      logo: '/logo-webconf.svg'
+      logo: '/logo-webconf.svg',
+      sameAs: ['https://www.facebook.com/WebConfTaiwan/', 'https://instagram.com/webconftw/', 'https://www.threads.com/@webconftw']
     }
   },
 
@@ -88,7 +89,16 @@ export default defineNuxtConfig({
     '/particle-studio': { robots: false },
     // 暫時頁只供內部檢視，不進 sitemap 或搜尋索引。
     '/coming-soon': { robots: false },
-    '/404-demo': { robots: false }
+    '/404-demo': { robots: false },
+    '/team': { robots: false },
+    '/history': { robots: false },
+    '/speakers': { robots: false },
+    '/venue': { robots: false },
+    '/about': { robots: false },
+    '/contact': { robots: false },
+    '/people': { robots: false },
+    '/greenscreen': { robots: false },
+    '/venue-cellular-lab': { robots: false }
   },
 
   app: {

@@ -1,5 +1,7 @@
 <script setup>
 const config = useRuntimeConfig()
+const route = useRoute()
+const site = useSiteConfig()
 
 const props = defineProps({
   title: {
@@ -22,8 +24,7 @@ const props = defineProps({
 
 const title = computed(() => props.title || config.public.APP_TITLE)
 const description = computed(() => props.desc || config.public.APP_DESC)
-const siteUrl = computed(() => config.public.APP_URL)
-const pageUrl = computed(() => props.url ? `${siteUrl.value}/${props.url}` : siteUrl.value)
+const pageUrl = computed(() => new URL(props.url || route.path.replace(/\/+$/, '') || '/', site.url).href)
 
 const seoMeta = {
   title,

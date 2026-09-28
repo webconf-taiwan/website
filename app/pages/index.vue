@@ -18,6 +18,27 @@
 //                        （被不透明底色蓋住，看不出定格），捲到這裡再醒回來繼續動
 
 const home = await useHomeData()
+const site = useSiteConfig()
+const siteUrl = site.url.replace(/\/+$/, '')
+const title = home.event.name
+const description = `${home.hero.subtitle}。${home.about.body_zh}`
+useSeoMeta({ title, description, ogTitle: title, ogDescription: description, twitterTitle: title, twitterDescription: description })
+defineOgImage('Default', { title, description: home.hero.subtitle })
+// Only publish confirmed dates and venue; ticket URLs and session times are still pending.
+useSchemaOrg([defineWebPage({ name: title, description, mainEntity: { '@id': `${siteUrl}/#event` } }), {
+  '@type': 'Event',
+  '@id': `${siteUrl}/#event`,
+  name: home.event.name,
+  description: home.about.body_zh,
+  url: `${siteUrl}/`,
+  startDate: home.event.start_date,
+  endDate: home.event.end_date,
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  eventStatus: 'https://schema.org/EventScheduled',
+  inLanguage: 'zh-TW',
+  location: { '@type': 'Place', name: home.venue.title_zh },
+  organizer: { '@id': `${siteUrl}/#identity` },
+}])
 
 // 「一鏡到底」只有桌機（≥1024px）跑得動，窄視窗換成幾張各自獨立、只在自己那一區
 // 跑的小 canvas。完整的理由與各區塊的取捨在 app/composables/useViewportMode.js。

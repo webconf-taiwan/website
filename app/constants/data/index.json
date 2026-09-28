@@ -1,4 +1,9 @@
 {
+  "event": {
+    "name": "WebConf Taiwan 2026",
+    "start_date": "2026-12-11",
+    "end_date": "2026-12-12"
+  },
   "hero": {
     "plate_label": "PL. I · Living Specimen · 2026",
     "title": "WebConf",
