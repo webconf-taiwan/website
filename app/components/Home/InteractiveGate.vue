@@ -37,7 +37,7 @@ function start () {
 
         <h2
           id="interactive-gate-title"
-          class="mt-3 font-en-serif text-[32px] font-bold italic leading-[1.2] text-pre-800"
+          class="mt-3 font-en-serif text-[32px] font-normal italic leading-[1.2] text-pre-800"
         >
           啟動互動模式
         </h2>
@@ -77,7 +77,7 @@ function start () {
           </button>
           <button
             type="button"
-            class="border border-accent-1 bg-accent-1/10 px-6 py-2 font-zh-sans text-[15px] font-medium tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/20"
+            class="border border-accent-1 bg-accent-1/10 px-6 py-2 font-zh-sans text-[15px] font-normal tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/20"
             @click="start"
           >
             開啟相機

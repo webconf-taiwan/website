@@ -1,10 +1,7 @@
 <script setup>
 definePageMeta({ layout: false })
 
-useSeoMeta({
-  title: '主辦團隊 - 網站建置中',
-  robots: 'noindex, nofollow'
-})
+usePageSeo('/team')
 
 function handleTicket () {
   return navigateTo('/#ticket')

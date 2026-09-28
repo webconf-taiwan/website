@@ -13,16 +13,27 @@ definePageMeta({
 const introRef = ref(null)
 useFadeIn(introRef, { step: 0.1 })
 
-useSeoMeta({
-  title: '議程 · WebConf',
-  description: 'WebConf Taiwan 2026 兩日議程資訊。',
-  ogTitle: '議程 · WebConf',
-  ogDescription: 'WebConf Taiwan 2026 兩日議程資訊。',
-  twitterTitle: '議程 · WebConf',
-  twitterDescription: 'WebConf Taiwan 2026 兩日議程資訊。'
-})
+usePageSeo('/agenda')
 
-defineOgImage('Default', { title: '議程 · WebConf', description: 'WebConf Taiwan 2026 兩日議程資訊。' })
+// 議程清單的結構化資料，讓 AI 摘要能回答「WebConf 有哪些議程、誰講什麼」。
+// ⚠️ 用 ItemList 而不是 Event.subEvent：場次時間還沒排（agenda.json 沒有時段），
+// subEvent 缺 startDate 會被 Google 判成無效的活動。排好之後可以改成 subEvent。
+useSchemaOrg([
+  {
+    '@type': 'ItemList',
+    name: 'WebConf Taiwan 2026 議程',
+    itemListElement: (agenda.items || []).map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      item: {
+        '@type': 'CreativeWork',
+        name: item.title,
+        keywords: (item.skills || []).join(', '),
+        author: { '@type': 'Person', name: item.speaker_name, jobTitle: item.speaker_title }
+      }
+    }))
+  }
+])
 
 const plate = computed(() => agenda.plate || {})
 const items = computed(() => agenda.items || [])
@@ -74,7 +85,7 @@ const items = computed(() => agenda.items || [])
 .agenda-layout [data-plate-hero-mobile],
 .agenda-layout [data-plate-hero-desktop] { background: transparent; }
 .agenda-layout [data-plate-hero-mobile] h1,
-.agenda-layout [data-plate-hero-desktop] h1 { font-weight: 400; letter-spacing: 0.02em; }
+.agenda-layout [data-plate-hero-desktop] [data-plate-title] { font-weight: 400; letter-spacing: 0.02em; }
 .agenda-layout .text-en-caption { font-weight: 400; }
 .agenda-layout [data-plate-body] .plate-page-content { background-color: #0a0a0c; }
 .agenda-layout [data-plate-body] .plate-page-content::before { content: none; }

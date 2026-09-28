@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({ layout: false })
-useSeoMeta({ title: '講者陣容 - 網站建置中', robots: 'noindex, nofollow' })
+usePageSeo('/speakers')
 </script>
 
 <template>

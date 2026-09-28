@@ -51,10 +51,7 @@
 
 definePageMeta({ layout: false })
 
-useSeoMeta({
-  title: '顯影牆 · Webconf',
-  description: '現場大螢幕的即時粒子裝置：人走過去，粒子場會凝聚成你的人形。',
-})
+usePageSeo('/wall')
 
 const { loadParticleKit } = useParticleKit()
 const { countFor, maxDpr } = useParticleBudget()

@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({ layout: false })
-useSeoMeta({ title: '場域介紹 - 網站建置中', robots: 'noindex, nofollow' })
+usePageSeo('/venue')
 </script>
 
 <template>

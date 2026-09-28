@@ -50,6 +50,12 @@ const props = defineProps({
 })
 
 const { loadParticleKit } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
+// 背景音：推粒子 → blip、收攏程度 → 濾波器（見 plugins/sound.client.js）
+const sound = useSiteSound()
+const SOUND_PUSH_MIN_SPEED = 6     // px／幀，低於這個當成沒在撥
+const SOUND_PUSH_FULL_SPEED = 40
 const { countFor, maxDpr, isMobile } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張 canvas，不需要 claim/release。
@@ -152,10 +158,15 @@ const KEYS = [
   // 對齊）——不能直接引用 VENUE_EFFECTS，那個常數宣告在這個陣列後面，模組執行
   // 順序上還沒 init 完。init() 裡的 applyVenueEffectToKeys() 會依網址覆寫這兩個值。
   { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 9, grip: 30, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
-  // shift 0.32 → 0.40：設計回饋標本整體要再往左推一點，離右邊「常見問答」內容更遠。
+  // shift 0.32 → 0.40 → 0.46：設計回饋標本整體要再往左推，離右邊「常見問答」內容更遠
+  // （0.46 在 1440 寬時標本右緣約 x≈440，右欄內容從 x≈505 開始）。
   // shift 越大＝內容被相機推得越往左（見 shiftToCamera），純粹是這一格自己的構圖，
   // 不影響 venue 那格（各自獨立的 KEYS 常數）。
-  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.40, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
+  // minAlpha 0.15 / lumaBias -0.5：faq.webp 上半部那兩顆棕色圓球有一大半是半透明
+  // （alpha < 0.5 的像素是藍色圓球的 8 倍），預設 0.5 的門檻會把它們吃掉，
+  // 標本頂端看起來像被切掉。調低門檻後棕球點數 +45%；負的 lumaBias 讓暗部（中央
+  // 那圈深色毛邊）也密一點。
+  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.46, shiftY: 0.26, opacity: 0.80, lumaBias: -0.5, minAlpha: 0.15 },
   { id: 'outro', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
@@ -552,18 +563,18 @@ let reducedMotion = false
 // 那是「明顯看得出來」的等級；一開始給 110/3.2 太保守，圈太小、涵蓋的粒子太少，滑過去沒感覺。
 // 粒子被推開多遠 ≈ 初速 / 摩擦，所以「推得更遠」要調的是 MAX_PUSH（給的初速），
 // 不是半徑（半徑只決定影響到多大一圈）。
-const POINTER_RADIUS = 260      // 影響半徑（sim px，= canvas CSS px）
-// ⚠️ 13 不是隨便訂的：引擎每幀把新脈衝併進舊的再衰減，穩態大約是這個值的三倍，
-// 剛好落在原本的 40 附近 —— 也就是維持放寬 clamp 之前調好的手感。
-const POINTER_MAX_PUSH = 13     // 滑動時的單幀最大推力
-const POINTER_SPEED_GAIN = 2  // 這一幀滑了多少 px → 推力（慢慢滑也要推得動）
+const POINTER_RADIUS = 320      // 影響半徑（sim px，= canvas CSS px）
+// ⚠️ 引擎每幀把新脈衝併進舊的再衰減，穩態大約是這個值的 2.5 倍。
+// 原本 13（穩態 ~33）滑過去還是太含蓄；24 的穩態 ~60，仍在引擎 ±100 的 clamp 內。
+const POINTER_MAX_PUSH = 24     // 滑動時的單幀最大推力
+const POINTER_SPEED_GAIN = 3.5  // 這一幀滑了多少 px → 推力（慢慢滑也要推得動）
 // 游標停著時也要持續輕推，粒子才會在游標周圍讓出一塊。只在移動時推的話，
 // 手一停下來粒子立刻填回去，等於游標本身沒有存在感 —— 那就是「沒感覺」的來源。
 //
 // ⚠️ 這個值要很小。引擎每幀把新脈衝併進舊的（s += new * 0.45）再乘 0.85 衰減，
 // 所以持續推的穩態強度是 idlePush * 3 左右 —— 給 2.5 實測會在 2.5 秒內把整個
 // 半徑內的粒子清空，變成一個跟著游標的大洞，不是「稍微推擠」。
-const POINTER_IDLE_PUSH = 0.8
+const POINTER_IDLE_PUSH = 2
 
 // --- 互動模式：把粒子「吸過去」-------------------------------------------
 // disturb 是速度脈衝，粒子被推向圓心後會直接衝過去再散開 —— 做不出「聚成一團」。
@@ -603,6 +614,12 @@ let pointerX = 0, pointerY = 0
 let pointerPrevX = 0, pointerPrevY = 0
 let pointerSeen = false
 let onPointerMove = null
+// 觸控（iPad 橫放這類 ≥1024 的平板）：沒有 hover，只在手指按著時推。
+// 滑鼠停著會持續輕推（POINTER_IDLE_PUSH），手指放開後就不該再有一個看不見的排斥圈。
+let touchMode = false
+let touchDown = false
+let onTouch = null
+let onTouchEnd = null
 const pointerPushes = []   // 只有 dev 會塞東西進來，給 __sameDbg 看（只留最近 20 筆）
 let pointerPushCount = 0
 
@@ -626,6 +643,7 @@ function applyPointerPush () {
   // 只要指標曾經進過畫面（pointerSeen）就每幀推一次。
   // 互動模式（彩蛋）開著時交給手勢，兩個一起推會打架。
   if (!pointerOn || !pointerSeen || !engine || interactiveOn.value) return
+  if (touchMode && !touchDown) return
 
   const dx = pointerX - pointerPrevX
   const dy = pointerY - pointerPrevY
@@ -638,6 +656,12 @@ function applyPointerPush () {
 
   const { x, y } = toSim(pointerX, pointerY)
   engine.disturb?.(x, y, POINTER_RADIUS, push)
+
+  // 背景音：真的在「撥」粒子（移動夠快）才出一小串 blip —— 停著的排斥圈每幀都在推，
+  // 不能每幀都響。力道跟著速度、左右跟著游標位置（plugin 那邊還有節流）
+  if (speed > SOUND_PUSH_MIN_SPEED) {
+    sound.particlePush(Math.min(1, speed / SOUND_PUSH_FULL_SPEED), (pointerX / window.innerWidth) * 2 - 1)
+  }
   if (import.meta.dev) {
     pointerPushCount++
     pointerPushes.push({ x: Math.round(x), y: Math.round(y), push: +push.toFixed(2) })
@@ -812,24 +836,25 @@ function speakerPortrait (i) {
   return props.speakers[i]?.portrait || null
 }
 
-function specKey (src, fit, lumaBias) { return `${src}@${fit}@${lumaBias}` }
+function specKey (src, fit, lumaBias, minAlpha) { return `${src}@${fit}@${lumaBias}@${minAlpha}` }
 
-async function getSpec (src, fit, lumaBias = DEFAULT_LUMA_BIAS) {
+async function getSpec (src, fit, lumaBias = DEFAULT_LUMA_BIAS, minAlpha) {
   if (!src) return null
-  const cacheKey = specKey(src, fit, lumaBias)
+  const cacheKey = specKey(src, fit, lumaBias, minAlpha)
   if (specs.has(cacheKey)) return specs.get(cacheKey)
   const spec = await window.PLImage.prepare(src, {
     count: samplesNow,
     colors: look.rules.species,   // 必須等於 species，否則得 setSpecies（會整場重生）
     fit,
     lumaBias,
+    minAlpha,
   })
   specs.set(cacheKey, spec)
   return spec
 }
 
-// 一個影格要拿的那份 spec（key 自己帶 fit 與 lumaBias）
-function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias) }
+// 一個影格要拿的那份 spec（key 自己帶 fit、lumaBias 與 minAlpha）
+function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias, key.minAlpha) }
 
 // PL.IV 的菌落構圖：在版面左半邊撒 VENUE_COLONIES 顆圓形群落，把 N 顆粒子依
 // 面積分給它們。回傳的是 buildImageTargets 那組同樣的 {tx, ty, tt} 介面。
@@ -1010,7 +1035,7 @@ async function buildAllShapes () {
       continue
     }
     if (!key.src) { pushFree(); continue }
-    const spec = specs.get(specKey(key.src, key.fit, key.lumaBias))
+    const spec = specs.get(specKey(key.src, key.fit, key.lumaBias, key.minAlpha))
     if (!spec) { pushFree(); continue }
     const built = shapeFromSpec(spec, snap, W, H, key.maxPx)
     shapes.push(built.shape)
@@ -1701,6 +1726,7 @@ async function init () {
     seedPattern: look.rules.seedPattern,
     palette: hero.particles,
     bgFade: hero.bgFade,
+    bg: '#0a0a0c',                  // GPU compose 的底色，對齊頁面底色（見 pages/index.vue）
     forceFactor: look.physics.forceFactor,
     friction: look.physics.friction,
     repel: look.physics.repel,
@@ -1778,6 +1804,30 @@ async function init () {
       pointerY = e.clientY
     }
     window.addEventListener('pointermove', onPointerMove, { passive: true })
+  } else if (!reducedMotion && engine.backend === 'webgpu' && navigator.maxTouchPoints > 0) {
+    // 觸控平板：手指按著、滑過的地方推開粒子（手機版在 MobileField 的 TOUCH_*）。
+    // ⚠️ 只給 WebGPU —— CPU 後端主執行緒已經很吃緊。
+    // ⚠️ listener 一律 passive、不 preventDefault，絕對不能跟捲動搶事件。
+    pointerOn = true
+    touchMode = true
+    onTouch = (e) => {
+      const p = e.touches[0]
+      if (!p) return
+      // 每次按下都重新對齊，不要跟上一次放開的位置算出一大段「速度」
+      if (e.type === 'touchstart') {
+        pointerPrevX = p.clientX
+        pointerPrevY = p.clientY
+      }
+      pointerX = p.clientX
+      pointerY = p.clientY
+      pointerSeen = true
+      touchDown = true
+    }
+    onTouchEnd = (e) => { touchDown = e.touches.length > 0 }
+    window.addEventListener('touchstart', onTouch, { passive: true })
+    window.addEventListener('touchmove', onTouch, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true })
   }
 
   introStart = performance.now()
@@ -1848,7 +1898,12 @@ async function init () {
         start: seg.start,
         end: seg.end,
         scrub: true,
-        onUpdate: (self) => { segProgress[i] = self.progress; flow = segProgress.reduce((a, b) => a + b, 0) },
+        onUpdate: (self) => {
+          segProgress[i] = self.progress
+          flow = segProgress.reduce((a, b) => a + b, 0)
+          // 收攏程度：hero → about 收成形狀（0→1），一路維持到票券區散回自由場（1→0）
+          sound.particleGather(Math.min(1, flow) * (1 - Math.min(1, Math.max(0, flow - (SEGMENTS.length - 1)))))
+        },
         onRefresh: (self) => { segProgress[i] = self.progress; flow = segProgress.reduce((a, b) => a + b, 0) },
       }))
     })
@@ -1864,7 +1919,7 @@ watch(speakerIndex, (i) => {
   KEYS[SPEAKER_KEY].src = speakerPortrait(i)
 })
 
-onMounted(() => { init() })
+onMounted(() => { trackIntro(init()) })
 
 onBeforeUnmount(() => {
   adaptAlive = false
@@ -1879,6 +1934,12 @@ onBeforeUnmount(() => {
   clearTimeout(resizeTimer)
   if (onResize) window.removeEventListener('resize', onResize)
   if (onPointerMove) window.removeEventListener('pointermove', onPointerMove)
+  if (onTouch) {
+    window.removeEventListener('touchstart', onTouch)
+    window.removeEventListener('touchmove', onTouch)
+    window.removeEventListener('touchend', onTouchEnd)
+    window.removeEventListener('touchcancel', onTouchEnd)
+  }
   if (engine) { engine.destroy(); engine = null }
   // ⚠️ 帶著自己的實作去核對 —— 跨斷點切換時窄視窗那張（HomeSpeakerPortrait）
   // 可能已經先登記好了，無條件清會把它踢掉。見 useSpeakerFieldBus 的說明。

@@ -32,7 +32,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     id="hero"
     ref="heroRef"
     data-same-hero
-    class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center bg-black/30 px-6 py-20 text-center"
+    class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center bg-bg-mid/30 px-6 py-20 text-center"
   >
     <p data-fade="in" class="font-mono mb-8 lg:mb-4 text-meta uppercase text-white/55">
       {{ content.plate_label }}
@@ -42,7 +42,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
       {{ content.title }}
     </h1>
 
-    <p data-fade="in" class="mb-4 text-zh-h5 italic">
+    <p data-fade="in" class="mb-4 text-zh-h5">
       {{ content.subtitle }}
     </p>
 

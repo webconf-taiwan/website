@@ -13,10 +13,7 @@
 
 definePageMeta({ layout: false })
 
-useSeoMeta({
-  title: 'PL.IV 菌落效果預覽 · Webconf',
-  description: '場地區塊菌落質感的兩個候選方向，細胞質感／電漿流動，可切換預覽。'
-})
+usePageSeo('/venue-cellular-lab')
 
 const route = useRoute()
 const router = useRouter()

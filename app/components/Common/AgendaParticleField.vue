@@ -1,5 +1,7 @@
 <script setup>
 const { loadParticleKit, registerNebula } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
 const { countFor, maxDpr } = useParticleBudget()
 const { idle } = useParticleStage()
 const { markActive, onTierChange, knobs, noteRespawn, suspendReadback } = useParticleQuality()
@@ -693,7 +695,7 @@ onMounted(() => {
     resizeObserver.observe(document.body)
   }
   schedule()
-  init().catch(useFallback)
+  trackIntro(init().catch(useFallback))
 })
 onBeforeUnmount(() => {
   disposed = true

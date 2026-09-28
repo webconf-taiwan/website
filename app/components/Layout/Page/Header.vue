@@ -16,7 +16,7 @@ const ticket = navItems.find(item => item.id === EXPOSED_ON_MOBILE)
 
 // 站內連結一律走 NuxtLink（SPA 導覽）：
 //   · 換路由的（/agenda、/team...）吃得到 LayoutPageTransition 的黑幕轉場
-//   · hash 錨點的（/#speaker...）點下去才會經過 vue-router，讓 lenis.client.js
+//   · hash 錨點的（/#xxx，目前 nav 已經沒有，一律跳各自頁面）點下去才會經過 vue-router，讓 lenis.client.js
 //     的 scrollToHash() 接手用 lenis 平滑捲過去 —— 原生 <a> 的話瀏覽器會自己
 //     原生瞬跳，完全不會經過 lenis
 // target="_blank" 的外部連結才維持原生 <a>（目前 nav_items 沒有這種，但資料是動態的）
@@ -49,6 +49,7 @@ function lockBackground (locked) {
 
 // 打開選單時，七個項目由上而下逐項淡入（面板本身的底色另外用 CSS 過場）
 const { fadeInNow } = useFadeIn()
+const { whenIntroDone } = useSiteIntro()
 watch(open, async (isOpen) => {
   lockBackground(isOpen)
   if (!isOpen) return
@@ -73,7 +74,9 @@ onMounted(() => {
   // 目前隱藏的項目先設為可見，避免日後改變斷點時卡在 opacity-0
   $gsap.set(all.filter(el => el.offsetParent === null), { opacity: 1 })
 
-  const tl = $gsap.timeline({ defaults: { ease: 'power2.out' } })
+  // 首次進站要等 loading 淡出才開始（見 useSiteIntro）；站內換頁 Header 不會重掛
+  const tl = $gsap.timeline({ defaults: { ease: 'power2.out' }, paused: true })
+  whenIntroDone(() => tl.play())
   // 1. logo 從上往下淡入
   tl.fromTo(
     logo,
@@ -143,9 +146,17 @@ onMounted(() => {
         </component>
       </nav>
 
-      <!-- 平板以下：購票 icon + 漢堡／叉叉。
+      <!-- 桌機：背景音開關。選單置中排版，開關不佔流、貼在最右邊 -->
+      <div data-nav-item class="absolute right-6 top-1/2 hidden -translate-y-1/2 opacity-0 xl:flex">
+        <LayoutPageSoundToggle />
+      </div>
+
+      <!-- 平板以下：背景音開關 + 購票 icon + 漢堡／叉叉。
            設計稿在 360px 寬只放得下兩顆 icon，購票是 icon 不是文字。 -->
       <div class="flex items-center gap-4 xl:hidden">
+        <div data-nav-item class="flex opacity-0">
+          <LayoutPageSoundToggle />
+        </div>
         <component
           :is="isInternalLink(ticket.target) ? NuxtLink : 'a'"
           v-if="ticket"
@@ -212,7 +223,7 @@ onMounted(() => {
             :rel="linkRel(link.target)"
             class="flex items-end justify-between py-4 text-pre-800 transition-colors hover:text-accent-1"
           >
-            <span class="font-en-serif text-[32px] font-bold italic leading-[1.2] tracking-[0.02em]">
+            <span class="font-en-serif text-[32px] font-normal italic leading-[1.2] tracking-[0.02em]">
               {{ link.label_en }}
             </span>
             <span class="px-3 py-1 text-zh-btn">

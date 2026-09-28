@@ -13,10 +13,10 @@
 // ─── canvas 為什麼放在觀景框「裡面」───────────────────────────────────────
 // Home/SpeakerField 那張是鋪滿整個 section 的，理由是 WebGPU 的 compose pass 是
 // clearValue{a:1} 的不透明黑，做成小方塊會有一塊硬邊壓在背景粒子上。
-// 這裡沒有那個問題 —— 窄視窗的 PL.II～PL.V 是包在一層不透明「純黑」底上的
-//（見 pages/index.vue），canvas 這個黑方塊跟它完全同色，邊界看不出來。
-// ⚠️ 那層底色一定要是純黑。改成 #0a0a0c 之類的近黑，這個方塊就會現形
-//（實測 canvas (0,0,0) vs 底 (10,10,12)）。
+// 這裡沒有那個問題 —— 窄視窗的 PL.II～PL.V 是包在一層不透明 #0a0a0c 底上的
+//（見 pages/index.vue），canvas 的 compose 底色也傳了同一個色（opts.bg），邊界看不出來。
+// ⚠️ 兩邊一定要同色。只改其中一邊，這個方塊就會現形
+//（以前 canvas 固定是純黑時實測 (0,0,0) vs 底 (10,10,12)）。
 // 好處很大：canvas 只有觀景框那麼大（手機約 342²、平板被 max-w 夾在 420² 以內），
 // 填充率與點數都跟著縮，而人像剛好落在設計稿要的那個框裡。
 //
@@ -69,6 +69,8 @@ const props = defineProps({
 })
 
 const { loadParticleKit, registerNebula } = useParticleKit()
+// 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
+const { trackIntro } = useSiteIntro()
 const { countFor, maxDpr, isMobile } = useParticleBudget()
 const { paletteToLinear, lerpPaletteLinear, buildImageTargets, buildSlotTargets } = useParticleMorph()
 const { idle } = useParticleStage()
@@ -695,7 +697,8 @@ async function init () {
     cellSubdivisions: 2,
     // ⚠️ 取 min 而不是直接用檔位值 —— 契約是「只會減、不會加」。
     maxDpr: Math.min(maxDpr(), q.dprCap),
-    bgFade: 'rgba(10,10,12,0.18)',  // 只有 CPU fallback 會用到；GPU 路徑是不透明黑
+    bgFade: 'rgba(10,10,12,0.18)',  // CPU fallback 的拖尾底色
+    bg: '#0a0a0c',                  // GPU compose 的不透明底色，要跟頁面底色一致（見檔頭）
   })
   // 建引擎的這段時間裡已經卸載，或被降檔換成靜態圖了 → 這顆引擎沒人要
   if (disposed || mode.value === 'static') { engine.destroy(); engine = null; return }
@@ -866,7 +869,7 @@ async function applyToolKnobs (next) {
   syncToolKnobs()
 }
 
-onMounted(() => { init() })
+onMounted(() => { trackIntro(init()) })
 
 // 拆掉粒子那一整套（卸載、或降檔換成靜態圖時共用）
 function teardownParticles () {
@@ -899,9 +902,9 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <!-- 觀景框裡的人像。粒子模式：canvas 同時也是框內的底色（GPU 路徑必定是不透明純黑），
-       而窄視窗這一段的底也是純黑，所以看不出這裡有個方塊。
-       靜態模式：透明底的 <img>，直接落在那層純黑底上。
+  <!-- 觀景框裡的人像。粒子模式：canvas 同時也是框內的底色（GPU 路徑是不透明的 opts.bg = #0a0a0c），
+       而窄視窗這一段的底也是 #0a0a0c，所以看不出這裡有個方塊。
+       靜態模式：透明底的 <img>，直接落在那層 #0a0a0c 底上。
        ⚠️ <img> 的 opacity 一律交給 gsap 寫（class 的 opacity-0 只是起始值）—— 不要放進
        :style，否則 Vue 每次重繪都會把動畫寫到一半的值蓋回去。大小與 canvas 上的人像
        一致：都是觀景區的 FIT（0.86），置中。 -->

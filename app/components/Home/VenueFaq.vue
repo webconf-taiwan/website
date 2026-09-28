@@ -50,6 +50,29 @@ const FAQ_PAGE = computed(() => Math.min(faqPage.value, FAQ_TOTAL_PAGES.value))
 const FAQ_OFFSET = computed(() => (FAQ_PAGE.value - 1) * FAQ_PER_PAGE.value)
 const FAQ_PAGE_ITEMS = computed(() => FAQS.value.slice(FAQ_OFFSET.value, FAQ_OFFSET.value + FAQ_PER_PAGE.value))
 
+// FAQPage 結構化資料：讓搜尋引擎／AI 摘要能直接讀到問答內容，不必等捲動或分頁。
+// JSON-LD 與畫面顯示無關，SSR 階段就會輸出（用全部題目，不是只有目前那一頁）。
+// ⚠️ 排除 is_placeholder 的題目 —— 那些答案還沒跟主辦確認，畫面上先頂著沒關係，
+// 但寫進結構化資料就會被 AI 摘要當成官方答案引用出去。確認後拿掉旗標就會自動收錄。
+const FAQ_SCHEMA_ITEMS = computed(() => FAQS.value.filter(item => !item.is_placeholder))
+useHead(() => ({
+  script: FAQ_SCHEMA_ITEMS.value.length
+    ? [{
+        key: 'faq-jsonld',
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQ_SCHEMA_ITEMS.value.map(item => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: { '@type': 'Answer', text: item.answer }
+          }))
+        })
+      }]
+    : []
+}))
+
 const venueRef = ref(null)
 const faqRef = ref(null)
 
@@ -63,8 +86,12 @@ onBeforeUnmount(() => killFadeIns())
 
 <template>
   <!-- ⚠️ 底色見上面檔頭。窄視窗這裡不鋪底 —— 不透明底是頁面在 PL.II～PL.V 外面
-       包的那一層（見 pages/index.vue）。 -->
-  <div class="relative lg:bg-black/25">
+       包的那一層（見 pages/index.vue）。
+       桌機的壓黑最後 160px 漸層淡出：下面的票券區沒有壓黑，直接整片壓的話
+       FAQ 底邊會有一條硬切的明暗交界（粒子亮度 ×0.75 → ×1），看起來像底色不一樣。
+       ⚠️ 壓色用頁面底色 #0a0a0c（rgba(10,10,12)），不要用黑色：黑色 25% 會把底色
+       一起壓暗成 #080809，這區的地色就跟別區不一樣了。 -->
+  <div class="relative lg:bg-[linear-gradient(to_bottom,rgba(10,10,12,0.25)_calc(100%-160px),transparent)]">
   <div class="absolute bottom-0 left-0 w-full translate-y-full h-8 md:h-12 lg:hidden bg-bg-mid"></div>
 
     <!-- PL. IV — Venue。設計稿是兩欄：左欄固定 484 寬只放卷號，右欄 flex-1 放內容。
@@ -92,12 +119,11 @@ onBeforeUnmount(() => killFadeIns())
         <!-- 左欄：卷號。
              ⚠️ data-fade="in" 掛在「文字的外層」而不是有 border-t 的那層 ——
              分隔線要留在原地，只有文字淡入，線跟著飄會很奇怪。
-             ⚠️ 這一欄下面大半是空的（留給 HomeField 的菌落場飄），只有卷號本身這
-             幾行文字會被點雲穿過去、糊到看不清楚。跟「更多資訊」按鈕同一招：
-             壓一塊半透明黑 + 模糊當底，只包住文字本身，不是整欄——不然點雲在這欄
-             就完全不會透出來，那塊留白的意義就沒了。 -->
+             ⚠️ 卷號不要再加 -mx-2 px-2 往兩側撐：它的 border-t 會伸進右欄 8px，跟右欄
+             自己的 border-t 疊在一起（兩層 35% 透明），接縫處多出一小段特別亮的線。
+             （那組 class 原本是給「文字後面墊半透明黑底」留邊用的，底已經拿掉了。） -->
         <div class="shrink-0 px-6 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <CommonPlate :data="venue.plate" data-fade="in" class="lg:-mx-2 lg:px-2" />
+          <CommonPlate :data="venue.plate" data-fade="in" />
         </div>
 
         <!-- 右欄：標題 + 交通方式 + 按鈕 -->
@@ -124,7 +150,7 @@ onBeforeUnmount(() => killFadeIns())
                   data-fade="in"
                   class="flex flex-col gap-2"
                 >
-                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0]">
+                  <p class="font-en-serif text-[28px] font-normal italic leading-[1.2] tracking-[0.02em] text-[#71c1f0]">
                     {{ transport.title }}
                   </p>
                   <p class="text-zh-body-lg text-pre-800/[62%]">
@@ -178,7 +204,7 @@ onBeforeUnmount(() => killFadeIns())
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號。同 PL.IV，見那邊的長註解。 -->
         <div class="shrink-0 px-6 lg:w-[484px] lg:py-[60px] lg:pl-[60px] lg:pr-0">
-          <CommonPlate :data="faq.plate" data-fade="in" class="lg:-mx-2 lg:px-2" />
+          <CommonPlate :data="faq.plate" data-fade="in" />
         </div>
 
         <!-- 右欄：標題 + 問答 + 分頁 -->
@@ -201,7 +227,7 @@ onBeforeUnmount(() => killFadeIns())
                 class="-mx-2 flex gap-x-4 py-3 lg:py-6 lg:pl-2 lg:pr-4 transition-[background-image,padding-left] duration-300 lg:hover:bg-gradient-to-r lg:hover:from-[rgba(15,29,78,0.8)] lg:hover:to-[rgba(15,29,78,0.3)] lg:hover:pl-6 lg:gap-x-6"
                 :class="i < FAQ_PAGE_ITEMS.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
               >
-                <span class="shrink-0 font-en-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
+                <span class="shrink-0 font-en-serif text-[20px] font-normal italic leading-[1.4] text-[#71c1f0]">
                   Q{{ FAQ_OFFSET + i + 1 }}
                 </span>
                 <div class="flex min-w-0 flex-col gap-3">
