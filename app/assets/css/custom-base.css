@@ -3,11 +3,15 @@
     scrollbar-gutter: stable;
   }
 
+  /* ⚠️ theme() 的 key 一定要存在：fontFamily 早就改名成 en-serif / zh-serif…，這裡原本寫
+     theme('fontFamily.serif') 解析失敗，Tailwind 不報錯、直接把「整條 rule」丟掉 ——
+     連同下面的 antialiased 一起消失，深底淺字在 macOS 上變成次像素平滑，字看起來偏粗
+     （跟品牌手冊 frank890417.github.io/webconf-visual-2026 同樣 400 卻明顯比較粗）。 */
   html,
   body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-family: theme('fontFamily.serif');
+    font-family: theme('fontFamily.en-serif');
   }
 
   input[type='search'],
