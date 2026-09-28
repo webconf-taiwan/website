@@ -7,7 +7,7 @@
      沒有對應那一邊的（zh 沒有 hero/caption，en 沒有 body_lg/btn），就不生
      造一個出來。h1~h5 中英文數值目前相同，但 Figma 那邊本來就是兩個各自獨立
      的變數，這裡也拆開，不共用 —— 之後只改一邊也不會悄悄跟代碼對不上。
-       A · Inria Serif（font-en-serif）  → en/* 標題與內文
+       A · Inria Serif（font-en-serif）  → en/* 標題與內文，h1~h5 / body_md / caption 一律 Regular 400
        B · Noto Serif TC（font-zh-serif） → zh/* 標題（h1~h5、display），一律 Medium 500
        B' · Noto Sans TC（font-zh-sans）  → zh/* 正文與按鈕（body_lg、body_md、btn）
        C · IBM Plex Mono（font-mono）    → common/*（數字、座標、標籤，一律大寫）
@@ -76,32 +76,32 @@
   }
 
   .text-en-h1 {
-    @apply font-en-serif font-bold text-fs-en-h1-m lg:text-fs-en-h1;
+    @apply font-en-serif font-normal text-fs-en-h1-m lg:text-fs-en-h1;
   }
 
   .text-en-h2 {
-    @apply font-en-serif font-bold text-fs-en-h2-m lg:text-fs-en-h2;
+    @apply font-en-serif font-normal text-fs-en-h2-m lg:text-fs-en-h2;
   }
 
   .text-en-h3 {
-    @apply font-en-serif font-bold text-fs-en-h3-m lg:text-fs-en-h3;
+    @apply font-en-serif font-normal text-fs-en-h3-m lg:text-fs-en-h3;
   }
 
   .text-en-h4 {
-    @apply font-en-serif font-bold text-fs-en-h4-m lg:text-fs-en-h4;
+    @apply font-en-serif font-normal text-fs-en-h4-m lg:text-fs-en-h4;
   }
 
   .text-en-h5 {
-    @apply font-en-serif font-bold text-fs-en-h5-m lg:text-fs-en-h5;
+    @apply font-en-serif font-normal text-fs-en-h5-m lg:text-fs-en-h5;
   }
 
   .text-en-body-md {
-    @apply font-en-serif font-bold text-fs-en-body-md-m lg:text-fs-en-body-md;
+    @apply font-en-serif font-normal text-fs-en-body-md-m lg:text-fs-en-body-md;
   }
 
   /* kit 沒有 zh/caption —— 英文專屬，14-14 兩端相同，無手機階，所以沒有 -m token。 */
   .text-en-caption {
-    @apply font-en-serif font-bold text-fs-en-caption;
+    @apply font-en-serif font-normal text-fs-en-caption;
   }
 
   /* ----- common/*（mono，桌機／手機共用同一個值，無 zh/en 之分，沒有 -m token）----- */

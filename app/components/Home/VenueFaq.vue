@@ -151,7 +151,7 @@ onBeforeUnmount(() => killFadeIns())
                   data-fade="in"
                   class="flex flex-col gap-2"
                 >
-                  <p class="font-en-serif text-[28px] font-bold italic leading-[1.2] tracking-[0.02em] text-[#71c1f0]">
+                  <p class="font-en-serif text-[28px] font-normal italic leading-[1.2] tracking-[0.02em] text-[#71c1f0]">
                     {{ transport.title }}
                   </p>
                   <p class="text-zh-body-lg text-pre-800/[62%]">
@@ -228,7 +228,7 @@ onBeforeUnmount(() => killFadeIns())
                 class="-mx-2 flex gap-x-4 py-3 lg:py-6 lg:pl-2 lg:pr-4 transition-[background-image,padding-left] duration-300 lg:hover:bg-gradient-to-r lg:hover:from-[rgba(15,29,78,0.8)] lg:hover:to-[rgba(15,29,78,0.3)] lg:hover:pl-6 lg:gap-x-6"
                 :class="i < FAQ_PAGE_ITEMS.length - 1 ? 'border-b border-dashed border-pre-800/35' : ''"
               >
-                <span class="shrink-0 font-en-serif text-[20px] font-bold italic leading-[1.4] text-[#71c1f0]">
+                <span class="shrink-0 font-en-serif text-[20px] font-normal italic leading-[1.4] text-[#71c1f0]">
                   Q{{ FAQ_OFFSET + i + 1 }}
                 </span>
                 <div class="flex min-w-0 flex-col gap-3">

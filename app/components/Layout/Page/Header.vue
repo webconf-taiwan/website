@@ -212,7 +212,7 @@ onMounted(() => {
             :rel="linkRel(link.target)"
             class="flex items-end justify-between py-4 text-pre-800 transition-colors hover:text-accent-1"
           >
-            <span class="font-en-serif text-[32px] font-bold italic leading-[1.2] tracking-[0.02em]">
+            <span class="font-en-serif text-[32px] font-normal italic leading-[1.2] tracking-[0.02em]">
               {{ link.label_en }}
             </span>
             <span class="px-3 py-1 text-zh-btn">
