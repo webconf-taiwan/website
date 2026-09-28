@@ -1,10 +1,7 @@
 <script setup>
 definePageMeta({ layout: false })
 
-useSeoMeta({
-  title: '404 Demo',
-  robots: 'noindex, nofollow'
-})
+usePageSeo('/404-demo')
 
 function handleTicket () {
   return navigateTo('/#ticket')

@@ -54,7 +54,7 @@ const label = computed(() => props.ariaLabel || props.title)
         <h1 data-fade="in" class="w-full text-center font-en-serif text-en-hero-m font-bold italic leading-[77px] text-pre-800">
           {{ title }}
         </h1>
-        <p data-fade="in" class="font-zh-serif text-zh-h5-m font-bold leading-[22px] text-pre-800">
+        <p data-fade="in" class="font-zh-serif text-zh-h5-m font-medium leading-[22px] text-pre-800">
           {{ subtitle }}
         </p>
         <slot />
@@ -83,10 +83,13 @@ const label = computed(() => props.ariaLabel || props.title)
         <span class="w-9 shrink-0">2026</span>
       </p>
 
-      <h1 data-fade="in" class="mt-4 font-en-serif text-[72px] font-bold italic leading-[86px] tracking-normal text-pre-800">
+      <!-- ⚠️ 桌機這份不用 <h1>：手機與桌機兩個 section 都會 SSR 出來（只靠 CSS 隱藏），
+           兩個都用 h1 的話爬蟲看到的是同一頁兩個 h1。role/aria-level 讓讀屏在桌機
+           （手機那份 display:none，讀不到）仍然拿得到頁面的一級標題。 -->
+      <p data-plate-title role="heading" aria-level="1" data-fade="in" class="mt-4 font-en-serif text-[72px] font-bold italic leading-[86px] tracking-normal text-pre-800">
         {{ title }}
-      </h1>
-      <p data-fade="in" class="mt-2 font-zh-serif text-[22px] font-bold leading-[26px] tracking-normal text-pre-800">
+      </p>
+      <p data-fade="in" class="mt-2 font-zh-serif text-[22px] font-medium leading-[26px] tracking-[0.02em] text-pre-800">
         {{ subtitle }}
       </p>
       <slot />

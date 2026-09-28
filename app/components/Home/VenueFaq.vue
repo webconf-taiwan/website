@@ -50,6 +50,29 @@ const FAQ_PAGE = computed(() => Math.min(faqPage.value, FAQ_TOTAL_PAGES.value))
 const FAQ_OFFSET = computed(() => (FAQ_PAGE.value - 1) * FAQ_PER_PAGE.value)
 const FAQ_PAGE_ITEMS = computed(() => FAQS.value.slice(FAQ_OFFSET.value, FAQ_OFFSET.value + FAQ_PER_PAGE.value))
 
+// FAQPage 結構化資料：讓搜尋引擎／AI 摘要能直接讀到問答內容，不必等捲動或分頁。
+// JSON-LD 與畫面顯示無關，SSR 階段就會輸出（用全部題目，不是只有目前那一頁）。
+// ⚠️ 排除 is_placeholder 的題目 —— 那些答案還沒跟主辦確認，畫面上先頂著沒關係，
+// 但寫進結構化資料就會被 AI 摘要當成官方答案引用出去。確認後拿掉旗標就會自動收錄。
+const FAQ_SCHEMA_ITEMS = computed(() => FAQS.value.filter(item => !item.is_placeholder))
+useHead(() => ({
+  script: FAQ_SCHEMA_ITEMS.value.length
+    ? [{
+        key: 'faq-jsonld',
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQ_SCHEMA_ITEMS.value.map(item => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: { '@type': 'Answer', text: item.answer }
+          }))
+        })
+      }]
+    : []
+}))
+
 const venueRef = ref(null)
 const faqRef = ref(null)
 
@@ -63,8 +86,12 @@ onBeforeUnmount(() => killFadeIns())
 
 <template>
   <!-- ⚠️ 底色見上面檔頭。窄視窗這裡不鋪底 —— 不透明底是頁面在 PL.II～PL.V 外面
-       包的那一層（見 pages/index.vue）。 -->
-  <div class="relative lg:bg-black/25">
+       包的那一層（見 pages/index.vue）。
+       桌機的壓黑最後 160px 漸層淡出：下面的票券區沒有壓黑，直接整片壓的話
+       FAQ 底邊會有一條硬切的明暗交界（粒子亮度 ×0.75 → ×1），看起來像底色不一樣。
+       ⚠️ 壓色用頁面底色 #0a0a0c（rgba(10,10,12)），不要用黑色：黑色 25% 會把底色
+       一起壓暗成 #080809，這區的地色就跟別區不一樣了。 -->
+  <div class="relative lg:bg-[linear-gradient(to_bottom,rgba(10,10,12,0.25)_calc(100%-160px),transparent)]">
   <div class="absolute bottom-0 left-0 w-full translate-y-full h-8 md:h-12 lg:hidden bg-bg-mid"></div>
 
     <!-- PL. IV — Venue。設計稿是兩欄：左欄固定 484 寬只放卷號，右欄 flex-1 放內容。

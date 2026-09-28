@@ -3,10 +3,7 @@ const sponsors = await useSponsorsData()
 const contentRef = ref(null)
 useFadeIn(contentRef)
 
-const title = '贊助廠商 · WebConf'
-const description = '成為 WebConf Taiwan 2026 的合作夥伴，與開發者、設計師及技術社群交流，一起支持台灣的 Web 社群。'
-useSeoMeta({ title, description, ogTitle: title, ogDescription: description, twitterTitle: title, twitterDescription: description })
-defineOgImage('Default', { title, description })
+usePageSeo('/sponsors')
 </script>
 
 <template>
@@ -80,7 +77,7 @@ defineOgImage('Default', { title, description })
 /* Sponsor-specific sizing keeps the reused agenda hero unchanged. */
 .sponsors-page :deep([data-plate-rail-note]) { display: none; }
 .sponsors-page :deep([data-plate-hero-mobile] h1),
-.sponsors-page :deep([data-plate-hero-desktop] h1),
+.sponsors-page :deep([data-plate-hero-desktop] [data-plate-title]),
 .sponsors-page :deep(.photo-heading h2),
 .sponsor-section h2 { font-weight: 400; letter-spacing: 0.02em; }
 .sponsors-page :deep(.text-en-caption) { font-weight: 400; }
@@ -106,7 +103,7 @@ defineOgImage('Default', { title, description })
 
 @media (min-width: 1024px) {
   .sponsors-page :deep([data-plate-body] > aside) { padding-top: 60px; }
-  .sponsors-page :deep([data-plate-hero-desktop] h1 + p) { letter-spacing: 0.02em; }
+  .sponsors-page :deep([data-plate-hero-desktop] [data-plate-title] + p) { letter-spacing: 0.02em; }
   .sponsors-page :deep([data-plate-hero-desktop] a),
   .sponsor-cta { padding-left: 20px; }
 

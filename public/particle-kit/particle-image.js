@@ -29,6 +29,9 @@
  *   count      取樣點數（預設 24000）。引擎 count 若更大會循環重用。
  *   colors     量化色數（預設 7，配合引擎物種上限）
  *   lumaBias   亮度權重混合（0 = 純輪廓均勻，1 = 全亮度加權；預設 0.6）
+ *              給負值則反過來「越暗越密」（-1 時最暗處權重是最亮處的 2 倍）
+ *   minAlpha   alpha 低於此值的像素不取樣（預設 0.5）。圖裡有大片半透明的部位
+ *              （例如 faq 標本上的棕色圓球）要調低，否則那塊會被吃掉、看起來像被切掉
  *   fit        圖形佔畫布短邊的比例（預設 0.86）
  *   name       pattern 註冊名（預設 'image:' + url）
  *   sampleEdge 取樣解析度上限（預設 480px，夠細且快）
@@ -184,6 +187,7 @@
     const count = opts.count || 24000;
     const K = opts.colors || 7;
     const lumaBias = typeof opts.lumaBias === 'number' ? opts.lumaBias : 0.6;
+    const minAlpha = typeof opts.minAlpha === 'number' ? opts.minAlpha : 0.5;
     const fit = opts.fit || 0.86;
     const name = opts.name || ('image:' + url);
     const sampleEdge = opts.sampleEdge || 480;
@@ -209,7 +213,7 @@
     let total = 0;
     for (let p = 0; p < w * h; p++) {
       const a = data[p * 4 + 3] / 255;
-      if (a < 0.5) continue;                      // 半透明邊緣不取，避免殘邊色
+      if (a < minAlpha) continue;                 // 半透明邊緣不取，避免殘邊色
       const r = data[p * 4], g = data[p * 4 + 1], b = data[p * 4 + 2];
       const luma = (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
       if (luma < (opts.minLuma || 0)) continue;

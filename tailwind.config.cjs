@@ -1,3 +1,15 @@
+// 伸縮字級：hero / display / h1 / h2 / h3 隨視窗寬度平滑變化，不在 lg 斷點跳階。
+// 390px 以下 = Figma 手機值，1440px 以上 = Figma 桌機值，中間線性內插：
+//   slope = (max − min) / (1440 − 390)，intercept = min − slope × 390
+// 桌機 token 與 -m token 都指向同一個值，所以 `text-fs-*-m lg:text-fs-*` 的寫法照舊可用。
+const FLUID = {
+  hero: 'clamp(4rem, 3.8143rem + 0.7619vw, 4.5rem)', // 64 → 72
+  display: 'clamp(2rem, 1.4429rem + 2.2857vw, 3.5rem)', // 32 → 56
+  h1: 'clamp(2.5rem, 1.9429rem + 2.2857vw, 4rem)', // 40 → 64
+  h2: 'clamp(2.25rem, 1.9714rem + 1.1429vw, 3rem)', // 36 → 48
+  h3: 'clamp(1.5rem, 1.3143rem + 0.7619vw, 2rem)', // 24 → 32
+}
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -124,10 +136,10 @@ module.exports = {
         // 的 class 選 font-Noto／font-zh／font-serif。
 
         // ----- zh/* -----
-        'fs-zh-display': ['3.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  56 · Bold
-        'fs-zh-h1': ['4rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  64 · Bold
-        'fs-zh-h2': ['3rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  48 · Bold
-        'fs-zh-h3': ['2rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  32 · Bold
+        'fs-zh-display': [FLUID.display, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 32 → 56（原56 · Bold）
+        'fs-zh-h1': [FLUID.h1, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 40 → 64（原64 · Bold）
+        'fs-zh-h2': [FLUID.h2, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 36 → 48（原48 · Bold）
+        'fs-zh-h3': [FLUID.h3, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 24 → 32（原32 · Bold）
         'fs-zh-h4': ['1.75rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  28 · Bold
         'fs-zh-h5': ['1.375rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  22 · Bold
         'fs-zh-body-lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  18 · Regular（Noto Sans TC）
@@ -135,11 +147,11 @@ module.exports = {
         'fs-zh-btn': ['1rem', { lineHeight: '1', letterSpacing: '0.1em' }], //  16 · Regular（Noto Sans TC，按鈕）
 
         // ----- en/* -----
-        'fs-en-display': ['3.5rem', { lineHeight: '1', letterSpacing: '0.02em' }], //  56 · Italic
-        'fs-en-hero': ['4.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  72 · Bold Italic
-        'fs-en-h1': ['4rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  64 · Bold
-        'fs-en-h2': ['3rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  48 · Bold
-        'fs-en-h3': ['2rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  32 · Bold
+        'fs-en-display': [FLUID.display, { lineHeight: '1', letterSpacing: '0.02em' }], // 伸縮 32 → 56（原56 · Italic）
+        'fs-en-hero': [FLUID.hero, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 64 → 72（原72 · Bold Italic）
+        'fs-en-h1': [FLUID.h1, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 40 → 64（原64 · Bold）
+        'fs-en-h2': [FLUID.h2, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 36 → 48（原48 · Bold）
+        'fs-en-h3': [FLUID.h3, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 24 → 32（原32 · Bold）
         'fs-en-h4': ['1.75rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  28 · Bold
         'fs-en-h5': ['1.375rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  22 · Bold
         'fs-en-body-md': ['1rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  16 · Bold
@@ -154,21 +166,21 @@ module.exports = {
         // Figma 的字級變數本來就是「桌機-手機」成對的（同一個樣式在 mode 切換下
         // 是兩個值）。這裡是手機那一半，语意 class 用 `mobile lg:desktop` 串起來
         // （見 typography.css）。common/* 與 en/caption 兩端相同，不需要手機階。
-        'fs-zh-display-m': ['2rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  32 ← 56-32
-        'fs-zh-h1-m': ['2.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  40 ← 64-40
-        'fs-zh-h2-m': ['2.25rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  36 ← 48-36
-        'fs-zh-h3-m': ['1.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  24 ← 32-24
+        'fs-zh-display-m': [FLUID.display, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 32 → 56（原32 ← 56-32）
+        'fs-zh-h1-m': [FLUID.h1, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 40 → 64（原40 ← 64-40）
+        'fs-zh-h2-m': [FLUID.h2, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 36 → 48（原36 ← 48-36）
+        'fs-zh-h3-m': [FLUID.h3, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 24 → 32（原24 ← 32-24）
         'fs-zh-h4-m': ['1.375rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  22 ← 28-22
         'fs-zh-h5-m': ['1.125rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  18 ← 22-18
         'fs-zh-body-lg-m': ['1rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  16 ← 18-16
         'fs-zh-body-md-m': ['0.9375rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  15 ← 16-15
         'fs-zh-btn-m': ['0.9375rem', { lineHeight: '1', letterSpacing: '0.1em' }], //  15 ← 16-15
 
-        'fs-en-display-m': ['2rem', { lineHeight: '1', letterSpacing: '0.02em' }], //  32 ← 56-32
-        'fs-en-hero-m': ['4rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  64 ← 72-64
-        'fs-en-h1-m': ['2.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  40 ← 64-40
-        'fs-en-h2-m': ['2.25rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  36 ← 48-36
-        'fs-en-h3-m': ['1.5rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  24 ← 32-24
+        'fs-en-display-m': [FLUID.display, { lineHeight: '1', letterSpacing: '0.02em' }], // 伸縮 32 → 56（原32 ← 56-32）
+        'fs-en-hero-m': [FLUID.hero, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 64 → 72（原64 ← 72-64）
+        'fs-en-h1-m': [FLUID.h1, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 40 → 64（原40 ← 64-40）
+        'fs-en-h2-m': [FLUID.h2, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 36 → 48（原36 ← 48-36）
+        'fs-en-h3-m': [FLUID.h3, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 24 → 32（原24 ← 32-24）
         'fs-en-h4-m': ['1.375rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  22 ← 28-22
         'fs-en-h5-m': ['1.125rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  18 ← 22-18
         'fs-en-body-md-m': ['0.9375rem', { lineHeight: '1.6', letterSpacing: '0.08em' }] //  15 ← 16-15

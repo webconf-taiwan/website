@@ -19,6 +19,56 @@
 
 const home = await useHomeData()
 
+// ─── SEO / AEO ──────────────────────────────────────────────────────────────
+// 標題、描述、活動日期地點都在 app/constants/data/seo.json。
+// ⚠️ 這段原本只在 index-old.vue 有，換成一鏡到底版時沒搬過來 —— 首頁一度只剩
+// 全站預設的 "WebConf | WebConf"、沒有 description、也沒有 Event 結構化資料。
+const seo = useSeoData()
+const site = useSiteConfig()
+const { event } = seo
+usePageSeo('/')
+
+// Event 結構化資料：Google 的活動資訊卡、AI 摘要回答「什麼時候、在哪、多少錢、誰會講」
+// 都讀這一份。活動本身的資訊在 seo.json；票價與講者取自首頁資料，改名單就會跟著變。
+useSchemaOrg([
+  defineEvent({
+    name: event.name,
+    description: seo.pages['/'].description,
+    startDate: event.start_date,
+    endDate: event.end_date,
+    eventAttendanceMode: event.attendance_mode,
+    eventStatus: event.status,
+    inLanguage: 'zh-TW',
+    location: {
+      '@type': 'Place',
+      name: event.venue.name,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: event.venue.street_address,
+        addressLocality: event.venue.locality,
+        addressRegion: event.venue.region,
+        postalCode: event.venue.postal_code,
+        addressCountry: event.venue.country
+      }
+    },
+    organizer: { '@type': 'Organization', name: seo.site.organization, url: site.url },
+    performer: (home.speaker?.items || []).map(p => ({
+      '@type': 'Person',
+      name: p.name,
+      jobTitle: p.role,
+      worksFor: p.org ? { '@type': 'Organization', name: p.org } : undefined
+    })),
+    offers: (home.ticket?.items || []).map(item => ({
+      '@type': 'Offer',
+      name: item.title,
+      price: item.price.replace(/,/g, ''),
+      priceCurrency: 'TWD',
+      url: `${site.url}/${event.ticket_anchor}`,
+      availability: 'https://schema.org/InStock'
+    }))
+  })
+])
+
 // 「一鏡到底」只有桌機（≥1024px）跑得動，窄視窗換成幾張各自獨立、只在自己那一區
 // 跑的小 canvas。完整的理由與各區塊的取捨在 app/composables/useViewportMode.js。
 const { isDesktop, viewportReady } = useViewportMode()
@@ -37,7 +87,7 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
 </script>
 
 <template>
-  <div class="relative bg-black text-[#efe6d2]">
+  <div class="relative bg-bg-mid text-[#efe6d2]">
     <!-- 粒子場。桌機是整頁唯一的那張（speakers 只用來拿 portrait 路徑，
          也就是 PL.III 影格的點雲）；窄視窗換成只服務 hero 與票券區的自由場，
          PL.III 的人像由觀景框裡自己那張畫（見 HomeSpeaker）。
@@ -84,13 +134,13 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          （實測 about 的底邊在 406.539px），交界那一列被兩個區塊各蓋半格，
          剩下的那半格就露出背後那張 fixed canvas —— 畫面上是一條會動的點線。
          包成一段連續的底就沒有內部交界了。
-         ⚠️ 顏色用純黑（＝頁面根層的 bg-black），不要用 #0a0a0c：粒子引擎的
-         compose pass 是 clearValue{a:1} 的「不透明純黑」，PL.III 觀景框裡那張
-         canvas 因此是一塊 #000 的方塊。底色若是 #0a0a0c，那塊方塊的邊界就看得出來
-         （實測 (0,0,0) vs (10,10,12)，暗色畫面上是一圈很淡但明確的框）。
+         ⚠️ 顏色用頁面底色 #0a0a0c（＝頁面根層的 bg-bg-mid），而且要跟粒子引擎的
+         compose 底色（makeEngine 的 opts.bg）同一個色：PL.III 觀景框裡那張 canvas
+         是一塊不透明方塊，兩邊不同色時方塊邊界就看得出來（以前引擎固定純黑時實測
+         (0,0,0) vs (10,10,12)，暗色畫面上是一圈很淡但明確的框）。
          桌機這一層要透明：那幾區的粒子就畫在背後那張 canvas 上。
     ==================================================================== -->
-    <div class="relative z-10 bg-black lg:bg-transparent">
+    <div class="relative z-10 bg-bg-mid lg:bg-transparent">
       <!-- ===================================================================
            PL. II — About
       ==================================================================== -->

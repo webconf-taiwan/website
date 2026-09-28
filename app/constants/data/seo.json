@@ -1,0 +1,110 @@
+{
+  "site": {
+    "name": "WebConf Taiwan 2026",
+    "short_name": "WebConf",
+    "organization": "WebConf Taiwan",
+    "logo": "/logo-webconf.svg",
+    "description": "WebConf Taiwan 2026 於 12 月 11–12 日在台北瓶蓋工廠台北製造所舉辦。今年以「湧現」為主題，聚焦 AI Agent、前端、後端、UI/UX、DevOps 與資安，兩天議程集結台灣網頁技術社群。"
+  },
+
+  "event": {
+    "name": "WebConf Taiwan 2026",
+    "start_date": "2026-12-11",
+    "end_date": "2026-12-12",
+    "status": "EventScheduled",
+    "attendance_mode": "OfflineEventAttendanceMode",
+    "ticket_anchor": "#ticket",
+    "venue": {
+      "name": "瓶蓋工廠台北製造所 Taipei Popop",
+      "street_address": "南港路二段13號",
+      "locality": "南港區",
+      "region": "臺北市",
+      "postal_code": "115",
+      "country": "TW"
+    }
+  },
+
+  "pages": {
+    "/": {
+      "title": "WebConf Taiwan 2026 — 瓶蓋工廠台北製造所 · Dec. 11-12, 2026",
+      "title_template": false,
+      "description": "WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。",
+      "og_image_title": "WebConf Taiwan 2026",
+      "og_image_description": "瓶蓋工廠台北製造所 · Dec. 11-12, 2026"
+    },
+    "/about": {
+      "title": "關於",
+      "description": "認識 WebConf Taiwan：一年一度聚集網頁技術專家與愛好者的年會，2026 年以「湧現」為主題。"
+    },
+    "/agenda": {
+      "title": "議程",
+      "description": "WebConf Taiwan 2026 兩日議程：AI Agent、前後端開發、產品思維、DevOps 與產業應用，12 月 11–12 日於瓶蓋工廠台北製造所。"
+    },
+    "/sponsors": {
+      "title": "贊助廠商",
+      "description": "成為 WebConf Taiwan 2026 的合作夥伴，與開發者、設計師及技術社群交流，一起支持台灣的 Web 社群。"
+    },
+    "/contact": {
+      "title": "聯絡我們",
+      "description": "有合作、贊助或其他問題，歡迎聯絡 WebConf Taiwan 團隊。"
+    },
+    "/greenscreen": {
+      "title": "虛擬綠幕",
+      "description": "瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。"
+    },
+
+    "/people": {
+      "title": "講者陣容",
+      "description": "認識 WebConf Taiwan 的講者陣容。",
+      "noindex": true,
+      "noindex_reason": "點雲效果示範頁，講者文案仍是佔位"
+    },
+    "/team": {
+      "title": "主辦團隊（建置中）",
+      "noindex": true,
+      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+    },
+    "/history": {
+      "title": "歷屆回顧（建置中）",
+      "noindex": true,
+      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+    },
+    "/coming-soon": {
+      "title": "網站建置中",
+      "noindex": true
+    },
+    "/index-old": {
+      "title": "WebConf Taiwan 2026（舊版首頁）",
+      "noindex": true,
+      "noindex_reason": "被一鏡到底版取代，內容與首頁重複"
+    },
+    "/wall": {
+      "title": "顯影牆",
+      "description": "現場大螢幕的即時粒子裝置：人走過去，粒子場會凝聚成你的人形。",
+      "noindex": true,
+      "noindex_reason": "現場裝置頁"
+    },
+    "/echo": {
+      "title": "回聲牆",
+      "description": "現場大螢幕的即時聲音裝置：對它說話，粒子場會排成你說的字。",
+      "noindex": true,
+      "noindex_reason": "現場裝置頁"
+    },
+    "/particle-studio": {
+      "title": "粒子產生器",
+      "description": "把講者照片轉換成粒子點雲，調整取樣與光影參數後下載成靜態 PNG。",
+      "noindex": true,
+      "noindex_reason": "內部工具"
+    },
+    "/venue-cellular-lab": {
+      "title": "PL.IV 菌落效果預覽",
+      "description": "場地區塊菌落質感的兩個候選方向，細胞質感／電漿流動，可切換預覽。",
+      "noindex": true,
+      "noindex_reason": "內部比稿頁"
+    },
+    "/404-demo": {
+      "title": "404 Demo",
+      "noindex": true
+    }
+  }
+}

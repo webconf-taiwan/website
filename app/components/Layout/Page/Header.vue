@@ -16,7 +16,7 @@ const ticket = navItems.find(item => item.id === EXPOSED_ON_MOBILE)
 
 // 站內連結一律走 NuxtLink（SPA 導覽）：
 //   · 換路由的（/agenda、/team...）吃得到 LayoutPageTransition 的黑幕轉場
-//   · hash 錨點的（/#speaker...）點下去才會經過 vue-router，讓 lenis.client.js
+//   · hash 錨點的（/#xxx，目前 nav 已經沒有，一律跳各自頁面）點下去才會經過 vue-router，讓 lenis.client.js
 //     的 scrollToHash() 接手用 lenis 平滑捲過去 —— 原生 <a> 的話瀏覽器會自己
 //     原生瞬跳，完全不會經過 lenis
 // target="_blank" 的外部連結才維持原生 <a>（目前 nav_items 沒有這種，但資料是動態的）

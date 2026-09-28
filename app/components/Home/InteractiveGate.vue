@@ -77,7 +77,7 @@ function start () {
           </button>
           <button
             type="button"
-            class="border border-accent-1 bg-accent-1/10 px-6 py-2 font-zh-sans text-[15px] font-medium tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/20"
+            class="border border-accent-1 bg-accent-1/10 px-6 py-2 font-zh-sans text-[15px] font-normal tracking-[0.1em] text-pre-800 transition-colors hover:bg-accent-1/20"
             @click="start"
           >
             開啟相機

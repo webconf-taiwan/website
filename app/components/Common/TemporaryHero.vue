@@ -65,7 +65,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
 
           <p
             data-fade="in"
-            class="whitespace-nowrap font-zh-serif text-zh-h5-m font-bold leading-[22px] tracking-[0.02em] lg:text-zh-h5 lg:leading-[26px]"
+            class="whitespace-nowrap font-zh-serif text-zh-h5-m font-medium leading-[22px] tracking-[0.02em] lg:text-zh-h5 lg:leading-[26px]"
             :class="is404 ? 'lg:w-[314px] lg:text-center' : ''"
           >
             {{ subtitle }}

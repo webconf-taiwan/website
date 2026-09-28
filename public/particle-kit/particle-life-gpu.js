@@ -524,6 +524,9 @@
       color = acesTonemap(color);
       color = pow(color, vec3f(0.45454545));
       color = dither(color, noise);
+      // Screen-blend onto the page background (opts.bg): empty pixels land on
+      // exactly bg, full-bright particles stay unchanged.
+      color = BG_COLOR + color * (vec3f(1.0) - BG_COLOR);
       return vec4f(color, 1.0);
     }
   `;
@@ -775,7 +778,13 @@
     const modForces = device.createShaderModule({ label: 'computeForces', code: COMPUTE_FORCES_WGSL });
     const modAdvance = device.createShaderModule({ label: 'particleAdvance', code: PARTICLE_ADVANCE_WGSL });
     const modGlow = device.createShaderModule({ label: 'renderGlow', code: RENDER_GLOW_WGSL });
-    const modCompose = device.createShaderModule({ label: 'composeHdr', code: COMPOSE_HDR_WGSL });
+    // opts.bg: opaque background colour the compose pass blends onto (default
+    // black). Baked in as a WGSL constant — it never changes per frame.
+    const bgRgb = hexToRGB(opts.bg ?? '#000000');
+    const modCompose = device.createShaderModule({
+      label: 'composeHdr',
+      code: `const BG_COLOR = vec3f(${bgRgb.map(v => v.toFixed(6)).join(', ')});\n` + COMPOSE_HDR_WGSL,
+    });
 
     // ---- Bind group layouts -----------------------------------------------
     const bglBinFill_Particles = device.createBindGroupLayout({
