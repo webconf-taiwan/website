@@ -1,10 +1,7 @@
 <script setup>
 definePageMeta({ layout: false })
 
-useSeoMeta({
-  title: '網站建置中',
-  robots: 'noindex, nofollow'
-})
+usePageSeo('/coming-soon')
 
 function handleTicket () {
   return navigateTo('/#ticket')

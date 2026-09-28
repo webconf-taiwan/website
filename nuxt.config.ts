@@ -1,6 +1,18 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'node:path'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
+// 全站 SEO 資料（站名、描述、各頁標題、哪些頁不收錄）的唯一來源，頁面端用 usePageSeo 讀同一份
+import seo from './app/constants/data/seo.json'
+
+// seo.json 裡標 noindex 的頁 → route rule。
+// ⚠️ 一定要走 route rule 而不是頁面裡的 useHead robots meta：只有 route rule 會同時被
+// nuxt-robots（robots.txt + meta）與 nuxt-sitemap 讀到。實測 useHead 那條 meta 有生效、
+// 但 sitemap.xml 仍然收錄了那一頁。
+const noindexRules = Object.fromEntries(
+  Object.entries(seo.pages)
+    .filter(([, page]) => page.noindex)
+    .map(([route]) => [route, { robots: false }])
+)
 
 // app.baseURL 需要結尾的斜線（'/'），但拼接資源路徑時要去掉，
 // 否則 '/' + '/favicon.ico' = '//favicon.ico'，那是 protocol-relative URL，
@@ -55,8 +67,8 @@ export default defineNuxtConfig({
   // 不用再各處各自判斷一次。
   site: {
     url: process.env.APP_URL,
-    name: process.env.APP_TITLE,
-    description: process.env.APP_DESC,
+    name: seo.site.name,
+    description: seo.site.description,
     defaultLocale: process.env.APP_DEFAULT_LANG,
     indexable: process.env.WEB_SEARCH === 'YES'
   },
@@ -64,8 +76,8 @@ export default defineNuxtConfig({
   schemaOrg: {
     identity: {
       type: 'Organization',
-      name: process.env.APP_TITLE,
-      logo: '/logo-webconf.svg'
+      name: seo.site.organization,
+      logo: seo.site.logo
     }
   },
 
@@ -74,27 +86,14 @@ export default defineNuxtConfig({
   // 頁面沒各自呼叫 defineOgImage() 時的保底，用 Default 模板產生通用的 WebConf 卡片圖。
   routeRules: {
     '/**': { ogImage: {} },
-    // ⚠️ /index-old 是被一鏡到底版取代的舊首頁（三張 canvas），整頁文案與首頁
-    // 的資料一模一樣 —— 不擋的話就是一份重複內容。
-    // 用 route rule 而不是頁面裡的 useHead robots meta：只有 route rule 會同時被
-    // nuxt-robots（robots.txt + meta）與 nuxt-sitemap 讀到。實測 useHead 那條
-    // meta 有生效、但 sitemap.xml 仍然收錄了 /index-old。
-    '/index-old': { robots: false },
-    // /wall、/echo 是現場大螢幕的裝置頁（要開相機 / 麥克風、沒有頁首頁尾），
-    // 不是給搜尋的內容頁。
-    '/wall': { robots: false },
-    '/echo': { robots: false },
-    // /particle-studio 是內部工具（把照片轉成粒子靜態圖），不是給搜尋的內容頁。
-    '/particle-studio': { robots: false },
-    // 暫時頁只供內部檢視，不進 sitemap 或搜尋索引。
-    '/coming-soon': { robots: false },
-    '/404-demo': { robots: false }
+    // 不收錄的頁（開發用、現場裝置、建置中）統一在 seo.json 的 pages[*].noindex 設定
+    ...noindexRules
   },
 
   app: {
     baseURL: `${process.env.APP_BASE_URL}`,
     head: {
-      title: process.env.APP_TITLE,
+      title: seo.site.name,
       htmlAttrs: {
         lang: process.env.APP_DEFAULT_LANG
       },
@@ -104,7 +103,7 @@ export default defineNuxtConfig({
         { name: 'format-detection', content: 'telephone=no' },
         {
           name: 'description',
-          content: process.env.APP_DESC
+          content: seo.site.description
         },
         {
           property: 'og:locale',
@@ -120,9 +119,9 @@ export default defineNuxtConfig({
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
         // ⚠️ 字重要對齊設計稿的 16 個文字樣式（Figma 變數 en/* zh/* common/*），少一個就會
         // 變成瀏覽器合成的假粗體 —— CJK 襯線體的合成粗體會把字腔塞死，跟真 Bold 差很多。
-        //   Noto Serif TC 700  zh/h3 zh/h4 zh/h5 都是 Bold（講者名、FAQ 問題、hero 場地日期）
+        //   Noto Serif TC 500  zh/display、zh/h1～h5 都是 Medium（講者名、FAQ 問題、hero 場地日期）
         //   Noto Sans TC 400   zh/body_lg zh/body_md
-        //   Noto Sans TC 500   zh/btn（按鈕）
+        //   Noto Sans TC 400   zh/btn（按鈕，Regular）
         // ⚠️ Noto Sans TC 原本是 nuxt-fonts 自動解析進來的（只給 400/700），沒有 500，
         //    所以按鈕的 Medium 也是合成的。這裡明確宣告就拿回控制權。
         // ⚠️ font-serif 的 stack 是 Inria Serif → Noto Serif TC，Inria 沒有中文字，

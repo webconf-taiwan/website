@@ -1,13 +1,13 @@
 <script setup>
 defineProps({
-  title: { type: String, required: false, default: 'WebConf' },
+  title: { type: String, required: false, default: 'WebConf Taiwan 2026' },
   description: { type: String, required: false }
 })
 </script>
 
 <template>
   <div
-    class="w-full h-full flex flex-col justify-between bg-black text-[#efe6d2] p-[64px]"
+    class="w-full h-full flex flex-col justify-between bg-[#0a0a0c] text-[#efe6d2] p-[64px]"
     style="font-family: 'Noto Sans TC', sans-serif;"
   >
     <p class="text-[22px] tracking-[0.3em] uppercase opacity-60 m-0">

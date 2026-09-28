@@ -19,6 +19,56 @@
 
 const home = await useHomeData()
 
+// ─── SEO / AEO ──────────────────────────────────────────────────────────────
+// 標題、描述、活動日期地點都在 app/constants/data/seo.json。
+// ⚠️ 這段原本只在 index-old.vue 有，換成一鏡到底版時沒搬過來 —— 首頁一度只剩
+// 全站預設的 "WebConf | WebConf"、沒有 description、也沒有 Event 結構化資料。
+const seo = useSeoData()
+const site = useSiteConfig()
+const { event } = seo
+usePageSeo('/')
+
+// Event 結構化資料：Google 的活動資訊卡、AI 摘要回答「什麼時候、在哪、多少錢、誰會講」
+// 都讀這一份。活動本身的資訊在 seo.json；票價與講者取自首頁資料，改名單就會跟著變。
+useSchemaOrg([
+  defineEvent({
+    name: event.name,
+    description: seo.pages['/'].description,
+    startDate: event.start_date,
+    endDate: event.end_date,
+    eventAttendanceMode: event.attendance_mode,
+    eventStatus: event.status,
+    inLanguage: 'zh-TW',
+    location: {
+      '@type': 'Place',
+      name: event.venue.name,
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: event.venue.street_address,
+        addressLocality: event.venue.locality,
+        addressRegion: event.venue.region,
+        postalCode: event.venue.postal_code,
+        addressCountry: event.venue.country
+      }
+    },
+    organizer: { '@type': 'Organization', name: seo.site.organization, url: site.url },
+    performer: (home.speaker?.items || []).map(p => ({
+      '@type': 'Person',
+      name: p.name,
+      jobTitle: p.role,
+      worksFor: p.org ? { '@type': 'Organization', name: p.org } : undefined
+    })),
+    offers: (home.ticket?.items || []).map(item => ({
+      '@type': 'Offer',
+      name: item.title,
+      price: item.price.replace(/,/g, ''),
+      priceCurrency: 'TWD',
+      url: `${site.url}/${event.ticket_anchor}`,
+      availability: 'https://schema.org/InStock'
+    }))
+  })
+])
+
 // 「一鏡到底」只有桌機（≥1024px）跑得動，窄視窗換成幾張各自獨立、只在自己那一區
 // 跑的小 canvas。完整的理由與各區塊的取捨在 app/composables/useViewportMode.js。
 const { isDesktop, viewportReady } = useViewportMode()

@@ -1,10 +1,7 @@
 <script setup>
 definePageMeta({ layout: false })
 
-useSeoMeta({
-  title: '歷屆回顧 - 網站建置中',
-  robots: 'noindex, nofollow'
-})
+usePageSeo('/history')
 
 function handleTicket () {
   return navigateTo('/#ticket')

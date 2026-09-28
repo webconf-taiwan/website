@@ -50,6 +50,29 @@ const FAQ_PAGE = computed(() => Math.min(faqPage.value, FAQ_TOTAL_PAGES.value))
 const FAQ_OFFSET = computed(() => (FAQ_PAGE.value - 1) * FAQ_PER_PAGE.value)
 const FAQ_PAGE_ITEMS = computed(() => FAQS.value.slice(FAQ_OFFSET.value, FAQ_OFFSET.value + FAQ_PER_PAGE.value))
 
+// FAQPage 結構化資料：讓搜尋引擎／AI 摘要能直接讀到問答內容，不必等捲動或分頁。
+// JSON-LD 與畫面顯示無關，SSR 階段就會輸出（用全部題目，不是只有目前那一頁）。
+// ⚠️ 排除 is_placeholder 的題目 —— 那些答案還沒跟主辦確認，畫面上先頂著沒關係，
+// 但寫進結構化資料就會被 AI 摘要當成官方答案引用出去。確認後拿掉旗標就會自動收錄。
+const FAQ_SCHEMA_ITEMS = computed(() => FAQS.value.filter(item => !item.is_placeholder))
+useHead(() => ({
+  script: FAQ_SCHEMA_ITEMS.value.length
+    ? [{
+        key: 'faq-jsonld',
+        type: 'application/ld+json',
+        innerHTML: JSON.stringify({
+          '@context': 'https://schema.org',
+          '@type': 'FAQPage',
+          mainEntity: FAQ_SCHEMA_ITEMS.value.map(item => ({
+            '@type': 'Question',
+            name: item.question,
+            acceptedAnswer: { '@type': 'Answer', text: item.answer }
+          }))
+        })
+      }]
+    : []
+}))
+
 const venueRef = ref(null)
 const faqRef = ref(null)
 

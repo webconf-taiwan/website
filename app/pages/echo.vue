@@ -46,10 +46,7 @@
 
 definePageMeta({ layout: false })
 
-useSeoMeta({
-  title: '回聲牆 · Webconf',
-  description: '現場大螢幕的即時聲音裝置：對它說話，粒子場會排成你說的字。',
-})
+usePageSeo('/echo')
 
 const { loadParticleKit } = useParticleKit()
 const { countFor, maxDpr } = useParticleBudget()

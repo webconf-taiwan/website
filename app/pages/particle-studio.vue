@@ -11,11 +11,7 @@
 //   繪製：Home/SpeakerPortrait.vue 的 drawPointCloud（CPU 路徑，加法混色）
 // 這裡把「取景比例 fit」從取樣結果裡拆出來，改成即時可調的繪製參數（不用重新取樣），
 // 因為 fit 只決定點雲在畫布裡的置中縮放，不影響取樣本身。
-useSeoMeta({
-  title: '粒子產生器 · Webconf',
-  description: '把講者照片轉換成粒子點雲，調整取樣與光影參數後下載成靜態 PNG。'
-})
-defineOgImage('Default', { title: '粒子產生器 · Webconf', description: '把講者照片轉換成粒子點雲，調整取樣與光影參數後下載成靜態 PNG。' })
+usePageSeo('/particle-studio')
 
 const { loadParticleKit } = useParticleKit()
 
