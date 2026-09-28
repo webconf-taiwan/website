@@ -387,6 +387,7 @@ async function init () {
     seedPattern: look.rules.seedPattern,
     palette: hero.particles,
     bgFade: hero.bgFade,
+    bg: '#0a0a0c',                  // GPU compose 的底色，對齊頁面底色（見 pages/index.vue）
     forceFactor: look.physics.forceFactor,
     friction: look.physics.friction,
     repel: look.physics.repel,

@@ -9,7 +9,7 @@
 // pause 掉 —— 同時只有一張在算，fps 比共用還好。交棒的仲裁在 useParticleStage()。
 //
 // ⚠️ canvas 為什麼要鋪滿整個 section，而不是設計稿上那個 550×550：
-// WebGPU 引擎的 compose pass 是 clearValue{a:1} 的「不透明黑」（bgFade 只有 CPU
+// WebGPU 引擎的 compose pass 輸出是不透明的（底色是 opts.bg，bgFade 只有 CPU
 // fallback 才吃），所以 canvas 一定是實心方塊。做成 550×550 就會有一塊硬邊黑方塊
 // 壓在背景粒子上，邊界看得出來。鋪滿整區反而乾淨：整片均勻蓋掉背景（正是設計要的
 // 效果），人像大小改由 FIT 控制。

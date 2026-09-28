@@ -37,7 +37,7 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
 </script>
 
 <template>
-  <div class="relative bg-black text-[#efe6d2]">
+  <div class="relative bg-bg-mid text-[#efe6d2]">
     <!-- 粒子場。桌機是整頁唯一的那張（speakers 只用來拿 portrait 路徑，
          也就是 PL.III 影格的點雲）；窄視窗換成只服務 hero 與票券區的自由場，
          PL.III 的人像由觀景框裡自己那張畫（見 HomeSpeaker）。
@@ -84,13 +84,13 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          （實測 about 的底邊在 406.539px），交界那一列被兩個區塊各蓋半格，
          剩下的那半格就露出背後那張 fixed canvas —— 畫面上是一條會動的點線。
          包成一段連續的底就沒有內部交界了。
-         ⚠️ 顏色用純黑（＝頁面根層的 bg-black），不要用 #0a0a0c：粒子引擎的
-         compose pass 是 clearValue{a:1} 的「不透明純黑」，PL.III 觀景框裡那張
-         canvas 因此是一塊 #000 的方塊。底色若是 #0a0a0c，那塊方塊的邊界就看得出來
-         （實測 (0,0,0) vs (10,10,12)，暗色畫面上是一圈很淡但明確的框）。
+         ⚠️ 顏色用頁面底色 #0a0a0c（＝頁面根層的 bg-bg-mid），而且要跟粒子引擎的
+         compose 底色（makeEngine 的 opts.bg）同一個色：PL.III 觀景框裡那張 canvas
+         是一塊不透明方塊，兩邊不同色時方塊邊界就看得出來（以前引擎固定純黑時實測
+         (0,0,0) vs (10,10,12)，暗色畫面上是一圈很淡但明確的框）。
          桌機這一層要透明：那幾區的粒子就畫在背後那張 canvas 上。
     ==================================================================== -->
-    <div class="relative z-10 bg-black lg:bg-transparent">
+    <div class="relative z-10 bg-bg-mid lg:bg-transparent">
       <!-- ===================================================================
            PL. II — About
       ==================================================================== -->

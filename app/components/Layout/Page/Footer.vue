@@ -1,10 +1,10 @@
 <script setup>
 defineProps({ mobileLogo: { type: String, default: '' } })
-// 進場：捲到 footer 時，裡面標了 data-fade="in" 的東西由上而下逐項淡入。
-// ⚠️ step 調得比預設(0.09)小 —— footer 有 20 個項目，照預設會拖到 2.4 秒才播完，
-// 使用者早就捲過去了。
+// 進場：捲到 footer 時，標了 data-fade="in" 的區塊由上而下逐塊淡入。
+// 以「區塊」為單位（logo 列、文案、每組選單、回頂按鈕），不要再標到每個連結上 ——
+// 逐項淡入在 footer 這種一眼掃過的地方太碎。
 const footerRef = ref(null)
-useFadeIn(footerRef, { step: 0.04 })
+useFadeIn(footerRef)
 
 const lenis = useLenis()
 
@@ -19,19 +19,19 @@ const { footer } = useGlobalData()
 <template>
   <footer ref="footerRef" class="relative grid grid-cols-1 gap-y-6 bg-[#0a0a0c] border-t border-pre-800/[35%] px-5 py-8 lg:gap-y-12 lg:px-10 lg:py-12 xl:grid-cols-[minmax(20rem,24rem)_minmax(0,1fr)] xl:gap-x-20 2xl:gap-x-34">
     <div class="lg:max-w-96">
-      <div data-footer-wordmark class="flex items-center gap-x-2 mb-6">
-        <NuxtLink to="/" data-fade="in">
+      <div data-footer-wordmark data-fade="in" class="flex items-center gap-x-2 mb-6">
+        <NuxtLink to="/">
           <picture>
             <source v-if="mobileLogo" media="(max-width: 1023px)" :srcset="assetUrl(mobileLogo)">
             <img class="h-7 w-28" :src="assetUrl(footer.logo.src)" :alt="footer.logo.alt">
           </picture>
         </NuxtLink>
-        <p data-fade="in" class="text-meta text-pre-800/80">{{ footer.tagline }}</p>
+        <p class="text-meta text-pre-800/80">{{ footer.tagline }}</p>
       </div>
-      <div data-footer-copy class="flex flex-col gap-y-6 text-pre-800/[62%] italic text-en-body-md">
+      <div data-footer-copy data-fade="in" class="flex flex-col gap-y-6 text-pre-800/[62%] italic text-en-body-md">
         <!-- 每段是一個「行」的陣列，行與行之間補 <br>。
              ⚠️ 不要改回把 <br> 寫在字串裡再 v-html —— 那等於讓資料源可以塞任意 HTML。 -->
-        <div v-for="(lines, i) in footer.paragraphs" :key="i" data-fade="in">
+        <div v-for="(lines, i) in footer.paragraphs" :key="i">
           <template v-for="(line, j) in lines" :key="j">
             <br v-if="j > 0">{{ line }}
           </template>
@@ -39,10 +39,10 @@ const { footer } = useGlobalData()
       </div>
     </div>
     <nav aria-label="Footer" class="grid grid-cols-2 gap-x-4 gap-y-8 lg:grid-cols-3 lg:gap-x-10 xl:gap-x-10 2xl:gap-x-14">
-      <div v-for="parentMenu in footer.menu_groups" :key="parentMenu.title" :data-footer-group="parentMenu.title">
-        <h2 data-fade="in" class="text-en-h5 text-pre-800 italic mb-4">{{ parentMenu.title }}</h2>
+      <div v-for="parentMenu in footer.menu_groups" :key="parentMenu.title" :data-footer-group="parentMenu.title" data-fade="in">
+        <h2 class="text-en-h5 text-pre-800 italic mb-4">{{ parentMenu.title }}</h2>
         <ul class="flex flex-col gap-y-2">
-          <li v-for="childMenu in parentMenu.links" :key="childMenu.label" data-fade="in">
+          <li v-for="childMenu in parentMenu.links" :key="childMenu.label">
             <a
               class="text-pre-800/80 text-zh-body-md transition-colors duration-300 lg:hover:text-brand-light"
               :href="childMenu.href"

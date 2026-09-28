@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
         :rel="linkRel(s.link?.target)"
         :aria-hidden="i >= sponsors.length ? 'true' : undefined"
         :tabindex="i >= sponsors.length ? -1 : undefined"
-        class="flex shrink-0 items-center justify-center px-8 transition-opacity hover:opacity-70"
+        class="flex shrink-0 items-center justify-center transition-opacity hover:opacity-70"
       >
         <!-- 現在的 logo 是設計稿直接切出來的 175px 寬圖磚：留白、字級、
              「連續 4 年贊助」那種標籤全都畫在圖裡了，所以這裡一律等寬顯示。

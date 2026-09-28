@@ -16,8 +16,8 @@
 //            框線的時序對齊（LEADER_OUT_MS / FRAME_DOT_MS / FRAME_GROW_MS 改了要同步）。
 //            那一版這一區沒有底色 —— 不透明底是頁面在 PL.II～PL.V 外面包的那一層
 //            （見 pages/index.vue，包成一段是為了不要在區塊交界露出縫）。
-//            那個底是純黑，跟 canvas 的不透明黑同色，所以框裡那個方塊的邊界
-//            看不出來。⚠️ 把它改成 #0a0a0c 之類的近黑，方塊就會現形。
+//            那個底是 #0a0a0c，canvas 的 compose 也用同一個底色（引擎 opts.bg），
+//            所以框裡那個方塊的邊界看不出來。⚠️ 兩邊要一起改，不同色方塊就會現形。
 
 const props = defineProps({
   data: {
@@ -288,7 +288,7 @@ onBeforeUnmount(() => {
     id="speaker"
     ref="sectionRef"
     data-same-speaker
-    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:bg-black/25 lg:px-[60px] lg:py-0"
+    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:bg-bg-mid/25 lg:px-[60px] lg:py-0"
   >
     <!-- 引線：被選中的名字 → 中央觀景框 -->
     <svg

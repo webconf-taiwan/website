@@ -152,10 +152,15 @@ const KEYS = [
   // 對齊）——不能直接引用 VENUE_EFFECTS，那個常數宣告在這個陣列後面，模組執行
   // 順序上還沒 init 完。init() 裡的 applyVenueEffectToKeys() 會依網址覆寫這兩個值。
   { id: 'venue', mode: 'colonies', src: null, fit: 0, pull: 9, grip: 30, zoom: 1.0, shift: 0, shiftY: 0, opacity: 0.85, shimmer: VENUE_SHIMMER, shimmerMs: VENUE_SHIMMER_MS, glow: true },
-  // shift 0.32 → 0.40：設計回饋標本整體要再往左推一點，離右邊「常見問答」內容更遠。
+  // shift 0.32 → 0.40 → 0.46：設計回饋標本整體要再往左推，離右邊「常見問答」內容更遠
+  // （0.46 在 1440 寬時標本右緣約 x≈440，右欄內容從 x≈505 開始）。
   // shift 越大＝內容被相機推得越往左（見 shiftToCamera），純粹是這一格自己的構圖，
   // 不影響 venue 那格（各自獨立的 KEYS 常數）。
-  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.40, shiftY: 0.26, opacity: 0.80, lumaBias: DEFAULT_LUMA_BIAS },
+  // minAlpha 0.15 / lumaBias -0.5：faq.webp 上半部那兩顆棕色圓球有一大半是半透明
+  // （alpha < 0.5 的像素是藍色圓球的 8 倍），預設 0.5 的門檻會把它們吃掉，
+  // 標本頂端看起來像被切掉。調低門檻後棕球點數 +45%；負的 lumaBias 讓暗部（中央
+  // 那圈深色毛邊）也密一點。
+  { id: 'faq', mode: 'image', src: FAQ_IMAGE, fit: 0.82, pull: 10, grip: 55, zoom: 1.06, shift: 0.46, shiftY: 0.26, opacity: 0.80, lumaBias: -0.5, minAlpha: 0.15 },
   { id: 'outro', mode: 'free', src: null, fit: 0, pull: 0, grip: 0, zoom: 1.30, shift: 0, shiftY: 0, opacity: 0.60, lumaBias: DEFAULT_LUMA_BIAS },
 ]
 const SPEAKER_KEY = 2                 // 講者影格的索引，換人時要改寫 shapes[2]
@@ -812,24 +817,25 @@ function speakerPortrait (i) {
   return props.speakers[i]?.portrait || null
 }
 
-function specKey (src, fit, lumaBias) { return `${src}@${fit}@${lumaBias}` }
+function specKey (src, fit, lumaBias, minAlpha) { return `${src}@${fit}@${lumaBias}@${minAlpha}` }
 
-async function getSpec (src, fit, lumaBias = DEFAULT_LUMA_BIAS) {
+async function getSpec (src, fit, lumaBias = DEFAULT_LUMA_BIAS, minAlpha) {
   if (!src) return null
-  const cacheKey = specKey(src, fit, lumaBias)
+  const cacheKey = specKey(src, fit, lumaBias, minAlpha)
   if (specs.has(cacheKey)) return specs.get(cacheKey)
   const spec = await window.PLImage.prepare(src, {
     count: samplesNow,
     colors: look.rules.species,   // 必須等於 species，否則得 setSpecies（會整場重生）
     fit,
     lumaBias,
+    minAlpha,
   })
   specs.set(cacheKey, spec)
   return spec
 }
 
-// 一個影格要拿的那份 spec（key 自己帶 fit 與 lumaBias）
-function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias) }
+// 一個影格要拿的那份 spec（key 自己帶 fit、lumaBias 與 minAlpha）
+function specOf (key) { return getSpec(key.src, key.fit, key.lumaBias, key.minAlpha) }
 
 // PL.IV 的菌落構圖：在版面左半邊撒 VENUE_COLONIES 顆圓形群落，把 N 顆粒子依
 // 面積分給它們。回傳的是 buildImageTargets 那組同樣的 {tx, ty, tt} 介面。
@@ -1010,7 +1016,7 @@ async function buildAllShapes () {
       continue
     }
     if (!key.src) { pushFree(); continue }
-    const spec = specs.get(specKey(key.src, key.fit, key.lumaBias))
+    const spec = specs.get(specKey(key.src, key.fit, key.lumaBias, key.minAlpha))
     if (!spec) { pushFree(); continue }
     const built = shapeFromSpec(spec, snap, W, H, key.maxPx)
     shapes.push(built.shape)
@@ -1701,6 +1707,7 @@ async function init () {
     seedPattern: look.rules.seedPattern,
     palette: hero.particles,
     bgFade: hero.bgFade,
+    bg: '#0a0a0c',                  // GPU compose 的底色，對齊頁面底色（見 pages/index.vue）
     forceFactor: look.physics.forceFactor,
     friction: look.physics.friction,
     repel: look.physics.repel,
