@@ -49,6 +49,7 @@ function lockBackground (locked) {
 
 // 打開選單時，七個項目由上而下逐項淡入（面板本身的底色另外用 CSS 過場）
 const { fadeInNow } = useFadeIn()
+const { whenIntroDone } = useSiteIntro()
 watch(open, async (isOpen) => {
   lockBackground(isOpen)
   if (!isOpen) return
@@ -73,7 +74,9 @@ onMounted(() => {
   // 目前隱藏的項目先設為可見，避免日後改變斷點時卡在 opacity-0
   $gsap.set(all.filter(el => el.offsetParent === null), { opacity: 1 })
 
-  const tl = $gsap.timeline({ defaults: { ease: 'power2.out' } })
+  // 首次進站要等 loading 淡出才開始（見 useSiteIntro）；站內換頁 Header 不會重掛
+  const tl = $gsap.timeline({ defaults: { ease: 'power2.out' }, paused: true })
+  whenIntroDone(() => tl.play())
   // 1. logo 從上往下淡入
   tl.fromTo(
     logo,
