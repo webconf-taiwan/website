@@ -146,9 +146,17 @@ onMounted(() => {
         </component>
       </nav>
 
-      <!-- 平板以下：購票 icon + 漢堡／叉叉。
+      <!-- 桌機：背景音開關。選單置中排版，開關不佔流、貼在最右邊 -->
+      <div data-nav-item class="absolute right-6 top-1/2 hidden -translate-y-1/2 opacity-0 xl:flex">
+        <LayoutPageSoundToggle />
+      </div>
+
+      <!-- 平板以下：背景音開關 + 購票 icon + 漢堡／叉叉。
            設計稿在 360px 寬只放得下兩顆 icon，購票是 icon 不是文字。 -->
       <div class="flex items-center gap-4 xl:hidden">
+        <div data-nav-item class="flex opacity-0">
+          <LayoutPageSoundToggle />
+        </div>
         <component
           :is="isInternalLink(ticket.target) ? NuxtLink : 'a'"
           v-if="ticket"

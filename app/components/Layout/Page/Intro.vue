@@ -40,6 +40,7 @@ const R = 199.5               // viewBox 400，1px 線畫在邊緣內側半格
 const CIRCUMFERENCE = 2 * Math.PI * R
 
 const { introDone, trackIntro, introTaskState } = useSiteIntro()
+const sound = useSiteSound()
 // ⚠️ 在 setup 就先拿好：finish() 是在 await / gsap 回呼裡跑的，那時已經沒有 Nuxt context
 const { $gsap, $lenis } = useNuxtApp()
 const visible = ref(!introDone.value)
@@ -156,6 +157,9 @@ onMounted(async () => {
   trackIntro(waitWindowLoad())
   trackIntro(waitFonts())
 
+  // loading 音：開機 thump 對齊圓圈放大。瀏覽器還不允許出聲時會安靜略過（見 plugins/sound.client.js）
+  sound.introStart()
+
   // 圓圈先從中心放大（SSR 時就是 scale-0，hydration 前不會先閃一個滿版的圈），放大完文字才出現
   if ($gsap && ringRef.value) {
     await new Promise(resolve => $gsap.fromTo(ringRef.value,
@@ -168,7 +172,8 @@ onMounted(async () => {
   const phrase = PHRASES[(Math.random() * PHRASES.length) | 0]
   const textDone = scramble(phrase)
   await new Promise(resolve => setTimeout(resolve, DRAW_DELAY_MS))
-  await Promise.all([textDone, drawTo(() => targetNow(startedAt))])
+  // 藍線真的畫滿那一刻播「鎖定」音 —— 不等文字解碼，跟畫面對齊
+  await Promise.all([textDone, drawTo(() => targetNow(startedAt)).then(() => sound.introLock())])
 
   finish()
 })
