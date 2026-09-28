@@ -4,6 +4,7 @@
     "short_name": "WebConf",
     "organization": "WebConf Taiwan",
     "logo": "/logo-webconf.svg",
+    "og_image": { "src": "/og.jpg", "width": 1200, "height": 630, "alt": "WebConf Taiwan 2026 — 瓶蓋工廠台北製造所 · Dec. 11-12, 2026" },
     "description": "WebConf Taiwan 2026 於 12 月 11–12 日在台北瓶蓋工廠台北製造所舉辦。今年以「湧現」為主題，聚焦 AI Agent、前端、後端、UI/UX、DevOps 與資安，兩天議程集結台灣網頁技術社群。"
   },
 
@@ -28,9 +29,7 @@
     "/": {
       "title": "WebConf Taiwan 2026 — 瓶蓋工廠台北製造所 · Dec. 11-12, 2026",
       "title_template": false,
-      "description": "WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。",
-      "og_image_title": "WebConf Taiwan 2026",
-      "og_image_description": "瓶蓋工廠台北製造所 · Dec. 11-12, 2026"
+      "description": "WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。"
     },
     "/about": {
       "title": "關於",

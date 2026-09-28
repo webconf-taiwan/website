@@ -35,13 +35,7 @@ export function usePageSeo (path) {
     twitterDescription: description
   })
 
-  // 不收錄的頁就不必特地產分享圖（nuxt.config 的 '/**' ogImage 仍會給一張通用的）
-  if (!page.noindex) {
-    defineOgImage('Default', {
-      title: page.og_image_title || `${page.title} · ${seo.site.short_name}`,
-      description: page.og_image_description || description
-    })
-  }
+  // 分享圖全站共用 public/og.jpg，寫在 nuxt.config 的 app.head，這裡不另外設定。
 
   return page
 }

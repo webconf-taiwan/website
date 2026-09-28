@@ -1,8 +1,12 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'node:path'
+import { readFileSync } from 'node:fs'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
-// 全站 SEO 資料（站名、描述、各頁標題、哪些頁不收錄）的唯一來源，頁面端用 usePageSeo 讀同一份
-import seo from './app/constants/data/seo.json'
+// 全站 SEO 資料（站名、描述、各頁標題、哪些頁不收錄）的唯一來源，頁面端用 usePageSeo 讀同一份。
+// ⚠️ 用 readFileSync 而不是 import：nuxt dev 改 config 時是在「同一個 Node process」裡重載，
+// import 進來的 JSON 會被 Node 的模組快取留住 —— seo.json 加了新欄位，重載後讀到的仍是舊版
+// （實際踩過：新增 site.og_image 後整站 500「Cannot read properties of undefined」）。
+const seo = JSON.parse(readFileSync(path.resolve(process.cwd(), 'app/constants/data/seo.json'), 'utf8'))
 
 // seo.json 裡標 noindex 的頁 → route rule。
 // ⚠️ 一定要走 route rule 而不是頁面裡的 useHead robots meta：只有 route rule 會同時被
@@ -18,6 +22,7 @@ const noindexRules = Object.fromEntries(
 // 否則 '/' + '/favicon.ico' = '//favicon.ico'，那是 protocol-relative URL，
 // 瀏覽器會當成 https://favicon.ico/ 這個「主機」去抓，全部失效。
 const assetBase = `${process.env.APP_BASE_URL || '/'}`.replace(/\/+$/, '')
+const ogImageUrl = `${(process.env.APP_URL || '').replace(/\/+$/, '')}${assetBase}${seo.site.og_image.src}`
 
 export default defineNuxtConfig({
   ssr: true,
@@ -81,11 +86,9 @@ export default defineNuxtConfig({
     }
   },
 
-  // nuxt-og-image 預設不會自動幫每個頁面加 og:image，要靠 route rule 開啟才會套用
-  // app/components/OgImage/Default.takumi.vue，並依各頁 title/description 自動產圖。
-  // 頁面沒各自呼叫 defineOgImage() 時的保底，用 Default 模板產生通用的 WebConf 卡片圖。
+  // 分享圖全站共用一張靜態圖（public/og.jpg，設定在 seo.json 的 site.og_image），
+  // 寫在下面 app.head 的 meta。不再用 nuxt-og-image 依各頁自動產卡片圖。
   routeRules: {
-    '/**': { ogImage: {} },
     // 不收錄的頁（開發用、現場裝置、建置中）統一在 seo.json 的 pages[*].noindex 設定
     ...noindexRules
   },
@@ -108,7 +111,14 @@ export default defineNuxtConfig({
         {
           property: 'og:locale',
           content: process.env.APP_DEFAULT_LANG
-        }
+        },
+        // 分享圖：og:image 必須是絕對網址，所以接上 APP_URL
+        { property: 'og:image', content: ogImageUrl },
+        { property: 'og:image:width', content: String(seo.site.og_image.width) },
+        { property: 'og:image:height', content: String(seo.site.og_image.height) },
+        { property: 'og:image:alt', content: seo.site.og_image.alt },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:image', content: ogImageUrl }
       ],
       link: [
         { rel: 'icon', sizes: '32x32', href: `${assetBase}/favicon.ico` },
