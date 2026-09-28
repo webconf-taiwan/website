@@ -101,6 +101,7 @@
       "noindex": true,
       "noindex_reason": "內部比稿頁"
     },
+    "/sound-lab": { "title": "背景音試聽", "description": "loading 與進場後背景音的候選試聽稿（程式合成）。", "noindex": true, "noindex_reason": "內部比稿頁" },
     "/404-demo": {
       "title": "404 Demo",
       "noindex": true
