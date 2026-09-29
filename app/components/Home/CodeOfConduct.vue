@@ -50,8 +50,9 @@ onBeforeUnmount(() => killFadeIns())
     />
 
     <div class="relative z-1 mx-auto max-w-[872px] px-6 pt-6 pb-20 lg:py-[92px]">
+      <!-- 設計稿：PL. I. VII. —— 卷號 code 後面補一個點，接斜體襯線的 number -->
       <p data-fade="in" class="text-meta text-pre-800/80">
-        {{ content.plate?.code }}
+        {{ content.plate?.code }}. <span v-if="content.plate?.number" class="font-en-serif italic">{{ content.plate.number }}</span>
       </p>
 
       <!-- ⚠️ 這裡的藍是 #71c1f0，與 PL.IV 的 By MRT / By Train 同一支，

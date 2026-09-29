@@ -68,19 +68,33 @@ onBeforeUnmount(() => {
         :rel="linkRel(s.link?.target)"
         :aria-hidden="i >= sponsors.length ? 'true' : undefined"
         :tabindex="i >= sponsors.length ? -1 : undefined"
-        class="flex shrink-0 items-center justify-center transition-opacity hover:opacity-70"
+        class="group flex shrink-0 items-center justify-center px-2.5 lg:px-5"
       >
-        <!-- 現在的 logo 是設計稿直接切出來的 175px 寬圖磚：留白、字級、
+        <!-- 現在的 logo 是設計稿直接切出來的圖磚（設計稿尺寸：桌機 150×120、手機 120×96，高度照比例）：留白、字級、
              「連續 4 年贊助」那種標籤全都畫在圖裡了，所以這裡一律等寬顯示。
              ⚠️ 別再回頭讓資料給 logo_height 逐張調高度 —— 圖磚本來就對齊好了，
-             逐張調反而會讓每個 logo 的視覺大小不一致。 -->
-        <img
-          :src="assetUrl(s.logo)"
-          :alt="s.name"
-          class="w-[175px] max-w-none object-contain"
-          loading="lazy"
-          draggable="false"
-        >
+             逐張調反而會讓每個 logo 的視覺大小不一致。
+             hover（或鍵盤 focus）換成彩色版（資料的 logo_color）：兩張疊在一起交叉淡入淡出。
+             ⚠️ 不能用 :src 直接換圖 —— 換 src 沒辦法做漸變，而且第一次 hover 才開始載入會閃一下。 -->
+        <span class="relative block">
+          <img
+            :src="assetUrl(s.logo)"
+            :alt="s.name"
+            class="w-[120px] max-w-none lg:w-[150px] object-contain transition-opacity duration-500"
+            :class="s.logo_color && 'group-hover:opacity-0 group-focus-visible:opacity-0'"
+            loading="lazy"
+            draggable="false"
+          >
+          <img
+            v-if="s.logo_color"
+            :src="assetUrl(s.logo_color)"
+            alt=""
+            aria-hidden="true"
+            class="absolute inset-0 w-[120px] max-w-none lg:w-[150px] object-contain opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
+            loading="lazy"
+            draggable="false"
+          >
+        </span>
       </a>
     </div>
   </section>
