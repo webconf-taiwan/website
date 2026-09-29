@@ -155,8 +155,9 @@ const ABOUT_SHIFT = 0
 //
 // ⚠️ 這一份是這支元件自己寫的閒置邏輯，跟 useParticleStage 那份是「兩套」。
 // 兩邊的門檻要一起改，不然行為會不一致。
-const IDLE_STOP_DESKTOP_MS = 5000
-const IDLE_STOP_TOUCH_MS = 60000
+// 跟 useParticleStage 一起改成 3 分鐘
+const IDLE_STOP_DESKTOP_MS = 3 * 60 * 1000
+const IDLE_STOP_TOUCH_MS = 3 * 60 * 1000
 
 function idleStopMs () {
   return window.matchMedia?.('(pointer: fine)').matches

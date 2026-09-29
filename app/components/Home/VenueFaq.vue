@@ -5,8 +5,8 @@
 // 這個元件只剩版面。
 //
 // ⚠️ 底色是 RWD 的：
-//   ≥1024px  半透明壓黑 —— 兩隻標本（菌落場、faq.png）的點雲由頁面底層那張唯一的
-//            HomeField 畫，不透明底會把它們整片蓋掉。
+//   ≥1024px  不鋪底 —— 兩隻標本（菌落場、faq.png）的點雲由頁面底層那張唯一的
+//            HomeField 畫，直接露出來。
 //   <1024px  這兩區「完全沒有粒子」（見 useViewportMode）。設計稿上的標本在窄視窗
 //            的版面裡本來就沒有位置攤開，而它們是全頁最吃密度的兩格（放射狀尖刺，
 //            原版 VenueFaqField 為此用到 52000 顆），在手機上算了也只是被文字蓋掉。
@@ -85,13 +85,9 @@ onBeforeUnmount(() => killFadeIns())
 </script>
 
 <template>
-  <!-- ⚠️ 底色見上面檔頭。窄視窗這裡不鋪底 —— 不透明底是頁面在 PL.II～PL.V 外面
-       包的那一層（見 pages/index.vue）。
-       桌機的壓黑最後 160px 漸層淡出：下面的票券區沒有壓黑，直接整片壓的話
-       FAQ 底邊會有一條硬切的明暗交界（粒子亮度 ×0.75 → ×1），看起來像底色不一樣。
-       ⚠️ 壓色用頁面底色 #0a0a0c（rgba(10,10,12)），不要用黑色：黑色 25% 會把底色
-       一起壓暗成 #080809，這區的地色就跟別區不一樣了。 -->
-  <div class="relative lg:bg-[linear-gradient(to_bottom,rgba(10,10,12,0.25)_calc(100%-160px),transparent)]">
+  <!-- ⚠️ 底色見上面檔頭：桌機、窄視窗這裡都不鋪底。窄視窗的不透明底是頁面在
+       PL.II～PL.V 外面包的那一層（見 pages/index.vue）。 -->
+  <div class="relative">
   <div class="absolute bottom-0 left-0 w-full translate-y-full h-8 md:h-12 lg:hidden bg-bg-mid"></div>
 
     <!-- PL. IV — Venue。設計稿是兩欄：左欄固定 484 寬只放卷號，右欄 flex-1 放內容。

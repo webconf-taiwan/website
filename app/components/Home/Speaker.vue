@@ -282,13 +282,13 @@ onBeforeUnmount(() => {
 
 <template>
   <!-- data-same-speaker 是 HomeField 第 2 段（about → speaker）的觸發器。
-       ⚠️ 底色只能是半透明 —— 人像就畫在背後那張 fixed canvas 上，
-       給不透明底色會把自己的人像整片蓋掉。 -->
+       桌機不鋪底：人像就畫在背後那張 fixed canvas 上，直接露出來。
+       ⚠️ 真的要加底色也只能半透明，不透明會把自己的人像整片蓋掉。 -->
   <section
     id="speaker"
     ref="sectionRef"
     data-same-speaker
-    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:bg-bg-mid/25 lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
+    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
   >
     <!-- 引線：被選中的名字 → 中央觀景框 -->
     <svg
