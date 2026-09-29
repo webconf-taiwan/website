@@ -53,7 +53,7 @@ useFadeIn(sectionRef)
                ⚠️ 邊框維持原本的 white/25 —— 票券卡用的 border-pre-500/50 那個 /50
                不會生效（pre-500 不是 rgb 格式，opacity modifier 吃不到），
                線會變成不透明的淺灰，在這個框上太搶。 -->
-          <div class="relative border border-white/25 bg-bg-mid/70 px-4 py-5 max-w-[200px]">
+          <div class="relative border border-white/25 bg-bg-mid/70 px-4 pb-5 pt-[52px] max-w-[200px]">
             <span class="absolute top-2.5 left-3 px-1 font-mono text-meta text-pre-800">
               {{ content.skills_box_label }}
             </span>
