@@ -50,8 +50,8 @@ const items = computed(() => agenda.items || [])
     :corner-right="agenda.corner_right"
     :note-lines="agenda.note_lines"
   >
-    <div class="mx-auto flex w-[calc(100%_-_40px)] flex-col pt-8 lg:mx-0 lg:w-full lg:max-w-none lg:gap-y-12 lg:pt-0">
-      <div ref="introRef" class="mb-6 flex flex-col gap-y-2 lg:mb-0 lg:gap-y-4">
+    <div class="mx-auto flex w-[calc(100%_-_40px)] flex-col pt-8 lg:mx-0 lg:w-full lg:max-w-none lg:pt-0">
+      <div ref="introRef" class="mb-6 flex flex-col gap-y-2 lg:mb-12 lg:gap-y-4">
         <h2 data-fade="in" class="agenda-heading font-en-serif text-fs-en-h1-m font-normal italic text-pre-800 lg:text-fs-en-h1">
           <span class="lg:hidden">{{ agenda.mobile_heading }}</span>
           <span class="hidden lg:inline">
@@ -73,7 +73,7 @@ const items = computed(() => agenda.items || [])
         />
       </div>
 
-      <p class="mt-[60px] text-center text-zh-h5 text-pre-800 lg:mt-[80px]">
+      <p data-agenda-more class="mt-[60px] text-center text-zh-h5 text-pre-800 lg:mb-[60px] lg:mt-[112px]">
         \ 更多精彩議程即將釋出 /
       </p>
     </div>

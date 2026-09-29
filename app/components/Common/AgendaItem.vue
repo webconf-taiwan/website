@@ -16,13 +16,10 @@ useFadeIn(itemRef, { step: 0.06 })
   <article
     ref="itemRef"
     class="agenda-item relative flex h-[145px] w-full flex-col justify-center border-b border-dashed border-pre-800/35 py-4 pl-2 pr-2 lg:h-auto lg:gap-y-4 lg:pr-4 lg:py-6"
-    :class="item.is_highlighted
-      ? 'bg-gradient-to-r from-[#0f1d4e]/80 via-[#0f1d4e]/30 via-[65.385%] to-[#0f1d4e]/10 lg:pl-6'
-      : 'pl-2 lg:pl-2'"
   >
     <div class="agenda-item-content flex w-full flex-col gap-y-3 lg:flex-row lg:gap-x-6">
       <div class="flex min-w-0 flex-1 flex-col gap-y-2 lg:gap-y-4">
-        <p data-fade="in" class="hidden font-mono text-meta uppercase text-pre-800/[62%] lg:block">
+        <p data-fade="in" class="hidden text-micro text-pre-800/[62%] lg:block">
           {{ item.code }}
         </p>
 
@@ -50,6 +47,13 @@ useFadeIn(itemRef, { step: 0.06 })
 </template>
 
 <style scoped>
+@media (min-width: 1024px) and (hover: hover) {
+  .agenda-item { transition: padding-left 250ms ease; }
+  .agenda-item:hover {
+    padding-left: 24px;
+    background-image: linear-gradient(to right, rgb(15 29 78 / 80%), rgb(15 29 78 / 30%) 65.385%, rgb(15 29 78 / 10%));
+  }
+}
 @media (max-width: 1023px) {
   .agenda-item {
     height: auto;

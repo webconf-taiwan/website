@@ -57,7 +57,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
         <div class="flex flex-col items-center gap-y-2 text-pre-800">
           <h1
             data-fade="in"
-            class="font-en-serif text-en-hero-m italic leading-[77px] tracking-[0.02em] lg:text-en-hero lg:leading-[86px]"
+            class="text-en-hero leading-[77px] lg:leading-[86px]"
             :class="is404 ? 'w-[252px] text-center lg:w-[121px]' : 'w-[252px] break-words lg:w-auto lg:whitespace-nowrap'"
           >
             {{ title }}
@@ -65,7 +65,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
 
           <p
             data-fade="in"
-            class="whitespace-nowrap font-zh-serif text-zh-h5-m font-medium leading-[22px] tracking-[0.02em] lg:text-zh-h5 lg:leading-[26px]"
+            class="whitespace-nowrap text-zh-h5 leading-[22px] lg:leading-[26px]"
             :class="is404 ? 'lg:w-[314px] lg:text-center' : ''"
           >
             {{ subtitle }}
@@ -73,27 +73,33 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
         </div>
       </div>
 
-      <button
-        type="button"
+      <AtomButton
         data-fade="in"
-        class="inline-flex h-10 items-center justify-center border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10 lg:hidden"
+        :text="mobileCtaLabel"
+        size="sm"
+        rounded="none"
+        icon="arrow-right-thin"
+        icon-position="end"
+        class="temporary-cta h-10 lg:hidden"
         :class="is404 ? 'w-[121px]' : 'w-[128px] gap-x-1'"
         @click="emit('mobile-action')"
-      >
-        <span class="whitespace-nowrap">{{ mobileCtaLabel }}</span>
-        <img src="/figma/home-hero/arrow-icon.svg" alt="" class="size-6 shrink-0">
-      </button>
+      />
 
-      <button
-        type="button"
+      <AtomButton
         data-fade="in"
-        class="hidden h-10 items-center justify-center border border-accent-1 bg-[#0a0a0c] py-2 pl-5 pr-3 text-zh-btn text-pre-800 transition-colors hover:bg-accent-1/10 lg:inline-flex"
+        :text="desktopCtaLabel"
+        size="sm"
+        rounded="none"
+        icon="arrow-right-thin"
+        icon-position="end"
+        class="temporary-cta hidden h-10 lg:flex"
         :class="is404 ? 'w-[125px]' : 'w-[132.4px] gap-x-1'"
         @click="emit('desktop-action')"
-      >
-        <span class="whitespace-nowrap">{{ desktopCtaLabel }}</span>
-        <img src="/figma/home-hero/arrow-icon.svg" alt="" class="size-6 shrink-0">
-      </button>
+      />
     </div>
   </main>
 </template>
+
+<style scoped>
+.temporary-cta { padding-left: 20px; padding-right: 12px; white-space: nowrap; }
+</style>

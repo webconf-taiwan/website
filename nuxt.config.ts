@@ -82,7 +82,8 @@ export default defineNuxtConfig({
     identity: {
       type: 'Organization',
       name: seo.site.organization,
-      logo: seo.site.logo
+      logo: seo.site.logo,
+      sameAs: seo.site.same_as
     }
   },
 

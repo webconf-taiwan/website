@@ -25,13 +25,17 @@ const home = await useHomeData()
 // 全站預設的 "WebConf | WebConf"、沒有 description、也沒有 Event 結構化資料。
 const seo = useSeoData()
 const site = useSiteConfig()
+const siteUrl = site.url.replace(/\/+$/, '')
 const { event } = seo
 usePageSeo('/')
 
 // Event 結構化資料：Google 的活動資訊卡、AI 摘要回答「什麼時候、在哪、多少錢、誰會講」
 // 都讀這一份。活動本身的資訊在 seo.json；票價與講者取自首頁資料，改名單就會跟著變。
 useSchemaOrg([
+  defineWebPage({ name: seo.pages['/'].title, description: seo.pages['/'].description, mainEntity: { '@id': `${siteUrl}/#event` } }),
   defineEvent({
+    '@id': `${siteUrl}/#event`,
+    url: `${siteUrl}/`,
     name: event.name,
     description: seo.pages['/'].description,
     startDate: event.start_date,
@@ -51,7 +55,7 @@ useSchemaOrg([
         addressCountry: event.venue.country
       }
     },
-    organizer: { '@type': 'Organization', name: seo.site.organization, url: site.url },
+    organizer: { '@id': `${siteUrl}/#identity` },
     performer: (home.speaker?.items || []).map(p => ({
       '@type': 'Person',
       name: p.name,
@@ -63,7 +67,7 @@ useSchemaOrg([
       name: item.title,
       price: item.price.replace(/,/g, ''),
       priceCurrency: 'TWD',
-      url: `${site.url}/${event.ticket_anchor}`,
+      url: `${siteUrl}/${event.ticket_anchor}`,
       availability: 'https://schema.org/InStock'
     }))
   })
