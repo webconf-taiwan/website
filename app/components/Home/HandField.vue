@@ -28,7 +28,7 @@ const props = defineProps({
 })
 
 const { fail } = useInteractiveMode()
-// 手勢不會產生滑鼠／捲動事件，不主動 poke 的話閒置計時器會在十秒後把粒子停掉 ——
+// 手勢不會產生滑鼠／捲動事件，不主動 poke 的話閒置計時器（3 分鐘）一到就把粒子停掉 ——
 // 手還在鏡頭前揮，畫面卻定格了。
 const { poke } = useParticleStage()
 

@@ -51,7 +51,7 @@ const props = defineProps({
 
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
-const { trackIntro } = useSiteIntro()
+const { trackIntro, introDone } = useSiteIntro()
 // 背景音：推粒子 → blip、收攏程度 → 濾波器（見 plugins/sound.client.js）
 const sound = useSiteSound()
 const SOUND_PUSH_MIN_SPEED = 6     // px／幀，低於這個當成沒在撥
@@ -1101,7 +1101,7 @@ function frame (now) {
   const y = window.scrollY
 
   // 停住時仍要更新時間 / 捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度
-  if (document.hidden || idle.value) {
+  if (document.hidden || idle.value || introHold()) {
     lastTime = t
     lastScrollY = y
     return
@@ -1344,12 +1344,26 @@ function frame (now) {
   engine.setMorph?.(pullNow * b, gripNow * b, e)
 }
 
+// ---- 等 loading 淡出才開始動 ------------------------------------------------
+// 首次進站時，粒子要等 LayoutPageIntro 整個淡出（introDone）才開始跑，之前一律定格。
+// ⚠️ 不能一 init 完就 pause：引擎 pause 時連畫都不畫，canvas 會是空的，loading 淡出
+// 那 0.8 秒就會露出一片黑。所以先讓它跑一小段（POSTER_MS）畫出靜止畫面，再定格。
+// 只等兩個 rAF 不夠：實測手機版引擎建好 3ms 就被停住，那時第一幀可能還沒畫出來。
+// 站內換頁回來時 introDone 早就是 true，這段等於不存在。
+const POSTER_MS = 200
+let posterDrawn = false
+const introHold = () => posterDrawn && !introDone.value
+function drawPosterThenHold (sync) {
+  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; sync() }), POSTER_MS)
+}
+
 function syncPause () {
   // 固定背景永遠在視窗內，所以不必 IntersectionObserver；要理的是分頁隱藏
-  //（rAF 在背景分頁只是降頻，不是停止）與使用者閒置。
-  engine?.pause(document.hidden || idle.value)
+  //（rAF 在背景分頁只是降頻，不是停止）、使用者閒置，與 loading 還沒淡出。
+  engine?.pause(document.hidden || idle.value || introHold())
 }
 watch(idle, () => syncPause())
+watch(introDone, () => syncPause())
 
 // --- 換人 ------------------------------------------------------------------
 // 兩段式：blend 1→0 把粒子往外拋，再在 blend=0（shape 權重為 0，換掉無縫）把
@@ -1833,6 +1847,7 @@ async function init () {
   introStart = performance.now()
   lastScrollY = window.scrollY
   syncPause()
+  drawPosterThenHold(syncPause)
 
   if (import.meta.dev) {
     window.__sameDbg = () => ({
@@ -1950,7 +1965,7 @@ onBeforeUnmount(() => {
 // 傳進來的是「螢幕座標」，相機變換由這裡統一處理 —— 呼叫端不需要知道 zoom / offset。
 // strength 正值往外推、負值往內吸（shader 是 v += dir * falloff * strength）。
 function pushAt (screenX, screenY, radius, strength) {
-  if (!engine || document.hidden || idle.value) return
+  if (!engine || document.hidden || idle.value || introHold()) return
   const { x, y } = toSim(screenX, screenY)
   engine.disturb?.(x, y, radius, strength)
 }

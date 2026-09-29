@@ -10,11 +10,20 @@ const isExpanded = ref(false)
 
 <template>
   <div
-    class="group relative w-full rounded p-4 backdrop-blur-md transition-[background-color,background-image] duration-300 md:p-8"
+    class="group relative w-full rounded p-4 backdrop-blur-md transition-colors duration-500 md:p-8"
     :class="data.is_highlighted
-      ? 'border-[1.5px] border-accent-1 bg-[#0a0a0c] bg-gradient-to-b from-[#0f1d4e] to-[#0f1d4e]/30 hover:bg-[linear-gradient(180deg,#1d327c_0%,rgba(29,50,124,0.3)_100%),linear-gradient(0deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2))]'
+      ? 'border-[1.5px] border-accent-1 bg-[#0a0a0c] bg-gradient-to-b from-[#0f1d4e] to-[#0f1d4e]/30'
       : 'border border-pre-800/50 bg-bg-light/10 hover:bg-bg-light/20'"
   >
+    <!-- 藍色票的 hover 色：另外疊一層，用 opacity 淡入。
+         ⚠️ 不能直接在卡片上寫 hover:bg-[linear-gradient(…)]：漸層（background-image）
+         沒辦法 transition，會瞬間跳色；灰色票換的是 background-color，所以本來就有漸變。
+         -z-10 不會跑到卡片後面：backdrop-blur 讓卡片自成一個 stacking context。 -->
+    <span
+      v-if="data.is_highlighted"
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 -z-10 rounded bg-[#0a0a0c] bg-[linear-gradient(180deg,#1d327c_0%,rgba(29,50,124,0.3)_100%),linear-gradient(0deg,rgba(0,0,0,0.2),rgba(0,0,0,0.2))] opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+    ></span>
     <div class="flex flex-col gap-y-6 md:justify-between h-full">
       <div>
         <div class="flex flex-col gap-y-4 md:mb-8">
