@@ -11,7 +11,9 @@ definePageMeta({
 })
 
 const introRef = ref(null)
+const moreRef = ref(null)
 useFadeIn(introRef, { step: 0.1 })
+useFadeIn(moreRef)
 
 usePageSeo('/agenda')
 
@@ -73,9 +75,11 @@ const items = computed(() => agenda.items || [])
         />
       </div>
 
-      <p data-agenda-more class="mt-[60px] text-center text-zh-h5 text-pre-800 lg:mb-[60px] lg:mt-[112px]">
-        \ 更多精彩議程即將釋出 /
-      </p>
+      <div ref="moreRef" class="mt-[60px] lg:mb-[60px] lg:mt-[112px]">
+        <p data-agenda-more data-fade="in" class="text-center text-zh-h5 text-pre-800">
+          \ 更多精彩議程即將釋出 /
+        </p>
+      </div>
     </div>
   </CommonPlatePage>
 </template>
