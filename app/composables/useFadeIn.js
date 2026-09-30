@@ -41,6 +41,7 @@ const DEFAULTS = {
 
 export function useFadeIn (rootRef, autoOpts = {}) {
   const triggers = []
+  const pendingFrames = new Set()
   // 首次進站要等 loading（LayoutPageIntro）淡出才開始建 trigger；站內換頁時早就是 done
   const { whenIntroDone } = useSiteIntro()
 
@@ -81,17 +82,27 @@ export function useFadeIn (rootRef, autoOpts = {}) {
     // ⚠️ opacity:0 上面已經先設好（藏在 loading 底下），只有「建 trigger、開始播」要等。
     // 等待期間元件可能已經卸載（使用者在 loading 時就換頁），root 不在 DOM 裡就不建了。
     whenIntroDone(() => {
-      if (!root.isConnected) return
-      triggers.push(...$ScrollTrigger.batch(els, {
-        start: o.start,
-        end: o.end,
-        once: o.once,
-        onEnter: batch => show(batch),
-        // once:true 時 ScrollTrigger 本來就只會叫一次 onEnter，其餘不必掛
-        onEnterBack: o.once ? undefined : batch => show(batch, o.step * 0.8),
-        onLeave: o.once ? undefined : batch => hide(batch, -o.y),
-        onLeaveBack: o.once ? undefined : batch => hide(batch, o.y),
-      }))
+      // 換頁後 Lenis 會在 page:finish 的下一幀重設捲動位置。
+      // 再等一幀才量測，避免沿用上一頁頁尾的位置，把新頁下方的動畫提前播完。
+      let frame = requestAnimationFrame(() => {
+        pendingFrames.delete(frame)
+        frame = requestAnimationFrame(() => {
+          pendingFrames.delete(frame)
+          if (!root.isConnected) return
+          triggers.push(...$ScrollTrigger.batch(els, {
+            start: o.start,
+            end: o.end,
+            once: o.once,
+            onEnter: batch => show(batch),
+            // once:true 時 ScrollTrigger 本來就只會叫一次 onEnter，其餘不必掛
+            onEnterBack: o.once ? undefined : batch => show(batch, o.step * 0.8),
+            onLeave: o.once ? undefined : batch => hide(batch, -o.y),
+            onLeaveBack: o.once ? undefined : batch => hide(batch, o.y),
+          }))
+        })
+        pendingFrames.add(frame)
+      })
+      pendingFrames.add(frame)
     })
   }
 
@@ -122,6 +133,8 @@ export function useFadeIn (rootRef, autoOpts = {}) {
   }
 
   function killFadeIns () {
+    pendingFrames.forEach(frame => cancelAnimationFrame(frame))
+    pendingFrames.clear()
     triggers.forEach(t => t.kill())
     triggers.length = 0
   }

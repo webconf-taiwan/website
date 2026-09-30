@@ -25,10 +25,11 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   nuxtApp.hook('page:finish', () => {
     requestAnimationFrame(() => {
+      // refresh 會保留並還原量測前的捲動位置，先完成量測，再由 Lenis 決定新頁位置。
+      $ScrollTrigger?.refresh()
       if (!router.currentRoute.value.hash) {
         lenis.scrollTo(0, { immediate: true })
       }
-      $ScrollTrigger?.refresh()
     })
   })
 
