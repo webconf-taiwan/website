@@ -95,7 +95,7 @@ async function init() {
     species: look.rules.species, count: budget.count,
     preset: look.rules.preset, seedPattern: look.rules.seedPattern,
     palette: window.PLPalettes.PALETTES[look.palette].particles,
-    bgFade: '#0a0a0c',
+    bg: '#0a0a0c', bgFade: 'rgba(10,10,12,0.18)',
     ...look.physics, rMax: look.physics.rMax * q.rMaxScale,
     simSpeed: look.speed.idle, cameraZoom: look.camera.zoom,
     pointSize: budget.pointSize, particleOpacity: look.visual.heroOpacity * q.opacityScale,
@@ -149,12 +149,12 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div ref="rootRef" data-agenda-mobile-field aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden">
+  <div ref="rootRef" data-agenda-mobile-field aria-hidden="true" class="pointer-events-none absolute inset-0 overflow-hidden bg-[#0a0a0c]">
     <img
       v-if="fallback" :src="props.source" alt="" width="2422" height="1710"
-      class="absolute max-w-none"
+      class="absolute max-w-none mix-blend-screen"
       :style="{ width: `${ART.width}px`, height: `${ART.height}px`, left: `calc(50% - 180px + ${ART.x}px)`, top: `${ART.y}px` }"
     >
-    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full mix-blend-screen" :style="{ opacity: ready ? 1 : 0 }" />
+    <canvas ref="canvasRef" class="absolute inset-0 h-full w-full" :style="{ opacity: ready ? 1 : 0 }" />
   </div>
 </template>

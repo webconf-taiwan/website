@@ -27,7 +27,7 @@ const backend = ref('')
 const ready = ref(false)
 const artwork = ref({ width: 1440, height: 1440 * 1710 / 2422, left: 64, top: (550 - 1440 * 1710 / 2422) / 2 })
 const wrapClass = computed(() => props.fixed
-  ? 'agenda-field--fixed fixed -inset-x-16 top-0 z-0 h-dvh overflow-hidden mix-blend-screen'
+  ? 'agenda-field--fixed fixed -inset-x-16 top-0 z-0 h-dvh overflow-hidden'
   : 'absolute inset-0 h-full w-full overflow-hidden'
 )
 
@@ -618,7 +618,8 @@ async function init () {
     preset: HERO.preset,
     seedPattern: look.rules.seedPattern,
     palette: palette.particles,
-    bgFade: palette.bgFade,
+    bgFade: 'rgba(10,10,12,0.18)',
+    bg: '#0a0a0c',
     forceFactor: look.physics.forceFactor,
     friction: look.physics.friction,
     repel: look.physics.repel,
@@ -715,7 +716,7 @@ defineExpose({ backend })
       :style="{ opacity: ready ? 0 : 'calc(1 - var(--rail-mix))' }"
     >
       <img
-        :src="SOURCE" alt="" width="2422" height="1710" fetchpriority="high" class="absolute max-w-none"
+        :src="SOURCE" alt="" width="2422" height="1710" fetchpriority="high" class="absolute max-w-none mix-blend-screen"
         :style="{ width: `${artwork.width}px`, height: `${artwork.height}px`, left: `${artwork.left}px`, top: `${artwork.top}px` }"
       >
     </div>

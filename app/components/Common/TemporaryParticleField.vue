@@ -84,6 +84,7 @@ async function init () {
     seedPattern: look.rules.seedPattern,
     palette: palette.particles,
     bgFade: 'rgba(10,10,12,0.18)',
+    bg: '#0a0a0c',
     count: q.count,
     forceFactor: look.physics.forceFactor,
     friction: look.physics.friction,
