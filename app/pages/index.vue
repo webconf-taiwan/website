@@ -29,49 +29,57 @@ const siteUrl = site.url.replace(/\/+$/, '')
 const { event } = seo
 usePageSeo('/')
 
-// Event 結構化資料：Google 的活動資訊卡、AI 摘要回答「什麼時候、在哪、多少錢、誰會講」
-// 都讀這一份。活動本身的資訊在 seo.json；票價與講者取自首頁資料，改名單就會跟著變。
 useSchemaOrg([
-  defineWebPage({ name: seo.pages['/'].title, description: seo.pages['/'].description, mainEntity: { '@id': `${siteUrl}/#event` } }),
-  defineEvent({
-    '@id': `${siteUrl}/#event`,
-    url: `${siteUrl}/`,
-    name: event.name,
-    description: seo.pages['/'].description,
-    startDate: event.start_date,
-    endDate: event.end_date,
-    eventAttendanceMode: event.attendance_mode,
-    eventStatus: event.status,
-    inLanguage: 'zh-TW',
-    location: {
-      '@type': 'Place',
-      name: event.venue.name,
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: event.venue.street_address,
-        addressLocality: event.venue.locality,
-        addressRegion: event.venue.region,
-        postalCode: event.venue.postal_code,
-        addressCountry: event.venue.country
-      }
-    },
-    organizer: { '@id': `${siteUrl}/#identity` },
-    performer: (home.speaker?.items || []).map(p => ({
-      '@type': 'Person',
-      name: p.name,
-      jobTitle: p.role,
-      worksFor: p.org ? { '@type': 'Organization', name: p.org } : undefined
-    })),
-    offers: (home.ticket?.items || []).map(item => ({
-      '@type': 'Offer',
-      name: item.title,
-      price: item.price.replace(/,/g, ''),
-      priceCurrency: 'TWD',
-      url: `${siteUrl}/${event.ticket_anchor}`,
-      availability: 'https://schema.org/InStock'
-    }))
-  })
+  defineWebPage({ name: seo.pages['/'].title, description: seo.pages['/'].description, mainEntity: { '@id': `${siteUrl}/#event` } })
 ])
+
+// Event 直接輸出已確認的資料，避免套件替 Offer 補入臆測的有效期限及庫存狀態。
+// 日期、票價與講者仍與畫面共用來源，SSR 即可讀取。
+const eventSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  image: `${siteUrl}${seo.site.og_image.src}`,
+  '@id': `${siteUrl}/#event`,
+  url: `${siteUrl}/`,
+  name: event.name,
+  description: seo.pages['/'].description,
+  startDate: event.start_date,
+  endDate: event.end_date,
+  eventAttendanceMode: `https://schema.org/${event.attendance_mode}`,
+  eventStatus: `https://schema.org/${event.status}`,
+  inLanguage: 'zh-TW',
+  location: {
+    '@type': 'Place',
+    name: event.venue.name,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: event.venue.street_address,
+      addressLocality: event.venue.locality,
+      addressRegion: event.venue.region,
+      postalCode: event.venue.postal_code,
+      addressCountry: event.venue.country
+    }
+  },
+  organizer: { '@id': `${siteUrl}/#identity` },
+  performer: (home.speaker?.items || []).map(p => ({
+    '@type': 'Person',
+    name: p.name,
+    jobTitle: p.role,
+    worksFor: p.org ? { '@type': 'Organization', name: p.org } : undefined
+  })),
+  offers: (home.ticket?.items || []).map(item => ({
+    '@type': 'Offer',
+    name: item.title,
+    price: item.price.replace(/,/g, ''),
+    priceCurrency: 'TWD',
+    url: `${siteUrl}/${event.ticket_anchor}`
+  }))
+}
+useHead({ script: [{
+  key: 'event-jsonld',
+  type: 'application/ld+json',
+  innerHTML: JSON.stringify(eventSchema).replace(/</g, '\\u003c')
+}] })
 
 // 「一鏡到底」只有桌機（≥1024px）跑得動，窄視窗換成幾張各自獨立、只在自己那一區
 // 跑的小 canvas。完整的理由與各區塊的取捨在 app/composables/useViewportMode.js。
