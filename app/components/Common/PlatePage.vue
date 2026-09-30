@@ -87,31 +87,6 @@ const backend = computed(() => fieldRef.value?.backend || '')
 </template>
 
 <style scoped>
-@media (min-width: 1024px) {
-  .plate-page-content {
-    position: relative;
-    isolation: isolate;
-  }
-
-  /* Feather only the backdrop, leaving text and pointer targets unaffected. */
-  .plate-page-content::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 0 -120px;
-    z-index: -1;
-    pointer-events: none;
-    background: linear-gradient(
-      to right,
-      rgb(10 10 12 / 0),
-      rgb(10 10 12 / 7%) 32px,
-      rgb(10 10 12 / 25%) 64px,
-      rgb(10 10 12 / 45%) 96px,
-      rgb(10 10 12 / 63%) 128px,
-      rgb(10 10 12 / 70%) 160px
-    );
-  }
-}
-
 @media (max-width: 1023px) {
   .plate-page-plate {
     height: 56px;

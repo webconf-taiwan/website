@@ -41,7 +41,7 @@ onMounted(() => {
     >
       <div
         v-if="show"
-        class="pointer-events-none fixed inset-0 z-[2000] bg-black"
+        class="pointer-events-none fixed inset-0 z-[2000] bg-[#0a0a0c]"
         aria-hidden="true"
       ></div>
     </Transition>

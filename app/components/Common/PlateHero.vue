@@ -23,8 +23,8 @@ const { isDesktop, viewportReady } = useViewportMode()
 const mobileHeroRef = ref(null)
 const desktopHeroRef = ref(null)
 
-useFadeIn(mobileHeroRef, { step: 0.1 })
-useFadeIn(desktopHeroRef, { step: 0.1 })
+useFadeIn(mobileHeroRef, { y: 28, step: 0.12 })
+useFadeIn(desktopHeroRef, { y: 28, step: 0.12 })
 
 const label = computed(() => props.ariaLabel || props.title)
 </script>

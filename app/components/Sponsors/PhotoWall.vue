@@ -177,13 +177,14 @@ onBeforeUnmount(() => {
 
 <template>
   <section ref="wallRef" data-plate-gallery aria-labelledby="sponsors-gallery-heading" class="photo-wall relative z-10 overflow-hidden">
-    <div ref="boardRef" data-fade="in" class="photo-board relative mx-auto max-w-[1440px]">
+    <!-- 分開觸發標題與照片，避免手機捲到輪播前就播完整區動畫；board 保持固定，供粒子與拖曳量測。 -->
+    <div ref="boardRef" class="photo-board relative mx-auto max-w-[1440px]">
       <div class="photo-heading relative z-10 mx-5 flex flex-col gap-4 lg:absolute lg:inset-x-[60px] lg:top-[60px] lg:mx-0">
-        <h2 id="sponsors-gallery-heading" class="text-en-h1 italic">
+        <h2 id="sponsors-gallery-heading" data-fade="in" class="text-en-h1 italic">
           <span class="block">{{ data.heading_lines[0] }}</span>
           <span class="block">{{ data.heading_lines[1] }}</span>
         </h2>
-        <p class="text-zh-h4">{{ data.subtitle }}</p>
+        <p data-fade="in" class="text-zh-h4">{{ data.subtitle }}</p>
       </div>
 
       <div class="hidden lg:contents" role="group" aria-label="活動照片牆；點選放大，拖曳或以方向鍵移動照片">
@@ -205,7 +206,8 @@ onBeforeUnmount(() => {
           @lostpointercapture="endDrag"
           @keydown="onPhotoKey($event, photo)"
         >
-          <span class="photo-print">
+          <!-- 進場只移動內層，保留按鈕原本的旋轉、放大與拖曳座標。 -->
+          <span data-fade="in" class="photo-print">
             <img :src="photo.src" alt="" width="1000" height="667" loading="lazy" decoding="async" draggable="false">
           </span>
         </button>
@@ -213,6 +215,7 @@ onBeforeUnmount(() => {
 
       <div
         ref="galleryRef"
+        data-fade="in"
         class="mobile-gallery relative mt-10 flex gap-2 overflow-x-auto lg:hidden"
         :class="{ 'is-dragging': draggingId }"
         role="group"
@@ -248,7 +251,7 @@ onBeforeUnmount(() => {
           <img :src="photo.src" alt="" width="1000" height="667" loading="lazy" decoding="async" draggable="false">
         </button>
       </div>
-      <button v-if="!reducedMotion" type="button" class="gallery-toggle absolute bottom-[76px] right-5 text-meta underline underline-offset-4 lg:hidden" :aria-pressed="autoplayPaused" @click="autoplayPaused = !autoplayPaused">
+      <button v-if="!reducedMotion" data-fade="in" type="button" class="gallery-toggle absolute bottom-[76px] right-5 text-meta underline underline-offset-4 lg:hidden" :aria-pressed="autoplayPaused" @click="autoplayPaused = !autoplayPaused">
         {{ autoplayPaused ? '播放輪播' : '暫停輪播' }}
       </button>
     </div>
