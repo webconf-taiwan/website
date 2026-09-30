@@ -155,12 +155,16 @@ function writeCssVars () {
     const W = canvasRef.value?.clientWidth || window.innerWidth + 128
     const heroBottom = Math.max(0, Math.min(canvasHeight, rects.hero?.bottom || 0) - railOffset)
     const railTop = Math.max(heroBottom, (rects.body?.top ?? rects.hero?.bottom ?? 0) - railOffset, 0)
-    const railWidth = Math.max(0, Math.min(W, (rects.aside?.right || 0) + 64 - 20))
+    const railEdge = Math.max(0, Math.min(W, (rects.aside?.right || 0) + 64))
+    // 在欄位交界前開始漸淡，跨入內容區後收至透明，避免粒子被矩形直接切斷。
+    // 文字起點只保留 18% 強度，讓背景延續而不影響閱讀。
+    const railFadeStart = Math.max(0, railEdge - 96)
+    const railFadeEnd = Math.min(W, railEdge + 80)
     const galleryTop = Math.max(0, (rects.gallery?.top || 0) - railOffset)
     const galleryBottom = Math.min(canvasHeight, (rects.gallery?.bottom || 0) - railOffset)
     const layers = [
       `linear-gradient(#000, #000) 0 0 / 100% ${heroBottom}px no-repeat`,
-      `linear-gradient(rgb(0 0 0 / ${railMix}), rgb(0 0 0 / ${railMix})) 0 ${railTop}px / ${railWidth}px ${Math.max(0, canvasHeight - railTop)}px no-repeat`,
+      `linear-gradient(to right, rgb(0 0 0 / ${railMix}) ${railFadeStart}px, rgb(0 0 0 / ${railMix * 0.18}) ${railEdge}px, transparent ${railFadeEnd}px) 0 ${railTop}px / ${railFadeEnd}px ${Math.max(0, canvasHeight - railTop)}px no-repeat`,
     ]
     if (galleryConfig) layers.push(`linear-gradient(rgb(0 0 0 / ${galleryMix}), rgb(0 0 0 / ${galleryMix})) 0 ${galleryTop}px / 100% ${Math.max(0, galleryBottom - galleryTop)}px no-repeat`)
     const nextMask = layers.join(', ')

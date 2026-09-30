@@ -91,7 +91,6 @@ const items = computed(() => agenda.items || [])
 .agenda-layout [data-plate-hero-mobile] h1,
 .agenda-layout [data-plate-hero-desktop] [data-plate-title] { font-weight: 400; letter-spacing: 0.02em; }
 .agenda-layout .text-en-caption { font-weight: 400; }
-.agenda-layout [data-plate-body] .plate-page-content { background-color: #0a0a0c; }
 .agenda-layout [data-plate-body] .plate-page-content::before { content: none; }
 
 @media (max-width: 1023px) {
