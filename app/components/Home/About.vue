@@ -2,7 +2,7 @@
 // PL. II — About。
 //
 // ⚠️ 這一區沒有自己的 canvas：桌機的粒子畫在背後那張 fixed canvas 上
-// （所以 lg 以上只鋪半透明的 bg-bg-mid/30），窄視窗則是被外層那段不透明的 #0a0a0c 底蓋掉。
+// （所以 lg 以上不鋪底，粒子直接露出來），窄視窗則是被外層那段不透明的 #0a0a0c 底蓋掉。
 // 底色為什麼掛在頁面那一層、而不是各區塊自己來，見 pages/index.vue 的註解。
 
 const props = defineProps({
@@ -24,7 +24,7 @@ useFadeIn(sectionRef)
   <section
     id="about"
     ref="sectionRef"
-    class="relative isolate z-10 px-6 lg:bg-bg-mid/30 lg:px-12 2xl:px-20"
+    class="relative isolate z-10 px-6 lg:px-12 2xl:px-20"
   >
     <!-- 手機／平板的裝飾圖：從下一區（Speaker）的分隔線後面探出來，靠右、被畫面右緣裁掉。
          桌機沒有（那邊的粒子是背後那張 canvas 畫的）。定位與裁切見 Home/Deco.vue。 -->
@@ -53,7 +53,7 @@ useFadeIn(sectionRef)
                ⚠️ 邊框維持原本的 white/25 —— 票券卡用的 border-pre-500/50 那個 /50
                不會生效（pre-500 不是 rgb 格式，opacity modifier 吃不到），
                線會變成不透明的淺灰，在這個框上太搶。 -->
-          <div class="relative border border-white/25 bg-bg-mid/70 px-4 py-5 max-w-[200px]">
+          <div class="relative border border-white/25 bg-bg-mid/70 px-4 pb-5 pt-[52px] max-w-[200px]">
             <span class="absolute top-2.5 left-3 px-1 font-mono text-meta text-pre-800">
               {{ content.skills_box_label }}
             </span>

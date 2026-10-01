@@ -27,7 +27,7 @@
 
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
-const { trackIntro } = useSiteIntro()
+const { trackIntro, introDone } = useSiteIntro()
 const { countFor, maxDpr } = useParticleBudget()
 const { buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張滿版 canvas，不需要 claim/release。
@@ -286,8 +286,21 @@ function invalidateTargets () {
 // --- 跑 / 停 ---------------------------------------------------------------
 // 「在其中一個區間內」才算要跑。離開就 pause —— canvas 保留最後一幀，而它此刻
 // 一定是被不透明區塊蓋住的，所以定格看不出來。
+// ---- 等 loading 淡出才開始動 ------------------------------------------------
+// 首次進站時，粒子要等 LayoutPageIntro 整個淡出（introDone）才開始跑，之前一律定格。
+// ⚠️ 不能一 init 完就 pause：引擎 pause 時連畫都不畫，canvas 會是空的，loading 淡出
+// 那 0.8 秒就會露出一片黑。所以先讓它跑一小段（POSTER_MS）畫出靜止畫面，再定格。
+// 只等兩個 rAF 不夠：實測手機版引擎建好 3ms 就被停住，那時第一幀可能還沒畫出來。
+// 站內換頁回來時 introDone 早就是 true，這段等於不存在。
+const POSTER_MS = 200
+let posterDrawn = false
+const introHold = () => posterDrawn && !introDone.value
+function drawPosterThenHold (sync) {
+  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; sync() }), POSTER_MS)
+}
+
 function syncRunning () {
-  const want = (inRegion[0] || inRegion[1]) && !document.hidden && !idle.value
+  const want = (inRegion[0] || inRegion[1]) && !document.hidden && !idle.value && !introHold()
   if (want === running) return
   running = want
   engine?.pause(!want)
@@ -303,6 +316,7 @@ function syncRunning () {
   }
 }
 watch(idle, () => syncRunning())
+watch(introDone, () => syncRunning())
 
 // --- 每幀 ------------------------------------------------------------------
 function frame (now) {
@@ -526,6 +540,7 @@ async function init () {
   // IO 的第一次回呼還沒到，先照捲動位置猜一次，免得開場空轉
   inRegion[0] = true
   syncRunning()
+  drawPosterThenHold(syncRunning)
 
   if (import.meta.dev) {
     window.__mobileDbg = () => ({

@@ -1,14 +1,13 @@
 <script setup>
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎）才收，見 useSiteIntro
-const { trackIntro } = useSiteIntro()
+const { trackIntro, introDone } = useSiteIntro()
 const { countFor, maxDpr } = useParticleBudget()
 const { isDesktop } = useViewportMode()
 const { idle } = useParticleStage()
 const { knobs, cpuFallback, markActive, onTierChange, noteRespawn } = useParticleQuality()
 
-// Both temporary variants use this fixed look, independent of homepage selection.
-const look = resolveFieldLook('biolum-drift')
+let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
 const stage = Symbol('temporaryField')
 const rootRef = ref(null)
 const canvasRef = ref(null)
@@ -52,7 +51,7 @@ function applyBudget () {
 
 function syncRunning () {
   if (!engine || disposed) return
-  const next = visible && !idle.value && !document.hidden && !motionQuery.matches
+  const next = visible && !idle.value && !document.hidden && !motionQuery.matches && introDone.value
   engine.pause(!next)
   if (running === next) return
   running = next
@@ -69,20 +68,23 @@ function onResize () {
 }
 
 watch(idle, syncRunning)
+watch(introDone, syncRunning)
 watch(isDesktop, onResize)
 
 async function init () {
   await loadParticleKit()
   if (disposed) return
+  look = fieldLookFromLocation().look
   motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
   const q = budget()
-  const palette = window.PLPalettes.PALETTES.mixed
+  const palette = window.PLPalettes.PALETTES[look.palette]
   const next = await window.makeEngine(canvasRef.value, {
     species: look.rules.species,
     preset: look.rules.preset,
     seedPattern: look.rules.seedPattern,
     palette: palette.particles,
     bgFade: 'rgba(10,10,12,0.18)',
+    bg: '#0a0a0c',
     count: q.count,
     forceFactor: look.physics.forceFactor,
     friction: look.physics.friction,
@@ -106,6 +108,9 @@ async function init () {
   }
   engine = next
   applyBudget()
+  await new Promise(resolve => setTimeout(resolve, 200))
+  if (disposed) return
+  if (import.meta.dev) window.__temporaryField = () => ({ look: look.id, running, count: engine?.config.count, backend: engine?.backend })
   observer = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting
     syncRunning()
@@ -132,6 +137,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('resize', onResize)
   motionQuery?.removeEventListener('change', syncRunning)
   markActive(stage, false)
+  if (import.meta.dev) delete window.__temporaryField
   engine?.destroy()
   engine = null
 })

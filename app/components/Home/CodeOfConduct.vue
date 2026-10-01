@@ -21,6 +21,13 @@ const props = defineProps({
   showChapterDots: {
     type: Boolean,
     default: true
+  },
+  // 背後是事先錄好的影片（沒有 WebGPU 的影片版，見 HomeVideoField）而不是即時粒子時開。
+  // 影片裡的粒子點很細、沒有光暈，32px 糊下去整片被平均成底色，等於什麼都看不到；
+  // 所以底色調淡、模糊收小，讓後面的影片還認得出是在流動的粒子。
+  thinGlass: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -46,12 +53,14 @@ onBeforeUnmount(() => killFadeIns())
          區塊上下緣會露出一條沒糊到的清晰粒子帶，非常明顯。 -->
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute -inset-x-12 inset-y-0 rounded-[24px] bg-bg-mid/70 backdrop-blur-[32px]"
+      class="pointer-events-none absolute -inset-x-12 inset-y-0 rounded-[24px]"
+      :class="thinGlass ? 'bg-bg-mid/35 backdrop-blur-[8px]' : 'bg-bg-mid/70 backdrop-blur-[32px]'"
     />
 
     <div class="relative z-1 mx-auto max-w-[872px] px-6 pt-6 pb-20 lg:py-[92px]">
+      <!-- 設計稿：PL. I. VII. —— 卷號 code 後面補一個點，接斜體襯線的 number -->
       <p data-fade="in" class="text-meta text-pre-800/80">
-        {{ content.plate?.code }}
+        {{ content.plate?.code }}. <span v-if="content.plate?.number" class="font-en-serif italic">{{ content.plate.number }}</span>
       </p>
 
       <!-- ⚠️ 這裡的藍是 #71c1f0，與 PL.IV 的 By MRT / By Train 同一支，

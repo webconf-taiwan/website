@@ -6,8 +6,8 @@
     "keywords": "Agent · Connections · Code",
     "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "corner_left": {
-      "label": "Code · Emergence",
-      "note": "vol. V · plate I ."
+      "label": "Codex Emergence",
+      "note": "vol. V · plate I"
     },
     "corner_right": {
       "label": "N 25.04° · E 121.56°",
@@ -30,12 +30,12 @@
       { "text": " coalesce into something larger than their parts." }
     ],
     "body_zh": "WebConf 是一年一度聚集網頁技術專家與愛好者的盛會。今年以「湧現」為主題，從生態學家的視角，觀察 AI Agent 如何執行任務、工具與平台如何串接，以及程式碼如何改變網頁的運作方式。這些技術如同顯微鏡下的細胞，從簡單規則出發，彼此影響、共同演化，逐步形成新的網頁生態。",
-    "cta": { "label": "議程資訊", "href": "#agenda", "target": "_self" }
+    "cta": { "label": "議程資訊", "href": "/agenda", "target": "_self" }
   },
 
   "speaker": {
     "plate": { "code": "PL. I", "number": "III.", "label": "SPEAKER" },
-    "more_link": { "label": "更多講者", "href": "/people", "target": "_self" }
+    "more_link": { "label": "更多講者", "href": "/speakers", "target": "_self" }
   },
 
   "venue": {
@@ -69,11 +69,11 @@
     "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "items": [
       {
-        "code": "PL. VI · 01",
+        "code": "PL. I. VI. 01",
         "title": "一般票",
         "price": "4,980",
         "unit": "元 / 人",
-        "category": "FIELD NOTES · General Admission",
+        "category": "Field notes · General Admission",
         "reserve_link": { "label": "reserve", "href": "https://google.com", "target": "_blank" },
         "is_highlighted": false,
         "features": [
@@ -84,7 +84,7 @@
         ]
       },
       {
-        "code": "PL. VI · 02",
+        "code": "PL. I. VI. 02",
         "title": "三人揪團票",
         "price": "4,400",
         "unit": "元 / 人",
@@ -100,14 +100,16 @@
         ]
       },
       {
-        "code": "PL. VI · 03",
+        "code": "PL. I. VI. 03",
         "title": "熱情贊助票",
-        "price": "4,400",
+        "price": "12,000",
         "unit": "元 / 人",
-        "category": "Field Group · Group Admission",
+        "category": "Field Patron · Supporter Admission",
         "reserve_link": { "label": "reserve", "href": "https://google.com", "target": "_blank" },
         "is_highlighted": true,
         "features": [
+          { "en": "Digital Presence", "zh": "品牌數位曝光" },
+          { "en": "VIP Seating", "zh": "VIP 尊榮席位" },
           { "en": "Programme", "zh": "兩日完整議程" },
           { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
           { "en": "Annual Edition", "zh": "年度紀念品" },
@@ -115,20 +117,20 @@
         ]
       },
       {
-        "code": "PL. VI · 04",
+        "code": "PL. I. VI. 04",
         "title": "企業支持票",
-        "price": "4,400",
+        "price": "4,980",
         "unit": "元 / 人",
-        "category": "Field Group · Group Admission",
+        "category": "Field Sponsor · Corporate Admission",
         "reserve_link": { "label": "reserve", "href": "https://google.com", "target": "_blank" },
         "is_highlighted": true,
         "features": [
-          { "en": "Three-Person Group Offer", "zh": "三人同行限定優惠" },
           { "en": "Programme", "zh": "兩日完整議程" },
           { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
           { "en": "Annual Edition", "zh": "年度紀念品" },
           { "en": "Interactive Area", "zh": "攤位互動體驗" }
-        ]
+        ],
+        "note": "如有大量購票需求請至粉專與我們聯繫"
       }
     ]
   },

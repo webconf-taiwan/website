@@ -46,10 +46,11 @@ const activeStage = ref('background')
 //
 // ⚠️ 用 (pointer: fine) 而不是視窗寬度：這裡問的是「有沒有一個會一直抖的指標
 // 裝置」，不是「螢幕多大」。觸控筆電（寬螢幕但主要用觸控）也該走長門檻。
-// 原本是 5000。5 秒對「停下來讀 hero 的文案」來說太短，桌機也會遇到 ——
-// 讀完一段字抬頭，動態已經定格了。10 秒比較接近「真的離開」。
-const IDLE_STOP_DESKTOP_MS = 10000
-const IDLE_STOP_TOUCH_MS = 60000
+// 原本是 5000 → 10000。還是太短：停下來讀文案、看講者，抬頭動態已經定格了。
+// 現在兩邊都是 3 分鐘 —— 只當「人真的走開了」的省電保底。觸控不能比桌機短，
+// 所以一起拉到 3 分鐘（兩個常數先留著，之後要分開調比較好改）。
+const IDLE_STOP_DESKTOP_MS = 3 * 60 * 1000
+const IDLE_STOP_TOUCH_MS = 3 * 60 * 1000
 
 function idleStopMs () {
   if (typeof window === 'undefined') return IDLE_STOP_DESKTOP_MS

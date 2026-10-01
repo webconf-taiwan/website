@@ -19,6 +19,10 @@
 //            那個底是 #0a0a0c，canvas 的 compose 也用同一個底色（引擎 opts.bg），
 //            所以框裡那個方塊的邊界看不出來。⚠️ 兩邊要一起改，不同色方塊就會現形。
 
+// 自動輪播：每隔幾秒自動換下一位（最後一位之後回到第一位）。0 = 不輪播。
+// 手動點名單／箭頭／滑動換人後秒數會重新計算，從被點的那位往下輪。
+const AUTOPLAY_SEC = 5
+
 const props = defineProps({
   data: {
     type: Object,
@@ -27,9 +31,14 @@ const props = defineProps({
 })
 
 const { speakerIndex, speakerBusy, selectSpeaker } = useSpeakerFieldBus()
+// 使用者走開太久（見 useParticleStage 的 idleStopMs）粒子會整個停住，自動輪播也跟著停
+const { idle } = useParticleStage()
 // 桌機的人像是頁面底層那張唯一的 canvas 畫的（HomeField 的 speaker 影格）；
 // 窄視窗沒有那條時間軸，改由觀景框裡自己那張小 canvas 畫，見 HomeSpeakerPortrait。
 const { isDesktop, viewportReady } = useViewportMode()
+// 桌機沒有可用 WebGPU 時首頁背景是影片（HomeVideoField），沒有整頁 canvas 可以畫人像 ——
+// 改在桌機觀景框上掛手機版那套靜態點畫圖（HomeSpeakerPortrait forceStatic）
+const { webgpu } = useWebGpuSupport()
 
 const SPEAKERS = computed(() => props.data?.items || [])
 const plate = computed(() => props.data?.plate || {})
@@ -229,7 +238,36 @@ function select (i) {
   const next = SPEAKERS.value[i]
   playSwap()
   selectSpeaker(i, next?.portrait)
+  restartAutoplay()          // 不管是手動還是自動換的，都從這一位重新計秒
 }
+
+// --- 自動輪播 --------------------------------------------------------------
+// 用 setTimeout 而不是 setInterval：每次換人都整個重排，「點了之後秒數重置」才自然成立。
+// ⚠️ 只在這一區看得到、分頁在前景、而且使用者沒閒置時才計秒 —— 捲到別區還在背後換人，
+// 粒子那端每次都要讀新人像，白做工；捲回來時也會從頭計 5 秒，不會一進來就馬上跳走。
+let autoplayTimer = null
+let inView = false
+let io = null
+
+function stopAutoplay () {
+  clearTimeout(autoplayTimer)
+  autoplayTimer = null
+}
+
+function restartAutoplay () {
+  stopAutoplay()
+  if (!AUTOPLAY_SEC || !inView || document.hidden || idle.value || SPEAKERS.value.length < 2) return
+  autoplayTimer = setTimeout(() => {
+    step(1)
+    // 上一輪動畫還沒跑完（speakerBusy）時 select 會直接 return、不會重排，這裡補排下一輪
+    restartAutoplay()
+  }, AUTOPLAY_SEC * 1000)
+}
+
+function onVisibilityChange () {
+  restartAutoplay()
+}
+watch(idle, () => restartAutoplay())
 
 // --- 窄視窗的輪播 ----------------------------------------------------------
 // 設計稿在 <1024px 是一次只顯示一位、靠左右箭頭或左右滑動切換（桌機是八個名字
@@ -272,9 +310,21 @@ onMounted(() => {
   onResize = () => updateLeader()
   window.addEventListener('resize', onResize)
   nextTick(() => updateLeader())
+
+  if (AUTOPLAY_SEC && sectionRef.value) {
+    io = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting
+      restartAutoplay()
+    }, { threshold: 0.3 })
+    io.observe(sectionRef.value)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+  }
 })
 
 onBeforeUnmount(() => {
+  stopAutoplay()
+  io?.disconnect()
+  document.removeEventListener('visibilitychange', onVisibilityChange)
   killSwap()
   if (onResize) window.removeEventListener('resize', onResize)
 })
@@ -282,13 +332,13 @@ onBeforeUnmount(() => {
 
 <template>
   <!-- data-same-speaker 是 HomeField 第 2 段（about → speaker）的觸發器。
-       ⚠️ 底色只能是半透明 —— 人像就畫在背後那張 fixed canvas 上，
-       給不透明底色會把自己的人像整片蓋掉。 -->
+       桌機不鋪底：人像就畫在背後那張 fixed canvas 上，直接露出來。
+       ⚠️ 真的要加底色也只能半透明，不透明會把自己的人像整片蓋掉。 -->
   <section
     id="speaker"
     ref="sectionRef"
     data-same-speaker
-    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:bg-bg-mid/25 lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
+    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
   >
     <!-- 引線：被選中的名字 → 中央觀景框 -->
     <svg
@@ -347,9 +397,12 @@ onBeforeUnmount(() => {
         <!-- 人像點雲。桌機不掛（那邊是頁面底層那張唯一的 canvas 畫的）。
              <ClientOnly> 是因為斷點只有 client 量得到，見 useViewportMode。 -->
         <ClientOnly>
+          <!-- 等 WebGPU 偵測完才掛：沒有 WebGPU 就直接用靜態圖（不載粒子套件），
+               顯示模式是元件 setup 當下決定的，偵測結果晚到就換不過去了 -->
           <HomeSpeakerPortrait
-            v-if="viewportReady && !isDesktop"
+            v-if="viewportReady && !isDesktop && webgpu !== null"
             :speakers="SPEAKERS"
+            :force-static="webgpu === false"
           />
         </ClientOnly>
 
@@ -445,7 +498,7 @@ onBeforeUnmount(() => {
          ⚠️ 在窄視窗是 display:none（不是 v-if）—— 名字要留在 SSR 的 HTML 裡。
     ==================================================================== -->
     <div
-      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-12 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:gap-x-0"
+      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-8 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:gap-x-0"
     >
       <button
         v-for="(s, i) in LEFT"
@@ -501,6 +554,18 @@ onBeforeUnmount(() => {
              是 0.02px，瀏覽器畫不出來，於是「從小點放射」的前半段整段是空白的
              （見 script 裡 FRAME_DOT_MS 那段註解）。動 width/height 則邊框全程 1px。 -->
         <div class="relative aspect-square w-full lg:size-[264px] xl:size-[300px]">
+          <!-- 影片版的人像。構圖照窄視窗：框線佔觀景區的 62%，所以觀景區 = 框的 1/0.62 倍、置中，
+               人像（FIT 0.86）的頭肩會溢出框線，跟粒子版一樣。
+               靜態圖的下緣是一條平的切邊：手機版底下是不透明底色看不出來，疊在影片上很明顯，
+               所以用 mask 把最下面那段淡掉。 -->
+          <ClientOnly>
+            <div
+              v-if="viewportReady && isDesktop && webgpu === false"
+              class="pointer-events-none absolute left-1/2 top-1/2 size-[161.3%] -translate-x-1/2 -translate-y-1/2 [mask-image:linear-gradient(to_bottom,#000_72%,transparent_92%)]"
+            >
+              <HomeSpeakerPortrait :speakers="SPEAKERS" force-static />
+            </div>
+          </ClientOnly>
           <div
             ref="frameRef"
             class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-pre-800/80"

@@ -1,4 +1,5 @@
 import { createSoundEngine } from '~/utils/soundEngine'
+import { SITE_SOUND_ENABLED } from '~/constants/sound'
 
 // 背景音的狀態與生命週期（引擎本身見 utils/soundEngine.js）。
 //
@@ -21,6 +22,9 @@ const ROUTE_SCENES = { '/': 'hero', '/agenda': 'agenda', '/coming-soon': 'quiet'
 const HOME_SECTIONS = ['about', 'speaker', 'venue', 'faq', 'ticket']
 
 export default defineNuxtPlugin((nuxtApp) => {
+  // 總開關關著：不建 AudioContext、不掛任何監聽，useSiteSound() 會拿到什麼都不做的替身
+  if (!SITE_SOUND_ENABLED) return
+
   const router = useRouter()
   const { introDone } = useSiteIntro()
 

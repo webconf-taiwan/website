@@ -65,6 +65,12 @@ const props = defineProps({
   speakers: {
     type: Array,
     default: () => []
+  },
+  // 一律用靜態圖，不管裝置。桌機沒有可用的 WebGPU、首頁背景改播影片時用（見 pages/index.vue）——
+  // 那時沒有 HomeField 那張整頁 canvas 可以畫人像，改由這支掛在桌機的觀景框上。
+  forceStatic: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -96,7 +102,7 @@ const imgRef = ref(null)
 const hasStaticImages = props.speakers.some(sp => sp.portrait_static)
 // ⚠️ 只有「手機」（視窗 < 768px，isMobile）才會換成靜態圖。平板與窄桌機視窗維持粒子，
 // 就算檔位被降下來也一樣（那邊只是變稀，見 MobileField / particleTiers）。
-const wantsStatic = () => isMobile() && (cpuFallback.value || tier.value < TIER_DEFAULT)
+const wantsStatic = () => props.forceStatic || (isMobile() && (cpuFallback.value || tier.value < TIER_DEFAULT))
 const mode = ref(hasStaticImages && wantsStatic() ? 'static' : 'particle')
 // canvas 與 <img> 換手時要重疊一小段，所以 canvas 不是跟著 mode 立刻拿掉
 const showCanvas = ref(mode.value === 'particle')

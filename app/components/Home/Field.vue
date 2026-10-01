@@ -51,7 +51,7 @@ const props = defineProps({
 
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
-const { trackIntro } = useSiteIntro()
+const { trackIntro, introDone } = useSiteIntro()
 // 背景音：推粒子 → blip、收攏程度 → 濾波器（見 plugins/sound.client.js）
 const sound = useSiteSound()
 const SOUND_PUSH_MIN_SPEED = 6     // px／幀，低於這個當成沒在撥
@@ -200,6 +200,20 @@ const COUNT_DENSITY = 0.0386
 const COUNT_MAX = 50000
 const COUNT_MIN = 10000
 const PAGE_BUDGET = { density: COUNT_DENSITY, max: COUNT_MAX, min: COUNT_MIN }
+// 沒有 WebGPU（退回 canvas2d，整個模擬跑在主執行緒 CPU 上）時的點數上限。
+// ⚠️ 上面的預算是照 WebGPU 定的，CPU 後端拿同一個數字就是 50000 顆 —— 實測
+// （M 系列 Mac、1440×960、DPR 1）：25000 顆 3fps、8000 顆 12fps、6000 顆 24fps、
+// 4000 顆 52fps、2500 顆 60fps。Snapdragon X 這類 ARM 筆電、或 WebGPU 被瀏覽器擋掉的
+// 機器就是走這條，整頁會卡到不能用。取 3000 給比 Mac 慢的 CPU 留餘裕；
+// 真的還跑不動，下面 FPS_SAMPLE_MS 那段會再減半一次。
+const CPU_COUNT_MAX = 3000
+
+// 這張 canvas 該跑幾顆。backend 還不知道時（init 建引擎之前）先看瀏覽器有沒有 WebGPU。
+function pageCount (backend) {
+  const n = countFor(canvasRef.value, PAGE_BUDGET)
+  const gpu = backend ? backend === 'webgpu' : !!navigator.gpu
+  return gpu ? n : Math.min(n, CPU_COUNT_MAX)
+}
 // 每張圖的取樣點數。⚠️ 全部必須一致，否則配對會有一撮粒子配不到對。
 // 引擎點數可以大於它（buildImageTargets 會循環重用取樣點），也可以小於它
 // （取樣是重要性採樣、順序隨機，取前 N 個仍是整張圖的均勻子集）。
@@ -1101,7 +1115,7 @@ function frame (now) {
   const y = window.scrollY
 
   // 停住時仍要更新時間 / 捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度
-  if (document.hidden || idle.value) {
+  if (document.hidden || idle.value || introHold()) {
     lastTime = t
     lastScrollY = y
     return
@@ -1344,12 +1358,26 @@ function frame (now) {
   engine.setMorph?.(pullNow * b, gripNow * b, e)
 }
 
+// ---- 等 loading 淡出才開始動 ------------------------------------------------
+// 首次進站時，粒子要等 LayoutPageIntro 整個淡出（introDone）才開始跑，之前一律定格。
+// ⚠️ 不能一 init 完就 pause：引擎 pause 時連畫都不畫，canvas 會是空的，loading 淡出
+// 那 0.8 秒就會露出一片黑。所以先讓它跑一小段（POSTER_MS）畫出靜止畫面，再定格。
+// 只等兩個 rAF 不夠：實測手機版引擎建好 3ms 就被停住，那時第一幀可能還沒畫出來。
+// 站內換頁回來時 introDone 早就是 true，這段等於不存在。
+const POSTER_MS = 200
+let posterDrawn = false
+const introHold = () => posterDrawn && !introDone.value
+function drawPosterThenHold (sync) {
+  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; sync() }), POSTER_MS)
+}
+
 function syncPause () {
   // 固定背景永遠在視窗內，所以不必 IntersectionObserver；要理的是分頁隱藏
-  //（rAF 在背景分頁只是降頻，不是停止）與使用者閒置。
-  engine?.pause(document.hidden || idle.value)
+  //（rAF 在背景分頁只是降頻，不是停止）、使用者閒置，與 loading 還沒淡出。
+  engine?.pause(document.hidden || idle.value || introHold())
 }
 watch(idle, () => syncPause())
+watch(introDone, () => syncPause())
 
 // --- 換人 ------------------------------------------------------------------
 // 兩段式：blend 1→0 把粒子往外拋，再在 blend=0（shape 權重為 0，換掉無縫）把
@@ -1590,7 +1618,7 @@ async function switchLook (idOrIndex) {
 
   // ⚠️ 換效果一律回到自動點數 —— 手動值是「這一組效果下我想看多稀」，
   // 換組之後那個數字沒有意義了，留著只會讓人以為是新效果的預設。
-  const count = countFor(canvasRef.value, PAGE_BUDGET)
+  const count = pageCount(engine.backend)
   toolMeta.autoCount = count
   applyFieldLook(engine, look, { count, allowGlow: !isMobile() })
   // applyFieldLook 剛把 pointSize / rMax 整組寫回新 look 的值，面板要跟著同步；
@@ -1713,7 +1741,7 @@ async function init () {
   applyVenueEffectToKeys()
 
   const hero = window.PLPalettes.PALETTES[look.palette]
-  const count = countFor(canvas, PAGE_BUDGET)
+  const count = pageCount()
   toolMeta.autoCount = count
 
   engine = await window.makeEngine(canvas, {
@@ -1747,6 +1775,11 @@ async function init () {
   })
   backend.value = engine.backend
   toolMeta.backend = engine.backend
+  // 瀏覽器有 navigator.gpu、但 WebGPU 初始化失敗退回 CPU 的情況：上面是照 GPU 給的點數，這裡補砍
+  if (engine.backend !== 'webgpu' && engine.config.count > CPU_COUNT_MAX) {
+    engine.setCount?.(CPU_COUNT_MAX)
+    toolMeta.autoCount = CPU_COUNT_MAX
+  }
   syncKnobs()
   rebuildTierPresets()
   unregisterTool = registerTool({
@@ -1833,6 +1866,7 @@ async function init () {
   introStart = performance.now()
   lastScrollY = window.scrollY
   syncPause()
+  drawPosterThenHold(syncPause)
 
   if (import.meta.dev) {
     window.__sameDbg = () => ({
@@ -1870,11 +1904,12 @@ async function init () {
   // 所以這段越短越好 —— 降點的判斷排在它「後面」，不能反過來卡住它。
   setTimeout(async () => {
     // 沒有 shrinkTo 的後端（CPU 引擎）維持舊做法：量一次 fps、慢就 setCount 減半。
-    // 那邊的粒子本來就少、跑不動的機率高，而且沒有能拿來逐漸減量的介面。
+    // 那邊的粒子已經在 init 壓到 CPU_COUNT_MAX，跑不動的機率高，而且沒有能拿來逐漸減量的介面。
     if (engine && !engine.shrinkTo) {
       const fps = engine.getFps ? engine.getFps() : 60
       if (fps > 0 && fps < 45) {
-        const halved = Math.round(count / 2)
+        // ⚠️ 用引擎現在的點數減半，不是 init 一開始算的 count —— CPU 上限已經砍過一次了
+        const halved = Math.round(engine.config.count / 2)
         engine.setCount?.(halved)
         // ⚠️ 面板要顯示「引擎現在真的跑幾顆」，不是我們原本想給幾顆 —— 這段減半
         // 一觸發，knobs.count 就跟引擎對不上了。autoCount 維持幾何算出來的值，
@@ -1950,7 +1985,7 @@ onBeforeUnmount(() => {
 // 傳進來的是「螢幕座標」，相機變換由這裡統一處理 —— 呼叫端不需要知道 zoom / offset。
 // strength 正值往外推、負值往內吸（shader 是 v += dir * falloff * strength）。
 function pushAt (screenX, screenY, radius, strength) {
-  if (!engine || document.hidden || idle.value) return
+  if (!engine || document.hidden || idle.value || introHold()) return
   const { x, y } = toSim(screenX, screenY)
   engine.disturb?.(x, y, radius, strength)
 }

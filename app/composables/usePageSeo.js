@@ -35,6 +35,9 @@ export function usePageSeo (path) {
     twitterDescription: description
   })
 
+  // 與畫面及 meta 共用同一份描述，避免子頁的 WebPage 沿用全站摘要。
+  useSchemaOrg([defineWebPage({ name: fullTitle, description })])
+
   // 分享圖全站共用 public/og.jpg，寫在 nuxt.config 的 app.head，這裡不另外設定。
 
   return page

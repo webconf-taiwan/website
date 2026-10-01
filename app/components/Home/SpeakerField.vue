@@ -351,7 +351,7 @@ function startLiveLoop () {
 function syncPause () {
   if (!engine) return
   // 上台中、換人漸變中、或力場還沒淡完 → 要繼續算；其餘一律凍結（保留末幀）。
-  // 閒置超過 5 秒也停 —— 使用者沒在看的時候沒有理由讓 GPU 全速跑（會發燙）。
+  // 閒置超過門檻（useParticleStage，3 分鐘）也停 —— 使用者沒在看的時候沒有理由讓 GPU 全速跑（會發燙）。
   const running = (live || switching.value || force > 0) && !document.hidden && !idle.value
   engine.pause(!running)
 }
