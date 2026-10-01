@@ -36,6 +36,9 @@ const { idle } = useParticleStage()
 // 桌機的人像是頁面底層那張唯一的 canvas 畫的（HomeField 的 speaker 影格）；
 // 窄視窗沒有那條時間軸，改由觀景框裡自己那張小 canvas 畫，見 HomeSpeakerPortrait。
 const { isDesktop, viewportReady } = useViewportMode()
+// 桌機沒有可用 WebGPU 時首頁背景是影片（HomeVideoField），沒有整頁 canvas 可以畫人像 ——
+// 改在桌機觀景框上掛手機版那套靜態點畫圖（HomeSpeakerPortrait forceStatic）
+const { webgpu } = useWebGpuSupport()
 
 const SPEAKERS = computed(() => props.data?.items || [])
 const plate = computed(() => props.data?.plate || {})
@@ -548,6 +551,18 @@ onBeforeUnmount(() => {
              是 0.02px，瀏覽器畫不出來，於是「從小點放射」的前半段整段是空白的
              （見 script 裡 FRAME_DOT_MS 那段註解）。動 width/height 則邊框全程 1px。 -->
         <div class="relative aspect-square w-full lg:size-[264px] xl:size-[300px]">
+          <!-- 影片版的人像。構圖照窄視窗：框線佔觀景區的 62%，所以觀景區 = 框的 1/0.62 倍、置中，
+               人像（FIT 0.86）的頭肩會溢出框線，跟粒子版一樣。
+               靜態圖的下緣是一條平的切邊：手機版底下是不透明底色看不出來，疊在影片上很明顯，
+               所以用 mask 把最下面那段淡掉。 -->
+          <ClientOnly>
+            <div
+              v-if="viewportReady && isDesktop && webgpu === false"
+              class="pointer-events-none absolute left-1/2 top-1/2 size-[161.3%] -translate-x-1/2 -translate-y-1/2 [mask-image:linear-gradient(to_bottom,#000_72%,transparent_92%)]"
+            >
+              <HomeSpeakerPortrait :speakers="SPEAKERS" force-static />
+            </div>
+          </ClientOnly>
           <div
             ref="frameRef"
             class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 border border-pre-800/80"

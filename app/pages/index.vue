@@ -84,6 +84,9 @@ useHead({ script: [{
 // 「一鏡到底」只有桌機（≥1024px）跑得動，窄視窗換成幾張各自獨立、只在自己那一區
 // 跑的小 canvas。完整的理由與各區塊的取捨在 app/composables/useViewportMode.js。
 const { isDesktop, viewportReady } = useViewportMode()
+// 桌機沒有可用的 WebGPU（顯示卡被瀏覽器擋、Windows ARM 筆電…）時，即時粒子會退到 CPU 卡死，
+// 改播事先錄好的循環影片（HomeVideoField），講者改用靜態圖。null = 還在偵測，先不掛。
+const { webgpu } = useWebGpuSupport()
 
 const fieldRef = ref(null)
 
@@ -107,11 +110,14 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          hydration 時對不起來。canvas 本來就是 onMounted 才建引擎，不影響首屏。 -->
     <ClientOnly>
       <template v-if="viewportReady">
-        <HomeField
-          v-if="isDesktop"
-          ref="fieldRef"
-          :speakers="home.speaker?.items || []"
-        />
+        <template v-if="isDesktop">
+          <HomeField
+            v-if="webgpu === true"
+            ref="fieldRef"
+            :speakers="home.speaker?.items || []"
+          />
+          <HomeVideoField v-else-if="webgpu === false" ref="fieldRef" />
+        </template>
         <HomeMobileField v-else ref="fieldRef" />
       </template>
     </ClientOnly>
@@ -124,9 +130,9 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          ⚠️ 只有桌機那張 canvas 有 pushAt —— 窄視窗是另一支 HomeMobileField，
          而且手舉在手機鏡頭前也擺不出這些手勢，所以整組只在 isDesktop 掛載。 -->
     <ClientOnly>
-      <HomeInteractiveGate v-if="isDesktop" />
+      <HomeInteractiveGate v-if="isDesktop && webgpu" />
       <HomeHandField
-        v-if="isDesktop && interactiveOn"
+        v-if="isDesktop && webgpu && interactiveOn"
         :on-push="handPush"
         :on-gather="handGather"
       />
