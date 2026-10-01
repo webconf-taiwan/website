@@ -31,6 +31,8 @@ const props = defineProps({
 })
 
 const { speakerIndex, speakerBusy, selectSpeaker } = useSpeakerFieldBus()
+// 使用者走開太久（見 useParticleStage 的 idleStopMs）粒子會整個停住，自動輪播也跟著停
+const { idle } = useParticleStage()
 // 桌機的人像是頁面底層那張唯一的 canvas 畫的（HomeField 的 speaker 影格）；
 // 窄視窗沒有那條時間軸，改由觀景框裡自己那張小 canvas 畫，見 HomeSpeakerPortrait。
 const { isDesktop, viewportReady } = useViewportMode()
@@ -238,7 +240,7 @@ function select (i) {
 
 // --- 自動輪播 --------------------------------------------------------------
 // 用 setTimeout 而不是 setInterval：每次換人都整個重排，「點了之後秒數重置」才自然成立。
-// ⚠️ 只在這一區看得到、而且分頁在前景時才計秒 —— 捲到別區還在背後換人，
+// ⚠️ 只在這一區看得到、分頁在前景、而且使用者沒閒置時才計秒 —— 捲到別區還在背後換人，
 // 粒子那端每次都要讀新人像，白做工；捲回來時也會從頭計 5 秒，不會一進來就馬上跳走。
 let autoplayTimer = null
 let inView = false
@@ -251,7 +253,7 @@ function stopAutoplay () {
 
 function restartAutoplay () {
   stopAutoplay()
-  if (!AUTOPLAY_SEC || !inView || document.hidden || SPEAKERS.value.length < 2) return
+  if (!AUTOPLAY_SEC || !inView || document.hidden || idle.value || SPEAKERS.value.length < 2) return
   autoplayTimer = setTimeout(() => {
     step(1)
     // 上一輪動畫還沒跑完（speakerBusy）時 select 會直接 return、不會重排，這裡補排下一輪
@@ -262,6 +264,7 @@ function restartAutoplay () {
 function onVisibilityChange () {
   restartAutoplay()
 }
+watch(idle, () => restartAutoplay())
 
 // --- 窄視窗的輪播 ----------------------------------------------------------
 // 設計稿在 <1024px 是一次只顯示一位、靠左右箭頭或左右滑動切換（桌機是八個名字
