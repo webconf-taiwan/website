@@ -54,7 +54,9 @@
           { "label": "MAIL", "href": "mailto:hi@webconf.tw", "target": "_self" },
           { "label": "FACEBOOK", "href": "https://www.facebook.com/WebConfTaiwan/", "target": "_blank" },
           { "label": "INSTAGRAM", "href": "https://instagram.com/webconftw/", "target": "_blank" },
-          { "label": "THREADS", "href": "https://www.threads.com/@webconftw", "target": "_blank" }
+          { "label": "THREADS", "href": "https://www.threads.com/@webconftw", "target": "_blank" },
+          { "label": "DISCORD", "href": "https://5xcamp.us/webconf-discord", "target": "_blank" }
+
         ]
       }
     ],

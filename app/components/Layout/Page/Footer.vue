@@ -43,12 +43,18 @@ const { footer } = useGlobalData()
                  loading（LayoutPageIntro）就會再跑一次。NuxtLink 遇到 mailto: / https://
                  會自己輸出一般的 <a>，所以外部連結也可以一起用。 -->
             <NuxtLink
-              class="text-pre-800/80 text-zh-body-md transition-colors duration-300 lg:hover:text-brand-light"
+              class="group inline-flex items-center text-pre-800/80 text-zh-body-md transition-colors duration-300 lg:hover:text-brand-light"
               :to="childMenu.href"
               :target="childMenu.target"
               :rel="linkRel(childMenu.target)"
             >
               {{ childMenu.label }}
+              <!-- hover 時箭頭從左邊滑入（只有桌機有 hover）。箭頭維持 pre-800，不跟著文字變藍。
+                   平常就佔著位置只是透明，hover 才不會把同一行擠動。 -->
+              <span
+                aria-hidden="true"
+                class="ml-2 text-pre-800 opacity-0 -translate-x-2 transition duration-300 motion-reduce:translate-x-0 lg:group-hover:translate-x-0 lg:group-hover:opacity-100 lg:group-focus-visible:translate-x-0 lg:group-focus-visible:opacity-100"
+              >→</span>
             </NuxtLink>
           </li>
         </ul>

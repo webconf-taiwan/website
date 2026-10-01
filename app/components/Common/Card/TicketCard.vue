@@ -52,6 +52,7 @@ const isExpanded = ref(false)
                 <p class="text-zh-body-lg">{{ feature.zh }}</p>
               </div>
             </li>
+            <li v-if="data.note" class="pt-4 text-zh-body-md text-pre-800/[62%]">{{ data.note }}</li>
           </ul>
         </div>
       </div>

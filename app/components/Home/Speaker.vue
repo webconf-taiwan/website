@@ -445,7 +445,7 @@ onBeforeUnmount(() => {
          ⚠️ 在窄視窗是 display:none（不是 v-if）—— 名字要留在 SSR 的 HTML 裡。
     ==================================================================== -->
     <div
-      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-12 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:gap-x-0"
+      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-8 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:gap-x-0"
     >
       <button
         v-for="(s, i) in LEFT"

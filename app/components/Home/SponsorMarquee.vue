@@ -54,7 +54,7 @@ onBeforeUnmount(() => {
   <section
     id="sponsors"
     ref="sectionRef"
-    class="relative z-10 overflow-hidden py-10"
+    class="relative z-10 overflow-hidden pt-10 pb-[60px]"
   >
     <div ref="trackRef" class="flex w-max">
       <!-- 每一格是連到贊助商官網的連結。
@@ -63,15 +63,16 @@ onBeforeUnmount(() => {
       <a
         v-for="(s, i) in loopList"
         :key="i"
-        :href="s.link?.href"
+        :href="s.link?.href || undefined"
         :target="s.link?.target"
         :rel="linkRel(s.link?.target)"
         :aria-hidden="i >= sponsors.length ? 'true' : undefined"
         :tabindex="i >= sponsors.length ? -1 : undefined"
         class="group flex shrink-0 items-center justify-center px-2.5 lg:px-5"
       >
-        <!-- 現在的 logo 是設計稿直接切出來的圖磚（設計稿尺寸：桌機 150×120、手機 120×96，高度照比例）：留白、字級、
-             「連續 4 年贊助」那種標籤全都畫在圖裡了，所以這裡一律等寬顯示。
+        <!-- 現在的 logo 是設計稿直接切出來的圖磚（設計稿尺寸：桌機 150×120、手機 120×96，高度照比例）：留白、字級
+             全都畫在圖裡了，所以這裡一律等寬顯示。
+             「連續 4 年贊助」標籤不在圖裡，由資料的 badge 欄位另外疊在 logo 下方。
              ⚠️ 別再回頭讓資料給 logo_height 逐張調高度 —— 圖磚本來就對齊好了，
              逐張調反而會讓每個 logo 的視覺大小不一致。
              hover（或鍵盤 focus）換成彩色版（資料的 logo_color）：兩張疊在一起交叉淡入淡出。
@@ -94,6 +95,13 @@ onBeforeUnmount(() => {
             loading="lazy"
             draggable="false"
           >
+          <!-- 設計稿 common/meta_12px、pre-800 底黑字。用 absolute 掛在 logo 下方，
+               不撐高這一格 —— 不然 items-center 會把這張 logo 往上推，跟其他家對不齊。
+               高度要落在 section 的 pb 內，不然會被 overflow-hidden 切掉（⚠️ Tailwind 沒有 pb-15）。 -->
+          <span
+            v-if="s.badge"
+            class="absolute left-1/2 top-full -translate-x-1/2 whitespace-nowrap block bg-pre-800 p-1 text-meta text-bg-mid"
+          >{{ s.badge }}</span>
         </span>
       </a>
     </div>

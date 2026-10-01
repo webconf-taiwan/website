@@ -44,8 +44,19 @@
       "name": "鈦坦科技 TITANSOFT",
       "logo": "/sponsors/鈦坦科技.svg",
       "logo_color": "/sponsors/鈦坦科技-color.svg",
+      "badge": "連續4年贊助",
       "link": {
         "href": "https://titansoft.com/tw",
+        "target": "_blank"
+      },
+      "show_on_home": true
+    },
+    {
+      "name": "NEXT",
+      "logo": "/sponsors/next.svg",
+      "logo_color": "/sponsors/next-color.svg",
+      "link": {
+        "href": "",
         "target": "_blank"
       },
       "show_on_home": true
