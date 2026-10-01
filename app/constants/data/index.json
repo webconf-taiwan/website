@@ -6,8 +6,8 @@
     "keywords": "Agent · Connections · Code",
     "cta": { "label": "前往購票", "href": "#ticket", "target": "_self" },
     "corner_left": {
-      "label": "Code · Emergence",
-      "note": "vol. V · plate I ."
+      "label": "Codex Emergence",
+      "note": "vol. V · plate I"
     },
     "corner_right": {
       "label": "N 25.04° · E 121.56°",
@@ -35,7 +35,7 @@
 
   "speaker": {
     "plate": { "code": "PL. I", "number": "III.", "label": "SPEAKER" },
-    "more_link": { "label": "更多講者", "href": "/speckers", "target": "_self" }
+    "more_link": { "label": "更多講者", "href": "/speakers", "target": "_self" }
   },
 
   "venue": {
