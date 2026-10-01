@@ -162,8 +162,10 @@ function writeCssVars () {
     const railFadeEnd = Math.min(W, railEdge + 80)
     const galleryTop = Math.max(0, (rects.gallery?.top || 0) - railOffset)
     const galleryBottom = Math.min(canvasHeight, (rects.gallery?.bottom || 0) - railOffset)
+    const heroTextY = (rects.hero?.top || 0) + HERO.height / 2 + 16 - railOffset
     const layers = [
-      `linear-gradient(#000, #000) 0 0 / 100% ${heroBottom}px no-repeat`,
+      // 只淡出 hero 文字後方，保留照片牆及左欄各自的遮罩。
+      `radial-gradient(ellipse 360px 210px at 50% ${heroTextY}px, transparent 65%, #000 100%) 0 0 / 100% ${heroBottom}px no-repeat`,
       `linear-gradient(to right, rgb(0 0 0 / ${railMix}) ${railFadeStart}px, rgb(0 0 0 / ${railMix * 0.18}) ${railEdge}px, transparent ${railFadeEnd}px) 0 ${railTop}px / ${railFadeEnd}px ${Math.max(0, canvasHeight - railTop)}px no-repeat`,
     ]
     if (galleryConfig) layers.push(`linear-gradient(rgb(0 0 0 / ${galleryMix}), rgb(0 0 0 / ${galleryMix})) 0 ${galleryTop}px / 100% ${Math.max(0, galleryBottom - galleryTop)}px no-repeat`)
@@ -304,11 +306,12 @@ async function rebuildTargets () {
     const railSlots = buildSlotTargetsRaw(raw, N, target, species, W)
     colonies = railSlots.shape
     railTypes = railSlots.shapeType
-    const heroSeed = buildSeedTargets(look.rules.seedPattern, N, species, W, HERO.height)
+    // 先用全寬生成構圖，再壓回 hero 高度；圓環／螺旋不再被短邊 550px 限縮。
+    const heroSeed = buildSeedTargets(look.rules.seedPattern, N, species, W, W)
     const zoom = look.camera.zoom / 1.35
     for (let i = 0; i < N; i++) {
       heroSeed.tx[i] = W / 2 + (heroSeed.tx[i] - W / 2) * zoom
-      heroSeed.ty[i] = HERO.height / 2 + (heroSeed.ty[i] - HERO.height / 2) * zoom
+      heroSeed.ty[i] = HERO.height / 2 + (heroSeed.ty[i] - W / 2) * HERO.height / W * zoom
     }
     const heroSlots = buildSlotTargetsRaw(raw, N, heroSeed, species, W, { recolor: true })
     spread = heroSlots.shape

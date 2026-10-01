@@ -93,6 +93,20 @@ const items = computed(() => agenda.items || [])
 .agenda-layout .text-en-caption { font-weight: 400; }
 .agenda-layout [data-plate-body] .plate-page-content::before { content: none; }
 
+@media (min-width: 1024px) {
+  .agenda-layout [data-plate-body] { position: relative; }
+  .agenda-layout [data-plate-body]::before {
+    content: '';
+    position: absolute;
+    top: 60px;
+    left: 60px;
+    right: 60px;
+    border-top: 1px solid rgb(239 230 210 / 35%);
+  }
+  .agenda-layout [data-plate-body] > aside,
+  .agenda-layout [data-plate-body] > .plate-page-content { padding-top: 92px; }
+}
+
 @media (max-width: 1023px) {
   .agenda-layout footer { border: 0; box-shadow: inset 0 1px rgb(239 230 210 / 35%); }
   .agenda-layout [data-footer-wordmark] { align-items: flex-end; }

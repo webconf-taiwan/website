@@ -302,12 +302,12 @@ onBeforeUnmount(() => {
     top: var(--photo-y);
     width: var(--photo-width);
     transform: translate(-50%, -50%) rotate(var(--photo-rotation));
-    transition: width 350ms, transform 350ms;
+    transition: transform 350ms;
     touch-action: none;
     cursor: grab;
     z-index: 20;
   }
-  .desktop-photo.is-active { width: 34.7222%; z-index: 30; transform: translate(-50%, -50%) rotate(0deg); }
+  .desktop-photo.is-active { z-index: 30; transform: translate(-50%, -50%) rotate(0deg) scale(1.05); }
   .desktop-photo.is-dragging { cursor: grabbing; transition: none; }
   .photo-print {
     display: block;
@@ -317,13 +317,13 @@ onBeforeUnmount(() => {
     scale: 1;
     transition: scale 350ms;
   }
-  .desktop-photo:hover .photo-print { animation: photo-breathe 2.4s ease-in-out infinite; }
+  .desktop-photo:not(.is-active):hover .photo-print { animation: photo-breathe 2.4s ease-in-out infinite; }
   .desktop-photo.is-dragging .photo-print { animation: none; }
   .photo-heading h2 { max-width: 700px; }
 }
 @keyframes photo-breathe { 0%, 100% { scale: 1; } 25% { scale: 1.05; } 75% { scale: 0.95; } }
 @media (prefers-reduced-motion: reduce) {
-  .desktop-photo:hover .photo-print { animation: none; }
-  .desktop-photo, .mobile-photo img, .photo-print img { transition: none; }
+  .desktop-photo:not(.is-active):hover .photo-print { animation: none; }
+  .desktop-photo, .photo-print, .mobile-photo img, .photo-print img { transition: none; }
 }
 </style>
