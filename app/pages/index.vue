@@ -84,14 +84,25 @@ useHead({ script: [{
 // 「一鏡到底」只有桌機（≥1024px）跑得動，窄視窗換成幾張各自獨立、只在自己那一區
 // 跑的小 canvas。完整的理由與各區塊的取捨在 app/composables/useViewportMode.js。
 const { isDesktop, viewportReady } = useViewportMode()
-// 桌機沒有可用的 WebGPU（顯示卡被瀏覽器擋、Windows ARM 筆電…）時，即時粒子會退到 CPU 卡死，
-// 改播事先錄好的循環影片（HomeVideoField），講者改用靜態圖。null = 還在偵測，先不掛。
+// 桌機沒有可用的 WebGPU（顯示卡被瀏覽器擋、Windows ARM 筆電…）時，即時粒子會退到 CPU 卡死。
+// 那時整頁背景關掉，只在 hero 與票券～CoC 兩段各放一支事先錄好的循環影片（HomeVideoField），
+// 講者改用靜態圖（見 Speaker.vue）。null = 還在偵測，先什麼都不掛。
+// 窄視窗同理，只是影片維持 fixed 一支（中間那段本來就有不透明底色蓋住），見 HomeVideoField。
 const { webgpu } = useWebGpuSupport()
+// ⚠️ 要等 mounted 才成立：videoMode 也拿去切 <ClientOnly> 外面的東西（CoC 的 thin-glass），
+// SSR 時一定是 false；偵測在 hydration 前就有結果的話（?webgpu=off、沒有 navigator.gpu）
+// class 會對不上，而正式版的 hydration 不會修正 class —— 毛玻璃就永遠停在 SSR 那一版。
+const mounted = ref(false)
+onMounted(() => { mounted.value = true })
+const videoMode = computed(() => mounted.value && viewportReady.value && webgpu.value === false)
+const desktopVideo = computed(() => videoMode.value && isDesktop.value)
 
 const fieldRef = ref(null)
 
 // 右下角的狀態列會顯示實際跑起來的後端（webgpu / webgl2 / canvas2d）
-const backend = computed(() => fieldRef.value?.backend || '')
+// 影片版沒有引擎，但仍顯示偵測結果：沒有 WebGPU 的機器原本就是退到 canvas2d，
+// 標成 canvas2d 讓看的人知道這台走的是哪條路（影片只是那條路的替身）。
+const backend = computed(() => fieldRef.value?.backend || (videoMode.value ? 'canvas2d' : ''))
 
 // 互動模式（彩蛋）。手勢那邊算出螢幕座標與力道，這裡轉交給粒子場 ——
 // 相機變換（zoom / offset）由 HomeField.pushAt 自己處理。
@@ -110,15 +121,18 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          hydration 時對不起來。canvas 本來就是 onMounted 才建引擎，不影響首屏。 -->
     <ClientOnly>
       <template v-if="viewportReady">
-        <template v-if="isDesktop">
-          <HomeField
-            v-if="webgpu === true"
-            ref="fieldRef"
-            :speakers="home.speaker?.items || []"
-          />
-          <HomeVideoField v-else-if="webgpu === false" ref="fieldRef" />
-        </template>
-        <HomeMobileField v-else ref="fieldRef" />
+        <HomeField
+          v-if="isDesktop && webgpu === true"
+          ref="fieldRef"
+          :speakers="home.speaker?.items || []"
+        />
+        <HomeMobileField v-else-if="!isDesktop && webgpu === true" ref="fieldRef" />
+        <HomeVideoField
+          v-else-if="!isDesktop && webgpu === false"
+          fixed
+          intro
+          :active-in="['#hero', '[data-same-outro]']"
+        />
       </template>
     </ClientOnly>
 
@@ -143,7 +157,13 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          data-same-hero 是第 1 段（自由場 → side.png）的觸發器：這個區塊的底邊
          從畫面底捲到畫面頂的這段 = 粒子從滿版自由場收攏成 side.png。
     ==================================================================== -->
-    <HomeHero :data="home.hero" :backend="backend" />
+    <!-- 影片版（沒有 WebGPU 的桌機）：hero 自己一支背景影片，見 HomeVideoField -->
+    <div class="relative">
+      <ClientOnly>
+        <HomeVideoField v-if="desktopVideo" intro />
+      </ClientOnly>
+      <HomeHero :data="home.hero" :backend="backend" />
+    </div>
 
     <!-- ===================================================================
          PL. II ～ PL. V —— 窄視窗的「沒有粒子」那一段
@@ -184,7 +204,11 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          這一段進畫面就把 hero 那張從 pause 喚醒，離開再停。
          ⚠️ 要包住票券／贊助／CoC 三區 —— 設計稿上這三區的底就是 hero 那種生態，
          中間任何一段沒被包到，粒子就會在那裡定格一下。 -->
-    <div data-same-outro>
+    <div data-same-outro class="relative">
+      <!-- 影片版：票券 → 贊助 → CoC 共用一支背景影片（CoC 的毛玻璃會把它糊掉） -->
+      <ClientOnly>
+        <HomeVideoField v-if="desktopVideo" />
+      </ClientOnly>
       <HomeTicket :data="home.ticket" />
 
     <!-- 贊助商跑馬燈。素材在 public/sponsors/ -->
@@ -195,7 +219,7 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          毛玻璃把背後的粒子糊掉 —— 這一區在兩個版本裡是完全一樣的。
     ==================================================================== -->
     <!-- 章節錨點交給上面那個 fixed 的 CommonChapterNav，關掉區塊內建的靜態版本 -->
-    <HomeCodeOfConduct :data="home.code_of_conduct" :show-chapter-dots="false" />
+    <HomeCodeOfConduct :data="home.code_of_conduct" :show-chapter-dots="false" :thin-glass="videoMode" />
     </div>
   </div>
 </template>

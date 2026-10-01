@@ -397,9 +397,12 @@ onBeforeUnmount(() => {
         <!-- 人像點雲。桌機不掛（那邊是頁面底層那張唯一的 canvas 畫的）。
              <ClientOnly> 是因為斷點只有 client 量得到，見 useViewportMode。 -->
         <ClientOnly>
+          <!-- 等 WebGPU 偵測完才掛：沒有 WebGPU 就直接用靜態圖（不載粒子套件），
+               顯示模式是元件 setup 當下決定的，偵測結果晚到就換不過去了 -->
           <HomeSpeakerPortrait
-            v-if="viewportReady && !isDesktop"
+            v-if="viewportReady && !isDesktop && webgpu !== null"
             :speakers="SPEAKERS"
+            :force-static="webgpu === false"
           />
         </ClientOnly>
 
