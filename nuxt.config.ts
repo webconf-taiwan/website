@@ -44,10 +44,10 @@ export default defineNuxtConfig({
       deployConfig: true,
       nodeCompat: true
     },
-    compressPublicAssets: {
-      gzip: true,
-      brotli: true,
-    },
+    // ⚠️ 不要開 compressPublicAssets。Workers Static Assets 不會拿預先壓好的 .br/.gz 回應，
+    // 邊緣自己會壓縮；開了只是讓 build 用 brotli 硬壓 40MB 的 mediapipe wasm/模型（實測多 30s～2min），
+    // 還多上傳 57 個檔、29MB。
+    compressPublicAssets: false,
   },
 
   modules: [
@@ -76,6 +76,12 @@ export default defineNuxtConfig({
     description: seo.site.description,
     defaultLocale: process.env.APP_DEFAULT_LANG,
     indexable: process.env.WEB_SEARCH === 'YES'
+  },
+
+  // 分享圖用靜態 public/og.jpg（見下方 app.head），不需要動態產圖。
+  // 關掉才不會把 takumi wasm（3.5MB）打包進 server bundle。
+  ogImage: {
+    enabled: false
   },
 
   schemaOrg: {
@@ -164,9 +170,7 @@ export default defineNuxtConfig({
         'class-variance-authority',
         'gsap',
         'lenis',
-        // 動態載入的去背套件：預打包成單一 chunk，dev 才不會 @fs 404（模型/wasm 仍執行期抓）
-        '@imgly/background-removal',
-        // 綠幕即時分割：同理預打包（wasm/模型從 public/mediapipe 自架載入）
+        // 綠幕即時分割：動態載入，預打包成單一 chunk，dev 才不會 @fs 404（wasm/模型從 public/mediapipe 自架載入）
         '@mediapipe/tasks-vision'
       ]
     },
