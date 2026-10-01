@@ -4,6 +4,7 @@
     "short_name": "WebConf",
     "organization": "WebConf Taiwan",
     "logo": "/logo-webconf.svg",
+    "same_as": ["https://www.facebook.com/WebConfTaiwan/", "https://instagram.com/webconftw/", "https://www.threads.com/@webconftw"],
     "og_image": { "src": "/og.jpg", "width": 1200, "height": 630, "alt": "WebConf Taiwan 2026 — 瓶蓋工廠台北製造所 · Dec. 11-12, 2026" },
     "description": "WebConf Taiwan 2026 於 12 月 11–12 日在台北瓶蓋工廠台北製造所舉辦。今年以「湧現」為主題，聚焦 AI Agent、前端、後端、UI/UX、DevOps 與資安，兩天議程集結台灣網頁技術社群。"
   },
@@ -33,7 +34,9 @@
     },
     "/about": {
       "title": "關於",
-      "description": "認識 WebConf Taiwan：一年一度聚集網頁技術專家與愛好者的年會，2026 年以「湧現」為主題。"
+      "description": "認識 WebConf Taiwan：一年一度聚集網頁技術專家與愛好者的年會，2026 年以「湧現」為主題。",
+      "noindex": true,
+      "noindex_reason": "頁面內容待補"
     },
     "/agenda": {
       "title": "議程",
@@ -45,13 +48,27 @@
     },
     "/contact": {
       "title": "聯絡我們",
-      "description": "有合作、贊助或其他問題，歡迎聯絡 WebConf Taiwan 團隊。"
+      "description": "有合作、贊助或其他問題，歡迎聯絡 WebConf Taiwan 團隊。",
+      "noindex": true,
+      "noindex_reason": "頁面內容待補"
     },
     "/greenscreen": {
       "title": "虛擬綠幕",
-      "description": "瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。"
+      "description": "瀏覽器端即時人像去背換背景，免安裝、免實體綠幕。",
+      "noindex": true,
+      "noindex_reason": "內部工具"
     },
 
+    "/speakers": {
+      "title": "講者陣容（建置中）",
+      "noindex": true,
+      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+    },
+    "/venue": {
+      "title": "場域介紹（建置中）",
+      "noindex": true,
+      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+    },
     "/people": {
       "title": "講者陣容",
       "description": "認識 WebConf Taiwan 的講者陣容。",

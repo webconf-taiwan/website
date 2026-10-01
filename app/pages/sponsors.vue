@@ -1,4 +1,5 @@
 <script setup>
+import galleryConfig from '~/constants/data/sponsors-particle.json'
 const sponsors = await useSponsorsData()
 const contentRef = ref(null)
 useFadeIn(contentRef)
@@ -16,6 +17,7 @@ usePageSeo('/sponsors')
     :corner-left="sponsors.corner_left"
     :corner-right="sponsors.corner_right"
     rail-start="body"
+    :gallery-config="galleryConfig"
   >
     <template #hero-actions>
       <AtomButton

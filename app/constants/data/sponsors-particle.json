@@ -1,0 +1,14 @@
+{
+  "schema": "webconf-sandbox-params",
+  "v": 1,
+  "name": "export",
+  "look": { "palette": "blue", "background": "ink" },
+  "sim": { "count": 100000, "species": 5, "simSpeed": 0.2, "cameraZoom": 1.4 },
+  "physics": { "forceFactor": 1.0210371981772872, "friction": 0.2849968653632267, "repel": 0.9591242710079027, "rMax": 78.18283164191256 },
+  "visual": { "pointSize": 0.9, "particleOpacity": 0.6, "showGlow": false, "showFps": false },
+  "glow": { "glowSize": 3.069473559776058, "glowIntensity": 0.013677575143211048, "glowSteepness": 5.4439378481926735 },
+  "behavior": { "preset": "auto", "seedPattern": "chromaticFlower" },
+  "exportGlow": true,
+  "exportBg": true,
+  "exportScale": 2
+}

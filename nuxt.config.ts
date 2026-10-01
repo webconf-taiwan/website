@@ -82,7 +82,8 @@ export default defineNuxtConfig({
     identity: {
       type: 'Organization',
       name: seo.site.organization,
-      logo: seo.site.logo
+      logo: seo.site.logo,
+      sameAs: seo.site.same_as
     }
   },
 
@@ -110,7 +111,7 @@ export default defineNuxtConfig({
         },
         {
           property: 'og:locale',
-          content: process.env.APP_DEFAULT_LANG
+          content: process.env.APP_DEFAULT_LANG?.replace('-', '_')
         },
         // 分享圖：og:image 必須是絕對網址，所以接上 APP_URL
         { property: 'og:image', content: ogImageUrl },

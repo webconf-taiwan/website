@@ -24,6 +24,7 @@ const props = defineProps({
   ariaLabel: { type: String, default: '' },
   // A between slot can delay the rail until its content reaches the hero boundary.
   railStart: { type: String, default: 'hero' },
+  galleryConfig: { type: Object, default: null },
 })
 
 const { isDesktop, viewportReady } = useViewportMode()
@@ -40,7 +41,7 @@ const backend = computed(() => fieldRef.value?.backend || '')
   <div data-plate-page class="relative overflow-x-clip bg-[#0a0a0c] text-pre-800">
     <ClientOnly>
       <template v-if="viewportReady">
-        <CommonAgendaParticleField v-if="isDesktop" ref="fieldRef" fixed :source="source" :rail-start="railStart" />
+        <CommonAgendaParticleField v-if="isDesktop" ref="fieldRef" fixed :source="source" :rail-start="railStart" :gallery-config="galleryConfig" />
       </template>
     </ClientOnly>
 
@@ -60,7 +61,6 @@ const backend = computed(() => fieldRef.value?.backend || '')
     <slot name="between" />
 
     <section class="relative z-10 bg-[#0a0a0c] pb-[120px] lg:bg-transparent lg:pb-0">
-      <div aria-hidden="true" class="absolute inset-x-0 bottom-16 border-t border-pre-800/35 lg:hidden" />
       <div data-plate-body class="mx-auto flex max-w-[1440px] flex-col lg:flex-row lg:justify-center">
         <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[484px] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
           <div class="relative z-10 flex h-14 flex-col justify-start [text-shadow:0_0_12px_#0a0a0c] lg:h-full lg:min-h-0 lg:justify-between">
@@ -87,31 +87,6 @@ const backend = computed(() => fieldRef.value?.backend || '')
 </template>
 
 <style scoped>
-@media (min-width: 1024px) {
-  .plate-page-content {
-    position: relative;
-    isolation: isolate;
-  }
-
-  /* Feather only the backdrop, leaving text and pointer targets unaffected. */
-  .plate-page-content::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 0 -120px;
-    z-index: -1;
-    pointer-events: none;
-    background: linear-gradient(
-      to right,
-      rgb(10 10 12 / 0),
-      rgb(10 10 12 / 7%) 32px,
-      rgb(10 10 12 / 25%) 64px,
-      rgb(10 10 12 / 45%) 96px,
-      rgb(10 10 12 / 63%) 128px,
-      rgb(10 10 12 / 70%) 160px
-    );
-  }
-}
-
 @media (max-width: 1023px) {
   .plate-page-plate {
     height: 56px;

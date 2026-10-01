@@ -64,7 +64,9 @@ function scramble (target) {
   return new Promise((resolve) => {
     const start = performance.now()
     const step = (now) => {
-      const t = Math.min(1, (now - start) / SCRAMBLE_MS)
+      // ⚠️ 要夾在 0 以上：rAF 給的 now 是這一幀開始的時間，可能比上面的 performance.now() 還早，
+      // t 變負數 → settled = -1 → slice(0, -1) 幾乎整句 + 後面再補一整串亂碼，第一幀字會爆出圓圈
+      const t = Math.min(1, Math.max(0, (now - start) / SCRAMBLE_MS))
       const settled = Math.floor(t * target.length)
       let out = target.slice(0, settled)
       for (let i = settled; i < target.length; i++) {
@@ -112,7 +114,7 @@ function drawTo (getTarget) {
   return new Promise((resolve) => {
     let last = performance.now()
     const step = (now) => {
-      const dt = now - last
+      const dt = Math.max(0, now - last)   // 同上：第一幀的 now 可能比 last 早
       last = now
       const target = getTarget()
       const maxStep = dt / MIN_DRAW_MS

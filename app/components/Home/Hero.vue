@@ -28,11 +28,12 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
 </script>
 
 <template>
+  <!-- 桌機不壓底，粒子直接露出來（桌機整頁只有 Code of Conduct 那塊有底）。窄視窗保留 30% 壓暗。 -->
   <section
     id="hero"
     ref="heroRef"
     data-same-hero
-    class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center bg-bg-mid/30 px-6 py-20 text-center"
+    class="relative z-10 flex min-h-[calc(100dvh-52px)] flex-col items-center justify-center bg-bg-mid/30 px-6 lg:bg-transparent py-20 text-center"
   >
     <p data-fade="in" class="font-mono mb-8 lg:mb-4 text-meta uppercase text-white/55">
       {{ content.plate_label }}
