@@ -19,6 +19,10 @@
 //            那個底是 #0a0a0c，canvas 的 compose 也用同一個底色（引擎 opts.bg），
 //            所以框裡那個方塊的邊界看不出來。⚠️ 兩邊要一起改，不同色方塊就會現形。
 
+// 自動輪播：每隔幾秒自動換下一位（最後一位之後回到第一位）。0 = 不輪播。
+// 手動點名單／箭頭／滑動換人後秒數會重新計算，從被點的那位往下輪。
+const AUTOPLAY_SEC = 5
+
 const props = defineProps({
   data: {
     type: Object,
@@ -229,6 +233,34 @@ function select (i) {
   const next = SPEAKERS.value[i]
   playSwap()
   selectSpeaker(i, next?.portrait)
+  restartAutoplay()          // 不管是手動還是自動換的，都從這一位重新計秒
+}
+
+// --- 自動輪播 --------------------------------------------------------------
+// 用 setTimeout 而不是 setInterval：每次換人都整個重排，「點了之後秒數重置」才自然成立。
+// ⚠️ 只在這一區看得到、而且分頁在前景時才計秒 —— 捲到別區還在背後換人，
+// 粒子那端每次都要讀新人像，白做工；捲回來時也會從頭計 5 秒，不會一進來就馬上跳走。
+let autoplayTimer = null
+let inView = false
+let io = null
+
+function stopAutoplay () {
+  clearTimeout(autoplayTimer)
+  autoplayTimer = null
+}
+
+function restartAutoplay () {
+  stopAutoplay()
+  if (!AUTOPLAY_SEC || !inView || document.hidden || SPEAKERS.value.length < 2) return
+  autoplayTimer = setTimeout(() => {
+    step(1)
+    // 上一輪動畫還沒跑完（speakerBusy）時 select 會直接 return、不會重排，這裡補排下一輪
+    restartAutoplay()
+  }, AUTOPLAY_SEC * 1000)
+}
+
+function onVisibilityChange () {
+  restartAutoplay()
 }
 
 // --- 窄視窗的輪播 ----------------------------------------------------------
@@ -272,9 +304,21 @@ onMounted(() => {
   onResize = () => updateLeader()
   window.addEventListener('resize', onResize)
   nextTick(() => updateLeader())
+
+  if (AUTOPLAY_SEC && sectionRef.value) {
+    io = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting
+      restartAutoplay()
+    }, { threshold: 0.3 })
+    io.observe(sectionRef.value)
+    document.addEventListener('visibilitychange', onVisibilityChange)
+  }
 })
 
 onBeforeUnmount(() => {
+  stopAutoplay()
+  io?.disconnect()
+  document.removeEventListener('visibilitychange', onVisibilityChange)
   killSwap()
   if (onResize) window.removeEventListener('resize', onResize)
 })
