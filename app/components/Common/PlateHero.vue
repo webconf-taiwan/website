@@ -2,8 +2,6 @@
 // 「標本頁」共用的主視覺：手機版與桌機版兩個 550px 區段、粒子場、置中標題、四角標籤。
 // 從 agenda.vue 抽出來，文字全部走 props；議程頁與贊助頁共用同一份版型與動態。
 //
-// ⚠️ 兩個 section 上的 data-plate-hero-* 與 data-same-hero 不能拿掉：
-//    CommonAgendaParticleField 用 [data-plate-hero-desktop] 算捲動進度與可見性。
 const props = defineProps({
   // { code, number, label } —— hero 只用 code（左上角的 PL. II 那串）
   plate: { type: Object, default: () => ({}) },
@@ -12,16 +10,17 @@ const props = defineProps({
   // { label, note }
   cornerLeft: { type: Object, default: () => ({}) },
   cornerRight: { type: Object, default: () => ({}) },
-  // 執行期才知道的繪圖後端（webgpu / webgl2 / canvas2d），接在右下角 note 後面
-  backend: { type: String, default: '' },
-  // 手機版粒子場的取樣來源圖
-  source: { type: String, default: '/figma/agenda/mobile-particle-source.webp' },
+  density: { type: Number, default: 0.8 },
+  desktopMode: { type: String, default: 'pending' },
+  desktopLook: { type: Object, default: null },
   ariaLabel: { type: String, default: '' },
 })
+const emit = defineEmits(['desktop-ready', 'desktop-unavailable'])
 
 const { isDesktop, viewportReady } = useViewportMode()
 const mobileHeroRef = ref(null)
 const desktopHeroRef = ref(null)
+const backend = computed(() => props.desktopMode === 'gpu' ? 'webgpu' : '')
 
 useFadeIn(mobileHeroRef, { y: 28, step: 0.12 })
 useFadeIn(desktopHeroRef, { y: 28, step: 0.12 })
@@ -34,11 +33,11 @@ const label = computed(() => props.ariaLabel || props.title)
     ref="mobileHeroRef"
     data-same-hero
     data-plate-hero-mobile
-    class="relative z-10 h-[550px] overflow-hidden px-5 pt-[52px] lg:hidden"
+    class="plate-hero relative z-10 h-[550px] overflow-hidden px-5 pt-[52px] lg:hidden"
     :aria-label="`${label} intro`"
   >
     <ClientOnly>
-      <CommonAgendaMobileField v-if="viewportReady && !isDesktop" :source="source" />
+      <CommonPlateField v-if="viewportReady && !isDesktop" :density="density" />
     </ClientOnly>
     <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
     <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4">
@@ -71,9 +70,18 @@ const label = computed(() => props.ariaLabel || props.title)
     ref="desktopHeroRef"
     data-plate-hero-desktop
     data-same-hero
-    class="relative z-10 hidden h-[550px] overflow-hidden lg:flex"
+    class="plate-hero relative z-10 hidden h-[550px] overflow-hidden lg:flex"
     :aria-label="`${label} hero`"
   >
+    <ClientOnly>
+      <CommonDesktopHeroField
+        v-if="viewportReady && isDesktop && desktopLook && desktopMode !== 'fallback'"
+        :look="desktopLook"
+        @ready="emit('desktop-ready')"
+        @unavailable="emit('desktop-unavailable')"
+      />
+      <CommonPlateField v-if="viewportReady && isDesktop && desktopMode !== 'gpu'" media-only :poster-only="desktopMode === 'pending'" />
+    </ClientOnly>
     <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center">
       <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-[12px] leading-[14px] tracking-normal text-pre-800/80">
         <span class="w-14 shrink-0">{{ plate.code }}</span>
@@ -118,3 +126,12 @@ const label = computed(() => props.ariaLabel || props.title)
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Figma 背景取景：手機 640px、桌機 720px；兩版皆自頂端顯示 550px。
+   粒子、影片與載入圖片共用此高度，避免視窗高低改變內頁構圖。 */
+.plate-hero { --plate-hero-field-height: 640px; }
+@media (min-width: 1024px) {
+  .plate-hero { --plate-hero-field-height: 720px; }
+}
+</style>
