@@ -16,6 +16,7 @@ usePageSeo('/sponsors')
     aria-label="Sponsors"
     :corner-left="sponsors.corner_left"
     :corner-right="sponsors.corner_right"
+    :hero-density="0.6"
     rail-start="body"
     :gallery-config="galleryConfig"
   >

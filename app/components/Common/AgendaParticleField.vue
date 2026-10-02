@@ -19,7 +19,11 @@ const props = defineProps({
   },
   railStart: { type: String, default: 'hero' },
   galleryConfig: { type: Object, default: null },
+  density: { type: Number, default: 0.8 },
+  heroVisible: { type: Boolean, default: true },
+  fieldLook: { type: Object, default: null },
 })
+const emit = defineEmits(['ready', 'unavailable'])
 
 const wrapRef = ref(null)
 const canvasRef = ref(null)
@@ -155,20 +159,18 @@ function writeCssVars () {
     const W = canvasRef.value?.clientWidth || window.innerWidth + 128
     const heroBottom = Math.max(0, Math.min(canvasHeight, rects.hero?.bottom || 0) - railOffset)
     const railTop = Math.max(heroBottom, (rects.body?.top ?? rects.hero?.bottom ?? 0) - railOffset, 0)
-    const railEdge = Math.max(0, Math.min(W, (rects.aside?.right || 0) + 64))
-    // 在欄位交界前開始漸淡，跨入內容區後收至透明，避免粒子被矩形直接切斷。
-    // 文字起點只保留 18% 強度，讓背景延續而不影響閱讀。
-    const railFadeStart = Math.max(0, railEdge - 96)
-    const railFadeEnd = Math.min(W, railEdge + 80)
     const galleryTop = Math.max(0, (rects.gallery?.top || 0) - railOffset)
     const galleryBottom = Math.min(canvasHeight, (rects.gallery?.bottom || 0) - railOffset)
     const heroTextY = (rects.hero?.top || 0) + HERO.height / 2 + 16 - railOffset
     const layers = [
-      // 只淡出 hero 文字後方，保留照片牆及左欄各自的遮罩。
-      `radial-gradient(ellipse 360px 210px at 50% ${heroTextY}px, transparent 65%, #000 100%) 0 0 / 100% ${heroBottom}px no-repeat`,
-      `linear-gradient(to right, rgb(0 0 0 / ${railMix}) ${railFadeStart}px, rgb(0 0 0 / ${railMix * 0.18}) ${railEdge}px, transparent ${railFadeEnd}px) 0 ${railTop}px / ${railFadeEnd}px ${Math.max(0, canvasHeight - railTop)}px no-repeat`,
+      // 新桌機 hero 自己使用首頁設定；此畫布保留原照片牆與正文的預算／動態。
+      props.heroVisible
+        ? `radial-gradient(ellipse 360px 210px at 50% ${heroTextY}px, transparent 65%, #000 100%) 0 0 / 100% ${heroBottom}px no-repeat`
+        : `linear-gradient(transparent, transparent) 0 0 / 100% ${heroBottom}px no-repeat`,
+      // 正文保留全寬畫布，避免左欄遮罩裁掉右側粒子；位移與變形仍由原本 morph 控制。
+      `linear-gradient(#000, #000) 0 ${railTop}px / ${W}px ${Math.max(0, canvasHeight - railTop)}px no-repeat`,
     ]
-    if (galleryConfig) layers.push(`linear-gradient(rgb(0 0 0 / ${galleryMix}), rgb(0 0 0 / ${galleryMix})) 0 ${galleryTop}px / 100% ${Math.max(0, galleryBottom - galleryTop)}px no-repeat`)
+    if (galleryConfig) layers.push(`linear-gradient(#000, #000) 0 ${galleryTop}px / 100% ${Math.max(0, galleryBottom - galleryTop)}px no-repeat`)
     const nextMask = layers.join(', ')
     if (nextMask !== maskKey) { el.style.mask = nextMask; maskKey = nextMask }
   }
@@ -202,9 +204,9 @@ function updateArtwork () {
 function countOptions () {
   const q = knobs('desktopField') || {}
   return {
-    density: 0.032 * ((q.density ?? 0.0386) / 0.0386),
-    max: Math.round(26000 * ((q.countMax ?? 50000) / 50000)),
-    min: Math.round(6200 * ((q.countMin ?? 10000) / 10000)),
+    density: props.density * 0.032 * ((q.density ?? 0.0386) / 0.0386),
+    max: Math.round(props.density * 26000 * ((q.countMax ?? 50000) / 50000)),
+    min: Math.round(props.density * 6200 * ((q.countMin ?? 10000) / 10000)),
   }
 }
 
@@ -598,7 +600,8 @@ function useFallback (error) {
   ready.value = false
   engine?.pause(true)
   syncRunning()
-  console.warn('[AgendaField] using source image:', error)
+  emit('unavailable')
+  console.warn('[AgendaField] using page media fallback:', error)
 }
 
 async function init () {
@@ -608,7 +611,7 @@ async function init () {
   if (reducedMotion.value) return
   await loadParticleKit()
   if (disposed) return
-  look = fieldLookFromLocation().look
+  look = props.fieldLook || fieldLookFromLocation().look
   species = look.rules.species
   HERO.preset = look.rules.preset
   HERO.simSpeed = look.speed.idle
@@ -648,6 +651,7 @@ async function init () {
     return
   }
   engine = nextEngine
+  if (engine.backend !== 'webgpu') throw new Error('WebGPU initialization unavailable')
   backend.value = engine.backend
   // 鏡頭縮放固定為 1；以前每幀重寫一次，現在只在這裡設一次。
   engine.setCameraZoom?.(1)
@@ -657,6 +661,7 @@ async function init () {
   await new Promise(resolve => setTimeout(resolve, 200))
   if (disposed) return
   posterDrawn = true
+  emit('ready')
 
   if (import.meta.dev) {
     window.__agendaField = engine
@@ -729,7 +734,6 @@ defineExpose({ backend })
     </div>
     <canvas
       ref="canvasRef" class="agenda-guided-particles absolute inset-0 h-full w-full"
-      :class="ready ? 'transition-opacity duration-700' : ''"
       :style="{ opacity: ready ? 1 : 0 }"
     />
   </div>
@@ -738,6 +742,7 @@ defineExpose({ backend })
 <style scoped>
 /* 動畫數值由 script 每幀直接寫成 wrapper 的 CSS 變數，子元素用 var() 讀。 */
 .agenda-field {
+  opacity: 0.72;
   --rail-mix: 0;
   --hero-offset: 0px;
   --rail-offset: 0px;

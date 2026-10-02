@@ -1,5 +1,5 @@
 <script setup>
-// 「標本頁」的頁面外殼：固定滿版粒子場 + 主視覺 + 兩欄 body（sticky 左欄標籤、右側內容）。
+// 「標本頁」的頁面外殼：共用首頁風格的主視覺與原有左欄粒子場 + 兩欄 body。
 // 議程頁與贊助頁共用；頁面只負責塞內容。
 //
 // Slots
@@ -7,9 +7,6 @@
 //   between      —— 主視覺與兩欄 body 之間的區塊（贊助頁的照片牆）
 //   default      —— 右側內容
 //
-// ⚠️ 粒子場靠這幾個掛鉤運作，改結構時要一起改 AgendaParticleField.vue：
-//    [data-plate-page]（可見性）、[data-plate-hero-desktop]（捲動進度，在 PlateHero 裡）、
-//    [data-plate-body] > aside（左欄聚落跟隨 sticky 側欄釋放）。
 const props = defineProps({
   // { code, number, label } —— 給左欄 CommonPlate 與 hero 的 code
   plate: { type: Object, default: () => ({}) },
@@ -19,50 +16,100 @@ const props = defineProps({
   cornerRight: { type: Object, default: () => ({}) },
   // 左欄底部兩行註記（桌機才顯示）
   noteLines: { type: Array, default: () => [] },
-  // 粒子取樣來源圖（桌機與手機共用）
-  source: { type: String, default: '/figma/agenda/mobile-particle-source.webp' },
-  ariaLabel: { type: String, default: '' },
-  // A between slot can delay the rail until its content reaches the hero boundary.
+  heroDensity: { type: Number, default: 0.8 },
   railStart: { type: String, default: 'hero' },
+  ariaLabel: { type: String, default: '' },
   galleryConfig: { type: Object, default: null },
 })
 
 const { isDesktop, viewportReady } = useViewportMode()
-const fieldRef = ref(null)
+const { webgpu } = useWebGpuSupport()
 const railRef = ref(null)
+const desktopReady = ref(false)
+const desktopHeroReady = ref(false)
+const desktopLook = shallowRef(null)
+const desktopFailed = ref(false)
+const reduced = ref(false)
+const desktopFallback = computed(() => webgpu.value === false || desktopFailed.value || reduced.value)
+const desktopMode = computed(() => desktopFallback.value ? 'fallback' : desktopReady.value && desktopHeroReady.value ? 'gpu' : 'pending')
+let motionMedia = null
+let initTimeout = null
+
+function motionChanged() {
+  reduced.value = motionMedia.matches
+}
+function fieldReady() {
+  desktopReady.value = true
+}
+watch([desktopReady, desktopHeroReady], ([body, hero]) => {
+  if (body && hero) clearTimeout(initTimeout)
+})
+watch(isDesktop, value => {
+  if (value && !desktopLook.value) desktopLook.value = fieldLookFromLocation().look
+}, { immediate: true })
+watch([isDesktop, webgpu, reduced, desktopFailed], () => {
+  clearTimeout(initTimeout)
+  desktopReady.value = false
+  desktopHeroReady.value = false
+  if (isDesktop.value && !desktopFallback.value) {
+    initTimeout = setTimeout(() => { desktopFailed.value = true }, 10000)
+  }
+}, { flush: 'post' })
+onMounted(() => {
+  motionMedia = matchMedia('(prefers-reduced-motion: reduce)')
+  motionChanged()
+  motionMedia.addEventListener('change', motionChanged)
+  if (isDesktop.value && !desktopFallback.value && !desktopReady.value) {
+    initTimeout = setTimeout(() => { desktopFailed.value = true }, 10000)
+  }
+})
+onBeforeUnmount(() => {
+  clearTimeout(initTimeout)
+  motionMedia?.removeEventListener('change', motionChanged)
+})
 
 useFadeIn(railRef, { step: 0.08 })
-
-// 桌機 hero 右下角要接在角落標籤 note 後面的繪圖後端（webgpu / webgl2 / canvas2d）
-const backend = computed(() => fieldRef.value?.backend || '')
 </script>
 
 <template>
-  <div data-plate-page class="relative overflow-x-clip bg-[#0a0a0c] text-pre-800">
+  <div data-plate-page class="relative overflow-x-clip bg-bg-mid text-pre-800">
     <ClientOnly>
-      <template v-if="viewportReady">
-        <CommonAgendaParticleField v-if="isDesktop" ref="fieldRef" fixed :source="source" :rail-start="railStart" :gallery-config="galleryConfig" />
-      </template>
+      <CommonAgendaParticleField
+        v-if="viewportReady && isDesktop && desktopLook && webgpu === true && !desktopFallback"
+        fixed :rail-start="railStart" :gallery-config="galleryConfig" :density="heroDensity"
+        :hero-visible="false" :field-look="desktopLook"
+        @ready="fieldReady" @unavailable="desktopFailed = true"
+      />
     </ClientOnly>
-
     <CommonPlateHero
       :plate="plate"
       :title="title"
       :subtitle="subtitle"
       :corner-left="cornerLeft"
       :corner-right="cornerRight"
-      :backend="backend"
-      :source="source"
+      :density="heroDensity"
+      :desktop-mode="desktopMode"
+      :desktop-look="desktopLook"
       :aria-label="ariaLabel"
+      @desktop-ready="desktopHeroReady = true"
+      @desktop-unavailable="desktopFailed = true"
     >
       <slot name="hero-actions" />
     </CommonPlateHero>
 
-    <slot name="between" />
+    <div v-if="$slots.between" class="relative">
+      <ClientOnly>
+        <CommonPlateField v-if="viewportReady && isDesktop && desktopFallback && galleryConfig" variant="gallery" media-only />
+      </ClientOnly>
+      <slot name="between" />
+    </div>
 
-    <section class="relative z-10 bg-[#0a0a0c] pb-[120px] lg:bg-transparent lg:pb-0">
+    <section class="plate-page-body-section relative z-10 pb-[120px] lg:pb-0">
       <div data-plate-body class="mx-auto flex max-w-[1440px] flex-col lg:flex-row lg:justify-center">
         <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[484px] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+          <ClientOnly>
+            <CommonPlateField v-if="viewportReady && isDesktop && desktopFallback" variant="rail" media-only />
+          </ClientOnly>
           <div class="relative z-10 flex h-14 flex-col justify-start [text-shadow:0_0_12px_#0a0a0c] lg:h-full lg:min-h-0 lg:justify-between">
             <CommonPlate
               data-fade="in"
@@ -88,6 +135,16 @@ const backend = computed(() => fieldRef.value?.backend || '')
 
 <style scoped>
 @media (max-width: 1023px) {
+  .plate-page-body-section::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 64px;
+    left: 0;
+    border-top: 1px solid rgb(239 230 210 / 35%);
+    pointer-events: none;
+  }
+
   .plate-page-plate {
     height: 56px;
     align-items: flex-end !important;
