@@ -105,12 +105,30 @@ usePageSeo('/sponsors')
 }
 
 @media (min-width: 1024px) {
-  .sponsors-page :deep([data-plate-body] > aside) { padding-top: 60px; }
+  .sponsors-page :deep([data-plate-body]) { position: relative; }
+  .sponsors-page :deep([data-plate-body])::before,
+  .sponsors-page :deep([data-plate-body])::after {
+    content: '';
+    position: absolute;
+    border-top: 1px solid rgb(239 230 210 / 35%);
+    pointer-events: none;
+  }
+  .sponsors-page :deep([data-plate-body])::before {
+    top: 60px;
+    left: 60px;
+    right: 60px;
+  }
+  .sponsors-page :deep([data-plate-body])::after {
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+  .sponsors-page :deep([data-plate-body] > aside) { padding-top: 92px; }
   .sponsors-page :deep([data-plate-hero-desktop] [data-plate-title] + p) { letter-spacing: 0.02em; }
   .sponsors-page :deep([data-plate-hero-desktop] a),
   .sponsor-cta { padding-left: 20px; }
 
-  .sponsor-section { box-shadow: inset 0 1px rgb(239 230 210 / 35%); }
+  .sponsor-section + .sponsor-section { box-shadow: inset 0 1px rgb(239 230 210 / 35%); }
   .sponsor-section-title { min-height: 127px; }
   .sponsor-section:first-child .sponsor-description { min-height: 145px; }
   .sponsor-section:last-child .sponsor-description { min-height: 116px; }

@@ -15,11 +15,11 @@ useFadeIn(itemRef, { step: 0.06 })
 <template>
   <article
     ref="itemRef"
-    class="agenda-item relative flex h-[145px] w-full flex-col justify-center border-b border-dashed border-pre-800/35 py-4 pl-2 pr-2 lg:h-auto lg:gap-y-4 lg:pr-4 lg:py-6"
+    class="agenda-item relative flex h-[145px] w-full flex-col justify-center py-4 pl-2 pr-2 lg:h-auto lg:pr-4 lg:py-6"
   >
     <div class="agenda-item-content flex w-full flex-col gap-y-3 lg:flex-row lg:gap-x-6">
-      <div class="flex min-w-0 flex-1 flex-col gap-y-2 lg:gap-y-4">
-        <p data-fade="in" class="hidden text-micro text-pre-800/[62%] lg:block">
+      <div class="flex min-w-0 flex-1 flex-col gap-y-2">
+        <p data-fade="in" class="hidden text-micro text-pre-800/[62%] lg:mb-2 lg:block">
           {{ item.code }}
         </p>
 
@@ -47,6 +47,19 @@ useFadeIn(itemRef, { step: 0.06 })
 </template>
 
 <style scoped>
+.agenda-item::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-top: 1px dashed rgb(239 230 210 / 35%);
+  pointer-events: none;
+}
+@media (min-width: 1024px) {
+  .agenda-item h2 { line-height: 1.1875; }
+  .agenda-item-content > div:first-child > p { line-height: 14px; }
+}
 @media (min-width: 1024px) and (hover: hover) {
   .agenda-item { transition: padding-left 250ms ease; }
   .agenda-item:hover {

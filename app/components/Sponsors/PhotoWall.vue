@@ -179,6 +179,9 @@ onBeforeUnmount(() => {
   <section ref="wallRef" data-plate-gallery aria-labelledby="sponsors-gallery-heading" class="photo-wall relative z-10 overflow-hidden">
     <!-- 分開觸發標題與照片，避免手機捲到輪播前就播完整區動畫；board 保持固定，供粒子與拖曳量測。 -->
     <div ref="boardRef" class="photo-board relative mx-auto max-w-[1440px]">
+      <div aria-hidden="true" class="mobile-gallery-art lg:hidden">
+        <img :src="assetUrl('/figma/sponsors/mobile-orbit.png')" alt="" loading="lazy" decoding="async">
+      </div>
       <div class="photo-heading relative z-10 mx-5 flex flex-col gap-4 lg:absolute lg:inset-x-[60px] lg:top-[60px] lg:mx-0">
         <h2 id="sponsors-gallery-heading" data-fade="in" class="text-en-h1 italic">
           <span class="block">{{ data.heading_lines[0] }}</span>
@@ -251,8 +254,11 @@ onBeforeUnmount(() => {
           <img :src="photo.src" alt="" width="1000" height="667" loading="lazy" decoding="async" draggable="false">
         </button>
       </div>
-      <button v-if="!reducedMotion" data-fade="in" type="button" class="gallery-toggle absolute bottom-[76px] right-5 text-meta underline underline-offset-4 lg:hidden" :aria-pressed="autoplayPaused" @click="autoplayPaused = !autoplayPaused">
-        {{ autoplayPaused ? '播放輪播' : '暫停輪播' }}
+      <button v-if="!reducedMotion" type="button" class="gallery-toggle sr-only focus:not-sr-only focus:absolute focus:bottom-[76px] focus:right-5 focus:z-20 focus:bg-bg-mid focus:p-3 focus:outline focus:outline-accent-1 lg:hidden" :aria-label="autoplayPaused ? '播放輪播' : '暫停輪播'" :aria-pressed="autoplayPaused" @click="autoplayPaused = !autoplayPaused">
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5" fill="currentColor">
+          <path v-if="autoplayPaused" d="M8 5v14l11-7z" />
+          <path v-else d="M6 5h4v14H6zM14 5h4v14h-4z" />
+        </svg>
       </button>
     </div>
   </section>
@@ -261,6 +267,25 @@ onBeforeUnmount(() => {
 <style scoped>
 .photo-board { padding: 32px 0 120px; }
 .photo-heading { pointer-events: none; }
+.mobile-gallery-art {
+  position: absolute;
+  top: 220px;
+  left: 50%;
+  width: 360px;
+  height: 440px;
+  overflow: hidden;
+  transform: translateX(-50%);
+  pointer-events: none;
+  mix-blend-mode: lighten;
+}
+.mobile-gallery-art img {
+  position: absolute;
+  top: -0.06%;
+  left: -36.67%;
+  width: 173.33%;
+  max-width: none;
+  height: 100.13%;
+}
 .mobile-gallery {
   --card-width: min(300px, calc(100vw - 60px));
   padding-inline: calc((100% - var(--card-width)) / 2);
@@ -271,7 +296,7 @@ onBeforeUnmount(() => {
 .mobile-gallery::-webkit-scrollbar { display: none; }
 .mobile-photo {
   width: var(--card-width);
-  padding: 4px 8px 12px;
+  padding: 4px;
   border: 1px solid rgb(239 230 210 / 35%);
   background: rgb(10 10 12 / 70%);
   scroll-snap-align: center;
