@@ -67,7 +67,7 @@ const items = computed(() => agenda.items || [])
         </p>
       </div>
 
-      <div class="flex flex-col lg:gap-y-4">
+      <div class="flex flex-col">
         <CommonAgendaItem
           v-for="item in items"
           :key="item.id"
