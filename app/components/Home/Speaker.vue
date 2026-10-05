@@ -624,7 +624,7 @@ onBeforeUnmount(() => {
     </div>
 
     <!-- 更多講者 -->
-    <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[60px] lg:mt-0">
+    <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[70px] lg:mt-0">
       <AtomButton
         v-if="moreLink.href"
         intent="primary"
