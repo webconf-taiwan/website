@@ -75,7 +75,7 @@
       "noindex": true,
       "noindex_reason": "點雲效果示範頁，講者文案仍是佔位"
     },
-    "/team": {
+    "/staff": {
       "title": "主辦團隊（建置中）",
       "noindex": true,
       "noindex_reason": "建置中，內容上線時拿掉 noindex"

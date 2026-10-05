@@ -10,7 +10,7 @@ export default defineNuxtPlugin((nuxtApp) => {
   // 粒子時間軸都是以「從頂端開始」設計的，從中間醒來會看到播到一半的狀態。
   // 所以關掉瀏覽器與 ScrollTrigger 兩邊的捲動記憶；網址帶 #hash 重整時也不捲過去
   // （hash 順便拿掉，免得網址跟畫面對不上）。⚠️ 只針對「重整」：第一次用帶 hash 的
-  // 連結進站（分享連結 /#ticket）照常捲到該區。
+  // 連結進站（分享連結 https://5xcamp.us/webconf2026-ticket）照常捲到該區。
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
   $ScrollTrigger?.clearScrollMemory?.('manual')
   let reloading = performance.getEntriesByType?.('navigation')[0]?.type === 'reload'

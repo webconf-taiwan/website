@@ -52,7 +52,6 @@ const props = defineProps({
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
 const { trackIntro, introDone } = useSiteIntro()
-const opening = useParticleOpening()
 // 背景音：推粒子 → blip、收攏程度 → 濾波器（見 plugins/sound.client.js）
 const sound = useSiteSound()
 const SOUND_PUSH_MIN_SPEED = 6     // px／幀，低於這個當成沒在撥
@@ -221,7 +220,7 @@ function pageCount (backend) {
 const SAMPLES = 36000
 
 // --- 效果（力矩陣 / 物理 / 色盤 / 光暈 / 相機 / 點數 / 速度）------------------
-// 與原版 ParticleField 共用同一張表：app/utils/particleFieldLooks.js。
+// 與原版 ParticleField 共用同一張表：app/utils/homeFieldLooks.js。
 // 那裡有 sandbox demo 那 5 組「載入範例」的完整換算、為什麼 4 組的力矩陣被換掉，
 // 以及「維持開場構圖」的 hold 參數說明。
 //
@@ -233,12 +232,12 @@ const SAMPLES = 36000
 // ⚠️ species 由 look 決定，而「所有 spec 的 colors 都必須等於 species」——
 //    morph 過程中不能改 species（setSpecies 會整場重生）。所以換效果時
 //    getSpec 的快取要一起清掉重取樣，見 switchLook。
-let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
+let look = resolveHomeFieldLook(DEFAULT_HOME_FIELD_LOOK)
 
 // 只給右側面板用的響應式狀態
 // ⚠️ looks 這個別名不能省：auto-import 只掃 script，只在 template 出現的名字不會
 //    被補上 import。
-const looks = FIELD_LOOK_LIST
+const looks = HOME_FIELD_LOOK_LIST
 const activeLook = shallowRef(look)
 const pinned = ref(false)
 const toolMode = ref(false)
@@ -297,7 +296,7 @@ const SCROLL_CALM = 0.6               // 捲動中把互動力場壓掉多少，
 // 一顆粒子受到的吸引力是 rMax 內所有鄰居的總和，密度越高越強；而 seek 是每顆
 // 固定的 pull × 距離。人像本來就是「亮處密、暗處疏」，所以密處的力場一定會贏，
 // 把該分布在五官上的粒子抽成一坨坨菌落 —— 效果的自吸引越強（#1 的 snake self=1）
-// 塌得越兇。這跟 particleFieldLooks 裡「minR 是唯一有效旋鈕」是同一件事的兩面。
+// 塌得越兇。這跟 homeFieldLooks 裡「minR 是唯一有效旋鈕」是同一件事的兩面。
 //
 // 解法：收攏成圖片的影格把互動力場降到引擎下限，畫面交給 seek + 閃動主導。
 // 實測 1440×900、鈷藍細胞、停在人像那格 25 秒（6px 網格）：
@@ -334,7 +333,7 @@ const LOCK_SIM_SPEED = 0.45
 // 「抽到標本切片的臉比較糊比較亮、抽到深海流光的比較銳比較暗」——
 // 而人像 / venue / faq 這幾格跟 hero 跑哪一組完全無關，不該有這種差異。
 //
-// 值取 0.8 = biolum-drift（DEFAULT_FIELD_LOOK，也是上面 LOCK_FORCE 那段實測裡
+// 值取 0.8 = biolum-drift（DEFAULT_HOME_FIELD_LOOK，也是上面 LOCK_FORCE 那段實測裡
 // 「人像五官清楚」的那一組參考）。
 // ⚠️ 純視覺常數：改它只會讓這幾格整體變亮變糊或變暗變銳，不影響物理，也完全不動
 //    到 hero / outro。要調就配 ?hero-animation=1~5 逐組比對同一張人像。
@@ -346,7 +345,7 @@ const LOCK_POINT_SIZE = 0.8
 // 其餘一律 -0.55（跟別的物種互斥）—— 完全對稱，所以會收斂成一顆顆互不往來的球。
 //
 // ⚠️ 這在 hero 是「壞掉」的定義（docs/living-particle-motion.md §1.1 拿它當呆板的
-// 反例，particleFieldLooks 也因此把 #1 的矩陣換成 snake）。但在這一區，那個塌陷
+// 反例，homeFieldLooks 也因此把 #1 的矩陣換成 snake）。但在這一區，那個塌陷
 // 就是設計要的東西 —— 差別在「hero 要一直演化，這裡要一群靜靜長著的菌落」。
 // 別把這裡也「修正」成非對稱矩陣，會直接失去這一格存在的理由。
 //
@@ -414,7 +413,7 @@ function registerPlasmaBlend (cellularWeight = 0.55) {
 }
 
 // 網址決定跑哪一組菌落效果；沒指定或打錯字就退回 cellular。只能在 client 呼叫
-//（讀 window.location），跟 fieldLookFromLocation 同一套規矩。
+//（讀 window.location），跟 homeFieldLookFromLocation 同一套規矩。
 function venueEffectFromLocation () {
   if (typeof window === 'undefined') return VENUE_EFFECTS.cellular
   const want = new URLSearchParams(window.location.search).get('venue-effect')
@@ -728,7 +727,7 @@ let lastOpacity = -1
 let lastColorKey = ''
 let colonyPreset = false              // 目前引擎跑的是不是菌落那組矩陣
 // 點的外觀。⚠️ 兩個都用「不可能的初值」當哨兵，讓第一幀無條件套一次 ——
-// switchLook 走的 applyFieldLook 會把 pointSize / 光暈整組寫回 look 的值，
+// switchLook 走的 applyHomeFieldLook 會把 pointSize / 光暈整組寫回 look 的值，
 // 快取著舊狀態的話，停在人像那一格換效果就不會被改回鎖定值。
 let appliedPointSize = -1
 let glowOn = null                     // true / false / null（還沒套過）
@@ -989,7 +988,7 @@ async function buildAllShapes () {
 
   // 自由場那兩格（hero / outro）的目標點：seedPattern 畫出來的開場構圖。
   // 那才是每組效果真正好看、也真正互相不同的樣子 —— 規則一接管幾秒內就洗掉了，
-  // 所以交給 seek 力去維持（見 particleFieldLooks 的 hold 那段）。
+  // 所以交給 seek 力去維持（見 homeFieldLooks 的 hold 那段）。
   //
   // ⚠️ 五組「一律」用開場構圖，包含 hold.grip = 0 的深海流光 —— 別再把它改回
   // 「grip=0 就退回 spread（快照當下的分布）」。那個版本讓這份目標點的品質綁在
@@ -1095,7 +1094,7 @@ function syncAmbient (lockNorm) {
     stopAmbient = null
     ambientOn = false
   } else if (!ambientOn && lockNorm < AMBIENT_ON_AT) {
-    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient })
+    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
     ambientOn = true
   }
 }
@@ -1113,8 +1112,6 @@ function frame (now) {
   if (!engine) return
 
   const t = now || performance.now()
-  const openingMix = reducedMotion ? 0 : opening.factor(t)
-  if (!openingMix) return
   const y = window.scrollY
 
   // 停住時仍要更新時間 / 捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度
@@ -1226,7 +1223,7 @@ function frame (now) {
     // 被 morph 按在形狀上、幾乎不亂跑，本來就不需要再壓。
     const freeNow = modeMix('free')
     const calmSpeed = CALM_SIM_SPEED + (simSpeed - CALM_SIM_SPEED) * (1 - freeNow)
-    engine.setSimSpeed?.((calmNow ? calmSpeed : simSpeed) * openingMix)
+    engine.setSimSpeed?.(calmNow ? calmSpeed : simSpeed)
 
     scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
     // 力場同理，而且三種 mode 要的方向完全不同：圖片要壓到下限、菌落要開大。
@@ -1369,9 +1366,9 @@ function frame (now) {
 // 站內換頁回來時 introDone 早就是 true，這段等於不存在。
 const POSTER_MS = 200
 let posterDrawn = false
-const introHold = () => posterDrawn && (!introDone.value || reducedMotion)
+const introHold = () => posterDrawn && !introDone.value
 function drawPosterThenHold (sync) {
-  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; opening.ready(); sync() }), POSTER_MS)
+  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; sync() }), POSTER_MS)
 }
 
 function syncPause () {
@@ -1603,8 +1600,8 @@ function setHold (pct) {
 // @param {string|number|null} idOrIndex null = 重新隨機抽一組（不會抽到目前這組）
 async function switchLook (idOrIndex) {
   const next = idOrIndex === null || idOrIndex === FIELD_LOOK_RANDOM
-    ? randomFieldLook(look)
-    : resolveFieldLook(idOrIndex)
+    ? randomHomeFieldLook(look)
+    : resolveHomeFieldLook(idOrIndex)
   const wantPinned = idOrIndex !== null && idOrIndex !== FIELD_LOOK_RANDOM
 
   pinned.value = wantPinned
@@ -1623,15 +1620,13 @@ async function switchLook (idOrIndex) {
   // 換組之後那個數字沒有意義了，留著只會讓人以為是新效果的預設。
   const count = pageCount(engine.backend)
   toolMeta.autoCount = count
-  applyFieldLook(engine, look, { count, allowGlow: !isMobile() })
-  engine.setSimSpeed(0)
-  opening.restart()
-  // applyFieldLook 剛把 pointSize / rMax 整組寫回新 look 的值，面板要跟著同步；
+  applyHomeFieldLook(engine, look, { count, allowGlow: !isMobile() })
+  // applyHomeFieldLook 剛把 pointSize / rMax 整組寫回新 look 的值，面板要跟著同步；
   // 檔位預設裡的 rMax 也吃 look，一起重算。
   syncKnobs()
   rebuildTierPresets()
   appliedForce = look.physics.forceFactor
-  // ⚠️ applyFieldLook 剛把 pointSize 與光暈整組寫回新 look 的值。如果現在正停在
+  // ⚠️ applyHomeFieldLook 剛把 pointSize 與光暈整組寫回新 look 的值。如果現在正停在
   // 人像 / venue 那幾格，下一幀必須把它們改回鎖定值 —— 所以把哨兵清掉強制重套。
   appliedPointSize = -1
   glowOn = null
@@ -1647,7 +1642,7 @@ async function switchLook (idOrIndex) {
 
   if (stopAmbient) { stopAmbient(); stopAmbient = null; ambientOn = false }
   if (!reducedMotion) {
-    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient })
+    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
     ambientOn = true
   }
 
@@ -1733,7 +1728,7 @@ async function init () {
   registerPlasmaBlend()
 
   // 網址決定跑哪一組；沒指定就隨機抽（值有白名單，打錯字會退回保底那組）
-  const fromUrl = fieldLookFromLocation()
+  const fromUrl = homeFieldLookFromLocation()
   look = fromUrl.look
   activeLook.value = fromUrl.look
   pinned.value = fromUrl.pinned
@@ -1750,7 +1745,9 @@ async function init () {
   toolMeta.autoCount = count
 
   engine = await window.makeEngine(canvas, {
-    // 五組效果使用 sandbox 原本的矩陣與種子，後續圖片形變保持原編排。
+    // ⚠️ 力矩陣不再寫死在這裡 —— 5 組效果各自帶一組，而且全都是「非對稱、沒有
+    // 靜止解」的（對稱矩陣會收斂成不動的菌落球，畫面就死了，見 docs §4）。
+    // 挑選準則與踩坑紀錄在 app/utils/homeFieldLooks.js 檔頭。
     species: look.rules.species,
     count,
     preset: look.rules.preset,
@@ -1763,7 +1760,7 @@ async function init () {
     repel: look.physics.repel,
     minR: look.physics.minR,
     rMax: look.physics.rMax,
-    simSpeed: 0,
+    simSpeed: startSimSpeed(),
     cameraZoom: KEYS[0].zoom,
     pointSize: look.visual.pointSize,
     particleOpacity: KEYS[0].opacity,
@@ -1801,7 +1798,7 @@ async function init () {
   }
 
   if (!reducedMotion) {
-    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient })
+    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
     ambientOn = true
   }
 
@@ -1873,7 +1870,6 @@ async function init () {
 
   if (import.meta.dev) {
     window.__sameDbg = () => ({
-      opening: opening.factor(),
       // 滑鼠推擠：最近幾次真的送進引擎的脈衝（座標是模擬空間）
       pointerPushCount,
       calm: calmNow,

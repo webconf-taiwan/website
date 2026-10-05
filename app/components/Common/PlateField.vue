@@ -75,7 +75,7 @@ onBeforeUnmount(() => {
 <template>
   <div ref="rootRef" aria-hidden="true" class="plate-field pointer-events-none absolute inset-0 z-0 overflow-hidden"
     :class="'plate-field--' + variant" :data-plate-field="variant" :data-backend="mode">
-    <HomeMobileField
+    <CommonPlateMobileField
       v-if="motionReady && activated && webgpu === true && !fallback && variant === 'hero'"
       ref="heroField"
       :plate-style="plateStyle"
