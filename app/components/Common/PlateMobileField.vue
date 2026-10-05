@@ -1,4 +1,12 @@
 <script setup>
+import { plateFieldLook } from '~/utils/particleFieldLooks'
+
+// ⚠️ 這支是議程／贊助／404／建置中用的那一份（CommonPlateField 的 hero 變體掛它），
+// 從 Home/MobileField.vue 分出來的：開場保留（useParticleOpening）、plateStyle、
+// sandbox 原值的效果表（particleFieldLooks.js）都只在這裡。
+// 首頁用的是 Home/MobileField.vue ＋ homeFieldLooks.js，兩邊各改各的。
+// 下面的說明沿用首頁版，提到的區間（PL.I、票券～CoC）是首頁的版面。
+//
 // 手機／平板（< 1024px）的粒子場 —— 桌機那條「一鏡到底」的時間軸在這裡是關掉的。
 //
 // ─── 跟桌機版（Home/Field.vue）差在哪 ─────────────────────────────────
@@ -25,10 +33,13 @@
 //      緊的半週期 seek 贏、粒子被帶回原點。構圖跑不掉，但畫面全程在動。
 // 這三件的長註解在 Home/ParticleField.vue，改參數前先讀那邊。
 
+const props = defineProps({ plateStyle: { type: Boolean, default: false } })
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
 const { trackIntro, introDone } = useSiteIntro()
+const opening = useParticleOpening()
 const { countFor, maxDpr } = useParticleBudget()
+const { isDesktop } = useViewportMode()
 const { buildSeedTargets, buildSlotTargets } = useParticleMorph()
 // 只借用它的閒置偵測（全 app 單例）。這一版沒有第二張滿版 canvas，不需要 claim/release。
 const { idle } = useParticleStage()
@@ -134,7 +145,7 @@ const TAU = Math.PI * 2
 // --------------------------------------------------------------------------
 
 // ⚠️ 用 let：frame() 每幀讀它，不需要響應式的開銷。
-let look = resolveHomeFieldLook(DEFAULT_HOME_FIELD_LOOK)
+let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
 // 目前檔位的旋鈕。init() 取一次；這一階段還沒有執行期換檔，所以之後不會變。
 let q = knobs('mobileField')
 
@@ -257,7 +268,7 @@ async function buildHold () {
     const seed = buildSeedTargets(look.rules.seedPattern, snap.length, look.rules.species, W, H)
     holdBase = buildSlotTargets(snap, seed, look.rules.species, W).shape
   } catch (err) {
-    console.warn('[HomeMobileField] 開場構圖目標點建立失敗，改成完全放手', err)
+    console.warn('[CommonPlateMobileField] 開場構圖目標點建立失敗，改成完全放手', err)
     holdBase = null
     return false
   }
@@ -294,9 +305,9 @@ function invalidateTargets () {
 // 站內換頁回來時 introDone 早就是 true，這段等於不存在。
 const POSTER_MS = 200
 let posterDrawn = false
-const introHold = () => posterDrawn && !introDone.value
+const introHold = () => posterDrawn && (!introDone.value || reducedMotion)
 function drawPosterThenHold (sync) {
-  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; sync() }), POSTER_MS)
+  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; opening.ready(); sync() }), POSTER_MS)
 }
 
 function syncRunning () {
@@ -324,6 +335,8 @@ function frame (now) {
   if (!engine || !running) return
 
   const t = now || performance.now()
+  const openingMix = reducedMotion ? 0 : opening.factor(t)
+  if (!openingMix) return
   const y = window.scrollY
 
   // --- 捲動速度 → 模擬速度 -------------------------------------------------
@@ -349,7 +362,7 @@ function frame (now) {
     const heat = Math.min(1, (Math.abs(y - lastScrollY) / dt) / SCROLL_REF)
     const target = base + (look.speed.max - idleSpeed) * heat
     simSpeed += (target - simSpeed) * (target > simSpeed ? ATTACK : RELEASE)
-    engine.setSimSpeed?.(simSpeed)
+    engine.setSimSpeed?.(simSpeed * openingMix)
 
     // 捲動中把互動力場壓掉一些，遷移才乾淨；停下來才擴散
     scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
@@ -404,10 +417,11 @@ function frame (now) {
     engine.setTargets(holdBase, holdBase)
   }
 
-  // 握力呼吸。reduced-motion 下維持固定握力。
+  // 內頁需持續保留設計構圖，呼吸最低仍保有四分之三握力。
+  const breatheFloor = props.plateStyle ? 0.75 : HOLD_BREATHE_FLOOR
   const breathe = reducedMotion
     ? 1
-    : HOLD_BREATHE_FLOOR + (1 - HOLD_BREATHE_FLOOR) * (0.5 - 0.5 * Math.cos(t / HOLD_BREATHE_MS * TAU))
+    : breatheFloor + (1 - breatheFloor) * (0.5 - 0.5 * Math.cos(t / HOLD_BREATHE_MS * TAU))
   engine.setMorph?.(look.hold.pull * breathe, look.hold.grip * breathe, 0)
 }
 
@@ -423,9 +437,9 @@ async function init () {
   // ⚠️ 窄視窗「不」提供效果切換清單 —— 效果的差異在這個寬度本來就看不太出來，
   // 而那份清單很長，在手機上會把真正要調的旋鈕擠到看不見。
   // ?tool=1 面板在這裡只顯示「參數微調」那一段（見 FieldLookPanel 的 look prop）。
-  const fromUrl = homeFieldLookFromLocation()
+  const fromUrl = fieldLookFromLocation()
   toolMode.value = fromUrl.tool
-  look = fromUrl.look
+  look = props.plateStyle ? plateFieldLook(fromUrl.look) : fromUrl.look
   appliedForce = look.physics.forceFactor
 
   const hero = window.PLPalettes.PALETTES[look.palette]
@@ -456,7 +470,7 @@ async function init () {
     repel: look.physics.repel,
     minR: look.physics.minR,
     rMax: look.physics.rMax * q.rMaxScale,
-    simSpeed: startSimSpeed(),
+    simSpeed: 0,
     cameraZoom: look.camera.zoom,
     // ⚠️ pointSize / opacity 隨檔位放大不是裝飾，是必須的：粒子少了還用同樣的
     // 點大小，畫面會變暗變薄，看起來像「壞了」而不是「刻意的稀」。
@@ -465,9 +479,8 @@ async function init () {
     // 套檔位表的亮度補償會變成一團大光斑。見 particleTiers.js。
     pointSize: cpuFallback.value ? CPU_POINT_SIZE_FIELD : look.visual.pointSize * q.pointScale,
     particleOpacity: Math.min(1, look.visual.heroOpacity * q.opacityScale),
-    // 光暈一律關：額外一趟全螢幕加法 pass，成本跟 DPR 平方成正比，
-    // 而這支元件只會在 < 1024px 掛載。
-    showGlow: false,
+    // 404／建置中也共用此自由場；桌機保留範本光暈，手機省略額外 pass。
+    showGlow: look.visual.showGlow && isDesktop.value,
     glowSize: look.glow.glowSize,
     glowIntensity: look.glow.glowIntensity,
     glowSteepness: look.glow.glowSteepness,
@@ -490,7 +503,7 @@ async function init () {
   // ⚠️ 但不能關掉 —— particle-ambient.js 檔頭第一句就是警告：沒有擾動的話
   // 場幾十秒後會收斂成靜態圖。
   if (!reducedMotion) {
-    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient * q.ambientGain })
+    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient * q.ambientGain })
   }
 
   // --- 區間偵測 -------------------------------------------------------------
@@ -544,6 +557,7 @@ async function init () {
 
   if (import.meta.dev) {
     window.__mobileDbg = () => ({
+      opening: opening.factor(),
       look: look.id,
       tier: tier.value,
       cpuFallback: cpuFallback.value,
@@ -680,7 +694,7 @@ function applyToolKnobs (next) {
     stopAmbient?.()
     stopAmbient = null
     if (!reducedMotion && ambientOverride > 0) {
-      stopAmbient = window.PLAmbient.start(() => engine, { intensity: ambientOverride })
+      stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: ambientOverride })
     }
   }
 
