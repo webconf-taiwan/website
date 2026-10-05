@@ -70,7 +70,9 @@ useFadeIn(itemRef, { step: 0.06 })
 @media (max-width: 1023px) {
   .agenda-item {
     height: auto;
-    min-height: 145px;
+    /* 組與組間距 24px：上下各 12px，虛線落在正中間。 */
+    padding-top: 12px;
+    padding-bottom: 12px;
     justify-content: flex-start;
     border: 0;
     background: none;
@@ -87,7 +89,7 @@ useFadeIn(itemRef, { step: 0.06 })
   .agenda-item::after { bottom: 0; }
   .agenda-item:first-child::before { top: 0; }
 
-  .agenda-item-content { gap: 16px; }
+  .agenda-item-content { gap: 8px; }
   .agenda-item h2 {
     overflow-wrap: anywhere;
   }
@@ -100,7 +102,7 @@ useFadeIn(itemRef, { step: 0.06 })
   }
   .agenda-item li { max-width: 100%; overflow-wrap: anywhere; }
 
-  .agenda-item-speaker { height: auto; min-height: 40px; }
+  .agenda-item-speaker { height: auto; }
   .agenda-item-speaker > p:last-child {
     overflow-wrap: anywhere;
   }
