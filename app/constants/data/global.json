@@ -12,7 +12,7 @@
       { "id": "speaker", "label_en": "Speakers", "label": "講者陣容", "href": "/speakers", "target": "_self", "side": "left", "is_highlight": false },
       { "id": "venue", "label_en": "Venue", "label": "場域介紹", "href": "/venue", "target": "_self", "side": "left", "is_highlight": false },
       { "id": "sponsors", "label_en": "Sponsors", "label": "贊助廠商", "href": "/sponsors", "target": "_self", "side": "left", "is_highlight": false },
-      { "id": "team", "label_en": "Staff", "label": "主辦團隊", "href": "/team", "target": "_self", "side": "right", "is_highlight": false },
+      { "id": "team", "label_en": "Staff", "label": "主辦團隊", "href": "/staff", "target": "_self", "side": "right", "is_highlight": false },
       { "id": "history", "label_en": "History", "label": "歷屆回顧", "href": "/history", "target": "_self", "side": "right", "is_highlight": false },
       { "id": "ticket", "label_en": "Ticket", "label": "前往購票", "href": "https://5xcamp.us/webconf2026-ticket", "target": "_self", "side": "right", "is_highlight": true }
     ],
@@ -44,7 +44,7 @@
         "title": "Codex",
         "links": [
           { "label": "贊助廠商", "href": "/sponsors", "target": "_self" },
-          { "label": "主辦團隊", "href": "/team", "target": "_self" },
+          { "label": "主辦團隊", "href": "/staff", "target": "_self" },
           { "label": "歷史回顧", "href": "/history", "target": "_self" },
           { "label": "簽到牆", "href": "/coming-soon", "target": "_self" }
         ]

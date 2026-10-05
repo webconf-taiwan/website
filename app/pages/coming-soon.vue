@@ -4,7 +4,7 @@ definePageMeta({ layout: false })
 usePageSeo('/coming-soon')
 
 function handleTicket () {
-  return navigateTo('/#ticket')
+  return navigateTo('https://5xcamp.us/webconf2026-ticket')
 }
 
 function handleHome () {

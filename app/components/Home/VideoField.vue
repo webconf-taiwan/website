@@ -73,7 +73,31 @@ function sync () {
   const v = videoRef.value
   if (!v) return
   if (reducedMotion || !visible.size || document.hidden || idle.value) v.pause()
-  else v.play().catch(() => {})
+  else v.play().catch(armGestureRetry)
+}
+
+// 自動播放被瀏覽器擋掉時（iOS 低耗電模式、Android 省電／省流量、LINE / FB 這類 App 內建瀏覽器），
+// play() 會 reject，畫面就停在 poster。這支影片 pointer-events-none 又沒有 controls，
+// 使用者怎麼點都點不到它 —— 所以等下一次「真的互動」再試一次，那時瀏覽器就會放行。
+// ⚠️ 要用 touchend / click：iOS 不把 touchstart、pointerdown 當成可以啟動播放的使用者手勢。
+const GESTURE_EVENTS = ['touchend', 'click', 'keydown']
+let gestureArmed = false
+
+function onGesture () {
+  disarmGestureRetry()
+  sync()
+}
+
+function armGestureRetry () {
+  if (gestureArmed) return
+  gestureArmed = true
+  GESTURE_EVENTS.forEach(ev => window.addEventListener(ev, onGesture, { passive: true }))
+}
+
+function disarmGestureRetry () {
+  if (!gestureArmed) return
+  gestureArmed = false
+  GESTURE_EVENTS.forEach(ev => window.removeEventListener(ev, onGesture))
 }
 
 function waitFirstFrame () {
@@ -104,6 +128,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   io?.disconnect()
+  disarmGestureRetry()
   document.removeEventListener('visibilitychange', sync)
 })
 </script>

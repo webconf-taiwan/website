@@ -1,10 +1,10 @@
 <script setup>
 definePageMeta({ layout: false })
 
-usePageSeo('/team')
+usePageSeo('/staff')
 
 function handleTicket () {
-  return navigateTo('/#ticket')
+  return navigateTo('https://5xcamp.us/webconf2026-ticket')
 }
 
 function handleHome () {
