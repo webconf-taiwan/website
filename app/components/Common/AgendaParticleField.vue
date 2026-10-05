@@ -1,11 +1,14 @@
 <script setup>
+import { plateFieldLook } from '~/utils/particleFieldLooks'
+
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 等粒子場與起始構圖準備好才結束。
 const { trackIntro, introDone } = useSiteIntro()
+const opening = useParticleOpening()
 const { countFor, maxDpr } = useParticleBudget()
 const { idle } = useParticleStage()
 const { markActive, onTierChange, knobs, noteRespawn, suspendReadback } = useParticleQuality()
-const { buildSeedTargets, buildSlotTargetsRaw, paletteToLinear, lerpPaletteLinear } = useParticleMorph()
+const { buildSlotTargetsRaw, paletteToLinear, lerpPaletteLinear } = useParticleMorph()
 
 const props = defineProps({
   fixed: {
@@ -85,7 +88,6 @@ let colonies = null
 let flower = null
 let flowerTypes = null
 let flowerBounds = null
-let galleryPalette = null
 let galleryMix = 0
 let flowerMode = false
 let lastGalleryTop = NaN
@@ -107,6 +109,9 @@ let lastPointSize = -1
 let lastMinR = -1
 let lastSimSpeed = NaN
 let lastCameraY = NaN
+let lastCameraZoom = NaN
+let returnUntil = 0
+let previousProgress = 0
 let lastMorphPull = NaN
 let lastMorphGrip = NaN
 let lastMorphBlend = NaN
@@ -123,19 +128,23 @@ let canvasHeight = 550
 let resizeObserver = null
 let posterDrawn = false
 let maskKey = ''
+let fieldBounds = null
 
 // --- DOM：元素只查一次，矩形一幀只量一次 ------------------------------------
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
-const dom = { hero: null, page: null, body: null, aside: null, gallery: null }
-const rects = { hero: null, page: null, aside: null, body: null, gallery: null }
+const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null }
+const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
   if (!dom.page) dom.page = canvasRef.value?.closest('[data-plate-page]') || null
   if (!dom.body) dom.body = document.querySelector('[data-plate-body]')
   if (!dom.aside && dom.body) dom.aside = dom.body.querySelector(':scope > aside')
-  if (galleryConfig && !dom.gallery) dom.gallery = dom.page?.querySelector('[data-plate-gallery]')
+  if (galleryConfig && !dom.gallery) {
+    dom.gallery = dom.page?.querySelector('[data-plate-gallery]')
+    dom.board = dom.gallery?.querySelector('.photo-board') || null
+  }
 }
 
 function measure () {
@@ -145,6 +154,7 @@ function measure () {
   rects.aside = dom.aside?.getBoundingClientRect() || null
   rects.body = dom.body?.getBoundingClientRect() || null
   if (dom.gallery) rects.gallery = dom.gallery.getBoundingClientRect()
+  if (dom.board) rects.board = dom.board.getBoundingClientRect()
 }
 
 // --- CSS 變數：動畫數值直接寫在 wrapper 上，Vue 不參與動畫迴圈 ----------------
@@ -157,22 +167,44 @@ function writeCssVars () {
   const clipBottom = 0
   if (props.fixed) {
     const W = canvasRef.value?.clientWidth || window.innerWidth + 128
-    const heroBottom = Math.max(0, Math.min(canvasHeight, rects.hero?.bottom || 0) - railOffset)
-    const railTop = Math.max(heroBottom, (rects.body?.top ?? rects.hero?.bottom ?? 0) - railOffset, 0)
-    const galleryTop = Math.max(0, (rects.gallery?.top || 0) - railOffset)
-    const galleryBottom = Math.min(canvasHeight, (rects.gallery?.bottom || 0) - railOffset)
+    const canvasLeft = canvasRef.value?.getBoundingClientRect().left || 0
+    // 只有一個顯示範圍，跟著同批粒子移動；不保留獨立的 Hero／正文窗口。
+    const bounds = {
+      left: 0, top: (rects.hero?.top || 0) - railOffset,
+      width: W, height: rects.hero?.height || HERO.height,
+    }
+    const moveBounds = (target, mix) => {
+      for (const key of ['left', 'top', 'width', 'height']) bounds[key] += (target[key] - bounds[key]) * mix
+    }
+    if (galleryConfig && rects.board) {
+      const board = rects.board
+      moveBounds({
+        left: board.left - canvasLeft + board.width * 0.48,
+        top: board.top - railOffset, width: board.width * 0.52, height: board.height,
+      }, galleryMix)
+    }
+    if (rects.aside) {
+      moveBounds({
+        left: rects.aside.left - canvasLeft, top: rects.aside.top - railOffset,
+        width: rects.aside.width, height: rects.aside.height,
+      }, railMix)
+    }
+    const top = Math.max(0, bounds.top)
+    const bottom = Math.min(canvasHeight, bounds.top + bounds.height)
+    fieldBounds = { ...bounds, top, height: Math.max(0, bottom - top) }
     const heroTextY = (rects.hero?.top || 0) + HERO.height / 2 + 16 - railOffset
-    const layers = [
-      // 新桌機 hero 自己使用首頁設定；此畫布保留原照片牆與正文的預算／動態。
-      props.heroVisible
-        ? `radial-gradient(ellipse 360px 210px at 50% ${heroTextY}px, transparent 65%, #000 100%) 0 0 / 100% ${heroBottom}px no-repeat`
-        : `linear-gradient(transparent, transparent) 0 0 / 100% ${heroBottom}px no-repeat`,
-      // 正文保留全寬畫布，避免左欄遮罩裁掉右側粒子；位移與變形仍由原本 morph 控制。
-      `linear-gradient(#000, #000) 0 ${railTop}px / ${W}px ${Math.max(0, canvasHeight - railTop)}px no-repeat`,
-    ]
-    if (galleryConfig) layers.push(`linear-gradient(#000, #000) 0 ${galleryTop}px / 100% ${Math.max(0, galleryBottom - galleryTop)}px no-repeat`)
-    const nextMask = layers.join(', ')
-    if (nextMask !== maskKey) { el.style.mask = nextMask; maskKey = nextMask }
+    const visible = props.heroVisible || galleryMix > 0 || railMix > 0
+    const region = visible
+      ? `linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent) ${fieldBounds.left}px ${fieldBounds.top}px / ${fieldBounds.width}px ${fieldBounds.height}px no-repeat`
+      : 'linear-gradient(transparent, transparent)'
+    // 文字留白與移動範圍相交，不把兩個區塊的可見範圍相加。
+    const text = `radial-gradient(ellipse 360px 210px at 50% ${heroTextY}px, transparent 65%, #000 100%)`
+    const nextMask = `${region}, ${text}`
+    if (nextMask !== maskKey) {
+      el.style.mask = nextMask
+      el.style.maskComposite = 'intersect'
+      maskKey = nextMask
+    }
   }
   const artworkOffset = (props.fixed ? rects.hero?.top || 0 : 0) * (1 - railMix)
   if (cssVars.railMix !== railMix) {
@@ -244,7 +276,10 @@ function scrollProgress () {
   const hero = rects.hero
   if (!hero?.height) return 0
   const boundary = props.railStart === 'body' ? (rects.body?.top ?? hero.bottom) : hero.bottom
-  const p = Math.max(0, Math.min(1, (hero.height - 120 - boundary) / (hero.height - 180)))
+  // 照片區右侧的場在正文入鏡時就往左移，接到側欄後維持 sticky。
+  const start = galleryConfig ? Math.min(window.innerHeight - 120, hero.height + 200) : hero.height - 120
+  const end = galleryConfig ? 160 : 60
+  const p = Math.max(0, Math.min(1, (start - boundary) / Math.max(1, start - end)))
   return p * p * (3 - 2 * p)
 }
 
@@ -308,38 +343,28 @@ async function rebuildTargets () {
     const railSlots = buildSlotTargetsRaw(raw, N, target, species, W)
     colonies = railSlots.shape
     railTypes = railSlots.shapeType
-    // 先用全寬生成構圖，再壓回 hero 高度；圓環／螺旋不再被短邊 550px 限縮。
-    const heroSeed = buildSeedTargets(look.rules.seedPattern, N, species, W, W)
-    const zoom = look.camera.zoom / 1.35
+    // 起點就是這批粒子的真實 seed；GPU 空間排序會換順序，必須以 slot 配對。
+    spread = new Float32Array(N * 2)
+    heroTypes = new Float32Array(N)
     for (let i = 0; i < N; i++) {
-      heroSeed.tx[i] = W / 2 + (heroSeed.tx[i] - W / 2) * zoom
-      heroSeed.ty[i] = HERO.height / 2 + (heroSeed.ty[i] - W / 2) * HERO.height / W * zoom
+      const slot = raw[i * 6 + 5]
+      spread[slot * 2] = raw[i * 6]
+      spread[slot * 2 + 1] = raw[i * 6 + 1]
+      heroTypes[slot] = raw[i * 6 + 4]
     }
-    const heroSlots = buildSlotTargetsRaw(raw, N, heroSeed, species, W, { recolor: true })
-    spread = heroSlots.shape
-    heroTypes = heroSlots.shapeType
     if (galleryConfig && dom.gallery) {
       const board = dom.gallery.querySelector('.photo-board').getBoundingClientRect()
-      const heading = dom.gallery.querySelector('.photo-heading').getBoundingClientRect()
-      // 設計稿的花形跨越照片後方，頂端與標題同高；不隨視窗高度縮小。
-      // 只放大構圖範圍，不增加粒子數量。
-      const top = Math.max(24, heading.top - board.top)
-      const radius = Math.min(board.width * 0.31, (board.height - top) * 0.52)
-      const size = radius * 2 / galleryConfig.sim.cameraZoom
-      const seed = buildSeedTargets(galleryConfig.behavior.seedPattern, N, species, size, size)
+      // 第一區的真實 seed 直接縮放移到照片右側，不生成另一組示意花形。
+      const scale = Math.min(board.width * 0.62 / W, (board.height - 60) * 0.9 / H)
       const cx = board.left - canvasLeft + board.width * 0.76
-      const cy = top + radius
+      const cy = board.height / 2
+      flower = new Float32Array(N * 2)
+      flowerTypes = heroTypes
       for (let i = 0; i < N; i++) {
-        seed.tx[i] = cx + (seed.tx[i] - size / 2) * galleryConfig.sim.cameraZoom
-        // Simulate within the viewport; the camera supplies the gallery's scroll offset.
-        // Putting offscreen targets outside the toroidal world would wrap them over the heading.
-        seed.ty[i] = H / 2 + (seed.ty[i] - size / 2) * galleryConfig.sim.cameraZoom
+        flower[i * 2] = cx + (spread[i * 2] - W / 2) * scale
+        flower[i * 2 + 1] = H / 2 + (spread[i * 2 + 1] - H / 2) * scale
       }
-      const slots = buildSlotTargetsRaw(raw, N, seed, species, W, { recolor: true })
-      flower = slots.shape
-      flowerTypes = slots.shapeType
-      flowerBounds = { cx, cy, simulationCy: H / 2, radius, top }
-      galleryPalette = paletteToLinear(window.PLPalettes.PALETTES[galleryConfig.look.palette].particles)
+      flowerBounds = { cx, cy, simulationCy: H / 2, radius: H * scale / 2, top: 0 }
     }
     // 同區域的粒子沿共同方向流動，保留 seed 的起始構圖。
     heroFlow = new Float32Array(N * 3)
@@ -372,7 +397,6 @@ async function rebuildTargets () {
     targetsSize = W + ':' + H
     shimmerCycle = -1
     heroCycle = -1
-    ready.value = true
   } finally {
     buildingTargets = false
     schedule()
@@ -510,20 +534,23 @@ function step (dt) {
   if (wantColony !== colonyMode || wantFlower !== flowerMode) {
     colonyMode = wantColony
     flowerMode = wantFlower
-    engine.setSeedPattern?.(wantFlower ? galleryConfig.behavior.seedPattern : look.rules.seedPattern)
-    engine.setPreset(wantColony ? RAIL.preset : wantFlower ? galleryConfig.behavior.preset : HERO.preset)
-    engine.setShowGlow?.(wantColony)
-    const physics = wantFlower ? galleryConfig.physics : look.physics
+    engine.setSeedPattern?.(look.rules.seedPattern)
+    engine.setPreset(wantColony ? RAIL.preset : HERO.preset)
+    engine.setShowGlow?.(wantColony || look.visual.showGlow)
+    const glow = wantColony ? { glowSize: RAIL.glow.size, glowIntensity: RAIL.glow.intensity, glowSteepness: RAIL.glow.steepness } : look.glow
+    engine.setGlowSize?.(glow.glowSize)
+    engine.setGlowIntensity?.(glow.glowIntensity)
+    engine.setGlowSteepness?.(glow.glowSteepness)
+    const physics = look.physics
     engine.setForce?.(physics.forceFactor)
     engine.setFriction?.(physics.friction)
     engine.setRepel?.(physics.repel)
     engine.setRMax?.(physics.rMax)
-    engine.setParticleOpacity?.(wantColony ? 0.9 : wantFlower ? galleryConfig.visual.particleOpacity : look.visual.heroOpacity)
+    engine.setParticleOpacity?.(wantColony ? 0.9 : look.visual.heroOpacity)
     engine.setShapeTypes?.(wantFlower && flowerTypes ? flowerTypes : heroTypes, railTypes)
   }
 
-  const stageSize = heroSize + ((galleryConfig?.visual.pointSize ?? heroSize) - heroSize) * galleryMix
-  const pointSize = stageSize + (RAIL.pointSize - stageSize) * railMix
+  const pointSize = heroSize + (RAIL.pointSize - heroSize) * railMix
   if (Math.abs(pointSize - lastPointSize) > 0.005 || ((railMix === 0 || railMix === 1) && pointSize !== lastPointSize)) {
     engine.setPointSize(pointSize)
     lastPointSize = pointSize
@@ -533,8 +560,7 @@ function step (dt) {
     engine.setMinR?.(minR)
     lastMinR = minR
   }
-  const stageSpeed = HERO.simSpeed + ((galleryConfig?.sim.simSpeed ?? HERO.simSpeed) - HERO.simSpeed) * galleryMix
-  const simSpeed = stageSpeed + (RAIL.simSpeed - stageSpeed) * railMix
+  const simSpeed = (HERO.simSpeed + (RAIL.simSpeed - HERO.simSpeed) * railMix) * opening.factor()
   if (simSpeed !== lastSimSpeed) {
     engine.setSimSpeed?.(simSpeed)
     lastSimSpeed = simSpeed
@@ -542,17 +568,29 @@ function step (dt) {
   const nextPaletteStep = `${Math.round(galleryMix * 100)}:${Math.round(railMix * 100)}`
   if (nextPaletteStep !== paletteStep) {
     paletteStep = nextPaletteStep
-    const firstPalette = galleryPalette ? paletteToLinear(lerpPaletteLinear(heroPalette, galleryPalette, galleryMix)) : heroPalette
-    engine.setColors(lerpPaletteLinear(firstPalette, railPalette, railMix))
+    engine.setColors(lerpPaletteLinear(heroPalette, railPalette, railMix))
   }
-  if (heroOffset !== lastCameraY) {
-    engine.setCameraOffset?.(0, -heroOffset)
-    lastCameraY = heroOffset
+  const cameraZoom = look.camera.zoom + (1 - look.camera.zoom) * Math.max(galleryMix, railMix)
+  if (cameraZoom !== lastCameraZoom) {
+    engine.setCameraZoom?.(cameraZoom)
+    lastCameraZoom = cameraZoom
+  }
+  // Hero 以 720px 取景；捲動與相機縮放同步，讓同一粒子的螢幕位移連續。
+  const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix)
+  const cameraY = (centerShift - heroOffset) / cameraZoom
+  if (cameraY !== lastCameraY) {
+    engine.setCameraOffset?.(0, cameraY)
+    lastCameraY = cameraY
   }
   const stagePull = HERO.pull + (24 - HERO.pull) * galleryMix
   const stageGrip = HERO.grip + (90 - HERO.grip) * galleryMix
   pull = stagePull + (RAIL.pull - stagePull) * railMix
   grip = stageGrip + (RAIL.grip - stageGrip) * railMix
+  // 回捲需先帶回同一份起點，收尾後再放手讓原範本自然演化。
+  if (performance.now() < returnUntil) {
+    pull = Math.max(pull, 8)
+    grip = Math.max(grip, 36)
+  }
   jitterTargets(motionTime)
   if (engine.setMorph) {
     if (pull !== lastMorphPull || grip !== lastMorphGrip || railMix !== lastMorphBlend) {
@@ -581,6 +619,9 @@ function frame (now = performance.now()) {
   galleryMix = galleryProgress * galleryProgress * (3 - 2 * galleryProgress)
   const galleryOffset = flowerBounds ? (rects.gallery?.top || 0) + flowerBounds.cy - flowerBounds.simulationCy : 0
   heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryMix) + galleryOffset * galleryMix) * (1 - railMix)
+  const combinedProgress = Math.max(railMix, galleryMix)
+  if (combinedProgress < previousProgress - 0.00001) returnUntil = now + 1400
+  previousProgress = combinedProgress
   step(dt)
   writeCssVars()
   if (running || railMix !== progress) schedule()
@@ -611,13 +652,13 @@ async function init () {
   if (reducedMotion.value) return
   await loadParticleKit()
   if (disposed) return
-  look = props.fieldLook || fieldLookFromLocation().look
+  look = plateFieldLook(props.fieldLook || fieldLookFromLocation().look)
   species = look.rules.species
   HERO.preset = look.rules.preset
   HERO.simSpeed = look.speed.idle
   HERO.pointSize = look.visual.pointSize
-  HERO.pull = Math.max(look.hold.pull, 4)
-  HERO.grip = Math.max(look.hold.grip, 18)
+  HERO.pull = look.hold.pull
+  HERO.grip = look.hold.grip
   const palette = window.PLPalettes.PALETTES[look.palette]
   heroPalette = paletteToLinear(palette.particles)
   const q = knobs('desktopField') || {}
@@ -634,15 +675,15 @@ async function init () {
     friction: look.physics.friction,
     repel: look.physics.repel,
     minR: look.physics.minR,
-    rMax: q.rMax || look.physics.rMax,
-    simSpeed: HERO.simSpeed,
-    cameraZoom: 1,
+    rMax: look.physics.rMax,
+    simSpeed: 0,
+    cameraZoom: look.camera.zoom,
     pointSize: heroSize,
     particleOpacity: look.visual.heroOpacity,
-    showGlow: false,
-    glowSize: RAIL.glow.size,
-    glowIntensity: RAIL.glow.intensity,
-    glowSteepness: RAIL.glow.steepness,
+    showGlow: look.visual.showGlow,
+    glowSize: look.glow.glowSize,
+    glowIntensity: look.glow.glowIntensity,
+    glowSteepness: look.glow.glowSteepness,
     cellSubdivisions: q.cellSub ?? 2,
     maxDpr: Math.min(maxDpr(), q.dprCap ?? maxDpr()),
   })
@@ -653,27 +694,30 @@ async function init () {
   engine = nextEngine
   if (engine.backend !== 'webgpu') throw new Error('WebGPU initialization unavailable')
   backend.value = engine.backend
-  // 鏡頭縮放固定為 1；以前每幀重寫一次，現在只在這裡設一次。
-  engine.setCameraZoom?.(1)
+  engine.setCameraZoom?.(look.camera.zoom)
   applyParticleBudget()
   await rebuildTargets()
   if (disposed) return
   await new Promise(resolve => setTimeout(resolve, 200))
   if (disposed) return
   posterDrawn = true
+  opening.ready()
+  // 與父層移除載入圖片同一批更新，避免 GPU 與 poster 短暫重疊。
+  ready.value = true
   emit('ready')
 
   if (import.meta.dev) {
     window.__agendaField = engine
     window.__agendaRailMotion = RAIL
     window.__agendaMotion = () => ({
+      opening: opening.factor(),
       railMix, galleryMix, flowerMode, flowerBounds, pull, grip, targetsGeneration, buildingTargets,
       look: look.id, ready: ready.value, running, failed: failed.value, reducedMotion: reducedMotion.value, motionTime, rafPending,
-      rail: railBounds(), colonyCount: COLONIES.length, mask: maskKey,
+      rail: railBounds(), colonyCount: COLONIES.length, mask: maskKey, fieldBounds,
     })
   }
   if (!reducedMotion.value) {
-    stopAmbient = window.PLAmbient.start(() => running && colonyMode && !failed.value ? engine : null, { intensity: look.ambient })
+    stopAmbient = window.PLAmbient.start(() => running && opening.factor() === 1 && colonyMode && !failed.value ? engine : null, { intensity: look.ambient })
   }
   document.addEventListener('visibilitychange', onVisibility)
   window.addEventListener('resize', onResize)
@@ -756,7 +800,7 @@ defineExpose({ backend })
 /* 與 PhotoWall 的 photo-board 同高，較矮視窗也不會讓花瓣越過模擬邊界繞回。
    CSS 在 resize 事件前完成尺寸更新，粒子數仍受原本預算上限限制。 */
 .agenda-field--gallery {
-  min-height: clamp(640px, 50vw, 720px);
+  min-height: calc(clamp(640px, 50vw, 720px) + 48px);
 }
 
 .agenda-hero-artwork {
