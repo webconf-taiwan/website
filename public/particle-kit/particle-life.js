@@ -938,7 +938,7 @@
         }
       }
       if (!config.paused) {
-        step();
+        if (config.simSpeed > 0) step();
         render();
       }
       raf = requestAnimationFrame(loop);
@@ -1002,7 +1002,7 @@
         else _removeFpsOverlay();
       },
       getFps() { return _fps; },
-      setSimSpeed(v) { config.simSpeed = Math.max(0.05, Math.min(4, v)); },
+      setSimSpeed(v) { config.simSpeed = Math.max(0, Math.min(4, v)); },
       // Async readback so callers can await regardless of backend (CPU
       // returns synchronously inside the Promise).
       async readParticles() {

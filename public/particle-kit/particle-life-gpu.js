@@ -1463,62 +1463,66 @@
         const wgParticles = Math.ceil(config.count / 64);
         const wgBins = Math.ceil((binCount + 1) / 64);
 
-        // 1. Clear binOffset, then fill counts
-        {
-          const pass = cmd.beginComputePass({ label: 'binFill' });
-          pass.setPipeline(pipeBinFillClear);
-          pass.setBindGroup(0, bgBinFillParticles);
-          pass.setBindGroup(1, bgSimOptions);
-          pass.setBindGroup(2, bgBinFillBinSize);
-          pass.dispatchWorkgroups(wgBins);
-          pass.setPipeline(pipeBinFill);
-          pass.dispatchWorkgroups(wgParticles);
-          pass.end();
-        }
-
-        // 2. Hillis-Steele prefix sum (ping-pong)
-        {
-          const pass = cmd.beginComputePass({ label: 'prefixSum' });
-          pass.setPipeline(pipePrefixSum);
-          for (let i = 0; i < prefixIter; i++) {
-            pass.setBindGroup(0, bgPrefixStep[i]);
+        // A visible seed can render during loading without advancing positions or velocities.
+        if (config.simSpeed > 0) {
+          // 1. Clear binOffset, then fill counts
+          {
+            const pass = cmd.beginComputePass({ label: 'binFill' });
+            pass.setPipeline(pipeBinFillClear);
+            pass.setBindGroup(0, bgBinFillParticles);
+            pass.setBindGroup(1, bgSimOptions);
+            pass.setBindGroup(2, bgBinFillBinSize);
             pass.dispatchWorkgroups(wgBins);
+            pass.setPipeline(pipeBinFill);
+            pass.dispatchWorkgroups(wgParticles);
+            pass.end();
           }
-          pass.end();
-        }
 
-        // 3. Clear sort counter, then bin-sort particles A → B
-        {
-          const pass = cmd.beginComputePass({ label: 'sort' });
-          pass.setPipeline(pipeSortClear);
-          pass.setBindGroup(0, bgSortIO);
-          pass.setBindGroup(1, bgSimOptions);
-          pass.dispatchWorkgroups(wgBins);
-          pass.setPipeline(pipeSort);
-          pass.dispatchWorkgroups(wgParticles);
-          pass.end();
-        }
+          // 2. Hillis-Steele prefix sum (ping-pong)
+          {
+            const pass = cmd.beginComputePass({ label: 'prefixSum' });
+            pass.setPipeline(pipePrefixSum);
+            for (let i = 0; i < prefixIter; i++) {
+              pass.setBindGroup(0, bgPrefixStep[i]);
+              pass.dispatchWorkgroups(wgBins);
+            }
+            pass.end();
+          }
 
-        // 4. Force compute: B sorted → A (velocities updated)
-        {
-          const pass = cmd.beginComputePass({ label: 'forces' });
-          pass.setPipeline(pipeForces);
-          pass.setBindGroup(0, bgForcesIO_BA);
-          pass.setBindGroup(1, bgSimOptions);
-          pass.dispatchWorkgroups(wgParticles);
-          pass.end();
-        }
+          // 3. Clear sort counter, then bin-sort particles A → B
+          {
+            const pass = cmd.beginComputePass({ label: 'sort' });
+            pass.setPipeline(pipeSortClear);
+            pass.setBindGroup(0, bgSortIO);
+            pass.setBindGroup(1, bgSimOptions);
+            pass.dispatchWorkgroups(wgBins);
+            pass.setPipeline(pipeSort);
+            pass.dispatchWorkgroups(wgParticles);
+            pass.end();
+          }
 
-        // 5. Advance positions in-place on A (+disturb)
-        {
-          const pass = cmd.beginComputePass({ label: 'advance' });
-          pass.setPipeline(pipeAdvance);
-          pass.setBindGroup(0, bgAdvanceA);
-          pass.setBindGroup(1, bgSimOptions);
-          pass.setBindGroup(2, bgDelta);
-          pass.setBindGroup(3, bgDisturb);
-          pass.dispatchWorkgroups(wgParticles);
-          pass.end();
+          // 4. Force compute: B sorted → A (velocities updated)
+          {
+            const pass = cmd.beginComputePass({ label: 'forces' });
+            pass.setPipeline(pipeForces);
+            pass.setBindGroup(0, bgForcesIO_BA);
+            pass.setBindGroup(1, bgSimOptions);
+            pass.dispatchWorkgroups(wgParticles);
+            pass.end();
+          }
+
+          // 5. Advance positions in-place on A (+disturb)
+          {
+            const pass = cmd.beginComputePass({ label: 'advance' });
+            pass.setPipeline(pipeAdvance);
+            pass.setBindGroup(0, bgAdvanceA);
+            pass.setBindGroup(1, bgSimOptions);
+            pass.setBindGroup(2, bgDelta);
+            pass.setBindGroup(3, bgDisturb);
+            pass.dispatchWorkgroups(wgParticles);
+            pass.end();
+          }
+
         }
 
         // 6a. Glow render → HDR (clear first, soft halos). Skippable: at
@@ -1800,7 +1804,7 @@
     function getFps() { return fpsSmoothed; }
     // Live sim-speed control. Useful for slow-motion effects without
     // dropping FPS — picked up on next writeDelta() (every frame).
-    function setSimSpeed(v) { config.simSpeed = Math.max(0.05, Math.min(4, v)); }
+    function setSimSpeed(v) { config.simSpeed = Math.max(0, Math.min(4, v)); }
     function setCameraZoom(z) {
       config.cameraZoom = Math.max(0.2, Math.min(8, z));
       writeCamera();

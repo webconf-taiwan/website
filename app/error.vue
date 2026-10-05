@@ -6,6 +6,10 @@ const props = defineProps({
   }
 })
 
+// Nuxt 錯誤頁取代 app.vue，沒有 LayoutPageIntro；掛載後直接放行共用進場。
+const { introDone } = useSiteIntro()
+onMounted(() => { introDone.value = true })
+
 const statusCode = computed(() => props.error?.statusCode || 404)
 const title = computed(() => String(statusCode.value || 404))
 const subtitle = computed(() => {

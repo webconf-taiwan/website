@@ -52,6 +52,7 @@ const props = defineProps({
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
 const { trackIntro, introDone } = useSiteIntro()
+const opening = useParticleOpening()
 // 背景音：推粒子 → blip、收攏程度 → 濾波器（見 plugins/sound.client.js）
 const sound = useSiteSound()
 const SOUND_PUSH_MIN_SPEED = 6     // px／幀，低於這個當成沒在撥
@@ -1094,7 +1095,7 @@ function syncAmbient (lockNorm) {
     stopAmbient = null
     ambientOn = false
   } else if (!ambientOn && lockNorm < AMBIENT_ON_AT) {
-    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
+    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient })
     ambientOn = true
   }
 }
@@ -1112,6 +1113,8 @@ function frame (now) {
   if (!engine) return
 
   const t = now || performance.now()
+  const openingMix = reducedMotion ? 0 : opening.factor(t)
+  if (!openingMix) return
   const y = window.scrollY
 
   // 停住時仍要更新時間 / 捲動基準，否則喚醒那一幀會算出爆炸的 dt 與捲動速度
@@ -1223,7 +1226,7 @@ function frame (now) {
     // 被 morph 按在形狀上、幾乎不亂跑，本來就不需要再壓。
     const freeNow = modeMix('free')
     const calmSpeed = CALM_SIM_SPEED + (simSpeed - CALM_SIM_SPEED) * (1 - freeNow)
-    engine.setSimSpeed?.(calmNow ? calmSpeed : simSpeed)
+    engine.setSimSpeed?.((calmNow ? calmSpeed : simSpeed) * openingMix)
 
     scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? ATTACK : RELEASE)
     // 力場同理，而且三種 mode 要的方向完全不同：圖片要壓到下限、菌落要開大。
@@ -1366,9 +1369,9 @@ function frame (now) {
 // 站內換頁回來時 introDone 早就是 true，這段等於不存在。
 const POSTER_MS = 200
 let posterDrawn = false
-const introHold = () => posterDrawn && !introDone.value
+const introHold = () => posterDrawn && (!introDone.value || reducedMotion)
 function drawPosterThenHold (sync) {
-  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; sync() }), POSTER_MS)
+  setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; opening.ready(); sync() }), POSTER_MS)
 }
 
 function syncPause () {
@@ -1621,6 +1624,8 @@ async function switchLook (idOrIndex) {
   const count = pageCount(engine.backend)
   toolMeta.autoCount = count
   applyFieldLook(engine, look, { count, allowGlow: !isMobile() })
+  engine.setSimSpeed(0)
+  opening.restart()
   // applyFieldLook 剛把 pointSize / rMax 整組寫回新 look 的值，面板要跟著同步；
   // 檔位預設裡的 rMax 也吃 look，一起重算。
   syncKnobs()
@@ -1642,7 +1647,7 @@ async function switchLook (idOrIndex) {
 
   if (stopAmbient) { stopAmbient(); stopAmbient = null; ambientOn = false }
   if (!reducedMotion) {
-    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
+    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient })
     ambientOn = true
   }
 
@@ -1745,9 +1750,7 @@ async function init () {
   toolMeta.autoCount = count
 
   engine = await window.makeEngine(canvas, {
-    // ⚠️ 力矩陣不再寫死在這裡 —— 5 組效果各自帶一組，而且全都是「非對稱、沒有
-    // 靜止解」的（對稱矩陣會收斂成不動的菌落球，畫面就死了，見 docs §4）。
-    // 挑選準則與踩坑紀錄在 app/utils/particleFieldLooks.js 檔頭。
+    // 五組效果使用 sandbox 原本的矩陣與種子，後續圖片形變保持原編排。
     species: look.rules.species,
     count,
     preset: look.rules.preset,
@@ -1760,7 +1763,7 @@ async function init () {
     repel: look.physics.repel,
     minR: look.physics.minR,
     rMax: look.physics.rMax,
-    simSpeed: startSimSpeed(),
+    simSpeed: 0,
     cameraZoom: KEYS[0].zoom,
     pointSize: look.visual.pointSize,
     particleOpacity: KEYS[0].opacity,
@@ -1798,7 +1801,7 @@ async function init () {
   }
 
   if (!reducedMotion) {
-    stopAmbient = window.PLAmbient.start(() => engine, { intensity: look.ambient })
+    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient })
     ambientOn = true
   }
 
@@ -1870,6 +1873,7 @@ async function init () {
 
   if (import.meta.dev) {
     window.__sameDbg = () => ({
+      opening: opening.factor(),
       // 滑鼠推擠：最近幾次真的送進引擎的脈衝（座標是模擬空間）
       pointerPushCount,
       calm: calmNow,

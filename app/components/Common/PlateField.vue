@@ -1,11 +1,12 @@
 <script setup>
-// 僅供議程與贊助頁使用。失敗狀態留在本區域，不改首頁共用的 webgpu ref。
+// 議程、贊助與 404／建置中共用；失敗狀態留在本區域。
 const props = defineProps({
   variant: { type: String, default: 'hero' },
   density: { type: Number, default: 0.8 },
   galleryConfig: { type: Object, default: null },
   mediaOnly: { type: Boolean, default: false },
   posterOnly: { type: Boolean, default: false },
+  plateStyle: { type: Boolean, default: false },
 })
 const emit = defineEmits(['backend'])
 const { webgpu } = useWebGpuSupport()
@@ -13,18 +14,19 @@ const rootRef = ref(null)
 const heroField = ref(null)
 const failed = ref(false)
 const reduced = ref(false)
+const motionReady = ref(false)
 const activated = ref(props.variant === 'hero')
 const gpuReady = ref(false)
 let media = null
 let observer = null
 let timeout = null
-// Hero 的減少動態行為由首頁元件處理，避免內頁另選一張不同取景的 poster。
-const fallback = computed(() => props.mediaOnly || webgpu.value === false || failed.value || (reduced.value && props.variant !== 'hero'))
+// 減少動態直接顯示共用 poster，避免初始化或換頁時先跑一段動畫。
+const fallback = computed(() => props.mediaOnly || webgpu.value === false || failed.value || reduced.value)
 const mode = computed(() => {
   if (!activated.value) return 'pending'
   if (!fallback.value && webgpu.value === true) return gpuReady.value ? 'webgpu' : 'initializing'
   if (!fallback.value) return 'pending'
-  return props.variant === 'hero' ? (props.posterOnly ? 'poster' : 'video') : 'static'
+  return props.variant === 'hero' ? (props.posterOnly || reduced.value ? 'poster' : 'video') : 'static'
 })
 function unavailable() {
   failed.value = true
@@ -55,6 +57,7 @@ watch([activated, webgpu, reduced], () => {
 onMounted(() => {
   media = matchMedia('(prefers-reduced-motion: reduce)')
   reduced.value = media.matches
+  motionReady.value = true
   media.addEventListener('change', motionChanged)
   observer = new IntersectionObserver(([entry]) => {
     if (entry.isIntersecting) activated.value = true
@@ -73,11 +76,12 @@ onBeforeUnmount(() => {
   <div ref="rootRef" aria-hidden="true" class="plate-field pointer-events-none absolute inset-0 z-0 overflow-hidden"
     :class="'plate-field--' + variant" :data-plate-field="variant" :data-backend="mode">
     <HomeMobileField
-      v-if="activated && webgpu === true && !fallback && variant === 'hero'"
+      v-if="motionReady && activated && webgpu === true && !fallback && variant === 'hero'"
       ref="heroField"
+      :plate-style="plateStyle"
     />
     <CommonPlateParticleCanvas
-      v-if="activated && webgpu === true && !fallback && variant !== 'hero'"
+      v-if="motionReady && activated && webgpu === true && !fallback && variant !== 'hero'"
       :variant="variant" :density="density" :gallery-config="galleryConfig"
       @ready="ready" @unavailable="unavailable"
     />
@@ -100,17 +104,23 @@ onBeforeUnmount(() => {
 }
 .plate-field--hero :deep(video),
 .plate-field-hero-poster { height: var(--plate-hero-field-height, 100vh); }
-.plate-field--gallery { mix-blend-mode: lighten; }
+.plate-field--gallery {
+  mix-blend-mode: lighten;
+  /* 只避開左上標題，照片後方的下半部花瓣保留完整。 */
+  mask:
+    linear-gradient(to right, transparent 48%, #000 54%) 0 0 / 100% 284px no-repeat,
+    linear-gradient(#000, #000) 0 284px / 100% calc(100% - 284px) no-repeat;
+}
 .plate-field--rail {
   mask-image: linear-gradient(to bottom, transparent 100px, #000 180px, #000 calc(100% - 90px), transparent calc(100% - 48px));
 }
 .plate-field-flower {
-  width: min(100%, 1080px);
+  /* Figma 1440px 畫板：原圖 x=348、y=0、1418×1001。 */
+  width: calc(min(100vw, 1440px) * 0.9847222222);
   max-width: none;
-  height: 100%;
-  object-fit: contain;
-  left: 40%;
+  height: auto;
+  left: calc(max(0px, 50vw - 720px) + min(100vw, 1440px) * 0.2416666667);
   top: 0;
-  opacity: 0.65;
+  opacity: 0.72;
 }
 </style>
