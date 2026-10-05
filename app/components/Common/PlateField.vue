@@ -87,7 +87,8 @@ onBeforeUnmount(() => {
     />
     <!-- 使用首頁影片元件；與粒子及載入圖片共用內頁取景高度。 -->
     <HomeVideoField v-if="mode === 'video'" :intro="variant === 'hero'" />
-    <img v-if="variant === 'hero' && ['pending', 'initializing', 'poster'].includes(mode)"
+    <!-- 粒子初始化期間不先放影片截圖，404 沒有載入動畫遮著時不會先閃一秒；只有備援的靜態模式才顯示。 -->
+    <img v-if="variant === 'hero' && mode === 'poster'"
       :src="assetUrl('/videos/hero-field-biolum-poster.jpg')" alt="" class="plate-field-hero-poster absolute inset-0 w-full object-cover">
     <img v-if="variant === 'gallery' && mode === 'static'"
       :src="assetUrl('/figma/sponsors/mobile-orbit.png')" alt="" class="plate-field-flower absolute">

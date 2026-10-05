@@ -72,7 +72,8 @@ const label = computed(() => props.ariaLabel || props.title)
     :aria-label="`${label} hero`"
   >
     <ClientOnly>
-      <CommonPlateField v-if="viewportReady && isDesktop && desktopMode !== 'gpu'" media-only :poster-only="desktopMode === 'pending'" />
+      <!-- 粒子初始化期間不先放載入圖，換頁時不會閃一張不同的底圖；確定走備援才顯示。 -->
+      <CommonPlateField v-if="viewportReady && isDesktop && desktopMode === 'fallback'" media-only />
     </ClientOnly>
     <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center">
       <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-[12px] leading-[14px] tracking-normal text-pre-800/80">
