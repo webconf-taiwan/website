@@ -34,7 +34,10 @@ export default defineEventHandler((event) => {
     '',
     ...speakers.items
       .filter(s => s.show_on_home)
-      .map(s => `- ${s.name}：${[s.org, s.role].filter(Boolean).join(' ')}`),
+      .map((s) => {
+        const extra = s.extra ? [s.extra.org, s.extra.role].filter(Boolean).join(' ') : ''
+        return `- ${s.name}：${[s.org, s.role].filter(Boolean).join(' ')}${extra ? `；${extra}` : ''}`
+      }),
     '',
     '## 議程',
     '',
