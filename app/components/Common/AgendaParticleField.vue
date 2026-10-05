@@ -129,6 +129,8 @@ let resizeObserver = null
 let posterDrawn = false
 let maskKey = ''
 let fieldBounds = null
+let regionEdges = null
+let regionSettling = false
 
 // --- DOM：元素只查一次，矩形一幀只量一次 ------------------------------------
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
@@ -189,21 +191,30 @@ function writeCssVars () {
         width: rects.aside.width, height: rects.aside.height,
       }, railMix)
     }
+    // 粒子靠物理追目標，會比捲動進度慢到位；左右邊界往內收時跟著放慢，
+    // 不在粒子還沒飛到時就先把它們切掉。往外放寬則立刻跟上。
+    const edgeLeft = bounds.left
+    const edgeRight = bounds.left + bounds.width
+    if (!regionEdges) regionEdges = { left: edgeLeft, right: edgeRight }
+    const follow = 1 - Math.exp(-1.5 * lastDt)
+    regionEdges.left = edgeLeft < regionEdges.left ? edgeLeft : regionEdges.left + (edgeLeft - regionEdges.left) * follow
+    regionEdges.right = edgeRight > regionEdges.right ? edgeRight : regionEdges.right + (edgeRight - regionEdges.right) * follow
+    if (Math.abs(regionEdges.left - edgeLeft) < 0.5) regionEdges.left = edgeLeft
+    if (Math.abs(regionEdges.right - edgeRight) < 0.5) regionEdges.right = edgeRight
+    regionSettling = regionEdges.left !== edgeLeft || regionEdges.right !== edgeRight
+    bounds.left = regionEdges.left
+    bounds.width = regionEdges.right - regionEdges.left
     const top = Math.max(0, bounds.top)
     const bottom = Math.min(canvasHeight, bounds.top + bounds.height)
     fieldBounds = { ...bounds, top, height: Math.max(0, bottom - top) }
-    const heroTextY = (rects.hero?.top || 0) + HERO.height / 2 + 16 - railOffset
     const visible = props.heroVisible || galleryMix > 0 || railMix > 0
     const region = visible
       ? `linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent) ${fieldBounds.left}px ${fieldBounds.top}px / ${fieldBounds.width}px ${fieldBounds.height}px no-repeat`
       : 'linear-gradient(transparent, transparent)'
-    // 文字留白與移動範圍相交，不把兩個區塊的可見範圍相加。
-    const text = `radial-gradient(ellipse 360px 210px at 50% ${heroTextY}px, transparent 65%, #000 100%)`
-    const nextMask = `${region}, ${text}`
-    if (nextMask !== maskKey) {
-      el.style.mask = nextMask
-      el.style.maskComposite = 'intersect'
-      maskKey = nextMask
+    // 標題不再挖空粒子；粒子直接從標題文字後方通過。
+    if (region !== maskKey) {
+      el.style.mask = region
+      maskKey = region
     }
   }
   const artworkOffset = (props.fixed ? rects.hero?.top || 0 : 0) * (1 - railMix)
@@ -624,7 +635,7 @@ function frame (now = performance.now()) {
   previousProgress = combinedProgress
   step(dt)
   writeCssVars()
-  if (running || railMix !== progress) schedule()
+  if (running || railMix !== progress || regionSettling) schedule()
   else lastTime = 0
 }
 
