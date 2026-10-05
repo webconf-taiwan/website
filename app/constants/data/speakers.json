@@ -40,7 +40,7 @@
     {
       "id": "max-chen",
       "name": "Max Chen",
-      "org": "對稱資訊股份有限公司/面試趣",
+      "org": "對稱資訊股份有限公司",
       "role": "CEO",
       "tag": "Speaker",
       "skills": ["AI", "產品思維"],
@@ -51,8 +51,8 @@
     {
       "id": "yin-siang-jhih",
       "name": "尹相志",
-      "org": "DataDecision.ai",
-      "role": "數據科學家",
+      "org": "數據決策股份有限公司",
+      "role": "技術長",
       "tag": "Speaker",
       "skills": ["AI"],
       "portrait": "/speakers/speaker-05.webp",
