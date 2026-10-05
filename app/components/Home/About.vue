@@ -30,9 +30,9 @@ useFadeIn(sectionRef)
          桌機沒有（那邊的粒子是背後那張 canvas 畫的）。定位與裁切見 Home/Deco.vue。 -->
     <HomeDeco
       class="-bottom-16"
-      src="/home-deco-1"
-      :width="522"
-      :height="508"
+      src="/home-deco/home-no-webgpu-deco-2"
+      :width="1600"
+      :height="1600"
       :reveal="0.656"
       :shift="0.165"
     />

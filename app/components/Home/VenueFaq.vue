@@ -201,11 +201,11 @@ onBeforeUnmount(() => killFadeIns())
            票券區的上內距 md 以上比手機多 16px，所以 bottom 也跟著換。桌機沒有。 -->
       <HomeDeco
         class="-bottom-8 z-1 md:-bottom-12"
-        src="/home-deco-3"
+        src="/home-deco/home-no-webgpu-deco-1"
         align="center"
         from="bottom"
-        :width="522"
-        :height="508"
+        :width="1600"
+        :height="1600"
         :reveal="0.445"
         :shift="0.043"
       />
