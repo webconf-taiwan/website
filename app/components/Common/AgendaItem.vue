@@ -15,9 +15,9 @@ useFadeIn(itemRef, { step: 0.06 })
 <template>
   <article
     ref="itemRef"
-    class="agenda-item relative flex h-[145px] w-full flex-col justify-center py-4 pl-2 pr-2 lg:h-auto lg:pr-4 lg:py-6"
+    class="agenda-item relative flex w-full flex-col py-3 pl-2 pr-2 lg:justify-center lg:pr-4 lg:py-6"
   >
-    <div class="agenda-item-content flex w-full flex-col gap-y-3 lg:flex-row lg:gap-x-6">
+    <div class="agenda-item-content flex w-full flex-col gap-y-2 lg:flex-row lg:gap-x-6">
       <div class="flex min-w-0 flex-1 flex-col gap-y-2">
         <p data-fade="in" class="hidden text-micro text-pre-800/[62%] lg:mb-2 lg:block">
           {{ item.code }}
@@ -34,7 +34,7 @@ useFadeIn(itemRef, { step: 0.06 })
         </ul>
       </div>
 
-      <div class="agenda-item-speaker flex h-10 w-full shrink-0 flex-col justify-end gap-y-1 lg:h-auto lg:w-[200px] lg:gap-y-2">
+      <div class="agenda-item-speaker flex w-full shrink-0 flex-col justify-end gap-y-1 lg:w-[200px] lg:gap-y-2">
         <p data-fade="in" class="text-zh-h5 text-accent-1">
           {{ item.speaker_name }}
         </p>
@@ -69,11 +69,6 @@ useFadeIn(itemRef, { step: 0.06 })
 }
 @media (max-width: 1023px) {
   .agenda-item {
-    height: auto;
-    /* 組與組間距 24px：上下各 12px，虛線落在正中間。 */
-    padding-top: 12px;
-    padding-bottom: 12px;
-    justify-content: flex-start;
     border: 0;
     background: none;
   }
@@ -89,7 +84,6 @@ useFadeIn(itemRef, { step: 0.06 })
   .agenda-item::after { bottom: 0; }
   .agenda-item:first-child::before { top: 0; }
 
-  .agenda-item-content { gap: 8px; }
   .agenda-item h2 {
     overflow-wrap: anywhere;
   }
@@ -102,7 +96,6 @@ useFadeIn(itemRef, { step: 0.06 })
   }
   .agenda-item li { max-width: 100%; overflow-wrap: anywhere; }
 
-  .agenda-item-speaker { height: auto; }
   .agenda-item-speaker > p:last-child {
     overflow-wrap: anywhere;
   }
