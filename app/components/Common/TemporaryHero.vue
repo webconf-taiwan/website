@@ -37,7 +37,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     id="temporary-page"
     ref="heroRef"
     data-same-hero
-    class="relative z-10 flex h-[550px] shrink-0 grow flex-col items-center justify-center overflow-hidden bg-[#0a0a0c] text-center lg:h-[720px]"
+    class="temporary-hero relative z-10 flex h-[550px] shrink-0 grow flex-col items-center justify-center overflow-hidden bg-[#0a0a0c] text-center lg:h-[720px]"
   >
     <ClientOnly>
       <TemporaryParticleField />
@@ -101,5 +101,9 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
 </template>
 
 <style scoped>
+.temporary-hero { --plate-hero-field-height: 640px; }
+@media (min-width: 1024px) {
+  .temporary-hero { --plate-hero-field-height: 720px; }
+}
 .temporary-cta { padding-left: 20px; padding-right: 12px; white-space: nowrap; }
 </style>

@@ -26,12 +26,11 @@ const { isDesktop, viewportReady } = useViewportMode()
 const { webgpu } = useWebGpuSupport()
 const railRef = ref(null)
 const desktopReady = ref(false)
-const desktopHeroReady = ref(false)
 const desktopLook = shallowRef(null)
 const desktopFailed = ref(false)
 const reduced = ref(false)
 const desktopFallback = computed(() => webgpu.value === false || desktopFailed.value || reduced.value)
-const desktopMode = computed(() => desktopFallback.value ? 'fallback' : desktopReady.value && desktopHeroReady.value ? 'gpu' : 'pending')
+const desktopMode = computed(() => desktopFallback.value ? 'fallback' : desktopReady.value ? 'gpu' : 'pending')
 let motionMedia = null
 let initTimeout = null
 
@@ -41,8 +40,8 @@ function motionChanged() {
 function fieldReady() {
   desktopReady.value = true
 }
-watch([desktopReady, desktopHeroReady], ([body, hero]) => {
-  if (body && hero) clearTimeout(initTimeout)
+watch(desktopReady, ready => {
+  if (ready) clearTimeout(initTimeout)
 })
 watch(isDesktop, value => {
   if (value && !desktopLook.value) desktopLook.value = fieldLookFromLocation().look
@@ -50,7 +49,6 @@ watch(isDesktop, value => {
 watch([isDesktop, webgpu, reduced, desktopFailed], () => {
   clearTimeout(initTimeout)
   desktopReady.value = false
-  desktopHeroReady.value = false
   if (isDesktop.value && !desktopFallback.value) {
     initTimeout = setTimeout(() => { desktopFailed.value = true }, 10000)
   }
@@ -77,7 +75,7 @@ useFadeIn(railRef, { step: 0.08 })
       <CommonAgendaParticleField
         v-if="viewportReady && isDesktop && desktopLook && webgpu === true && !desktopFallback"
         fixed :rail-start="railStart" :gallery-config="galleryConfig" :density="heroDensity"
-        :hero-visible="false" :field-look="desktopLook"
+        :field-look="desktopLook"
         @ready="fieldReady" @unavailable="desktopFailed = true"
       />
     </ClientOnly>
@@ -89,10 +87,7 @@ useFadeIn(railRef, { step: 0.08 })
       :corner-right="cornerRight"
       :density="heroDensity"
       :desktop-mode="desktopMode"
-      :desktop-look="desktopLook"
       :aria-label="ariaLabel"
-      @desktop-ready="desktopHeroReady = true"
-      @desktop-unavailable="desktopFailed = true"
     >
       <slot name="hero-actions" />
     </CommonPlateHero>
@@ -135,16 +130,6 @@ useFadeIn(railRef, { step: 0.08 })
 
 <style scoped>
 @media (max-width: 1023px) {
-  .plate-page-body-section::after {
-    content: '';
-    position: absolute;
-    right: 0;
-    bottom: 64px;
-    left: 0;
-    border-top: 1px solid rgb(239 230 210 / 35%);
-    pointer-events: none;
-  }
-
   .plate-page-plate {
     height: 56px;
     align-items: flex-end !important;

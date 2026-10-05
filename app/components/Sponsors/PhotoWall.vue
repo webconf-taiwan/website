@@ -179,9 +179,6 @@ onBeforeUnmount(() => {
   <section ref="wallRef" data-plate-gallery aria-labelledby="sponsors-gallery-heading" class="photo-wall relative z-10 overflow-hidden">
     <!-- 分開觸發標題與照片，避免手機捲到輪播前就播完整區動畫；board 保持固定，供粒子與拖曳量測。 -->
     <div ref="boardRef" class="photo-board relative mx-auto max-w-[1440px]">
-      <div aria-hidden="true" class="mobile-gallery-art lg:hidden">
-        <img :src="assetUrl('/figma/sponsors/mobile-orbit.png')" alt="" loading="lazy" decoding="async">
-      </div>
       <div class="photo-heading relative z-10 mx-5 flex flex-col gap-4 lg:absolute lg:inset-x-[60px] lg:top-[60px] lg:mx-0">
         <h2 id="sponsors-gallery-heading" data-fade="in" class="text-en-h1 italic">
           <span class="block">{{ data.heading_lines[0] }}</span>
@@ -267,25 +264,6 @@ onBeforeUnmount(() => {
 <style scoped>
 .photo-board { padding: 32px 0 120px; }
 .photo-heading { pointer-events: none; }
-.mobile-gallery-art {
-  position: absolute;
-  top: 220px;
-  left: 50%;
-  width: 360px;
-  height: 440px;
-  overflow: hidden;
-  transform: translateX(-50%);
-  pointer-events: none;
-  mix-blend-mode: lighten;
-}
-.mobile-gallery-art img {
-  position: absolute;
-  top: -0.06%;
-  left: -36.67%;
-  width: 173.33%;
-  max-width: none;
-  height: 100.13%;
-}
 .mobile-gallery {
   --card-width: min(300px, calc(100vw - 60px));
   padding-inline: calc((100% - var(--card-width)) / 2);

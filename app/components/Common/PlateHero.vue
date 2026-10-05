@@ -12,10 +12,8 @@ const props = defineProps({
   cornerRight: { type: Object, default: () => ({}) },
   density: { type: Number, default: 0.8 },
   desktopMode: { type: String, default: 'pending' },
-  desktopLook: { type: Object, default: null },
   ariaLabel: { type: String, default: '' },
 })
-const emit = defineEmits(['desktop-ready', 'desktop-unavailable'])
 
 const { isDesktop, viewportReady } = useViewportMode()
 const mobileHeroRef = ref(null)
@@ -37,7 +35,7 @@ const label = computed(() => props.ariaLabel || props.title)
     :aria-label="`${label} intro`"
   >
     <ClientOnly>
-      <CommonPlateField v-if="viewportReady && !isDesktop" :density="density" />
+      <CommonPlateField v-if="viewportReady && !isDesktop" :density="density" plate-style />
     </ClientOnly>
     <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
     <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4">
@@ -74,12 +72,6 @@ const label = computed(() => props.ariaLabel || props.title)
     :aria-label="`${label} hero`"
   >
     <ClientOnly>
-      <CommonDesktopHeroField
-        v-if="viewportReady && isDesktop && desktopLook && desktopMode !== 'fallback'"
-        :look="desktopLook"
-        @ready="emit('desktop-ready')"
-        @unavailable="emit('desktop-unavailable')"
-      />
       <CommonPlateField v-if="viewportReady && isDesktop && desktopMode !== 'gpu'" media-only :poster-only="desktopMode === 'pending'" />
     </ClientOnly>
     <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center">

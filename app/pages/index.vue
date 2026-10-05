@@ -24,6 +24,7 @@ const home = await useHomeData()
 // ⚠️ 這段原本只在 index-old.vue 有，換成一鏡到底版時沒搬過來 —— 首頁一度只剩
 // 全站預設的 "WebConf | WebConf"、沒有 description、也沒有 Event 結構化資料。
 const seo = useSeoData()
+const agenda = await useAgendaData()
 const site = useSiteConfig()
 const siteUrl = site.url.replace(/\/+$/, '')
 const { event } = seo
@@ -32,6 +33,24 @@ usePageSeo('/')
 useSchemaOrg([
   defineWebPage({ name: seo.pages['/'].title, description: seo.pages['/'].description, mainEntity: { '@id': `${siteUrl}/#event` } })
 ])
+
+// performer：首頁講者 + 只出現在議程頁的講者（以姓名去重），跟兩頁畫面上的名單一致。
+// 議程的 speaker_title 是「單位・職稱」，拆回 worksFor / jobTitle。
+// 講者的第二頭銜（extra）畫面上有顯示，jobTitle 一起帶上。
+const homeSpeakers = home.speaker?.items || []
+const performers = [
+  ...homeSpeakers.map(p => ({
+    name: p.name,
+    org: p.org,
+    titles: [p.role, p.extra && [p.extra.org, p.extra.role].filter(Boolean).join(' ')].filter(Boolean)
+  })),
+  ...(agenda.items || [])
+    .filter(a => a.speaker_name && !homeSpeakers.some(p => p.name === a.speaker_name))
+    .map((a) => {
+      const [org, role] = (a.speaker_title || '').split('・')
+      return { name: a.speaker_name, org, titles: role ? [role] : [] }
+    })
+]
 
 // Event 直接輸出已確認的資料，避免套件替 Offer 補入臆測的有效期限及庫存狀態。
 // 日期、票價與講者仍與畫面共用來源，SSR 即可讀取。
@@ -61,10 +80,10 @@ const eventSchema = {
     }
   },
   organizer: { '@id': `${siteUrl}/#identity` },
-  performer: (home.speaker?.items || []).map(p => ({
+  performer: performers.map(p => ({
     '@type': 'Person',
     name: p.name,
-    jobTitle: p.role,
+    jobTitle: p.titles.length > 1 ? p.titles : p.titles[0],
     worksFor: p.org ? { '@type': 'Organization', name: p.org } : undefined
   })),
   offers: (home.ticket?.items || []).map(item => ({
