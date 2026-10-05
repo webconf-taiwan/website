@@ -4,6 +4,17 @@ export default defineNuxtPlugin((nuxtApp) => {
   const { $gsap, $ScrollTrigger } = nuxtApp
   const router = useRouter()
 
+  // ─── 重整一律回到最上面 ─────────────────────────────────────────────────
+  // 瀏覽器預設（scrollRestoration = 'auto'）會在重整後把頁面捲回離開前的位置，而且是
+  // 「版面長出來之後」才補捲 —— 會蓋掉下面 page:finish 的 scrollTo(0)。首頁的進場動畫、
+  // 粒子時間軸都是以「從頂端開始」設計的，從中間醒來會看到播到一半的狀態。
+  // 所以關掉瀏覽器與 ScrollTrigger 兩邊的捲動記憶；網址帶 #hash 重整時也不捲過去
+  // （hash 順便拿掉，免得網址跟畫面對不上）。⚠️ 只針對「重整」：第一次用帶 hash 的
+  // 連結進站（分享連結 /#ticket）照常捲到該區。
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual'
+  $ScrollTrigger?.clearScrollMemory?.('manual')
+  let reloading = performance.getEntriesByType?.('navigation')[0]?.type === 'reload'
+
   const lenis = new Lenis({
     autoRaf: false,
     duration: 1.1,
@@ -35,7 +46,16 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   let hashScrollId = 0
 
+  async function resetToTop () {
+    const { path, query, hash } = router.currentRoute.value
+    if (hash) await router.replace({ path, query, hash: '' }).catch(() => {})
+    reloading = false
+    window.scrollTo(0, 0)
+    lenis.scrollTo(0, { immediate: true, force: true })
+  }
+
   async function scrollToHash () {
+    if (reloading) return
     const requestId = ++hashScrollId
     const { hash, fullPath } = router.currentRoute.value
     if (!hash) return
@@ -72,7 +92,7 @@ export default defineNuxtPlugin((nuxtApp) => {
     $ScrollTrigger?.update()
   }
 
-  nuxtApp.hook('app:mounted', () => { void scrollToHash() })
+  nuxtApp.hook('app:mounted', () => { void (reloading ? resetToTop() : scrollToHash()) })
   nuxtApp.hook('page:loading:end', () => { void scrollToHash() })
   nuxtApp.hook('page:start', () => { hashScrollId++ })
 

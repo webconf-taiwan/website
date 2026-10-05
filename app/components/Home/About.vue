@@ -37,6 +37,15 @@ useFadeIn(sectionRef)
       :shift="0.165"
     />
 
+    <!-- 桌機沒有 WebGPU 時的裝飾圖（甜甜圈）：代替粒子在左欄收攏出來的那一團，
+         往左溢出畫面、Skills 框落在它的洞附近。條件與動畫見 Home/SideDeco.vue。 -->
+    <HomeSideDeco
+      class="-left-[190px] top-[100px] w-[600px] xl:w-[680px]"
+      src="/home-deco/home-no-webgpu-deco-2"
+      :width="1600"
+      :height="1600"
+    />
+
     <div class="mx-auto grid max-w-[1680px] grid-cols-1 border-t border-pre-800/35 lg:pt-8 pb-[120px] lg:grid-cols-12 lg:gap-10">
       <!-- 左欄：卷號 + Skills 標本框 -->
       <div class="lg:col-span-4">

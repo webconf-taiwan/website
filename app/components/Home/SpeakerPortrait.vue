@@ -112,10 +112,12 @@ let pendingStatic = false           // 換人動畫中被降檔 → 等收完再
 let unsubTier = null
 let nearIo = null
 let staticTween = null
+let staticEntered = false           // 靜態圖已經顯示過（進場播了，或使用者先換過人）
 
 // 換人動畫的時序。⚠️ 要跟 Speaker.vue 的框線同一拍（LEADER_OUT_MS / FRAME_DOT_MS /
 // FRAME_GROW_MS），改那邊時記得回來對。兩邊是各自跑的時間軸、不互相等待。
 const STATIC_APPEAR_MS = 400        // 第一次出現（與換人無關）
+const STATIC_ENTER_MS = 1200        // 進站後第一次捲到人像時的進場（淡入 + 微放大）
 const SWAP_OUT_MS = 260
 const SWAP_DOT_MS = 130
 const SWAP_GROW_MS = 520
@@ -193,20 +195,45 @@ async function initStatic () {
   shownPortrait = props.speakers[speakerIndex.value]?.portrait || null
 
   // 框快進畫面才開始載 —— 靜態圖每張約 0.5MB，不要在首屏跟 hero 搶頻寬。
-  await new Promise((resolve) => {
-    if (!rootRef.value || !('IntersectionObserver' in window)) return resolve()
-    nearIo = new IntersectionObserver((entries) => {
-      if (entries.some(en => en.isIntersecting)) { nearIo.disconnect(); resolve() }
-    }, { rootMargin: '100% 0px' })
-    nearIo.observe(rootRef.value)
-  })
+  await whenInView({ rootMargin: '100% 0px' })
   if (disposed) return
 
   const src = await resolveImage(staticSrcOf(shownPortrait))
   if (disposed || !src) return
   await mountStaticSrc(src)
-  appearStatic()
   prefetchNeighbors()
+
+  // 進場：等人像「真的進到畫面」才浮現。⚠️ 圖是提早一個畫面高就載好的，載完馬上淡入的話
+  // 動畫會在畫面外播完，使用者捲到時人像早就在那裡了。
+  await whenInView({ threshold: 0.25 })
+  // 等待期間使用者換過人的話，swapStatic 已經接手了（它自己會把圖顯示出來），不要打斷它
+  if (disposed || staticEntered) return
+  enterStatic()
+}
+
+// rootRef 進到畫面（依 IntersectionObserver 的 options）就 resolve，只等一次。
+function whenInView (options) {
+  return new Promise((resolve) => {
+    if (!rootRef.value || !('IntersectionObserver' in window)) return resolve()
+    nearIo?.disconnect()
+    nearIo = new IntersectionObserver((entries) => {
+      if (entries.some(en => en.isIntersecting)) { nearIo.disconnect(); resolve() }
+    }, options)
+    nearIo.observe(rootRef.value)
+  })
+}
+
+// 進站後第一次的進場：淡入 + 從略小放大回來（跟換人時「長出來」同一個方向，但慢很多）。
+function enterStatic () {
+  const el = imgRef.value
+  if (!el) return
+  staticEntered = true
+  const { $gsap } = useNuxtApp()
+  if (!$gsap || reducedMotion) { el.style.opacity = '1'; return }
+  staticTween?.kill()
+  staticTween = $gsap.fromTo(el, { opacity: 0, scale: 0.96 }, {
+    opacity: 1, scale: 1, duration: STATIC_ENTER_MS / 1000, ease: 'power3.out',
+  })
 }
 
 // 靜態模式的換人：跟框線同一拍。
@@ -214,6 +241,7 @@ async function swapStatic (portrait) {
   const url = staticSrcOf(portrait)
   const el = imgRef.value
   if (!url || !el) return
+  staticEntered = true
   staticTween?.kill()
   const loading = resolveImage(url)          // 與淡出並行，載入時間藏在動畫裡
 
