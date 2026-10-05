@@ -111,6 +111,19 @@ onBeforeUnmount(() => killFadeIns())
         :shift="0.083"
       />
 
+      <!-- 桌機沒有 WebGPU 時的裝飾圖（菌落群）：鋪滿左欄，卷號文字疊在它上面。
+           見 Home/SideDeco.vue。
+           ⚠️ 要貼齊畫面左緣（left-0）：圖檔左邊本來就切掉半顆菌落，離開邊緣會露出切口。
+           ⚠️ 上下不裁切（設計決定）：整張圖完整露出，底下那排會伸進 FAQ 的上內距。
+           寬度 × 視差要讓它停在 FAQ 的分隔線以上（本區高 658 + FAQ 上內距 60）。 -->
+      <HomeSideDeco
+        class="left-0 top-[56px] w-[420px]"
+        src="/home-deco/home-no-webgpu-deco-3"
+        :width="884"
+        :height="1340"
+        :parallax="0.04"
+      />
+
       <div class="flex flex-col lg:flex-row lg:items-start">
         <!-- 左欄：卷號。
              ⚠️ data-fade="in" 掛在「文字的外層」而不是有 border-t 的那層 ——
@@ -195,6 +208,18 @@ onBeforeUnmount(() => killFadeIns())
         :height="508"
         :reveal="0.445"
         :shift="0.043"
+      />
+
+      <!-- 桌機沒有 WebGPU 時的裝飾圖（放射球）：放大、偏左下 —— 球心落在左欄的左下角，
+           左半邊溢出畫面、下半邊被本區底邊裁掉（粒子版的 faq 標本也是推到左下裁掉一截）。
+           ⚠️ bottom-0 + overflow-hidden 就是那條裁切線：外層不動、動的是裡面的圖。
+           見 Home/SideDeco.vue。 -->
+      <HomeSideDeco
+        class="-left-[220px] top-[213px] bottom-0 w-[780px] overflow-hidden"
+        src="/home-deco/home-no-webgpu-deco-1"
+        :width="1600"
+        :height="1600"
+        :parallax="0.04"
       />
 
       <div class="flex flex-col lg:flex-row lg:items-start">
