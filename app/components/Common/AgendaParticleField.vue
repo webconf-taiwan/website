@@ -8,7 +8,7 @@ const opening = useParticleOpening()
 const { countFor, maxDpr } = useParticleBudget()
 const { idle } = useParticleStage()
 const { markActive, onTierChange, knobs, noteRespawn, suspendReadback } = useParticleQuality()
-const { buildSlotTargetsRaw, paletteToLinear, lerpPaletteLinear } = useParticleMorph()
+const { buildSeedTargets, buildSlotTargetsRaw, paletteToLinear, lerpPaletteLinear } = useParticleMorph()
 
 const props = defineProps({
   fixed: {
@@ -180,9 +180,12 @@ function writeCssVars () {
     }
     if (galleryConfig && rects.board) {
       const board = rects.board
+      // 顯示範圍跟著花形，花瓣左緣不被固定比例切掉。
+      const flowerLeft = flowerBounds ? flowerBounds.cx - flowerBounds.radius - 48 : board.left - canvasLeft + board.width * 0.48
+      const left = Math.max(board.left - canvasLeft, flowerLeft)
       moveBounds({
-        left: board.left - canvasLeft + board.width * 0.48,
-        top: board.top - railOffset, width: board.width * 0.52, height: board.height,
+        left, top: board.top - railOffset,
+        width: board.left - canvasLeft + board.width - left, height: board.height,
       }, galleryMix)
     }
     if (rects.aside) {
@@ -365,17 +368,25 @@ async function rebuildTargets () {
     }
     if (galleryConfig && dom.gallery) {
       const board = dom.gallery.querySelector('.photo-board').getBoundingClientRect()
-      // 第一區的真實 seed 直接縮放移到照片右側，不生成另一組示意花形。
-      const scale = Math.min(board.width * 0.62 / W, (board.height - 60) * 0.9 / H)
+      const heading = dom.gallery.querySelector('.photo-heading').getBoundingClientRect()
+      // 第二區是設計稿的花形：跨越照片後方、頂端與標題同高，不隨視窗高度縮小。
+      // 同一批粒子以 slot 配對變形過去，不另開引擎、不增加粒子數。
+      const top = Math.max(24, heading.top - board.top)
+      const radius = Math.min(board.width * 0.31, (board.height - top) * 0.52)
+      const zoom = galleryConfig.sim.cameraZoom
+      const size = radius * 2 / zoom
+      const seedTargets = buildSeedTargets(galleryConfig.behavior.seedPattern, N, species, size, size)
       const cx = board.left - canvasLeft + board.width * 0.76
-      const cy = board.height / 2
-      flower = new Float32Array(N * 2)
-      flowerTypes = heroTypes
+      const cy = top + radius
       for (let i = 0; i < N; i++) {
-        flower[i * 2] = cx + (spread[i * 2] - W / 2) * scale
-        flower[i * 2 + 1] = H / 2 + (spread[i * 2 + 1] - H / 2) * scale
+        seedTargets.tx[i] = cx + (seedTargets.tx[i] - size / 2) * zoom
+        // 目標放在視窗內模擬，照片區的捲動位移交給相機；放到環狀世界外會繞回蓋到標題。
+        seedTargets.ty[i] = H / 2 + (seedTargets.ty[i] - size / 2) * zoom
       }
-      flowerBounds = { cx, cy, simulationCy: H / 2, radius: H * scale / 2, top: 0 }
+      const slots = buildSlotTargetsRaw(raw, N, seedTargets, species, W, { recolor: true })
+      flower = slots.shape
+      flowerTypes = slots.shapeType
+      flowerBounds = { cx, cy, simulationCy: H / 2, radius, top }
     }
     // 同區域的粒子沿共同方向流動，保留 seed 的起始構圖。
     heroFlow = new Float32Array(N * 3)
