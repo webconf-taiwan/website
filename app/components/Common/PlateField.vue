@@ -1,4 +1,6 @@
 <script setup>
+import { homeFieldLookFromLocation } from '~/utils/homeFieldLooks'
+
 // 議程、贊助與 404／建置中共用；失敗狀態留在本區域。
 const props = defineProps({
   variant: { type: String, default: 'hero' },
@@ -10,6 +12,8 @@ const props = defineProps({
 })
 const emit = defineEmits(['backend'])
 const { webgpu } = useWebGpuSupport()
+const { isDesktop, viewportReady } = useViewportMode()
+const desktopLook = shallowRef(null)
 const rootRef = ref(null)
 const heroField = ref(null)
 const failed = ref(false)
@@ -39,6 +43,9 @@ function ready(backend) {
   clearTimeout(timeout)
   emit('backend', backend)
 }
+watch(isDesktop, value => {
+  if (value && !desktopLook.value) desktopLook.value = homeFieldLookFromLocation().look
+}, { immediate: true })
 // 首頁原本已 expose backend；內頁讀這個介面，不修改首頁元件。
 watch(() => heroField.value?.backend, backend => {
   if (backend) ready(backend)
@@ -76,9 +83,14 @@ onBeforeUnmount(() => {
   <div ref="rootRef" aria-hidden="true" class="plate-field pointer-events-none absolute inset-0 z-0 overflow-hidden"
     :class="'plate-field--' + variant" :data-plate-field="variant" :data-backend="mode">
     <CommonPlateMobileField
-      v-if="motionReady && activated && webgpu === true && !fallback && variant === 'hero'"
+      v-if="viewportReady && !isDesktop && motionReady && activated && webgpu === true && !fallback && variant === 'hero'"
       ref="heroField"
       :plate-style="plateStyle"
+    />
+    <CommonDesktopHeroField
+      v-if="viewportReady && isDesktop && desktopLook && motionReady && activated && webgpu === true && !fallback && variant === 'hero'"
+      ref="heroField" :look="desktopLook"
+      @ready="ready('webgpu')" @unavailable="unavailable"
     />
     <CommonPlateParticleCanvas
       v-if="motionReady && activated && webgpu === true && !fallback && variant !== 'hero'"
@@ -98,13 +110,14 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
-/* 只改內頁取景；首頁元件仍以原面積預算決定粒子數與裝置檔位。 */
+/* 背景與首頁採同一個視窗尺度；外層 Hero 仍以原本高度裁切，不拉高版面。 */
 .plate-field--hero :deep(canvas) {
   position: absolute;
-  height: var(--plate-hero-field-height, 100vh);
+  height: 100vh;
+  min-height: 100%;
 }
 .plate-field--hero :deep(video),
-.plate-field-hero-poster { height: var(--plate-hero-field-height, 100vh); }
+.plate-field-hero-poster { height: 100vh; min-height: 100%; }
 .plate-field--gallery {
   mix-blend-mode: lighten;
   /* 只避開左上標題，照片後方的下半部花瓣保留完整。 */

@@ -124,6 +124,8 @@ const label = computed(() => props.ariaLabel || props.title)
 /* Figma 背景取景：手機 640px、桌機 720px；兩版皆自頂端顯示 550px。
    粒子、影片與載入圖片共用此高度，避免視窗高低改變內頁構圖。 */
 .plate-hero { --plate-hero-field-height: 640px; }
+/* 只襯字緣，讓亮粒子經過時仍能辨識文字。 */
+.plate-hero :is(h1, p) { text-shadow: 0 1px 3px #0a0a0c; }
 @media (min-width: 1024px) {
   .plate-hero { --plate-hero-field-height: 720px; }
 }
