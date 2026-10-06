@@ -25,6 +25,8 @@ usePageSeo('/sponsors')
         data-fade="in"
         class="mt-8 hidden h-10 lg:flex"
         :href="sponsors.sections[0].cta.href"
+        :target="sponsors.sections[0].cta.target"
+        :rel="linkRel(sponsors.sections[0].cta.target)"
         :text="sponsors.sections[0].cta.label"
         size="sm"
         rounded="none"
@@ -63,6 +65,8 @@ usePageSeo('/sponsors')
           <AtomButton
             data-fade="in"
             :href="section.cta.href"
+            :target="section.cta.target"
+            :rel="linkRel(section.cta.target)"
             :text="section.cta.label"
             class="sponsor-cta h-10"
             size="sm"

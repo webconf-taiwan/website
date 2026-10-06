@@ -19,7 +19,7 @@ const subtitle = computed(() => {
 })
 
 function handleTicket () {
-  clearError({ redirect: 'https://5xcamp.us/webconf2026-ticket' })
+  window.open('https://5xcamp.us/webconf2026-ticket', '_blank', 'noopener,noreferrer')
 }
 
 function handleHome () {

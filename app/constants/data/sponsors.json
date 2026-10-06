@@ -187,7 +187,8 @@
       ],
       "cta": {
         "label": "成為夥伴",
-        "href": "https://5xcamp.us/webconf2026-ticket"
+        "href": "https://5xcamp.us/webconf2026-ticket",
+        "target": "_blank"
       }
     }
   ]
