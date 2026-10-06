@@ -1017,7 +1017,6 @@ defineExpose({ backend })
 <style scoped>
 /* 動畫數值由 script 每幀直接寫成 wrapper 的 CSS 變數，子元素用 var() 讀。 */
 .agenda-field {
-  opacity: 0.72;
   --rail-mix: 0;
   --hero-offset: 0px;
   --rail-offset: 0px;
