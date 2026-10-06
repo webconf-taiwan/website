@@ -15,7 +15,7 @@ useFadeIn(itemRef, { step: 0.06 })
 <template>
   <article
     ref="itemRef"
-    class="agenda-item relative flex w-full flex-col py-3 pl-2 pr-2 lg:justify-center lg:pr-4 lg:py-6"
+    class="agenda-item relative flex w-full flex-col py-6 pl-2 pr-2 lg:justify-center lg:pr-4 lg:py-6"
   >
     <div class="agenda-item-content flex w-full flex-col gap-y-2 lg:flex-row lg:gap-x-6">
       <div class="flex min-w-0 flex-1 flex-col gap-y-2">

@@ -1,5 +1,6 @@
 <script setup>
 import { plateFieldLook } from '~/utils/particleFieldLooks'
+import { homeFieldLookFromLocation } from '~/utils/homeFieldLooks'
 
 // ⚠️ 這支是議程／贊助／404／建置中用的那一份（CommonPlateField 的 hero 變體掛它），
 // 從 Home/MobileField.vue 分出來的：開場保留（useParticleOpening）、plateStyle、
@@ -305,7 +306,7 @@ function invalidateTargets () {
 // 站內換頁回來時 introDone 早就是 true，這段等於不存在。
 const POSTER_MS = 200
 let posterDrawn = false
-const introHold = () => posterDrawn && (!introDone.value || reducedMotion)
+const introHold = () => posterDrawn && (!introDone.value || (props.plateStyle && reducedMotion))
 function drawPosterThenHold (sync) {
   setTimeout(() => requestAnimationFrame(() => { posterDrawn = true; opening.ready(); sync() }), POSTER_MS)
 }
@@ -335,7 +336,9 @@ function frame (now) {
   if (!engine || !running) return
 
   const t = now || performance.now()
-  const openingMix = reducedMotion ? 0 : opening.factor(t)
+  // 開場閘門只給議程／贊助（plateStyle）：先把設計構圖定住再放開。
+  // 404／建置中是自由場，跟首頁一樣一開始就動。
+  const openingMix = props.plateStyle ? (reducedMotion ? 0 : opening.factor(t)) : 1
   if (!openingMix) return
   const y = window.scrollY
 
@@ -437,7 +440,10 @@ async function init () {
   // ⚠️ 窄視窗「不」提供效果切換清單 —— 效果的差異在這個寬度本來就看不太出來，
   // 而那份清單很長，在手機上會把真正要調的旋鈕擠到看不見。
   // ?tool=1 面板在這裡只顯示「參數微調」那一段（見 FieldLookPanel 的 look prop）。
-  const fromUrl = fieldLookFromLocation()
+  // 議程／贊助用 sandbox 原值表再套 plateFieldLook（藍白、強拉力撐住構圖）。
+  // 404／建置中沒有那層拉力，sandbox 原值表的對稱矩陣會在滿版塌成幾顆球然後不動
+  //（#111），所以改讀首頁那張站上調校過的表，行為跟首頁 hero 一樣。
+  const fromUrl = props.plateStyle ? fieldLookFromLocation() : homeFieldLookFromLocation()
   toolMode.value = fromUrl.tool
   look = props.plateStyle ? plateFieldLook(fromUrl.look) : fromUrl.look
   appliedForce = look.physics.forceFactor
@@ -470,7 +476,7 @@ async function init () {
     repel: look.physics.repel,
     minR: look.physics.minR,
     rMax: look.physics.rMax * q.rMaxScale,
-    simSpeed: 0,
+    simSpeed: props.plateStyle ? 0 : startSimSpeed(),
     cameraZoom: look.camera.zoom,
     // ⚠️ pointSize / opacity 隨檔位放大不是裝飾，是必須的：粒子少了還用同樣的
     // 點大小，畫面會變暗變薄，看起來像「壞了」而不是「刻意的稀」。
@@ -479,8 +485,8 @@ async function init () {
     // 套檔位表的亮度補償會變成一團大光斑。見 particleTiers.js。
     pointSize: cpuFallback.value ? CPU_POINT_SIZE_FIELD : look.visual.pointSize * q.pointScale,
     particleOpacity: Math.min(1, look.visual.heroOpacity * q.opacityScale),
-    // 404／建置中也共用此自由場；桌機保留範本光暈，手機省略額外 pass。
-    showGlow: look.visual.showGlow && isDesktop.value,
+    // 議程／贊助桌機保留範本光暈，手機省略額外 pass；404／建置中跟首頁一樣不開。
+    showGlow: props.plateStyle && look.visual.showGlow && isDesktop.value,
     glowSize: look.glow.glowSize,
     glowIntensity: look.glow.glowIntensity,
     glowSteepness: look.glow.glowSteepness,
@@ -503,7 +509,7 @@ async function init () {
   // ⚠️ 但不能關掉 —— particle-ambient.js 檔頭第一句就是警告：沒有擾動的話
   // 場幾十秒後會收斂成靜態圖。
   if (!reducedMotion) {
-    stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: look.ambient * q.ambientGain })
+    stopAmbient = window.PLAmbient.start(() => !props.plateStyle || opening.factor() === 1 ? engine : null, { intensity: look.ambient * q.ambientGain })
   }
 
   // --- 區間偵測 -------------------------------------------------------------
@@ -694,7 +700,7 @@ function applyToolKnobs (next) {
     stopAmbient?.()
     stopAmbient = null
     if (!reducedMotion && ambientOverride > 0) {
-      stopAmbient = window.PLAmbient.start(() => opening.factor() === 1 ? engine : null, { intensity: ambientOverride })
+      stopAmbient = window.PLAmbient.start(() => !props.plateStyle || opening.factor() === 1 ? engine : null, { intensity: ambientOverride })
     }
   }
 
