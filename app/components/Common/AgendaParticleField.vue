@@ -7,7 +7,7 @@ const { trackIntro, introDone } = useSiteIntro()
 const opening = useParticleOpening()
 const { countFor, maxDpr } = useParticleBudget()
 const { idle } = useParticleStage()
-const { markActive, onTierChange, knobs, noteRespawn, suspendReadback } = useParticleQuality()
+const { suspendReadback } = useParticleQuality()
 const { buildSeedTargets, buildSlotTargetsRaw, paletteToLinear, lerpPaletteLinear } = useParticleMorph()
 
 const props = defineProps({
@@ -41,13 +41,68 @@ const wrapClass = computed(() => props.fixed
 let look = resolveFieldLook(DEFAULT_FIELD_LOOK)
 const galleryConfig = props.galleryConfig
 let species = look.rules.species
-const STAGE = Symbol('agendaField')
 const SOURCE = props.source
 const HERO = {
   height: 550, preset: 'nebula', pull: 12, grip: 58,
   pointSize: 0.85, simSpeed: 0.65,
   flowMs: 1000 / 24, flowDistance: 18, rippleDistance: 6,
 }
+// 首頁 hero 的力矩陣、物理、相機與握力，數值抄自 utils/homeFieldLooks.js。
+// 刻意在這裡留一份副本、不 import 首頁那份：兩邊各調各的，互不影響。
+const HERO_MOTION = {
+  'cobalt-cells': {
+    rules: { preset: 'snake', species: 6 },
+    physics: { forceFactor: 0.95, friction: 0.31, repel: 1.4, minR: 16, rMax: 72 },
+    zoom: 1.58, hold: { pull: 6, grip: 28 },
+    speed: { idle: 0.21, max: 0.8 },
+  },
+  'biolum-drift': {
+    rules: { preset: 'spiral-conveyor', species: 7 },
+    physics: { forceFactor: 1.0, friction: 0.3, repel: 1.0, minR: 5, rMax: 72 },
+    zoom: 1.35, hold: { pull: 0, grip: 0 },
+    speed: { idle: 0.16, max: 0.6 },
+  },
+  'parchment-herbarium': {
+    rules: { preset: 'tri-spiral', species: 7 },
+    physics: { forceFactor: 1.0, friction: 0.32, repel: 1.2, minR: 5, rMax: 70 },
+    zoom: 1.69, hold: { pull: 6, grip: 32 },
+    speed: { idle: 0.24, max: 0.9 },
+  },
+  'fluoro-swarm': {
+    rules: { preset: 'predator', species: 5 },
+    physics: { forceFactor: 1.0, friction: 0.29, repel: 1.1, minR: 5, rMax: 78 },
+    zoom: 1.46, hold: { pull: 5, grip: 20 },
+    speed: { idle: 0.27, max: 1.0 },
+  },
+  'coral-membrane': {
+    rules: { preset: 'helical', species: 6 },
+    physics: { forceFactor: 0.92, friction: 0.31, repel: 1.05, minR: 5, rMax: 80 },
+    zoom: 1.58, hold: { pull: 6, grip: 26 },
+    speed: { idle: 0.21, max: 0.8 },
+  },
+}
+// 以下常數同 Home/Field.vue：握力呼吸、相機漂移壓制、環境擾動門檻、滑鼠推擠。
+const HOLD_BREATHE_MS = 7000
+const HOLD_BREATHE_FLOOR = 0.18
+const AMBIENT_OFF_AT = 0.35
+const POINTER_RADIUS = 320
+const POINTER_MAX_PUSH = 24
+const POINTER_SPEED_GAIN = 3.5
+const POINTER_IDLE_PUSH = 2
+// 模擬速度同 Home/Field.vue：待機速度照效果，捲動越快越接近 speed.max。
+const SCROLL_REF = 2200
+const SPEED_ATTACK = 0.14
+const SPEED_RELEASE = 0.022
+// 效能降規同 Home/Field.vue：不接檔位表，暖機後量幀時間中位數，
+// 連續兩個視窗超標就用 shrinkTo 分批減半（逐漸變稀、不重生），整個 page view 只降一次。
+const ADAPT_WARMUP_MS = 1200
+const ADAPT_WINDOW_MS = 1500
+const ADAPT_MIN_FRAMES = 20
+const ADAPT_P50_MS = 22
+const ADAPT_FAIL_STREAK = 2
+const ADAPT_MAX_WINDOWS = 4
+const SHRINK_STEPS = 10
+const SHRINK_STEP_MS = 200
 // HomeField's cellular structure and shimmer, with tighter guidance for the rail.
 const RAIL = {
   preset: 'cellular',
@@ -72,7 +127,10 @@ let engine = null
 let stopAmbient = null
 let raf = 0
 let rafPending = false
-let unsubTier = null
+let adaptRaf = 0
+let shrinking = false
+// 降點後的倍率；resize 重算點數時要沿用，不然一拉視窗就把降掉的粒子補回來。
+let countScale = 1
 let running = false
 const reducedMotion = ref(false)
 let disposed = false
@@ -108,7 +166,19 @@ let colonyMode = false
 let lastPointSize = -1
 let lastMinR = -1
 let lastSimSpeed = NaN
+let simSpeedNow = NaN
+let lastScrollY = 0
+let lastCameraX = NaN
 let lastCameraY = NaN
+let lockNorm = 1
+let pointerOn = false
+let touchMode = false
+let touchDown = false
+let pointerSeen = false
+let pointerX = 0
+let pointerY = 0
+let pointerPrevX = 0
+let pointerPrevY = 0
 let lastCameraZoom = NaN
 let returnUntil = 0
 let previousProgress = 0
@@ -136,7 +206,7 @@ let regionSettling = false
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
 const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null }
-const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null }
+const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, canvas: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
@@ -155,6 +225,7 @@ function measure () {
   rects.page = dom.page?.getBoundingClientRect() || null
   rects.aside = dom.aside?.getBoundingClientRect() || null
   rects.body = dom.body?.getBoundingClientRect() || null
+  rects.canvas = canvasRef.value?.getBoundingClientRect() || null
   if (dom.gallery) rects.gallery = dom.gallery.getBoundingClientRect()
   if (dom.board) rects.board = dom.board.getBoundingClientRect()
 }
@@ -248,30 +319,20 @@ function updateArtwork () {
 }
 
 function countOptions () {
-  const q = knobs('desktopField') || {}
   return {
-    density: props.density * 0.032 * ((q.density ?? 0.0386) / 0.0386),
-    max: Math.round(props.density * 26000 * ((q.countMax ?? 50000) / 50000)),
-    min: Math.round(props.density * 6200 * ((q.countMin ?? 10000) / 10000)),
+    density: props.density * 0.032,
+    max: Math.round(props.density * 26000),
+    min: Math.round(props.density * 6200),
   }
 }
 
-function heroPointSize () {
-  const q = knobs('desktopField') || {}
-  return HERO.pointSize * ((q.pointSize ?? 0.8) / 0.8)
-}
-
 function applyParticleBudget () {
-  heroSize = heroPointSize()
-  if (!engine || !canvasRef.value) return
-  const q = knobs('desktopField') || {}
-  engine.setMaxDpr?.(Math.min(maxDpr(), q.dprCap ?? maxDpr()))
-  const count = countFor(canvasRef.value, countOptions())
+  if (!engine || !canvasRef.value || shrinking) return
+  const count = Math.round(countFor(canvasRef.value, countOptions()) * countScale)
   const nextCount = engine.setTargets ? count : Math.min(count, 3600)
   if (nextCount !== engine.config.count) {
     engine.setMorph?.(0, 0, 0)
     engine.setCount(nextCount)
-    noteRespawn()
   }
   needsTargets = true
   schedule()
@@ -436,7 +497,6 @@ function syncRunning (fresh = false) {
   if (want === running) return
   running = want
   engine?.pause(!want)
-  markActive(STAGE, want)
   schedule()
 }
 watch(idle, () => syncRunning())
@@ -541,6 +601,8 @@ function step (dt) {
   if (!running || failed.value) return
   motionTime += dt * 1000
 
+  // 分批減量期間 slot 一直在重編，先放手讓力場自己跑，最後一批之後才重建目標點。
+  if (shrinking) return
   const generation = engine.targetsGeneration ?? engine.config.count
   const size = engine.size.W + ':' + engine.size.H
   if (needsTargets || targetsGeneration !== generation || targetsSize !== size) {
@@ -582,7 +644,13 @@ function step (dt) {
     engine.setMinR?.(minR)
     lastMinR = minR
   }
-  const simSpeed = (HERO.simSpeed + (RAIL.simSpeed - HERO.simSpeed) * railMix) * opening.factor()
+  const scrollY = window.scrollY
+  const heat = Math.min(1, Math.abs(scrollY - lastScrollY) / dt / SCROLL_REF)
+  lastScrollY = scrollY
+  const speedTarget = HERO.simSpeed + (RAIL.simSpeed - HERO.simSpeed) * railMix + (look.speed.max - look.speed.idle) * heat
+  if (Number.isNaN(simSpeedNow)) simSpeedNow = speedTarget
+  simSpeedNow += (speedTarget - simSpeedNow) * (speedTarget > simSpeedNow ? SPEED_ATTACK : SPEED_RELEASE)
+  const simSpeed = simSpeedNow * opening.factor()
   if (simSpeed !== lastSimSpeed) {
     engine.setSimSpeed?.(simSpeed)
     lastSimSpeed = simSpeed
@@ -592,22 +660,36 @@ function step (dt) {
     paletteStep = nextPaletteStep
     engine.setColors(lerpPaletteLinear(heroPalette, railPalette, railMix))
   }
-  const cameraZoom = look.camera.zoom + (1 - look.camera.zoom) * Math.max(galleryMix, railMix)
+  const stageGrip = HERO.grip + (90 - HERO.grip) * galleryMix
+  lockNorm = Math.min(1, (stageGrip + (RAIL.grip - stageGrip) * railMix) / 90)
+  // 首頁的電影感漂移：只在 hero 自由場作用，花形與側欄要對齊版面所以收到 0。
+  const s = motionTime * 0.001
+  const drift = (1 - 0.75 * lockNorm) * (1 - Math.max(galleryMix, railMix))
+  const dx = (Math.sin(s * 0.021) * 42 + Math.sin(s * 0.006) * 26) * drift
+  const dy = (Math.cos(s * 0.017) * 30 + Math.sin(s * 0.010) * 16) * drift
+  const dz = 1 + 0.035 * Math.sin(s * 0.011) * drift
+  const cameraZoom = (look.camera.zoom + (1 - look.camera.zoom) * Math.max(galleryMix, railMix)) * dz
   if (cameraZoom !== lastCameraZoom) {
     engine.setCameraZoom?.(cameraZoom)
     lastCameraZoom = cameraZoom
   }
   // Hero 以 720px 取景；捲動與相機縮放同步，讓同一粒子的螢幕位移連續。
   const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix)
-  const cameraY = (centerShift - heroOffset) / cameraZoom
-  if (cameraY !== lastCameraY) {
-    engine.setCameraOffset?.(0, cameraY)
+  const cameraY = (centerShift - heroOffset) / cameraZoom + dy
+  if (dx !== lastCameraX || cameraY !== lastCameraY) {
+    engine.setCameraOffset?.(dx, cameraY)
+    lastCameraX = dx
     lastCameraY = cameraY
   }
-  const stagePull = HERO.pull + (24 - HERO.pull) * galleryMix
-  const stageGrip = HERO.grip + (90 - HERO.grip) * galleryMix
+  pushPointer()
+  // 握力呼吸只乘在 hero 的握力上；花形與側欄需要穩定的握力。
+  const breathe = HOLD_BREATHE_FLOOR + (1 - HOLD_BREATHE_FLOOR) * (0.5 - 0.5 * Math.cos(motionTime / HOLD_BREATHE_MS * Math.PI * 2))
+  const heroPull = HERO.pull * breathe
+  const heroGrip = HERO.grip * breathe
+  const stagePull = heroPull + (24 - heroPull) * galleryMix
+  const breathedGrip = heroGrip + (90 - heroGrip) * galleryMix
   pull = stagePull + (RAIL.pull - stagePull) * railMix
-  grip = stageGrip + (RAIL.grip - stageGrip) * railMix
+  grip = breathedGrip + (RAIL.grip - breathedGrip) * railMix
   // 回捲需先帶回同一份起點，收尾後再放手讓原範本自然演化。
   if (performance.now() < returnUntil) {
     pull = Math.max(pull, 8)
@@ -624,6 +706,105 @@ function step (dt) {
   } else {
     seekCpuTargets(dt)
   }
+}
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+
+// 量一個視窗的幀時間中位數。分頁在背景或引擎暫停的視窗量到的不是引擎成本，回 null。
+function measureFrameTime () {
+  return new Promise((resolve) => {
+    const deltas = []
+    const t0 = performance.now()
+    let last = 0
+    let invalid = false
+    const tick = (now) => {
+      if (disposed || !engine) return resolve(null)
+      if (document.hidden || !running) invalid = true
+      if (last) deltas.push(now - last)
+      last = now
+      if (now - t0 < ADAPT_WINDOW_MS) {
+        adaptRaf = requestAnimationFrame(tick)
+        return
+      }
+      if (invalid) return resolve(null)
+      // 可見又沒暫停、幀數卻少，那是「更慢」不是「無效」，改用平均幀時間。
+      if (deltas.length < ADAPT_MIN_FRAMES) return resolve(ADAPT_WINDOW_MS / (deltas.length + 1))
+      deltas.sort((a, b) => a - b)
+      resolve(deltas[deltas.length >> 1])
+    }
+    adaptRaf = requestAnimationFrame(tick)
+  })
+}
+
+async function adaptCount () {
+  // 開場保留期間模擬速度是 0，量到的不是實際成本；等放開之後才開始暖機。
+  while (opening.factor() < 1) {
+    if (disposed || !engine) return
+    await sleep(200)
+  }
+  await sleep(ADAPT_WARMUP_MS)
+  let streak = 0
+  for (let w = 0; w < ADAPT_MAX_WINDOWS; w++) {
+    const p50 = await measureFrameTime()
+    if (disposed || !engine) return
+    if (p50 === null) continue
+    streak = p50 > ADAPT_P50_MS ? streak + 1 : 0
+    if (streak < ADAPT_FAIL_STREAK) continue
+    const from = engine.config.count
+    const target = Math.round(from / 2)
+    shrinking = true
+    engine.setMorph(0, 0, 0)
+    try {
+      for (let i = 1; i <= SHRINK_STEPS; i++) {
+        await engine.shrinkTo(Math.round(from + (target - from) * i / SHRINK_STEPS))
+        if (disposed || !engine) return
+        if (i < SHRINK_STEPS) await sleep(SHRINK_STEP_MS)
+      }
+      countScale *= 0.5
+    } finally {
+      shrinking = false
+      needsTargets = true
+      lastMorphPull = NaN
+      schedule()
+    }
+    return
+  }
+}
+
+function onPointerMove (event) {
+  // 第一次進來先對齊，不然 prev 還停在 (0,0)，會算出一整個螢幕的位移
+  if (!pointerSeen) {
+    pointerPrevX = event.clientX
+    pointerPrevY = event.clientY
+    pointerSeen = true
+  }
+  pointerX = event.clientX
+  pointerY = event.clientY
+}
+
+function onTouch (event) {
+  const p = event.touches[0]
+  if (!p) return
+  if (event.type === 'touchstart') pointerSeen = false
+  onPointerMove(p)
+  touchDown = true
+}
+function onTouchEnd (event) { touchDown = event.touches.length > 0 }
+
+// 每幀最多推一次；游標停著也持續輕推，作法與量級同 Home/Field.vue。
+function pushPointer () {
+  if (!pointerOn || !pointerSeen || !rects.canvas || (touchMode && !touchDown)) return
+  const speed = Math.hypot(pointerX - pointerPrevX, pointerY - pointerPrevY)
+  pointerPrevX = pointerX
+  pointerPrevY = pointerY
+  // 螢幕座標 → 模擬座標：canvas 往左外擴 64px 且會跟著側欄位移，再反轉相機。
+  const { W, H } = engine.size
+  const zoom = engine.config?.cameraZoom ?? 1
+  engine.disturb?.(
+    (pointerX - rects.canvas.left - W / 2) / zoom + W / 2 + (engine.config?.cameraX ?? 0),
+    (pointerY - rects.canvas.top - H / 2) / zoom + H / 2 + (engine.config?.cameraY ?? 0),
+    POINTER_RADIUS, Math.min(POINTER_MAX_PUSH, POINTER_IDLE_PUSH + speed * POINTER_SPEED_GAIN),
+  )
 }
 
 function frame (now = performance.now()) {
@@ -675,6 +856,18 @@ async function init () {
   await loadParticleKit()
   if (disposed) return
   look = plateFieldLook(props.fieldLook || fieldLookFromLocation().look)
+  // 色盤、光暈與點數維持內頁設定；動態個性換成首頁那組（見 HERO_MOTION）。
+  const motion = HERO_MOTION[look.id]
+  if (motion) {
+    look = {
+      ...look,
+      rules: { ...look.rules, ...motion.rules },
+      physics: motion.physics,
+      camera: { zoom: motion.zoom },
+      hold: motion.hold,
+      speed: motion.speed,
+    }
+  }
   species = look.rules.species
   HERO.preset = look.rules.preset
   HERO.simSpeed = look.speed.idle
@@ -683,8 +876,7 @@ async function init () {
   HERO.grip = look.hold.grip
   const palette = window.PLPalettes.PALETTES[look.palette]
   heroPalette = paletteToLinear(palette.particles)
-  const q = knobs('desktopField') || {}
-  heroSize = heroPointSize()
+  heroSize = HERO.pointSize
   const nextEngine = await window.makeEngine(canvas, {
     species,
     count: countFor(canvas, countOptions()),
@@ -706,8 +898,8 @@ async function init () {
     glowSize: look.glow.glowSize,
     glowIntensity: look.glow.glowIntensity,
     glowSteepness: look.glow.glowSteepness,
-    cellSubdivisions: q.cellSub ?? 2,
-    maxDpr: Math.min(maxDpr(), q.dprCap ?? maxDpr()),
+    cellSubdivisions: 2,
+    maxDpr: maxDpr(),
   })
   if (disposed) {
     nextEngine.destroy()
@@ -739,12 +931,25 @@ async function init () {
     })
   }
   if (!reducedMotion.value) {
-    stopAmbient = window.PLAmbient.start(() => running && opening.factor() === 1 && colonyMode && !failed.value ? engine : null, { intensity: look.ambient })
+    // 首頁在握力鬆的自由場就有環境擾動；側欄菌落維持原本的擾動，花形握得緊所以不擾動。
+    stopAmbient = window.PLAmbient.start(() => running && opening.factor() === 1 && (colonyMode || lockNorm < AMBIENT_OFF_AT) && !failed.value ? engine : null, { intensity: look.ambient })
+  }
+  // canvas 是 pointer-events-none，所以聽 window；listener 一律 passive，不跟捲動搶事件。
+  pointerOn = window.matchMedia('(pointer: fine)').matches
+  if (pointerOn) {
+    window.addEventListener('pointermove', onPointerMove, { passive: true })
+  } else if (navigator.maxTouchPoints > 0) {
+    pointerOn = true
+    touchMode = true
+    window.addEventListener('touchstart', onTouch, { passive: true })
+    window.addEventListener('touchmove', onTouch, { passive: true })
+    window.addEventListener('touchend', onTouchEnd, { passive: true })
+    window.addEventListener('touchcancel', onTouchEnd, { passive: true })
   }
   document.addEventListener('visibilitychange', onVisibility)
   window.addEventListener('resize', onResize)
-  unsubTier = onTierChange(applyParticleBudget)
   syncRunning()
+  if (engine.shrinkTo) adaptCount().catch(error => console.warn('[AgendaField] adaptCount:', error))
 }
 
 function onVisibility () {
@@ -766,13 +971,17 @@ onBeforeUnmount(() => {
   disposed = true
   cancelAnimationFrame(raf)
   cancelAnimationFrame(resizeRaf)
+  cancelAnimationFrame(adaptRaf)
   stopAmbient?.()
   resizeObserver?.disconnect()
   window.removeEventListener('scroll', schedule)
   document.removeEventListener('visibilitychange', onVisibility)
   window.removeEventListener('resize', onResize)
-  unsubTier?.()
-  markActive(STAGE, false)
+  window.removeEventListener('pointermove', onPointerMove)
+  window.removeEventListener('touchstart', onTouch)
+  window.removeEventListener('touchmove', onTouch)
+  window.removeEventListener('touchend', onTouchEnd)
+  window.removeEventListener('touchcancel', onTouchEnd)
   if (import.meta.dev && window.__agendaField === engine) {
     delete window.__agendaField
     delete window.__agendaMotion
