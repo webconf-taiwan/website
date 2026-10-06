@@ -53,7 +53,7 @@
         "description": "搭乘至南港火車站的北門出站，經市民大道向西步行約 5 分鐘"
       }
     ],
-    "more_link": { "label": "更多資訊", "href": "/coming-soon", "target": "_self" }
+    "more_link": { "label": "更多資訊", "href": "/venue", "target": "_self" }
   },
 
   "faq": {

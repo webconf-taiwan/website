@@ -60,6 +60,16 @@
         "target": "_blank"
       },
       "show_on_home": true
+    },
+    {
+      "name": "HackMD",
+      "logo": "/sponsors/hackMD.svg",
+      "logo_color": "/sponsors/hackMD-color.svg",
+      "link": {
+        "href": "https://hackmd.io/",
+        "target": "_blank"
+      },
+      "show_on_home": true
     }
   ],
   "plate": {

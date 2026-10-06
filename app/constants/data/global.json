@@ -45,8 +45,7 @@
         "links": [
           { "label": "贊助廠商", "href": "/sponsors", "target": "_self" },
           { "label": "主辦團隊", "href": "/staff", "target": "_self" },
-          { "label": "歷史回顧", "href": "/history", "target": "_self" },
-          { "label": "簽到牆", "href": "/coming-soon", "target": "_self" }
+          { "label": "歷史回顧", "href": "/history", "target": "_self" }
         ]
       },
       {
