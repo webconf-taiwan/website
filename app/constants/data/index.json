@@ -4,7 +4,7 @@
     "title": "WebConf",
     "subtitle": "瓶蓋工廠台北製造所 · Dec. 11-12, 2026",
     "keywords": "AGENT・CONNECTIONS・CODE",
-    "cta": { "label": "前往購票", "href": "https://5xcamp.us/webconf2026-ticket", "target": "_self" },
+    "cta": { "label": "前往購票", "href": "https://5xcamp.us/webconf2026-ticket", "target": "_blank" },
     "corner_left": {
       "label": "CODEX EMERGENCE",
       "note": "vol.V · plate I"
@@ -66,7 +66,7 @@
   "ticket": {
     "plate": { "code": "PL. I", "number": "VI.", "label": "TICKET" },
     "heading_lines": ["Four ways", "to enter the field."],
-    "cta": { "label": "前往購票", "href": "https://5xcamp.us/webconf2026-ticket", "target": "_self" },
+    "cta": { "label": "前往購票", "href": "https://5xcamp.us/webconf2026-ticket", "target": "_blank" },
     "items": [
       {
         "code": "PL. I. VI. 01",

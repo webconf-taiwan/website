@@ -63,6 +63,8 @@ useFadeIn(sectionRef, { step: 0.12 })
         :icon-position="'end'"
         :icon-size="'md'"
         :href="content.cta?.href"
+        :target="content.cta?.target"
+        :rel="linkRel(content.cta?.target)"
         :text="content.cta?.label"
       >
         {{ content.cta?.label }}

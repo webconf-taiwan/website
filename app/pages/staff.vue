@@ -4,7 +4,7 @@ definePageMeta({ layout: false })
 usePageSeo('/staff')
 
 function handleTicket () {
-  return navigateTo('https://5xcamp.us/webconf2026-ticket')
+  return navigateTo('https://5xcamp.us/webconf2026-ticket', { external: true, open: { target: '_blank' } })
 }
 
 function handleHome () {
