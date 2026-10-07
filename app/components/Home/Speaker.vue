@@ -338,7 +338,7 @@ onBeforeUnmount(() => {
     id="speaker"
     ref="sectionRef"
     data-same-speaker
-    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
+    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[800px] lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
   >
     <!-- 引線：被選中的名字 → 中央觀景框 -->
     <svg
@@ -497,8 +497,11 @@ onBeforeUnmount(() => {
          左四位／人像／右四位。八個名字同時在畫面上，點誰換誰。
          ⚠️ 在窄視窗是 display:none（不是 v-if）—— 名字要留在 SSR 的 HTML 裡。
     ==================================================================== -->
+    <!-- ⚠️ ≥1440 的 min-h 要跟 section 的 lg:min-h-[860px] 同一個數字：這個尺寸卷號是絕對定位、
+         名單格線就是 section 的全部內容。只給 100vh 的話，視窗矮於 860 時格線比 section 矮、
+         又貼在最上面 —— 名單擠到頂端（鑽進導覽列底下）、底下空一大塊。 -->
     <div
-      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-8 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:gap-x-0"
+      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-8 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:min-h-[max(100vh,800px)] min-[1440px]:gap-x-0"
     >
       <button
         v-for="(s, i) in LEFT"
@@ -540,7 +543,7 @@ onBeforeUnmount(() => {
            上下文字用 clip-path 從左往右揭開（typeTop / typeBottom = 打字）。
            ⚠️ 打字用 clip-path 而不是逐字塞 DOM：後者每格都要動一次 DOM，
            而且會讓文字寬度一直變、右對齊的那行會抖。 -->
-      <div class="relative flex flex-col items-stretch gap-y-2 lg:col-start-2 lg:row-span-5 lg:row-start-1">
+      <div class="flex flex-col items-stretch gap-y-2 lg:col-start-2 lg:row-span-5 lg:row-start-1">
         <div
           class="flex items-start justify-between text-en-caption text-pre-800"
           :style="{ opacity: frameFade }"
@@ -585,33 +588,31 @@ onBeforeUnmount(() => {
             <span>{{ sk }}</span>
           </template>
         </div>
+      </div>
 
-        <!-- 更多講者（桌機）：照設計稿壓在人像肩膀下緣上（跟人像底部重疊一點），不是貼 section 底。
-             ⚠️ 人像是背後那張 fixed canvas 畫的、對齊視窗中心，大小 = min(68vh, 612px)
-             （HomeField speaker 影格的 fit / PORTRAIT_MAX_PX），肩膀下緣約在中心下方 45%。
-             觀景框中心固定在視窗中心上方 96px，所以從這一欄頂端算：
-             28（卷標列）+ 框高的一半 + 96 + 人像下半 min(30.6vh, 275px) − 46（往上壓進人像）。
-             1440×900 時 = 框線下緣往下 175px（設計稿約 185，再往上收一點是實機看過後定的）。
-             那邊的 fit / maxPx 改了，這裡的 30.6vh / 275px 要跟著改。 -->
-        <div
-          v-if="moreLink.href"
-          data-fade="in"
-          class="absolute inset-x-0 top-[calc(210px_+_min(30.6vh,275px))] hidden justify-center whitespace-nowrap lg:flex xl:top-[calc(228px_+_min(30.6vh,275px))]"
+      <!-- 更多講者（桌機）：名單格線裡的一格 —— 中央那一欄、最後一列，下緣切齊最後一位講者的
+           文字下緣（pb-4 = 名字那格自己的 pb-4，扣掉才是文字的底，不是格子的底）。
+           位置完全跟著名單走，不看視窗高度也不看 section 底部（那兩種算法視窗一變就跑位）。
+           中央觀景框那一欄跨五列但內容只到第四列左右，這顆放第五列不會撞到。 -->
+      <div
+        v-if="moreLink.href"
+        data-fade="in"
+        class="hidden whitespace-nowrap lg:col-start-2 lg:row-start-5 lg:flex lg:items-end lg:justify-center lg:pb-4"
+      >
+        <AtomButton
+          class="lg:translate-y-[100%]"
+          intent="primary"
+          size="md"
+          rounded="none"
+          icon="arrow-right-thin"
+          icon-position="end"
+          icon-size="md"
+          :href="moreLink.href"
+          :target="moreLink.target"
+          :rel="linkRel(moreLink.target)"
         >
-          <AtomButton
-            intent="primary"
-            size="md"
-            rounded="none"
-            icon="arrow-right-thin"
-            icon-position="end"
-            icon-size="md"
-            :href="moreLink.href"
-            :target="moreLink.target"
-            :rel="linkRel(moreLink.target)"
-          >
-            {{ moreLink.label }}
-          </AtomButton>
-        </div>
+          {{ moreLink.label }}
+        </AtomButton>
       </div>
 
       <button
@@ -650,7 +651,7 @@ onBeforeUnmount(() => {
       </button>
     </div>
 
-    <!-- 更多講者（窄視窗）。桌機那顆在中央觀景框那一欄裡，跟著人像走。 -->
+    <!-- 更多講者（窄視窗）。桌機那顆是名單格線裡的一格，跟著名單走。 -->
     <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:hidden">
       <AtomButton
         v-if="moreLink.href"
