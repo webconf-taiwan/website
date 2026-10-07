@@ -21,6 +21,10 @@ const reduced = ref(false)
 const motionReady = ref(false)
 const activated = ref(props.variant === 'hero')
 const gpuReady = ref(false)
+const flowerRef = ref(null)
+const flowerInnerRef = ref(null)
+const flowerParallaxRef = ref(null)
+useDecoReveal({ root: flowerRef, inner: flowerInnerRef, parallaxEl: flowerParallaxRef }, { parallax: 0.02, fromX: 32, start: 'top 50%' })
 let media = null
 let observer = null
 let timeout = null
@@ -102,8 +106,12 @@ onBeforeUnmount(() => {
     <!-- 粒子初始化期間不先放影片截圖，404 沒有載入動畫遮著時不會先閃一秒；只有備援的靜態模式才顯示。 -->
     <img v-if="variant === 'hero' && mode === 'poster'"
       :src="assetUrl('/videos/hero-field-biolum-poster.jpg')" alt="" class="plate-field-hero-poster absolute inset-0 w-full object-cover">
-    <img v-if="variant === 'gallery' && mode === 'static'"
-      :src="assetUrl('/figma/sponsors/mobile-orbit.png')" alt="" class="plate-field-flower absolute">
+    <!-- 進場與視差同首頁沒有 WebGPU 時的裝飾圖（useDecoReveal）；花在右側，所以從右邊滑進來。 -->
+    <div v-if="variant === 'gallery' && mode === 'static'" ref="flowerRef" class="plate-field-flower absolute">
+      <div ref="flowerParallaxRef">
+        <img ref="flowerInnerRef" :src="assetUrl('/figma/sponsors/mobile-orbit.png')" alt="" class="block h-auto w-full max-w-none">
+      </div>
+    </div>
     <CommonPlateParticleCanvas v-if="variant === 'rail' && mode === 'static'" variant="rail" poster @ready="ready" />
     <CommonHeroShade v-if="variant === 'hero'" class="z-1" />
   </div>
@@ -131,8 +139,6 @@ onBeforeUnmount(() => {
 .plate-field-flower {
   /* Figma 1440px 畫板：原圖 x=348、y=0、1418×1001。 */
   width: calc(min(100vw, 1440px) * 0.9847222222);
-  max-width: none;
-  height: auto;
   left: calc(max(0px, 50vw - 720px) + min(100vw, 1440px) * 0.2416666667);
   top: 0;
   opacity: 0.72;

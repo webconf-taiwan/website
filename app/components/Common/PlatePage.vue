@@ -67,6 +67,16 @@ onBeforeUnmount(() => {
 })
 
 useFadeIn(railRef, { step: 0.08 })
+
+const decoRef = ref(null)
+const decoInnerRef = ref(null)
+const decoParallaxRef = ref(null)
+// 側欄 sticky 之後圖片自己不再經過畫面，視差改跟著整段 body 的捲動走；
+// 範圍比首頁那一區長很多，位移量給大一點才看得出在動。
+useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef }, {
+  parallax: 0.1,
+  scrubTrigger: () => railRef.value?.parentElement,
+})
 </script>
 
 <template>
@@ -102,8 +112,21 @@ useFadeIn(railRef, { step: 0.08 })
     <section class="plate-page-body-section relative z-10 pb-[120px] lg:pb-0">
       <div data-plate-body class="mx-auto flex max-w-[1440px] flex-col lg:flex-row lg:justify-center">
         <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[484px] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+          <!-- 沒有 WebGPU（或減少動態、引擎失敗）時的側欄：跟首頁 PL.IV 同一張菌落圖、
+               同樣的寬度與位置（見 Home/VenueFaq.vue 的 HomeSideDeco）。貼齊左緣，圖檔左邊本來就切掉半顆。
+               進場與視差同首頁（useDecoReveal）；側欄是 sticky，視差的捲動範圍改看整段 body。 -->
           <ClientOnly>
-            <CommonPlateField v-if="viewportReady && isDesktop && desktopFallback" variant="rail" media-only />
+            <div v-if="viewportReady && isDesktop && desktopFallback" ref="decoRef" aria-hidden="true" class="pointer-events-none absolute left-0 top-[56px] z-0 w-[420px]">
+              <div ref="decoParallaxRef">
+                <picture ref="decoInnerRef" class="block">
+                  <source srcset="/home-deco/home-no-webgpu-deco-3.webp" type="image/webp">
+                  <img
+                    src="/home-deco/home-no-webgpu-deco-3.png" alt="" width="884" height="1340"
+                    decoding="async" draggable="false" class="block h-auto w-full max-w-none select-none"
+                  >
+                </picture>
+              </div>
+            </div>
           </ClientOnly>
           <div class="relative z-10 flex h-14 flex-col justify-start [text-shadow:0_0_12px_#0a0a0c] lg:h-full lg:min-h-0 lg:justify-between">
             <CommonPlate
