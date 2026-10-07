@@ -18,7 +18,8 @@ const props = defineProps({
 const { isDesktop, viewportReady } = useViewportMode()
 const mobileHeroRef = ref(null)
 const desktopHeroRef = ref(null)
-const backend = computed(() => props.desktopMode === 'gpu' ? 'webgpu' : '')
+// 備援（影片／靜態圖）沒有引擎，照首頁的慣例標成 canvas2d（見 pages/index.vue 的 backend）。
+const backend = computed(() => props.desktopMode === 'gpu' ? 'webgpu' : props.desktopMode === 'fallback' ? 'canvas2d' : '')
 
 useFadeIn(mobileHeroRef, { y: 28, step: 0.12 })
 useFadeIn(desktopHeroRef, { y: 28, step: 0.12 })

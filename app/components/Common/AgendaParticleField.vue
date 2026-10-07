@@ -5,7 +5,6 @@ import { resolveHomeFieldLook, DEFAULT_HOME_FIELD_LOOK } from '~/utils/homeField
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 等粒子場與起始構圖準備好才結束。
 const { trackIntro, introDone } = useSiteIntro()
-const opening = useParticleOpening()
 const { countFor, maxDpr } = useParticleBudget()
 const { idle } = useParticleStage()
 const { suspendReadback } = useParticleQuality()
@@ -43,15 +42,20 @@ let look = resolveHomeFieldLook(DEFAULT_HOME_FIELD_LOOK)
 const galleryConfig = props.galleryConfig
 let species = look.rules.species
 const SOURCE = props.source
+// 自由場同 Home/Field.vue 的 hero 格：preset／握力／速度／點徑在 init() 換成 look 的值，
+// 閃動同 SHIMMER_AMP／SHIMMER_PERIOD_MS。flowMs 只給贊助頁花形的呼吸用。
 const HERO = {
-  height: 550, preset: 'nebula', pull: 12, grip: 58,
-  pointSize: 0.85, simSpeed: 0.65,
-  flowMs: 1000 / 24, flowDistance: 18, rippleDistance: 6,
+  height: 550, preset: 'nebula', pull: 0, grip: 0,
+  pointSize: 0.85, simSpeed: 0.3,
+  shimmer: 3, shimmerMs: 1000, flowMs: 1000 / 24,
 }
-// 以下常數同 Home/Field.vue：握力呼吸、相機漂移壓制、環境擾動門檻、滑鼠推擠。
+// 以下常數同 Home/Field.vue：握力呼吸、握力跟隨、相機漂移壓制、環境擾動門檻、滑鼠推擠。
 const HOLD_BREATHE_MS = 7000
 const HOLD_BREATHE_FLOOR = 0.18
+const LOCK_ATTACK = 0.20
+const LOCK_RELEASE = 0.012
 const AMBIENT_OFF_AT = 0.35
+const AMBIENT_ON_AT = 0.20
 const POINTER_RADIUS = 320
 const POINTER_MAX_PUSH = 24
 const POINTER_SPEED_GAIN = 3.5
@@ -60,6 +64,7 @@ const POINTER_IDLE_PUSH = 2
 const SCROLL_REF = 2200
 const SPEED_ATTACK = 0.14
 const SPEED_RELEASE = 0.022
+const SCROLL_CALM = 0.6
 // 效能降規同 Home/Field.vue：不接檔位表，暖機後量幀時間中位數，
 // 連續兩個視窗超標就用 shrinkTo 分批減半（逐漸變稀、不重生），整個 page view 只降一次。
 const ADAPT_WARMUP_MS = 1200
@@ -99,9 +104,14 @@ function colonyTargets (N, T, W, H) {
   const tx = new Float32Array(N)
   const ty = new Float32Array(N)
   const tt = new Uint8Array(N)
-  const m = Math.min(W, H)
+  // 首頁那張 canvas 就是視窗；這張左右各外擴 64px，寬螢幕的側欄又跟著 1440 版心置中，
+  // 所以換算回同一塊螢幕區域（視窗 ≤ 1440 時與首頁逐 px 相同）。
+  const pad = props.fixed ? 64 : 0
+  const frame = Math.min(W - pad * 2, 1440)
+  const left = pad + (W - pad * 2 - frame) / 2
+  const m = Math.min(frame, H)
   const r = VENUE_REGION
-  const minX = W * r.x0; const spanX = W * (r.x1 - r.x0)
+  const minX = left + frame * r.x0; const spanX = frame * (r.x1 - r.x0)
   const minY = H * r.y0; const spanY = H * (r.y1 - r.y0)
   const col = []
   for (let c = 0; c < VENUE_COLONIES; c++) {
@@ -144,9 +154,10 @@ let needsTargets = true
 let buildingTargets = false
 let targetsGeneration = -1
 let targetsSize = ''
-let spread = null
-let heroFlow = null
+let heroShape = null
+let heroJitter = null
 let heroTypes = null
+let seededOnce = false
 let railTypes = null
 let colonies = null
 let flower = null
@@ -170,7 +181,6 @@ let lastTime = 0
 let lastDt = 1 / 60
 let colonyMode = false
 let lastPointSize = -1
-let lastMinR = -1
 let lastSimSpeed = NaN
 let simSpeedNow = NaN
 let lastScrollY = 0
@@ -186,8 +196,13 @@ let pointerY = 0
 let pointerPrevX = 0
 let pointerPrevY = 0
 let lastCameraZoom = NaN
-let returnUntil = 0
-let previousProgress = 0
+let pullNow = 0
+let gripNow = 0
+let scrollHeat = 0
+let appliedForce = NaN
+let lastOpacity = NaN
+let ambientOn = false
+let lastFlowCycle = -1
 let lastMorphPull = NaN
 let lastMorphGrip = NaN
 let lastMorphBlend = NaN
@@ -266,9 +281,11 @@ function writeCssVars () {
       }, galleryMix)
     }
     if (rects.aside) {
+      // 首頁的菌落沒有遮罩：側欄定住後上緣開到視窗頂，左右各放寬，只擋住右側內文。
+      const top = Math.max(rects.aside.top - 60, rects.body?.top ?? rects.aside.top)
       moveBounds({
-        left: rects.aside.left - canvasLeft, top: rects.aside.top - railOffset,
-        width: rects.aside.width, height: rects.aside.height,
+        left: rects.aside.left - canvasLeft - 24, top: top - railOffset,
+        width: rects.aside.width + 72, height: rects.aside.bottom - top,
       }, railMix)
     }
     // 粒子靠物理追目標，會比捲動進度慢到位；左右邊界往內收時跟著放慢，
@@ -393,15 +410,21 @@ async function rebuildTargets () {
     const railSlots = buildSlotTargetsRaw(raw, N, target, species, W)
     colonies = railSlots.shape
     railTypes = railSlots.shapeType
-    // 起點就是這批粒子的真實 seed；GPU 空間排序會換順序，必須以 slot 配對。
-    spread = new Float32Array(N * 2)
-    heroTypes = new Float32Array(N)
-    for (let i = 0; i < N; i++) {
-      const slot = raw[i * 6 + 5]
-      spread[slot * 2] = raw[i * 6]
-      spread[slot * 2 + 1] = raw[i * 6 + 1]
-      heroTypes[slot] = raw[i * 6 + 4]
+    // 自由場的目標點同首頁：seedPattern 的開場構圖，顏色跟著物種走。
+    // 第一次建的時候粒子還站在引擎剛 seed 出來的位置，那份本身就是構圖，直接沿用
+    // 才不會一進場就換位；之後（resize、降點）場已經演化過，照首頁重畫一份再配對。
+    if (seededOnce) {
+      const seed = buildSeedTargets(look.rules.seedPattern, N, species, W, H)
+      const heroSlots = buildSlotTargetsRaw(raw, N, seed, species, W)
+      heroShape = heroSlots.shape
+      heroTypes = heroSlots.shapeType
+    } else {
+      heroShape = railSlots.spread
+      heroTypes = new Float32Array(N)
+      for (let i = 0; i < N; i++) heroTypes[raw[i * 6 + 5]] = raw[i * 6 + 4] % species
+      seededOnce = true
     }
+    heroJitter = new Float32Array(heroShape)
     if (galleryConfig && dom.gallery) {
       const board = dom.gallery.querySelector('.photo-board').getBoundingClientRect()
       const heading = dom.gallery.querySelector('.photo-heading').getBoundingClientRect()
@@ -412,6 +435,7 @@ async function rebuildTargets () {
       const zoom = galleryConfig.sim.cameraZoom
       const size = radius * 2 / zoom
       const seedTargets = buildSeedTargets(galleryConfig.behavior.seedPattern, N, species, size, size)
+      const canvasLeft = canvasRef.value?.getBoundingClientRect().left || 0
       const cx = board.left - canvasLeft + board.width * 0.76
       const cy = top + radius
       for (let i = 0; i < N; i++) {
@@ -424,30 +448,18 @@ async function rebuildTargets () {
       flowerTypes = slots.shapeType
       flowerBounds = { cx, cy, simulationCy: H / 2, radius, top }
     }
-    // 同區域的粒子沿共同方向流動，保留 seed 的起始構圖。
-    heroFlow = new Float32Array(N * 3)
-    for (let i = 0; i < N; i++) {
-      const dx = spread[i * 2] - W / 2
-      const dy = spread[i * 2 + 1] - HERO.height / 2
-      const distance = Math.max(1, Math.hypot(dx, dy))
-      heroFlow[i * 3] = dx / distance
-      heroFlow[i * 3 + 1] = dy / distance
-      heroFlow[i * 3 + 2] = Math.atan2(dy, dx) * 2 + distance * 0.008
-    }
     heroPalette = paletteToLinear(window.PLPalettes.PALETTES[look.palette].particles)
     railPalette = heroPalette
     paletteStep = -1
     packed = new Float32Array(N * 4)
     for (let i = 0; i < N; i++) {
-      packed[i * 4] = spread[i * 2]
-      packed[i * 4 + 1] = spread[i * 2 + 1]
+      packed[i * 4] = heroShape[i * 2]
+      packed[i * 4 + 1] = heroShape[i * 2 + 1]
       packed[i * 4 + 2] = colonies[i * 2]
       packed[i * 4 + 3] = colonies[i * 2 + 1]
     }
     uploadTargets(current)
     current.setShapeTypes?.(flowerMode && flowerTypes ? flowerTypes : heroTypes, railTypes)
-    pull = HERO.pull
-    grip = HERO.grip
     current.setMorph?.(pull, grip, railMix)
     lastMorphPull = pull
     lastMorphGrip = grip
@@ -493,23 +505,28 @@ function jitterTargets (now) {
     }
     changed = true
   }
-  const nextHeroCycle = Math.floor(now / HERO.flowMs)
+  // 自由場的閃動同首頁：握得住構圖（lockNorm > 0.05）時每秒換一組 3px 的目標點偏移。
+  // 花形只有贊助頁有，維持原本的呼吸，進到花形時才逐格重算。
+  const nextHeroCycle = Math.floor(now / HERO.shimmerMs)
+  const flowCycle = flower && galleryMix > 0 ? Math.floor(now / HERO.flowMs) : -1
   const galleryTop = rects.gallery?.top || 0
-  if (railMix < 1 && (nextHeroCycle !== heroCycle || lastGalleryTop !== galleryTop || lastGalleryMix !== galleryMix)) {
+  if (railMix < 1 && (nextHeroCycle !== heroCycle || flowCycle !== lastFlowCycle || lastGalleryTop !== galleryTop || lastGalleryMix !== galleryMix)) {
+    if (nextHeroCycle !== heroCycle && lockNorm > 0.05) {
+      for (let i = 0, n = heroShape.length; i < n; i += 2) {
+        const angle = Math.random() * Math.PI * 2
+        const radius = HERO.shimmer * (0.3 + 0.7 * Math.random())
+        heroJitter[i] = heroShape[i] + Math.cos(angle) * radius
+        heroJitter[i + 1] = heroShape[i + 1] + Math.sin(angle) * radius
+      }
+    }
     heroCycle = nextHeroCycle
+    lastFlowCycle = flowCycle
     lastGalleryTop = galleryTop
     lastGalleryMix = galleryMix
-    const t = now * 0.001
-    for (let i = 0, n = spread.length / 2; i < n; i++) {
-      const nx = heroFlow[i * 3]
-      const ny = heroFlow[i * 3 + 1]
-      const phase = heroFlow[i * 3 + 2]
-      const flow = Math.sin(t * 0.85 + phase) * HERO.flowDistance
-      const ripple = Math.sin(t * 1.1 + phase * 1.7) * HERO.rippleDistance
-      const grain = Math.sin(t * 2.4 + i * 2.399963) * 2.5
-      const hx = spread[i * 2] - ny * flow + nx * (ripple + grain)
-      const hy = spread[i * 2 + 1] + nx * flow + ny * (ripple + grain)
-      const breathing = 1 + Math.sin(t * 0.6) * 0.035
+    const breathing = 1 + Math.sin(now * 0.0006) * 0.035
+    for (let i = 0, n = heroShape.length / 2; i < n; i++) {
+      const hx = heroJitter[i * 2]
+      const hy = heroJitter[i * 2 + 1]
       const fx = flower ? flowerBounds.cx + (flower[i * 2] - flowerBounds.cx) * breathing : hx
       const fy = flower ? flowerBounds.simulationCy + (flower[i * 2 + 1] - flowerBounds.simulationCy) * breathing : hy
       packed[i * 4] = hx + (fx - hx) * galleryMix
@@ -543,7 +560,7 @@ function uploadTargets (target) {
 
 function seekCpuTargets (dt) {
   const arrays = engine.particleArrays
-  if (!arrays || !spread || pull < 0.02) return
+  if (!arrays || !heroShape || pull < 0.02) return
   // Use the existing CPU simulation/render path; only apply the same target
   // guidance that setMorph supplies on WebGPU.
   const follow = 1 - Math.exp(-pull * dt)
@@ -571,10 +588,25 @@ function schedule () {
   raf = requestAnimationFrame(frame)
 }
 
+// 環境擾動的開關同首頁（遲滯）：收攏到一定程度就關掉，tide 那層會把菌落打散。
+function syncAmbient (lock) {
+  if (ambientOn && lock > AMBIENT_OFF_AT) {
+    stopAmbient?.()
+    stopAmbient = null
+    ambientOn = false
+  } else if (!ambientOn && lock < AMBIENT_ON_AT) {
+    stopAmbient = window.PLAmbient.start(() => running && !failed.value ? engine : null, { intensity: look.ambient })
+    ambientOn = true
+  }
+}
+
 function step (dt) {
   if (!engine) return
   syncRunning(true)
-  if (!running || failed.value) return
+  if (!running || failed.value) {
+    lastScrollY = window.scrollY
+    return
+  }
   motionTime += dt * 1000
 
   // 分批減量期間 slot 一直在重編，先放手讓力場自己跑，最後一批之後才重建目標點。
@@ -602,13 +634,12 @@ function step (dt) {
     engine.setGlowIntensity?.(glow.glowIntensity)
     engine.setGlowSteepness?.(glow.glowSteepness)
     const physics = wantColony
-      ? { forceFactor: RAIL.force, friction: RAIL.friction, repel: RAIL.repel, rMax: RAIL.rMax }
+      ? { friction: RAIL.friction, repel: RAIL.repel, minR: RAIL.minR, rMax: RAIL.rMax }
       : look.physics
-    engine.setForce?.(physics.forceFactor)
+    engine.setMinR?.(physics.minR)
     engine.setFriction?.(physics.friction)
     engine.setRepel?.(physics.repel)
     engine.setRMax?.(physics.rMax)
-    engine.setParticleOpacity?.(wantColony ? RAIL.opacity : look.visual.heroOpacity)
     engine.setShapeTypes?.(wantFlower && flowerTypes ? flowerTypes : heroTypes, railTypes)
   }
 
@@ -617,32 +648,52 @@ function step (dt) {
     engine.setPointSize(pointSize)
     lastPointSize = pointSize
   }
-  const minR = look.physics.minR + (RAIL.minR - look.physics.minR) * railMix
-  if (Math.abs(minR - lastMinR) > 0.1 || ((railMix === 0 || railMix === 1) && minR !== lastMinR)) {
-    engine.setMinR?.(minR)
-    lastMinR = minR
-  }
   const scrollY = window.scrollY
   const heat = Math.min(1, Math.abs(scrollY - lastScrollY) / dt / SCROLL_REF)
   lastScrollY = scrollY
   const speedTarget = HERO.simSpeed + (RAIL.simSpeed - HERO.simSpeed) * railMix + (look.speed.max - look.speed.idle) * heat
   if (Number.isNaN(simSpeedNow)) simSpeedNow = speedTarget
   simSpeedNow += (speedTarget - simSpeedNow) * (speedTarget > simSpeedNow ? SPEED_ATTACK : SPEED_RELEASE)
-  const simSpeed = simSpeedNow * opening.factor()
-  if (simSpeed !== lastSimSpeed) {
-    engine.setSimSpeed?.(simSpeed)
-    lastSimSpeed = simSpeed
+  if (simSpeedNow !== lastSimSpeed) {
+    engine.setSimSpeed?.(simSpeedNow)
+    lastSimSpeed = simSpeedNow
+  }
+  // 力場同首頁：自由場捲動時壓掉一部分讓遷移乾淨，菌落用自己的固定值，兩者照 railMix 插值。
+  scrollHeat += (heat - scrollHeat) * (heat > scrollHeat ? SPEED_ATTACK : SPEED_RELEASE)
+  const freeForce = look.physics.forceFactor * (1 - SCROLL_CALM * scrollHeat)
+  const force = freeForce + (RAIL.force - freeForce) * railMix
+  if (!(Math.abs(force - appliedForce) <= 0.01)) {
+    appliedForce = force
+    engine.setForce?.(force)
+  }
+  const opacity = look.visual.heroOpacity + (RAIL.opacity - look.visual.heroOpacity) * railMix
+  if (!(Math.abs(opacity - lastOpacity) <= 0.004)) {
+    lastOpacity = opacity
+    engine.setParticleOpacity?.(opacity)
   }
   const nextPaletteStep = `${Math.round(galleryMix * 100)}:${Math.round(railMix * 100)}`
   if (nextPaletteStep !== paletteStep) {
     paletteStep = nextPaletteStep
     engine.setColors(lerpPaletteLinear(heroPalette, railPalette, railMix))
   }
+  // 握力跟隨同首頁：收攏快、放手慢（回到自由場時還有約 1.4 秒把粒子送回構圖）。
+  // 花形 → 側欄那段不拖：花形握得很緊，慢放會把整群粒子壓成幾個亮點。
+  const flowerMix = galleryMix * (1 - railMix)
+  const freeWeight = (1 - galleryMix) * (1 - railMix)
+  const stagePull = HERO.pull + (24 - HERO.pull) * galleryMix
   const stageGrip = HERO.grip + (90 - HERO.grip) * galleryMix
-  lockNorm = Math.min(1, (stageGrip + (RAIL.grip - stageGrip) * railMix) / 90)
-  // 首頁的電影感漂移：只在 hero 自由場作用，花形與側欄要對齊版面所以收到 0。
+  const pullTarget = stagePull + (RAIL.pull - stagePull) * railMix
+  const gripTarget = stageGrip + (RAIL.grip - stageGrip) * railMix
+  const release = freeWeight > 0.5 ? LOCK_RELEASE : LOCK_ATTACK
+  pullNow += (pullTarget - pullNow) * (pullTarget > pullNow ? LOCK_ATTACK : release)
+  gripNow += (gripTarget - gripNow) * (gripTarget > gripNow ? LOCK_ATTACK : release)
+  if (pullNow < 0.02) { pullNow = 0; gripNow = 0 }
+  lockNorm = Math.min(1, gripNow / 90)
+  // 菌落那格在首頁一律是關著環境擾動進來的（前一格人像握力 82），這裡比照。
+  syncAmbient(Math.max(lockNorm, railMix))
+  // 首頁的電影感漂移：自由場與側欄菌落都照握力打折，花形要對齊照片所以收到 0。
   const s = motionTime * 0.001
-  const drift = (1 - 0.75 * lockNorm) * (1 - Math.max(galleryMix, railMix))
+  const drift = (1 - 0.75 * lockNorm) * (1 - flowerMix)
   const dx = (Math.sin(s * 0.021) * 42 + Math.sin(s * 0.006) * 26) * drift
   const dy = (Math.cos(s * 0.017) * 30 + Math.sin(s * 0.010) * 16) * drift
   const dz = 1 + 0.035 * Math.sin(s * 0.011) * drift
@@ -660,19 +711,11 @@ function step (dt) {
     lastCameraY = cameraY
   }
   pushPointer()
-  // 握力呼吸只乘在 hero 的握力上；花形與側欄需要穩定的握力。
+  // 握力呼吸只吃自由場的權重，乘在最後（同首頁）；花形與側欄需要穩定的握力。
   const breathe = HOLD_BREATHE_FLOOR + (1 - HOLD_BREATHE_FLOOR) * (0.5 - 0.5 * Math.cos(motionTime / HOLD_BREATHE_MS * Math.PI * 2))
-  const heroPull = HERO.pull * breathe
-  const heroGrip = HERO.grip * breathe
-  const stagePull = heroPull + (24 - heroPull) * galleryMix
-  const breathedGrip = heroGrip + (90 - heroGrip) * galleryMix
-  pull = stagePull + (RAIL.pull - stagePull) * railMix
-  grip = breathedGrip + (RAIL.grip - breathedGrip) * railMix
-  // 回捲需先帶回同一份起點，收尾後再放手讓原範本自然演化。
-  if (performance.now() < returnUntil) {
-    pull = Math.max(pull, 8)
-    grip = Math.max(grip, 36)
-  }
+  const hold = (1 - freeWeight) + freeWeight * breathe
+  pull = pullNow * hold
+  grip = gripNow * hold
   jitterTargets(motionTime)
   if (engine.setMorph) {
     if (pull !== lastMorphPull || grip !== lastMorphGrip || railMix !== lastMorphBlend) {
@@ -715,11 +758,6 @@ function measureFrameTime () {
 }
 
 async function adaptCount () {
-  // 開場保留期間模擬速度是 0，量到的不是實際成本；等放開之後才開始暖機。
-  while (opening.factor() < 1) {
-    if (disposed || !engine) return
-    await sleep(200)
-  }
   await sleep(ADAPT_WARMUP_MS)
   let streak = 0
   for (let w = 0; w < ADAPT_MAX_WINDOWS; w++) {
@@ -800,9 +838,6 @@ function frame (now = performance.now()) {
   galleryMix = galleryProgress * galleryProgress * (3 - 2 * galleryProgress)
   const galleryOffset = flowerBounds ? (rects.gallery?.top || 0) + flowerBounds.cy - flowerBounds.simulationCy : 0
   heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryMix) + galleryOffset * galleryMix) * (1 - railMix)
-  const combinedProgress = Math.max(railMix, galleryMix)
-  if (combinedProgress < previousProgress - 0.00001) returnUntil = now + 1400
-  previousProgress = combinedProgress
   step(dt)
   writeCssVars()
   if (running || railMix !== progress || regionSettling) schedule()
@@ -851,14 +886,14 @@ async function init () {
     preset: HERO.preset,
     seedPattern: look.rules.seedPattern,
     palette: palette.particles,
-    bgFade: 'rgba(10,10,12,0.18)',
+    bgFade: palette.bgFade,
     bg: '#0a0a0c',
     forceFactor: look.physics.forceFactor,
     friction: look.physics.friction,
     repel: look.physics.repel,
     minR: look.physics.minR,
     rMax: look.physics.rMax,
-    simSpeed: 0,
+    simSpeed: look.speed.idle,
     cameraZoom: look.camera.zoom,
     pointSize: heroSize,
     particleOpacity: look.visual.heroOpacity,
@@ -883,7 +918,6 @@ async function init () {
   await new Promise(resolve => setTimeout(resolve, 200))
   if (disposed) return
   posterDrawn = true
-  opening.ready()
   // 與父層移除載入圖片同一批更新，避免 GPU 與 poster 短暫重疊。
   ready.value = true
   emit('ready')
@@ -892,16 +926,14 @@ async function init () {
     window.__agendaField = engine
     window.__agendaRailMotion = RAIL
     window.__agendaMotion = () => ({
-      opening: opening.factor(),
-      railMix, galleryMix, flowerMode, flowerBounds, pull, grip, targetsGeneration, buildingTargets,
+      railMix, galleryMix, flowerMode, flowerBounds, pull, grip, lockNorm, ambientOn, force: appliedForce, simSpeed: simSpeedNow, targetsGeneration, buildingTargets,
       look: look.id, ready: ready.value, running, failed: failed.value, reducedMotion: reducedMotion.value, motionTime, rafPending,
       mask: maskKey, fieldBounds,
     })
   }
-  if (!reducedMotion.value) {
-    // 首頁在握力鬆的自由場就有環境擾動；側欄菌落維持原本的擾動，花形握得緊所以不擾動。
-    stopAmbient = window.PLAmbient.start(() => running && opening.factor() === 1 && (colonyMode || lockNorm < AMBIENT_OFF_AT) && !failed.value ? engine : null, { intensity: look.ambient })
-  }
+  // 環境擾動同首頁：開場就開，之後由 syncAmbient 依握力開關。
+  ambientOn = false
+  syncAmbient(0)
   // canvas 是 pointer-events-none，所以聽 window；listener 一律 passive，不跟捲動搶事件。
   pointerOn = window.matchMedia('(pointer: fine)').matches
   if (pointerOn) {
