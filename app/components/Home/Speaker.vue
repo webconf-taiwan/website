@@ -540,7 +540,7 @@ onBeforeUnmount(() => {
            上下文字用 clip-path 從左往右揭開（typeTop / typeBottom = 打字）。
            ⚠️ 打字用 clip-path 而不是逐字塞 DOM：後者每格都要動一次 DOM，
            而且會讓文字寬度一直變、右對齊的那行會抖。 -->
-      <div class="flex flex-col items-stretch gap-y-2 lg:col-start-2 lg:row-span-5 lg:row-start-1">
+      <div class="relative flex flex-col items-stretch gap-y-2 lg:col-start-2 lg:row-span-5 lg:row-start-1">
         <div
           class="flex items-start justify-between text-en-caption text-pre-800"
           :style="{ opacity: frameFade }"
@@ -585,6 +585,33 @@ onBeforeUnmount(() => {
             <span>{{ sk }}</span>
           </template>
         </div>
+
+        <!-- 更多講者（桌機）：照設計稿壓在人像肩膀下緣上（跟人像底部重疊一點），不是貼 section 底。
+             ⚠️ 人像是背後那張 fixed canvas 畫的、對齊視窗中心，大小 = min(68vh, 612px)
+             （HomeField speaker 影格的 fit / PORTRAIT_MAX_PX），肩膀下緣約在中心下方 45%。
+             觀景框中心固定在視窗中心上方 96px，所以從這一欄頂端算：
+             28（卷標列）+ 框高的一半 + 96 + 人像下半 min(30.6vh, 275px) − 46（往上壓進人像）。
+             1440×900 時 = 框線下緣往下 175px（設計稿約 185，再往上收一點是實機看過後定的）。
+             那邊的 fit / maxPx 改了，這裡的 30.6vh / 275px 要跟著改。 -->
+        <div
+          v-if="moreLink.href"
+          data-fade="in"
+          class="absolute inset-x-0 top-[calc(210px_+_min(30.6vh,275px))] hidden justify-center whitespace-nowrap lg:flex xl:top-[calc(228px_+_min(30.6vh,275px))]"
+        >
+          <AtomButton
+            intent="primary"
+            size="md"
+            rounded="none"
+            icon="arrow-right-thin"
+            icon-position="end"
+            icon-size="md"
+            :href="moreLink.href"
+            :target="moreLink.target"
+            :rel="linkRel(moreLink.target)"
+          >
+            {{ moreLink.label }}
+          </AtomButton>
+        </div>
       </div>
 
       <button
@@ -623,8 +650,8 @@ onBeforeUnmount(() => {
       </button>
     </div>
 
-    <!-- 更多講者 -->
-    <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[70px] lg:mt-0">
+    <!-- 更多講者（窄視窗）。桌機那顆在中央觀景框那一欄裡，跟著人像走。 -->
+    <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:hidden">
       <AtomButton
         v-if="moreLink.href"
         intent="primary"
