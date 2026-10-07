@@ -1,5 +1,17 @@
+<script setup lang="ts">
+// 只在 webconf.tw / www.webconf.tw 顯示；2025.webconf.tw（歷史站）與其他網域不顯示
+// 頁面為預渲染，建置時取不到網址，因此在瀏覽器端判斷
+const SHOW_HOSTS = ['webconf.tw', 'www.webconf.tw']
+const visible = ref(false)
+
+onMounted(() => {
+  visible.value = SHOW_HOSTS.includes(window.location.hostname)
+})
+</script>
+
 <template>
   <div
+    v-if="visible"
     class="fixed inset-x-0 bottom-0 z-[100] flex w-[100dvw] bg-[rgba(0,0,0,0.85)]"
   >
     <div
