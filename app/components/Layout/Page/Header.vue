@@ -63,6 +63,14 @@ onBeforeUnmount(() => lockBackground(false))
 
 watch(() => route.fullPath, () => { open.value = false })
 
+// 點到「目前這一頁」的連結時 fullPath 不會變，上面的 watch 不會觸發，選單會卡著不關。
+// 只在同頁時才手動關；換頁的照舊交給 watch，選單才會撐到黑幕轉場蓋上來。
+const router = useRouter()
+function closeIfSamePage (link) {
+  if (!open.value || !isInternalLink(link.target)) return
+  if (router.resolve(link.href).fullPath === route.fullPath) open.value = false
+}
+
 onMounted(() => {
   const { $gsap } = useNuxtApp()
   if (!$gsap || !rootRef.value) return
@@ -117,7 +125,7 @@ onMounted(() => {
       </nav>
 
       <!-- 中央 logo（平板以下靠左） -->
-      <NuxtLink data-logo to="/" class="flex shrink-0 items-center gap-1.5 opacity-0">
+      <NuxtLink data-logo to="/" class="flex shrink-0 items-center gap-1.5 opacity-0" @click="closeIfSamePage({ href: '/' })">
         <img
           :src="logoSrc"
           :alt="header.logo?.alt"
@@ -167,6 +175,7 @@ onMounted(() => {
           data-nav-item
           class="flex size-6 shrink-0 items-center justify-center text-accent-1 opacity-0 transition-colors"
           :aria-label="ticket.label"
+          @click="closeIfSamePage(ticket)"
         >
           <AtomIcon name="ticket" is-full />
         </component>
@@ -223,6 +232,7 @@ onMounted(() => {
             :target="link.target"
             :rel="linkRel(link.target)"
             class="flex items-end justify-between py-4 text-pre-800 transition-colors hover:text-accent-1"
+            @click="closeIfSamePage(link)"
           >
             <span class="font-en-serif text-[32px] font-normal italic leading-[1.2] tracking-[0.02em]">
               {{ link.label_en }}

@@ -43,30 +43,29 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
       <TemporaryParticleField />
     </ClientOnly>
     <!-- Figma 的黑底襯墊僅為設計示意，實際不使用。 -->
-    <div class="relative z-1 flex w-[955.825px] shrink-0 flex-col items-center gap-y-8 pt-8 drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
+    <!-- 寬度一律跟著內容／視窗走，不寫死 px：標題在窄螢幕靠空白自然折行，放得下就維持一行。 -->
+    <div class="container relative z-1 flex flex-col items-center gap-y-8 pt-8 drop-shadow-[0_0_12.5px_rgba(0,0,0,0.86)]">
       <div class="flex flex-col items-center gap-y-4">
         <p
           data-fade="in"
-          class="flex h-[14px] w-[162px] items-center gap-x-3 overflow-hidden font-mono text-meta leading-[14px] uppercase text-pre-800/80"
+          class="flex items-center gap-x-3 whitespace-nowrap font-mono text-meta leading-[14px] uppercase text-pre-800/80"
         >
-          <span class="w-[94px] shrink-0 overflow-hidden text-left">WEBCONF.TW</span>
-          <span class="w-2 shrink-0 overflow-hidden text-left text-accent-1" aria-hidden="true">·</span>
-          <span class="w-9 shrink-0 overflow-hidden text-left">2026</span>
+          <span>WEBCONF.TW</span>
+          <span class="text-accent-1" aria-hidden="true">·</span>
+          <span>2026</span>
         </p>
 
-        <div class="flex flex-col items-center gap-y-2 text-pre-800">
+        <div class="flex max-w-full flex-col items-center gap-y-2 text-pre-800">
           <h1
             data-fade="in"
-            class="text-en-hero leading-[77px] lg:leading-[86px]"
-            :class="is404 ? 'w-[252px] text-center lg:w-[121px]' : 'w-[252px] break-words lg:w-auto lg:whitespace-nowrap'"
+            class="max-w-full text-balance text-en-hero leading-[77px] lg:leading-[86px]"
           >
             {{ title }}
           </h1>
 
           <p
             data-fade="in"
-            class="whitespace-nowrap text-zh-h5 leading-[22px] lg:leading-[26px]"
-            :class="is404 ? 'lg:w-[314px] lg:text-center' : ''"
+            class="max-w-full text-balance text-zh-h5 leading-[22px] lg:leading-[26px]"
           >
             {{ subtitle }}
           </p>
@@ -81,7 +80,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
         icon="arrow-right-thin"
         icon-position="end"
         class="temporary-cta h-10 lg:hidden"
-        :class="is404 ? 'w-[121px]' : 'w-[128px] gap-x-1'"
+        :class="is404 ? '' : 'gap-x-1'"
         @click="emit('mobile-action')"
       />
 
@@ -93,7 +92,7 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
         icon="arrow-right-thin"
         icon-position="end"
         class="temporary-cta hidden h-10 lg:flex"
-        :class="is404 ? 'w-[125px]' : 'w-[132.4px] gap-x-1'"
+        :class="is404 ? '' : 'gap-x-1'"
         @click="emit('desktop-action')"
       />
     </div>
