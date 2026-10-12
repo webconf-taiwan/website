@@ -69,20 +69,16 @@ const ORGANIZERS = [
       class="group inline-block p-3 lg:py-10 lg:pl-12 lg:pr-[42px]"
     >
       <div class="relative">
-        <NuxtImg
+        <img
           :src="organizer.logo"
           :alt="organizer.name"
           width="150"
-          loading="eager"
-          placeholder
           class="aspect-[5/4] w-[96px] transition-opacity duration-300 sm:w-[120px] lg:w-[150px] lg:group-hover:opacity-0"
         />
-        <NuxtImg
+        <img
           :src="organizer.hoverLogo"
           :alt="organizer.name"
           width="150"
-          loading="eager"
-          placeholder
           class="absolute inset-0 aspect-[5/4] w-[96px] opacity-0 transition-opacity duration-300 sm:w-[120px] lg:w-[150px] lg:group-hover:opacity-100"
         />
         <span

@@ -35,24 +35,19 @@ const SOCIAL_ITEMS = [
             class="relative inline-block h-[91px] w-[240px] sm:size-full"
           >
             <!-- default logo -->
-            <NuxtImg
-              src="images/home/footer/footerLogo.svg"
+            <img
+              src="/images/home/footer/footerLogo.svg"
               alt="2025 WebConf"
               width="280"
               height="106"
-              format="webp"
-              loading="eager"
-              placeholder
               class="opacity-100 transition-opacity duration-500 lg:group-hover:opacity-0"
             />
             <!-- hover logo -->
-            <NuxtImg
+            <img
               src="/images/home/footer/footerLogo-hover.svg"
               alt="2025 WebConf"
               width="280"
               height="106"
-              loading="eager"
-              placeholder
               class="absolute inset-0 opacity-0 transition-opacity duration-500 lg:group-hover:opacity-100"
             />
           </NuxtLink>
