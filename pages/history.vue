@@ -80,7 +80,7 @@ onMounted(() => {
   <div>
     <section class="flex-1">
       <ShareBanner
-        title="HiSTORY"
+        title="HISTORY"
         sub-title="歷史回顧"
       />
     </section>
