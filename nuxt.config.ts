@@ -165,21 +165,25 @@ export default defineNuxtConfig({
     },
   },
 
-  nitro: {
-    hooks: {
-      async compiled(nitro) {
-        // 純靜態輸出（nuxt generate）與預渲染用的建置不會在執行時跑 IPX
-        if (nitro.options.static || nitro.options.preset === 'nitro-prerender')
-          return
+  hooks: {
+    // 用 hook() 追加，不能寫在 nitro.hooks.compiled：
+    // 那會蓋掉 Vercel preset 自己的 compiled（產生 .vercel/output/config.json），部署就找不到輸出
+    'nitro:init': function (nitro) {
+      // 純靜態輸出（nuxt generate）與預渲染用的建置不會在執行時跑 IPX
+      if (nitro.options.static || nitro.options.preset === 'nitro-prerender')
+        return
 
+      nitro.hooks.hook('compiled', async () => {
         await cp(
           resolve(nitro.options.rootDir, 'public'),
           resolve(nitro.options.output.serverDir, IPX_SOURCE_DIR),
           { recursive: true },
         )
-      },
+      })
     },
+  },
 
+  nitro: {
     // 啟用頁面預渲染
     prerender: {
       routes: [
