@@ -1,5 +1,13 @@
 import { visualizer } from 'rollup-plugin-visualizer'
 import { site, sitemap } from './config/seo.config'
+import { AGENDA_LIST } from './constants/agenda'
+
+// 議程卡片的講者頭像（AgendaCard 的 43×60 與 2x 的 86×120）。
+// 靜態部署只會產生預渲染 HTML 裡出現過的 /_ipx 網址，議程頁預設只渲染 12/12，
+// 切到 12/13 才在瀏覽器渲染的頭像從沒被產生，上線後會 404，所以在這裡補進預渲染清單
+const agendaAvatarRoutes = [...new Set(
+  AGENDA_LIST.flatMap(agenda => agenda.speakerInfo?.map(speaker => speaker.avatarUrl) ?? []),
+)].flatMap(avatarUrl => ['s_43x60', 's_86x120'].map(size => `/_ipx/${size}${encodeURI(avatarUrl)}`))
 
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
@@ -160,6 +168,7 @@ export default defineNuxtConfig({
         '/agenda/3/4',
         '/agenda/33/34',
         '/agenda/00/23/24',
+        ...agendaAvatarRoutes,
       ],
     },
     routeRules: {
