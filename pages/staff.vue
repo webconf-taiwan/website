@@ -40,7 +40,7 @@ useSeoMeta({
           v-for="(staff, index) in STAFF"
           :key="`${staff.name}-${index}`"
           :staff="staff"
-          hydrate-on-idle
+          hydrate-on-visible
         />
       </div>
     </main>

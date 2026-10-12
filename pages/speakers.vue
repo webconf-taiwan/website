@@ -49,18 +49,17 @@ const isMenuOpen = ref(false)
       </section>
 
       <section class="relative flex">
-        <LazyShareTagFilterMenuAside
+        <ShareTagFilterMenuAside
           v-model:is-open="isMenuOpen"
           v-model:selected-tags="selectedTags"
           class="lg:top-[54.5px]"
-          hydrate-on-idle
         />
 
         <!-- 講者卡片 -->
         <div
           class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
-          <LazySpeakerCard
+          <SpeakerCard
             v-for="(speaker, index) in [...SPEAKERS, CUSTOM_AGENDA_ITEM]"
             :key="`${speaker.name}-${index}`"
             :selected-tags="selectedTags"
@@ -69,7 +68,6 @@ const isMenuOpen = ref(false)
               speaker.tags?.some((tag) => selectedTags.includes(tag))
                 || selectedTags.length === 0
             "
-            hydrate-on-idle
             @tag-click="handleTagClick"
           />
         </div>

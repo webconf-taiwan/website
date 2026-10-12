@@ -87,10 +87,9 @@ const isMenuOpen = ref(false)
       </section>
 
       <section class="relative flex">
-        <LazyShareTagFilterMenuAside
+        <ShareTagFilterMenuAside
           v-model:is-open="isMenuOpen"
           v-model:selected-tags="selectedTags"
-          hydrate-on-idle
         />
 
         <div class="grid grow grid-cols-3 bg-black">
@@ -145,7 +144,7 @@ const isMenuOpen = ref(false)
                 </time>
               </div>
 
-              <LazyAgendaCard
+              <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
                 :data="agenda"
@@ -157,7 +156,6 @@ const isMenuOpen = ref(false)
                     || selectedTags.length === 0
                 "
                 :selected-tags="selectedTags"
-                hydrate-on-idle
                 @tag-click="handleTagClick"
               />
             </div>
@@ -201,7 +199,7 @@ const isMenuOpen = ref(false)
                 </time>
               </div>
 
-              <LazyAgendaCard
+              <AgendaCard
                 v-for="(agenda, index) in agendas"
                 :key="`${time}-${index}`"
                 :selected-tags="selectedTags"
@@ -213,7 +211,6 @@ const isMenuOpen = ref(false)
                   agenda.tags?.some((tag) => selectedTags.includes(tag))
                     || selectedTags.length === 0
                 "
-                hydrate-on-idle
                 @tag-click="handleTagClick"
               />
             </div>
