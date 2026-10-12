@@ -59,7 +59,7 @@ const scheduleMap = {
   // Day 2~2025-12-13
 
   // Keynote Speaker
-  'Huli': { id: '17', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/17_Huli.webp', ogImage: '/images/ogImage/17_Huli.png' },
+  'Huli': { id: '17', day: 'day2', date: '2025-12-13', time: '09:00~09:45', room: 'M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/17_huli.webp', ogImage: '/images/ogImage/17_huli.png' },
   '游舒帆': { id: '18', day: 'day2', date: '2025-12-13', time: '16:15~17:00', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/18_游舒帆_Gipi.webp', ogImage: '/images/ogImage/18_游舒帆_Gipi.png' },
   '李智樺': { id: '44', day: 'day2', date: '2025-12-13', time: '16:15~16:30', room: 'A2 棟 & M 棟 & F 棟', doc: '', slides: '', image: '/images/speakers/44_ruddy.webp', ogImage: '/images/ogImage/44_ruddy.png' },
 

@@ -119,8 +119,8 @@ export const eventPerformers = [
     'image': {
       '@type': 'ImageObject',
       '@id': 'https://webconf.tw/#image/speaker17',
-      'contentUrl': 'https://webconf.tw/images/speakers/17_Huli.webp',
-      'url': 'https://webconf.tw/images/speakers/17_Huli.webp',
+      'contentUrl': 'https://webconf.tw/images/speakers/17_huli.webp',
+      'url': 'https://webconf.tw/images/speakers/17_huli.webp',
       'inLanguage': 'zh-TW',
     },
     'sameAs': [
