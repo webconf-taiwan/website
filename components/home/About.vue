@@ -139,7 +139,6 @@ onBeforeUnmount(() => {
           width="768"
           height="512"
           loading="eager"
-          placeholder
           class="blue-shadow about-img-filter about-photo relative hidden w-full sm:left-0 sm:mt-[300px] sm:block sm:max-w-[280px] xl:left-[120px] xl:mt-[260px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 1 }"
         />
@@ -150,7 +149,6 @@ onBeforeUnmount(() => {
           width="768"
           height="512"
           loading="eager"
-          placeholder
           class="blue-shadow about-img-filter about-photo relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
           :class="{ 'is-hovered': hoveredImageIndex === 2 }"
         />
@@ -161,7 +159,6 @@ onBeforeUnmount(() => {
           width="768"
           height="512"
           loading="eager"
-          placeholder
           class="blue-shadow about-img-filter about-photo relative w-full sm:left-0 sm:mt-[250px] sm:max-w-[360px] xl:left-10 xl:mt-[150px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 3 }"
         />
@@ -177,7 +174,6 @@ onBeforeUnmount(() => {
           width="768"
           height="512"
           loading="eager"
-          placeholder
           class="blue-shadow about-img-filter about-photo relative hidden w-full sm:right-10 sm:mt-[150px] sm:block sm:max-w-[280px] xl:right-20 xl:mt-[120px] xl:max-w-[420px]"
           :class="{ 'is-hovered': hoveredImageIndex === 4 }"
         />
@@ -188,7 +184,6 @@ onBeforeUnmount(() => {
           width="768"
           height="512"
           loading="eager"
-          placeholder
           class="blue-shadow about-img-filter about-photo relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
           :class="{ 'is-hovered': hoveredImageIndex === 5 }"
         />
@@ -199,7 +194,6 @@ onBeforeUnmount(() => {
           width="768"
           height="512"
           loading="eager"
-          placeholder
           class="blue-shadow about-img-filter about-photo relative hidden w-full sm:right-10 sm:mt-[200px] sm:block sm:max-w-[240px] xl:right-[120px] xl:mt-[180px]"
           :class="{ 'is-hovered': hoveredImageIndex === 6 }"
         />

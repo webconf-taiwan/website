@@ -701,7 +701,6 @@ import { EXTERNAL_LINKS } from '~/constants/externalLinks'
               width="570"
               height="215"
               loading="eager"
-              placeholder
               class="mr-0 md:mr-[86px] md:w-[570px]"
             />
           </h1>

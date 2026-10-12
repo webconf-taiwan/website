@@ -117,7 +117,6 @@ onBeforeUnmount(() => {
                   width="409"
                   height="60"
                   loading="eager"
-                  placeholder
                 />
               </div>
 
@@ -149,7 +148,6 @@ onBeforeUnmount(() => {
               width="409"
               height="60"
               loading="eager"
-              placeholder
             />
           </div>
 

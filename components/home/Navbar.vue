@@ -97,7 +97,6 @@ onUnmounted(() => {
           width="191"
           height="28"
           loading="eager"
-          placeholder
           class="h-5 w-[137px] opacity-100 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-0"
         />
         <!-- hover logo -->
@@ -107,7 +106,6 @@ onUnmounted(() => {
           width="191"
           height="28"
           loading="eager"
-          placeholder
           class="absolute inset-0 h-5 w-[137px] opacity-0 transition-opacity duration-500 sm:h-[28px] sm:w-[191px] lg:group-hover:opacity-100"
         />
       </NuxtLink>
@@ -171,7 +169,6 @@ onUnmounted(() => {
             width="24"
             height="24"
             loading="eager"
-            placeholder
             :class="{ hidden: isMenuOpen }"
             @click="onToggleMenu"
           />
@@ -180,7 +177,6 @@ onUnmounted(() => {
             width="24"
             height="24"
             loading="eager"
-            placeholder
             :class="{ hidden: !isMenuOpen }"
             @click="onToggleMenu"
           />

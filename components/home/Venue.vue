@@ -471,7 +471,6 @@
             height="536"
             fit="contain"
             loading="eager"
-            placeholder
             class="size-full translate-y-0 object-contain"
           />
         </div>
@@ -488,7 +487,6 @@
           width="161"
           height="117"
           loading="eager"
-          placeholder
           class="absolute right-0 top-12 hidden sm:block"
         />
         <div
