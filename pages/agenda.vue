@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { AgendaItem } from '~/types'
 import { GROUPED_AGENDAS } from '~/constants/agenda'
 
 useSeoMeta({
@@ -42,6 +43,39 @@ const currentAfternoonAgendas = computed(() =>
 // 議程類型篩選
 const { selectedTags, handleTagClick } = useSelectedTags()
 const isMenuOpen = ref(false)
+
+// 講者彈窗的照片：碰到卡片時以 high 插隊，多人議程一次抓全部講者
+const { preloadSpeakerDialog, warmSpeakerDialogs } = useSpeakerDialogImages()
+
+function speakerIdsOf(agenda: AgendaItem) {
+  return agenda.speakerInfo?.map(speaker => speaker.speakerId) ?? []
+}
+
+function speakerIdsOfDay(day: '12' | '13') {
+  const groups
+    = day === '12'
+      ? [agendasAtDec12Morning, agendasAtDec12Afternoon]
+      : [agendasAtDec13Morning, agendasAtDec13Afternoon]
+
+  return groups.flatMap(group =>
+    Object.values(group).flat().flatMap(speakerIdsOf),
+  )
+}
+
+let stopWarm: (() => void) | undefined
+
+// 其餘在頁面 load 後趁空閒預熱：目前顯示的那天先，另一天接在後面
+onMounted(() => {
+  const otherDay = selectedDate.value === '12' ? '13' : '12'
+  const ids = [
+    ...speakerIdsOfDay(selectedDate.value as '12' | '13'),
+    ...speakerIdsOfDay(otherDay),
+  ]
+
+  stopWarm = warmSpeakerDialogs([...new Set(ids)])
+})
+
+onBeforeUnmount(() => stopWarm?.())
 </script>
 
 <template>
@@ -157,6 +191,9 @@ const isMenuOpen = ref(false)
                 "
                 :selected-tags="selectedTags"
                 @tag-click="handleTagClick"
+                @mouseenter="preloadSpeakerDialog(speakerIdsOf(agenda))"
+                @focusin="preloadSpeakerDialog(speakerIdsOf(agenda))"
+                @touchstart.passive="preloadSpeakerDialog(speakerIdsOf(agenda))"
               />
             </div>
           </transition-group>
@@ -212,6 +249,9 @@ const isMenuOpen = ref(false)
                     || selectedTags.length === 0
                 "
                 @tag-click="handleTagClick"
+                @mouseenter="preloadSpeakerDialog(speakerIdsOf(agenda))"
+                @focusin="preloadSpeakerDialog(speakerIdsOf(agenda))"
+                @touchstart.passive="preloadSpeakerDialog(speakerIdsOf(agenda))"
               />
             </div>
           </transition-group>

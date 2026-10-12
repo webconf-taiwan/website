@@ -10,6 +10,19 @@ useSeoMeta({
 // 議程類型篩選
 const { selectedTags, handleTagClick } = useSelectedTags()
 const isMenuOpen = ref(false)
+
+// 講者彈窗的照片：碰到卡片時以 high 插隊，其餘在頁面 load 後趁空閒依卡片順序預熱
+const speakerCards = [...SPEAKERS, CUSTOM_AGENDA_ITEM]
+const { preloadSpeakerDialog, warmSpeakerDialogs } = useSpeakerDialogImages()
+let stopWarm: (() => void) | undefined
+
+onMounted(() => {
+  stopWarm = warmSpeakerDialogs(
+    speakerCards.map(speaker => speaker.speakerId),
+  )
+})
+
+onBeforeUnmount(() => stopWarm?.())
 </script>
 
 <template>
@@ -60,7 +73,7 @@ const isMenuOpen = ref(false)
           class="relative z-0 grid w-full grid-cols-1 lg:grid-cols-3 xl:grid-cols-4"
         >
           <SpeakerCard
-            v-for="(speaker, index) in [...SPEAKERS, CUSTOM_AGENDA_ITEM]"
+            v-for="(speaker, index) in speakerCards"
             :key="`${speaker.name}-${index}`"
             :selected-tags="selectedTags"
             :speaker="speaker"
@@ -69,6 +82,9 @@ const isMenuOpen = ref(false)
                 || selectedTags.length === 0
             "
             @tag-click="handleTagClick"
+            @mouseenter="preloadSpeakerDialog([speaker.speakerId])"
+            @focusin="preloadSpeakerDialog([speaker.speakerId])"
+            @touchstart.passive="preloadSpeakerDialog([speaker.speakerId])"
           />
         </div>
       </section>
