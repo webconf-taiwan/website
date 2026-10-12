@@ -81,7 +81,7 @@ onBeforeUnmount(() => stopWarm?.())
 <template>
   <div>
     <ShareBanner
-      title="Agenda"
+      title="AGENDA"
       sub-title="議程資訊"
     />
 
