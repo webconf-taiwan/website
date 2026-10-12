@@ -165,7 +165,6 @@ function handleCardClick(event: MouseEvent) {
             alt="location"
             width="20"
             height="20"
-            placeholder
           />
           {{ data.location }}
         </div>

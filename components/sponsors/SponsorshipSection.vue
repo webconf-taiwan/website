@@ -154,7 +154,6 @@ const SUPPORTSTARGET = [
       src="/images/sponsors/sponsors-line-mobile.svg"
       width="394"
       height="326"
-      placeholder
     />
   </div>
 </template>

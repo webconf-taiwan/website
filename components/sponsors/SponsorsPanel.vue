@@ -37,7 +37,6 @@ import { SPONSORS_INFO } from '~/constants/sponsors'
           width="375"
           height="300"
           :alt="`贊助商${sponsor.name}標誌`"
-          placeholder
         />
       </div>
 
@@ -67,7 +66,6 @@ import { SPONSORS_INFO } from '~/constants/sponsors'
                 width="24"
                 height="24"
                 :alt="link.name"
-                placeholder
               />
             </a>
           </li>

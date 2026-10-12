@@ -111,7 +111,6 @@ defineExpose({
             width="24"
             height="24"
             :alt="link.alt"
-            placeholder
           />
         </a>
       </li>
