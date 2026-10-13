@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDevicePixelRatio } from '@vueuse/core'
 import { EXTERNAL_LINKS } from '~/constants/externalLinks'
 
 useSeoMeta({
@@ -123,15 +124,39 @@ function setVenue(num: number, isAvailable: boolean) {
 
 const venueBgRef = ref<HTMLDivElement | null>(null)
 
-function preloadImages() {
-  MAP_INFO.filter(venue => venue.isAvailable).forEach((venue) => {
-    const img = new Image()
-    img.src = venue.image
+/** 與下方平面圖 <NuxtImg> 的尺寸一致；URL 要完全相同才會命中預熱的快取 */
+const VENUE_MAP = { width: 1180, height: 550 } as const
+
+const img = useImage()
+const { preload, warm } = useImagePreload()
+const { pixelRatio } = useDevicePixelRatio()
+
+/** <NuxtImg> 的 srcset 有 1x、2x 兩張，瀏覽器依像素比只會抓其中一張 */
+function venueMapUrl(src: string) {
+  const density = pixelRatio.value > 1 ? 2 : 1
+
+  return img(src, {
+    width: VENUE_MAP.width * density,
+    height: VENUE_MAP.height * density,
   })
 }
 
+/** 碰到分頁按鈕時用 high 插隊，點下去前就抓好 */
+function preloadVenueMap(venue: (typeof MAP_INFO)[number]) {
+  if (venue.isAvailable && venue.image)
+    void preload(venueMapUrl(venue.image), 'high')
+}
+
+let stopWarm: (() => void) | undefined
+
 onMounted(() => {
-  preloadImages()
+  // 預設顯示的那張已經在畫面上；其餘在頁面 load 後趁空閒預熱，不跟首屏搶頻寬
+  stopWarm = warm(
+    MAP_INFO.filter(
+      venue =>
+        venue.isAvailable && venue.image && venue.id !== selectedVenueNum.value,
+    ).map(venue => venueMapUrl(venue.image)),
+  )
 
   if (!venueBgRef.value)
     return
@@ -151,6 +176,8 @@ onMounted(() => {
     },
   )
 })
+
+onBeforeUnmount(() => stopWarm?.())
 </script>
 
 <template>
@@ -248,6 +275,9 @@ onMounted(() => {
           ]"
           :disabled="!map.isAvailable"
           @click="setVenue(map.id, map.isAvailable)"
+          @mouseenter="preloadVenueMap(map)"
+          @focusin="preloadVenueMap(map)"
+          @touchstart.passive="preloadVenueMap(map)"
         >
           <h3
             class="relative z-20 text-btn-16 lg:text-h4-24"
