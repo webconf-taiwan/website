@@ -6,7 +6,7 @@ type SpeakerSectionsReturn = ReturnType<typeof useSpeakerSections>
 const props = defineProps<{
   speaker: ContentCollectionItem[]
   meta: ContentCollectionItem['meta']
-  renderableIntroSection: SpeakerSectionsReturn['renderableIntroSection']['value']
+  renderableIntroSections: SpeakerSectionsReturn['renderableIntroSections']['value']
   currentPageNumber: number
 }>()
 
@@ -89,7 +89,14 @@ defineExpose({
         class="inline-block text-[18px] leading-[1.2] tracking-[0.02em] text-webconf-gray-500 lg:text-[20px]"
       >{{ meta.company }} / {{ meta.job_title }}</span>
     </div>
-    <ContentRenderer :value="renderableIntroSection" />
+    <!-- 每位講者的簡介都先渲染好，切換時只切換顯示；
+         若共用一個 ContentRenderer 換內容，重新渲染時會有一格是空的，下方區塊會跟著往上跳 -->
+    <ContentRenderer
+      v-for="(section, index) in renderableIntroSections"
+      v-show="index === currentPageNumber"
+      :key="index"
+      :value="section"
+    />
     <ul class="flex flex-wrap gap-3">
       <li
         v-for="link in socialLinks"

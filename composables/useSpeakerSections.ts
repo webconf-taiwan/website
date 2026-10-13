@@ -36,12 +36,6 @@ export function useSpeakerSections(
     () => speaker.value?.[currentPageNumber.value]?.meta || {},
   )
 
-  const introSection = computed(() => {
-    return speaker.value?.[currentPageNumber.value]?.body.value.find(
-      node => node[0] === 'speaker-intro',
-    )
-  })
-
   const summarySection = () => {
     return speaker.value?.[0]?.body.value.find(
       node => node[0] === 'speaker-summary',
@@ -60,8 +54,13 @@ export function useSpeakerSections(
     )
   }
 
-  const renderableIntroSection = computed(() =>
-    toRenderableSection(introSection.value),
+  // 每位講者各自的簡介，讓畫面可以先全部渲染好再切換顯示
+  const renderableIntroSections = computed(() =>
+    (speaker.value ?? []).map(item =>
+      toRenderableSection(
+        item.body.value.find(node => node[0] === 'speaker-intro'),
+      ),
+    ),
   )
 
   const speakerInfo = computed(() => ({
@@ -78,7 +77,7 @@ export function useSpeakerSections(
   })
 
   return {
-    renderableIntroSection,
+    renderableIntroSections,
     speakerInfo,
     toRenderableSection,
     meta,
