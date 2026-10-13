@@ -118,7 +118,7 @@ export default defineNuxtConfig({
   image: {
     provider: 'ipx',
     ipx: {
-      maxAge: 60 * 60 * 24 * 30,
+      maxAge: 0,
       fs: { dir: IPX_SOURCE_DIR },
     },
   },
@@ -202,14 +202,24 @@ export default defineNuxtConfig({
       ],
     },
     routeRules: {
-      // 原始圖片路徑快取(背景圖片使用)
+      // 頁面每次都回伺服器確認，部署後馬上拿到新版
+      '/**': {
+        headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' },
+      },
+
+      // 檔名帶 hash，可以長期快取
+      '/_nuxt/**': {
+        headers: { 'Cache-Control': 'public, max-age=31536000, immutable' },
+      },
+
+      // 圖片檔名沒帶 hash，換圖或改檔名後要馬上看得到，所以也每次確認
       '/images/**': {
-        headers: { 'Cache-Control': 'public, max-age=2592000, s-maxage=2592000' },
+        headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' },
       },
 
       // IPX 處理的圖片路徑
       '/_ipx/**': {
-        headers: { 'Cache-Control': 'public, max-age=2592000, s-maxage=2592000' },
+        headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' },
       },
     },
     compressPublicAssets: {
