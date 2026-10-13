@@ -1,5 +1,30 @@
+<script setup lang="ts">
+import { MAP_INFO } from '~/constants/venue'
+
+// 場地圖在首屏下方：先不跟首屏搶頻寬，頁面 load 後趁空閒預熱；
+// 順便預熱場域頁預設那張平面圖，點「更多資訊」過去時已經抓好
+const venueSectionRef = ref<HTMLElement | null>(null)
+const { warm, warmLazyImages } = useImagePreload()
+const venueMapUrl = useVenueMapUrl()
+let stopWarmSelf: (() => void) | undefined
+let stopWarmVenuePage: (() => void) | undefined
+
+onMounted(() => {
+  stopWarmSelf = warmLazyImages(venueSectionRef.value)
+  stopWarmVenuePage = warm([venueMapUrl(MAP_INFO[0].image)])
+})
+
+onBeforeUnmount(() => {
+  stopWarmSelf?.()
+  stopWarmVenuePage?.()
+})
+</script>
+
 <template>
-  <section class="relative pt-0 lg:pt-20">
+  <section
+    ref="venueSectionRef"
+    class="relative pt-0 lg:pt-20"
+  >
     <!-- 桌機使用 -->
     <svg
       class="absolute inset-0 hidden size-full lg:block"
@@ -470,7 +495,7 @@
             width="793"
             height="536"
             fit="contain"
-            loading="eager"
+            loading="lazy"
             class="size-full translate-y-0 object-contain"
           />
         </div>
@@ -486,7 +511,7 @@
           alt="指北針圖示"
           width="161"
           height="117"
-          loading="eager"
+          loading="lazy"
           class="absolute right-0 top-12 hidden sm:block"
         />
         <div

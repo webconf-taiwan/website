@@ -29,6 +29,7 @@ import { ORGANIZERS } from '~/constants/sponsors'
         class="relative grid place-content-center border-b-[0.5px] border-webconf-frame before:absolute before:inset-0 before:block before:size-5 before:bg-webconf-blue before:content-[''] lg:before:size-7"
       >
         <NuxtImg
+          loading="lazy"
           :src="organizer.logo"
           width="225"
           height="180"
@@ -58,6 +59,7 @@ import { ORGANIZERS } from '~/constants/sponsors'
               class="block p-[10px]"
             >
               <NuxtImg
+                loading="lazy"
                 :src="link.icon"
                 width="24"
                 height="24"
@@ -80,12 +82,14 @@ import { ORGANIZERS } from '~/constants/sponsors'
     </div>
 
     <NuxtImg
+      loading="lazy"
       class="absolute right-[14.3906px] top-[-409.219px] -z-10 hidden lg:block"
       src="/images/sponsors/sponsors-line.svg"
       width="908"
       height="749"
     />
     <NuxtImg
+      loading="lazy"
       class="absolute right-[-36px] top-[-186.375px] -z-10 block lg:hidden"
       src="/images/sponsors/sponsors-line-mobile.svg"
       width="394"

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { SPEAKERS } from '~/constants/agenda'
+
 const speakers = [
   {
     name: 'Happy',
@@ -62,6 +64,15 @@ const displayCardLengthArr = ref(
   Array.from({ length: 3 }, (_, index) => index),
 )
 
+// 講者頁首屏的卡片照片，閒置時先抓，點「講者陣容」過去時已經抓好
+/** 與 SpeakerCard 的 <NuxtImg> 尺寸一致 */
+const SPEAKER_CARD_PHOTO = { width: 220, height: 314 } as const
+/** 講者頁首屏的卡片數；1920×1080 實測只露出一排四張 */
+const SPEAKERS_PAGE_FIRST_SCREEN = 4
+const { warm } = useImagePreload()
+const placeholderImageUrls = usePlaceholderImageUrls()
+let stopWarmSpeakersPage: (() => void) | undefined
+
 onMounted(() => {
   const updateCardLength = () => {
     let length = 3
@@ -78,7 +89,15 @@ onMounted(() => {
 
   updateCardLength()
   watch(width, updateCardLength)
+
+  stopWarmSpeakersPage = warm(
+    SPEAKERS.slice(0, SPEAKERS_PAGE_FIRST_SCREEN).flatMap(speaker =>
+      placeholderImageUrls(speaker.avatarUrl, SPEAKER_CARD_PHOTO),
+    ),
+  )
 })
+
+onBeforeUnmount(() => stopWarmSpeakersPage?.())
 
 watch(displayCardLengthArr, () => {
   forceRerenderKey.value++

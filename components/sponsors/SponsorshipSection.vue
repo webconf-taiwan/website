@@ -150,6 +150,7 @@ const SUPPORTSTARGET = [
     </ShareGradientDotsCard>
 
     <NuxtImg
+      loading="lazy"
       class="absolute right-[-36px] top-[-96.6406px] -z-10 block lg:hidden"
       src="/images/sponsors/sponsors-line-mobile.svg"
       width="394"

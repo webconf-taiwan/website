@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useDevicePixelRatio } from '@vueuse/core'
 import { EXTERNAL_LINKS } from '~/constants/externalLinks'
+import { MAP_INFO } from '~/constants/venue'
 
 useSeoMeta({
   title: '場域介紹',
@@ -41,75 +41,6 @@ const TRANSPORT_INFO = [
   },
 ]
 
-const MAP_INFO = [
-  {
-    id: 1,
-    name: 'HQ｜大會報到處',
-    display: 'HQ｜大會報到處',
-    image: '/images/venue/HQ.webp',
-    link: '/images/venue/HQ.png',
-    isAvailable: true,
-  },
-  {
-    id: 2,
-    name: 'M 棟｜議程廳',
-    display: 'M 棟｜議程廳',
-    image: '/images/venue/M.webp',
-    link: '/images/venue/M.png',
-    isAvailable: true,
-  },
-  {
-    id: 3,
-    name: 'I 棟｜休息區',
-    display: 'I 棟｜休息區',
-    image: '/images/venue/I.webp',
-    link: '/images/venue/I.png',
-    isAvailable: true,
-  },
-  {
-    id: 4,
-    name: 'F 棟｜議程廳',
-    display: 'F 棟｜議程廳',
-    image: '/images/venue/F.webp',
-    link: '/images/venue/F.png',
-    isAvailable: true,
-  },
-  {
-    id: 5,
-    name: 'B 棟｜交流攤位',
-    display: 'B 棟｜交流攤位',
-    image: '/images/venue/B.webp',
-    link: '/images/venue/B.png',
-    isAvailable: true,
-  },
-  {
-    id: 6,
-    name: 'A1 棟｜工作坊',
-    display: 'A1 棟｜工作坊（2F）',
-    image: '/images/venue/A1.webp',
-    link: '/images/venue/A1.png',
-    isAvailable: true,
-  },
-  {
-    id: 7,
-    name: 'A2 棟｜議程廳',
-    display: 'A2 棟｜議程廳',
-    image: '/images/venue/A2.webp',
-    link: '/images/venue/A2.png',
-    isAvailable: true,
-  },
-  {
-    id: 8,
-    name: 'G 棟｜未開放',
-    display: 'G 棟｜未開放',
-    width: 0,
-    height: 0,
-    image: '',
-    link: '',
-    isAvailable: false,
-  },
-]
-
 const selectedVenueNum = ref(1)
 
 const selectedVenue = computed(() =>
@@ -124,22 +55,8 @@ function setVenue(num: number, isAvailable: boolean) {
 
 const venueBgRef = ref<HTMLDivElement | null>(null)
 
-/** 與下方平面圖 <NuxtImg> 的尺寸一致；URL 要完全相同才會命中預熱的快取 */
-const VENUE_MAP = { width: 1180, height: 550 } as const
-
-const img = useImage()
 const { preload, warm } = useImagePreload()
-const { pixelRatio } = useDevicePixelRatio()
-
-/** <NuxtImg> 的 srcset 有 1x、2x 兩張，瀏覽器依像素比只會抓其中一張 */
-function venueMapUrl(src: string) {
-  const density = pixelRatio.value > 1 ? 2 : 1
-
-  return img(src, {
-    width: VENUE_MAP.width * density,
-    height: VENUE_MAP.height * density,
-  })
-}
+const venueMapUrl = useVenueMapUrl()
 
 /** 碰到分頁按鈕時用 high 插隊，點下去前就抓好 */
 function preloadVenueMap(venue: (typeof MAP_INFO)[number]) {

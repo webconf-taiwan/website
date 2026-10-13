@@ -165,5 +165,41 @@ export function useImagePreload() {
     }
   }
 
-  return { preload, warm }
+  /**
+   * 預熱 root 底下 loading="lazy" 的圖，讓首屏外的圖滑到前就抓好。
+   * 網址直接取自 <img> 的 srcset，跟瀏覽器之後要抓的是同一張；
+   * display: none 的圖（例如手機版隱藏的照片）跳過，免得抓了用不到。
+   */
+  function warmLazyImages(root: HTMLElement | null | undefined): () => void {
+    if (!import.meta.client || !root)
+      return () => {}
+
+    const urls = [...root.querySelectorAll<HTMLImageElement>('img[loading="lazy"]')]
+      .filter(image => getComputedStyle(image).display !== 'none')
+      .map(pickImageUrl)
+      .filter((url): url is string => Boolean(url))
+
+    return warm(urls)
+  }
+
+  return { preload, warm, warmLazyImages }
+}
+
+/** 依像素比從 srcset 的 1x、2x 挑出瀏覽器會用的那張；沒有 srcset 就用 src */
+function pickImageUrl(image: HTMLImageElement) {
+  const candidates = image.srcset
+    .split(/,\s+/)
+    .map((candidate) => {
+      const [url, descriptor = '1x'] = candidate.trim().split(/\s+/)
+      return { url, density: Number.parseFloat(descriptor) }
+    })
+    .filter(candidate => candidate.url && !Number.isNaN(candidate.density))
+    .sort((a, b) => a.density - b.density)
+
+  if (!candidates.length)
+    return image.getAttribute('src')
+
+  const ratio = window.devicePixelRatio || 1
+
+  return (candidates.find(candidate => candidate.density >= ratio) ?? candidates.at(-1)!).url
 }
