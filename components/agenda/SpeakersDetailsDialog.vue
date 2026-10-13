@@ -64,6 +64,9 @@ const pageNumber = computed(() => {
 
 let autoPlayTween: gsap.core.Tween | null = null
 
+// 講者圖片滑動的時間（秒）
+const IMAGE_SLIDE_DURATION = 0.8
+
 // 觸控或捲動停止後，等待多久再恢復自動播放（毫秒）
 const TOUCH_RESUME_DELAY = 5000
 // 滑鼠停在內容區
@@ -123,36 +126,61 @@ function animateContentTransition(nextIndex: number, type: 'next' | 'prev') {
     return
   }
 
+  const contentEl = speakerDialogIntroComponentRef.value.contentRef
+  // 文字淡出、淡入各占圖片滑動時間的一半，讓兩者同時開始、同時結束；
+  // 若先淡出文字才滑圖片，手機版上下排列時會先整塊變黑，再出現新名字配舊照片的空檔
+  const halfDuration = IMAGE_SLIDE_DURATION / 2
+
   const tl = gsap.timeline({
     onComplete: () => {
       isAnimating.value = false
     },
   })
 
-  // 內容淡出
-  tl.to(speakerDialogIntroComponentRef.value.contentRef, {
-    opacity: 0,
-    duration: 0.3,
-    ease: 'power2.out',
-  })
+  // 啟動圖片動畫
+  tl.call(
+    () => {
+      if (type === 'next') {
+        animateImageTransition(nextIndex)
+      }
+      else {
+        animateImageTransitionReverse(nextIndex)
+      }
+    },
+    [],
+    0,
+  )
 
-  // 更新內容資料 + 啟動圖片動畫
-  tl.call(() => {
-    currentPageNumber.value = nextIndex
-    if (type === 'next') {
-      animateImageTransition(nextIndex)
-    }
-    else {
-      animateImageTransitionReverse(nextIndex)
-    }
-  })
+  // 內容淡出
+  tl.to(
+    contentEl,
+    {
+      opacity: 0,
+      duration: halfDuration,
+      ease: 'power1.in',
+    },
+    0,
+  )
+
+  // 圖片滑到一半時更新內容資料
+  tl.call(
+    () => {
+      currentPageNumber.value = nextIndex
+    },
+    [],
+    halfDuration,
+  )
 
   // 內容淡入
-  tl.to(speakerDialogIntroComponentRef.value.contentRef, {
-    opacity: 1,
-    duration: 0.3,
-    ease: 'power2.in',
-  })
+  tl.to(
+    contentEl,
+    {
+      opacity: 1,
+      duration: halfDuration,
+      ease: 'power1.out',
+    },
+    halfDuration,
+  )
 }
 
 /* 處理下一位講者 */
@@ -202,7 +230,7 @@ function animateImageTransition(targetIndex: number) {
   // 向左滑動
   tl.to(container, {
     x: '-100%',
-    duration: 0.8,
+    duration: IMAGE_SLIDE_DURATION,
     ease: 'power2.inOut',
   })
 }
@@ -235,7 +263,7 @@ function animateImageTransitionReverse(targetIndex: number) {
   // 向右滑動到 0
   tl.to(container, {
     x: 0,
-    duration: 0.8,
+    duration: IMAGE_SLIDE_DURATION,
     ease: 'power2.inOut',
   })
 }
