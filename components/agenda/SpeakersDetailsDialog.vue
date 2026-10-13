@@ -64,6 +64,14 @@ const pageNumber = computed(() => {
 
 let autoPlayTween: gsap.core.Tween | null = null
 
+// 觸控或捲動停止後，等待多久再恢復自動播放（毫秒）
+const TOUCH_RESUME_DELAY = 5000
+// 滑鼠停在內容區
+const isHoveringContent = ref(false)
+// 觸控或捲動中（停止後經過 TOUCH_RESUME_DELAY 才解除）
+const isTouchInteracting = ref(false)
+let touchResumeTimer: ReturnType<typeof setTimeout> | null = null
+
 /* 處理關閉彈出視窗 */
 function handleClose() {
   // 淡出動畫
@@ -236,7 +244,11 @@ function animateImageTransitionReverse(targetIndex: number) {
 function startAutoPlay() {
   if (!props.speaker || props.speaker.length <= 1)
     return
+  // 使用者還在操作時不啟動，等操作結束再由對應的處理函式恢復
+  if (isHoveringContent.value || isTouchInteracting.value)
+    return
 
+  pauseAutoPlay()
   isAutoPlaying.value = true
 
   autoPlayTween = gsap.delayedCall(5, () => {
@@ -255,16 +267,34 @@ function pauseAutoPlay() {
   }
 }
 
-/* 處理滑鼠進入內容區 */
-function handleMouseEnterContent() {
+/* 處理滑鼠進入內容區（觸控模擬出來的事件不算，交給觸控處理） */
+function handlePointerEnterContent(event: PointerEvent) {
+  if (event.pointerType !== 'mouse')
+    return
+  isHoveringContent.value = true
   pauseAutoPlay()
 }
 
 /* 處理滑鼠離開內容區 */
-function handleMouseLeaveContent() {
-  if (props.speaker && props.speaker.length > 1) {
+function handlePointerLeaveContent(event: PointerEvent) {
+  if (event.pointerType !== 'mouse')
+    return
+  isHoveringContent.value = false
+  startAutoPlay()
+}
+
+/* 處理觸控與捲動：暫停自動播放，停止操作一段時間後再恢復 */
+function handleTouchInteraction() {
+  isTouchInteracting.value = true
+  pauseAutoPlay()
+
+  if (touchResumeTimer)
+    clearTimeout(touchResumeTimer)
+  touchResumeTimer = setTimeout(() => {
+    touchResumeTimer = null
+    isTouchInteracting.value = false
     startAutoPlay()
-  }
+  }, TOUCH_RESUME_DELAY)
 }
 
 /** 處理 ESC 關閉事件監聽 */
@@ -290,6 +320,8 @@ onMounted(() => {
 
 onUnmounted(() => {
   pauseAutoPlay()
+  if (touchResumeTimer)
+    clearTimeout(touchResumeTimer)
   if (lenis) {
     lenis.start()
   }
@@ -302,6 +334,8 @@ onUnmounted(() => {
     data-lenis-prevent
     class="fixed inset-0 z-40 flex h-dvh flex-col overflow-y-auto bg-black/80 pt-[47px] opacity-0 scrollbar-none xs:pt-[55px] sm:pt-[57px] lg:flex-row lg:pt-[55px]"
     @keyup.esc="handleClose"
+    @touchstart.passive="handleTouchInteraction"
+    @scroll.capture.passive="handleTouchInteraction"
   >
     <AgendaFloatingBlocks />
 
@@ -329,8 +363,8 @@ onUnmounted(() => {
       <!-- 主要內容區塊 -->
       <div
         class="flex h-[calc(100%-72px)] flex-col lg:h-[calc(100%-76px)] lg:flex-row"
-        @mouseenter="handleMouseEnterContent"
-        @mouseleave="handleMouseLeaveContent"
+        @pointerenter="handlePointerEnterContent"
+        @pointerleave="handlePointerLeaveContent"
       >
         <!-- 講者圖片區塊(手機版) -->
         <SpeakerDialogImageMobile
