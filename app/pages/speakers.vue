@@ -28,29 +28,36 @@ const items = computed(() => (speakers.items || []).map((item, i) => ({
 })))
 
 const selected = ref([])
-const visible = computed(() => selected.value.length
-  ? items.value.filter(({ item }) => item.skills?.some(skill => selected.value.includes(skill)))
-  : items.value)
+// 篩選不藏人：沒選中的講者照片變灰（設計稿），SPEC 編號不動
+const matches = item => !selected.value.length || item.skills?.some(skill => selected.value.includes(skill))
 
-// 窄視窗才分頁（設計稿：一頁 8 位）。用 CSS 藏掉別頁的，不從 DOM 拿掉 ——
+// 窄視窗才分頁（設計稿：一頁 8 位），桌機一次列完。用 CSS 藏掉別頁的，不從 DOM 拿掉 ——
 // SSR 時還不知道視窗寬度，整份名單都要輸出，桌機與爬蟲才拿得到全部。
+// 窄視窗另外把選中的講者排到前面（CSS order），桌機照原本順序
 const perPage = speakers.mobile_per_page || 8
 const page = ref(1)
-const totalPages = computed(() => Math.max(1, Math.ceil(visible.value.length / perPage)))
-const onPage = i => Math.floor(i / perPage) + 1 === page.value
+const totalPages = computed(() => Math.max(1, Math.ceil(items.value.length / perPage)))
+const mobileOrder = computed(() => {
+  const order = new Map()
+  const rows = [...items.value.filter(({ item }) => matches(item)), ...items.value.filter(({ item }) => !matches(item))]
+  rows.forEach(({ item }, i) => order.set(item.id, i))
+  return order
+})
+const onPage = item => Math.floor(mobileOrder.value.get(item.id) / perPage) + 1 === page.value
 
 const introRef = ref(null)
 const listRef = ref(null)
 useFadeIn(introRef, { step: 0.1 })
 const { fadeInNow } = useFadeIn(listRef, { step: 0.04 })
 
-// 篩選後名單高度變了：補播一次進場（還沒捲到、仍是 opacity 0 的卡片才不會卡住），
+// 補播一次進場（還沒捲到、仍是 opacity 0 的卡片才不會卡住），
 // 並讓 ScrollTrigger 重新量測（側欄粒子場與後面的進場都靠它）
 async function replayList () {
   await nextTick()
   fadeInNow(listRef.value, { step: 0.04 })
   useNuxtApp().$ScrollTrigger?.refresh()
 }
+// 篩選後窄視窗的排序變了：回第 1 頁看選中的
 watch(selected, () => {
   page.value = 1
   replayList()
@@ -107,14 +114,15 @@ watch(page, () => {
         :default-open="false"
       />
 
-      <ul ref="listRef" class="mt-6 flex flex-col lg:mt-12 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
+      <ul ref="listRef" class="speaker-list mt-6 flex flex-col lg:mt-12 lg:grid lg:grid-cols-4 lg:gap-x-6 lg:gap-y-12">
         <li
-          v-for="({ item, spec }, i) in visible"
+          v-for="{ item, spec } in items"
           :key="item.id"
           class="speaker-row"
-          :class="{ 'max-lg:hidden': !onPage(i) }"
+          :class="{ 'max-lg:hidden': !onPage(item) }"
+          :style="{ '--mobile-order': mobileOrder.get(item.id) }"
         >
-          <SpeakersProfile :data="item" :spec="spec" />
+          <SpeakersProfile :data="item" :spec="spec" :dimmed="!matches(item)" />
         </li>
       </ul>
 
@@ -126,11 +134,13 @@ watch(page, () => {
 </template>
 
 <style scoped>
-/* 窄視窗的名單是橫列：每列底下一條虛線，當頁第一列頂端再補一條 */
+/* 窄視窗的名單是橫列：每列底下一條虛線，名單頂端再補一條（列會被 order 重排，所以畫在 ul 上） */
 @media (max-width: 1023px) {
-  .speaker-row { border-bottom: 1px dashed rgb(239 230 210 / 20%); }
-  .speaker-row:not(.max-lg\:hidden):first-child,
-  .speaker-row.max-lg\:hidden + .speaker-row:not(.max-lg\:hidden) { border-top: 1px dashed rgb(239 230 210 / 20%); }
+  .speaker-list { border-top: 1px dashed rgb(239 230 210 / 20%); }
+  .speaker-row {
+    order: var(--mobile-order);
+    border-bottom: 1px dashed rgb(239 230 210 / 20%);
+  }
 }
 
 /* 同議程／贊助頁：右欄頂端那條線與 92px 的起點、底部收尾線 */

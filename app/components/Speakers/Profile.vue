@@ -7,6 +7,8 @@ const props = defineProps({
   data: { type: Object, default: () => ({}) },
   // 卡片左上角的 SPEC.01 —— 依完整名單的順序編號，篩選時不重排
   spec: { type: String, default: '' },
+  // 篩選沒選中：照片框變淡（設計稿 opacity 30%），文字與 SPEC 標籤照舊
+  dimmed: { type: Boolean, default: false },
 })
 
 const item = computed(() => props.data || {})
@@ -23,18 +25,21 @@ const orgLines = computed(() => [item.value, item.value.extra]
 <template>
   <article class="flex gap-4 py-6 lg:flex-col lg:gap-[14px] lg:py-0" @mouseenter="hovered = true" @mouseleave="hovered = false">
     <div data-fade="in" class="relative size-20 shrink-0 overflow-hidden bg-pre-800/5 lg:aspect-square lg:size-auto lg:w-full">
-      <img
-        :src="item.portrait"
-        :alt="item.name"
-        width="1000"
-        height="1000"
-        loading="lazy"
-        decoding="async"
-        class="block size-full object-cover"
-      >
-      <ClientOnly>
-        <SpeakersHoverPortrait v-if="isDesktop" :portrait="item.portrait" :static-src="item.portrait_static" :active="hovered" />
-      </ClientOnly>
+      <!-- 變淡放在裡面這層：外層的 opacity 由 data-fade 進場動畫控制 -->
+      <div class="absolute inset-0 transition-opacity duration-500" :class="{ 'opacity-30': dimmed }">
+        <img
+          :src="item.portrait"
+          :alt="item.name"
+          width="1000"
+          height="1000"
+          loading="lazy"
+          decoding="async"
+          class="block size-full object-cover"
+        >
+        <ClientOnly>
+          <SpeakersHoverPortrait v-if="isDesktop" :portrait="item.portrait" :static-src="item.portrait_static" :active="hovered" />
+        </ClientOnly>
+      </div>
       <div class="absolute inset-x-0 top-0 hidden items-center justify-between px-2 py-1 font-mono text-fs-meta text-pre-800/[62%] lg:flex">
         <p>{{ spec }}</p>
         <p v-if="item.day">{{ item.day }}</p>
