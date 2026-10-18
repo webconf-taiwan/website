@@ -1,6 +1,7 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'node:path'
 import { readFileSync } from 'node:fs'
+import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 // 全站 SEO 資料（站名、描述、各頁標題、哪些頁不收錄）的唯一來源，頁面端用 usePageSeo 讀同一份。
 // ⚠️ 用 readFileSync 而不是 import：nuxt dev 改 config 時是在「同一個 Node process」裡重載，
@@ -50,6 +51,29 @@ export default defineNuxtConfig({
     compressPublicAssets: false,
   },
 
+  hooks: {
+    // public/particle-kit/ 是零 build step 的 IIFE 原始碼（見 docs/point-cloud-effect.md），
+    // 正式 build 時只在「輸出目錄」那份上就地壓縮，原始碼與 dev 都不動。
+    // 全域名稱是掛在 window 上的屬性，minify 不會改名；不做 tree-shaking（各檔互相讀全域）。
+    // ⚠️ 一定要用 nitro.hooks.hook() 「追加」，不能寫在 nitro.hooks.compiled：
+    // cloudflare-module preset 自己也有 compiled hook（寫 wrangler.json、_headers fallback），
+    // 寫在設定裡會把它整個蓋掉，build 照樣成功但部署設定全沒了（實際踩過）。
+    'nitro:init' (nitro) {
+      if (nitro.options.dev) return
+      nitro.hooks.hook('compiled', async () => {
+        const { transform } = await import('esbuild')
+        const dir = path.join(nitro.options.output.publicDir, 'particle-kit')
+        let files = []
+        try { files = (await readdir(dir)).filter(f => f.endsWith('.js')) } catch { return }
+        for (const f of files) {
+          const file = path.join(dir, f)
+          const { code } = await transform(await readFile(file, 'utf8'), { minify: true, target: 'es2020', legalComments: 'none' })
+          await writeFile(file, code)
+        }
+      })
+    }
+  },
+
   modules: [
     '@nuxt/eslint',
     '@nuxt/fonts',
@@ -59,11 +83,25 @@ export default defineNuxtConfig({
     '@vueuse/nuxt'
   ],
 
-  // OG 圖模板要顯示中文，nuxt-og-image 內建只有 Inter（拉丁字），中文字會變成缺字方框，
-  // 得靠 @nuxt/fonts 額外抓一套支援繁中的字型，並在 OgImage/Default 模板裡指定套用。
+  // 全站字型唯一來源：@nuxt/fonts 在 build 時把 Google Fonts 抓下來自託管到 /_fonts/
+  // （同源、immutable 長快取、不阻塞渲染）。⚠️ 別再在 app.head 加 Google Fonts 的 <link>：
+  // 之前兩邊同時存在，同一套字被下載兩次（33 個字型檔、2.3 MB），Google 那支 CSS 還阻塞首屏。
+  //
+  // ⚠️ 字重要對齊設計稿的 16 個文字樣式（Figma 變數 en/* zh/* common/*），少一個就會
+  // 變成瀏覽器合成的假粗體 —— CJK 襯線體的合成粗體會把字腔塞死，跟真 Bold 差很多。
+  //   Noto Serif TC 500  zh/display、zh/h1～h5 都是 Medium（講者名、FAQ 問題、hero 場地日期）
+  //   Noto Serif TC 700  講者名中文 font-bold；font-en-serif 裡的中文字也會掉到這套
+  //   Noto Sans TC 400   zh/body_lg zh/body_md zh/btn
+  //   Noto Sans TC 500   font-medium 的按鈕、標籤
+  //   Inria Serif        en/* 全部是斜體為主，400/700 × normal/italic
+  //   IBM Plex Mono      common/*（數字、座標、標籤）400/500
+  // 全站只用 font-normal / font-medium / font-bold（grep 過），要加字重記得同步這裡。
   fonts: {
     families: [
-      { name: 'Noto Sans TC', weights: [400, 700], global: true }
+      { name: 'Noto Serif TC', provider: 'google', weights: [400, 500, 700], styles: ['normal'] },
+      { name: 'Noto Sans TC', provider: 'google', weights: [400, 500], styles: ['normal'] },
+      { name: 'Inria Serif', provider: 'google', weights: [400, 700], styles: ['normal', 'italic'] },
+      { name: 'IBM Plex Mono', provider: 'google', weights: [400, 500], styles: ['normal'] }
     ]
   },
 
@@ -131,19 +169,7 @@ export default defineNuxtConfig({
         { rel: 'icon', sizes: '32x32', href: `${assetBase}/favicon.ico` },
         { rel: 'icon', type: 'image/svg+xml', href: `${assetBase}/favicon.svg` },
         { rel: 'apple-touch-icon', href: `${assetBase}/apple-touch-icon.png` },
-        { rel: 'manifest', href: `${assetBase}/manifest.webmanifest` },
-        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
-        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        // ⚠️ 字重要對齊設計稿的 16 個文字樣式（Figma 變數 en/* zh/* common/*），少一個就會
-        // 變成瀏覽器合成的假粗體 —— CJK 襯線體的合成粗體會把字腔塞死，跟真 Bold 差很多。
-        //   Noto Serif TC 500  zh/display、zh/h1～h5 都是 Medium（講者名、FAQ 問題、hero 場地日期）
-        //   Noto Sans TC 400   zh/body_lg zh/body_md
-        //   Noto Sans TC 400   zh/btn（按鈕，Regular）
-        // ⚠️ Noto Sans TC 原本是 nuxt-fonts 自動解析進來的（只給 400/700），沒有 500，
-        //    所以按鈕的 Medium 也是合成的。這裡明確宣告就拿回控制權。
-        // ⚠️ font-serif 的 stack 是 Inria Serif → Noto Serif TC，Inria 沒有中文字，
-        //    所以「用 font-serif 寫中文」的地方也會掉到 Noto Serif TC 700。
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Noto+Sans+TC:wght@400;500&family=Noto+Serif+TC:wght@300;400;500;600;700&display=swap' }
+        { rel: 'manifest', href: `${assetBase}/manifest.webmanifest` }
       ],
       noscript: [{ innerHTML: '此網站需要開啟 JavaScript' }]
     }

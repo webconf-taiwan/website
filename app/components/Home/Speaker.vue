@@ -52,11 +52,7 @@ const RIGHT = computed(() => SPEAKERS.value.slice(5))
 // `lg:row-start-${i}` 這種拼接它看不到，產不出 CSS。
 const ROW = ['lg:row-start-1', 'lg:row-start-2', 'lg:row-start-3', 'lg:row-start-4', 'lg:row-start-5']
 
-// 名字中英混排：中文用 Noto Serif TC Bold（不斜），英文用 Inria Serif Bold Italic。
-const CJK_RUN = /([㐀-鿿豈-﫿]+)/
-function nameRuns (name) {
-  return name.split(CJK_RUN).filter(Boolean).map(t => ({ t, zh: CJK_RUN.test(t) }))
-}
+// 名字中英混排的切法見 utils/nameRuns.js
 
 // --- 換人的編排 ------------------------------------------------------------
 // 設計要的順序（點下另一位時）：
@@ -338,7 +334,7 @@ onBeforeUnmount(() => {
     id="speaker"
     ref="sectionRef"
     data-same-speaker
-    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[860px] lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
+    class="relative z-10 overflow-clip px-6 py-16 lg:min-h-[800px] lg:px-[60px] lg:py-0 lg:pt-[60px] min-[1440px]:pt-0"
   >
     <!-- 引線：被選中的名字 → 中央觀景框 -->
     <svg
@@ -497,8 +493,11 @@ onBeforeUnmount(() => {
          左四位／人像／右四位。八個名字同時在畫面上，點誰換誰。
          ⚠️ 在窄視窗是 display:none（不是 v-if）—— 名字要留在 SSR 的 HTML 裡。
     ==================================================================== -->
+    <!-- ⚠️ ≥1440 的 min-h 要跟 section 的 lg:min-h-[860px] 同一個數字：這個尺寸卷號是絕對定位、
+         名單格線就是 section 的全部內容。只給 100vh 的話，視窗矮於 860 時格線比 section 矮、
+         又貼在最上面 —— 名單擠到頂端（鑽進導覽列底下）、底下空一大塊。 -->
     <div
-      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-8 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:gap-x-0"
+      class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-8 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:min-h-[max(100vh,800px)] min-[1440px]:gap-x-0"
     >
       <button
         v-for="(s, i) in LEFT"
@@ -587,6 +586,31 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
+      <!-- 更多講者（桌機）：名單格線裡的一格 —— 中央那一欄、最後一列，下緣切齊最後一位講者的
+           文字下緣（pb-4 = 名字那格自己的 pb-4，扣掉才是文字的底，不是格子的底）。
+           位置完全跟著名單走，不看視窗高度也不看 section 底部（那兩種算法視窗一變就跑位）。
+           中央觀景框那一欄跨五列但內容只到第四列左右，這顆放第五列不會撞到。 -->
+      <div
+        v-if="moreLink.href"
+        data-fade="in"
+        class="hidden whitespace-nowrap lg:col-start-2 lg:row-start-5 lg:flex lg:items-end lg:justify-center lg:pb-4"
+      >
+        <AtomButton
+          class="lg:translate-y-[100%]"
+          intent="primary"
+          size="md"
+          rounded="none"
+          icon="arrow-right-thin"
+          icon-position="end"
+          icon-size="md"
+          :href="moreLink.href"
+          :target="moreLink.target"
+          :rel="linkRel(moreLink.target)"
+        >
+          {{ moreLink.label }}
+        </AtomButton>
+      </div>
+
       <button
         v-for="(s, i) in RIGHT"
         :key="s.name"
@@ -623,8 +647,8 @@ onBeforeUnmount(() => {
       </button>
     </div>
 
-    <!-- 更多講者 -->
-    <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:absolute lg:inset-x-0 lg:bottom-[70px] lg:mt-0">
+    <!-- 更多講者（窄視窗）。桌機那顆是名單格線裡的一格，跟著名單走。 -->
+    <div data-fade="in" class="relative z-2 mt-10 flex justify-center lg:hidden">
       <AtomButton
         v-if="moreLink.href"
         intent="primary"

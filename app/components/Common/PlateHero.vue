@@ -18,7 +18,8 @@ const props = defineProps({
 const { isDesktop, viewportReady } = useViewportMode()
 const mobileHeroRef = ref(null)
 const desktopHeroRef = ref(null)
-const backend = computed(() => props.desktopMode === 'gpu' ? 'webgpu' : '')
+// 備援（影片／靜態圖）沒有引擎，照首頁的慣例標成 canvas2d（見 pages/index.vue 的 backend）。
+const backend = computed(() => props.desktopMode === 'gpu' ? 'webgpu' : props.desktopMode === 'fallback' ? 'canvas2d' : '')
 
 useFadeIn(mobileHeroRef, { y: 28, step: 0.12 })
 useFadeIn(desktopHeroRef, { y: 28, step: 0.12 })
@@ -38,7 +39,7 @@ const label = computed(() => props.ariaLabel || props.title)
       <CommonPlateField v-if="viewportReady && !isDesktop" :density="density" plate-style />
     </ClientOnly>
     <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
-    <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4">
+    <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[calc(100%_-_32px)] -translate-x-1/2 flex-col items-center gap-y-4">
       <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-meta leading-[14px] text-pre-800/80">
         <span class="w-14 shrink-0">{{ plate.code }}</span>
         <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
@@ -87,7 +88,7 @@ const label = computed(() => props.ariaLabel || props.title)
       <!-- ⚠️ 桌機這份不用 <h1>：手機與桌機兩個 section 都會 SSR 出來（只靠 CSS 隱藏），
            兩個都用 h1 的話爬蟲看到的是同一頁兩個 h1。role/aria-level 讓讀屏在桌機
            （手機那份 display:none，讀不到）仍然拿得到頁面的一級標題。 -->
-      <p data-plate-title role="heading" aria-level="1" data-fade="in" class="mt-4 font-en-serif text-[72px] font-bold italic leading-[86px] tracking-normal text-pre-800">
+      <p data-plate-title role="heading" aria-level="1" data-fade="in" class="mt-4 font-en-serif text-[72px] font-normal italic leading-[86px] tracking-[0.02em] text-pre-800">
         {{ title }}
       </p>
       <p data-fade="in" class="mt-2 font-zh-serif text-[22px] font-medium leading-[26px] tracking-[0.02em] text-pre-800">
@@ -124,7 +125,14 @@ const label = computed(() => props.ariaLabel || props.title)
 /* Figma 背景取景：手機 640px、桌機 720px；兩版皆自頂端顯示 550px。
    粒子、影片與載入圖片共用此高度，避免視窗高低改變內頁構圖。 */
 .plate-hero { --plate-hero-field-height: 640px; }
+/* 只襯字緣，讓亮粒子經過時仍能辨識文字。 */
+.plate-hero :is(h1, p) { text-shadow: 0 1px 3px #0a0a0c; }
 @media (min-width: 1024px) {
   .plate-hero { --plate-hero-field-height: 720px; }
+}
+/* 手機標題：SPEAKERS / SPONSORS 這種 8 個字母的在 64px 會比 360px 視窗還寬，
+   框寬跟著視窗走、字級在窄手機上往下縮（390px 以上維持設計稿的 64px）。 */
+@media (max-width: 1023px) {
+  .plate-hero h1 { font-size: clamp(56px, 17.78vw, 64px); }
 }
 </style>

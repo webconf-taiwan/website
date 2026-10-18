@@ -1,7 +1,6 @@
 <script setup>
-// 議程與贊助共用的桌機 hero。基準為未修改的 Home/Field.vue 自由場：
-// 使用同一份 look、面積預算與取樣工具；550px 的版面裁切 Figma 背景取景。
-// 側欄／照片牆仍由原有場負責，避免調整 hero 密度時連它們一起改變。
+// 404／建置中的桌機自由場，沿用 Home/Field.vue 的 look、面積預算與取樣工具。
+// 視窗大小的背景由外層 Hero 裁切，呈現高度由各頁既有版面決定。
 const props = defineProps({ look: { type: Object, required: true } })
 const emit = defineEmits(['ready', 'unavailable'])
 const { loadParticleKit } = useParticleKit()
@@ -350,6 +349,6 @@ defineExpose({ backend })
 
 <template>
   <div ref="rootRef" aria-hidden="true" class="pointer-events-none absolute inset-0 z-0 overflow-hidden" data-desktop-hero-field>
-    <canvas ref="canvasRef" class="absolute inset-0 w-full" style="height: var(--plate-hero-field-height, 100vh)" />
+    <canvas ref="canvasRef" class="absolute inset-0 w-full" style="height: 100vh" />
   </div>
 </template>

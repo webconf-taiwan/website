@@ -58,12 +58,7 @@ const RIGHT = computed(() => SPEAKERS.value.slice(4))
 // `lg:row-start-${i}` 這種拼接它看不到，產不出 CSS。
 const ROW = ['lg:row-start-1', 'lg:row-start-2', 'lg:row-start-3', 'lg:row-start-4']
 
-// 名字中英混排：中文用 Noto Serif TC Bold（不斜），英文用 Inria Serif Bold Italic。
-// 設計稿的「保哥 Will」就是這樣拼的 —— 拆成 runs 之後，之後加講者不必再手動切 span。
-const CJK_RUN = /([㐀-鿿豈-﫿]+)/
-function nameRuns (name) {
-  return name.split(CJK_RUN).filter(Boolean).map(t => ({ t, zh: CJK_RUN.test(t) }))
-}
+// 名字中英混排的切法見 utils/nameRuns.js
 
 // --- 可調參數 --------------------------------------------------------------
 const SAMPLES = 32000       // ⚠️ 每張圖都要同一個點數，否則換人配對會有一撮粒子配不到對

@@ -203,6 +203,7 @@ onBeforeUnmount(() => killFadeIns())
         class="-bottom-8 z-1 md:-bottom-12"
         src="/home-deco/home-no-webgpu-deco-1"
         align="center"
+        :small-width="900"
         from="bottom"
         :width="1600"
         :height="1600"

@@ -1,11 +1,9 @@
 <script setup>
-import { plateFieldLook } from '~/utils/particleFieldLooks'
 import { homeFieldLookFromLocation } from '~/utils/homeFieldLooks'
 
 // ⚠️ 這支是議程／贊助／404／建置中用的那一份（CommonPlateField 的 hero 變體掛它），
-// 從 Home/MobileField.vue 分出來的：開場保留（useParticleOpening）、plateStyle、
-// sandbox 原值的效果表（particleFieldLooks.js）都只在這裡。
-// 首頁用的是 Home/MobileField.vue ＋ homeFieldLooks.js，兩邊各改各的。
+// 從 Home/MobileField.vue 分出來的；各頁 Hero 共用首頁的視覺參數，
+// 議程／贊助的開場與取景仍由 plateStyle 控制。
 // 下面的說明沿用首頁版，提到的區間（PL.I、票券～CoC）是首頁的版面。
 //
 // 手機／平板（< 1024px）的粒子場 —— 桌機那條「一鏡到底」的時間軸在這裡是關掉的。
@@ -420,8 +418,8 @@ function frame (now) {
     engine.setTargets(holdBase, holdBase)
   }
 
-  // 內頁需持續保留設計構圖，呼吸最低仍保有四分之三握力。
-  const breatheFloor = props.plateStyle ? 0.75 : HOLD_BREATHE_FLOOR
+  // 與首頁相同的鬆握幅度，避免粒子一直黏在標題中央。
+  const breatheFloor = HOLD_BREATHE_FLOOR
   const breathe = reducedMotion
     ? 1
     : breatheFloor + (1 - breatheFloor) * (0.5 - 0.5 * Math.cos(t / HOLD_BREATHE_MS * TAU))
@@ -440,12 +438,10 @@ async function init () {
   // ⚠️ 窄視窗「不」提供效果切換清單 —— 效果的差異在這個寬度本來就看不太出來，
   // 而那份清單很長，在手機上會把真正要調的旋鈕擠到看不見。
   // ?tool=1 面板在這裡只顯示「參數微調」那一段（見 FieldLookPanel 的 look prop）。
-  // 議程／贊助用 sandbox 原值表再套 plateFieldLook（藍白、強拉力撐住構圖）。
-  // 404／建置中沒有那層拉力，sandbox 原值表的對稱矩陣會在滿版塌成幾顆球然後不動
-  //（#111），所以改讀首頁那張站上調校過的表，行為跟首頁 hero 一樣。
-  const fromUrl = props.plateStyle ? fieldLookFromLocation() : homeFieldLookFromLocation()
+  // 共用首頁的點徑、亮度、相機與持續演化規則，避免內頁另鎖一份中央構圖。
+  const fromUrl = homeFieldLookFromLocation()
   toolMode.value = fromUrl.tool
-  look = props.plateStyle ? plateFieldLook(fromUrl.look) : fromUrl.look
+  look = fromUrl.look
   appliedForce = look.physics.forceFactor
 
   const hero = window.PLPalettes.PALETTES[look.palette]

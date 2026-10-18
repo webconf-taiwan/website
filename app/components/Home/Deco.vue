@@ -71,7 +71,12 @@ const props = defineProps({
   // 視差位移量，以「圖片寬度」的倍數表示；0 = 不做視差
   parallax: { type: Number, default: 0.12 },
   // 進場方向：'right' 從右邊滑入；'bottom' 從下往上浮起
-  from: { type: String, default: 'right' }
+  from: { type: String, default: 'right' },
+  // 有縮小版時給「縮小版的寬度」（例如 900 → 另外要有 `${src}-900.webp`）。
+  // 這些圖顯示寬度上限只有 max（440px），手機 2x 螢幕也只要 ~880px，
+  // 原檔 1600px 是給桌機 SideDeco 用的，手機抓原檔會多下載將近一倍。
+  // 不給就只輸出原檔（舊行為）。
+  smallWidth: { type: Number, default: 0 }
 })
 
 const rootRef = ref(null)
@@ -125,6 +130,9 @@ onBeforeUnmount(() => {
 })
 
 const W = computed(() => `min(${props.size * 100}vw, ${props.max}px)`)
+const webpSrcset = computed(() => (props.smallWidth
+  ? `${props.src}-${props.smallWidth}.webp ${props.smallWidth}w, ${props.src}.webp ${props.width}w`
+  : `${props.src}.webp`))
 const boxStyle = computed(() => ({ height: `calc(${W.value} * ${props.reveal})` }))
 const imgStyle = computed(() => {
   const push = `${props.shift * 100}%`
@@ -147,7 +155,7 @@ const imgStyle = computed(() => {
     <div ref="parallaxRef" class="absolute inset-0">
       <div ref="innerRef" class="absolute inset-0 z-1">
         <picture>
-          <source :srcset="`${src}.webp`" type="image/webp">
+          <source :srcset="webpSrcset" :sizes="smallWidth ? W : undefined" type="image/webp">
           <img
             ref="imgRef"
             :src="`${src}.png`"

@@ -1,4 +1,23 @@
 {
+  "plate": {
+    "code": "PL. III",
+    "number": "III.",
+    "label": "SPEAKERS"
+  },
+  "corner_left": {
+    "label": "CODEX EMERGENCE",
+    "note": "vol. V · plate III"
+  },
+  "corner_right": {
+    "label": "N 25.04° · E 121.56°",
+    "note": "simulation · live"
+  },
+  "heading_lines": ["Thinkers behind", "the evolving Web."],
+  "subheading": "推動網路演化的觀察者與實踐者",
+  "filter_label": "標籤篩選",
+  "filter_all": "全部",
+  "mobile_per_page": 8,
+  "filter_skills": ["AI", "Frontend", "Backend", "DevOps", "Security", "Agile", "產品思維", "產業應用", "團隊管理", "軟體設計", "設計實務"],
   "items": [
     {
       "id": "gipi",

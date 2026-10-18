@@ -73,7 +73,18 @@ function sync () {
   const v = videoRef.value
   if (!v) return
   if (reducedMotion || !visible.size || document.hidden || idle.value) v.pause()
-  else v.play().catch(armGestureRetry)
+  else if (v.paused) v.play().catch(armGestureRetry)
+}
+
+// 捲動時再試一次：該播卻停著（play() 之前被擋、或觀察器還沒回報）就趁捲動補播。
+// 一幀最多一次，而且已經在播時 sync 什麼都不做。
+let scrollRaf = 0
+function onScroll () {
+  if (scrollRaf) return
+  scrollRaf = requestAnimationFrame(() => {
+    scrollRaf = 0
+    sync()
+  })
 }
 
 // 自動播放被瀏覽器擋掉時（iOS 低耗電模式、Android 省電／省流量、LINE / FB 這類 App 內建瀏覽器），
@@ -115,6 +126,7 @@ onMounted(() => {
   // prefers-reduced-motion：只留 poster（第一幀），不播
   reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
   document.addEventListener('visibilitychange', sync)
+  window.addEventListener('scroll', onScroll, { passive: true })
   io = new IntersectionObserver((entries) => {
     for (const e of entries) e.isIntersecting ? visible.add(e.target) : visible.delete(e.target)
     sync()
@@ -129,6 +141,8 @@ onMounted(() => {
 onBeforeUnmount(() => {
   io?.disconnect()
   disarmGestureRetry()
+  cancelAnimationFrame(scrollRaf)
+  window.removeEventListener('scroll', onScroll)
   document.removeEventListener('visibilitychange', sync)
 })
 </script>
