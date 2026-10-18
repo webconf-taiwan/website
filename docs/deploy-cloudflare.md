@@ -1,7 +1,8 @@
 # 部署到 Cloudflare Workers（Nuxt 4 SSR）— 實作說明
 
 > 相關檔案：`wrangler.jsonc`（根目錄）、`nuxt.config.ts` 的 `nitro` 區塊、`.gitignore`。
-> 正式網域 `webconf2026.jordanttc.com`，production 分支 `deploy/2026-main`。
+> 正式網域 `webconf.tw`（`www.webconf.tw` 由 `server/middleware/canonical-host.js` 301 轉回 apex），
+> 測試網域 `webconf2026.jordanttc.com`，production 分支 `deploy/2026-main`。
 
 以 **Cloudflare Workers**（不是 Pages）跑真正的 SSR，設定用 **`wrangler.jsonc` 進版控**，
 由 **Workers Builds（Git 整合）** 自動部署。全程不需要在本機打 wrangler 指令。
@@ -104,12 +105,12 @@ title / description / lang / og:locale / robots、`runtimeConfig` 的預設值�
 | 變數 | 值 | 備註 |
 |---|---|---|
 | `APP_BASE_URL` | `/` | **漏了整站 404** |
-| `APP_URL` | `https://webconf2026.jordanttc.com` | og / canonical |
+| `APP_URL` | `https://webconf.tw` | og / canonical / sitemap / llms.txt 的網址都從這裡來 |
 | `APP_TITLE` | `Webconf` | |
 | `APP_DESC` | （正式描述） | |
 | `APP_DEFAULT_LANG` | `zh-TW` | |
-| `APP_API` | `https://webconf2026.jordanttc.com/api` | 目前沒人呼叫，先佔位 |
-| `WEB_SEARCH` | `NO` | 上線前保持 `NO` → `noindex, nofollow`；開站當天改 `YES` |
+| `APP_API` | `https://webconf.tw/api` | 目前沒人呼叫，先佔位 |
+| `WEB_SEARCH` | `YES`（正式）／`NO`（測試） | `NO` → robots.txt `Disallow: /` + 每頁 `noindex, nofollow`，**所有搜尋引擎與 AI 爬蟲（GPTBot、ClaudeBot、PerplexityBot…）都進不來**，llms.txt 與結構化資料等於白做。見 §8「開站檢查」 |
 | `SHOW_CONSOLE_LOG` | `NO` | 讓 vite esbuild 清掉 `console.log` / `console.info` |
 | `NODE_VERSION` | `22` | 對齊本機 v22.18.0 |
 | `YARN_VERSION` | `1.22.22` | **不設會 install 失敗**，見下 |
@@ -236,7 +237,23 @@ npx wrangler dev    # 會自動跟著 .wrangler/deploy/config.json 走
   （證明是 SSR，不是空殼）
 - 逐頁開 `/`、`/about`、`/contact`、`/people`、`/greenscreen`
 - `/people` 與 `/greenscreen` 開 DevTools Network，確認 wasm / 模型載得到、Console 沒錯
-- 上線前確認 response 裡有 `noindex, nofollow`
+- 測試站確認 response 裡有 `noindex, nofollow`
+
+### 開站檢查（正式站 `WEB_SEARCH=YES` 之後）
+
+改完 build variable 要**重新 build**（是 build 時讀的，只改 runtime vars 沒用）。
+
+```bash
+curl -s https://webconf.tw/robots.txt          # 要是 Allow: / 並帶 Sitemap: 行，不能是 Disallow: /
+curl -s https://webconf.tw/ | grep -o '<meta name="robots"[^>]*>'   # 不能出現 noindex
+curl -s https://webconf.tw/ | grep -o '<link rel="canonical"[^>]*>' # 要是 https://webconf.tw/
+curl -sI https://www.webconf.tw/agenda | grep -i 'location'         # 301 → https://webconf.tw/agenda
+curl -s https://webconf.tw/sitemap.xml | grep -o '<loc>[^<]*'
+curl -s https://webconf.tw/llms.txt | head
+```
+
+全部對了再到 Google Search Console／Bing Webmaster Tools 提交 `https://webconf.tw/sitemap.xml`
+（Bing 的索引也是 ChatGPT 搜尋的來源之一）。
 
 ---
 
@@ -255,3 +272,5 @@ npx wrangler dev    # 會自動跟著 .wrangler/deploy/config.json 走
 | `/people` 去背失敗但本機正常 | imgly CDN 被擋，或誤加了 COEP header |
 | push 了卻沒觸發部署 | Branch control 還指著 `main`，不是 `deploy/2026-main` |
 | 搜尋引擎收錄了測試站 | `WEB_SEARCH` 不是 `NO` |
+| 正式站搜尋不到、AI 回答不引用 | 正式站的 `WEB_SEARCH` 還是 `NO`（看 `robots.txt` 是不是 `Disallow: /`） |
+| 同名換圖後訪客看到舊圖 | `public/_headers` 給靜態檔 7 天快取，換圖要改檔名 |
