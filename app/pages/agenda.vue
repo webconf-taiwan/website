@@ -73,11 +73,13 @@ const scheduleRef = ref(null)
 useFadeIn(introRef, { step: 0.1 })
 useFadeIn(controlsRef)
 const { fadeInNow } = useFadeIn(scheduleRef, { step: 0.06 })
+const { drawNow } = useDrawIn(scheduleRef)
 
 // 換天：另一天原本是 display:none，補播一次進場並讓 ScrollTrigger 重新量測
 watch(day, async () => {
   await nextTick()
   fadeInNow(scheduleRef.value, { step: 0.06 })
+  drawNow(scheduleRef.value)
   useNuxtApp().$ScrollTrigger?.refresh()
 })
 </script>
@@ -155,62 +157,67 @@ watch(day, async () => {
         </div>
       </div>
 
-      <!-- 兩天都輸出（另一天 display:none），爬蟲與 SSR 拿得到完整議程 -->
+      <!-- 兩天都輸出（另一天 display:none），爬蟲與 SSR 拿得到完整議程。
+           框線都是獨立的 span（data-draw），進場時畫出來（useDrawIn）；
+           x = 橫線由左往右、y = 直線由上往下。 -->
       <div ref="scheduleRef" class="mt-8 lg:mt-0">
         <div v-for="d in days" v-show="d.id === day" :key="d.id">
           <template v-if="d.slots.length">
             <!-- 表頭：場館（桌機才有；窄視窗每格自己標場館） -->
-            <div class="hidden grid-cols-3 border-y border-pre-800/35 lg:grid">
-              <p
-                v-for="room in rooms"
-                :key="room.id"
-                class="border-r border-dashed border-pre-800/35 py-6 text-center text-zh-body-md text-pre-800 last:border-r-0"
-              >
-                {{ room.label }}
-              </p>
+            <div class="relative hidden grid-cols-3 lg:grid">
+              <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-pre-800/35" />
+              <div v-for="(room, r) in rooms" :key="room.id" class="relative">
+                <p data-fade="in" class="py-6 text-center text-zh-body-md text-pre-800">{{ room.label }}</p>
+                <span v-if="r < rooms.length - 1" data-draw="y" aria-hidden="true" class="absolute inset-y-0 right-0 border-r border-dashed border-pre-800/35" />
+              </div>
+              <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 bottom-0 h-px bg-pre-800/35" />
             </div>
 
-            <div class="border-pre-800/35 max-lg:border-b">
+            <div class="relative">
               <template v-for="(slot, i) in d.slots" :key="i">
-                <p
-                  v-if="slot.type === 'break'"
-                  data-fade="in"
-                  class="border-pre-800/35 py-6 text-center text-zh-h5 text-pre-800 max-lg:border-t lg:border-b"
-                >
-                  {{ slot.label }}
-                </p>
+                <div v-if="slot.type === 'break'" class="relative">
+                  <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-pre-800/35 lg:hidden" />
+                  <p data-fade="in" class="py-6 text-center text-zh-h5 text-pre-800">{{ slot.label }}</p>
+                  <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 bottom-0 hidden h-px bg-pre-800/35 lg:block" />
+                </div>
 
-                <section v-else class="relative border-pre-800/35 lg:border-b">
-                  <!-- 時段：桌機壓在這列的上框線上（底色蓋掉線），窄視窗自成一列、後面拉一條線 -->
-                  <h3 data-fade="in" class="flex items-center gap-2 lg:absolute lg:-top-[10px] lg:left-0 lg:z-10 lg:bg-bg-mid lg:px-2">
-                    <span class="whitespace-nowrap text-body-sm text-accent-1">{{ d.label }} · {{ slot.time }}</span>
-                    <span aria-hidden="true" class="h-px flex-1 bg-pre-800/35 lg:hidden" />
+                <section v-else class="relative">
+                  <!-- 時段：桌機壓在上一列的底線上（底色蓋掉線），窄視窗自成一列、後面拉一條線 -->
+                  <h3 class="flex items-center gap-2 lg:absolute lg:-top-[10px] lg:left-0 lg:z-10 lg:bg-bg-mid lg:px-2">
+                    <span data-fade="in" class="whitespace-nowrap text-body-sm text-accent-1">{{ d.label }} · {{ slot.time }}</span>
+                    <span data-draw="x" aria-hidden="true" class="h-px flex-1 bg-pre-800/35 lg:hidden" />
                   </h3>
 
                   <div class="grid lg:grid-cols-3">
-                    <div
-                      v-for="cell in slot.cells"
-                      :key="cell.room.id"
-                      data-fade="in"
-                      class="border-dashed border-pre-800/35 max-lg:border-t max-lg:first:border-t-0 lg:border-r lg:last:border-r-0"
-                    >
+                    <div v-for="(cell, c) in slot.cells" :key="cell.room.id" class="relative">
                       <AgendaSession
                         v-if="cell.type === 'session'"
+                        data-fade="in"
                         :data="cell.session"
                         :room="cell.room.label"
                         :dimmed="!matches(cell.session)"
                       />
                       <p
                         v-else
+                        data-fade="in"
                         class="flex h-full items-center justify-center px-6 py-6 text-center text-zh-h5 lg:py-10"
                         :class="cell.type === 'tba' ? 'text-pre-800/[62%]' : 'text-pre-800'"
                       >
                         <span class="sr-only">{{ cell.room.label }}：</span>{{ cell.type === 'simulcast' ? agenda.simulcast_label : agenda.tba_label }}
                       </p>
+
+                      <!-- 線放在內容後面，hover 的漸層才不會蓋過去。
+                           窄視窗：同一時段的場次之間一條虛線；桌機：欄與欄之間一條直虛線 -->
+                      <span v-if="c > 0" data-draw="x" aria-hidden="true" class="absolute inset-x-0 top-0 border-t border-dashed border-pre-800/35 lg:hidden" />
+                      <span v-if="c < slot.cells.length - 1" data-draw="y" aria-hidden="true" class="absolute inset-y-0 right-0 hidden border-r border-dashed border-pre-800/35 lg:block" />
                     </div>
                   </div>
+
+                  <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 bottom-0 hidden h-px bg-pre-800/35 lg:block" />
                 </section>
               </template>
+
+              <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 bottom-0 h-px bg-pre-800/35 lg:hidden" />
             </div>
           </template>
 
