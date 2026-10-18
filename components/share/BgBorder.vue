@@ -450,7 +450,7 @@ onUnmounted(() => {
     <!-- 網格層 (最底層) -->
     <div
       ref="gridContainer"
-      class="fixed inset-0 z-10 size-full"
+      class="grid-placeholder fixed inset-0 z-10 size-full"
     ></div>
 
     <!-- 浮動方塊特效 -->
@@ -480,6 +480,31 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
+/*
+ * p5 要等 JS 載完、hydration 後才畫得出格線，這裡先用 CSS 畫一層相同的灰網格，
+ * 第一次繪製就有格線；p5 的 canvas 底色是不透明的黑，畫好後會整個蓋掉這層。
+ * 間距、顏色、線寬對應 FIXED_GRID_SIZE 與 props 預設值；
+ * p5 從第一個間距開始畫線，所以裁掉左緣與上緣在 0 的那條。
+ */
+.grid-placeholder::before {
+  --grid-size: 64px;
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image:
+    linear-gradient(to right, rgb(230 230 230 / 0.3) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(230 230 230 / 0.3) 1px, transparent 1px);
+  background-size: var(--grid-size) var(--grid-size);
+  clip-path: inset(1px 0 0 1px);
+}
+
+@media (min-width: 1024px) {
+  .grid-placeholder::before {
+    --grid-size: 80px;
+  }
+}
+
 @supports (min-height: 100dvh) {
   .hero-contentContainer {
     min-height: 100dvh;

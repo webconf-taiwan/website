@@ -113,6 +113,7 @@ export default antfu(
             'venue-content',
             'venue-map',
             'agenda-section',
+            'grid-placeholder',
           ], // 允許自定義的 CSS 類名
         },
       ],
