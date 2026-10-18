@@ -142,6 +142,7 @@ module.exports = {
         'fs-zh-h3': [FLUID.h3, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 24 → 32（原32 · Bold）
         'fs-zh-h4': ['1.75rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  28 · Bold
         'fs-zh-h5': ['1.375rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  22 · Bold
+        'fs-zh-h6': ['1.125rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  18 · Medium
         'fs-zh-body-lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  18 · Regular（Noto Sans TC）
         'fs-zh-body-md': ['1rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  16 · Regular（Noto Sans TC）
         'fs-zh-btn': ['1rem', { lineHeight: '1', letterSpacing: '0.1em' }], //  16 · Regular（Noto Sans TC，按鈕）
@@ -172,6 +173,7 @@ module.exports = {
         'fs-zh-h3-m': [FLUID.h3, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 24 → 32（原24 ← 32-24）
         'fs-zh-h4-m': ['1.375rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  22 ← 28-22
         'fs-zh-h5-m': ['1.125rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  18 ← 22-18
+        'fs-zh-h6-m': ['1rem', { lineHeight: '1.2', letterSpacing: '0.02em' }], //  16 ← 18-16
         'fs-zh-body-lg-m': ['1rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  16 ← 18-16
         'fs-zh-body-md-m': ['0.9375rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  15 ← 16-15
         'fs-zh-btn-m': ['0.9375rem', { lineHeight: '1', letterSpacing: '0.1em' }], //  15 ← 16-15

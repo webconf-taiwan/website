@@ -2,109 +2,116 @@
   "plate": { "code": "PL. II", "number": "II.", "label": "AGENDA" },
   "corner_left": { "label": "CODEX EMERGENCE", "note": "vol. V · plate II" },
   "corner_right": { "label": "N 25.04° · E 121.56°", "note": "simulation · live" },
-  "note_lines": ["The full schedule,", "coming soon."],
   "heading_lines": ["Sessions,", "across two days."],
   "mobile_heading": "Sessions across two days.",
   "date": "Dec. 11-12, 2026",
+  "filter_label": "標籤篩選",
+  "filter_all": "全部",
+  "filter_skills": ["AI", "Frontend", "Backend", "DevOps", "Security", "Agile", "產品思維", "產業應用", "團隊管理", "軟體設計", "設計實務"],
+  "simulcast_label": "同步聯播",
+  "tba_label": "議程即將公布",
+  "coming_soon_label": "\\ 更多精彩議程即將釋出 /",
+  "rooms": [
+    { "id": "m", "label": "M 棟" },
+    { "id": "f", "label": "F 棟" },
+    { "id": "a2", "label": "A2 棟" }
+  ],
+  "days": [
+    {
+      "id": "day1",
+      "label": "DAY 1",
+      "date": "2026-12-11",
+      "slots": [
+        { "start": "09:05", "end": "09:55", "sessions": { "m": null, "f": "simulcast", "a2": "simulcast" } },
+        { "start": "10:05", "end": "10:50", "sessions": { "m": "agenda-02", "f": "agenda-04", "a2": "agenda-07" } },
+        { "start": "11:00", "end": null, "sessions": { "m": "agenda-12", "f": "agenda-09", "a2": "agenda-10" } },
+        { "start": "11:55", "end": null, "sessions": { "m": "agenda-01", "f": "agenda-03", "a2": "agenda-05" } },
+        { "type": "break", "label": "午休時間" },
+        { "start": "13:30", "end": null, "sessions": { "m": "agenda-06", "f": "agenda-08", "a2": "agenda-11" } },
+        { "start": "14:25", "end": null, "sessions": { "m": null, "f": null, "a2": null } },
+        { "start": "15:20", "end": null, "sessions": { "m": null, "f": null, "a2": null } },
+        { "start": "16:15", "end": null, "sessions": { "m": null, "f": "simulcast", "a2": "simulcast" } }
+      ]
+    },
+    {
+      "id": "day2",
+      "label": "DAY 2",
+      "date": "2026-12-12",
+      "slots": []
+    }
+  ],
   "items": [
     {
       "id": "agenda-01",
-      "code": "PL. II · 01",
       "title": "唱片公司的一名 AI 員工：AI 時代音樂廠牌與創意人的新角色",
       "skills": ["AI", "產品思維", "產業應用"],
-      "speaker_name": "陳律融",
-      "speaker_title": "律森文化事業有限公司・創辦人",
-      "is_highlighted": false
+      "speakers": [{ "name": "陳律融", "title": "律森文化事業有限公司・創辦人" }]
     },
     {
       "id": "agenda-02",
-      "code": "PL. II · 02",
       "title": "agent first 的 web 開發心得",
       "skills": ["Frontend", "Backend", "DevOps", "AI"],
-      "speaker_name": "TonyQ",
-      "speaker_title": "拾果踏冰有限公司・創辦人",
-      "is_highlighted": true
+      "speakers": [{ "id": "tonyq" }]
     },
     {
       "id": "agenda-03",
-      "code": "PL. II · 03",
       "title": "AI x 傳產，AI 如何重塑組織",
       "skills": ["AI", "產業應用", "團隊管理"],
-      "speaker_name": "Gipi 游舒帆",
-      "speaker_title": "方圓國際・策略長",
-      "is_highlighted": false
+      "speakers": [{ "id": "gipi" }]
     },
     {
       "id": "agenda-04",
-      "code": "PL. II · 04",
       "title": "所有靠人類自律來實現的 tokens 節費都是徒勞無功的",
       "skills": ["AI"],
-      "speaker_name": "尹相志",
-      "speaker_title": "數據決策股份有限公司・技術長",
-      "is_highlighted": false
+      "speakers": [{ "id": "yin-siang-jhih" }]
     },
     {
       "id": "agenda-05",
-      "code": "PL. II · 05",
       "title": "當 Agent 成為另一個 User：AI 時代的產品架構重構",
       "skills": ["AI", "產品思維", "軟體設計"],
-      "speaker_name": "Ian 陳葵懋",
-      "speaker_title": "一等一科技・研發部主任工程師",
-      "is_highlighted": false
+      "speakers": [{ "name": "Ian 陳葵懋", "title": "一等一科技・研發部主任工程師" }]
     },
     {
       "id": "agenda-06",
-      "code": "PL. II · 06",
       "title": "秒站，就是你的即站力！",
       "skills": ["AI", "軟體設計", "產品思維"],
-      "speaker_name": "張耿瑭",
-      "speaker_title": "言回有限公司・負責人",
-      "is_highlighted": false
+      "speakers": [{ "name": "張耿瑭", "title": "言回有限公司・負責人" }]
     },
     {
       "id": "agenda-07",
-      "code": "PL. II · 07",
       "title": "與 Agent 打造 Day1 就有用戶的產品",
       "skills": ["AI", "產品思維"],
-      "speaker_name": "Max Chen",
-      "speaker_title": "對稱資訊股份有限公司・CEO",
-      "is_highlighted": false
+      "speakers": [{ "id": "max-chen" }]
     },
     {
       "id": "agenda-08",
-      "code": "PL. II · 08",
       "title": "先懷疑，再共舞 - 駕馭 AI 時代的探索性測試",
       "skills": ["AI", "軟體設計"],
-      "speaker_name": "柯仁傑",
-      "speaker_title": "Odd-eAgile・Coach",
-      "is_highlighted": false
+      "speakers": [{ "name": "柯仁傑", "title": "Odd-eAgile・Coach" }]
     },
     {
       "id": "agenda-09",
-      "code": "PL. II · 09",
       "title": "站在巨人的肩上，看見未見之地：把工程知識變成可模擬的未來",
       "skills": ["AI", "軟體設計", "產品思維", "產業應用", "團隊管理"],
-      "speaker_name": "趙敏含",
-      "speaker_title": "MetAI 宇見智能科技・產品總監",
-      "is_highlighted": false
+      "speakers": [{ "name": "趙敏含", "title": "MetAI 宇見智能科技・產品總監" }]
     },
     {
       "id": "agenda-10",
-      "code": "PL. II · 10",
       "title": "以人為本的 AI 轉型",
       "skills": ["AI", "DevOps", "團隊管理"],
-      "speaker_name": "Jalex Chang",
-      "speaker_title": "Nitra・Staff software engineer",
-      "is_highlighted": false
+      "speakers": [{ "name": "Jalex Chang", "title": "Nitra・Staff software engineer" }]
     },
     {
       "id": "agenda-11",
-      "code": "PL. II · 11",
       "title": "AI 時代的拓荒筆記 - 當事實不再稀缺，我們如何建立共識？",
       "skills": ["AI", "軟體設計", "設計實務", "產品思維", "團隊管理"],
-      "speaker_name": "姜虹伊",
-      "speaker_title": "inline・Sr. Product designer",
-      "is_highlighted": false
+      "speakers": [{ "name": "姜虹伊", "title": "inline・Sr. Product designer" }]
+    },
+    {
+      "id": "agenda-12",
+      "title": "演算人生的編織：從一張網，到活起來的神經",
+      "skills": [],
+      "speakers": []
     }
   ]
 }

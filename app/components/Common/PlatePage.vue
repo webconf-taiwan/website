@@ -112,7 +112,9 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
 
     <section class="plate-page-body-section relative z-10 pb-[120px] lg:pb-0">
       <div data-plate-body class="mx-auto flex max-w-[1440px] flex-col lg:flex-row lg:justify-center">
-        <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[484px] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+        <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[clamp(400px,33.61vw,484px)] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+          <!-- 左欄寬：1440 時是設計稿的 484，窄一點的桌機跟著縮（33.61vw），
+               最窄 400 = 左內距 60 + 篩選面板 300 + 跟右欄留 40，不然中間會空一大塊。 -->
           <!-- 沒有 WebGPU（或減少動態、引擎失敗）時的側欄：跟首頁 PL.IV 同一張菌落圖、
                同樣的寬度與位置（見 Home/VenueFaq.vue 的 HomeSideDeco）。貼齊左緣，圖檔左邊本來就切掉半顆。
                進場與視差同首頁（useDecoReveal）；側欄是 sticky，視差的捲動範圍改看整段 body。 -->

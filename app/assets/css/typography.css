@@ -51,6 +51,10 @@
     @apply font-zh-serif font-medium text-fs-zh-h5-m lg:text-fs-zh-h5;
   }
 
+  .text-zh-h6 {
+    @apply font-zh-serif font-medium text-fs-zh-h6-m lg:text-fs-zh-h6;
+  }
+
   .text-zh-body-lg {
     @apply font-zh-sans font-normal text-fs-zh-body-lg-m lg:text-fs-zh-body-lg;
   }

@@ -39,9 +39,11 @@ const HOME_FALLBACK = {
 
 const AGENDA_FALLBACK = {
   plate: {},
-  note_lines: [],
   heading_lines: [],
   date: '',
+  filter_skills: [],
+  rooms: [],
+  days: [],
   items: []
 }
 
@@ -83,12 +85,25 @@ export const useHomeData = async () => {
   }
 }
 
+// 議程的講者：有在講者名單（speakers.json）的寫 { "id": "tonyq" }，姓名、頭銜、照片都從名單拿；
+// 只講議程、沒上講者名單的直接寫 { "name", "title", "portrait"? }。
+// 這裡統一攤平成 { name, title, portrait }，元件不用管是哪一種。
 export const useAgendaData = async () => {
-  const agenda = await import('~/constants/data/agenda.json')
+  const [agenda, speakers] = await Promise.all([
+    import('~/constants/data/agenda.json'),
+    import('~/constants/data/speakers.json')
+  ])
+  const byId = new Map((speakers.default.items || []).map(p => [p.id, p]))
+  const resolve = (ref) => {
+    const person = ref.id && byId.get(ref.id)
+    if (!person) return { name: ref.name || '', title: ref.title || '', portrait: ref.portrait || '' }
+    return { name: person.name, title: [person.org, person.role].filter(Boolean).join('・'), portrait: person.portrait || '' }
+  }
 
   return {
     ...AGENDA_FALLBACK,
-    ...agenda.default
+    ...agenda.default,
+    items: (agenda.default.items || []).map(item => ({ ...item, speakers: (item.speakers || []).map(resolve) }))
   }
 }
 

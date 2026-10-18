@@ -1,15 +1,17 @@
 <script setup>
-// 講者頁的標籤篩選（Figma：Skills Container）。可複選；什麼都沒勾 = 全部。
+// 標籤篩選（Figma：Skills Container），講者頁與議程頁共用。可複選；什麼都沒勾 = 全部。
 // 桌機掛在 PlatePage 左欄（rail slot），手機放在名單上方 —— 兩份共用同一個 v-model，各自收合。
+// collapsible=false：沒有標題列、永遠展開（議程頁手機版由旁邊的篩選鈕控制開關）。
 const props = defineProps({
   label: { type: String, default: '' },
   allLabel: { type: String, default: '' },
   options: { type: Array, default: () => [] },
   defaultOpen: { type: Boolean, default: true },
+  collapsible: { type: Boolean, default: true },
 })
 
 const selected = defineModel({ type: Array, default: () => [] })
-const open = ref(props.defaultOpen)
+const open = ref(!props.collapsible || props.defaultOpen)
 const listId = useId()
 
 // 設計稿是兩欄、先由上往下排滿左欄（全部、AI、Frontend… 再換到右欄）
@@ -34,6 +36,7 @@ function toggle (value) {
 <template>
   <div class="w-full border border-pre-800/80 bg-bg-mid/70 backdrop-blur-[8px] lg:w-[300px]">
     <button
+      v-if="collapsible"
       type="button"
       class="flex w-full items-center justify-between border-b px-4 py-2 text-left text-zh-body-md text-pre-800 transition-colors duration-300"
       :class="open ? 'border-pre-800/35' : 'border-transparent'"

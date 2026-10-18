@@ -87,8 +87,9 @@ watch(page, () => {
     :corner-right="speakers.corner_right"
   >
     <template #rail>
-      <SpeakersSkillFilter
+      <CommonSkillFilter
         v-model="selected"
+        data-fade="in"
         :label="speakers.filter_label"
         :all-label="speakers.filter_all"
         :options="speakers.filter_skills"
@@ -105,7 +106,7 @@ watch(page, () => {
         <p data-fade="in" class="text-zh-h4 text-pre-800">{{ speakers.subheading }}</p>
       </div>
 
-      <SpeakersSkillFilter
+      <CommonSkillFilter
         v-model="selected"
         class="mt-6 lg:hidden"
         :label="speakers.filter_label"

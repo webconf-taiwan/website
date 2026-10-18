@@ -35,7 +35,7 @@ useSchemaOrg([
 ])
 
 // performer：首頁講者 + 只出現在議程頁的講者（以姓名去重），跟兩頁畫面上的名單一致。
-// 議程的 speaker_title 是「單位・職稱」，拆回 worksFor / jobTitle。
+// 議程講者的 title 是「單位・職稱」，拆回 worksFor / jobTitle。
 // 講者的第二頭銜（extra）畫面上有顯示，jobTitle 一起帶上。
 const homeSpeakers = home.speaker?.items || []
 const performers = [
@@ -45,10 +45,11 @@ const performers = [
     titles: [p.role, p.extra && [p.extra.org, p.extra.role].filter(Boolean).join(' ')].filter(Boolean)
   })),
   ...(agenda.items || [])
-    .filter(a => a.speaker_name && !homeSpeakers.some(p => p.name === a.speaker_name))
-    .map((a) => {
-      const [org, role] = (a.speaker_title || '').split('・')
-      return { name: a.speaker_name, org, titles: role ? [role] : [] }
+    .flatMap(a => a.speakers)
+    .filter((p, i, all) => p.name && !homeSpeakers.some(h => h.name === p.name) && all.findIndex(q => q.name === p.name) === i)
+    .map((p) => {
+      const [org, role] = (p.title || '').split('・')
+      return { name: p.name, org, titles: role ? [role] : [] }
     })
 ]
 
