@@ -66,6 +66,22 @@ const selected = ref([])
 // 篩選不藏場次：沒選中的變淡（同講者頁），表格不會因此缺格
 const matches = session => !selected.value.length || session.skills?.some(skill => selected.value.includes(skill))
 const filterOpen = ref(false)
+const filterButtonRef = ref(null)
+const filterPanelRef = ref(null)
+// 篩選面板浮在議程上：點面板以外的地方或按 Esc 就收起來
+function closeFilterOutside (e) {
+  if (e.type === 'keydown' ? e.key !== 'Escape' : filterPanelRef.value?.contains(e.target) || filterButtonRef.value?.contains(e.target)) return
+  filterOpen.value = false
+}
+watch(filterOpen, (open) => {
+  const method = open ? 'addEventListener' : 'removeEventListener'
+  document[method]('pointerdown', closeFilterOutside)
+  document[method]('keydown', closeFilterOutside)
+})
+onBeforeUnmount(() => {
+  document.removeEventListener('pointerdown', closeFilterOutside)
+  document.removeEventListener('keydown', closeFilterOutside)
+})
 
 const introRef = ref(null)
 const controlsRef = ref(null)
@@ -122,45 +138,49 @@ watch(day, async () => {
         </p>
       </div>
 
-      <!-- 窄視窗：天數切換＋篩選鈕，篩選面板在下方展開 -->
-      <div ref="controlsRef" class="lg:hidden">
+      <!-- 窄視窗：天數切換＋篩選鈕，往下捲時黏在 header（52px）下方。
+           篩選面板浮在議程上面、不推動內容；按鈕換成 ✕。
+           底色鋪滿整個視窗寬（-mx-5 px-5），議程捲過去時才不會從兩側露出來。 -->
+      <div ref="controlsRef" class="sticky top-[52px] z-25 -mx-5 bg-bg-mid/70 px-5 py-2 backdrop-blur-[8px] lg:hidden">
         <div data-fade="in" class="flex gap-2">
           <AgendaDayTabs v-model="day" :days="days" class="flex-1" />
           <button
+            ref="filterButtonRef"
             type="button"
-            class="flex size-[42px] shrink-0 items-center justify-center border text-pre-800 transition-colors duration-300"
-            :class="filterOpen || selected.length ? 'border-pre-800/80' : 'border-pre-800/35'"
+            class="relative flex size-[42px] shrink-0 items-center justify-center border text-pre-800 transition-colors duration-300"
+            :class="filterOpen ? 'border-pre-800/80 bg-pre-800/20' : selected.length ? 'border-pre-800/80' : 'border-pre-800/35'"
             :aria-label="agenda.filter_label"
             :aria-expanded="filterOpen"
             aria-controls="agenda-mobile-filter"
             @click="filterOpen = !filterOpen"
           >
-            <AtomIcon name="sliders" class="size-5" />
+            <!-- 篩選圖示轉 90° 交叉淡入成 ✕（同標籤篩選的加減號） -->
+            <AtomIcon name="sliders" class="absolute size-5 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none" :class="filterOpen ? 'rotate-90 opacity-0' : 'opacity-100'" />
+            <AtomIcon name="x" class="absolute size-6 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none" :class="filterOpen ? 'opacity-100' : '-rotate-90 opacity-0'" />
           </button>
         </div>
+
         <div
           id="agenda-mobile-filter"
-          class="grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none"
-          :class="filterOpen ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'"
+          ref="filterPanelRef"
+          class="absolute inset-x-5 top-full -mt-1 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none"
+          :class="filterOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none -translate-y-2 opacity-0'"
           :inert="!filterOpen"
-          @transitionend.self="useNuxtApp().$ScrollTrigger?.refresh()"
         >
-          <div class="min-h-0 overflow-hidden">
-            <CommonSkillFilter
-              v-model="selected"
-              class="mt-2"
-              :collapsible="false"
-              :all-label="agenda.filter_all"
-              :options="agenda.filter_skills"
-            />
-          </div>
+          <CommonSkillFilter
+            v-model="selected"
+            :collapsible="false"
+            :label="agenda.filter_label"
+            :all-label="agenda.filter_all"
+            :options="agenda.filter_skills"
+          />
         </div>
       </div>
 
       <!-- 兩天都輸出（另一天 display:none），爬蟲與 SSR 拿得到完整議程。
            框線都是獨立的 span（data-draw），進場時畫出來（useDrawIn）；
            x = 橫線由左往右、y = 直線由上往下。 -->
-      <div ref="scheduleRef" class="mt-8 lg:mt-0">
+      <div ref="scheduleRef" class="mt-6 lg:mt-0">
         <div v-for="d in days" v-show="d.id === day" :key="d.id">
           <template v-if="d.slots.length">
             <!-- 表頭：場館（桌機才有；窄視窗每格自己標場館） -->
@@ -183,7 +203,7 @@ watch(day, async () => {
 
                 <section v-else class="relative">
                   <!-- 時段：桌機壓在上一列的底線上（底色蓋掉線），窄視窗自成一列、後面拉一條線 -->
-                  <h3 class="flex items-center gap-2 lg:absolute lg:-top-[10px] lg:left-0 lg:z-10 lg:bg-bg-mid lg:px-2">
+                  <h3 class="flex items-center gap-2 lg:absolute lg:-top-[10px] lg:left-0 lg:z-1 lg:bg-bg-mid lg:px-2">
                     <span data-fade="in" class="whitespace-nowrap text-body-sm text-accent-1">{{ d.label }} · {{ slot.time }}</span>
                     <span data-draw="x" aria-hidden="true" class="h-px flex-1 bg-pre-800/35 lg:hidden" />
                   </h3>

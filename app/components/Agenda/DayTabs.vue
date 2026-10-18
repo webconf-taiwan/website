@@ -20,7 +20,7 @@ const active = defineModel({ type: String, default: '' })
       :class="[
         i > 0 && '-ml-px',
         day.id === active
-          ? 'z-10 border-accent-1 bg-gradient-to-b from-[#0F1D4E] to-[#0F1D4E]/30 text-accent-1'
+          ? 'z-1 border-accent-1 bg-gradient-to-b from-[#0F1D4E] to-[#0F1D4E]/30 text-accent-1'
           : 'border-pre-800/35 text-pre-800',
       ]"
       :aria-pressed="day.id === active"
