@@ -60,9 +60,8 @@
     },
 
     "/speakers": {
-      "title": "講者陣容（建置中）",
-      "noindex": true,
-      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+      "title": "講者陣容",
+      "description": "WebConf Taiwan 2026 講者陣容：來自 AI、前後端開發、產品與產業應用的實踐者，12 月 11–12 日於瓶蓋工廠台北製造所分享。"
     },
     "/venue": {
       "title": "場域介紹（建置中）",

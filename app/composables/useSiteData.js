@@ -96,3 +96,8 @@ export const useSponsorsData = async () => {
   const sponsors = await import('~/constants/data/sponsors.json')
   return sponsors.default
 }
+
+export const useSpeakersData = async () => {
+  const speakers = await import('~/constants/data/speakers.json')
+  return speakers.default
+}

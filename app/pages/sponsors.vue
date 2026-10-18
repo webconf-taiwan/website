@@ -83,8 +83,6 @@ usePageSeo('/sponsors')
 <style scoped>
 /* Sponsor-specific sizing keeps the reused agenda hero unchanged. */
 .sponsors-page :deep([data-plate-rail-note]) { display: none; }
-.sponsors-page :deep([data-plate-hero-mobile] h1),
-.sponsors-page :deep([data-plate-hero-desktop] [data-plate-title]),
 .sponsors-page :deep(.photo-heading h2),
 .sponsor-section h2 { font-weight: 400; letter-spacing: 0.02em; }
 .sponsors-page :deep(.text-en-caption) { font-weight: 400; }
@@ -96,16 +94,6 @@ usePageSeo('/sponsors')
     border-top: 1px solid rgb(239 230 210 / 35%);
     padding-top: 24px;
   }
-
-  .sponsors-page :deep([data-plate-hero-mobile] > .absolute.left-1\/2) {
-    width: calc(100% - 32px);
-  }
-
-  .sponsors-page :deep([data-plate-hero-mobile] h1) {
-    font-size: clamp(56px, 17.78vw, 64px);
-  }
-
-  .sponsors-page :deep([data-plate-hero-mobile] h1 + p) { font-size: 18px; letter-spacing: 0.02em; }
 }
 
 @media (min-width: 1024px) {

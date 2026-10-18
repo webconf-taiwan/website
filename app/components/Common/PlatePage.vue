@@ -1,10 +1,11 @@
 <script setup>
 // 「標本頁」的頁面外殼：共用首頁風格的主視覺與原有左欄粒子場 + 兩欄 body。
-// 議程頁與贊助頁共用；頁面只負責塞內容。
+// 議程頁、贊助頁與講者頁共用；頁面只負責塞內容。
 //
 // Slots
 //   hero-actions —— 主視覺副標下方（例如贊助頁的「成為夥伴 →」CTA）
 //   between      —— 主視覺與兩欄 body 之間的區塊（贊助頁的照片牆）
+//   rail         —— 左欄卷號下方（桌機才顯示；講者頁的標籤篩選）
 //   default      —— 右側內容
 //
 const props = defineProps({
@@ -129,14 +130,20 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
             </div>
           </ClientOnly>
           <div class="relative z-10 flex h-14 flex-col justify-start [text-shadow:0_0_12px_#0a0a0c] lg:h-full lg:min-h-0 lg:justify-between">
-            <CommonPlate
-              data-fade="in"
-              :data="plate"
-              :divider="false"
-              class="plate-page-plate !flex-row !items-baseline !gap-x-4 !py-0 lg:!flex-col lg:!gap-x-0"
-            />
+            <div class="flex min-h-0 flex-col">
+              <CommonPlate
+                data-fade="in"
+                :data="plate"
+                :divider="false"
+                class="plate-page-plate !flex-row !items-baseline !gap-x-4 !py-0 lg:!flex-col lg:!gap-x-0"
+              />
+              <!-- 卷號下方的側欄內容（桌機才有，例如講者頁的標籤篩選），跟著側欄一起 sticky -->
+              <div v-if="$slots.rail" class="hidden lg:mt-[60px] lg:block">
+                <slot name="rail" />
+              </div>
+            </div>
 
-            <div data-plate-rail-note class="hidden shrink-0 flex-col gap-1 lg:flex">
+            <div v-if="noteLines.length" data-plate-rail-note class="hidden shrink-0 flex-col gap-1 lg:flex">
               <p data-fade="in" class="font-mono text-meta leading-[14px] text-pre-800/80">{{ noteLines[0] }}</p>
               <p data-fade="in" class="text-en-caption italic text-pre-800">{{ noteLines[1] }}</p>
             </div>

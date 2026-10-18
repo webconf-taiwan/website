@@ -52,11 +52,7 @@ const RIGHT = computed(() => SPEAKERS.value.slice(5))
 // `lg:row-start-${i}` 這種拼接它看不到，產不出 CSS。
 const ROW = ['lg:row-start-1', 'lg:row-start-2', 'lg:row-start-3', 'lg:row-start-4', 'lg:row-start-5']
 
-// 名字中英混排：中文用 Noto Serif TC Bold（不斜），英文用 Inria Serif Bold Italic。
-const CJK_RUN = /([㐀-鿿豈-﫿]+)/
-function nameRuns (name) {
-  return name.split(CJK_RUN).filter(Boolean).map(t => ({ t, zh: CJK_RUN.test(t) }))
-}
+// 名字中英混排的切法見 utils/nameRuns.js
 
 // --- 換人的編排 ------------------------------------------------------------
 // 設計要的順序（點下另一位時）：
