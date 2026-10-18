@@ -140,8 +140,10 @@ watch(day, async () => {
 
       <!-- 窄視窗：天數切換＋篩選鈕，往下捲時黏在 header（52px）下方。
            篩選面板浮在議程上面、不推動內容；按鈕換成 ✕。
-           底色鋪滿整個視窗寬（-mx-5 px-5），議程捲過去時才不會從兩側露出來。 -->
-      <div ref="controlsRef" class="sticky top-[52px] z-25 -mx-5 bg-bg-mid/70 px-5 py-2 backdrop-blur-[8px] lg:hidden">
+           底色鋪滿整個視窗寬（-mx-5 px-5），議程捲過去時才不會從兩側露出來。
+           z-5：要蓋過議程內容（最高 z-1），但得低於 header 的手機選單（z-25），
+           同層級時它在 DOM 後面會反過來壓在選單上。 -->
+      <div ref="controlsRef" class="sticky top-[52px] z-5 -mx-5 bg-bg-mid/70 px-5 py-2 backdrop-blur-[8px] lg:hidden">
         <div data-fade="in" class="flex gap-2">
           <AgendaDayTabs v-model="day" :days="days" class="flex-1" />
           <button
