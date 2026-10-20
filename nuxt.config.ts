@@ -78,7 +78,6 @@ export default defineNuxtConfig({
         provider: 'google',
         weights: [400, 600, 700],
         styles: ['normal'],
-        subsets: ['chinese-traditional'],
         display: 'swap',
         preload: true,
       },
@@ -126,6 +125,13 @@ export default defineNuxtConfig({
   vite: {
     build: {
       rollupOptions: {
+        // @nuxt/fonts 1.x 每份用到字型的 CSS 都會重登記同一批字型檔，檔名與內容相同，覆蓋無害
+        // 用 onLog 而非 onwarn：Nuxt 的 server build 自帶 onwarn，會蓋掉這裡的設定
+        onLog(level, log, handler) {
+          if (log.code === 'FILE_NAME_CONFLICT' && log.message.includes('_nuxt/fonts/'))
+            return
+          handler(level, log)
+        },
         output: {
           manualChunks: {
             'gsap': ['gsap'],
