@@ -9,21 +9,18 @@ const props = defineProps({
   spec: { type: String, default: '' },
   // 篩選沒選中：照片框變淡（設計稿 opacity 30%），文字與 SPEC 標籤照舊
   dimmed: { type: Boolean, default: false },
+  // 目前篩選選中的標籤：卡片上對到的那幾個改用 accent-1（設計稿）
+  highlight: { type: Array, default: () => [] },
 })
 
 const item = computed(() => props.data || {})
-// hover 時照片換成粒子人像（見 Speakers/HoverPortrait）。
-// ⚠️ 只有桌機排版才掛：窄視窗的照片只有 80px，粒子／點畫圖縮到這麼小會糊成一片亮白、
-// 看不出是誰（設計決定手機版人物先不做粒子）。就算是有滑鼠的窄視窗也一樣。
-const hovered = ref(false)
-const { isDesktop } = useViewportMode()
 const orgLines = computed(() => [item.value, item.value.extra]
   .filter(line => line?.org || line?.role)
   .map(line => [line.org, line.role].filter(Boolean)))
 </script>
 
 <template>
-  <article class="flex gap-4 py-6 lg:flex-col lg:gap-[14px] lg:py-0" @mouseenter="hovered = true" @mouseleave="hovered = false">
+  <article class="flex gap-4 py-6 lg:flex-col lg:gap-[14px] lg:py-0">
     <div data-fade="in" class="relative size-20 shrink-0 overflow-hidden bg-pre-800/5 lg:aspect-square lg:size-auto lg:w-full">
       <!-- 變淡放在裡面這層：外層的 opacity 由 data-fade 進場動畫控制 -->
       <div class="absolute inset-0 transition-opacity duration-500" :class="{ 'opacity-30': dimmed }">
@@ -36,9 +33,6 @@ const orgLines = computed(() => [item.value, item.value.extra]
           decoding="async"
           class="block size-full object-cover"
         >
-        <ClientOnly>
-          <SpeakersHoverPortrait v-if="isDesktop" :portrait="item.portrait" :static-src="item.portrait_static" :active="hovered" />
-        </ClientOnly>
       </div>
       <div class="absolute inset-x-0 top-0 hidden items-center justify-between px-2 py-1 font-mono text-fs-meta text-pre-800/[62%] lg:flex">
         <p>{{ spec }}</p>
@@ -65,7 +59,14 @@ const orgLines = computed(() => [item.value, item.value.extra]
       </div>
 
       <ul data-fade="in" class="flex flex-wrap gap-x-2 gap-y-1 border-t border-dashed border-pre-800/35 pt-2 font-mono text-fs-meta text-pre-800/[62%] lg:gap-2 lg:pt-3">
-        <li v-for="skill in item.skills" :key="skill">#{{ skill }}</li>
+        <li
+          v-for="skill in item.skills"
+          :key="skill"
+          class="transition-colors duration-300"
+          :class="{ 'text-accent-1': highlight.includes(skill) }"
+        >
+          #{{ skill }}
+        </li>
       </ul>
     </div>
   </article>

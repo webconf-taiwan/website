@@ -123,7 +123,7 @@ watch(page, () => {
           :class="{ 'max-lg:hidden': !onPage(item) }"
           :style="{ '--mobile-order': mobileOrder.get(item.id) }"
         >
-          <SpeakersProfile :data="item" :spec="spec" :dimmed="!matches(item)" />
+          <SpeakersProfile :data="item" :spec="spec" :dimmed="!matches(item)" :highlight="selected" />
         </li>
       </ul>
 

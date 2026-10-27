@@ -112,7 +112,34 @@ export const useSponsorsData = async () => {
   return sponsors.default
 }
 
+// 講者卡右上角的 Day 1／Day 2：從議程排程反查（days[].slots[].sessions → 場次 → speakers 的 id），
+// 不在 speakers.json 另外維護。還沒排進議程的講者沒有 day，卡片就不印；
+// 兩天都有場次的寫成「Day 1・2」。speakers.json 自己寫了 day 的以那個為準。
 export const useSpeakersData = async () => {
-  const speakers = await import('~/constants/data/speakers.json')
-  return speakers.default
+  const [speakers, agenda] = await Promise.all([
+    import('~/constants/data/speakers.json'),
+    import('~/constants/data/agenda.json')
+  ])
+  const sessionById = new Map((agenda.default.items || []).map(item => [item.id, item]))
+  const daysById = new Map()
+  for (const [i, day] of (agenda.default.days || []).entries()) {
+    for (const slot of day.slots || []) {
+      for (const sessionId of Object.values(slot.sessions || {})) {
+        for (const ref of sessionById.get(sessionId)?.speakers || []) {
+          if (!ref.id) continue
+          if (!daysById.has(ref.id)) daysById.set(ref.id, new Set())
+          daysById.get(ref.id).add(i + 1)
+        }
+      }
+    }
+  }
+  const dayLabel = (id) => {
+    const days = [...(daysById.get(id) || [])].sort()
+    return days.length ? `Day ${days.join('・')}` : ''
+  }
+
+  return {
+    ...speakers.default,
+    items: (speakers.default.items || []).map(item => ({ ...item, day: item.day || dayLabel(item.id) }))
+  }
 }
