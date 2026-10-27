@@ -70,7 +70,7 @@
     "items": [
       {
         "code": "PL. I. VI. 01",
-        "title": "一般票",
+        "title": "一般票（沒有燈箱小禮）",
         "price": "4,980",
         "unit": "元 / 人",
         "category": "Field notes · General Admission",
@@ -79,7 +79,6 @@
         "features": [
           { "en": "Programme", "zh": "兩日完整議程" },
           { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
-          { "en": "Annual Edition", "zh": "年度紀念品" },
           { "en": "Interactive Area", "zh": "攤位互動體驗" }
         ]
       },
@@ -95,7 +94,7 @@
           { "en": "Three-Person Group Offer", "zh": "三人同行限定優惠" },
           { "en": "Programme", "zh": "兩日完整議程" },
           { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
-          { "en": "Annual Edition", "zh": "年度紀念品" },
+          { "en": "Exclusive Edition", "zh": "限定紀念品（燈箱）" },
           { "en": "Interactive Area", "zh": "攤位互動體驗" }
         ]
       },
@@ -112,7 +111,7 @@
           { "en": "VIP Seating", "zh": "VIP 尊榮席位" },
           { "en": "Programme", "zh": "兩日完整議程" },
           { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
-          { "en": "Annual Edition", "zh": "年度紀念品" },
+          { "en": "Exclusive Edition", "zh": "限定紀念品（燈箱）" },
           { "en": "Interactive Area", "zh": "攤位互動體驗" }
         ]
       },
@@ -127,7 +126,7 @@
         "features": [
           { "en": "Programme", "zh": "兩日完整議程" },
           { "en": "Daily Hospitality", "zh": "兩日午餐、下午茶" },
-          { "en": "Annual Edition", "zh": "年度紀念品" },
+          { "en": "Exclusive Edition", "zh": "限定紀念品（燈箱）" },
           { "en": "Interactive Area", "zh": "攤位互動體驗" }
         ],
         "note": "如有大量購票需求請至粉專與我們聯繫"
