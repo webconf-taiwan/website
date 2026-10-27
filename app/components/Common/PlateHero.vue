@@ -40,12 +40,14 @@ const label = computed(() => props.ariaLabel || props.title)
     </ClientOnly>
     <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
     <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[calc(100%_-_32px)] -translate-x-1/2 flex-col items-center gap-y-4">
-      <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-meta leading-[14px] text-pre-800/80">
-        <span class="w-14 shrink-0">{{ plate.code }}</span>
-        <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
-        <span class="w-[94px] shrink-0">WEBCONF.TW</span>
-        <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
-        <span class="w-9 shrink-0">2026</span>
+      <!-- 設計稿 common/meta_12px（12px／120%／字距 20%），每段都是 Hug —— 不要寫死寬度，
+           0.2em 字距下固定寬會擠在一起或溢出 -->
+      <p data-fade="in" class="flex items-center gap-x-3 whitespace-nowrap text-meta text-pre-800/80">
+        <span>{{ plate.code }}</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>WEBCONF.TW</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>2026</span>
       </p>
 
       <div class="flex h-[107px] w-full flex-col items-center gap-y-2">
@@ -77,12 +79,14 @@ const label = computed(() => props.ariaLabel || props.title)
       <CommonPlateField v-if="viewportReady && isDesktop && desktopMode === 'fallback'" media-only />
     </ClientOnly>
     <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center">
-      <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-[12px] leading-[14px] tracking-normal text-pre-800/80">
-        <span class="w-14 shrink-0">{{ plate.code }}</span>
-        <span aria-hidden="true" class="w-2 shrink-0 text-accent-1">&middot;</span>
-        <span class="w-[94px] shrink-0">WEBCONF.TW</span>
-        <span aria-hidden="true" class="w-2 shrink-0 text-accent-1">&middot;</span>
-        <span class="w-9 shrink-0">2026</span>
+      <!-- 設計稿 common/meta_12px（12px／120%／字距 20%），每段都是 Hug —— 不要寫死寬度，
+           0.2em 字距下固定寬會擠在一起或溢出 -->
+      <p data-fade="in" class="flex items-center gap-x-3 whitespace-nowrap text-meta text-pre-800/80">
+        <span>{{ plate.code }}</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>WEBCONF.TW</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>2026</span>
       </p>
 
       <!-- ⚠️ 桌機這份不用 <h1>：手機與桌機兩個 section 都會 SSR 出來（只靠 CSS 隱藏），
