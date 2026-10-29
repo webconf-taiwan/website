@@ -1,6 +1,6 @@
 # WebConf Taiwan 2024
 
-- Website : https://webconf.tw
+- Website : https://2024.webconf.tw
 - Facebook : https://www.facebook.com/WebConfTaiwan
 
 ## Features
@@ -41,6 +41,24 @@ Copy `.env.example` to `.env.production` and fill in the necessary values.
 ```bash
 pnpm build
 ```
+
+## Cloudflare Workers
+
+The Nuxt site is generated ahead of time and deployed as Worker static assets.
+Its pages, agenda detail routes, optimized images, and sitemap are generated
+into `.output/public`.
+
+```bash
+pnpm install --frozen-lockfile
+pnpm deploy
+```
+
+`pnpm deploy` regenerates the site before uploading it to the `webconf-2024`
+Worker. `NUXT_SITE_URL` defaults to `https://2024.webconf.tw` so generated
+canonical URLs and the sitemap use the archive domain. The custom domain is
+declared in `wrangler.jsonc` and is already bound to the Worker.
+
+推送 `2024` 分支後，GitHub Actions 會安裝套件、執行 `pnpm generate`，再部署 Worker。首次使用前，請在 GitHub repository 的 Actions secrets 設定 `CLOUDFLARE_ACCOUNT_ID` 與 `CLOUDFLARE_API_TOKEN`。API token 需有目標 Cloudflare 帳戶的 Workers 編輯權限。
 
 ## Developers
 

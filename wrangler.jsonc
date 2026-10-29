@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "webconf-2024",
+  "compatibility_date": "2026-10-29",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "2024.webconf.tw",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./.output/public",
+    "html_handling": "drop-trailing-slash",
+    "not_found_handling": "404-page"
+  },
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
+  }
+}
