@@ -1,5 +1,5 @@
 export const site = {
-  url: 'https://webconf.tw/',
+  url: 'https://2025.webconf.tw/', // 歷史站已搬到子網域，canonical／og:url／sitemap 都跟著這個值
   title: 'WebConf Taiwan 2025', // 影響 ld+json 的 WebPage name 生成
   name: 'WebConf Taiwan 2025',
   description:
