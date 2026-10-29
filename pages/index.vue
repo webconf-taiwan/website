@@ -13,8 +13,8 @@ useSchemaOrg([
   ...eventPerformers,
   {
     ...eventBasic,
-    location: { '@id': 'https://webconf.tw/#location' },
-    organizer: { '@id': 'https://webconf.tw/#organization' },
+    location: { '@id': 'https://2025.webconf.tw/#location' },
+    organizer: { '@id': 'https://2025.webconf.tw/#organization' },
     offers: eventOffers,
   },
 ])

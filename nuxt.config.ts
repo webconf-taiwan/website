@@ -97,8 +97,8 @@ export default defineNuxtConfig({
   app: {
     head: {
       link: [
-        { rel: 'icon', href: 'https://webconf.tw/images/seo/favicon.ico?v=2025' },
-        { rel: 'apple-touch-icon', href: 'https://webconf.tw/images/seo/appleTouchIcon.png?v=2025' },
+        { rel: 'icon', href: 'https://2025.webconf.tw/images/seo/favicon.ico?v=2025' },
+        { rel: 'apple-touch-icon', href: 'https://2025.webconf.tw/images/seo/appleTouchIcon.png?v=2025' },
       ],
       meta: [
         { name: 'theme-color', content: 'black' },
@@ -153,7 +153,7 @@ export default defineNuxtConfig({
             template: 'treemap',
             gzipSize: true,
             brotliSize: true,
-            open: true,
+            open: false,
           }) as any,
         ]
       : [],

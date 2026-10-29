@@ -1,7 +1,7 @@
 # WebConf Taiwan 2025
 
-<a href="https://webconf.tw" target="_blank" rel="noopener noreferrer">
-  <img src="https://img.shields.io/badge/Website-webconf.tw-blue" alt="Website">
+<a href="https://2025.webconf.tw" target="_blank" rel="noopener noreferrer">
+  <img src="https://img.shields.io/badge/Website-2025.webconf.tw-blue" alt="Website">
 </a>
 <a href="https://www.facebook.com/WebConfTaiwan" target="_blank" rel="noopener noreferrer">
   <img src="https://img.shields.io/badge/Facebook-WebConfTaiwan-1877F2" alt="Facebook">
@@ -15,7 +15,7 @@
 
 WebConf Taiwan 是一個聚集網頁技術愛好者和專家的年度盛會，讓大家一起探索網頁技術的演進和未來發展趨勢。過去幾年，網路世界變化迅速，我們將在這次研討會上回顧網頁技術的演變歷程，了解那些改變遊戲規則的關鍵時刻。除了回顧過去，WebConf Taiwan 更專注於未來。我們會討論如何利用人工智慧和機器學習來改善使用者體驗。還有最新的業界趨勢分享，幫助企業把握未來發展方向，保持競爭優勢。這將是一個充滿創意和靈感的活動，讓你與來自各地的網頁技術專業人士互動交流，共同探討未來的技術創新和可能性。
 
-- **官方網站**: <a href="https://webconf.tw" target="_blank" rel="noopener noreferrer">webconf.tw</a>
+- **官方網站**: <a href="https://2025.webconf.tw" target="_blank" rel="noopener noreferrer">2025.webconf.tw</a>
 - **活動花絮**: <a href="https://gallery.webconf.tw/" target="_blank" rel="noopener noreferrer">gallery.webconf.tw</a>
 - **聯絡信箱**: <a href="mailto:hi@webconf.tw" target="_blank" rel="noopener noreferrer">hi@webconf.tw</a>
 - **大會共筆**: <a href="https://hackmd.io/@webconf/HJiwwqnxZe/%2F9SP9NyHoSiSZEOYHsaeYeg" target="_blank" rel="noopener noreferrer">HackMD</a>
@@ -140,6 +140,24 @@ pnpm build
 # Preview production build
 pnpm preview
 ```
+
+### Cloudflare Workers
+
+The historical site can be prerendered and served as static assets from
+`.output/public`. `pnpm deploy` runs `nuxt generate` and then deploys the
+`webconf-2025` Worker.
+
+```bash
+SHARP_IGNORE_GLOBAL_LIBVIPS=1 pnpm install --frozen-lockfile
+pnpm deploy
+```
+
+The `SHARP_IGNORE_GLOBAL_LIBVIPS` setting avoids a source build of the older
+Sharp version used by Nuxt Image on machines with a global libvips install.
+The custom domain `2025.webconf.tw` is declared in `wrangler.jsonc` and is
+already bound to the Worker.
+
+推送 `2025` 分支後，GitHub Actions 會安裝套件、執行 `pnpm generate`，再部署 Worker。首次使用前，請在 GitHub repository 的 Actions secrets 設定 `CLOUDFLARE_ACCOUNT_ID` 與 `CLOUDFLARE_API_TOKEN`。API token 需有目標 Cloudflare 帳戶的 Workers 編輯權限。
 
 ---
 

@@ -1,0 +1,46 @@
+name: Deploy 2025
+
+on:
+  push:
+    branches:
+      - '2025'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-webconf-2025
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Check Cloudflare secrets
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_ACCOUNT_ID" ] || [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "Set CLOUDFLARE_ACCOUNT_ID and CLOUDFLARE_API_TOKEN as repository Actions secrets." >&2
+            exit 1
+          fi
+      - uses: actions/checkout@v6
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 8.15.9
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '22'
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+        env:
+          HUSKY: '0'
+          SHARP_IGNORE_GLOBAL_LIBVIPS: '1'
+      - run: pnpm generate
+      - name: Deploy Worker
+        run: ./node_modules/.bin/wrangler deploy --strict
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

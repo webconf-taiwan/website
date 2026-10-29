@@ -12,7 +12,7 @@ export function useSpeakerSeo(
     return {
       title: site.title,
       description: site.description,
-      ogUrl: 'https://webconf.tw/',
+      ogUrl: 'https://2025.webconf.tw/',
       author: site.name,
       keywords: '',
     }
@@ -43,7 +43,7 @@ export function useSpeakerSeo(
 
   // OG URL
   const ogUrl = (() => {
-    const baseUrl = `https://webconf.tw${BACK_LINKS[type].link}`
+    const baseUrl = `https://2025.webconf.tw${BACK_LINKS[type].link}`
     return `${baseUrl}/${speakerIdsFormat}`
   })()
 
@@ -66,9 +66,9 @@ export function useSpeakerSeo(
   // SEO Meta
   const seoData = {
     title,
-    ogImage: `https://webconf.tw${firstSpeaker.meta.ogImage}`,
+    ogImage: `https://2025.webconf.tw${firstSpeaker.meta.ogImage}`,
     ogImageAlt: typeof firstSpeaker.meta.name === 'string' ? firstSpeaker.meta.name : site.name,
-    twitterImage: `https://webconf.tw${firstSpeaker.meta.ogImage}`,
+    twitterImage: `https://2025.webconf.tw${firstSpeaker.meta.ogImage}`,
     twitterImageAlt: typeof firstSpeaker.meta.name === 'string' ? firstSpeaker.meta.name : site.name,
     description,
     ogUrl,
@@ -84,10 +84,10 @@ export function useSpeakerSeo(
       .filter(link => typeof link === 'string' && link.length > 0) as string[]
 
     return {
-      '@id': `https://webconf.tw/#person/${s.meta.speakerId}`,
+      '@id': `https://2025.webconf.tw/#person/${s.meta.speakerId}`,
       '@type': 'Person',
       'name': String(s.meta.name),
-      'url': `https://webconf.tw/speakers/${s.meta.speakerId}`,
+      'url': `https://2025.webconf.tw/speakers/${s.meta.speakerId}`,
       'jobTitle': s.meta.job_title,
       'worksFor': {
         '@type': 'Organization',
@@ -95,9 +95,9 @@ export function useSpeakerSeo(
       },
       'image': {
         '@type': 'ImageObject',
-        '@id': `https://webconf.tw/#image/speaker${s.meta.speakerId}`,
-        'contentUrl': `https://webconf.tw${s.meta.image}`,
-        'url': `https://webconf.tw${s.meta.image}`,
+        '@id': `https://2025.webconf.tw/#image/speaker${s.meta.speakerId}`,
+        'contentUrl': `https://2025.webconf.tw${s.meta.image}`,
+        'url': `https://2025.webconf.tw${s.meta.image}`,
         'inLanguage': 'zh-TW',
       },
       'description': typeof s.meta?.speakerInfo === 'string' ? s.meta.speakerInfo : site.description,
@@ -116,15 +116,15 @@ export function useSpeakerSeo(
 
     const [startTime, endTime] = timeString.split('~')
     const agendaEventSchema = {
-      '@id': `https://webconf.tw/#event/${speakerIdsFormat}`,
+      '@id': `https://2025.webconf.tw/#event/${speakerIdsFormat}`,
       '@type': 'Event',
       'name': firstSpeaker.meta.topic,
       description,
       'image': {
         '@type': 'ImageObject',
-        '@id': `https://webconf.tw/#ogImage/speaker${firstSpeaker.meta.speakerId}`,
-        'url': `https://webconf.tw${firstSpeaker.meta.ogImage}`,
-        'contentUrl': `https://webconf.tw${firstSpeaker.meta.ogImage}`,
+        '@id': `https://2025.webconf.tw/#ogImage/speaker${firstSpeaker.meta.speakerId}`,
+        'url': `https://2025.webconf.tw${firstSpeaker.meta.ogImage}`,
+        'contentUrl': `https://2025.webconf.tw${firstSpeaker.meta.ogImage}`,
         'inLanguage': 'zh-TW',
       },
       'startDate': `${date}T${startTime}:00+08:00`,
@@ -133,23 +133,23 @@ export function useSpeakerSeo(
       'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
       'inLanguage': 'zh-TW',
       'location': {
-        '@id': 'https://webconf.tw/#location',
+        '@id': 'https://2025.webconf.tw/#location',
       },
       'organizer': {
-        '@id': 'https://webconf.tw/#organization',
+        '@id': 'https://2025.webconf.tw/#organization',
       },
       'performer': speaker.length > 1
         ? speaker.map(s => ({
-            '@id': `https://webconf.tw/#person/${s.meta.speakerId}`,
+            '@id': `https://2025.webconf.tw/#person/${s.meta.speakerId}`,
           }))
         : {
-            '@id': `https://webconf.tw/#person/${speakerIdsFormat}`,
+            '@id': `https://2025.webconf.tw/#person/${speakerIdsFormat}`,
           },
       'url': ogUrl,
       'superEvent': {
         ...eventBasicForSuperEvent,
-        location: { '@id': 'https://webconf.tw/#location' },
-        organizer: { '@id': 'https://webconf.tw/#organization' },
+        location: { '@id': 'https://2025.webconf.tw/#location' },
+        organizer: { '@id': 'https://2025.webconf.tw/#organization' },
       },
     }
     useSchemaOrg([...speakersInfo, eventOrganizer, eventLocation, agendaEventSchema])
@@ -162,7 +162,7 @@ export function useSpeakerSeo(
 
   useHead({
     meta: [
-      { name: 'twitter:image:src', content: `https://webconf.tw${firstSpeaker.meta.ogImage}` },
+      { name: 'twitter:image:src', content: `https://2025.webconf.tw${firstSpeaker.meta.ogImage}` },
     ],
   })
 

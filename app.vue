@@ -1,10 +1,10 @@
 <script setup lang="ts">
 useSeoMeta({
-  ogImage: 'https://webconf.tw/images/seo/ogImage.png',
+  ogImage: 'https://2025.webconf.tw/images/seo/ogImage.png',
   ogImageAlt: 'WebConf Taiwan 2025',
   ogImageWidth: 1200,
   ogImageHeight: 630,
-  twitterImage: 'https://webconf.tw/images/seo/ogImage.png',
+  twitterImage: 'https://2025.webconf.tw/images/seo/ogImage.png',
   twitterImageAlt: 'WebConf Taiwan 2025',
 })
 

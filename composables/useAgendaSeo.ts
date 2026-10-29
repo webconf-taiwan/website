@@ -19,13 +19,13 @@ export function useAgendaSeo() {
         '@type': 'Person',
         'name': speaker.name,
         'jobTitle': speaker.JobTitle,
-        'url': `https://webconf.tw/speakers/${speaker.speakerId}`,
+        'url': `https://2025.webconf.tw/speakers/${speaker.speakerId}`,
       }
     }) || []
 
     return {
       '@type': 'Event',
-      '@id': `https://webconf.tw/#agenda-${index}`,
+      '@id': `https://2025.webconf.tw/#agenda-${index}`,
       'name': agenda.title,
       'description': agenda.title,
       'startDate': startDateTime,
@@ -42,7 +42,7 @@ export function useAgendaSeo() {
       },
       'performer': performers,
       'superEvent': {
-        '@id': 'https://webconf.tw/#main-event',
+        '@id': 'https://2025.webconf.tw/#main-event',
       },
       'inLanguage': 'zh-TW',
       ...(agenda.tags && {
@@ -55,10 +55,10 @@ export function useAgendaSeo() {
   const mainEvent = {
     '@context': 'https://schema.org',
     '@type': 'Event',
-    '@id': 'https://webconf.tw/#main-event',
+    '@id': 'https://2025.webconf.tw/#main-event',
     'name': site.name,
     'description': site.description,
-    'image': 'https://webconf.tw/images/seo/ogImage.png',
+    'image': 'https://2025.webconf.tw/images/seo/ogImage.png',
     'startDate': '2025-12-12T09:00:00+08:00',
     'endDate': '2025-12-13T17:25:00+08:00',
     'eventStatus': 'https://schema.org/EventScheduled',
@@ -88,40 +88,40 @@ export function useAgendaSeo() {
   const day1Event = {
     '@context': 'https://schema.org',
     '@type': 'Event',
-    '@id': 'https://webconf.tw/#day1-event',
+    '@id': 'https://2025.webconf.tw/#day1-event',
     'name': `${site.name} - 第一天`,
     'description': 'WebConf Taiwan 2025 第一天議程，12 月 12 日精彩內容',
-    'image': 'https://webconf.tw/images/seo/ogImage.png',
+    'image': 'https://2025.webconf.tw/images/seo/ogImage.png',
     'startDate': '2025-12-12T09:00:00+08:00',
     'endDate': '2025-12-12T18:00:00+08:00',
     'eventStatus': 'https://schema.org/EventScheduled',
     'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
     'location': eventLocation,
     'organizer': eventOrganizer,
-    'url': 'https://webconf.tw/agenda',
+    'url': 'https://2025.webconf.tw/agenda',
     'inLanguage': 'zh-TW',
     'superEvent': {
-      '@id': 'https://webconf.tw/#main-event',
+      '@id': 'https://2025.webconf.tw/#main-event',
     },
   }
 
   const day2Event = {
     '@context': 'https://schema.org',
     '@type': 'Event',
-    '@id': 'https://webconf.tw/#day2-event',
+    '@id': 'https://2025.webconf.tw/#day2-event',
     'name': `${site.name} - 第二天`,
     'description': 'WebConf Taiwan 2025 第二天議程，12 月 13 日精彩內容',
-    'image': 'https://webconf.tw/images/seo/ogImage.png',
+    'image': 'https://2025.webconf.tw/images/seo/ogImage.png',
     'startDate': '2025-12-13T09:00:00+08:00',
     'endDate': '2025-12-13T17:25:00+08:00',
     'eventStatus': 'https://schema.org/EventScheduled',
     'eventAttendanceMode': 'https://schema.org/OfflineEventAttendanceMode',
     'location': eventLocation,
     'organizer': eventOrganizer,
-    'url': 'https://webconf.tw/agenda',
+    'url': 'https://2025.webconf.tw/agenda',
     'inLanguage': 'zh-TW',
     'superEvent': {
-      '@id': 'https://webconf.tw/#main-event',
+      '@id': 'https://2025.webconf.tw/#main-event',
     },
   }
 

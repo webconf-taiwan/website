@@ -9,6 +9,7 @@
     "build": "nuxt build",
     "dev": "nuxt dev",
     "generate": "nuxt generate",
+    "deploy": "pnpm generate && wrangler deploy",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
     "storybook": "storybook dev -p 6007",
@@ -67,7 +68,8 @@
     "tailwindcss-animate": "^1.0.7",
     "vite": "^6.0.0",
     "vue": "^3.5.18",
-    "vue-router": "^4.5.1"
+    "vue-router": "^4.5.1",
+    "wrangler": "4.155.0"
   },
   "config": {
     "commitizen": {
