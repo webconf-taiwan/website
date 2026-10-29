@@ -20,51 +20,36 @@
   "filter_skills": ["AI", "Frontend", "Backend", "DevOps", "Security", "Agile", "產品思維", "產業應用", "團隊管理", "軟體設計", "設計實務"],
   "items": [
     {
+      "id": "tonyq",
+      "name": "TonyQ",
+      "org": "拾果踏冰有限公司",
+      "role": "創辦人",
+      "bio": "資深產品工程師，曾有前端、後端、APP 等不同領域開發經驗，在產品設計及開發的經驗15年以上。",
+      "links": {
+        "facebook": "https://www.facebook.com/tonylovejava/"
+      },
+      "tag": "Speaker",
+      "skills": ["Frontend", "Backend", "DevOps", "AI"],
+      "photo": "/speakers/photos/tonyq.webp",
+      "portrait": "/speakers/speaker-07.webp",
+      "portrait_static": "/speakers/speaker-particle-07.webp",
+      "show_on_home": true
+    },
+    {
       "id": "gipi",
       "name": "Gipi 游舒帆",
       "org": "方圓國際",
       "role": "策略長",
-      "tag": "Speaker",
-      "skills": ["AI", "產業應用", "團隊管理"],
-      "portrait": "/speakers/speaker-01.webp",
-      "portrait_static": "/speakers/speaker-particle-01.webp",
-      "show_on_home": true
-    },
-    {
-      "id": "will",
-      "name": "Will 保哥",
-      "org": "多奇數位創意有限公司",
-      "role": "技術總監",
-      "tag": "Speaker",
-      "skills": ["AI", "軟體設計", "產品思維"],
-      "portrait": "/speakers/speaker-02.webp",
-      "portrait_static": "/speakers/speaker-particle-02.webp",
-      "show_on_home": true
-    },
-    {
-      "id": "che-yu-wu",
-      "name": "吳哲宇",
-      "org": "墨雨互動設計 & MonoLab",
-      "role": "創辦人",
-      "extra": {
-        "org": "演算藝術家",
-        "role": "Algorithmic Artist"
+      "bio": "工程師出身，做過產品、創業與企業營運。最近走進餐飲業，實際參與品牌升級、餐飲資訊化與全球市場發展，運用 AI 與人才思維推動轉型。我特別關心的，不只是如何用 AI 把事情做快，而是如何重新設計工作、組織與人的價值。",
+      "links": {
+        "facebook": "https://facebook.com/gipi.net/",
+        "website": "https://gipi.tw"
       },
       "tag": "Speaker",
-      "skills": ["AI", "軟體設計", "產品思維"],
-      "portrait": "/speakers/speaker-03.webp",
-      "portrait_static": "/speakers/speaker-particle-03.webp",
-      "show_on_home": true
-    },
-    {
-      "id": "max-chen",
-      "name": "Max Chen",
-      "org": "對稱資訊股份有限公司",
-      "role": "CEO",
-      "tag": "Speaker",
-      "skills": ["AI", "產品思維"],
-      "portrait": "/speakers/speaker-04.webp",
-      "portrait_static": "/speakers/speaker-particle-04.webp",
+      "skills": ["AI", "產業應用", "團隊管理"],
+      "photo": "/speakers/photos/gipi.webp",
+      "portrait": "/speakers/speaker-01.webp",
+      "portrait_static": "/speakers/speaker-particle-01.webp",
       "show_on_home": true
     },
     {
@@ -72,32 +57,33 @@
       "name": "尹相志",
       "org": "數據決策股份有限公司",
       "role": "技術長",
+      "bio": "DataDecision.ai數據科學家，大數據行業經歷今年第27年。於2002年成立台灣第一家大數據顧問公司asiaMiner，曾經協助台灣大型電信公司（中華電信、遠傳電信、台灣大哥大）、銀行（中國信託、台新、台灣銀行、元大、新光、萬泰...等)、零售業（特力屋、7-11）...等企業導入數據科學相關產業應用。也是臺灣微軟在數據科學領域的特約講師，曾獲選2006~2017年微軟最有價值專家(MVP)，於2015~2016年曾兼任上海華院數據（中國第一家大數據顧問公司）之首席數據科學家，於國內發起中國首次國際人工智能競賽「BOT (Brain of things) Shanghai 2016」，同時也擔任2016年與2017年的賽題設計。現任光寶科技、啟雲科技之企業顧問",
+      "links": {
+        "facebook": "https://facebook.com/allanyiin",
+        "x": "https://x.com/AllanYiin",
+        "website": "https://www.youtube.com/@allanyiin_ai"
+      },
       "tag": "Speaker",
       "skills": ["AI"],
+      "photo": "/speakers/photos/yin-siang-jhih.webp",
       "portrait": "/speakers/speaker-05.webp",
       "portrait_static": "/speakers/speaker-particle-05.webp",
       "show_on_home": true
     },
     {
-      "id": "summer",
-      "name": "Summer",
-      "org": "台積電",
-      "role": "主任工程師",
+      "id": "max-chen",
+      "name": "Max Chen",
+      "org": "對稱資訊股份有限公司",
+      "role": "CEO",
+      "bio": "陳致宏(Max)，面試趣與比薪水創辦人。2012 年創業至今，打造出台灣最大的求職經驗與薪資分享平台，公司於 2025 年登陸創櫃板。2026 年與 AI 協作，56 小時做出整合全台 7,000多所幼兒園資訊的「育兒趣」，上線兩天用戶破萬——從求職跨到育兒，靠的不是做得快，而是從數據裡看見還沒被滿足的需求。",
+      "links": {
+        "website": "https://threads.com/@frugal_ptt"
+      },
       "tag": "Speaker",
-      "skills": ["AI", "軟體設計", "產品思維"],
-      "portrait": "/speakers/speaker-06.webp",
-      "portrait_static": "/speakers/speaker-particle-06.webp",
-      "show_on_home": true
-    },
-    {
-      "id": "tonyq",
-      "name": "TonyQ",
-      "org": "拾果踏冰有限公司",
-      "role": "創辦人",
-      "tag": "Speaker",
-      "skills": ["AI", "Frontend", "Backend", "DevOps"],
-      "portrait": "/speakers/speaker-07.webp",
-      "portrait_static": "/speakers/speaker-particle-07.webp",
+      "skills": ["AI", "產品思維"],
+      "photo": "/speakers/photos/max-chen.webp",
+      "portrait": "/speakers/speaker-04.webp",
+      "portrait_static": "/speakers/speaker-particle-04.webp",
       "show_on_home": true
     },
     {
@@ -105,33 +91,579 @@
       "name": "David Chen 陳文剛",
       "org": "路思創研",
       "role": "總監",
+      "bio": "UX領域的創新者 & 實踐者，專注在設計與創新。20年以上，跨產業、多鏈點的UX設計顧問經驗。實際操刀的設計顧問案，包括金融、醫療、交通、電商、旅遊、教育等。專長是：把複雜的東西變簡單、把扭扭的服務變俐落，把難搞的商業問題，轉換成精采的設計方案。",
+      "links": {
+        "facebook": "https://facebook.com/davidwkchen",
+        "x": "https://x.com/davidwkchen",
+        "instagram": "https://www.instagram.com/davidwkchen/",
+        "website": "https://handyui.com"
+      },
       "tag": "Speaker",
-      "skills": ["AI", "軟體設計", "產品思維"],
+      "skills": ["AI", "設計實務"],
+      "photo": "/speakers/photos/david-chen.webp",
       "portrait": "/speakers/speaker-08.webp",
       "portrait_static": "/speakers/speaker-particle-08.webp",
       "show_on_home": true
+    },
+    {
+      "id": "che-yu-wu",
+      "name": "Che Yu Wu 吳哲宇",
+      "org": "墨雨互動設計 / MonoLab",
+      "role": "創辦人、新媒體藝術家",
+      "bio": "吳哲宇，新媒體藝術家，墨雨互動設計與 MonoLab 創辦人。十二年以演算法追問程式碼能否擁有生命與情感，相信機制本身就是作品。作品於威尼斯雙年展、Art Basel Miami 與台北 101 展出，駐研足跡從巴黎 104 到 C-LAB × 法國 IRCAM。2026 發起開源知識庫 Taiwan.md，為台灣寫下 AI 讀得懂的靈魂；線上學生逾兩萬人。",
+      "links": {
+        "facebook": "https://facebook.com/cheyuwu345",
+        "x": "https://x.com/cheyuwu345",
+        "instagram": "https://instagram.com/cheyuwu345/",
+        "website": "https://cheyuwu.com/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Frontend", "設計實務"],
+      "photo": "/speakers/photos/che-yu-wu.webp",
+      "portrait": "/speakers/speaker-03.webp",
+      "portrait_static": "/speakers/speaker-particle-03.webp",
+      "show_on_home": true
+    },
+    {
+      "id": "mike-sun",
+      "name": "Mike Sun",
+      "org": "晧飛思科技",
+      "role": "資深產品總監",
+      "bio": "10 年以上的產品經理經驗，過去在 Hahow、17LIVE 擔任產品主管，近兩年投入於新創致力於開發 AI 產品。",
+      "links": {},
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維", "產業應用", "團隊管理"],
+      "photo": "/speakers/photos/mike-sun.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "selena-chen",
+      "name": "Selena 陳亭勻",
+      "org": "LINE Taiwan Limited",
+      "role": "Sr. Product Manager (AI Product Lead)",
+      "bio": "外商科技業資深產品經理，網站「未竟紀事」創辦人，熱衷產品打磨、用戶行為研究與各式文本閱讀。現為 LINE AI 產品團隊 Lead，探索 Agent 與 AI 產品設計。\n\n小學成為遊戲攻略特約作家，賺錢買自己的電腦；藉由做網站、玩遊戲與軟體結下不解之緣。25 歲自文學院畢業，幸運展開跨國、跨領域、跨產業的非典型職涯，產業橫跨遊戲、財經資訊、供應鏈、電商與通訊平台。近年提供導師諮詢服務，幫助早期職涯探索者找尋價值與可能性。\n\n人生中最久的身分是跨平台遊戲玩家與 LoL 召喚師。相信良知、人性、美感與筆耕不輟是 AI 時代個人辨識度的關鍵。",
+      "links": {
+        "facebook": "https://www.facebook.com/selenaceline",
+        "website": "https://yuntalks.com/"
+      },
+      "tag": "Speaker",
+      "skills": [],
+      "photo": "/speakers/photos/selena-chen.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "jocelin-ho",
+      "name": "Jocelin Ho",
+      "org": "PicCollage",
+      "role": "Engineering Manager",
+      "bio": "Hi, 我是Jocelin，目前擁有 10+ 年軟體產業經驗的 Tech Leader，經歷橫跨矽谷大公司 Meta and Instagram (擔任 iOS Tech Lead) 與從零開始打造的新創 Cooby（擔任 CTO & co-founder，獲 Sequoia India 投資），目前在中型產品型組織 PicCollage （擔任 Engineering Manager），帶領內部創業團隊打造獨一無二的產品。這些經歷讓我熟悉各種組織規模、文化與技術管理挑戰，並鍛鍊出快速洞察問題本質、提出具體可行解法的能力。",
+      "links": {
+        "facebook": "https://www.facebook.com/profile.php?id=61594120769702",
+        "website": "https://jocelinho.com"
+      },
+      "tag": "Speaker",
+      "skills": [],
+      "photo": "/speakers/photos/jocelin-ho.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "alvin",
+      "name": "Alvin",
+      "org": "GNTC",
+      "role": "產品負責人",
+      "bio": "大家好我是 Alvin，過去曾在各個新創打滾，也在字節跳動跟幣安擔任過資深產品經理，共同之處是不管在哪裡都在負責做新產品，在新科技跟新場景的前線衝浪，很開心跟大家一起交流！",
+      "links": {
+        "linkedin": "https://www.linkedin.com/in/paizanmay"
+      },
+      "tag": "Speaker",
+      "skills": [],
+      "photo": "/speakers/photos/alvin.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "summer",
+      "name": "Summer Tang",
+      "org": "TSMC",
+      "role": "Principal Engineer",
+      "bio": "資深前端工程師與架構師，著有《前端測試指南：策略與實踐》、《打造高速網站，從網站指標開始！》等技術專書。擁有 15 年高流量企業級系統經驗，專精於微前端架構、效能優化與測試體系建構，長年推動大規模團隊的現代化工程實踐。",
+      "links": {
+        "facebook": "https://facebook.com/cythilya",
+        "x": "https://x.com/cythilya",
+        "instagram": "https://www.instagram.com/cythilya.dev/",
+        "website": "https://cythilya.tw/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Frontend", "軟體設計", "設計實務", "產品思維", "產業應用"],
+      "photo": "/speakers/photos/summer.webp",
+      "portrait": "/speakers/speaker-06.webp",
+      "portrait_static": "/speakers/speaker-particle-06.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "hana",
+      "name": "Hana 花水木",
+      "org": "獎金獵人",
+      "role": "共同創辦人",
+      "bio": "張芷芸（Hana 花水木）是一位兼具科技思維與藝術感性的連續創業家、軟體工程師與創作歌手。身為全台最大競賽整合平台「獎金獵人」的共同創辦人，她不僅具備豐富的產品開發、團隊管理與新創營運經驗，近年更積極投入 AI 應用開發（如 Vibe Coding），對科技趨勢具備敏銳的洞察力。\n\n除了在科技與創業領域的卓越成就，她同時擁有豐富的音樂創作與舞台演出經驗，擅長以多元、斜槓的獨特視角剖析問題。她的演講風格親切、充滿感染力，能將複雜的技術概念與新創思維，轉化為具體且具啟發性的實戰經驗分享。",
+      "links": {
+        "facebook": "https://www.facebook.com/hanamizuki.tw",
+        "x": "https://x.com/hanamizuki",
+        "instagram": "https://instagram.com/hanamizuki/",
+        "website": "https://hanamizuki.tw/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "團隊管理"],
+      "photo": "/speakers/photos/hana.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "tsai-cheng-hsuan",
+      "name": "蔡承軒",
+      "org": "Google",
+      "role": "Software Engineer",
+      "bio": "Angular Team/Google Core Web的一員，Angular Aria作者。",
+      "links": {
+        "website": "https://github.com/ok7sai"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Frontend"],
+      "photo": "/speakers/photos/tsai-cheng-hsuan.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "justin-hsiao",
+      "name": "Justin 蕭晊莛",
+      "org": "新加坡商鈦坦科技 / Titansoft",
+      "role": "Technical Manager",
+      "bio": "新加坡商鈦坦科技 Technical Manager，擁有 10 年以上 .NET 開發經驗，目前以 Claude Code 作為主要的 Coding Agent。 在公司內專注於協助導入 AI 工作流程，並致力於將現行開發模式轉型為 Agentic SDLC。同時也是台灣第二位 Claude Community Ambassador，每個月都會舉辦 Claude 社群活動並且以 Workshop 為主。",
+      "links": {
+        "facebook": "https://facebook.com/JrtingShiau",
+        "instagram": "https://instagram.com/debuguy.dev",
+        "linkedin": "https://www.linkedin.com/in/jrting-shiau-77b0ab225"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產業應用", "團隊管理", "Agile"],
+      "photo": "/speakers/photos/justin-hsiao.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "sam-liang",
+      "name": "Sam Liang 飛鳥涼不涼",
+      "org": "星宿科技",
+      "role": "總經理",
+      "bio": "20年的遊戲經驗，從月營收上億的遊戲到三個月就結束的遊戲都做過，曾經開過課，曾受Google邀請寫了兩年的台灣遊戲產業深度研究，也曾擔任過數發部的獨立遊戲獎勵評審，目前除了努力經營公司以外，還有經營Podcast飛鳥電台",
+      "links": {},
+      "tag": "Speaker",
+      "skills": ["AI", "產品思維", "產業應用"],
+      "photo": "/speakers/photos/sam-liang.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "pjchender",
+      "name": "PJCHENder 陳柏融",
+      "org": "TSMC",
+      "role": "軟體工程師",
+      "bio": "從 React 前端開發到生成式 UI（generative UI）,負責將 AI agent 的能力串接進產品。特別關注人與 agent 之間的互動介面：如何把 agent 的思考過程轉化為使用者看得懂、用得上的資訊，以及如何設計互動，讓人與 agent 真正協作，而不只是一問一答。",
+      "links": {
+        "facebook": "https://facebook.com/pjchender/",
+        "website": "https://pjchender.dev"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Frontend", "軟體設計"],
+      "photo": "/speakers/photos/pjchender.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "wu-cheng-hsien",
+      "name": "吳政賢",
+      "org": "白沙屯 GPS 團隊",
+      "role": "資深工程師",
+      "bio": "媽祖婆的全端工程師",
+      "links": {
+        "facebook": "https://facebook.com/oawu.tw",
+        "threads": "https://threads.com/@oawu.tw",
+        "instagram": "https://instagram.com/oawu.tw/",
+        "website": "https://oawu.tw/"
+      },
+      "tag": "Speaker",
+      "skills": ["Frontend", "Backend", "軟體設計", "設計實務", "產品思維", "團隊管理"],
+      "photo": "/speakers/photos/wu-cheng-hsien.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "james-chou",
+      "name": "James Chou",
+      "org": "RaccoonAI",
+      "role": "CEO",
+      "bio": "周益鑫 James Chou｜Raccoon AI 創辦人暨執行長\n\n擁有十多年創業經驗，從協助企業導入客服與 CRM 系統，到創立 Raccoon AI，帶領團隊打造 AI 客服與 AI 員工產品，持續探索如何讓 AI 融入企業的日常工作。\n\n在產品開發過程中，他最常面對的問題是：客戶真正需要什麼? 哪些功能值得做? 又該如何把令人驚豔的 Demo，變成客戶願意付費、持續使用的產品? 他將從創辦人的角度，分享產品取捨、客戶導入與團隊協作的實際經驗，以及打造 AI 產品一路上踩過的坑。",
+      "links": {
+        "facebook": "https://www.facebook.com/yishin.chou.5?locale=zh_TW",
+        "linkedin": "https://www.linkedin.com/in/james-chou-1b6374b8/?isSelfProfile=true"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "設計實務"],
+      "photo": "/speakers/photos/james-chou.webp",
+      "portrait": "/speakers/speaker-10.webp",
+      "portrait_static": "/speakers/speaker-particle-10.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "will",
+      "name": "Will 保哥",
+      "org": "多奇數位創意有限公司",
+      "role": "技術總監",
+      "bio": "現任「多奇數位創意有限公司」技術總監。2024 年榮獲 GenAI 方向的 Google Developer Expert (GDE) 開發專家。2019 獲選微軟技術社群區域總監 (Microsoft Regional Director)。2018 年榮獲 Angular 方向的 Google Developer Expert (GDE) 開發專家。連續 19 度當選微軟最有價值專家(MVP)。熟悉 Generative AI、Angular、JavaScript、.NET、C#、Java、Go、Docker、Kubernetes 相關技術。擅長 DevOps 與組織文化建立、軟體團隊建構與管理。熱愛分享知識。",
+      "links": {
+        "facebook": "https://facebook.com/will.fans/",
+        "x": "https://twitter.com/Will_Huang",
+        "instagram": "https://instagram.com/willh_tw/",
+        "linkedin": "https://www.linkedin.com/in/will-huang-tw/",
+        "website": "https://duotify.com/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Frontend", "軟體設計"],
+      "photo": "/speakers/photos/will.webp",
+      "portrait": "/speakers/speaker-02.webp",
+      "portrait_static": "/speakers/speaker-particle-02.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "bo-yi-wu",
+      "name": "Bo Yi Wu",
+      "org": "聯發科技",
+      "role": "工程師",
+      "bio": "現任聯發科技後端架構工程師，負責公司內部 Technology Platform 開發與維運。擅長以 Go 語言構建微服務架構，熱衷導入 DevOps 與自動化流程改善團隊協作效率。長期貢獻於 Open Source 專案，曾擔任多場技術研討會講師。目前專注於 AI 工具導入，探索 AI 能為軟體團隊帶來多少價值，加速開發流程與決策效率。",
+      "links": {
+        "facebook": "https://facebook.com/appleboy46",
+        "website": "https://blog.wu-boy.com/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Backend", "DevOps", "軟體設計", "設計實務", "團隊管理"],
+      "photo": "/speakers/photos/bo-yi-wu.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "chen-chung-kuan",
+      "name": "陳仲寬",
+      "org": "奧義智慧",
+      "role": "資安研究處長",
+      "bio": "陳仲寬 (CK) 現為奧義智慧資安研究處長，也是台灣駭客協會副理事長。畢業於國立交通大學網路安全實驗室博士班，專注於研究網路攻擊與防禦、機器學習、軟體漏洞、惡意程式分析等領域。曾發表多篇學術期刊與研討會技術文章。另也曾於多個國內外技術研討會上發表演講，如 BlackHat、HITCON、HITB、SANS DFIR Summit、CodeBlue、FIRST 以及 VXCON。目前亦擔任東吳大學兼任助理教授、HITCON 審稿委員會的主席和資安社群 CHROOT 的成員。",
+      "links": {
+        "facebook": "https://facebook.com/Bletchley13"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Security"],
+      "photo": "/speakers/photos/chen-chung-kuan.webp",
+      "show_on_home": false
     },
     {
       "id": "gordon-chang",
       "name": "Gordon Chang 張智翔",
       "org": "Appier",
       "role": "產品副總",
+      "bio": "擁有十多年產品管理經驗，職涯橫跨大型科技公司、新創企業與顧問領域。曾任職於美國微軟、Facebook（Meta）、Y Combinator 新創公司，亦曾擔任台灣新創產品長，現任 Appier 產品副總。\n\n隨著新興技術不斷湧現，打造產品的門檻越來越低，也更加考驗 Product Managers 的溝通力、判斷力與產品直覺。相信好的產品來自技術、使用者體驗與商業的交會，也透過產品與行銷顧問、新創輔導、人才培育及經驗分享，幫助更多人打造有價值的產品。",
+      "links": {
+        "instagram": "https://www.instagram.com/gordonwinnow/",
+        "linkedin": "https://www.linkedin.com/in/gordonwinnow/",
+        "website": "https://gochang.substack.com/"
+      },
       "tag": "Speaker",
-      "skills": ["AI", "軟體設計", "產品思維"],
+      "skills": ["AI", "軟體設計", "產品思維", "團隊管理"],
+      "photo": "/speakers/photos/gordon-chang.webp",
       "portrait": "/speakers/speaker-09.webp",
       "portrait_static": "/speakers/speaker-particle-09.webp",
-      "show_on_home": true
+      "show_on_home": false
     },
     {
-      "id": "james-chou",
-      "name": "James Chou",
-      "org": "Raccoon AI",
-      "role": "Founder & CEO",
+      "id": "gugu",
+      "name": "古古",
+      "org": "古古的後端筆記",
+      "role": "Software Engineer",
+      "bio": "一個喜歡分享技術的軟體工程師，曾經裸辭過全職做自媒體，現在又回來寫程式啦！",
+      "links": {
+        "facebook": "https://facebook.com/kucw.io/",
+        "instagram": "https://instagram.com/kucw.io/",
+        "website": "https://kucw.io/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI"],
+      "photo": "/speakers/photos/gugu.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "benjamin-chen",
+      "name": "Benjamin Chen",
+      "org": "Houston Kiltmakers",
+      "role": "數位轉型經理",
+      "bio": "旅英數位轉型經理，具備 5 年以上跨領域產品開發與服務設計實務。現於英國百年傳統工藝品牌主導數位化與 AI 商業落地，並曾參與英國公共體系（GDS）數位轉型 與擔任 Samsung 創新競賽導師。專注於在既有作業習慣與新技術之間建立橋樑，推動生成式 AI 與雲端架構在傳統產業的務實落地。",
+      "links": {
+        "facebook": "https://www.facebook.com/chen.yang.yang.974942",
+        "linkedin": "https://www.linkedin.com/in/benjaminchen7260666/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "設計實務", "產品思維", "產業應用", "團隊管理", "Agile"],
+      "photo": "/speakers/photos/benjamin-chen.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "huang-kuan-chung",
+      "name": "黃冠中",
+      "org": "TSMC",
+      "role": "副理",
+      "bio": "An Engineer、Dad and Hacker",
+      "links": {
+        "facebook": "https://www.facebook.com/share/1CBw46E6gR/?mibextid=wwXIfr",
+        "website": "https://aaronhua.ng"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Backend", "DevOps", "軟體設計"],
+      "photo": "/speakers/photos/huang-kuan-chung.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "kid-shih",
+      "name": "Kid Shih",
+      "org": "AscentisTech",
+      "role": "昇新科技總經理",
+      "bio": "從工程轉變來的管理者，很E的I人，嘗試著把事做完，也把人帶好",
+      "links": {},
+      "tag": "Speaker",
+      "skills": ["AI", "團隊管理"],
+      "photo": "/speakers/photos/kid-shih.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "nai-lu-cha",
+      "name": "奶綠茶",
+      "org": "Dentscape",
+      "role": "前端工程師",
+      "bio": "一個寫了 20 年前端、還沒寫膩的工程師。最近認真研究 AI 時代下工程師的生存之道，目前還活著。",
+      "links": {
+        "x": "https://x.com/milkmidi",
+        "website": "https://milkmidi.medium.com/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產業應用"],
+      "photo": "/speakers/photos/nai-lu-cha.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "cheng-chung-nan",
+      "name": "鄭重男",
+      "org": "國軍高雄總醫院",
+      "role": "技術頭",
+      "bio": "熱愛開源、喜歡自己動手做的技術人，也是管理人。樂於分享，更喜歡解決真實世界裡的痛點。 當 AI 讓寫程式變得便宜，我也開始從「Writer 走向 Maker」。不只坐在電腦前寫程式，更希望走進現場，理解第一線的需求，親手把解決方案做出來比起技術有多厲害，我更在意的是：「讓真正使用的人，因為我們做的東西而感到幸福」",
+      "links": {
+        "facebook": "https://www.facebook.com/nickle.cheng",
+        "website": "https://nicklecheng.turbos.tw"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "DevOps", "產品思維", "產業應用"],
+      "photo": "/speakers/photos/cheng-chung-nan.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "kuro-hsu",
+      "name": "Kuro Hsu",
+      "org": "Vue.js Taiwan",
+      "role": "打雜工",
+      "bio": "長期活躍於國內外技術社群，曾多次於 JSDC、Modern Web、WebConf Taiwan、COSCUP 等各大技術峰會擔任講者，著有《重新認識 Vue.js》、《重新認識 JavaScript》等書，並持續在線上分享 Web 前沿技術與架構實踐經驗。\n\n專注於 JavaScript 核心機制、現代前端架構演化、Web Components、開放標準及全端工程實踐等領域，致力於推動 Web 生態與社群技術交流，深信開放標準與社群共享是驅動 Web 持續進化的核心動力。",
+      "links": {
+        "facebook": "https://facebook.com/kurotanshi",
+        "x": "https://x.com/kurotanshi",
+        "website": "https://kurohsu.dev/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Frontend", "Backend"],
+      "photo": "/speakers/photos/kuro-hsu.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "rich-li",
+      "name": "Rich 李琦",
+      "org": "國泰金控",
+      "role": "DDT Sr. Architect",
+      "bio": "熟悉雲原生架構與技術，熱愛學習與分享新技術，目前專注於GenAI Appication Architecture、Agentic AI與Cloud Architecture for AI等領域。\n\n• 10+ years experience in software architecture design and application modernization.\n• Specialty in agentic agent development and Cloud-native architecture design.",
+      "links": {
+        "website": "https://www.linkedin.com/in/richlee0423/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "Backend"],
+      "photo": "/speakers/photos/rich-li.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "ihower",
+      "name": "ihower 張文鈿",
+      "org": "愛好資訊科技有限公司",
+      "role": "負責人",
+      "bio": "AI 工程獨立顧問、軟體工程師和開課講師。2002年開始從事 Web App 軟體開發工作，2018年自行開業愛好資訊科技有限公司。",
+      "links": {
+        "facebook": "https://facebook.com/ihower",
+        "x": "https://x.com/ihower",
+        "threads": "https://threads.com/@ihower",
+        "website": "https://ihower.tw/blog/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Backend"],
+      "photo": "/speakers/photos/ihower.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "chen-lu-jung",
+      "name": "陳律融",
+      "org": "律森文化事業有限公司",
+      "role": "創辦人",
+      "bio": "陳律融 GreenTed，為律森文化事業、沃康特企業社負責人，擔任過多張嘻哈專輯的製作人及編曲者。曾得第9屆金音獎最佳專輯、入圍第10、11屆金音獎最佳嘻哈專輯/歌曲獎。利用過往經營新興嘻哈音樂廠牌與新媒體團隊的經驗，投入音樂教育推廣，開立律森文化事業，與先於線上課程平台 Yotta 推出音樂教育課程，累積將近三千名學員，近期投入開發AI相關軟硬體及書籍，透過企劃降低接觸流行音樂專業門檻，並將其中的知能傳承與擴散並持續人才培育及社群經營的線上整合。\n\n曾製作線上音樂節目《SampleThis》(取樣這個)、由音樂廠牌新樂園出品《製作人到你家》、音樂媒體 KKBOX 龍虎門 Podcast《拆一首歌》、北流響《TMC CL-1取樣機》軟體開發、AI分析與取樣音樂技術開發，等不同媒介類型之音樂內容節目，並使用社群直播，推廣音樂製作教育，與音樂新世代線上互動，培養不同以往的線上音樂學習社群。",
+      "links": {
+        "facebook": "https://www.facebook.com/BeatGreenTed",
+        "instagram": "https://instagram.com/",
+        "website": "https://rytho.ai/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "產品思維", "產業應用"],
+      "photo": "/speakers/photos/chen-lu-jung.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "ian-chen",
+      "name": "Ian 陳葵懋",
+      "org": "一等一科技",
+      "role": "研發部主任工程師",
+      "bio": "目前為一等一科技研發主任工程師，同時連續15年獲選微軟 AI 人工智慧最有價值專家（MVP）與連續6年微軟認證講師（MCT）。專注於 .NET、Azure 、容器化、雲/地端生成式AI應用解決方案，曾在 Microsoft TechDay、DevDays、MWC、HWDC、MOPCON 等活動分享業界實戰心法。近年聚焦生成式 AI 、RAG、MCP與 AI Agent 的研究與公務機關/企業生成式AI培訓。同時陸續出版多本生成式AI共同著作。\n• AI Agent 奇幻旅程：MCP 通往異世界金鑰（含最新 OpenAI GPT-5 範例）\n• Python原力爆擊：OpenAI / Gemini / AWS / Ollama生成式AI應用新手指南\n• LangChain 奇幻旅程：OpenAI x Gemini x 多模態應用開發指南\n• 極速 ChatGPT 開發者兵器指南：跨界整合 Prompt Flow 、LangChain 與 Semantic Kernel 框架\n• 駕馭 ChatGPT 4: 探索 Azure OpenAI 與 Cognitive Service for Language 開發實踐（使用 .NET 與 Node.js）",
+      "links": {
+        "facebook": "https://facebook.com/ian.no18",
+        "website": "https://iangithub.github.io/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "產品思維", "軟體設計"],
+      "photo": "/speakers/photos/ian-chen.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "chang-keng-tang",
+      "name": "張耿瑭",
+      "org": "言回有限公司",
+      "role": "負責人",
+      "bio": "橫跨心理、老年、管理與資訊四大領域，過去從基層一路做到上市公司總經理特助，目前是言回有限公司的負責人，主導近 1000 個網站建置與數十家企業的數位轉型。",
+      "links": {
+        "facebook": "https://facebook.com/apple810424",
+        "instagram": "https://www.instagram.com/ckctw_official/",
+        "website": "https://site-now.co"
+      },
       "tag": "Speaker",
       "skills": ["AI", "軟體設計", "產品思維"],
-      "portrait": "/speakers/speaker-10.webp",
-      "portrait_static": "/speakers/speaker-particle-10.webp",
-      "show_on_home": true
+      "photo": "/speakers/photos/chang-keng-tang.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "ko-jen-chieh",
+      "name": "柯仁傑",
+      "org": "Odd-eAgile",
+      "role": "Coach",
+      "bio": "目前在 Odd-e 擔任 Agile Coach，幫助企業導入敏捷、改善流程和提供培訓，台灣 Agile Tour Taipei 的組織者之一，也是國內最大敏捷社群的創始人，致力於推廣敏捷技術。\n\n擅長敏捷開發流程、敏捷測試、軟體測試、設計衝刺 (Design Sprint) 和 DevOps 轉型。",
+      "links": {
+        "facebook": "https://facebook.com/kojenchieh/",
+        "website": "https://agile3uncles.com/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計"],
+      "photo": "/speakers/photos/ko-jen-chieh.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "chao-min-han",
+      "name": "趙敏含",
+      "org": "MetAI 宇見智能科技",
+      "role": "產品總監",
+      "bio": "專注於高科技工廠數位孿生、工程資料與知識本體化，以及生成式 AI 產品化策略。曾任創業家兄弟產品總監，並於瑞昱半導體波比特科技、網上網國際數據等新創團隊擔任專案與產品經理，亦為 X Change 與曼陀號領航計畫產品經理組導師。\n\n遊走於表演藝術、新媒體、電商、數位孿生與 AI 等跨領域，長期在新創團隊處理從零到一的真實問題。拉縴人文化藝術基金會合唱團團長兼歌手、正念減壓 MBSR 第三模塊培訓師資、雙朝聖者、半馬跑者。",
+      "links": {
+        "facebook": "https://facebook.com/andreechao",
+        "x": "https://x.com/andreechao",
+        "instagram": "https://instagram.com/andreechao",
+        "website": "https://www.linkedin.com/in/andreechao"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "產品思維", "產業應用", "團隊管理"],
+      "photo": "/speakers/photos/chao-min-han.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "jalex-chang",
+      "name": "Jalex Chang",
+      "org": "Nitra",
+      "role": "Staff software engineer",
+      "bio": "資料庫系統與分散式系統愛好者，Gopher，博士班逃兵。喜歡把複雜的事情變得簡單。目前在 Nitra 擔任 Staff Software Engineer。",
+      "links": {
+        "facebook": "https://facebook.com/jalex.chang",
+        "website": "https://www.linkedin.com/in/jalex-cpc/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "DevOps", "團隊管理"],
+      "photo": "/speakers/photos/jalex-chang.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "chiang-hung-yi",
+      "name": "姜虹伊",
+      "org": "inline",
+      "role": "Sr. Product designer",
+      "bio": "嗨，我是 Duki 👋「我擅長運用假設驗證的思維模式，從未知中建立秩序，並讓有序的系統變得有趣好玩！」\n\n目前在 inline 擔任 Sr. Product Designer，擁有工業設計背景，累積 9+ 年產品設計經驗與 2+ 年領導經驗，曾在 Gamania 擔任 Product Design Lead\n\n設計旅程橫跨 B2B 與 B2C，涵蓋生產力工具、IP 粉絲經濟社群、零售與餐飲科技等產業，喜歡在敏捷與探索並行的節奏中，推動產品創新與使用者體驗優化，同時遊走在產品規劃與體驗設計的灰色地帶",
+      "links": {
+        "instagram": "https://www.instagram.com/dukichiang?igsh=ZDhldnpvMHNuZWh0&utm_source=qr",
+        "website": "https://www.linkedin.com/in/hongichiang?utm_source=share_via&utm_content=profile&utm_medium=member_ios"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "設計實務", "產品思維", "團隊管理"],
+      "photo": "/speakers/photos/chiang-hung-yi.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "steven-shen",
+      "name": "Steven Shen",
+      "org": "JidouAI",
+      "role": "CEO",
+      "bio": "2017 年共同創辦 CuboAI 並擔任技術長，從 0 到 1 打造出世界級的 AI 智慧寶寶攝影機，產品行銷全球 17 個國家、銷量突破 25 萬台，並兩度獲得 CES 創新獎。之後加入外商 Circle 擔任 Data Team Director，帶領資料團隊兩年多。2025 年創立 JidouAI，專注將 AI 導入中小企業，致力於用 AI 自動化解決企業日常營運的真實問題。",
+      "links": {
+        "facebook": "https://facebook.com/sysheen",
+        "x": "https://x.com/syshen"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "產品思維"],
+      "photo": "/speakers/photos/steven-shen.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "liao-li-kuan",
+      "name": "廖力寬",
+      "org": "資料治理學院",
+      "role": "創辦人",
+      "bio": "擁有十年資料工程與資料管理經驗，專注於資料治理與 AI 應用落地，協助企業建立可信、可用與安全的資料基礎。曾於科技新創擔任資料架構工程師，現為資料治理學院創辦人、線性成長數位執行長及台灣資料管理協會常務理事。具備 CDMP Master 認證，致力於在台灣推廣 DAMA 資料管理知識體系，培育 AI 時代的資料治理人才，累計培訓逾百名來自半導體、科技、政府、零售與金融等領域的學員。在企業實務方面，深耕電子商務產業，服務涵蓋商業智慧、自然語言資料分析，以及財務流程、廣告分析等客製化 AI 應用。同時經營「大門談數據」部落格，開設 GTM、GA4 × BigQuery 等專業課程，累計已有逾千名學員。",
+      "links": {
+        "facebook": "https://facebook.com/",
+        "instagram": "https://instagram.com/kuan09273/",
+        "website": "https://datadgpro.com.tw/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "產業應用", "團隊管理"],
+      "photo": "/speakers/photos/liao-li-kuan.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "sally-hsieh",
+      "name": "Sally Hsieh 謝佩珊",
+      "org": "",
+      "role": "",
+      "bio": "我是 Sally，現任 MIXXIN 一起實驗營運長，也是 CCOO 營運長試營運社群共同創辦人、AAMA 第 13 期校友。擁有近十年的產業經驗，從群募專案管理、品牌全通路運營到成為社群發起者，營運流程、跨部門協作、知識管理與人才培育都是我熱愛探索的領域，近年也將這些實務經驗延伸至組織的 AI 導入。AI 導入對我來說想解決的是如何從真實的營運問題出發，將 AI 融入工作流程、團隊知識與管理制度，讓個人的工具使用經驗逐步長成為組織能力。一起實驗於 2026 年獲得商周 AI 創新百強肯定；我也曾於 AAMA 分享營運導入經驗，並在 SLP 進行 AI 導入組織的專題演講。",
+      "links": {
+        "facebook": "https://www.facebook.com/sally.hsieh.737/",
+        "linkedin": "https://www.linkedin.com/in/pei-shan-hsieh-9b560a52",
+        "website": "https://ccoo.space/"
+      },
+      "tag": "Speaker",
+      "skills": ["團隊管理"],
+      "photo": "/speakers/photos/sally-hsieh.webp",
+      "show_on_home": false
     }
   ]
 }

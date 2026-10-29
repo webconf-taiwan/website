@@ -25,7 +25,7 @@ const orgLines = computed(() => [item.value, item.value.extra]
       <!-- 變淡放在裡面這層：外層的 opacity 由 data-fade 進場動畫控制 -->
       <div class="absolute inset-0 transition-opacity duration-500" :class="{ 'opacity-30': dimmed }">
         <img
-          :src="item.portrait"
+          :src="item.photo || item.portrait"
           :alt="item.name"
           width="1000"
           height="1000"

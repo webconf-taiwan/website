@@ -88,6 +88,7 @@ export const useHomeData = async () => {
 // 議程的講者：有在講者名單（speakers.json）的寫 { "id": "tonyq" }，姓名、頭銜、照片都從名單拿；
 // 只講議程、沒上講者名單的直接寫 { "name", "title", "portrait"? }。
 // 這裡統一攤平成 { name, title, portrait }，元件不用管是哪一種。
+// 名單裡的講者 portrait 取帶背景的 photo（講者頁同一張），首頁粒子用的去背 portrait 只是備援。
 export const useAgendaData = async () => {
   const [agenda, speakers] = await Promise.all([
     import('~/constants/data/agenda.json'),
@@ -97,7 +98,7 @@ export const useAgendaData = async () => {
   const resolve = (ref) => {
     const person = ref.id && byId.get(ref.id)
     if (!person) return { name: ref.name || '', title: ref.title || '', portrait: ref.portrait || '' }
-    return { name: person.name, title: [person.org, person.role].filter(Boolean).join('・'), portrait: person.portrait || '' }
+    return { name: person.name, title: [person.org, person.role].filter(Boolean).join('・'), portrait: person.photo || person.portrait || '' }
   }
 
   return {
@@ -115,31 +116,45 @@ export const useSponsorsData = async () => {
 // 講者卡右上角的 Day 1／Day 2：從議程排程反查（days[].slots[].sessions → 場次 → speakers 的 id），
 // 不在 speakers.json 另外維護。還沒排進議程的講者沒有 day，卡片就不印；
 // 兩天都有場次的寫成「Day 1・2」。speakers.json 自己寫了 day 的以那個為準。
+//
+// 講者抽屜要的場次也在這裡攤平成 item.sessions：
+//   { ...場次, speakers: [講者 id], slots: [{ day: 1, date, start, end, room }] }
+// 同一場排了兩個時段（對談上／下）就是 slots 有兩筆。講題有了、還沒排時段的 slots 是空的。
 export const useSpeakersData = async () => {
   const [speakers, agenda] = await Promise.all([
     import('~/constants/data/speakers.json'),
     import('~/constants/data/agenda.json')
   ])
-  const sessionById = new Map((agenda.default.items || []).map(item => [item.id, item]))
-  const daysById = new Map()
+  const roomLabel = new Map((agenda.default.rooms || []).map(room => [room.id, room.label]))
+  const slotsBySession = new Map()
   for (const [i, day] of (agenda.default.days || []).entries()) {
     for (const slot of day.slots || []) {
-      for (const sessionId of Object.values(slot.sessions || {})) {
-        for (const ref of sessionById.get(sessionId)?.speakers || []) {
-          if (!ref.id) continue
-          if (!daysById.has(ref.id)) daysById.set(ref.id, new Set())
-          daysById.get(ref.id).add(i + 1)
-        }
+      for (const [room, sessionId] of Object.entries(slot.sessions || {})) {
+        if (!sessionId || sessionId === 'simulcast') continue
+        if (!slotsBySession.has(sessionId)) slotsBySession.set(sessionId, [])
+        slotsBySession.get(sessionId).push({ day: i + 1, date: day.date, start: slot.start, end: slot.end, room: roomLabel.get(room) || '' })
       }
     }
   }
-  const dayLabel = (id) => {
-    const days = [...(daysById.get(id) || [])].sort()
+  const sessionsById = new Map()
+  for (const item of agenda.default.items || []) {
+    const ids = (item.speakers || []).map(ref => ref.id).filter(Boolean)
+    const session = { ...item, speakers: ids, slots: slotsBySession.get(item.id) || [] }
+    for (const id of ids) {
+      if (!sessionsById.has(id)) sessionsById.set(id, [])
+      sessionsById.get(id).push(session)
+    }
+  }
+  const dayLabel = (sessions) => {
+    const days = [...new Set(sessions.flatMap(s => s.slots.map(slot => slot.day)))].sort()
     return days.length ? `Day ${days.join('・')}` : ''
   }
 
   return {
     ...speakers.default,
-    items: (speakers.default.items || []).map(item => ({ ...item, day: item.day || dayLabel(item.id) }))
+    items: (speakers.default.items || []).map((item) => {
+      const sessions = sessionsById.get(item.id) || []
+      return { ...item, sessions, day: item.day || dayLabel(sessions) }
+    })
   }
 }

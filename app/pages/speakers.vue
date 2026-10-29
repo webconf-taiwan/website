@@ -15,7 +15,7 @@ useSchemaOrg([
         name: item.name,
         jobTitle: item.role,
         worksFor: item.org ? { '@type': 'Organization', name: item.org } : undefined,
-        image: item.portrait,
+        image: item.photo || item.portrait,
       }
     }))
   }
@@ -26,6 +26,32 @@ const items = computed(() => (speakers.items || []).map((item, i) => ({
   item,
   spec: `SPEC.${String(i + 1).padStart(2, '0')}`,
 })))
+
+// 講者抽屜：開哪一位看 ?speaker=<id>，連結可以直接分享（設計稿要求）。
+// 從卡片點開是 push 一筆歷史，關閉就 back —— 手機按返回鍵也是關抽屜；
+// 直接開分享連結進來的沒有上一筆可退，關閉改成把 query 拿掉。
+// ⚠️ 每個 to 都要帶 path: route.path —— 只給 query 的話 router 會解析成沒有結尾斜線的
+// /speakers，跟目前的 /speakers/ 算不同路徑，LayoutPageTransition 就會蓋上黑幕，
+// 而同一頁不會觸發 page:finish，黑幕就永遠拿不掉。
+const route = useRoute()
+const router = useRouter()
+const currentSpeaker = computed(() => {
+  const id = route.query.speaker
+  return typeof id === 'string' && speakers.items?.some(p => p.id === id) ? id : ''
+})
+let openedHere = false
+const openSpeaker = () => { openedHere = true }
+function closeSpeaker () {
+  if (openedHere) {
+    openedHere = false
+    router.back()
+  } else {
+    const { speaker, ...query } = route.query
+    router.replace({ path: route.path, query })
+  }
+}
+// 抽屜裡切換對談講者：換掉網址的 speaker，不多疊一筆歷史
+const selectSpeaker = id => router.replace({ path: route.path, query: { ...route.query, speaker: id } })
 
 const selected = ref([])
 // 篩選不藏人：沒選中的講者照片變灰（設計稿），SPEC 編號不動
@@ -123,9 +149,20 @@ watch(page, () => {
           :class="{ 'max-lg:hidden': !onPage(item) }"
           :style="{ '--mobile-order': mobileOrder.get(item.id) }"
         >
-          <SpeakersProfile :data="item" :spec="spec" :dimmed="!matches(item)" :highlight="selected" />
+          <NuxtLink
+            :to="{ path: route.path, query: { ...route.query, speaker: item.id } }"
+            class="speaker-link block focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-accent-1"
+            @click="openSpeaker"
+          >
+            <SpeakersProfile :data="item" :spec="spec" :dimmed="!matches(item)" :highlight="selected" />
+          </NuxtLink>
         </li>
       </ul>
+
+      <!-- 網址的 ?speaker 只有瀏覽器端看得到（頁面是預先產生的），抽屜只在 client 畫，hydration 才對得上 -->
+      <ClientOnly>
+        <SpeakersDrawer :items="speakers.items" :current="currentSpeaker" @close="closeSpeaker" @select="selectSpeaker" />
+      </ClientOnly>
 
       <div class="mt-10 lg:hidden">
         <CommonControlPagination v-model:page="page" :total="totalPages" />

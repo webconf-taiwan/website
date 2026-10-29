@@ -69,6 +69,12 @@
     @apply font-zh-sans font-normal text-fs-zh-btn-m lg:text-fs-zh-btn;
   }
 
+  /* 長段落：Figma 的 body_16px（不在 zh/ 底下），Noto Sans TC，180% 行高 / 2% 字距 ——
+     比 zh/body_md 鬆、字距窄，用在講者介紹與議程摘要這種整段文字。 */
+  .text-body {
+    @apply font-zh-sans font-normal text-fs-body-m lg:text-fs-body;
+  }
+
   /* ----- en/* ----- */
   .text-en-display {
     @apply font-en-serif font-normal italic text-fs-en-display-m lg:text-fs-en-display;

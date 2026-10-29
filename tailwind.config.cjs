@@ -146,6 +146,7 @@ module.exports = {
         'fs-zh-body-lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  18 · Regular（Noto Sans TC）
         'fs-zh-body-md': ['1rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  16 · Regular（Noto Sans TC）
         'fs-zh-btn': ['1rem', { lineHeight: '1', letterSpacing: '0.1em' }], //  16 · Regular（Noto Sans TC，按鈕）
+        'fs-body': ['1rem', { lineHeight: '1.8', letterSpacing: '0.02em' }], //  16 · Regular（Noto Sans TC，Figma body_16px：講者介紹、議程內文）
 
         // ----- en/* -----
         'fs-en-display': [FLUID.display, { lineHeight: '1', letterSpacing: '0.02em' }], // 伸縮 32 → 56（原56 · Italic）
@@ -177,6 +178,7 @@ module.exports = {
         'fs-zh-body-lg-m': ['1rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  16 ← 18-16
         'fs-zh-body-md-m': ['0.9375rem', { lineHeight: '1.6', letterSpacing: '0.08em' }], //  15 ← 16-15
         'fs-zh-btn-m': ['0.9375rem', { lineHeight: '1', letterSpacing: '0.1em' }], //  15 ← 16-15
+        'fs-body-m': ['0.875rem', { lineHeight: '1.8', letterSpacing: '0.02em' }], //  14 ← 16-14
 
         'fs-en-display-m': [FLUID.display, { lineHeight: '1', letterSpacing: '0.02em' }], // 伸縮 32 → 56（原32 ← 56-32）
         'fs-en-hero-m': [FLUID.hero, { lineHeight: '1.2', letterSpacing: '0.02em' }], // 伸縮 64 → 72（原64 ← 72-64）
