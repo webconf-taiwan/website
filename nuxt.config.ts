@@ -75,7 +75,11 @@ export default defineNuxtConfig({
     name: seo.site.name,
     description: seo.site.description,
     defaultLocale: process.env.APP_DEFAULT_LANG,
-    indexable: process.env.WEB_SEARCH === 'YES'
+    // 正式網域一律可索引：避免部署環境漏設 WEB_SEARCH 時整站被 noindex；
+    // 測試站與本機的 APP_URL 不是 webconf.tw，仍維持不收錄。
+    indexable:
+      process.env.WEB_SEARCH === 'YES' ||
+      /^https?:\/\/webconf\.tw(\/|$)/.test(process.env.APP_URL || '')
   },
 
   // 分享圖用靜態 public/og.jpg（見下方 app.head），不需要動態產圖。
