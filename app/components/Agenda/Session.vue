@@ -26,7 +26,8 @@ const speakers = computed(() => session.value.speakers || [])
       </div>
 
       <div class="flex items-end gap-3">
-        <div v-if="speakers.length" class="flex shrink-0 gap-1">
+        <!-- 頭像兩個一排（對談四位就是 2×2），名字在右邊一行一位、用 · 接起來 -->
+        <div v-if="speakers.length" class="flex w-max max-w-[100px] shrink-0 flex-wrap gap-1">
           <div v-for="person in speakers" :key="person.name" class="size-12 overflow-hidden bg-pre-800/5">
             <img
               v-if="person.portrait"
@@ -40,11 +41,10 @@ const speakers = computed(() => session.value.speakers || [])
             >
           </div>
         </div>
-        <p class="flex min-w-0 flex-1 flex-wrap items-center gap-x-1 text-body-sm text-pre-800">
-          <template v-for="(person, i) in speakers" :key="person.name">
-            <span v-if="i > 0" aria-hidden="true" class="text-accent-1">·</span>
-            <span>{{ person.name }}</span>
-          </template>
+        <p class="flex min-w-0 flex-1 flex-col gap-1 self-center text-body-sm text-pre-800">
+          <span v-for="(person, i) in speakers" :key="person.name">
+            {{ person.name }}<span v-if="i < speakers.length - 1" aria-hidden="true" class="text-accent-1"> ·</span>
+          </span>
         </p>
         <p class="flex shrink-0 items-center gap-1 text-body-sm text-pre-800 lg:hidden">
           <AtomIcon name="geo-alt" class="size-4" />
