@@ -1,0 +1,21 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "webconf-2023",
+  "compatibility_date": "2026-10-29",
+  "workers_dev": true,
+  "routes": [
+    {
+      "pattern": "2023.webconf.tw",
+      "custom_domain": true
+    }
+  ],
+  "assets": {
+    "directory": "./dist"
+  },
+  "observability": {
+    "enabled": true,
+    "traces": {
+      "enabled": true
+    }
+  }
+}

@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "predeploy": "npm run build",
+    "deploy": "wrangler deploy",
     "preview": "vite preview",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
@@ -36,6 +38,7 @@
     "vite": "^4.1.4",
     "vite-plugin-eslint": "^1.8.1",
     "vite-svg-loader": "^4.0.0",
-    "vitest": "^0.29.1"
+    "vitest": "^0.29.1",
+    "wrangler": "4.155.0"
   }
 }
