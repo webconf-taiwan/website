@@ -34,20 +34,33 @@ interface Props {
 
 /*
  * 網格與手電筒效果全部交給 CSS：
- * 底層是藍色網格，上層是不透明的灰色網格，手電筒用 mask 在上層挖出一個漸層圓洞露出底層。
- * 原本用 p5 每一幀重畫三張滿版畫布，就算畫面沒變也一直在畫，捲動時會掉到 20～30 fps
+ * 底層是不透明的灰色網格；手電筒是一塊跟著游標移動的小方塊，裡面是藍色網格，
+ * 用由中心往外漸淡的 mask 疊在灰網格上。方塊與裡面的網格都只改 transform，移動時不必重畫。
+ * 原本用 p5 每一幀重畫三張滿版畫布，就算畫面沒變也一直在畫，捲動時會掉到 20～30 fps；
+ * mask 也不能直接蓋在滿版網格上，滿版 mask 的繪製在載入時會卡住主執行緒 300ms 以上
  */
 const gridStyle = computed(() => ({
   '--grid-line-color': `color-mix(in srgb, ${props.borderColor} ${props.borderAlpha * 100}%, transparent)`,
   '--grid-line-width': `${props.borderWidth}px`,
 }))
 
-const gridContainer = ref<HTMLElement | null>(null)
+const flashlightRef = ref<HTMLElement | null>(null)
+const flashlightGridRef = ref<HTMLElement | null>(null)
 const ease = 0.25 // 平滑滑鼠追蹤係數
 let mx = 0
 let my = 0
 let tx = 0
 let ty = 0
+
+// 方塊以游標為中心，裡面的網格反向位移，讓藍線對齊視窗不跟著動
+function updateFlashlight() {
+  if (!flashlightRef.value || !flashlightGridRef.value)
+    return
+
+  const r = Math.min(window.innerWidth, window.innerHeight) * 0.25
+  flashlightRef.value.style.transform = `translate3d(${mx - r}px, ${my - r}px, 0)`
+  flashlightGridRef.value.style.transform = `translate3d(${r - mx}px, ${r - my}px, 0)`
+}
 
 // 只在游標移動、手電筒還沒追上時才逐幀更新，追上就停
 const flashlight = useRafFn(
@@ -61,8 +74,7 @@ const flashlight = useRafFn(
       flashlight.pause()
     }
 
-    gridContainer.value?.style.setProperty('--flashlight-x', `${mx}px`)
-    gridContainer.value?.style.setProperty('--flashlight-y', `${my}px`)
+    updateFlashlight()
   },
   { immediate: false },
 )
@@ -73,12 +85,15 @@ useEventListener(
     if (!isDesktop.value || event.pointerType !== 'mouse')
       return
 
-    tx = event.clientX
-    ty = event.clientY
+    tx = Math.min(Math.max(event.clientX, 0), window.innerWidth)
+    ty = Math.min(Math.max(event.clientY, 0), window.innerHeight)
     flashlight.resume()
   },
   { passive: true },
 )
+
+// 視窗大小改變時半徑跟著變，重新對齊
+useEventListener('resize', updateFlashlight, { passive: true })
 
 // 定義 DVD 方框屬性
 interface DVDBox {
@@ -165,6 +180,7 @@ const dvdAnimation = useRafFn(
 onMounted(() => {
   mx = tx = window.innerWidth / 2
   my = ty = window.innerHeight / 2
+  updateFlashlight()
 
   const { minX, maxX, minY, maxY } = getDvdBounds()
   dvdDot = {
@@ -182,10 +198,22 @@ onMounted(() => {
   <div class="relative size-full bg-black">
     <!-- 網格層 (最底層) -->
     <div
-      ref="gridContainer"
       class="grid-placeholder fixed inset-0 z-10 size-full"
       :style="gridStyle"
-    ></div>
+    >
+      <!-- 手電筒（桌機） -->
+      <div
+        ref="flashlightRef"
+        data-flashlight
+        class="pointer-events-none absolute left-0 top-0 hidden overflow-hidden will-change-transform lg:block"
+      >
+        <div
+          ref="flashlightGridRef"
+          data-flashlight-grid
+          class="absolute left-0 top-0 will-change-transform"
+        ></div>
+      </div>
+    </div>
 
     <!-- 浮動方塊特效 -->
     <ShareFloatingBlocks class="z-[15]" />
@@ -220,24 +248,10 @@ onMounted(() => {
 <style scoped>
 /*
  * 線條從第一個間距開始畫，左緣與上緣在 0 的那條用 clip-path 裁掉。
- * 底層藍線寬 2px、以格線為中心，所以往回偏 1px
+ * 灰網格是底層；藍網格只在手電筒裡，線寬 2px、以格線為中心，所以往回偏 1px
  */
 .grid-placeholder {
   --grid-size: 64px;
-  background-color: #000;
-  background-image:
-    linear-gradient(to right, #002eff 2px, transparent 2px),
-    linear-gradient(to bottom, #002eff 2px, transparent 2px);
-  background-size: var(--grid-size) var(--grid-size);
-  background-position: -1px -1px;
-  clip-path: inset(1px 0 0 1px);
-}
-
-/* 上層灰網格，底色不透明，蓋住藍網格 */
-.grid-placeholder::before {
-  content: "";
-  position: absolute;
-  inset: 0;
   background-color: #000;
   background-image:
     linear-gradient(
@@ -251,20 +265,35 @@ onMounted(() => {
       transparent var(--grid-line-width)
     );
   background-size: var(--grid-size) var(--grid-size);
+  clip-path: inset(1px 0 0 1px);
 }
 
-/* 桌機才有手電筒：以游標為圓心、半徑為視窗短邊的 1/4，中心完全透出藍網格，往外漸回灰網格 */
+/*
+ * 桌機才有手電筒：半徑為視窗短邊的 1/4，中心完全是藍網格，往外漸回灰網格。
+ * JS 接手前先放在視窗正中央
+ */
+[data-flashlight] {
+  width: 50vmin;
+  height: 50vmin;
+  mask-image: radial-gradient(circle 25vmin at center, #000, transparent);
+  transform: translate3d(calc(50vw - 25vmin), calc(50vh - 25vmin), 0);
+}
+
+[data-flashlight-grid] {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  background-image:
+    linear-gradient(to right, #002eff 2px, transparent 2px),
+    linear-gradient(to bottom, #002eff 2px, transparent 2px);
+  background-size: var(--grid-size) var(--grid-size);
+  background-position: -1px -1px;
+  transform: translate3d(calc(25vmin - 50vw), calc(25vmin - 50vh), 0);
+}
+
 @media (min-width: 1024px) {
   .grid-placeholder {
     --grid-size: 80px;
-  }
-
-  .grid-placeholder::before {
-    mask-image: radial-gradient(
-      circle 25vmin at var(--flashlight-x, 50%) var(--flashlight-y, 50%),
-      transparent,
-      #000
-    );
   }
 }
 
