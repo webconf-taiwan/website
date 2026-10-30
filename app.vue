@@ -30,9 +30,12 @@ useEasterEgg()
 </template>
 
 <style scoped>
-/* 進入時由下往上淡入 */
+/*
+ * 進入時由下往上滑入，不做淡入：整頁一起淡入要把整頁當成半透明圖層合成，換頁會掉幀。
+ * 透明度不在 transition 裡，第一幀之後就直接是完全不透明
+ */
 .page-enter-active {
-  transition: all 0.5s;
+  transition: transform 0.5s;
 }
 .page-enter-from {
   opacity: 0;
@@ -41,7 +44,7 @@ useEasterEgg()
 
 /* 離開時淡出；整頁加上模糊太吃顯示卡，換頁會掉到 30 fps 左右，所以拿掉 */
 .page-leave-active {
-  transition: all 0.4s;
+  transition: opacity 0.4s;
 }
 .page-leave-to {
   opacity: 0;
