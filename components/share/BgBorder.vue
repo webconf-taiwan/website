@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type p5 from 'p5'
-import { useBreakpoints } from '@vueuse/core'
+import { useBreakpoints, useEventListener, useRafFn } from '@vueuse/core'
 
 const props = withDefaults(defineProps<Props>(), {
   borderColor: '#E6E6E6',
@@ -33,415 +32,149 @@ interface Props {
   dvdDotColors?: [string, string, string]
 }
 
+/*
+ * 網格與手電筒效果全部交給 CSS：
+ * 底層是藍色網格，上層是不透明的灰色網格，手電筒用 mask 在上層挖出一個漸層圓洞露出底層。
+ * 原本用 p5 每一幀重畫三張滿版畫布，就算畫面沒變也一直在畫，捲動時會掉到 20～30 fps
+ */
+const gridStyle = computed(() => ({
+  '--grid-line-color': `color-mix(in srgb, ${props.borderColor} ${props.borderAlpha * 100}%, transparent)`,
+  '--grid-line-width': `${props.borderWidth}px`,
+}))
+
+const gridContainer = ref<HTMLElement | null>(null)
+const ease = 0.25 // 平滑滑鼠追蹤係數
+let mx = 0
+let my = 0
+let tx = 0
+let ty = 0
+
+// 只在游標移動、手電筒還沒追上時才逐幀更新，追上就停
+const flashlight = useRafFn(
+  () => {
+    mx += (tx - mx) * ease
+    my += (ty - my) * ease
+
+    if (Math.abs(tx - mx) < 0.5 && Math.abs(ty - my) < 0.5) {
+      mx = tx
+      my = ty
+      flashlight.pause()
+    }
+
+    gridContainer.value?.style.setProperty('--flashlight-x', `${mx}px`)
+    gridContainer.value?.style.setProperty('--flashlight-y', `${my}px`)
+  },
+  { immediate: false },
+)
+
+useEventListener(
+  'pointermove',
+  (event: PointerEvent) => {
+    if (!isDesktop.value || event.pointerType !== 'mouse')
+      return
+
+    tx = event.clientX
+    ty = event.clientY
+    flashlight.resume()
+  },
+  { passive: true },
+)
+
 // 定義 DVD 方框屬性
 interface DVDBox {
-  x: number // 初始座標
-  y: number // 初始座標
-  vx: number // 移動 x 座標
-  vy: number // 移動 y 座標
-  size: number // 大小
-  color: string // 顏色
+  x: number // 中心座標
+  y: number // 中心座標
+  vx: number // 每幀移動的 x 距離（以 60fps 計）
+  vy: number // 每幀移動的 y 距離（以 60fps 計）
   colorIndex: number // 顏色索引
 }
 
-const gridContainer = ref<HTMLElement | null>(null)
-const boxContainer = ref<HTMLElement | null>(null)
-const contentContainer = ref<HTMLElement | null>(null)
-const gridSizeRef = ref<number>(0)
-
-let dvdDots: DVDBox[] = [] // DVD 方框狀態
-const FIXED_GRID_SIZE = computed(() => (isDesktop.value ? 80 : 64)) // 網格的大小(固定值)
-let gridSize: number // 網格大小（動態計算）
-const ease = 0.25 // 平滑滑鼠追蹤係數
-
-let topLayer: p5.Graphics | null // 上層灰網格緩衝
-let bottomLayer: p5.Graphics | null // 下層藍網格緩衝
-let tempLayer: p5.Graphics | null // 臨時圖層（用於遮罩效果）
-let mx: number, my: number, tx: number, ty: number // 鼠標位置
-let r: number // flashlight 半徑
-
-const defaultColors = {
-  primary: '#4a90ff', // 方框預設顏色
-  topGrid: props.borderColor, // 上層灰網格顏色
-  bottomGrid: '#002EFF', // 下層藍網格顏色
-}
-
 const dvdDotSize = 20
+const dvdDotBuffer = 20
 const headerOffset = 58 // 對應 h-[58px] 的高度偏移
-const p5InstanceRef = ref<p5 | null>(null)
+const dvdDotRef = ref<HTMLElement | null>(null)
+const dvdDotColor = ref('#4a90ff') // 第一次碰壁前的顏色
+let dvdDot: DVDBox | null = null
 
 watch(
   () => props.dvdDotSpeed,
-  (newSpped) => {
-    for (const dot of dvdDots) {
-      const speed = newSpped || 4
-      dot.vx = dot.vx < 0 ? -Math.abs(speed) : Math.abs(speed)
-      dot.vy = dot.vy < 0 ? -Math.abs(speed) : Math.abs(speed)
-    }
+  (newSpeed) => {
+    if (!dvdDot)
+      return
+    const speed = newSpeed || 4
+    dvdDot.vx = dvdDot.vx < 0 ? -Math.abs(speed) : Math.abs(speed)
+    dvdDot.vy = dvdDot.vy < 0 ? -Math.abs(speed) : Math.abs(speed)
   },
 )
 
-watch(
-  [() => props.borderColor, () => props.borderWidth, () => props.borderAlpha],
-  ([newColor, newWidth, newAlpha]) => {
-    defaultColors.topGrid = newColor
-    if (topLayer && p5InstanceRef.value) {
-      const p = p5InstanceRef.value
-      drawGrid(p, topLayer, p.color(newColor), newAlpha, newWidth)
-    }
-  },
-)
-
-function drawGrid(
-  p: p5,
-  pg: p5.Graphics,
-  lineCol: p5.Color,
-  alpha: number = 1,
-  customStrokeWeight?: number,
-) {
-  if (!pg)
-    return
-
-  pg.background(0)
-
-  const ctx = pg.drawingContext as CanvasRenderingContext2D
-  if (!ctx)
-    return
-
-  const r = p.red(lineCol)
-  const g = p.green(lineCol)
-  const b = p.blue(lineCol)
-
-  ctx.strokeStyle = `rgba(${r}, ${g}, ${b}, ${alpha})`
-  ctx.lineWidth = customStrokeWeight || 0.5
-  ctx.lineCap = 'butt'
-  ctx.lineJoin = 'miter' // 確保連接點是尖角
-
-  // 確保線條對齊到像素邊界，避免模糊
-  const halfPixel = (customStrokeWeight || 0.5) % 2 === 0 ? 0 : 0.5
-
-  ctx.beginPath()
-
-  // 繪製垂直線 - 從第一條開始，避免邊界重疊
-  for (let x = gridSize; x < pg.width; x += gridSize) {
-    const adjustedX = Math.floor(x) + halfPixel
-    ctx.moveTo(adjustedX, 0)
-    ctx.lineTo(adjustedX, pg.height)
+function getDvdBounds() {
+  const half = dvdDotSize / 2 + dvdDotBuffer
+  return {
+    minX: half,
+    maxX: window.innerWidth - half,
+    minY: headerOffset + half,
+    maxY: window.innerHeight - half,
   }
-
-  // 繪製水平線 - 從第一條開始，避免邊界重疊
-  for (let y = gridSize; y < pg.height; y += gridSize) {
-    const adjustedY = Math.floor(y) + halfPixel
-    ctx.moveTo(0, adjustedY)
-    ctx.lineTo(pg.width, adjustedY)
-  }
-
-  ctx.stroke()
 }
 
-// 圖層初始化函數
-function initializeLayersSync(p: p5) {
-  if (p.width === undefined || p.height === undefined)
-    return
-
-  // 清理舊的 Graphics 對象
-  if (topLayer) {
-    topLayer.remove()
-    topLayer = null
-  }
-  if (bottomLayer) {
-    bottomLayer.remove()
-    bottomLayer = null
-  }
-  if (tempLayer) {
-    tempLayer.remove()
-    tempLayer = null
-  }
-
-  // 建立三層畫布
-  topLayer = p.createGraphics(p.width, p.height, 'p2d')
-  bottomLayer = p.createGraphics(p.width, p.height, 'p2d')
-  tempLayer = p.createGraphics(p.width, p.height, 'p2d')
-
-  topLayer.pixelDensity(1)
-  bottomLayer.pixelDensity(1)
-  tempLayer.pixelDensity(1)
-
-  const { topGrid, bottomGrid } = defaultColors
-
-  // 繪製底層藍色網格（完全不透明）
-  drawGrid(p, bottomLayer, p.color(bottomGrid), 1, 2)
-
-  // 繪製上層灰色網格（半透明）
-  drawGrid(p, topLayer, p.color(topGrid), props.borderAlpha, props.borderWidth)
+function nextDvdColor(dot: DVDBox) {
+  dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
+  dvdDotColor.value = props.dvdDotColors[dot.colorIndex]
 }
 
-// p5 網格背景程式
-function gridSketch(p: p5) {
-  p.setup = () => {
-    p5InstanceRef.value = p
-    const canvas = p.createCanvas(p.windowWidth, p.windowHeight, 'p2d')
-    canvas.id('gridCanvas')
-    canvas.parent(gridContainer.value!)
-    p.pixelDensity(1)
-
-    // 計算 gridSize 和設置 CSS 變數
-    gridSize = FIXED_GRID_SIZE.value
-    gridSizeRef.value = gridSize
-
-    // 初始化 flashlight 參數
-    r = isDesktop.value ? Math.min(p.width, p.height) * 0.25 : 0
-    mx = tx = p.width / 2
-    my = ty = p.height / 2
-
-    watch(
-      isDesktop,
-      (newVal) => {
-        if (!p)
-          return
-        r = newVal ? Math.min(p.width, p.height) * 0.25 : 0
-      },
-      { immediate: true },
-    )
-
-    initializeLayersSync(p)
-  }
-
-  p.draw = () => {
-    if (!topLayer || !bottomLayer || !tempLayer)
+// 方塊是單獨一個小元素，只改 transform，不必為了它重畫一張滿版畫布
+const dvdAnimation = useRafFn(
+  ({ delta }) => {
+    if (!dvdDot || !dvdDotRef.value)
       return
 
-    p.clear()
+    // 分頁切回來時 delta 會很大，最多補一幀左右的距離
+    const step = Math.min(delta, 34) / (1000 / 60)
+    const dot = dvdDot
+    const { minX, maxX, minY, maxY } = getDvdBounds()
 
-    // 平滑追蹤游標
-    mx = p.lerp(mx, tx, ease)
-    my = p.lerp(my, ty, ease)
-
-    if (bottomLayer) {
-      p.image(bottomLayer, 0, 0)
-    }
-
-    if (topLayer && tempLayer) {
-      tempLayer.clear()
-      tempLayer.image(topLayer, 0, 0)
-
-      const ctx = tempLayer.drawingContext as CanvasRenderingContext2D
-      if (ctx) {
-        ctx.save()
-        ctx.globalCompositeOperation = 'destination-out'
-        const gradient = ctx.createRadialGradient(mx, my, 0, mx, my, r)
-        gradient.addColorStop(0, 'rgba(0,0,0,1)')
-        gradient.addColorStop(1, 'rgba(0,0,0,0)')
-        ctx.fillStyle = gradient
-
-        ctx.beginPath()
-        ctx.arc(mx, my, r, 0, Math.PI * 2)
-        ctx.closePath()
-        ctx.fill()
-        ctx.restore()
-      }
-
-      p.image(tempLayer, 0, 0)
-    }
-  }
-
-  const handleResized = () => {
-    p.resizeCanvas(p.windowWidth, p.windowHeight)
-    gridSize = FIXED_GRID_SIZE.value
-    gridSizeRef.value = gridSize
-
-    if (
-      topLayer
-      && (topLayer.width !== p.width || topLayer.height !== p.height)
-    ) {
-      initializeLayersSync(p)
-    }
-  }
-
-  p.windowResized = function () {
-    handleResized()
-  }
-
-  p.mouseMoved = () => {
-    if (
-      !topLayer
-      || !bottomLayer
-      || !tempLayer
-      || p.width === undefined
-      || p.height === undefined
-    ) {
-      return
-    }
-    tx = p.constrain(p.mouseX, 0, p.width)
-    ty = p.constrain(p.mouseY, 0, p.height)
-  }
-
-  p.mouseDragged = () => {
-    if (
-      !topLayer
-      || !bottomLayer
-      || !tempLayer
-      || p.width === undefined
-      || p.height === undefined
-    ) {
-      return
-    }
-    tx = p.constrain(p.mouseX, 0, p.width)
-    ty = p.constrain(p.mouseY, 0, p.height)
-  }
-}
-
-// p5 方框動畫程式
-function boxSketch(p: p5) {
-  p.setup = () => {
-    const canvas = p.createCanvas(p.windowWidth, p.windowHeight, 'p2d')
-    canvas.parent(boxContainer.value!)
-    p.pixelDensity(1)
-    canvas.id('dvdDotCanvas')
-
-    // 畫動態方框
-    createDVDDots(p)
-  }
-
-  p.draw = () => {
-    if (!p || p.width === undefined || p.height === undefined) {
-      return
-    }
-
-    p.clear()
-    updateAndDrawDVDDots(p)
-  }
-
-  const handleResized = () => {
-    p.resizeCanvas(p.windowWidth, p.windowHeight)
-  }
-
-  p.windowResized = function () {
-    handleResized()
-  }
-}
-
-// 創建 DVD 初始化設定
-function createDVDDots(p: p5) {
-  dvdDots = []
-
-  // 確保方框完全在邊界內，考慮 header 偏移
-  const buffer = 20
-  const minX = dvdDotSize / 2 + buffer
-  const maxX = p.width - dvdDotSize / 2 - buffer
-  const minY = headerOffset + dvdDotSize / 2 + buffer
-  const maxY = p.windowHeight - dvdDotSize / 2 - buffer
-
-  dvdDots.push({
-    x: p.random(minX, maxX),
-    y: p.random(minY, maxY),
-    vx: props.dvdDotSpeed,
-    vy: props.dvdDotSpeed,
-    size: dvdDotSize,
-    color: defaultColors.primary,
-    colorIndex: 0,
-  })
-}
-
-// 更新和繪製 DVD 點
-function updateAndDrawDVDDots(p: p5) {
-  if (!p || p.width === undefined || p.height === undefined) {
-    return
-  }
-
-  const buffer = 20
-
-  for (const dot of dvdDots) {
-    // 先更新位置
-    dot.x += dot.vx
-    dot.y += dot.vy
-
-    // 邊界檢測，使用當前視窗的可見區域
-    const minX = dot.size / 2 + buffer
-    const maxX = p.width - dot.size / 2 - buffer
-    const topBoundary = headerOffset + dot.size / 2 + buffer
-    const bottomBoundary = p.windowHeight - dot.size / 2 - buffer
+    dot.x += dot.vx * step
+    dot.y += dot.vy * step
 
     if (dot.x <= minX) {
       dot.x = minX
       dot.vx = Math.abs(dot.vx)
-      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
-      dot.color = props.dvdDotColors[dot.colorIndex]
+      nextDvdColor(dot)
     }
     if (dot.x >= maxX) {
       dot.x = maxX
       dot.vx = -Math.abs(dot.vx)
-      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
-      dot.color = props.dvdDotColors[dot.colorIndex]
+      nextDvdColor(dot)
     }
-    if (dot.y <= topBoundary) {
-      dot.y = topBoundary
+    if (dot.y <= minY) {
+      dot.y = minY
       dot.vy = Math.abs(dot.vy)
-      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
-      dot.color = props.dvdDotColors[dot.colorIndex]
+      nextDvdColor(dot)
     }
-    if (dot.y >= bottomBoundary) {
-      dot.y = bottomBoundary
+    if (dot.y >= maxY) {
+      dot.y = maxY
       dot.vy = -Math.abs(dot.vy)
-      dot.colorIndex = (dot.colorIndex + 1) % props.dvdDotColors.length
-      dot.color = props.dvdDotColors[dot.colorIndex]
+      nextDvdColor(dot)
     }
 
-    drawGlowingBox(p, dot.x, dot.y, dot.size, dot.color)
+    dvdDotRef.value.style.transform = `translate3d(${dot.x - dvdDotSize / 2}px, ${dot.y - dvdDotSize / 2}px, 0)`
+  },
+  { immediate: false },
+)
+
+onMounted(() => {
+  mx = tx = window.innerWidth / 2
+  my = ty = window.innerHeight / 2
+
+  const { minX, maxX, minY, maxY } = getDvdBounds()
+  dvdDot = {
+    x: minX + Math.random() * (maxX - minX),
+    y: minY + Math.random() * (maxY - minY),
+    vx: props.dvdDotSpeed,
+    vy: props.dvdDotSpeed,
+    colorIndex: 0,
   }
-}
-
-// 繪製方框
-function drawGlowingBox(
-  p: p5,
-  x: number,
-  y: number,
-  size: number,
-  colorHex: string,
-) {
-  const colorObj = p.color(colorHex)
-  const r = p.red(colorObj)
-  const g = p.green(colorObj)
-  const b = p.blue(colorObj)
-
-  // 核心方框
-  p.fill(r, g, b)
-  p.noStroke()
-  p.rectMode(p.CENTER)
-  p.rect(x, y, size, size)
-}
-
-const gridP5Sketch = useP5Sketch({
-  container: gridContainer,
-  sketch: gridSketch,
-})
-
-const boxP5Sketch = useP5Sketch({
-  container: boxContainer,
-  sketch: boxSketch,
-})
-
-onMounted(async () => {
-  // 等待下一個 tick 確保 DOM 和插件都已就緒
-  await nextTick()
-  requestAnimationFrame(() => {
-    gridP5Sketch.createSketch()
-    boxP5Sketch.createSketch()
-  })
-})
-
-onUnmounted(() => {
-  document.documentElement.style.removeProperty('--grid-size')
-
-  if (topLayer)
-    topLayer.remove()
-  if (bottomLayer)
-    bottomLayer.remove()
-  if (tempLayer)
-    tempLayer.remove()
-
-  gridP5Sketch.destroySketch()
-  boxP5Sketch.destroySketch()
+  dvdAnimation.resume()
 })
 </script>
 
@@ -451,6 +184,7 @@ onUnmounted(() => {
     <div
       ref="gridContainer"
       class="grid-placeholder fixed inset-0 z-10 size-full"
+      :style="gridStyle"
     ></div>
 
     <!-- 浮動方塊特效 -->
@@ -458,7 +192,6 @@ onUnmounted(() => {
 
     <!-- 內容層 (圖片等) -->
     <div
-      ref="contentContainer"
       class="content-container relative z-[20] flex min-h-screen flex-col overflow-x-clip"
     >
       <slot></slot>
@@ -467,13 +200,18 @@ onUnmounted(() => {
     <!-- 方框層 (最上層) -->
     <Teleport to="body">
       <div
-        ref="boxContainer"
+        ref="dvdDotRef"
         :class="
           (isMenuOpen && !isDesktop) || isInSpeakerDetailPage
             ? 'invisible'
             : 'visible'
         "
-        class="pointer-events-none fixed inset-0 z-50 size-full"
+        class="pointer-events-none fixed left-0 top-0 z-50 will-change-transform"
+        :style="{
+          width: `${dvdDotSize}px`,
+          height: `${dvdDotSize}px`,
+          backgroundColor: dvdDotColor,
+        }"
       ></div>
     </Teleport>
   </div>
@@ -481,27 +219,52 @@ onUnmounted(() => {
 
 <style scoped>
 /*
- * p5 要等 JS 載完、hydration 後才畫得出格線，這裡先用 CSS 畫一層相同的灰網格，
- * 第一次繪製就有格線；p5 的 canvas 底色是不透明的黑，畫好後會整個蓋掉這層。
- * 間距、顏色、線寬對應 FIXED_GRID_SIZE 與 props 預設值；
- * p5 從第一個間距開始畫線，所以裁掉左緣與上緣在 0 的那條。
+ * 線條從第一個間距開始畫，左緣與上緣在 0 的那條用 clip-path 裁掉。
+ * 底層藍線寬 2px、以格線為中心，所以往回偏 1px
  */
-.grid-placeholder::before {
+.grid-placeholder {
   --grid-size: 64px;
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+  background-color: #000;
   background-image:
-    linear-gradient(to right, rgb(230 230 230 / 0.3) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(230 230 230 / 0.3) 1px, transparent 1px);
+    linear-gradient(to right, #002eff 2px, transparent 2px),
+    linear-gradient(to bottom, #002eff 2px, transparent 2px);
   background-size: var(--grid-size) var(--grid-size);
+  background-position: -1px -1px;
   clip-path: inset(1px 0 0 1px);
 }
 
+/* 上層灰網格，底色不透明，蓋住藍網格 */
+.grid-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  background-image:
+    linear-gradient(
+      to right,
+      var(--grid-line-color) var(--grid-line-width),
+      transparent var(--grid-line-width)
+    ),
+    linear-gradient(
+      to bottom,
+      var(--grid-line-color) var(--grid-line-width),
+      transparent var(--grid-line-width)
+    );
+  background-size: var(--grid-size) var(--grid-size);
+}
+
+/* 桌機才有手電筒：以游標為圓心、半徑為視窗短邊的 1/4，中心完全透出藍網格，往外漸回灰網格 */
 @media (min-width: 1024px) {
-  .grid-placeholder::before {
+  .grid-placeholder {
     --grid-size: 80px;
+  }
+
+  .grid-placeholder::before {
+    mask-image: radial-gradient(
+      circle 25vmin at var(--flashlight-x, 50%) var(--flashlight-y, 50%),
+      transparent,
+      #000
+    );
   }
 }
 
