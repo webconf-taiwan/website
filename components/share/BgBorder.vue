@@ -14,13 +14,20 @@ const breakpoints = useBreakpoints({
 })
 const isDesktop = breakpoints.greaterOrEqual('lg')
 
-const isInSpeakerDetailPage = computed(() => {
-  const isAgendaDetail = route.path.startsWith('/agenda')
-  const isSpeakerDetail
-    = route.path.startsWith('/speakers/') && route.path !== '/speakers'
+const settledPath = useSettledRoutePath()
+
+function isSpeakerDetailPath(path: string) {
+  const isAgendaDetail = path.startsWith('/agenda')
+  const isSpeakerDetail = path.startsWith('/speakers/') && path !== '/speakers'
 
   return isAgendaDetail || isSpeakerDetail
-})
+}
+
+// 要去的頁面要隱藏就馬上隱藏；要顯示則等舊頁離場、新頁進場才出現，不比新頁先冒出來
+const isInSpeakerDetailPage = computed(
+  () =>
+    isSpeakerDetailPath(route.path) || isSpeakerDetailPath(settledPath.value),
+)
 
 const { isMenuOpen } = useGlobalState()
 
