@@ -12,13 +12,18 @@ onMounted(() => {
   mm.add('(min-width: 1024px)', () => {
     gsap.delayedCall(0.6, () => {
       for (const el of els) {
-        gsap.to(el, {
+        // 在 delayedCall 裡建立的動畫不會被 mm.revert() 收掉，元素已不在畫面上就自行結束
+        const tween = gsap.to(el, {
           x: () => gsap.utils.random(-10, 10),
           y: () => gsap.utils.random(-10, 10),
           duration: gsap.utils.random(1, 1.5),
           ease: 'none',
           repeat: -1,
           repeatRefresh: true,
+          onRepeat: () => {
+            if (!el.isConnected)
+              tween.kill()
+          },
         })
       }
     })

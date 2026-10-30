@@ -58,13 +58,19 @@ onMounted(() => {
   if (!blockRef.value)
     return
 
-  gsap.to(blockRef.value, {
+  const el = blockRef.value
+  // 無限循環的動畫不會隨元件卸載停止，元素已不在畫面上就自行結束，避免換頁後在背景空轉
+  const tween = gsap.to(el, {
     x: () => gsap.utils.random(-10, 10),
     y: () => gsap.utils.random(-10, 10),
     duration: gsap.utils.random(1, 1.5),
     ease: 'none',
     repeat: -1,
     repeatRefresh: true,
+    onRepeat: () => {
+      if (!el.isConnected)
+        tween.kill()
+    },
   })
 })
 </script>

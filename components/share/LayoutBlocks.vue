@@ -15,13 +15,19 @@ onMounted(() => {
       return
 
     els.forEach((el) => {
-      gsap.to(el, {
+      // 無限循環的動畫不會隨元件卸載停止，換頁後元素已不在畫面上就自行結束，
+      // 否則每換一次頁就多一組在背景空轉，越換越卡。等下一輪才停，離場淡出時照常浮動
+      const tween = gsap.to(el, {
         x: () => gsap.utils.random(-10, 10),
         y: () => gsap.utils.random(-10, 10),
         duration: gsap.utils.random(1, 1.5),
         ease: 'none',
         repeat: -1,
         repeatRefresh: true,
+        onRepeat: () => {
+          if (!el.isConnected)
+            tween.kill()
+        },
       })
     })
   })
