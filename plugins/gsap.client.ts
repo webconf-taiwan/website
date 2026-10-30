@@ -1,4 +1,3 @@
-import type Lenis from 'lenis'
 import { useDebounceFn, useResizeObserver } from '@vueuse/core'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -7,43 +6,8 @@ export default defineNuxtPlugin((nuxtApp) => {
   gsap.registerPlugin(ScrollTrigger)
 
   nuxtApp.hook('app:mounted', () => {
-    const { $lenis } = nuxtApp
-
-    if ($lenis) {
-      const lenis = $lenis as Lenis
-
-      ScrollTrigger.scrollerProxy(document.body, {
-        scrollTop(value) {
-          if (arguments.length && value !== undefined) {
-            lenis.scrollTo(value, { immediate: true })
-          }
-          return lenis.animatedScroll || 0
-        },
-        scrollLeft() {
-          return 0
-        },
-        getBoundingClientRect() {
-          return {
-            top: 0,
-            left: 0,
-            width: window.innerWidth,
-            height: window.innerHeight,
-          }
-        },
-        pinType: document.querySelector('body')?.style.transform ? 'transform' : 'fixed',
-      })
-
-      lenis.on('scroll', ScrollTrigger.update)
-      ScrollTrigger.addEventListener('refresh', () => {
-        lenis.resize()
-      })
-
-      ScrollTrigger.defaults({
-        scroller: document.body,
-      })
-
-      ScrollTrigger.refresh()
-    }
+    // Lenis 捲的是原生的 window，ScrollTrigger 用預設的 scroller 即可，不需要 scrollerProxy
+    ScrollTrigger.refresh()
 
     // ScrollTrigger 只在 load / resize 時自動重算，不會察覺頁面本身長高或變矮
     // （圖片換圖、字型替換、延遲 hydration 的區塊、ClientOnly 頁尾），
