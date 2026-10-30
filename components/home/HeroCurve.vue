@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type p5 from 'p5'
 
-import { useWindowSize } from '@vueuse/core'
+import { useIntersectionObserver, useWindowSize } from '@vueuse/core'
 import { useP5Sketch } from '~/composables/useP5'
 
 // 取得視窗尺寸
@@ -484,9 +484,21 @@ function sketch(p: p5) {
   }
 }
 
-const { createSketch, destroySketch } = useP5Sketch({
+const { createSketch, destroySketch, p5Instance } = useP5Sketch({
   container: containerRef,
   sketch,
+})
+
+// 捲出畫面就停止逐幀重畫，回到畫面再繼續
+// p5Instance 是 readonly 包裝，loop／noLoop 要寫入實例的狀態，得先取回原始物件
+useIntersectionObserver(containerRef, ([entry]) => {
+  const instance = toRaw(p5Instance.value) as p5 | null
+  if (!instance)
+    return
+
+  if (entry?.isIntersecting)
+    instance.loop()
+  else instance.noLoop()
 })
 
 onMounted(async () => {
