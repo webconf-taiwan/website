@@ -39,12 +39,11 @@ useEasterEgg()
   transform: translateY(30px);
 }
 
-/* 離開時模糊消失 */
+/* 離開時淡出；整頁加上模糊太吃顯示卡，換頁會掉到 30 fps 左右，所以拿掉 */
 .page-leave-active {
   transition: all 0.4s;
 }
 .page-leave-to {
   opacity: 0;
-  filter: blur(0.5rem);
 }
 </style>
