@@ -308,6 +308,14 @@ onBeforeUnmount(() => stopWarm?.())
   opacity: 1;
 }
 
+/*
+ * 切換日期時舊的那天直接移出版面，只讓新的一天淡入。
+ * 舊的留在版面上淡出時，兩天的議程會疊在一起，頁面高度瞬間變兩倍再縮回來，看起來會閃一下
+ */
+.agenda-fade-leave-active {
+  display: none;
+}
+
 .agenda-fade-move {
   transition: opacity 0.3s ease-in-out;
 }
