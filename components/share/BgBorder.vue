@@ -8,7 +8,6 @@ const props = withDefaults(defineProps<Props>(), {
   dvdDotSpeed: 1,
   dvdDotColors: () => ['#2F2ADB', '#919191', '#E6E6E6'],
 })
-const route = useRoute()
 const breakpoints = useBreakpoints({
   lg: 1024,
 })
@@ -24,9 +23,11 @@ function isSpeakerDetailPath(path: string) {
 }
 
 // 要去的頁面要隱藏就馬上隱藏；要顯示則等舊頁離場、新頁進場才出現，不比新頁先冒出來
+const targetPath = useTargetRoutePath()
 const isInSpeakerDetailPage = computed(
   () =>
-    isSpeakerDetailPath(route.path) || isSpeakerDetailPath(settledPath.value),
+    isSpeakerDetailPath(targetPath.value)
+    || isSpeakerDetailPath(settledPath.value),
 )
 
 const { isMenuOpen } = useGlobalState()

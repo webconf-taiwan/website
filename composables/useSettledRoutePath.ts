@@ -8,3 +8,13 @@ export function useSettledRoutePath() {
   const route = useRoute()
   return useState<string>('settledRoutePath', () => route.path)
 }
+
+/**
+ * 正要前往的頁面路徑，點下連結的當下就更新。
+ * useRoute() 與 router.currentRoute 都要等新頁的資料準備好才切換，那時新頁已經在進場；
+ * 要跟舊頁一起淡出的元素得看這個
+ */
+export function useTargetRoutePath() {
+  const route = useRoute()
+  return useState<string>('targetRoutePath', () => route.path)
+}

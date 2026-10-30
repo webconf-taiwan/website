@@ -2,7 +2,7 @@
 defineOptions({ inheritAttrs: false })
 
 const { gsap } = useGsap()
-const route = useRoute()
+const targetPath = useTargetRoutePath()
 const settledPath = useSettledRoutePath()
 const hiddenPaths = ['/agenda', '/sponsors', '/history']
 
@@ -13,13 +13,22 @@ function isHiddenPath(path: string) {
 // 要去的頁面不顯示方塊：跟著舊頁一起淡出；
 // 要去的頁面會顯示：等舊頁離場、跟新頁一起淡入，不會比新頁先冒出來
 const isVisible = computed(
-  () => !isHiddenPath(route.path) && !isHiddenPath(settledPath.value),
+  () => !isHiddenPath(targetPath.value) && !isHiddenPath(settledPath.value),
 )
 
-// 淡入 0.5 秒、淡出 0.4 秒，跟換頁的進場與離場同步
-const fadeStyle = computed(() => ({
-  transitionDuration: isVisible.value ? '500ms' : '400ms',
-}))
+// 淡入 0.5 秒、淡出 0.4 秒，跟換頁的進場與離場同步。
+// 第一次進入某頁時舊頁的離場常被縮短到 0.1 秒左右，淡出還沒跑完新頁就進場了；
+// 舊頁一離場（settledPath 已是不顯示的頁面）就直接收掉，不讓方塊疊在新頁上。
+// 只把時間改成 0 不會中斷已經在跑的淡出，要把 transition 拿掉才會立刻跳到結果
+const fadeStyle = computed(() => {
+  if (isVisible.value)
+    return { transitionDuration: '500ms' }
+
+  if (isHiddenPath(settledPath.value))
+    return { transitionProperty: 'none' }
+
+  return { transitionDuration: '400ms' }
+})
 
 const topGroupRef = ref<HTMLElement | null>(null)
 const bottomGroupRef = ref<HTMLElement | null>(null)
