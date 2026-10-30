@@ -76,10 +76,15 @@ onMounted(() => {
   )
 })
 
-// ScrollTrigger 不會隨頁面卸載消失，不收掉每來一次就多一個；不還原背景位置，離場淡出時畫面不跳
+// ScrollTrigger 不會隨頁面卸載消失，不收掉每來一次就多一個。
+// 收掉時 GSAP 會把背景位置還原成起點，離場淡出時圖片會跳一下，所以寫回收掉前的位置
 onBeforeUnmount(() => {
+  const el = historyBgRef.value
+  const position = el?.style.backgroundPosition
   bgTween?.scrollTrigger?.kill()
   bgTween?.kill()
+  if (el && position)
+    el.style.backgroundPosition = position
 })
 </script>
 
