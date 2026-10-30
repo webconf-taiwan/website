@@ -29,6 +29,8 @@ onMounted(() => {
     delay: 0.4,
     onComplete: () => {
       setFirstLoad(true)
+      // 載入畫面只出現一次，等 1.5 秒淡出結束後停掉無限循環，不再在看不見的畫面上空轉
+      gsap.delayedCall(1.5, () => tl.kill())
     },
   })
 })
