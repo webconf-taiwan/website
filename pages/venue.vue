@@ -65,6 +65,7 @@ function preloadVenueMap(venue: (typeof MAP_INFO)[number]) {
 }
 
 let stopWarm: (() => void) | undefined
+let bgTween: gsap.core.Tween | undefined
 
 onMounted(() => {
   // 預設顯示的那張已經在畫面上；其餘在頁面 load 後趁空閒預熱，不跟首屏搶頻寬
@@ -78,7 +79,7 @@ onMounted(() => {
   if (!venueBgRef.value)
     return
 
-  gsap.fromTo(
+  bgTween = gsap.fromTo(
     venueBgRef.value,
     { backgroundPosition: 'center 0%' },
     {
@@ -94,7 +95,12 @@ onMounted(() => {
   )
 })
 
-onBeforeUnmount(() => stopWarm?.())
+onBeforeUnmount(() => {
+  stopWarm?.()
+  // ScrollTrigger 不會隨頁面卸載消失，不收掉每來一次就多一個；不還原背景位置，離場淡出時畫面不跳
+  bgTween?.scrollTrigger?.kill()
+  bgTween?.kill()
+})
 </script>
 
 <template>

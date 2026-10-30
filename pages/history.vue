@@ -55,11 +55,12 @@ function useCursorLink() {
 const cursorLinkRefs = CONF_LINKS.map(() => useCursorLink())
 
 const historyBgRef = ref<HTMLDivElement | null>(null)
+let bgTween: gsap.core.Tween | undefined
 
 onMounted(() => {
   if (!historyBgRef.value)
     return
-  gsap.fromTo(
+  bgTween = gsap.fromTo(
     historyBgRef.value,
     { backgroundPosition: 'center 50%' },
     {
@@ -73,6 +74,12 @@ onMounted(() => {
       },
     },
   )
+})
+
+// ScrollTrigger 不會隨頁面卸載消失，不收掉每來一次就多一個；不還原背景位置，離場淡出時畫面不跳
+onBeforeUnmount(() => {
+  bgTween?.scrollTrigger?.kill()
+  bgTween?.kill()
 })
 </script>
 
