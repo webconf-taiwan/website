@@ -514,11 +514,15 @@ onBeforeUnmount(() => {
           loading="lazy"
           class="absolute right-0 top-12 hidden sm:block"
         />
+        <!--
+          透明度為 0 時 mix-blend 仍會讓整頁每一幀重新混色（約掉 15 fps），平常用 invisible 關掉；
+          visibility 跟著 opacity 一起 transition，滑入時立刻可見、滑出時等淡出結束才隱藏
+        -->
         <div
-          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-100"
+          class="invisible absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-[opacity,visibility] duration-300 lg:group-hover:visible lg:group-hover:opacity-100"
         ></div>
         <div
-          class="absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-opacity duration-300 lg:group-hover:opacity-60"
+          class="invisible absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-[opacity,visibility] duration-300 lg:group-hover:visible lg:group-hover:opacity-60"
         ></div>
       </div>
       <ShareGradientDotsCard
