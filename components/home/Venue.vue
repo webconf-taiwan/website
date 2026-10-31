@@ -9,6 +9,13 @@ const venueMapUrl = useVenueMapUrl()
 let stopWarmSelf: (() => void) | undefined
 let stopWarmVenuePage: (() => void) | undefined
 
+// 沒有 GPU 加速時，疊色淡入淡出的每一幀都要用 CPU 重混整塊地圖（約掉到 23 fps），
+// 改成直接切換；最後呈現的樣子不變，只少了 0.3 秒的淡入淡出
+const isSoftwareRendering = useSoftwareRendering()
+const overlayTransitionStyle = computed(() =>
+  isSoftwareRendering.value ? { transitionProperty: 'none' } : undefined,
+)
+
 onMounted(() => {
   stopWarmSelf = warmLazyImages(venueSectionRef.value)
   stopWarmVenuePage = warm([venueMapUrl(MAP_INFO[0].image)])
@@ -524,9 +531,11 @@ onBeforeUnmount(() => {
         -->
         <div
           class="invisible absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-[opacity,visibility] duration-300 lg:group-hover:visible lg:group-hover:opacity-100"
+          :style="overlayTransitionStyle"
         ></div>
         <div
           class="invisible absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-[opacity,visibility] duration-300 lg:group-hover:visible lg:group-hover:opacity-60"
+          :style="overlayTransitionStyle"
         ></div>
       </div>
       <ShareGradientDotsCard

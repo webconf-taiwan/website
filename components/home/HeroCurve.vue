@@ -25,19 +25,7 @@ const curve2Offset = reactive({
 // 計算縮放比例
 const getScale = () => windowWidth.value / ORIGINAL_WIDTH
 
-/** 拿不到 WebGL，或拿到的是軟體模擬的繪圖器，代表瀏覽器目前用 CPU 畫圖 */
-function isSoftwareRendering() {
-  const gl = document.createElement('canvas').getContext('webgl')
-  if (!gl)
-    return true
-
-  const info = gl.getExtension('WEBGL_debug_renderer_info')
-  const renderer = info
-    ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL))
-    : ''
-  gl.getExtension('WEBGL_lose_context')?.loseContext()
-  return /swiftshader|llvmpipe|software/i.test(renderer)
-}
+const isSoftwareRendering = useSoftwareRendering()
 
 // 視覺參數
 const ANCHOR_POINT_SIZE = 16 // 錨點方塊的尺寸（從 SVG 中提取，16.054px ≈ 16px）
@@ -249,7 +237,7 @@ function sketch(p: p5) {
 
     // 瀏覽器沒有 GPU 加速（例如關閉圖形加速）時，整張畫布每幀重畫的成本很高；
     // 曲線每幀只漂移約 0.04px，改成每秒 30 幀肉眼看不出差別
-    if (isSoftwareRendering())
+    if (isSoftwareRendering.value)
       p.frameRate(30)
 
     // 初始化曲線控制器
