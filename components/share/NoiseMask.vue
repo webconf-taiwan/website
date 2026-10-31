@@ -1,8 +1,27 @@
+<script setup lang="ts">
+/*
+ * 雜訊點陣圖準備好後改用點陣圖：同一個濾鏡畫出來的，看起來一樣，但不必每次重畫都重算 feTurbulence。
+ * 準備好之前（含伺服器端渲染）仍用原本的 SVG 濾鏡。濾鏡內容與 plugins/noise-texture.client.ts 相同，修改時要一起改
+ */
+const noiseTexture = useNoiseTexture()
+
+const textureStyle = computed(() =>
+  noiseTexture.value
+    ? {
+        backgroundImage: `url("${noiseTexture.value}")`,
+        backgroundSize: `${NOISE_TEXTURE_SIZE}px ${NOISE_TEXTURE_SIZE}px`,
+      }
+    : undefined,
+)
+</script>
+
 <template>
   <div
     class="pointer-events-none absolute inset-0 opacity-35 mix-blend-multiply duration-300"
+    :style="textureStyle"
   >
     <svg
+      v-if="!noiseTexture"
       xmlns="http://www.w3.org/2000/svg"
       class="size-full"
     >
