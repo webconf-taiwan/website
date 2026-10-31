@@ -471,7 +471,7 @@ onBeforeUnmount(() => {
     >
       <div
         v-cursor="{ scale: 0.4, duration: 0.5 }"
-        class="group relative w-full border-x-0 border-y-[0.5px] border-webconf-frame bg-black px-5 pb-5 pt-[85px] text-webconf-gray sm:aspect-auto sm:border-x-[0.5px] sm:pb-0 sm:pl-[29.14px] sm:pr-[34.24px] sm:pt-[29px] lg:w-[68.75%] lg:pb-[24px] lg:pl-[40px] lg:pr-[47px] lg:pt-0"
+        class="group relative isolate w-full border-x-0 border-y-[0.5px] border-webconf-frame bg-black px-5 pb-5 pt-[85px] text-webconf-gray sm:aspect-auto sm:border-x-[0.5px] sm:pb-0 sm:pl-[29.14px] sm:pr-[34.24px] sm:pt-[29px] lg:w-[68.75%] lg:pb-[24px] lg:pl-[40px] lg:pr-[47px] lg:pt-0"
       >
         <!-- 標題 -->
         <div
@@ -516,7 +516,9 @@ onBeforeUnmount(() => {
         />
         <!--
           透明度為 0 時 mix-blend 仍會讓整頁每一幀重新混色（約掉 15 fps），平常用 invisible 關掉；
-          visibility 跟著 opacity 一起 transition，滑入時立刻可見、滑出時等淡出結束才隱藏
+          visibility 跟著 opacity 一起 transition，滑入時立刻可見、滑出時等淡出結束才隱藏。
+          外層加 isolate 讓混色只跟這一塊混：區塊本身是不透明黑底，看起來一樣，
+          但不必每一幀把整頁連同背後的網格、方塊一起重混（hover 時從 22 fps 回到 54 fps）
         -->
         <div
           class="invisible absolute left-0 top-0 block size-full bg-webconf-blue opacity-0 mix-blend-color transition-[opacity,visibility] duration-300 lg:group-hover:visible lg:group-hover:opacity-100"
