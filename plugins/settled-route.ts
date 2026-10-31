@@ -20,7 +20,17 @@ export default defineNuxtPlugin((nuxtApp) => {
   })
 
   // 換頁時等舊頁淡出結束、新頁開始進場才更新
-  nuxtApp.hook('page:transition:finish', () => {
+  let fallbackTimer: ReturnType<typeof setTimeout> | undefined
+  const settle = () => {
+    clearTimeout(fallbackTimer)
     settledPath.value = router.currentRoute.value.path
+  }
+  nuxtApp.hook('page:transition:finish', settle)
+
+  // 新頁準備好後舊頁約 0.4 秒離場；若這次沒播轉場（例如新頁還沒準備好又點了別頁），
+  // page:transition:finish 不會觸發，1 秒後直接以目前頁面為準，避免停在舊值
+  nuxtApp.hook('page:finish', () => {
+    clearTimeout(fallbackTimer)
+    fallbackTimer = setTimeout(settle, 1000)
   })
 })
