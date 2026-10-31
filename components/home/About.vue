@@ -141,79 +141,107 @@ onBeforeUnmount(() => {
   >
     <section class="container flex flex-col justify-center sm:flex-row">
       <div class="flex flex-col items-start sm:w-1/2 md:mb-[72px]">
-        <NuxtImg
+        <div
           ref="aboutPhotoL1Ref"
-          src="/images/home/about/left-1.webp"
-          alt="about"
-          width="768"
-          height="512"
-          loading="lazy"
-          class="blue-shadow about-img-filter about-photo relative hidden w-full sm:left-0 sm:mt-[300px] sm:block sm:max-w-[280px] xl:left-[120px] xl:mt-[260px] xl:max-w-[360px]"
-          :class="{ 'is-hovered': hoveredImageIndex === 1 }"
-        />
-        <NuxtImg
+          class="about-photo relative hidden w-full sm:left-0 sm:mt-[300px] sm:block sm:max-w-[280px] xl:left-[120px] xl:mt-[260px] xl:max-w-[360px]"
+        >
+          <NuxtImg
+            src="/images/home/about/left-1.webp"
+            alt="about"
+            width="768"
+            height="512"
+            loading="lazy"
+            class="blue-shadow about-img-filter block w-full"
+            :class="{ 'is-hovered': hoveredImageIndex === 1 }"
+          />
+        </div>
+        <div
           ref="aboutPhotoL2Ref"
-          src="/images/home/about/left-2.webp"
-          alt="about"
-          width="768"
-          height="512"
-          loading="lazy"
-          class="blue-shadow about-img-filter about-photo relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
-          :class="{ 'is-hovered': hoveredImageIndex === 2 }"
-        />
-        <NuxtImg
+          class="about-photo relative mt-[160px] hidden w-full sm:left-10 sm:block sm:max-w-[280px] xl:-left-10 xl:mt-[160px] xl:max-w-[360px]"
+        >
+          <NuxtImg
+            src="/images/home/about/left-2.webp"
+            alt="about"
+            width="768"
+            height="512"
+            loading="lazy"
+            class="blue-shadow about-img-filter block w-full"
+            :class="{ 'is-hovered': hoveredImageIndex === 2 }"
+          />
+        </div>
+        <div
           ref="aboutPhotoL3Ref"
-          src="/images/home/about/left-3.webp"
-          alt="about"
-          width="768"
-          height="512"
-          loading="lazy"
-          class="blue-shadow about-img-filter about-photo relative w-full sm:left-0 sm:mt-[250px] sm:max-w-[360px] xl:left-10 xl:mt-[150px] xl:max-w-[439px]"
-          :class="{ 'is-hovered': hoveredImageIndex === 3 }"
-        />
+          class="about-photo relative w-full sm:left-0 sm:mt-[250px] sm:max-w-[360px] xl:left-10 xl:mt-[150px] xl:max-w-[439px]"
+        >
+          <NuxtImg
+            src="/images/home/about/left-3.webp"
+            alt="about"
+            width="768"
+            height="512"
+            loading="lazy"
+            class="blue-shadow about-img-filter block w-full"
+            :class="{ 'is-hovered': hoveredImageIndex === 3 }"
+          />
+        </div>
       </div>
 
       <HomeAboutCard />
 
       <div class="flex flex-col items-end sm:w-1/2">
-        <NuxtImg
+        <div
           ref="aboutPhotoR1Ref"
-          src="/images/home/about/right-1.webp"
-          alt="about"
-          width="768"
-          height="512"
-          loading="lazy"
-          class="blue-shadow about-img-filter about-photo relative hidden w-full sm:right-10 sm:mt-[150px] sm:block sm:max-w-[280px] xl:right-20 xl:mt-[120px] xl:max-w-[420px]"
-          :class="{ 'is-hovered': hoveredImageIndex === 4 }"
-        />
-        <NuxtImg
+          class="about-photo relative hidden w-full sm:right-10 sm:mt-[150px] sm:block sm:max-w-[280px] xl:right-20 xl:mt-[120px] xl:max-w-[420px]"
+        >
+          <NuxtImg
+            src="/images/home/about/right-1.webp"
+            alt="about"
+            width="768"
+            height="512"
+            loading="lazy"
+            class="blue-shadow about-img-filter block w-full"
+            :class="{ 'is-hovered': hoveredImageIndex === 4 }"
+          />
+        </div>
+        <div
           ref="aboutPhotoR2Ref"
-          src="/images/home/about/right-2.webp"
-          alt="about"
-          width="768"
-          height="512"
-          loading="lazy"
-          class="blue-shadow about-img-filter about-photo relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
-          :class="{ 'is-hovered': hoveredImageIndex === 5 }"
-        />
-        <NuxtImg
+          class="about-photo relative w-full sm:-right-10 sm:mt-[200px] sm:max-w-[360px] xl:right-0 xl:mt-[160px] xl:max-w-[439px]"
+        >
+          <NuxtImg
+            src="/images/home/about/right-2.webp"
+            alt="about"
+            width="768"
+            height="512"
+            loading="lazy"
+            class="blue-shadow about-img-filter block w-full"
+            :class="{ 'is-hovered': hoveredImageIndex === 5 }"
+          />
+        </div>
+        <div
           ref="aboutPhotoR3Ref"
-          src="/images/home/about/right-3.webp"
-          alt="about"
-          width="768"
-          height="512"
-          loading="lazy"
-          class="blue-shadow about-img-filter about-photo relative hidden w-full sm:right-10 sm:mt-[200px] sm:block sm:max-w-[240px] xl:right-[120px] xl:mt-[180px]"
-          :class="{ 'is-hovered': hoveredImageIndex === 6 }"
-        />
+          class="about-photo relative hidden w-full sm:right-10 sm:mt-[200px] sm:block sm:max-w-[240px] xl:right-[120px] xl:mt-[180px]"
+        >
+          <NuxtImg
+            src="/images/home/about/right-3.webp"
+            alt="about"
+            width="768"
+            height="512"
+            loading="lazy"
+            class="blue-shadow about-img-filter block w-full"
+            :class="{ 'is-hovered': hoveredImageIndex === 6 }"
+          />
+        </div>
       </div>
     </section>
   </div>
 </template>
 
 <style scoped>
+/*
+ * 視差位移放在外層，外層獨立成圖層；照片本身的灰階濾鏡與藍色陰影畫在這個圖層裡，
+ * 捲動時只搬動已經畫好的圖層。濾鏡若直接放在獨立圖層的照片上，每一幀都要重新套用，
+ * 六張一起移動時首頁這一段會掉到 25～30 fps
+ */
 .about-photo {
-  /* 硬體加速，提升動畫效能 */
   will-change: transform;
   transform: translate3d(0, 0, 0);
 }
