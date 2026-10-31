@@ -179,11 +179,16 @@ export default defineNuxtConfig({
       if (nitro.options.static || nitro.options.preset === 'nitro-prerender')
         return
 
+      // 社群分享圖（ogImage）只放在 meta 給社群平台直接抓，不會經過 IPX 縮圖；
+      // 一共 30 多 MB，複製進來只會讓部署的映像檔變大、上傳下載變慢
+      const publicDir = resolve(nitro.options.rootDir, 'public')
+      const ogImageDir = resolve(publicDir, 'images/ogImage')
+
       nitro.hooks.hook('compiled', async () => {
         await cp(
-          resolve(nitro.options.rootDir, 'public'),
+          publicDir,
           resolve(nitro.options.output.serverDir, IPX_SOURCE_DIR),
-          { recursive: true },
+          { recursive: true, filter: source => source !== ogImageDir },
         )
       })
     },
