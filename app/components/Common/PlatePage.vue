@@ -7,6 +7,8 @@
 //   between      —— 主視覺與兩欄 body 之間的區塊（贊助頁的照片牆）
 //   rail         —— 左欄卷號下方（桌機才顯示；講者頁的標籤篩選）
 //   default      —— 右側內容
+//   after        —— 兩欄 body 之後的整寬區塊（場域頁的平面圖）。包一層 [data-plate-outro]，
+//                   桌機粒子會從側欄菌落散回自由場鋪在這一區（見 AgendaParticleField 的 outroMix）
 //
 const props = defineProps({
   // { code, number, label } —— 給左欄 CommonPlate 與 hero 的 code
@@ -21,6 +23,8 @@ const props = defineProps({
   railStart: { type: String, default: 'hero' },
   ariaLabel: { type: String, default: '' },
   galleryConfig: { type: Object, default: null },
+  // 沒有 WebGPU 時 between 區要不要放贊助頁那張花形靜態圖；頁面自己有備援圖就關掉。
+  galleryFallback: { type: Boolean, default: true },
 })
 
 const { isDesktop, viewportReady } = useViewportMode()
@@ -105,9 +109,9 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
 
     <div v-if="$slots.between" class="relative">
       <ClientOnly>
-        <CommonPlateField v-if="viewportReady && isDesktop && desktopFallback && galleryConfig" variant="gallery" media-only />
+        <CommonPlateField v-if="viewportReady && isDesktop && desktopFallback && galleryConfig && galleryFallback" variant="gallery" media-only />
       </ClientOnly>
-      <slot name="between" />
+      <slot name="between" :desktop-mode="desktopMode" />
     </div>
 
     <section class="plate-page-body-section relative z-10 pb-[120px] lg:pb-0">
@@ -157,6 +161,10 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
         </div>
       </div>
     </section>
+
+    <div v-if="$slots.after" data-plate-outro class="relative z-10">
+      <slot name="after" :desktop-mode="desktopMode" />
+    </div>
   </div>
 </template>
 

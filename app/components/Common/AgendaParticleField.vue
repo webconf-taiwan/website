@@ -40,6 +40,8 @@ const wrapClass = computed(() => props.fixed
 
 let look = resolveHomeFieldLook(DEFAULT_HOME_FIELD_LOOK)
 const galleryConfig = props.galleryConfig
+// gather：第二區不收成花形，只是自由場往中間靠、繼續動（場域頁）。沒給就是贊助頁的花形。
+const gatherMode = !!galleryConfig?.gather
 let species = look.rules.species
 const SOURCE = props.source
 // 自由場同 Home/Field.vue 的 hero 格：preset／握力／速度／點徑在 init() 換成 look 的值，
@@ -164,6 +166,8 @@ let flower = null
 let flowerTypes = null
 let flowerBounds = null
 let galleryMix = 0
+// 尾段（[data-plate-outro]，場域頁的平面圖）：粒子從側欄菌落散回滿版自由場，同首頁票券區。
+let outroMix = 0
 let flowerMode = false
 let lastGalleryTop = NaN
 let lastGalleryMix = NaN
@@ -226,8 +230,8 @@ let regionSettling = false
 // --- DOM：元素只查一次，矩形一幀只量一次 ------------------------------------
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
-const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null }
-const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, canvas: null }
+const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null, outro: undefined }
+const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, outro: null, canvas: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
@@ -238,6 +242,8 @@ function lookupDom () {
     dom.gallery = dom.page?.querySelector('[data-plate-gallery]')
     dom.board = dom.gallery?.querySelector('.photo-board') || null
   }
+  // 尾段只有場域頁有；找過一次沒有就記成 null，不要每幀重查。
+  if (dom.outro === undefined && dom.page) dom.outro = dom.page.querySelector('[data-plate-outro]')
 }
 
 function measure () {
@@ -249,6 +255,7 @@ function measure () {
   rects.canvas = canvasRef.value?.getBoundingClientRect() || null
   if (dom.gallery) rects.gallery = dom.gallery.getBoundingClientRect()
   if (dom.board) rects.board = dom.board.getBoundingClientRect()
+  if (dom.outro) rects.outro = dom.outro.getBoundingClientRect()
 }
 
 // --- CSS 變數：動畫數值直接寫在 wrapper 上，Vue 不參與動畫迴圈 ----------------
@@ -263,9 +270,11 @@ function writeCssVars () {
     const W = canvasRef.value?.clientWidth || window.innerWidth + 128
     const canvasLeft = canvasRef.value?.getBoundingClientRect().left || 0
     // 只有一個顯示範圍，跟著同批粒子移動；不保留獨立的 Hero／正文窗口。
+    // 進到尾段後自由場的範圍改成尾段那一區（這時 railMix 還是 1，範圍仍在側欄，不會跳）。
+    const freeRect = outroMix > 0 && rects.outro ? rects.outro : rects.hero
     const bounds = {
-      left: 0, top: (rects.hero?.top || 0) - railOffset,
-      width: W, height: rects.hero?.height || HERO.height,
+      left: 0, top: (freeRect?.top || 0) - railOffset,
+      width: W, height: freeRect?.height || HERO.height,
     }
     const moveBounds = (target, mix) => {
       for (const key of ['left', 'top', 'width', 'height']) bounds[key] += (target[key] - bounds[key]) * mix
@@ -273,7 +282,7 @@ function writeCssVars () {
     if (galleryConfig && rects.board) {
       const board = rects.board
       // 顯示範圍跟著花形，花瓣左緣不被固定比例切掉。
-      const flowerLeft = flowerBounds ? flowerBounds.cx - flowerBounds.radius - 48 : board.left - canvasLeft + board.width * 0.48
+      const flowerLeft = flowerBounds?.gather ? board.left - canvasLeft : flowerBounds ? flowerBounds.cx - flowerBounds.radius - 48 : board.left - canvasLeft + board.width * 0.48
       const left = Math.max(board.left - canvasLeft, flowerLeft)
       moveBounds({
         left, top: board.top - railOffset,
@@ -304,7 +313,7 @@ function writeCssVars () {
     const top = Math.max(0, bounds.top)
     const bottom = Math.min(canvasHeight, bounds.top + bounds.height)
     fieldBounds = { ...bounds, top, height: Math.max(0, bottom - top) }
-    const visible = props.heroVisible || galleryMix > 0 || railMix > 0
+    const visible = props.heroVisible || galleryMix > 0 || railMix > 0 || outroMix > 0
     const region = visible
       ? `linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent) ${fieldBounds.left}px ${fieldBounds.top}px / ${fieldBounds.width}px ${fieldBounds.height}px no-repeat`
       : 'linear-gradient(transparent, transparent)'
@@ -370,6 +379,25 @@ function scrollProgress () {
   return p * p * (3 - 2 * p)
 }
 
+// 花形的構圖。behavior.seedPatterns（陣列）＝每次進頁隨機挑一個（場域頁的「粒子隨機型」），
+// 同一次瀏覽內 resize 重建時沿用同一個，不會一拉視窗就換形狀。
+let pickedSeedPattern = ''
+function gallerySeedPattern () {
+  const list = galleryConfig.behavior.seedPatterns
+  if (!list?.length) return galleryConfig.behavior.seedPattern
+  if (!pickedSeedPattern) pickedSeedPattern = list[(Math.random() * list.length) | 0]
+  return pickedSeedPattern
+}
+
+// 尾段進場：區塊頂端從視窗底下 100px 捲到視窗 35% 高的這段，粒子從側欄散回自由場。
+function outroProgress () {
+  if (!props.fixed || !rects.outro) return 0
+  const start = window.innerHeight - 100
+  const end = window.innerHeight * 0.35
+  const p = Math.max(0, Math.min(1, (start - rects.outro.top) / Math.max(1, start - end)))
+  return p * p * (3 - 2 * p)
+}
+
 // CPU 後端只有物件快照，轉成 GPU readParticlesRaw 同款的 stride 6 陣列，slot = index。
 function rawFromSnapshot (snap) {
   const raw = new Float32Array(snap.length * 6)
@@ -430,23 +458,39 @@ async function rebuildTargets () {
       const heading = dom.gallery.querySelector('.photo-heading').getBoundingClientRect()
       // 第二區是設計稿的花形：跨越照片後方、頂端與標題同高，不隨視窗高度縮小。
       // 同一批粒子以 slot 配對變形過去，不另開引擎、不增加粒子數。
-      const top = Math.max(24, heading.top - board.top)
-      const radius = Math.min(board.width * 0.31, (board.height - top) * 0.52)
+      // layout.x：花心在照片區寬度的哪裡（贊助頁 0.76 在右側；場域頁往中間收）。
+      // layout.top：花頂距照片區頂端，沒給就跟標題同高。
+      const layout = { x: 0.76, radius: 0.31, ...galleryConfig.layout }
+      const top = layout.top ?? Math.max(24, heading.top - board.top)
+      const radius = Math.min(board.width * layout.radius, (board.height - top) * 0.52)
       const zoom = galleryConfig.sim.cameraZoom
       const size = radius * 2 / zoom
-      const seedTargets = buildSeedTargets(galleryConfig.behavior.seedPattern, N, species, size, size)
+      const seedTargets = gatherMode ? null : buildSeedTargets(gallerySeedPattern(), N, species, size, size)
       const canvasLeft = canvasRef.value?.getBoundingClientRect().left || 0
-      const cx = board.left - canvasLeft + board.width * 0.76
+      const cx = board.left - canvasLeft + board.width * layout.x
       const cy = top + radius
-      for (let i = 0; i < N; i++) {
-        seedTargets.tx[i] = cx + (seedTargets.tx[i] - size / 2) * zoom
-        // 目標放在視窗內模擬，照片區的捲動位移交給相機；放到環狀世界外會繞回蓋到標題。
-        seedTargets.ty[i] = H / 2 + (seedTargets.ty[i] - size / 2) * zoom
+      if (gatherMode) {
+        // 場域頁：不鎖成花形。目標就是自由場的構圖，只朝 (cx, 視窗中線) 收 gather.amount 這麼多；
+        // 握力也放鬆（gather.pull / grip），粒子照樣跟著力場一直演化，只是整團往中間靠。
+        const amount = galleryConfig.gather.amount ?? 0.35
+        flower = new Float32Array(heroShape.length)
+        for (let i = 0; i < N; i++) {
+          flower[i * 2] = cx + (heroShape[i * 2] - cx) * (1 - amount)
+          flower[i * 2 + 1] = H / 2 + (heroShape[i * 2 + 1] - H / 2) * (1 - amount)
+        }
+        flowerTypes = heroTypes
+        flowerBounds = { cx, cy: board.height / 2, simulationCy: H / 2, radius, top, gather: true }
+      } else {
+        for (let i = 0; i < N; i++) {
+          seedTargets.tx[i] = cx + (seedTargets.tx[i] - size / 2) * zoom
+          // 目標放在視窗內模擬，照片區的捲動位移交給相機；放到環狀世界外會繞回蓋到標題。
+          seedTargets.ty[i] = H / 2 + (seedTargets.ty[i] - size / 2) * zoom
+        }
+        const slots = buildSlotTargetsRaw(raw, N, seedTargets, species, W, { recolor: true })
+        flower = slots.shape
+        flowerTypes = slots.shapeType
+        flowerBounds = { cx, cy, simulationCy: H / 2, radius, top }
       }
-      const slots = buildSlotTargetsRaw(raw, N, seedTargets, species, W, { recolor: true })
-      flower = slots.shape
-      flowerTypes = slots.shapeType
-      flowerBounds = { cx, cy, simulationCy: H / 2, radius, top }
     }
     heroPalette = paletteToLinear(window.PLPalettes.PALETTES[look.palette].particles)
     railPalette = heroPalette
@@ -524,11 +568,17 @@ function jitterTargets (now) {
     lastGalleryTop = galleryTop
     lastGalleryMix = galleryMix
     const breathing = 1 + Math.sin(now * 0.0006) * 0.035
+    // gather：目標跟著自由場的閃動一起換（收攏後的 heroJitter），不是一張固定的花形
+    const gatherScale = gatherMode ? (1 - (galleryConfig.gather.amount ?? 0.35)) * breathing : 0
     for (let i = 0, n = heroShape.length / 2; i < n; i++) {
       const hx = heroJitter[i * 2]
       const hy = heroJitter[i * 2 + 1]
-      const fx = flower ? flowerBounds.cx + (flower[i * 2] - flowerBounds.cx) * breathing : hx
-      const fy = flower ? flowerBounds.simulationCy + (flower[i * 2 + 1] - flowerBounds.simulationCy) * breathing : hy
+      const fx = !flower ? hx : gatherMode
+        ? flowerBounds.cx + (hx - flowerBounds.cx) * gatherScale
+        : flowerBounds.cx + (flower[i * 2] - flowerBounds.cx) * breathing
+      const fy = !flower ? hy : gatherMode
+        ? flowerBounds.simulationCy + (hy - flowerBounds.simulationCy) * gatherScale
+        : flowerBounds.simulationCy + (flower[i * 2 + 1] - flowerBounds.simulationCy) * breathing
       packed[i * 4] = hx + (fx - hx) * galleryMix
       packed[i * 4 + 1] = hy + (fy - hy) * galleryMix
     }
@@ -680,8 +730,10 @@ function step (dt) {
   // 花形 → 側欄那段不拖：花形握得很緊，慢放會把整群粒子壓成幾個亮點。
   const flowerMix = galleryMix * (1 - railMix)
   const freeWeight = (1 - galleryMix) * (1 - railMix)
-  const stagePull = HERO.pull + (24 - HERO.pull) * galleryMix
-  const stageGrip = HERO.grip + (90 - HERO.grip) * galleryMix
+  const galleryPull = gatherMode ? galleryConfig.gather.pull : 24
+  const galleryGrip = gatherMode ? galleryConfig.gather.grip : 90
+  const stagePull = HERO.pull + (galleryPull - HERO.pull) * galleryMix
+  const stageGrip = HERO.grip + (galleryGrip - HERO.grip) * galleryMix
   const pullTarget = stagePull + (RAIL.pull - stagePull) * railMix
   const gripTarget = stageGrip + (RAIL.grip - stageGrip) * railMix
   const release = freeWeight > 0.5 ? LOCK_RELEASE : LOCK_ATTACK
@@ -693,7 +745,8 @@ function step (dt) {
   syncAmbient(Math.max(lockNorm, railMix))
   // 首頁的電影感漂移：自由場與側欄菌落都照握力打折，花形要對齊照片所以收到 0。
   const s = motionTime * 0.001
-  const drift = (1 - 0.75 * lockNorm) * (1 - flowerMix)
+  // gather 模式不用對齊照片，漂移照常（只照握力打折）。
+  const drift = (1 - 0.75 * lockNorm) * (gatherMode ? 1 : 1 - flowerMix)
   const dx = (Math.sin(s * 0.021) * 42 + Math.sin(s * 0.006) * 26) * drift
   const dy = (Math.cos(s * 0.017) * 30 + Math.sin(s * 0.010) * 16) * drift
   const dz = 1 + 0.035 * Math.sin(s * 0.011) * drift
@@ -703,7 +756,8 @@ function step (dt) {
     lastCameraZoom = cameraZoom
   }
   // Hero 以 720px 取景；捲動與相機縮放同步，讓同一粒子的螢幕位移連續。
-  const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix)
+  // 尾段的自由場不再對齊 hero 的 720px 取景，直接置中在視窗。
+  const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix) * (1 - outroMix)
   const cameraY = (centerShift - heroOffset) / cameraZoom + dy
   if (dx !== lastCameraX || cameraY !== lastCameraY) {
     engine.setCameraOffset?.(dx, cameraY)
@@ -831,13 +885,15 @@ function frame (now = performance.now()) {
   lastDt = dt
   // 先讀後寫：所有 DOM 量測集中在這裡，樣式在幀尾一次寫入。
   measure()
-  const progress = scrollProgress()
+  outroMix = outroProgress()
+  const progress = scrollProgress() * (1 - outroMix)
   railMix += (progress - railMix) * (reducedMotion.value ? 1 : 1 - Math.exp(-10 * dt))
   if (Math.abs(progress - railMix) < 0.0001) railMix = progress
   const galleryProgress = galleryConfig ? Math.max(0, Math.min(1, -(rects.hero?.top || 0) / (HERO.height - 120))) : 0
-  galleryMix = galleryProgress * galleryProgress * (3 - 2 * galleryProgress)
+  galleryMix = galleryProgress * galleryProgress * (3 - 2 * galleryProgress) * (1 - outroMix)
   const galleryOffset = flowerBounds ? (rects.gallery?.top || 0) + flowerBounds.cy - flowerBounds.simulationCy : 0
-  heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryMix) + galleryOffset * galleryMix) * (1 - railMix)
+  // 尾段的自由場固定在視窗上（同首頁票券區），不再跟著 hero 的位置捲走。
+  heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryMix) + galleryOffset * galleryMix) * (1 - railMix) * (1 - outroMix)
   step(dt)
   writeCssVars()
   if (running || railMix !== progress || regionSettling) schedule()
@@ -926,7 +982,7 @@ async function init () {
     window.__agendaField = engine
     window.__agendaRailMotion = RAIL
     window.__agendaMotion = () => ({
-      railMix, galleryMix, flowerMode, flowerBounds, pull, grip, lockNorm, ambientOn, force: appliedForce, simSpeed: simSpeedNow, targetsGeneration, buildingTargets,
+      railMix, galleryMix, outroMix, flowerMode, flowerBounds, pull, grip, lockNorm, ambientOn, force: appliedForce, simSpeed: simSpeedNow, targetsGeneration, buildingTargets,
       look: look.id, ready: ready.value, running, failed: failed.value, reducedMotion: reducedMotion.value, motionTime, rafPending,
       mask: maskKey, fieldBounds,
     })
