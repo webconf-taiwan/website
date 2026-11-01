@@ -10,7 +10,7 @@ useFadeIn(sectionRef, { step: 0.08 })
 </script>
 
 <template>
-  <section ref="sectionRef" aria-labelledby="venue-access-heading" class="mx-5 flex flex-col pt-8 lg:mx-0 lg:pl-6 lg:pt-0">
+  <section ref="sectionRef" aria-labelledby="venue-access-heading" class="relative mx-5 flex flex-col pt-8 lg:mx-0 lg:pl-6 lg:pt-0">
     <div class="flex flex-col gap-2 lg:gap-4">
       <h2 id="venue-access-heading" data-fade="in" class="text-en-h1 italic text-pre-800">{{ data.title_en }}</h2>
       <p data-fade="in" class="text-zh-h4 text-pre-800">{{ data.title_zh }}</p>
@@ -33,14 +33,14 @@ useFadeIn(sectionRef, { step: 0.08 })
       </div>
     </dl>
 
-    <!-- 窄視窗沒有側欄菌落粒子：交通資訊下方放一小段同一張菌落圖（設計稿手機版） -->
-    <div aria-hidden="true" class="venue-access-deco pointer-events-none relative -mx-5 mt-6 h-[150px] overflow-hidden lg:hidden">
-      <picture>
-        <source :srcset="assetUrl('/home-deco/home-no-webgpu-deco-3.webp')" type="image/webp">
+    <!-- 窄視窗沒有側欄菌落粒子：設計稿手機版在區塊底部的 120px 留白裡放一張菌落圖
+         （x 42、緊接在文字下方、325×310 只露出上段、不透明度 90%），不另外佔高度 -->
+    <div aria-hidden="true" class="pointer-events-none absolute left-[22px] top-[calc(100%+2px)] h-[118px] w-[325px] overflow-hidden lg:hidden">
+      <picture data-fade="in" class="block">
+        <source :srcset="assetUrl('/figma/venue/access-colonies.webp')" type="image/webp">
         <img
-          :src="assetUrl('/home-deco/home-no-webgpu-deco-3.png')" alt="" width="884" height="1340"
-          loading="lazy" decoding="async" draggable="false"
-          class="absolute right-0 top-[-12px] w-[220px] max-w-none select-none"
+          :src="assetUrl('/figma/venue/access-colonies.png')" alt="" width="325" height="310"
+          loading="lazy" decoding="async" draggable="false" class="block max-w-none select-none opacity-90"
         >
       </picture>
     </div>

@@ -29,6 +29,15 @@ const carouselRef = ref(null)
 const hovering = ref(false)
 const focusInside = ref(false)
 const inView = ref(false)
+// 底圖進場：這一區頂端進到畫面 85% 就淡入，播一次
+const bgShown = ref(false)
+let bgObserver = null
+// 窄視窗的粒子場等這一區快進畫面（前 600px）才建引擎，不跟 hero 那張搶進站時的 GPU
+const nearView = ref(false)
+let nearObserver = null
+// PlateField 回報的實際模式（webgpu / video / poster…）；它退到 poster 時改放設計稿底圖
+const mobileBackend = ref('')
+const showStaticBg = computed(() => viewportReady.value && (reducedMotion.value || (!isDesktop.value && mobileBackend.value === 'poster')))
 const reducedMotion = ref(false)
 // 使用者點過 tab 就交給他自己切，不再自動換；暫停鈕也是同一個開關
 const autoplayStopped = ref(false)
@@ -178,10 +187,24 @@ onMounted(() => {
   motionQuery.addEventListener('change', motionChanged)
   observer = new IntersectionObserver(([entry]) => { inView.value = entry.isIntersecting }, { threshold: 0.4 })
   if (carouselRef.value) observer.observe(carouselRef.value)
+  bgObserver = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return
+    bgShown.value = true
+    bgObserver.disconnect()
+  }, { rootMargin: '0px 0px -15% 0px' })
+  bgObserver.observe(sectionRef.value)
+  nearObserver = new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) return
+    nearView.value = true
+    nearObserver.disconnect()
+  }, { rootMargin: '600px 0px' })
+  nearObserver.observe(sectionRef.value)
 })
 onBeforeUnmount(() => {
   clearInterval(timer)
   observer?.disconnect()
+  bgObserver?.disconnect()
+  nearObserver?.disconnect()
   motionQuery?.removeEventListener('change', motionChanged)
   if (lightbox.value >= 0) {
     lenis?.start()
@@ -191,15 +214,29 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section ref="sectionRef" aria-labelledby="venue-floor-heading" class="venue-floor relative overflow-hidden">
+  <section ref="sectionRef" data-venue-floor aria-labelledby="venue-floor-heading" class="venue-floor relative overflow-clip">
     <!-- 背景：沒有即時粒子時的替身（見檔頭） -->
+    <!-- 背景，跟首頁票券區同一套分法：
+           桌機有 WebGPU    整頁那張粒子場散回來（AgendaParticleField 的 outroMix），這裡不放東西
+           桌機沒有 WebGPU  首頁那支自由場影片
+           窄視窗           自己一張粒子場（PlateMobileField，只在這一區看得到時才跑）；
+                            沒有 WebGPU 時它自己換成同一支影片
+           減少動態         設計稿的靜態底圖（Figma 的圖片填色，2x 匯出） -->
     <ClientOnly>
-      <HomeVideoField v-if="viewportReady && isDesktop && desktopMode === 'fallback'" />
-      <img
-        v-if="viewportReady && !isDesktop"
-        :src="assetUrl('/videos/hero-field-biolum-poster.jpg')" alt="" aria-hidden="true" loading="lazy" decoding="async"
-        class="venue-floor-poster pointer-events-none absolute inset-0 size-full object-cover"
-      >
+      <HomeVideoField v-if="viewportReady && isDesktop && desktopMode === 'fallback' && !reducedMotion" />
+      <CommonPlateField
+        v-if="viewportReady && !isDesktop && nearView && !reducedMotion"
+        :regions="['[data-venue-floor]']"
+        class="venue-floor-field"
+        @backend="mobileBackend = $event"
+      />
+      <picture v-if="showStaticBg" aria-hidden="true" class="venue-floor-bg pointer-events-none absolute inset-0" :class="{ 'is-shown': bgShown }">
+        <source :srcset="assetUrl('/figma/venue/floor-bg.webp')" type="image/webp">
+        <img
+          :src="assetUrl('/figma/venue/floor-bg.jpg')" alt="" width="2880" height="1884" loading="lazy" decoding="async"
+          class="size-full object-cover object-top"
+        >
+      </picture>
     </ClientOnly>
 
     <div class="relative mx-auto max-w-[1440px] pb-[120px] pt-0 lg:px-[60px]">
@@ -314,7 +351,7 @@ onBeforeUnmount(() => {
               <span class="text-zh-body-md font-medium text-pre-800">{{ map.code }} {{ map.label }}</span>
               <AtomIcon name="zoom-in" class="size-5 text-pre-800" />
             </span>
-            <picture>
+            <picture data-fade="in" class="block">
               <source v-if="map.fallback" :srcset="assetUrl(map.src)" type="image/webp">
               <img
                 :src="assetUrl(map.fallback || map.src)" :alt="map.alt" width="1180" height="550"
@@ -400,9 +437,20 @@ onBeforeUnmount(() => {
 @media (prefers-reduced-motion: reduce) {
   .venue-map-track { transition: none; }
 }
-/* 窄視窗的定格圖只當底紋：壓暗、上下淡出，不搶平面圖的線條 */
-.venue-floor-poster {
-  opacity: 0.55;
-  mask-image: linear-gradient(to bottom, transparent, #000 160px, #000 calc(100% - 160px), transparent);
+/* 窄視窗的粒子場：PlateField 的 canvas 是一個畫面高、跟著區塊頂端；這一區比一個畫面高很多，
+   改成黏在畫面上（同 HomeVideoField 的 sticky 作法），粒子一路鋪在平面圖後面 */
+.venue-floor-field { overflow: clip; }
+.venue-floor-field :deep(canvas) {
+  position: sticky !important;
+  top: 0;
+  height: 100vh !important;
+  min-height: 0 !important;
+}
+
+/* 底圖進場：區塊進到畫面才淡入、微微放大回原尺寸（bgShown，見 script） */
+.venue-floor-bg { opacity: 0; transform: scale(1.04); transition: opacity 1.2s ease-out, transform 1.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.venue-floor-bg.is-shown { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .venue-floor-bg { opacity: 1; transform: none; transition: none; }
 }
 </style>

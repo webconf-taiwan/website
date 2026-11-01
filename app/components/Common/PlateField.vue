@@ -9,6 +9,8 @@ const props = defineProps({
   mediaOnly: { type: Boolean, default: false },
   posterOnly: { type: Boolean, default: false },
   plateStyle: { type: Boolean, default: false },
+  // 傳給窄視窗的 PlateMobileField：哪些區塊在畫面上才跑（見那支的 regions）
+  regions: { type: Array, default: null },
 })
 const emit = defineEmits(['backend'])
 const { webgpu } = useWebGpuSupport()
@@ -90,6 +92,7 @@ onBeforeUnmount(() => {
       v-if="viewportReady && !isDesktop && motionReady && activated && webgpu === true && !fallback && variant === 'hero'"
       ref="heroField"
       :plate-style="plateStyle"
+      :regions="regions"
     />
     <CommonDesktopHeroField
       v-if="viewportReady && isDesktop && desktopLook && motionReady && activated && webgpu === true && !fallback && variant === 'hero'"
