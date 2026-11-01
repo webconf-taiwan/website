@@ -7,11 +7,19 @@ const seo = useSeoData()
 usePageSeo('/venue')
 
 // 場地的結構化資料：地址與活動共用 seo.json 的 event.venue，跟首頁 Event 的 location 同一份。
+// 給 @id 並設成這一頁的 mainEntity，搜尋引擎才知道這頁「講的就是這個地點」。
 const { venue: place } = seo.event
+const siteUrl = useSiteConfig().url.replace(/\/+$/, '')
+const placeId = `${siteUrl}/venue#place`
 useSchemaOrg([
+  // ⚠️ 要再帶一次 description：這裡的 defineWebPage 會跟 usePageSeo 那筆合併，沒給的話會被全站預設描述蓋掉
+  defineWebPage({ description: seo.pages['/venue'].description, mainEntity: { '@id': placeId } }),
   {
     '@type': 'Place',
+    '@id': placeId,
+    url: `${siteUrl}/venue`,
     name: place.name,
+    image: `${siteUrl}${venue.gather.photo.fallback}`,
     hasMap: venue.map_link.href,
     address: {
       '@type': 'PostalAddress',

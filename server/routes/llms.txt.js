@@ -7,6 +7,7 @@ import home from '../../app/constants/data/index.json'
 import agenda from '../../app/constants/data/agenda.json'
 import faq from '../../app/constants/data/faq.json'
 import speakers from '../../app/constants/data/speakers.json'
+import venue from '../../app/constants/data/venue.json'
 
 export default defineEventHandler((event) => {
   const base = (getSiteConfig(event).url || '').replace(/\/+$/, '')
@@ -25,6 +26,16 @@ export default defineEventHandler((event) => {
     `- 地點：${v.name}（${v.region}${v.locality}${v.street_address}）`,
     `- 購票：${base}/${ev.ticket_anchor}`,
     ...(home.ticket?.items || []).map(t => `- ${t.title}：NT$ ${t.price} ${t.unit || ''}`.trim()),
+    '',
+    // 交通方式（場域頁同一份資料）：問「怎麼去」的時候答得出來
+    '## 交通方式',
+    '',
+    `- 地圖：${venue.map_link.href}`,
+    ...(venue.access?.transports || []).map((t) => {
+      const items = t.items?.length ? `（${t.items.join('、')}）` : ''
+      return `- ${t.label}：${t.description}${items}`
+    }),
+    `- 場館平面圖：${base}/venue`,
     '',
     '## 頁面',
     '',

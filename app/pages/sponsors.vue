@@ -116,7 +116,7 @@ usePageSeo('/sponsors')
     right: 0;
   }
   .sponsors-page :deep([data-plate-body] > aside) { padding-top: 92px; }
-  .sponsors-page :deep([data-plate-hero-desktop] [data-plate-title] + p) { letter-spacing: 0.02em; }
+  .sponsors-page :deep([data-plate-hero-desktop] [data-plate-title] > span + span) { letter-spacing: 0.02em; }
   .sponsors-page :deep([data-plate-hero-desktop] a),
   .sponsor-cta { padding-left: 20px; }
 

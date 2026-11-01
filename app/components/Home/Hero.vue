@@ -40,7 +40,8 @@ useFadeIn(heroRef, { y: 28, step: 0.12 })
     </p>
 
     <h1 data-fade="in" class="mb-8 lg:mb-4 font-en-serif text-[clamp(72px,13vw,240px)] italic leading-[0.95] tracking-[-0.02em]">
-      {{ content.title }}
+      <!-- 畫面上只有 WebConf；完整活動名「WebConf Taiwan 2026」留給爬蟲與讀屏 -->
+      {{ content.title }}<span v-if="content.title_sr" class="sr-only">{{ ' ' + content.title_sr }}</span>
     </h1>
 
     <p data-fade="in" class="mb-4 text-zh-h5">

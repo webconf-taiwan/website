@@ -51,12 +51,11 @@ const label = computed(() => props.ariaLabel || props.title)
       </p>
 
       <div class="flex h-[107px] w-full flex-col items-center gap-y-2">
-        <h1 data-fade="in" class="w-full text-center font-en-serif text-fs-en-hero-m font-normal italic leading-[77px] text-pre-800">
-          {{ title }}
+        <!-- 中英文同一個 h1（「VENUE 場域介紹」），各自一個 span 排版。中文 span 開頭補一個空白讓爬蟲讀成兩個詞
+             （要用 {{ ' ' }} 插值：直接寫空白或 &#32; 都會被 Vue 的空白壓縮吃掉；block 排版下看不到） -->
+        <h1 class="flex w-full flex-col items-center gap-y-2">
+          <span data-fade="in" data-plate-title-en class="block w-full text-center font-en-serif text-fs-en-hero-m font-normal italic leading-[77px] text-pre-800">{{ title }}</span><span v-if="subtitle" data-fade="in" class="block font-zh-serif text-fs-zh-h5-m font-medium leading-[22px] text-pre-800">{{ ' ' + subtitle }}</span>
         </h1>
-        <p data-fade="in" class="font-zh-serif text-fs-zh-h5-m font-medium leading-[22px] text-pre-800">
-          {{ subtitle }}
-        </p>
         <slot />
       </div>
     </div>
@@ -92,11 +91,8 @@ const label = computed(() => props.ariaLabel || props.title)
       <!-- ⚠️ 桌機這份不用 <h1>：手機與桌機兩個 section 都會 SSR 出來（只靠 CSS 隱藏），
            兩個都用 h1 的話爬蟲看到的是同一頁兩個 h1。role/aria-level 讓讀屏在桌機
            （手機那份 display:none，讀不到）仍然拿得到頁面的一級標題。 -->
-      <p data-plate-title role="heading" aria-level="1" data-fade="in" class="mt-4 font-en-serif text-[72px] font-normal italic leading-[86px] tracking-[0.02em] text-pre-800">
-        {{ title }}
-      </p>
-      <p data-fade="in" class="mt-2 font-zh-serif text-[22px] font-medium leading-[26px] tracking-[0.02em] text-pre-800">
-        {{ subtitle }}
+      <p data-plate-title role="heading" aria-level="1" class="mt-4 flex flex-col items-center gap-y-2">
+        <span data-fade="in" class="block font-en-serif text-[72px] font-normal italic leading-[86px] tracking-[0.02em] text-pre-800">{{ title }}</span><span v-if="subtitle" data-fade="in" class="block font-zh-serif text-[22px] font-medium leading-[26px] tracking-[0.02em] text-pre-800">{{ ' ' + subtitle }}</span>
       </p>
       <slot />
     </div>
@@ -137,6 +133,6 @@ const label = computed(() => props.ariaLabel || props.title)
 /* 手機標題：SPEAKERS / SPONSORS 這種 8 個字母的在 64px 會比 360px 視窗還寬，
    框寬跟著視窗走、字級在窄手機上往下縮（390px 以上維持設計稿的 64px）。 */
 @media (max-width: 1023px) {
-  .plate-hero h1 { font-size: clamp(56px, 17.78vw, 64px); }
+  .plate-hero [data-plate-title-en] { font-size: clamp(56px, 17.78vw, 64px); }
 }
 </style>
