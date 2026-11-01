@@ -108,6 +108,11 @@ export const useAgendaData = async () => {
   }
 }
 
+export const useVenueData = async () => {
+  const venue = await import('~/constants/data/venue.json')
+  return venue.default
+}
+
 export const useSponsorsData = async () => {
   const sponsors = await import('~/constants/data/sponsors.json')
   return sponsors.default

@@ -1,0 +1,9 @@
+{
+  "schema": "webconf-sandbox-params",
+  "v": 1,
+  "name": "venue-gather",
+  "sim": { "cameraZoom": 1.4 },
+  "behavior": {},
+  "gather": { "amount": 0.3, "pull": 2.5, "grip": 10 },
+  "layout": { "x": 0.45, "radius": 0.25, "top": 110 }
+}
