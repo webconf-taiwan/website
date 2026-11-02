@@ -1,0 +1,140 @@
+<script setup>
+// 歷屆回顧專用主視覺；本頁的版型與粒子設定在這裡維護。
+const props = defineProps({
+  // { code, number, label } —— hero 只用 code（左上角的 PL. II 那串）
+  plate: { type: Object, default: () => ({}) },
+  title: { type: String, required: true },
+  subtitle: { type: String, default: '' },
+  // { label, note }
+  cornerLeft: { type: Object, default: () => ({}) },
+  cornerRight: { type: Object, default: () => ({}) },
+  density: { type: Number, default: 0.8 },
+  desktopMode: { type: String, default: 'pending' },
+  ariaLabel: { type: String, default: '' },
+  // 整寬內頁自行持有 Hero 粒子，不使用 PlatePage 側欄場。
+  standalone: { type: Boolean, default: false },
+})
+
+const { isDesktop, viewportReady } = useViewportMode()
+const mobileHeroRef = ref(null)
+const desktopHeroRef = ref(null)
+// 備援（影片／靜態圖）沒有引擎，照首頁的慣例標成 canvas2d（見 pages/index.vue 的 backend）。
+const standaloneBackend = ref('')
+const backend = computed(() => props.standalone ? (standaloneBackend.value === 'webgpu' ? 'webgpu' : standaloneBackend.value ? 'canvas2d' : '') : props.desktopMode === 'gpu' ? 'webgpu' : props.desktopMode === 'fallback' ? 'canvas2d' : '')
+
+useFadeIn(mobileHeroRef, { y: 28, step: 0.12 })
+useFadeIn(desktopHeroRef, { y: 28, step: 0.12 })
+
+const label = computed(() => props.ariaLabel || props.title)
+</script>
+
+<template>
+  <section
+    ref="mobileHeroRef"
+    data-same-hero
+    data-plate-hero-mobile
+    class="plate-hero relative z-10 h-[550px] overflow-hidden px-5 pt-[52px] lg:hidden"
+    :aria-label="`${label} intro`"
+  >
+    <ClientOnly>
+      <CommonPlateField v-if="viewportReady && !isDesktop" :density="density" plate-style />
+    </ClientOnly>
+    <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
+    <div data-plate-mobile-copy class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[calc(100%_-_32px)] -translate-x-1/2 flex-col items-center gap-y-4">
+      <!-- 設計稿 common/meta_12px（12px／120%／字距 20%），每段都是 Hug —— 不要寫死寬度，
+           0.2em 字距下固定寬會擠在一起或溢出 -->
+      <p data-fade="in" class="flex items-center gap-x-3 whitespace-nowrap text-meta text-pre-800/80">
+        <span>{{ plate.code }}</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>WEBCONF.TW</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>2026</span>
+      </p>
+
+      <div class="flex h-[107px] w-full flex-col items-center gap-y-2">
+        <!-- 中英文同一個 h1（「HISTORY 歷屆回顧」），各自一個 span 排版。中文 span 開頭補一個空白讓爬蟲讀成兩個詞
+             （要用 {{ ' ' }} 插值：直接寫空白或 &#32; 都會被 Vue 的空白壓縮吃掉；block 排版下看不到） -->
+        <h1 class="flex w-full flex-col items-center gap-y-2">
+          <span data-fade="in" data-plate-title-en class="block w-full text-center font-en-serif text-fs-en-hero-m font-normal italic leading-[77px] text-pre-800">{{ title }}</span><span v-if="subtitle" data-fade="in" class="block font-zh-serif text-fs-zh-h5-m font-medium leading-[22px] text-pre-800">{{ ' ' + subtitle }}</span>
+        </h1>
+        <slot />
+      </div>
+    </div>
+
+    <div data-plate-mobile-corner class="absolute bottom-5 left-5 flex h-[38px] flex-col gap-1">
+      <p data-fade="in" class="font-mono text-meta leading-[14px] text-pre-800/80">{{ cornerLeft?.label }}</p>
+      <p data-fade="in" class="text-en-caption italic leading-5 text-pre-800">{{ cornerLeft?.note }}</p>
+    </div>
+  </section>
+
+  <section
+    ref="desktopHeroRef"
+    data-plate-hero-desktop
+    data-same-hero
+    class="plate-hero relative z-10 hidden h-[550px] overflow-hidden lg:flex"
+    :aria-label="`${label} hero`"
+  >
+    <ClientOnly>
+      <!-- 粒子初始化期間不先放載入圖，換頁時不會閃一張不同的底圖；確定走備援才顯示。 -->
+      <CommonPlateField v-if="viewportReady && isDesktop && standalone" :density="density" @backend="standaloneBackend = $event" />
+      <CommonPlateField v-else-if="viewportReady && isDesktop && desktopMode === 'fallback'" media-only />
+    </ClientOnly>
+    <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center">
+      <!-- 設計稿 common/meta_12px（12px／120%／字距 20%），每段都是 Hug —— 不要寫死寬度，
+           0.2em 字距下固定寬會擠在一起或溢出 -->
+      <p data-fade="in" class="flex items-center gap-x-3 whitespace-nowrap text-meta text-pre-800/80">
+        <span>{{ plate.code }}</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>WEBCONF.TW</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>2026</span>
+      </p>
+
+      <!-- ⚠️ 桌機這份不用 <h1>：手機與桌機兩個 section 都會 SSR 出來（只靠 CSS 隱藏），
+           兩個都用 h1 的話爬蟲看到的是同一頁兩個 h1。role/aria-level 讓螢幕閱讀器在桌機
+           （手機那份 display:none，讀不到）仍然拿得到頁面的一級標題。 -->
+      <p data-plate-title role="heading" aria-level="1" class="mt-4 flex flex-col items-center gap-y-2">
+        <span data-fade="in" class="block font-en-serif text-[72px] font-normal italic leading-[86px] tracking-[0.02em] text-pre-800">{{ title }}</span><span v-if="subtitle" data-fade="in" class="block font-zh-serif text-[22px] font-medium leading-[26px] tracking-[0.02em] text-pre-800">{{ ' ' + subtitle }}</span>
+      </p>
+      <slot />
+    </div>
+
+    <!-- 四角的「標本標籤」：跟首頁 Hero 同一套科學紀錄語彙，座標讀自 Figma
+         （left/right 40px、bottom 30px、兩行間 gap 4px），不是沿用首頁的抓法。 -->
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 mx-auto hidden w-full max-w-[1440px] justify-between px-10 pb-[30px] lg:flex">
+      <div class="flex flex-col gap-1 text-left">
+        <p data-fade="in" class="font-mono text-meta uppercase text-pre-800/80">
+          {{ cornerLeft?.label }}
+        </p>
+        <p data-fade="in" class="text-en-caption italic text-pre-800">
+          {{ cornerLeft?.note }}
+        </p>
+      </div>
+      <div class="flex flex-col gap-1 text-right">
+        <p data-fade="in" class="font-mono text-meta uppercase text-pre-800/80">
+          {{ cornerRight?.label }}
+        </p>
+        <!-- note 後面接的是執行期才知道的繪圖後端，不是資料（同 Home/Hero.vue 慣例） -->
+        <p data-fade="in" class="text-en-caption italic text-pre-800">
+          {{ cornerRight?.note }}{{ backend ? ` · ${backend}` : '' }}
+        </p>
+      </div>
+    </div>
+  </section>
+</template>
+
+<style scoped>
+/* Figma 背景取景：手機 640px、桌機 720px；兩版皆自頂端顯示 550px。
+   粒子、影片與載入圖片共用此高度，避免視窗高低改變內頁構圖。 */
+.plate-hero { --plate-hero-field-height: 640px; }
+/* 只襯字緣，讓亮粒子經過時仍能辨識文字。 */
+.plate-hero :is(h1, p) { text-shadow: 0 1px 3px #0a0a0c; }
+@media (min-width: 1024px) {
+  .plate-hero { --plate-hero-field-height: 720px; }
+}
+/* 手機標題：SPEAKERS / SPONSORS 這種 8 個字母的在 64px 會比 360px 視窗還寬，
+   框寬跟著視窗走、字級在窄手機上往下縮（390px 以上維持設計稿的 64px）。 */
+@media (max-width: 1023px) {
+  .plate-hero [data-plate-title-en] { font-size: clamp(56px, 17.78vw, 64px); }
+}
+</style>
