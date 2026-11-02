@@ -73,10 +73,17 @@ export function useDrawIn (rootRef, autoOpts = {}) {
     const { $gsap } = useNuxtApp()
     if (!$gsap || reduced()) return
 
-    const els = [...root.querySelectorAll('[data-draw]')].filter(el => el.offsetParent)
+    let els = [...root.querySelectorAll('[data-draw]')].filter(el => el.offsetParent)
     if (!els.length) return
 
     const o = { ...DEFAULTS, ...opts }
+    // onlyInView：同 useFadeIn —— 畫面外的線直接畫滿，只錯開畫面內的
+    if (o.onlyInView) {
+      const [inView, rest] = splitByViewport(els)
+      if (rest.length) $gsap.set(rest, { scaleX: 1, scaleY: 1, overwrite: true })
+      els = inView
+      if (!els.length) return
+    }
     els.forEach(el => $gsap.set(el, axisProps(el)))
     show($gsap, els, o)
   }

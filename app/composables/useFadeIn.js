@@ -39,6 +39,19 @@ const DEFAULTS = {
   once: true,          // true = 播一次就定住；false = 進出視窗都重播
 }
 
+// 把元素分成「看得到且在視窗內」與其他（display:none 或在視窗外）
+export function splitByViewport (els) {
+  const vh = window.innerHeight
+  const inView = []
+  const rest = []
+  els.forEach((el) => {
+    const r = el.getBoundingClientRect()
+    const visible = el.offsetParent !== null && r.bottom > 0 && r.top < vh
+    ;(visible ? inView : rest).push(el)
+  })
+  return [inView, rest]
+}
+
 export function useFadeIn (rootRef, autoOpts = {}) {
   const triggers = []
   const pendingFrames = new Set()
@@ -115,11 +128,20 @@ export function useFadeIn (rootRef, autoOpts = {}) {
     const { $gsap } = useNuxtApp()
     if (!$gsap) return
 
-    const els = root.querySelectorAll('[data-fade="in"]')
+    let els = [...root.querySelectorAll('[data-fade="in"]')]
     if (!els.length) return
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const o = { ...DEFAULTS, ...opts }
+    // onlyInView：只有畫面內的錯開播放，其餘直接定在最終狀態。
+    // 區塊很長時（例如手機版議程），stagger 依 DOM 順序排，捲到中段時畫面上那幾個
+    // 要等前面幾十個播完才輪到，看起來像內容消失了好幾秒。
+    if (o.onlyInView) {
+      const [inView, rest] = splitByViewport(els)
+      if (rest.length) $gsap.set(rest, { opacity: 1, y: 0, overwrite: true })
+      els = inView
+      if (!els.length) return
+    }
     $gsap.fromTo(els,
       { opacity: 0, y: o.y },
       {

@@ -8,6 +8,8 @@ const props = defineProps({
   room: { type: String, default: '' },
   // 標籤篩選沒選中：整格變淡（同講者頁），位置不動
   dimmed: { type: Boolean, default: false },
+  // 篩選選中的標籤：#標籤 換成亮色（同講者頁）
+  highlight: { type: Array, default: () => [] },
 })
 
 const session = computed(() => props.data || {})
@@ -21,7 +23,14 @@ const speakers = computed(() => session.value.speakers || [])
       <div class="flex flex-col gap-2">
         <h4 class="text-zh-h6 text-pre-800">{{ session.title }}</h4>
         <ul v-if="skills.length" class="flex flex-wrap gap-x-2 gap-y-1 text-body-sm text-pre-800/[62%]">
-          <li v-for="skill in skills" :key="skill">#{{ skill }}</li>
+          <li
+            v-for="skill in skills"
+            :key="skill"
+            class="transition-colors duration-300"
+            :class="{ 'text-accent-1': highlight.includes(skill) }"
+          >
+            #{{ skill }}
+          </li>
         </ul>
       </div>
 
@@ -85,7 +94,8 @@ const speakers = computed(() => session.value.speakers || [])
       mask-position 700ms cubic-bezier(0.22, 1, 0.36, 1);
     pointer-events: none;
   }
-  .agenda-session:hover .agenda-session-body::before {
+  /* 沒有講者、點不開的場次（開幕／閉幕）不給 hover，免得看起來能點 */
+  .agenda-session:not(.agenda-session--static):hover .agenda-session-body::before {
     -webkit-mask-position: 0 0;
     mask-position: 0 0;
     opacity: 1;

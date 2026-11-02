@@ -97,8 +97,9 @@ export const useAgendaData = async () => {
   const byId = new Map((speakers.default.items || []).map(p => [p.id, p]))
   const resolve = (ref) => {
     const person = ref.id && byId.get(ref.id)
-    if (!person) return { name: ref.name || '', title: ref.title || '', portrait: ref.portrait || '' }
-    return { name: person.name, title: [person.org, person.role].filter(Boolean).join('・'), portrait: person.photo || person.portrait || '' }
+    // 對到 speakers.json 的才有 id（議程頁點場次要開對應的講者抽屜）
+    if (!person) return { id: '', name: ref.name || '', title: ref.title || '', portrait: ref.portrait || '' }
+    return { id: person.id, name: person.name, title: [person.org, person.role].filter(Boolean).join('・'), portrait: person.photo || person.portrait || '' }
   }
 
   return {

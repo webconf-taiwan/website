@@ -1,5 +1,5 @@
 <script setup>
-const agenda = await useAgendaData()
+const [agenda, speakers] = await Promise.all([useAgendaData(), useSpeakersData()])
 
 definePageMeta({
   layoutProps: {
@@ -47,11 +47,18 @@ function cellOf (slot, room) {
 // "09:05" → "9:05"；沒有結束時間就只印開始
 const timeText = slot => [slot.start, slot.end].filter(Boolean).map(t => t.replace(/^0(\d)/, '$1')).join(' - ')
 
+// 三棟排的是同一場（開幕／閉幕致詞）：整列合併成一格、標題置中，不拆成三格
+function mergedOf (slot) {
+  const ids = rooms.map(room => slot.sessions?.[room.id])
+  const same = ids.length > 1 && ids.every(id => id && id !== 'simulcast' && id === ids[0])
+  return (same && sessions.get(ids[0])) || null
+}
+
 const days = (agenda.days || []).map(d => ({
   ...d,
   slots: (d.slots || []).map(slot => slot.type === 'break'
     ? slot
-    : { ...slot, time: timeText(slot), cells: rooms.map(room => cellOf(slot, room)) }),
+    : { ...slot, time: timeText(slot), cells: rooms.map(room => cellOf(slot, room)), merged: mergedOf(slot) }),
 }))
 
 const day = ref(days[0]?.id || '')
@@ -62,9 +69,54 @@ onMounted(() => {
   const current = days.find(d => d.date === today)
   if (current) day.value = current.id
 })
+// 點場次開講者抽屜（同講者頁，?speaker=<id>）：開那場的第一位講者，
+// 對談的其他講者在抽屜裡 ← 1/2 → 切換。開幕／閉幕這種沒有講者的不能點。
+const {
+  current: currentSpeaker,
+  linkTo: speakerLink,
+  markOpened: openSpeaker,
+  close: closeSpeaker,
+  select: selectSpeaker,
+} = useSpeakerDrawerRoute(speakers.items || [])
+const speakerIds = new Set((speakers.items || []).map(p => p.id))
+const speakerOf = session => session.speakers.find(p => speakerIds.has(p.id))?.id || ''
+
 const selected = ref([])
 // 篩選不藏場次：沒選中的變淡（同講者頁），表格不會因此缺格
 const matches = session => !selected.value.length || session.skills?.some(skill => selected.value.includes(skill))
+// 篩選一改就捲到當天第一個符合的場次。
+// 窄視窗是單欄長表，捲到那一格（若是該時段第一格就捲到時段標題，連時間一起看到）；
+// 桌機一列三格並排，捲到整列。上方要扣掉 header 與手機版黏住的切換列
+// （面板開著時連面板一起扣，不然捲到的格子會被面板蓋住）。
+const isDesktop = () => window.matchMedia('(min-width: 1024px)').matches
+// immediate：換天時用。內容整個換掉了，從舊位置慢慢捲過去沒意義，
+// 而且進場動畫要等定位後才知道哪些格子在畫面內。
+function scrollToFirstMatch ({ immediate = false } = {}) {
+  if (!selected.value.length) return
+  const active = days.find(d => d.id === day.value)
+  const first = active?.slots.flatMap(slot => slot.cells || []).find(cell => cell.type === 'session' && matches(cell.session))
+  const cellEl = first && scheduleRef.value?.querySelector(`[data-session-id="${first.session.id}"]`)
+  if (!cellEl) return
+  const section = cellEl.closest('section')
+  const target = isDesktop() || cellEl === section.querySelector('[data-cell]') ? section : cellEl
+
+  let offset = document.querySelector('header')?.getBoundingClientRect().height || 0
+  if (!isDesktop() && controlsRef.value) {
+    // 黏住之後的位置：sticky top + 切換列高度（面板浮在列下方，-mt-1）
+    offset = parseFloat(getComputedStyle(controlsRef.value).top) + controlsRef.value.offsetHeight
+    if (filterOpen.value && filterPanelRef.value) offset += filterPanelRef.value.offsetHeight - 4
+  }
+  offset += isDesktop() ? 32 : 16 // 留一點呼吸空間（桌機時段標籤壓在列頂線上方 10px）
+
+  const lenis = useNuxtApp().$lenis
+  const reduced = immediate || window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const distance = Math.abs(target.getBoundingClientRect().top - offset)
+  const duration = Math.min(1.6, Math.max(0.5, distance / 1400))
+  if (lenis) lenis.scrollTo(target, { offset: -offset, duration, immediate: reduced })
+  else window.scrollTo({ top: window.scrollY + target.getBoundingClientRect().top - offset, behavior: reduced ? 'instant' : 'smooth' })
+}
+watch(selected, () => scrollToFirstMatch())
+
 const filterOpen = ref(false)
 const filterButtonRef = ref(null)
 const filterPanelRef = ref(null)
@@ -94,8 +146,11 @@ const { drawNow } = useDrawIn(scheduleRef)
 // 換天：另一天原本是 display:none，補播一次進場並讓 ScrollTrigger 重新量測
 watch(day, async () => {
   await nextTick()
-  fadeInNow(scheduleRef.value, { step: 0.06 })
-  drawNow(scheduleRef.value)
+  // 有篩選時先跳到這天第一個符合的場次，再播畫面內的進場
+  scrollToFirstMatch({ immediate: true })
+  // 只播畫面內的：手機版是單欄長表，捲到中段時若照 DOM 順序錯開，畫面上的格子要等好幾秒
+  fadeInNow(scheduleRef.value, { step: 0.06, onlyInView: true })
+  drawNow(scheduleRef.value, { onlyInView: true })
   useNuxtApp().$ScrollTrigger?.refresh()
 })
 </script>
@@ -210,14 +265,49 @@ watch(day, async () => {
                     <span data-draw="x" aria-hidden="true" class="h-px flex-1 bg-pre-800/35 lg:hidden" />
                   </h3>
 
-                  <div class="grid lg:grid-cols-3">
-                    <div v-for="(cell, c) in slot.cells" :key="cell.room.id" class="relative">
+                  <!-- 合併列：整列一格、標題置中，字樣同「同步聯播」那格；有講者的話一樣可以點開抽屜 -->
+                  <div v-if="slot.merged" class="relative" data-cell :data-session-id="slot.merged.id">
+                    <NuxtLink
+                      v-if="speakerOf(slot.merged)"
+                      :to="speakerLink(speakerOf(slot.merged))"
+                      class="block focus-visible:outline focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-accent-1"
+                      @click="openSpeaker"
+                    >
+                      <p data-fade="in" class="px-6 py-10 text-center text-zh-h5 text-pre-800 lg:py-16">{{ slot.merged.title }}</p>
+                    </NuxtLink>
+                    <p v-else data-fade="in" class="px-6 py-10 text-center text-zh-h5 text-pre-800 lg:py-16">{{ slot.merged.title }}</p>
+                  </div>
+
+                  <div v-else class="grid lg:grid-cols-3">
+                    <div
+                      v-for="(cell, c) in slot.cells"
+                      :key="cell.room.id"
+                      class="relative"
+                      data-cell
+                      :data-session-id="cell.type === 'session' ? cell.session.id : undefined"
+                    >
+                      <NuxtLink
+                        v-if="cell.type === 'session' && speakerOf(cell.session)"
+                        :to="speakerLink(speakerOf(cell.session))"
+                        class="block h-full focus-visible:outline focus-visible:outline-1 focus-visible:-outline-offset-1 focus-visible:outline-accent-1"
+                        @click="openSpeaker"
+                      >
+                        <AgendaSession
+                          data-fade="in"
+                          :data="cell.session"
+                          :room="cell.room.label"
+                          :dimmed="!matches(cell.session)"
+                          :highlight="selected"
+                        />
+                      </NuxtLink>
                       <AgendaSession
-                        v-if="cell.type === 'session'"
+                        v-else-if="cell.type === 'session'"
                         data-fade="in"
                         :data="cell.session"
                         :room="cell.room.label"
                         :dimmed="!matches(cell.session)"
+                        :highlight="selected"
+                        class="agenda-session--static"
                       />
                       <p
                         v-else
@@ -248,6 +338,11 @@ watch(day, async () => {
           </p>
         </div>
       </div>
+
+      <!-- 同講者頁：?speaker 只有瀏覽器端看得到（頁面是預先產生的），抽屜只在 client 畫 -->
+      <ClientOnly>
+        <SpeakersDrawer :items="speakers.items" :current="currentSpeaker" @close="closeSpeaker" @select="selectSpeaker" />
+      </ClientOnly>
     </div>
   </CommonPlatePage>
 </template>
