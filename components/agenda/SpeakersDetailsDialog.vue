@@ -91,8 +91,16 @@ const breakpoints = useBreakpoints({
 })
 const isMobileLayout = breakpoints.smaller('lg')
 
+// Esc 同時觸發 onKeyStroke（keydown）與 @keyup.esc，關閉按鈕也可能連點；
+// 只跑一次，否則會連送兩次換頁，第一次被取消
+let isClosing = false
+
 /* 處理關閉彈出視窗 */
 function handleClose() {
+  if (isClosing)
+    return
+  isClosing = true
+
   // 淡出動畫
   setToggleModal(false)
   gsap.to(popoverRef.value, {

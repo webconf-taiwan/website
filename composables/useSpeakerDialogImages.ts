@@ -34,7 +34,12 @@ export function useSpeakerDialogImages() {
     )
   }
 
-  /** 空閒時依傳入順序（呼叫端排成畫面上由上而下）預熱彈窗照片 */
+  /**
+   * 空閒時依傳入順序（呼叫端排成畫面上由上而下）預熱彈窗照片。
+   * 三張都要：模糊小圖、1x（<NuxtImg placeholder> 要等它抓完才拿掉模糊圖），
+   * 以及高密度螢幕最後真正顯示的 2x；少了 2x，Retina 螢幕點開後照片會再變清楚一次，看起來像還在讀取。
+   * 同時下載的張數由 useImagePreload 的 WARM_CONCURRENCY 控制，不會塞住連線
+   */
   function warmSpeakerDialogs(speakerIds: string[]) {
     return warm(photoSources(speakerIds).flatMap(photoUrls))
   }

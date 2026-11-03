@@ -113,10 +113,14 @@ onBeforeUnmount(() => {
           class="hover:blue-shadow group relative border-b border-webconf-gray/50 bg-black text-white duration-300 lg:w-[calc(100dvw/2)]"
         >
           <div class="size-full">
+            <!-- 第一張封面在首屏：直接放進 HTML 優先下載，不用模糊小圖等 JS 接手才換 -->
             <NuxtImg
               :src="item.img"
               :alt="`${item.year} WebConf 網站封面`"
-              placeholder
+              :placeholder="index !== 0"
+              :loading="index === 0 ? 'eager' : undefined"
+              :fetchpriority="index === 0 ? 'high' : undefined"
+              :preload="index === 0 ? { fetchPriority: 'high' } : false"
               class="size-full object-cover"
             />
             <div
@@ -169,6 +173,7 @@ onBeforeUnmount(() => {
       :src="item.img"
       :alt="`${item.year} WebConf 網站封面`"
       placeholder
+      fetchpriority="low"
       :class="{
         'opacity-60': hoveredImageIndex === index,
       }"

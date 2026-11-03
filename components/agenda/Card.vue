@@ -8,10 +8,17 @@ const props = defineProps<{
   showTime?: boolean
   isSelected: boolean
   selectedTags: AgendaTag[]
+  /**
+   * 首屏的卡片：照片直接放進 HTML 並以 high 優先下載（加上 <link rel="preload">）。
+   * 一般卡片用模糊小圖佔位，真正的照片要等 JS 接手後才開始抓，首屏用這種方式會晚好幾百毫秒
+   */
+  priority?: boolean
 }>()
 
 const emit = defineEmits<{
   tagClick: [tag: AgendaTag]
+  /** 一般左鍵點開；父頁面據此先打開彈窗，不必等換頁完成 */
+  open: []
 }>()
 
 const { setToggleModal } = useGlobalState()
@@ -34,7 +41,21 @@ function handleCardClick(event: MouseEvent) {
     return
   }
 
+  // Cmd／Ctrl／Shift／中鍵是開新分頁或新視窗，這一頁不開彈窗
+  if (
+    event.metaKey
+    || event.ctrlKey
+    || event.shiftKey
+    || event.altKey
+    || event.button !== 0
+  ) {
+    return
+  }
+
   setToggleModal(true)
+
+  if (props.data.speakerInfo?.length)
+    emit('open')
 }
 </script>
 
@@ -127,7 +148,10 @@ function handleCardClick(event: MouseEvent) {
                 :alt="speaker.name"
                 width="43"
                 height="60"
-                placeholder
+                :placeholder="!priority"
+                :loading="priority ? 'eager' : undefined"
+                :fetchpriority="priority ? 'high' : undefined"
+                :preload="priority ? { fetchPriority: 'high' } : false"
               />
               <ShareNoiseMask />
             </div>

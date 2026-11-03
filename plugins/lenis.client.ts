@@ -33,8 +33,18 @@ export default defineNuxtPlugin({
     // 主執行緒卡頓後 GSAP 預設會壓縮時間差，捲動會跟著突然跳一段
     gsap.ticker.lagSmoothing(0)
 
+    // 同一個頂層頁面內換子路由（開關講者彈窗：/agenda ↔ /agenda/1）不算換頁，要留在原本的捲動位置。
+    // 子頁面的 NuxtPage 一樣會觸發 page:finish，不擋的話點開或關掉彈窗都會被拉回最上面
+    let isSamePageNavigation = false
+    nuxtApp.$router.afterEach((to, from, failure) => {
+      if (!failure)
+        isSamePageNavigation = to.matched[0]?.path === from.matched[0]?.path
+    })
+
     // 切換頁面會滾到最上面
     nuxtApp.hook('page:finish', () => {
+      if (isSamePageNavigation)
+        return
       lenis.scrollTo(0, { immediate: false })
     })
 

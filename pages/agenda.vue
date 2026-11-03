@@ -2,6 +2,11 @@
 import type { AgendaItem } from '~/types'
 import { GROUPED_AGENDAS } from '~/constants/agenda'
 
+// 開關講者彈窗（/agenda ↔ /agenda/:id）只換子路由，不捲動，留在原本的位置；從別頁進來才回到頂端
+definePageMeta({
+  scrollToTop: (to, from) => to.matched[0]?.path !== from.matched[0]?.path,
+})
+
 useSeoMeta({
   title: '議程資訊',
   description:
@@ -40,6 +45,11 @@ const currentAfternoonAgendas = computed(() =>
     : agendasAtDec13Afternoon,
 )
 
+// 第一個時段的卡片在首屏，講者頭像直接放進 HTML 優先下載
+const firstMorningTime = computed(
+  () => Object.keys(currentMorningAgendas.value)[0],
+)
+
 // 議程類型篩選
 const { selectedTags, handleTagClick } = useSelectedTags()
 const isMenuOpen = ref(false)
@@ -64,18 +74,34 @@ function speakerIdsOfDay(day: '12' | '13') {
 
 let stopWarm: (() => void) | undefined
 
-// 其餘在頁面 load 後趁空閒預熱：目前顯示的那天先，另一天接在後面
-onMounted(() => {
-  const otherDay = selectedDate.value === '12' ? '13' : '12'
-  const ids = [
-    ...speakerIdsOfDay(selectedDate.value as '12' | '13'),
-    ...speakerIdsOfDay(otherDay),
-  ]
+// 頁面 load 後趁空閒只預熱目前顯示那天的講者；切到另一天再換那天的。
+// 以前一進來就把兩天全部講者、每人三種尺寸一次排進去（近 150 個請求），
+// 塞住同一條連線，點開彈窗要的照片跟換頁要的 _payload.json 都被拖慢
+function warmDay(day: string) {
+  stopWarm?.()
+  stopWarm = warmSpeakerDialogs([
+    ...new Set(speakerIdsOfDay(day as '12' | '13')),
+  ])
+}
 
-  stopWarm = warmSpeakerDialogs([...new Set(ids)])
-})
+onMounted(() => warmDay(selectedDate.value))
+watch(selectedDate, warmDay)
 
 onBeforeUnmount(() => stopWarm?.())
+
+// 講者彈窗：多人議程只接受這幾組講者
+const {
+  speakers: dialogSpeakers,
+  speakerIds: dialogSpeakerIds,
+  open: openSpeakerDialog,
+  close: closeSpeakerDialog,
+} = useSpeakerDialog({
+  allowedGroups: [
+    ['3', '4'],
+    ['33', '34'],
+    ['00', '23', '24'],
+  ],
+})
 </script>
 
 <template>
@@ -190,7 +216,9 @@ onBeforeUnmount(() => stopWarm?.())
                     || selectedTags.length === 0
                 "
                 :selected-tags="selectedTags"
+                :priority="time === firstMorningTime"
                 @tag-click="handleTagClick"
+                @open="openSpeakerDialog(speakerIdsOf(agenda))"
                 @mouseenter="preloadSpeakerDialog(speakerIdsOf(agenda))"
                 @focusin="preloadSpeakerDialog(speakerIdsOf(agenda))"
                 @touchstart.passive="preloadSpeakerDialog(speakerIdsOf(agenda))"
@@ -249,6 +277,7 @@ onBeforeUnmount(() => stopWarm?.())
                     || selectedTags.length === 0
                 "
                 @tag-click="handleTagClick"
+                @open="openSpeakerDialog(speakerIdsOf(agenda))"
                 @mouseenter="preloadSpeakerDialog(speakerIdsOf(agenda))"
                 @focusin="preloadSpeakerDialog(speakerIdsOf(agenda))"
                 @touchstart.passive="preloadSpeakerDialog(speakerIdsOf(agenda))"
@@ -286,7 +315,13 @@ onBeforeUnmount(() => stopWarm?.())
       </section>
     </main>
 
-    <!-- 講者資訊彈跳視窗 -->
+    <!-- 講者資訊彈跳視窗：渲染在這裡，點卡片當下就打開；子路由只負責網址 -->
+    <AgendaSpeakersDetailsDialog
+      v-if="dialogSpeakers.length > 0"
+      :speaker="dialogSpeakers"
+      :speaker-ids="dialogSpeakerIds"
+      @close="closeSpeakerDialog"
+    />
     <NuxtPage />
   </div>
 </template>

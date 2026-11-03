@@ -29,7 +29,14 @@ if (!shouldShowLoading.value) {
     :class="[isFirstLoad ? 'opacity-100' : 'opacity-0']"
   >
     <HomeNavbar />
-    <slot></slot>
+    <!--
+      頁面一定要包在自己的容器裡：開著講者彈窗（/agenda/10 這類子路由）直接點導覽列換頁時，
+      out-in 轉場會找不到新頁面該插入的位置，退回插到容器最後面；
+      容器若跟 Footer 共用，新頁面就會跑到 Footer 下面，畫面變成 Footer 在最上面
+    -->
+    <div>
+      <slot></slot>
+    </div>
     <HomeSiteFooter />
   </ShareBgBorder>
 </template>

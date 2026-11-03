@@ -50,6 +50,7 @@ function handleNext(speakers: any[]) {
           height="498"
           alt="講者照片"
           placeholder
+          fetchpriority="high"
           class="shrink-0"
         />
 

@@ -27,6 +27,16 @@ let highInFlight = 0
 /** 一次空閒送幾張；GSAP、p5 與 Lenis 的 rAF 讓真正的空閒很少，一次一張會拖太久 */
 const WARM_BATCH = 4
 
+/**
+ * 背景預熱同時最多幾張還在下載。
+ * 只限每次空閒送幾張不夠：空閒一秒來很多次，幾秒內就把上百張全丟出去，
+ * 全部擠在同一條連線上，使用者真正點開要的照片和換頁要的 _payload.json 都排在後面
+ */
+const WARM_CONCURRENCY = 4
+
+/** 背景預熱還在下載的張數 */
+let lowInFlight = 0
+
 /** requestIdleCallback 沒有 VueUse 對應，Safari 16.4 以前也沒有，退回 setTimeout */
 function scheduleIdle(task: IdleRequestCallback) {
   return typeof requestIdleCallback === 'function'
@@ -104,8 +114,15 @@ export function useImagePreload() {
     requests.set(url, { image, priority, promise })
     image.src = url
 
-    if (priority === 'high')
+    if (priority === 'high') {
       trackHigh(promise)
+    }
+    else {
+      lowInFlight++
+      void promise.finally(() => {
+        lowInFlight--
+      })
+    }
 
     return promise
   }
@@ -113,7 +130,8 @@ export function useImagePreload() {
   /**
    * 空閒時依序以 low 預熱一串圖，回傳停止函式（元件卸載時呼叫）。
    *
-   * 頁面 load 之後才開始，不跟首屏搶頻寬；每次空閒最多送 WARM_BATCH 張。
+   * 頁面 load 之後才開始，不跟首屏搶頻寬；每次空閒最多送 WARM_BATCH 張，
+   * 而且同時下載中的不超過 WARM_CONCURRENCY 張。
    * 使用者碰到的圖走 preload(url, 'high')：已送出的會升級，還沒輪到的直接插隊；
    * 只要還有 high 在下載，這裡就先讓出去，等下一次空閒再接著送。
    */
@@ -130,7 +148,7 @@ export function useImagePreload() {
         return
 
       if (highInFlight === 0) {
-        for (let sent = 0; sent < WARM_BATCH && index < urls.length; sent++) {
+        for (let sent = 0; sent < WARM_BATCH && index < urls.length && lowInFlight < WARM_CONCURRENCY; sent++) {
           // 每格空閒至少送一張：持續跑動畫的頁面每格空閒常不到 1ms，
           // 先檢查再送會永遠送不出去，timeout 也因為每格都有拿到空閒而不會觸發。
           // 之後這一格用完就先讓出去，didTimeout 代表等不到空閒、不再退讓

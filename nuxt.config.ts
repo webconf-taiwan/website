@@ -1,8 +1,10 @@
+import { readdirSync, readFileSync } from 'node:fs'
 import { cp } from 'node:fs/promises'
 import { resolve } from 'node:path'
 import { visualizer } from 'rollup-plugin-visualizer'
 import { site, sitemap } from './config/seo.config'
 import { AGENDA_LIST } from './constants/agenda'
+import { CONF_LINKS } from './constants/confLinks'
 
 // 議程卡片的講者頭像（AgendaCard 的 43×60 與 2x 的 86×120）。
 // 靜態部署只會產生預渲染 HTML 裡出現過的 /_ipx 網址，議程頁預設只渲染 12/12，
@@ -10,6 +12,28 @@ import { AGENDA_LIST } from './constants/agenda'
 const agendaAvatarRoutes = [...new Set(
   AGENDA_LIST.flatMap(agenda => agenda.speakerInfo?.map(speaker => speaker.avatarUrl) ?? []),
 )].flatMap(avatarUrl => ['s_43x60', 's_86x120'].map(size => `/_ipx/${size}${encodeURI(avatarUrl)}`))
+
+// <NuxtImg placeholder> 的模糊小圖；modifier 順序要跟 @nuxt/image 產生的網址一模一樣才會命中
+const PLACEHOLDER_MODIFIERS = 'q_50&blur_3&s_10x10'
+
+// 講者彈窗的照片（SpeakerDialogImageDesktop／Mobile 的 350×498、2x 的 700×996，加上模糊小圖）。
+// 彈窗只在瀏覽器打開，預渲染 HTML 裡沒有這些網址，以前全部在 Zeabur 上執行時才由 IPX 現場縮圖；
+// 一進議程頁就排進上百張，伺服器一張張轉、又沒快取，照片要好幾秒才出來。
+// 建置時先產好成靜態檔，伺服器直接回檔案
+const speakerPhotoSources = [...new Set(
+  readdirSync(resolve(import.meta.dirname, 'content'))
+    .filter(file => file.endsWith('.md'))
+    .map(file => readFileSync(resolve(import.meta.dirname, 'content', file), 'utf8').match(/^image:(.*)$/m)?.[1]?.trim().replace(/^['"]|['"]$/g, ''))
+    .filter((image): image is string => Boolean(image)),
+)]
+const speakerDialogPhotoRoutes = speakerPhotoSources.flatMap(image =>
+  [PLACEHOLDER_MODIFIERS, 's_350x498', 's_700x996'].map(modifiers => `/_ipx/${modifiers}${encodeURI(image)}`),
+)
+
+// 歷屆回顧的封面圖沒指定尺寸（modifier 是 _），原圖在瀏覽器掛上後才抓，一樣只會在執行時現場處理
+const historyImageRoutes = CONF_LINKS.flatMap(link =>
+  ['_', PLACEHOLDER_MODIFIERS].map(modifiers => `/_ipx/${modifiers}${encodeURI(link.img)}`),
+)
 
 // @nuxt/image 預設讓 IPX 去讀伺服器輸出外面的靜態檔目錄。
 // Vercel、Zeabur 這類 serverless 平台的函式跟靜態檔分開部署，函式裡讀不到，
@@ -210,6 +234,8 @@ export default defineNuxtConfig({
         '/agenda/33/34',
         '/agenda/00/23/24',
         ...agendaAvatarRoutes,
+        ...speakerDialogPhotoRoutes,
+        ...historyImageRoutes,
       ],
     },
     routeRules: {
@@ -228,9 +254,11 @@ export default defineNuxtConfig({
         headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' },
       },
 
-      // IPX 處理的圖片路徑
+      // IPX 處理的圖片路徑：快取一天，之後一週內先用舊的、背景再更新。
+      // 以前每次都回伺服器確認，彈窗照片、頭像同一頁重複出現也要一張張問一次；
+      // 換圖時最慢隔天生效，急的話改檔名
       '/_ipx/**': {
-        headers: { 'Cache-Control': 'public, max-age=0, must-revalidate' },
+        headers: { 'Cache-Control': 'public, max-age=86400, stale-while-revalidate=604800' },
       },
     },
     compressPublicAssets: {

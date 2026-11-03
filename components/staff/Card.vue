@@ -3,6 +3,11 @@ import type { Staff } from '~/types'
 
 defineProps<{
   staff: Staff
+  /**
+   * 首屏的卡片：照片直接放進 HTML 並以 high 優先下載（加上 <link rel="preload">）。
+   * 一般卡片用模糊小圖佔位，真正的照片要等 JS 接手後才開始抓，首屏用這種方式會晚好幾百毫秒
+   */
+  priority?: boolean
 }>()
 </script>
 
@@ -18,7 +23,10 @@ defineProps<{
           :alt="staff.name"
           width="220"
           height="314"
-          placeholder
+          :placeholder="!priority"
+          :loading="priority ? 'eager' : undefined"
+          :fetchpriority="priority ? 'high' : undefined"
+          :preload="priority ? { fetchPriority: 'high' } : false"
           class="aspect-speaker-img-full h-[144px] w-[100px] object-cover duration-300 group-hover:grayscale-0 lg:size-full lg:grayscale"
         />
 

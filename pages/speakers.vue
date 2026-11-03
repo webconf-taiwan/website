@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import { CUSTOM_AGENDA_ITEM, SPEAKERS } from '~/constants/agenda'
 
+// 開關講者彈窗（/speakers ↔ /speakers/:id）只換子路由，不捲動，留在原本的位置；從別頁進來才回到頂端
+definePageMeta({
+  scrollToTop: (to, from) => to.matched[0]?.path !== from.matched[0]?.path,
+})
+
 useSeoMeta({
   title: '講者陣容',
   description:
@@ -10,6 +15,9 @@ useSeoMeta({
 // 議程類型篩選
 const { selectedTags, handleTagClick } = useSelectedTags()
 const isMenuOpen = ref(false)
+
+// 首屏的卡片數（桌機一排最多 4 張，手機一屏約 4 張）；這幾張照片直接放進 HTML 優先下載
+const FIRST_SCREEN_CARDS = 4
 
 // 講者彈窗的照片：碰到卡片時以 high 插隊，其餘在頁面 load 後趁空閒依卡片順序預熱
 const speakerCards = [...SPEAKERS, CUSTOM_AGENDA_ITEM]
@@ -23,6 +31,13 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => stopWarm?.())
+
+const {
+  speakers: dialogSpeakers,
+  speakerIds: dialogSpeakerIds,
+  open: openSpeakerDialog,
+  close: closeSpeakerDialog,
+} = useSpeakerDialog()
 </script>
 
 <template>
@@ -77,11 +92,13 @@ onBeforeUnmount(() => stopWarm?.())
             :key="`${speaker.name}-${index}`"
             :selected-tags="selectedTags"
             :speaker="speaker"
+            :priority="index < FIRST_SCREEN_CARDS"
             :is-selected="
               speaker.tags?.some((tag) => selectedTags.includes(tag))
                 || selectedTags.length === 0
             "
             @tag-click="handleTagClick"
+            @open="openSpeakerDialog([speaker.speakerId])"
             @mouseenter="preloadSpeakerDialog([speaker.speakerId])"
             @focusin="preloadSpeakerDialog([speaker.speakerId])"
             @touchstart.passive="preloadSpeakerDialog([speaker.speakerId])"
@@ -90,7 +107,14 @@ onBeforeUnmount(() => stopWarm?.())
       </section>
     </main>
 
-    <!-- 講者資訊彈跳視窗 -->
+    <!-- 講者資訊彈跳視窗：渲染在這裡，點卡片當下就打開；子路由只負責網址 -->
+    <AgendaSpeakersDetailsDialog
+      v-if="dialogSpeakers.length > 0"
+      :speaker="dialogSpeakers"
+      :speaker-ids="dialogSpeakerIds"
+      type="speakers"
+      @close="closeSpeakerDialog"
+    />
     <NuxtPage />
   </div>
 </template>
