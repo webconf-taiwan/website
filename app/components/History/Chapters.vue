@@ -89,7 +89,7 @@ onBeforeUnmount(() => observer?.disconnect())
         </p>
         <a :href="item.href" target="_blank" rel="noopener noreferrer" class="history-image block" :aria-label="`前往 WebConf ${item.year} 官方網站（另開分頁）`">
           <img :src="assetUrl(item.image)" :srcset="imageSources(item.image)"
-            sizes="(min-width: 1024px) 582px, (min-width: 680px) 590px, (min-width: 600px) calc(100vw - 90px), calc(100vw - 50px)"
+            sizes="(min-width: 1024px) 582px, (min-width: 680px) 590px, (min-width: 480px) calc(80vw + 46px), calc(100vw - 50px)"
             :alt="`WebConf ${item.year} 活動主視覺`" width="600" height="337" loading="lazy" decoding="async" draggable="false">
         </a>
         <div class="history-copy">
@@ -129,8 +129,9 @@ onBeforeUnmount(() => observer?.disconnect())
   .history-label .text-en-caption { font-weight: 700; }
   .chapter-ribbon { margin-left: -9.69px; }
 }
-@media (min-width: 600px) and (max-width: 1023px) {
-  .history-chapters { padding-inline: 40px; }
+@media (min-width: 480px) and (max-width: 1023px) {
+  /* 480～680px 的左右留白逐漸增加，避免視窗變寬時卡片突然縮窄。 */
+  .history-chapters { padding-inline: clamp(20px, calc(10vw - 28px), 40px); }
   .history-card { width: 100%; max-width: 600px; margin-inline: auto; }
 }
 @media (min-width: 1024px) {
