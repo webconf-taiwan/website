@@ -28,8 +28,9 @@ function scheduleAdvance() {
   autoplayTimer = setTimeout(() => {
     const track = trackRef.value
     const max = track.scrollWidth - track.clientWidth
-    const next = [...track.children].find(card => card.offsetLeft > track.scrollLeft + 1)
-    track.scrollTo({ left: track.scrollLeft >= max - 1 ? 0 : Math.min(next?.offsetLeft ?? max, max), behavior: 'smooth' })
+    const start = track.firstElementChild?.offsetLeft || 0
+    const next = [...track.children].map(card => card.offsetLeft - start).find(left => left > track.scrollLeft + 1)
+    track.scrollTo({ left: track.scrollLeft >= max - 1 ? 0 : Math.min(next ?? max, max), behavior: 'smooth' })
     scheduleAdvance()
   }, 3000)
 }
@@ -202,11 +203,13 @@ onBeforeUnmount(() => {
   .chapter-heading { margin: 0; padding-top: 32px; }
   .chapter-heading h2 { line-height: 77px; }
   .chapter-heading > p { line-height: 34px; }
-  /* 軌道占滿視窗；標題與卷號仍維持原本版心。 */
+  /* 軌道滿版；首尾留白隨卡片捲動，預設位置與版心對齊。 */
   .history-track { flex-direction: row; align-items: flex-start; overflow-x: auto; gap: 40px; margin-top: 48px; scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab; }
   .history-track:active { cursor: grabbing; }
   .history-track::-webkit-scrollbar { display: none; }
   .history-card { flex: 0 0 600px; }
+  .history-card:first-child { margin-left: max(60px, calc((100% - 1320px) / 2)); }
+  .history-card:last-child { margin-right: max(60px, calc((100% - 1320px) / 2)); }
   .history-label { padding-inline: 8px; margin-bottom: 12px; }
   .history-label .text-en-caption { font-weight: 700; line-height: 20px; }
   .history-label .text-meta { line-height: 14px; }

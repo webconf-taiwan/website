@@ -37,7 +37,9 @@ useFadeIn(rootRef)
 .recap-label { padding: 0 4px; margin-bottom: 8px; }
 .recap-frame { padding: 4px; border: 1px solid rgb(239 230 210 / 35%); background: rgb(10 10 12 / 70%); }
 .recap-media { aspect-ratio: 2880 / 1616; }
-.recap-play img { display: block; width: 100%; height: auto; aspect-ratio: 2880 / 1616; object-fit: cover; }
+.recap-play img { display: block; width: 100%; height: auto; aspect-ratio: 2880 / 1616; object-fit: cover; filter: brightness(0.6); transition: filter 180ms ease-out; }
+.recap-play:focus-visible img { filter: brightness(1); }
+@media (hover: hover) { .recap-play:hover img { filter: brightness(1); } }
 .recap-media iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .recap-play:focus-visible { outline: 2px solid theme('colors.accent.1'); outline-offset: 4px; }
 @media (min-width: 1024px) {
@@ -47,5 +49,5 @@ useFadeIn(rootRef)
   .recap-media, .recap-play img { aspect-ratio: 872 / 489; }
   .video-ribbon { top: 189.43px; left: 50%; transform: translateX(-50%); }
 }
-@media (prefers-reduced-motion: reduce) { .play-icon { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .play-icon, .recap-play img { transition: none; } }
 </style>
