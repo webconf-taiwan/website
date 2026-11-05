@@ -1,5 +1,6 @@
 <script setup>
 const { default: history } = await import('~/constants/data/history.json')
+const { isDesktop, viewportReady } = useViewportMode()
 const gallery = { ...history.gallery, photos: history.gallery.photos.map(photo => ({ ...photo, src: assetUrl(photo.src) })) }
 const title = '歷屆回顧'
 const description = '回顧 WebConf Taiwan 2025、2024、2023 與 2013 的精彩篇章，觀看活動回顧影片與歷年活動花絮。'
@@ -9,18 +10,21 @@ useSchemaOrg([defineWebPage({ name: fullTitle, description })])
 </script>
 
 <template>
-  <div class="history-page overflow-x-clip bg-bg-mid text-pre-800">
-    <HistoryHero
-      standalone :plate="history.plate" title="HISTORY" subtitle="歷屆回顧"
+  <HistoryParticleStage v-slot="{ desktopMode }" class="history-page">
+    <CommonPlateHero
+      :plate="history.plate" title="HISTORY" subtitle="歷屆回顧"
       :corner-left="history.corner_left" :corner-right="history.corner_right" aria-label="歷屆回顧"
+      :desktop-mode="desktopMode"
     />
     <HistoryChapters :data="history" />
     <HistoryRecap :data="history.recap" />
-    <div class="history-gallery relative">
-      <ClientOnly><CommonPlateField class="hidden lg:block" variant="gallery" media-only /></ClientOnly>
+    <div class="history-gallery relative z-10">
+      <ClientOnly>
+        <CommonPlateField v-if="viewportReady && isDesktop && desktopMode === 'fallback'" variant="gallery" media-only />
+      </ClientOnly>
       <LazyHistoryPhotoWall :hydrate-on-visible="{ rootMargin: '400px' }" :data="gallery" heading-id="history-gallery-heading" />
     </div>
-  </div>
+  </HistoryParticleStage>
 </template>
 
 <style scoped>
@@ -30,22 +34,12 @@ useSchemaOrg([defineWebPage({ name: fullTitle, description })])
 .history-gallery :deep(.photo-cta-label) { margin-right: -0.1em; }
 .history-gallery :deep(.photo-heading h2) { letter-spacing: 0.02em; }
 @media (max-width: 1023px) {
-  .history-page :deep([data-plate-mobile-copy]) { top: 224px; height: 134px; }
-  .history-page :deep([data-plate-mobile-copy] > .text-meta) { line-height: 14px; }
-  .history-page :deep([data-plate-hero-mobile] h1 > span:last-child) {
-    font-size: 16px;
-    line-height: 19px;
-    letter-spacing: 0.02em;
-  }
   .history-gallery :deep(.photo-heading > p) { line-height: 26px; }
   .history-gallery :deep(.mobile-photo) { min-height: 204px; }
   /* 手機稿以彩色照片橫向瀏覽；黑白切換保留在桌機照片牆。 */
   .history-gallery :deep(.mobile-photo img) { filter: none; }
 }
 @media (min-width: 1024px) {
-  .history-page :deep([data-plate-hero-desktop] .text-meta) { line-height: 14px; }
-  .history-page :deep([data-plate-hero-desktop] .text-meta > span:not(:last-child)) { margin-right: -0.2em; }
-  .history-page :deep([data-plate-hero-desktop] .text-en-caption) { font-weight: 700; line-height: 20px; }
   .history-gallery :deep(.photo-board) { height: 720px; }
   .history-gallery :deep(.photo-heading h2) { line-height: 77px; }
   .history-gallery :deep(.photo-heading > p) { line-height: 34px; }

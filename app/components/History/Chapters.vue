@@ -4,10 +4,44 @@ const rootRef = ref(null)
 const trackRef = ref(null)
 const progress = ref(0)
 const thumbSize = ref(60)
+const { isDesktop } = useViewportMode()
+const inView = ref(false)
+const hovered = ref(false)
+const focused = ref(false)
+const interacting = ref(false)
+const dragging = ref(false)
+const reduced = ref(true)
+const pageVisible = ref(true)
+const canAdvance = computed(() => isDesktop.value && inView.value && thumbSize.value < 100 && !hovered.value && !focused.value && !interacting.value && !dragging.value && !reduced.value && pageVisible.value)
 useFadeIn(rootRef)
 let observer
+let visibilityObserver
+let motionMedia
+let autoplayTimer
+let interactionTimer
 let gesture
 let moved = false
+
+function scheduleAdvance() {
+  clearTimeout(autoplayTimer)
+  if (!canAdvance.value) return
+  autoplayTimer = setTimeout(() => {
+    const track = trackRef.value
+    const max = track.scrollWidth - track.clientWidth
+    const next = [...track.children].find(card => card.offsetLeft > track.scrollLeft + 1)
+    track.scrollTo({ left: track.scrollLeft >= max - 1 ? 0 : Math.min(next?.offsetLeft ?? max, max), behavior: 'smooth' })
+    scheduleAdvance()
+  }, 3000)
+}
+watch(canAdvance, scheduleAdvance)
+function holdAutoplay() {
+  interacting.value = true
+  clearTimeout(interactionTimer)
+  interactionTimer = setTimeout(() => { interacting.value = false }, 8000)
+}
+function motionChanged() { reduced.value = motionMedia.matches }
+function visibilityChanged() { pageVisible.value = !document.hidden }
+function focusOut(event) { focused.value = rootRef.value.contains(event.relatedTarget) }
 
 function imageSources(src) {
   return `${assetUrl(src.replace(/\.webp$/, '-800.webp'))} 800w, ${assetUrl(src)} 1200w`
@@ -21,6 +55,7 @@ function updateProgress() {
   thumbSize.value = Math.min(100, track.clientWidth / track.scrollWidth * 100)
 }
 function seek(event) {
+  holdAutoplay()
   const track = trackRef.value
   track.scrollLeft = (track.scrollWidth - track.clientWidth) * Number(event.target.value) / 100
 }
@@ -31,11 +66,14 @@ function onKey(event) {
   const targets = { ArrowRight: track.scrollLeft + step, ArrowLeft: track.scrollLeft - step, Home: 0, End: track.scrollWidth }
   if (!(event.key in targets)) return
   event.preventDefault()
+  holdAutoplay()
   track.scrollTo({ left: targets[event.key], behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
 }
 function startDrag(event) {
+  holdAutoplay()
   if (event.button !== 0 || event.pointerType !== 'mouse' || trackRef.value.scrollWidth <= trackRef.value.clientWidth) return
   moved = false
+  dragging.value = true
   gesture = { x: event.clientX, left: trackRef.value.scrollLeft, id: event.pointerId }
 }
 function drag(event) {
@@ -47,6 +85,8 @@ function drag(event) {
   trackRef.value.scrollLeft = gesture.left - delta
 }
 function endDrag(event) {
+  if (dragging.value) holdAutoplay()
+  dragging.value = false
   gesture = null
   if (trackRef.value.hasPointerCapture(event.pointerId)) trackRef.value.releasePointerCapture(event.pointerId)
 }
@@ -54,15 +94,32 @@ function onClick(event) {
   if (moved) { event.preventDefault(); moved = false }
 }
 onMounted(() => {
+  motionMedia = matchMedia('(prefers-reduced-motion: reduce)')
+  motionChanged()
+  motionMedia.addEventListener('change', motionChanged)
+  visibilityChanged()
+  document.addEventListener('visibilitychange', visibilityChanged)
+  window.addEventListener('pointerup', endDrag)
+  visibilityObserver = new IntersectionObserver(([entry]) => { inView.value = entry.isIntersecting }, { threshold: 0.15 })
+  visibilityObserver.observe(trackRef.value)
   observer = new ResizeObserver(updateProgress)
   observer.observe(trackRef.value)
   updateProgress()
 })
-onBeforeUnmount(() => observer?.disconnect())
+onBeforeUnmount(() => {
+  observer?.disconnect()
+  visibilityObserver?.disconnect()
+  motionMedia?.removeEventListener('change', motionChanged)
+  document.removeEventListener('visibilitychange', visibilityChanged)
+  window.removeEventListener('pointerup', endDrag)
+  clearTimeout(autoplayTimer)
+  clearTimeout(interactionTimer)
+})
 </script>
 
 <template>
-  <section ref="rootRef" class="history-chapters relative mx-auto max-w-[1440px]" aria-labelledby="history-chapters-heading">
+  <section ref="rootRef" class="history-chapters relative" aria-labelledby="history-chapters-heading"
+    @focusin="focused = true" @focusout="focusOut">
     <HistoryRibbon class="chapter-ribbon" />
     <div class="chapter-header relative">
       <CommonPlate :data="data.plate" class="history-plate" />
@@ -77,9 +134,11 @@ onBeforeUnmount(() => observer?.disconnect())
     <div
       ref="trackRef" class="history-track relative" tabindex="0" role="region"
       aria-label="歷屆 WebConf；桌機可左右拖曳或使用方向鍵瀏覽" data-lenis-prevent-horizontal
+      @pointerenter="hovered = $event.pointerType !== 'touch'" @pointerleave="hovered = false"
       @scroll.passive="updateProgress" @keydown="onKey"
+      @wheel.passive="holdAutoplay"
       @pointerdown="startDrag" @pointermove="drag" @pointerup="endDrag" @pointercancel="endDrag"
-      @lostpointercapture="gesture = null" @click.capture="onClick" @dragstart.prevent
+      @lostpointercapture="endDrag" @click.capture="onClick" @dragstart.prevent
     >
       <article v-for="item in data.items" :key="item.year" class="history-card" :aria-labelledby="`history-${item.year}`">
         <p class="history-label flex items-center gap-2">
@@ -98,9 +157,11 @@ onBeforeUnmount(() => observer?.disconnect())
         </div>
       </article>
     </div>
-    <div class="history-scrollbar relative mx-auto hidden lg:block" :style="{ '--thumb-size': `${thumbSize}%`, '--thumb-left': `${progress / 100 * (100 - thumbSize)}%` }">
-      <span class="scrollbar-line" aria-hidden="true"><span /></span>
-      <input type="range" min="0" max="100" step="0.1" :value="progress" aria-label="歷屆回顧橫向捲動位置" @input="seek">
+    <div class="history-controls relative mx-auto hidden lg:flex">
+      <div class="history-scrollbar relative" :style="{ '--thumb-size': `${thumbSize}%`, '--thumb-left': `${progress / 100 * (100 - thumbSize)}%` }">
+        <span class="scrollbar-line" aria-hidden="true"><span /></span>
+        <input type="range" min="0" max="100" step="0.1" :value="progress" aria-label="歷屆回顧橫向捲動位置" @input="seek">
+      </div>
     </div>
   </section>
 </template>
@@ -135,13 +196,14 @@ onBeforeUnmount(() => observer?.disconnect())
   .history-card { width: 100%; max-width: 600px; margin-inline: auto; }
 }
 @media (min-width: 1024px) {
-  .history-chapters { padding: 60px; }
+  .history-chapters { padding: 60px 0; }
+  .chapter-header { max-width: 1320px; margin-inline: auto; width: calc(100% - 120px); }
   .history-plate { position: absolute; inset: 0 0 auto; padding-block: 32px; }
   .chapter-heading { margin: 0; padding-top: 32px; }
   .chapter-heading h2 { line-height: 77px; }
   .chapter-heading > p { line-height: 34px; }
-  /* 下一張卡片延伸到視窗邊緣，末張仍保留與標題一致的右側留白。 */
-  .history-track { flex-direction: row; align-items: flex-start; overflow-x: auto; gap: 40px; margin-top: 48px; margin-right: -60px; padding-right: 60px; scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab; }
+  /* 軌道占滿視窗；標題與卷號仍維持原本版心。 */
+  .history-track { flex-direction: row; align-items: flex-start; overflow-x: auto; gap: 40px; margin-top: 48px; scrollbar-width: none; overscroll-behavior-x: contain; cursor: grab; }
   .history-track:active { cursor: grabbing; }
   .history-track::-webkit-scrollbar { display: none; }
   .history-card { flex: 0 0 600px; }
@@ -152,8 +214,9 @@ onBeforeUnmount(() => observer?.disconnect())
   .history-copy { flex-direction: row; align-items: flex-start; gap: 40px; margin-top: 12px; }
   .history-year { font-size: 48px; line-height: 58px; flex-shrink: 0; }
   .history-copy > p { padding-block: 8px; line-height: 26px; }
-  .history-scrollbar { width: 400px; height: 24px; margin-top: 13px; margin-bottom: -11px; }
-  .scrollbar-line { position: absolute; inset: 11px 0; background: rgb(239 230 210 / 20%); }
+  .history-controls { width: 400px; height: 44px; align-items: center; margin-top: 3px; margin-bottom: -21px; }
+  .history-scrollbar { flex: 1; height: 44px; }
+  .scrollbar-line { position: absolute; inset: 21px 0; background: rgb(239 230 210 / 20%); }
   .scrollbar-line > span { display: block; position: absolute; left: var(--thumb-left); width: var(--thumb-size); height: 2px; background: theme('colors.pre.800'); }
   .history-scrollbar input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; }
   .history-scrollbar:focus-within { outline: 2px solid theme('colors.accent.1'); outline-offset: 4px; }

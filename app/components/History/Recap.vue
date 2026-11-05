@@ -18,8 +18,10 @@ useFadeIn(rootRef)
           <iframe v-if="playing" :src="data.embed_url" title="WebConf Taiwan 2025 完整活動回顧影片" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" />
           <button v-else type="button" class="recap-play group relative block w-full" aria-label="播放 WebConf Taiwan 2025 完整活動回顧影片" @click="playing = true">
             <img :src="assetUrl(data.poster)" alt="2025 WebConf 活動回顧影片" width="872" height="489" loading="lazy" decoding="async">
-            <span class="play-icon absolute left-1/2 top-1/2 flex size-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-pre-800/50 bg-bg-mid/70 text-pre-800 opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
-              <AtomIcon name="play" class="size-7" />
+            <span class="play-icon absolute left-1/2 top-1/2 flex size-[60px] -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-pre-800/35 bg-bg-mid text-pre-800 transition-colors group-hover:border-accent-1 group-hover:text-accent-1 group-focus-visible:border-accent-1 group-focus-visible:text-accent-1">
+              <svg class="h-7 w-6" viewBox="0 0 24 28" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round">
+                <path d="M2 2 L22 14 L2 26 Z" />
+              </svg>
             </span>
           </button>
         </div>
@@ -38,7 +40,6 @@ useFadeIn(rootRef)
 .recap-play img { display: block; width: 100%; height: auto; aspect-ratio: 2880 / 1616; object-fit: cover; }
 .recap-media iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .recap-play:focus-visible { outline: 2px solid theme('colors.accent.1'); outline-offset: 4px; }
-@media (hover: none) { .play-icon { opacity: 1; } }
 @media (min-width: 1024px) {
   .history-recap { min-height: 720px; padding: 81px 60px 106px; }
   .recap-label { padding-inline: 8px; margin-bottom: 12px; line-height: 14px; }
