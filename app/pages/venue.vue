@@ -100,5 +100,9 @@ useSchemaOrg([
   }
   .venue-page :deep([data-plate-body] > aside),
   .venue-page :deep([data-plate-body] > .plate-page-content) { padding-top: 100px; }
+  /* 交通方式到下一區（平面圖）固定 92px（設計稿）。左欄預設是一個視窗高（sticky 用），
+     這區內容比視窗短，高度會被左欄撐開、視窗越高空越多 —— 改成跟著右欄內容走。 */
+  .venue-page :deep([data-plate-body] > aside) { height: auto; }
+  .venue-page :deep([data-plate-body] > .plate-page-content) { padding-bottom: 92px; }
 }
 </style>
