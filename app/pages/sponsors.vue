@@ -23,7 +23,7 @@ usePageSeo('/sponsors')
     <template #hero-actions>
       <AtomButton
         data-fade="in"
-        class="mt-8 hidden h-10 lg:flex"
+        class="sponsor-hero-cta mt-6 h-10 shrink-0 lg:mt-8"
         :href="sponsors.sections[0].cta.href"
         :target="sponsors.sections[0].cta.target"
         :rel="linkRel(sponsors.sections[0].cta.target)"
@@ -88,7 +88,11 @@ usePageSeo('/sponsors')
 .sponsors-page :deep(.text-en-caption) { font-weight: 400; }
 
 @media (max-width: 1023px) {
-  .sponsors-page :deep(.sponsor-cta) { padding-left: 20px; padding-right: 12px; }
+  /* 有 CTA 的手機 Hero 對齊 Figma；slot 的 8px gap 加上 mt-6 共留 32px。 */
+  .sponsors-page :deep([data-plate-hero-mobile] > .flex:not([data-plate-mobile-corner])) { top: 186.5px; }
+  .sponsors-page :deep(.sponsor-hero-cta) { font-weight: 500; }
+  .sponsors-page :deep(.sponsor-cta),
+  .sponsors-page :deep(.sponsor-hero-cta) { padding-left: 20px; padding-right: 12px; }
 
   .sponsor-section + .sponsor-section {
     border-top: 1px solid rgb(239 230 210 / 35%);
