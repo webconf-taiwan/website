@@ -33,16 +33,19 @@ useSchemaOrg([
 ])
 
 // 議程表：rooms 是欄、days[].slots 是列。
-// slot.sessions 以場館 id 對到場次 id；"simulcast" = 同步聯播、null = 還沒排。
+// slot.sessions 以場館 id 對到場次 id；"simulcast" = 同步聯播（播同一列裡另一棟排的那場）、null = 還沒排。
 // { type: 'break' } 是午休那種橫跨三欄的一列。
 const sessions = new Map((agenda.items || []).map(item => [item.id, item]))
 const rooms = agenda.rooms || []
 
 function cellOf (slot, room) {
   const value = slot.sessions?.[room.id]
-  if (value === 'simulcast') return { room, type: 'simulcast' }
-  const session = value && sessions.get(value)
-  return session ? { room, type: 'session', session } : { room, type: 'tba' }
+  // 聯播格照樣印出那場的完整內容（標題前多一個「聯播」標記），點了一樣開講者抽屜。
+  // 來源是同一列第一個有排場次的館；找不到就當還沒排。
+  const simulcast = value === 'simulcast'
+  const id = simulcast ? Object.values(slot.sessions || {}).find(v => v && v !== 'simulcast') : value
+  const session = id && sessions.get(id)
+  return session ? { room, type: 'session', session, simulcast } : { room, type: 'tba' }
 }
 // "09:05" → "9:05"；沒有結束時間就只印開始
 const timeText = slot => [slot.start, slot.end].filter(Boolean).map(t => t.replace(/^0(\d)/, '$1')).join(' - ')
@@ -98,22 +101,36 @@ function scrollToFirstMatch ({ immediate = false } = {}) {
   const cellEl = first && scheduleRef.value?.querySelector(`[data-session-id="${first.session.id}"]`)
   if (!cellEl) return
   const section = cellEl.closest('section')
-  const target = isDesktop() || cellEl === section.querySelector('[data-cell]') ? section : cellEl
-
+  scrollToTarget(isDesktop() || cellEl === section.querySelector('[data-cell]') ? section : cellEl, { immediate })
+}
+// 沒篩選時換天：回到這天的開頭。
+// 桌機停在大標「Sessions, across two days.」整個露出在導覽列下方（不能被 header 切一半）；
+// 窄視窗沒有表頭，停在這天第一個時段（扣掉黏住的切換列）。
+function scrollToDayStart ({ immediate = false } = {}) {
+  if (isDesktop()) return scrollToTarget(introRef.value, { immediate })
+  const first = [...(scheduleRef.value?.querySelectorAll('section') || [])].find(el => el.offsetParent)
+  if (first) scrollToTarget(first, { immediate })
+}
+function scrollToTarget (target, { immediate = false, extra } = {}) {
+  if (!target) return
   let offset = document.querySelector('header')?.getBoundingClientRect().height || 0
   if (!isDesktop() && controlsRef.value) {
     // 黏住之後的位置：sticky top + 切換列高度（面板浮在列下方，-mt-1）
     offset = parseFloat(getComputedStyle(controlsRef.value).top) + controlsRef.value.offsetHeight
     if (filterOpen.value && filterPanelRef.value) offset += filterPanelRef.value.offsetHeight - 4
   }
-  offset += isDesktop() ? 32 : 16 // 留一點呼吸空間（桌機時段標籤壓在列頂線上方 10px）
+  offset += extra ?? (isDesktop() ? 32 : 16) // 留一點呼吸空間（桌機時段標籤壓在列頂線上方 10px）
 
   const lenis = useNuxtApp().$lenis
   const reduced = immediate || window.matchMedia('(prefers-reduced-motion: reduce)').matches
   const distance = Math.abs(target.getBoundingClientRect().top - offset)
   const duration = Math.min(1.6, Math.max(0.5, distance / 1400))
-  if (lenis) lenis.scrollTo(target, { offset: -offset, duration, immediate: reduced })
-  else window.scrollTo({ top: window.scrollY + target.getBoundingClientRect().top - offset, behavior: reduced ? 'instant' : 'smooth' })
+  // ⚠️ 目標位置自己用 window.scrollY 算成絕對座標再交給 Lenis，不要傳元素：
+  // 換天時這天比較短，瀏覽器會先把捲動位置夾到新的底部，Lenis 記的還是舊位置，
+  // 傳元素它會用「舊位置 + 元素 rect」算，落點整段偏下。
+  const top = window.scrollY + target.getBoundingClientRect().top - offset
+  if (lenis) lenis.scrollTo(top, { duration, immediate: reduced, force: true })
+  else window.scrollTo({ top, behavior: reduced ? 'instant' : 'smooth' })
 }
 watch(selected, () => scrollToFirstMatch())
 
@@ -146,8 +163,9 @@ const { drawNow } = useDrawIn(scheduleRef)
 // 換天：另一天原本是 display:none，補播一次進場並讓 ScrollTrigger 重新量測
 watch(day, async () => {
   await nextTick()
-  // 有篩選時先跳到這天第一個符合的場次，再播畫面內的進場
-  scrollToFirstMatch({ immediate: true })
+  // 先定位再播畫面內的進場：有篩選跳到這天第一個符合的場次，沒篩選回到這天開頭
+  if (selected.value.length) scrollToFirstMatch({ immediate: true })
+  else scrollToDayStart({ immediate: true })
   // 只播畫面內的：手機版是單欄長表，捲到中段時若照 DOM 順序錯開，畫面上的格子要等好幾秒
   fadeInNow(scheduleRef.value, { step: 0.06, onlyInView: true })
   drawNow(scheduleRef.value, { onlyInView: true })
@@ -247,7 +265,7 @@ watch(day, async () => {
                 <p data-fade="in" class="py-6 text-center text-zh-body-md text-pre-800">{{ room.label }}</p>
                 <span v-if="r < rooms.length - 1" data-draw="y" aria-hidden="true" class="absolute inset-y-0 right-0 border-r border-dashed border-pre-800/35" />
               </div>
-              <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 bottom-0 h-px bg-pre-800/35" />
+              <!-- 表頭沒有底線：第一個時段自己畫那條線（時段標籤 + 後面的線），見下方 h3 -->
             </div>
 
             <div class="relative">
@@ -255,14 +273,15 @@ watch(day, async () => {
                 <div v-if="slot.type === 'break'" class="relative">
                   <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 top-0 h-px bg-pre-800/35 lg:hidden" />
                   <p data-fade="in" class="py-6 text-center text-zh-h5 text-pre-800">{{ slot.label }}</p>
-                  <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 bottom-0 hidden h-px bg-pre-800/35 lg:block" />
                 </div>
 
                 <section v-else class="relative">
-                  <!-- 時段：桌機壓在上一列的底線上（底色蓋掉線），窄視窗自成一列、後面拉一條線 -->
-                  <h3 class="flex items-center gap-2 lg:absolute lg:-top-[10px] lg:left-0 lg:z-1 lg:bg-bg-mid lg:px-2">
+                  <!-- 時段：窄視窗自成一列；桌機壓在列頂（-10px = 字高一半），兩種都是「標籤 + 後面拉一條線」。
+                       桌機這條就是列與列之間的分隔線，所以上一列（表頭、午休、上一個時段）不另外畫底線 ——
+                       不用底色蓋線的做法，那會把背後的粒子菌落蓋出一塊黑框。 -->
+                  <h3 class="flex items-center gap-2 lg:absolute lg:inset-x-0 lg:-top-[10px] lg:z-1 lg:pl-2">
                     <span data-fade="in" class="whitespace-nowrap text-body-sm text-accent-1">{{ d.label }} · {{ slot.time }}</span>
-                    <span data-draw="x" aria-hidden="true" class="h-px flex-1 bg-pre-800/35 lg:hidden" />
+                    <span data-draw="x" aria-hidden="true" class="h-px flex-1 bg-pre-800/35" />
                   </h3>
 
                   <!-- 合併列：整列一格、標題置中，字樣同「同步聯播」那格；有講者的話一樣可以點開抽屜 -->
@@ -296,6 +315,7 @@ watch(day, async () => {
                           data-fade="in"
                           :data="cell.session"
                           :room="cell.room.label"
+                          :badge="cell.simulcast ? agenda.simulcast_label : ''"
                           :dimmed="!matches(cell.session)"
                           :highlight="selected"
                         />
@@ -305,6 +325,7 @@ watch(day, async () => {
                         data-fade="in"
                         :data="cell.session"
                         :room="cell.room.label"
+                        :badge="cell.simulcast ? agenda.simulcast_label : ''"
                         :dimmed="!matches(cell.session)"
                         :highlight="selected"
                         class="agenda-session--static"
@@ -312,10 +333,9 @@ watch(day, async () => {
                       <p
                         v-else
                         data-fade="in"
-                        class="flex h-full items-center justify-center px-6 py-6 text-center text-zh-h5 lg:py-10"
-                        :class="cell.type === 'tba' ? 'text-pre-800/[62%]' : 'text-pre-800'"
+                        class="flex h-full items-center justify-center px-6 py-6 text-center text-zh-h5 text-pre-800/[62%] lg:py-10"
                       >
-                        <span class="sr-only">{{ cell.room.label }}：</span>{{ cell.type === 'simulcast' ? agenda.simulcast_label : agenda.tba_label }}
+                        <span class="sr-only">{{ cell.room.label }}：</span>{{ agenda.tba_label }}
                       </p>
 
                       <!-- 線放在內容後面，hover 的漸層才不會蓋過去。
@@ -325,7 +345,13 @@ watch(day, async () => {
                     </div>
                   </div>
 
-                  <span data-draw="x" aria-hidden="true" class="absolute inset-x-0 bottom-0 hidden h-px bg-pre-800/35 lg:block" />
+                  <!-- 下一個是時段的話由它的標籤線接手；接午休或是最後一列才自己收底線 -->
+                  <span
+                    v-if="d.slots[i + 1]?.type === 'break' || i === d.slots.length - 1"
+                    data-draw="x"
+                    aria-hidden="true"
+                    class="absolute inset-x-0 bottom-0 hidden h-px bg-pre-800/35 lg:block"
+                  />
                 </section>
               </template>
 
