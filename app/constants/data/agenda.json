@@ -8,7 +8,7 @@
   "filter_label": "標籤篩選",
   "filter_all": "全部",
   "filter_skills": ["AI", "Frontend", "Backend", "DevOps", "Security", "Agile", "產品思維", "產業應用", "團隊管理", "軟體設計", "設計實務"],
-  "simulcast_label": "同步聯播",
+  "simulcast_label": "聯播",
   "tba_label": "議程即將公布",
   "coming_soon_label": "\\ 更多精彩議程即將釋出 /",
   "rooms": [
@@ -24,14 +24,14 @@
       "slots": [
         { "start": "09:00", "end": "09:10", "sessions": { "m": "agenda-13", "f": "agenda-13", "a2": "agenda-13" } },
         { "start": "09:10", "end": "09:55", "sessions": { "m": "agenda-03", "f": "simulcast", "a2": "agenda-09" } },
-        { "start": "10:05", "end": "10:50", "sessions": { "m": null, "f": "agenda-36", "a2": "agenda-23" } },
+        { "start": "10:05", "end": "10:50", "sessions": { "m": "agenda-08", "f": "agenda-36", "a2": "agenda-23" } },
         { "start": "11:00", "end": "11:45", "sessions": { "m": "agenda-14", "f": "agenda-15", "a2": "agenda-01" } },
         { "start": "11:55", "end": "12:40", "sessions": { "m": "agenda-12", "f": "agenda-06", "a2": "agenda-17" } },
         { "type": "break", "label": "午休時間" },
-        { "start": "13:30", "end": "14:15", "sessions": { "m": "agenda-18", "f": "simulcast", "a2": "agenda-19" } },
-        { "start": "14:25", "end": "15:10", "sessions": { "m": null, "f": null, "a2": null } },
+        { "start": "13:30", "end": "14:15", "sessions": { "m": "agenda-18", "f": "agenda-40", "a2": "agenda-19" } },
+        { "start": "14:25", "end": "15:10", "sessions": { "m": null, "f": null, "a2": "agenda-11" } },
         { "start": "15:20", "end": "16:05", "sessions": { "m": "agenda-20", "f": "agenda-05", "a2": "agenda-21" } },
-        { "start": "16:15", "end": "17:00", "sessions": { "m": "agenda-07", "f": null, "a2": "agenda-21" } }
+        { "start": "16:15", "end": "17:00", "sessions": { "m": "agenda-07", "f": "agenda-41", "a2": "agenda-21" } }
       ]
     },
     {
@@ -39,15 +39,15 @@
       "label": "DAY 2",
       "date": "2026-12-12",
       "slots": [
-        { "start": "09:00", "end": "09:45", "sessions": { "m": "agenda-04", "f": "agenda-38", "a2": "agenda-24" } },
+        { "start": "09:00", "end": "09:45", "sessions": { "m": "agenda-04", "f": "agenda-38", "a2": null } },
         { "start": "10:00", "end": "10:45", "sessions": { "m": null, "f": "agenda-25", "a2": "agenda-26" } },
         { "start": "10:55", "end": "11:40", "sessions": { "m": "agenda-02", "f": "agenda-27", "a2": "agenda-28" } },
         { "start": "11:50", "end": "12:35", "sessions": { "m": "agenda-29", "f": "agenda-30", "a2": null } },
         { "type": "break", "label": "午休時間" },
-        { "start": "13:30", "end": "14:15", "sessions": { "m": "agenda-31", "f": "agenda-32", "a2": null } },
+        { "start": "13:30", "end": "14:15", "sessions": { "m": null, "f": null, "a2": null } },
         { "start": "14:25", "end": "15:10", "sessions": { "m": "agenda-37", "f": "agenda-39", "a2": "agenda-10" } },
-        { "start": "15:20", "end": "16:05", "sessions": { "m": null, "f": "agenda-33", "a2": "agenda-34" } },
-        { "start": "16:15", "end": "17:00", "sessions": { "m": null, "f": null, "a2": null } },
+        { "start": "15:20", "end": "16:05", "sessions": { "m": "agenda-31", "f": "agenda-32", "a2": "agenda-34" } },
+        { "start": "16:15", "end": "17:00", "sessions": { "m": null, "f": "agenda-33", "a2": "agenda-24" } },
         { "start": "17:00", "end": "17:15", "sessions": { "m": "agenda-35", "f": "agenda-35", "a2": "agenda-35" } }
       ]
     }
@@ -292,12 +292,12 @@
     },
     {
       "id": "agenda-25",
-      "title": "比昨天的自己更厲害一點點：AI Coding 零基礎入門",
+      "title": "一個 AI 不夠，那就再來幾個：Subagent 的分工與協作",
       "skills": ["AI"],
       "speakers": [{ "id": "gugu" }],
-      "abstract": "這場分享將從 AI 的基本概念出發，介紹如何透過上下文管理、常用 CLI 指令、Subagent 平行處理與交叉驗證，以及 AGENTS.md 等功能，讓 AI 更有效地協助我們完成日常開發工作。\n\nAI 可以幫助我們更快地解決問題，但要持續進步，還是需要累積自己的技術實力。希望透過這次分享，讓大家從簡單的方法開始，逐步找到適合自己的 AI Coding 使用方式，比昨天的自己更厲害一點點。",
-      "audience": "尚在摸索如何使用 AI 提升開發效率、或是想要了解 AI 提供哪些功能的軟體工程師",
-      "takeaways": "能夠了解並使用 AI 所提供的基礎功能，並思考 AI 對軟體工程師帶來的短期和長期效應",
+      "abstract": "在以前，我們常使用單一 AI 從頭到尾完成所有工作，但是如果能將任務拆分，交給多個 AI 分別處理，再整合彼此的成果，開發的效率與解決問題的方式是否會有所不同?\n\n這場分享會先介紹 Subagent 是什麼，並且介紹如何將任務分配給不同的 Subagent，透過平行處理與交叉辯論，讓主 Agent 整合各個 Subagent 所產出的成果，從不同角度檢視問題，進而提高答案的可靠性。\n\n當 AI 不再單打獨鬥時，能為日常開發帶來哪些新的可能性呢? Let's try it!",
+      "audience": "想了解什麼是 Subagent，並且應用在日常工作中的軟體工程師",
+      "takeaways": "能夠了解什麼是 Subagent、使用它的好處，以及如何應用在日常的開發中",
       "notes_url": "",
       "slides_url": ""
     },
