@@ -20,6 +20,7 @@ useFadeIn(sectionRef, { step: 0.1 })
 
 // 「B 棟」這種：建築代號後面接一個「棟」（HQ 不是建築，不接）
 const titleOf = map => `${map.code}${map.building ? ' 棟' : ''}`
+const PENDING_TEXT = '配置尚未定案，敬請期待'
 
 // ─── 桌機：tab ＋ 輪播 ─────────────────────────────────────────────────────
 const AUTOPLAY_MS = 6000
@@ -324,7 +325,11 @@ onBeforeUnmount(() => {
               :inert="current !== i"
               class="relative w-full shrink-0"
             >
-              <picture>
+              <!-- 配置還沒定案的館（pending）不放圖，只放一行灰字，維持跟其他圖一樣的比例。 -->
+              <div v-if="map.pending" class="flex aspect-[1180/550] w-full items-center justify-center">
+                <p class="text-zh-body-md text-pre-800/[62%]">{{ PENDING_TEXT }}</p>
+              </div>
+              <picture v-else>
                 <source v-if="map.fallback" :srcset="assetUrl(map.src)" type="image/webp">
                 <img
                   :src="assetUrl(map.fallback || map.src)" :alt="map.alt" width="1180" height="550"
@@ -332,7 +337,6 @@ onBeforeUnmount(() => {
                   class="block h-auto w-full select-none"
                 >
               </picture>
-              <p v-if="map.pending" class="absolute right-6 top-5 text-zh-body-md text-pre-800/[62%]">配置尚未定案，敬請期待</p>
             </div>
           </div>
         </div>
@@ -351,7 +355,8 @@ onBeforeUnmount(() => {
               <span class="text-zh-body-md font-medium text-pre-800">{{ map.code }} {{ map.label }}</span>
               <AtomIcon name="zoom-in" class="size-5 text-pre-800" />
             </span>
-            <picture data-fade="in" class="block">
+            <span v-if="map.pending" class="flex aspect-[1180/550] w-full items-center justify-center px-5 text-zh-body-md text-pre-800/[62%]">{{ PENDING_TEXT }}</span>
+            <picture v-else data-fade="in" class="block">
               <source v-if="map.fallback" :srcset="assetUrl(map.src)" type="image/webp">
               <img
                 :src="assetUrl(map.fallback || map.src)" :alt="map.alt" width="1180" height="550"
@@ -402,7 +407,8 @@ onBeforeUnmount(() => {
           </div>
 
           <div class="relative mt-6 bg-pre-800/[4%]">
-            <picture>
+            <p v-if="maps[lightbox].pending" class="flex aspect-[1180/550] w-full items-center justify-center px-5 text-zh-body-md text-pre-800/[62%]">{{ PENDING_TEXT }}</p>
+            <picture v-else>
               <source v-if="maps[lightbox].fallback" :srcset="assetUrl(maps[lightbox].src)" type="image/webp">
               <img
                 :src="assetUrl(maps[lightbox].fallback || maps[lightbox].src)" :alt="maps[lightbox].alt" width="1180" height="550"
@@ -422,7 +428,8 @@ onBeforeUnmount(() => {
               :aria-current="i === lightbox ? 'true' : undefined"
               @click="lightbox = i"
             >
-              <img :src="assetUrl(map.fallback || map.src)" alt="" width="1180" height="550" loading="lazy" decoding="async" class="block h-auto w-full">
+              <span v-if="map.pending" class="block aspect-[1180/550] w-full bg-pre-800/[4%]" />
+              <img v-else :src="assetUrl(map.fallback || map.src)" alt="" width="1180" height="550" loading="lazy" decoding="async" class="block h-auto w-full">
             </button>
           </div>
         </div>

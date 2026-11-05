@@ -6,6 +6,8 @@ const props = defineProps({
   // useAgendaData 攤平過的場次：{ title, skills, speakers: [{ name, title, portrait }] }
   data: { type: Object, default: () => ({}) },
   room: { type: String, default: '' },
+  // 標題前的小標記（同步聯播的「聯播」）；空字串不印
+  badge: { type: String, default: '' },
   // 標籤篩選沒選中：整格變淡（同講者頁），位置不動
   dimmed: { type: Boolean, default: false },
   // 篩選選中的標籤：#標籤 換成亮色（同講者頁）
@@ -21,7 +23,9 @@ const speakers = computed(() => session.value.speakers || [])
   <article class="agenda-session flex h-full overflow-clip lg:pb-6 lg:pt-4">
     <div class="agenda-session-body flex min-w-0 flex-1 flex-col justify-between gap-6 py-6 lg:px-4" :class="{ 'opacity-30': dimmed }">
       <div class="flex flex-col gap-2">
-        <h4 class="text-zh-h6 text-pre-800">{{ session.title }}</h4>
+        <h4 class="text-zh-h6 text-pre-800">
+          <span v-if="badge" class="mr-2 inline-block bg-pre-800 px-2align-[0.15em] text-en-caption text-bg-mid">{{ badge }}</span>{{ session.title }}
+        </h4>
         <ul v-if="skills.length" class="flex flex-wrap gap-x-2 gap-y-1 text-body-sm text-pre-800/[62%]">
           <li
             v-for="skill in skills"
