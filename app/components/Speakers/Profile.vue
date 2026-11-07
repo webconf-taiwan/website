@@ -24,7 +24,9 @@ const orgLines = computed(() => [item.value, item.value.extra]
     <div data-fade="in" class="relative size-20 shrink-0 overflow-hidden bg-pre-800/5 lg:aspect-square lg:size-auto lg:w-full">
       <!-- 變淡放在裡面這層：外層的 opacity 由 data-fade 進場動畫控制 -->
       <div class="absolute inset-0 transition-opacity duration-500" :class="{ 'opacity-30': dimmed }">
+        <!-- 照片還沒到的講者：不放 img（src 空字串會變破圖），只留外層的淡底色 -->
         <img
+          v-if="item.photo || item.portrait"
           :src="item.photo || item.portrait"
           :alt="item.name"
           width="1000"
