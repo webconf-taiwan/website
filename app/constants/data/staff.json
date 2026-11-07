@@ -29,129 +29,89 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
     {
       "id": "staff-02",
       "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
+      "name": "廖洧杰",
+      "role": "六角學院校長",
+      "photo": "/staff/photos/gonsakon.webp",
       "socials": [
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/sfismy"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": null
+          "href": "https://www.threads.com/@gonsakon"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": null
+          "href": "https://www.instagram.com/gonsakon/"
         }
       ]
     },
     {
       "id": "staff-03",
       "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
+      "name": "Jordan Tseng",
+      "role": "版塊設計・軟體工程師",
+      "photo": "/staff/photos/jordan-tseng.webp",
       "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": null
-        },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@ting_chun0131"
         },
         {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": null
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": null
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": null
+          "label": "個人網站",
+          "icon": "globe",
+          "href": "https://jordanttc.com/"
         }
       ]
     },
     {
       "id": "staff-04",
       "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
+      "name": "Gui 劉桂廷",
+      "role": "版塊設計・軟體工程師",
+      "photo": "/staff/photos/guitimliu.webp",
       "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": null
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": null
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": null
-        },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://instagram.com/guitimliu"
         },
         {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": null
+          "label": "個人網站",
+          "icon": "globe",
+          "href": "https://guiblogs.com/"
         }
       ]
     },
@@ -165,27 +125,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -199,27 +159,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -233,27 +193,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -267,27 +227,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -301,27 +261,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -335,27 +295,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -369,27 +329,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -403,27 +363,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     },
@@ -437,27 +397,27 @@
         {
           "label": "Facebook",
           "icon": "facebook",
-          "href": null
+          "href": "https://www.facebook.com/eddiekao"
         },
         {
           "label": "Threads",
           "icon": "threads",
-          "href": null
+          "href": "https://www.threads.com/@kaochenlong"
         },
         {
           "label": "LinkedIn",
           "icon": "linkedin",
-          "href": null
+          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": null
+          "href": "https://www.instagram.com/kaochenlong/"
         },
         {
           "label": "X",
           "icon": "twitter-x",
-          "href": null
+          "href": "https://x.com/eddiekao"
         }
       ]
     }
