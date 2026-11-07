@@ -61,7 +61,7 @@
 陳正瑋（艦長）`chen-cheng-wei`、陳欽章 `casper-chen`、Fngi 徐方繹 `fngi`，依 Notion 資料建立並排入時段
 （D1 14:25 F、D2 11:50 A2、D2 13:30 M＋F 同步）。廖力寬（Damon）排入 D2 13:30 A2。
 
-- 三位都還沒有照片（Notion 照片欄是空的），卡片與抽屜先只顯示淡底色。
+- 陳欽章還沒有照片（Notion 照片欄是空的），卡片與抽屜先只顯示淡底色。陳正瑋、徐方繹的照片已於 2026-11-07 補上。
 - 截圖上被截斷、沒辦法確定的連結，先不放：
   - 陳正瑋 FB：`facebook.com/are…aptain`
   - 陳欽章 FB／X：`facebook.com/cas…77chen`、`x.com/cas…77chen`

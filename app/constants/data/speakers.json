@@ -676,6 +676,7 @@
       },
       "tag": "Speaker",
       "skills": ["AI", "DevOps"],
+      "photo": "/speakers/photos/chen-cheng-wei.webp",
       "show_on_home": false
     },
     {
@@ -702,6 +703,7 @@
       },
       "tag": "Speaker",
       "skills": ["AI", "Frontend", "Backend", "Security"],
+      "photo": "/speakers/photos/fngi.webp",
       "show_on_home": false
     }
   ]
