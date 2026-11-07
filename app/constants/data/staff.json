@@ -1,0 +1,465 @@
+{
+  "is_placeholder": true,
+  "plate": {
+    "code": "PL. VI",
+    "number": "II.",
+    "label": "PARTNER"
+  },
+  "corner_left": {
+    "label": "CODEX EMERGENCE",
+    "note": "vol. V · plate VI"
+  },
+  "corner_right": {
+    "label": "N 25.04° · E 121.56°",
+    "note": "simulation · live"
+  },
+  "heading_lines": [
+    "The people behind",
+    "the fieldwork."
+  ],
+  "subtitle": "一同探索的幕後夥伴",
+  "items": [
+    {
+      "id": "staff-01",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-02",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-03",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-04",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-05",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-06",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-07",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-08",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-09",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-10",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-11",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-12",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    },
+    {
+      "id": "staff-13",
+      "spec": "SPEC.01",
+      "name": "高見龍",
+      "role": "掃地兼敲鐘",
+      "photo": "/figma/staff/portrait-placeholder.png",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": null
+        },
+        {
+          "label": "Threads",
+          "icon": "threads",
+          "href": null
+        },
+        {
+          "label": "LinkedIn",
+          "icon": "linkedin",
+          "href": null
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": null
+        },
+        {
+          "label": "X",
+          "icon": "twitter-x",
+          "href": null
+        }
+      ]
+    }
+  ]
+}

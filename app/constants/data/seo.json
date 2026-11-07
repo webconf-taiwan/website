@@ -74,9 +74,10 @@
       "noindex_reason": "點雲效果示範頁，講者文案仍是佔位"
     },
     "/staff": {
-      "title": "主辦團隊（建置中）",
+      "title": "主辦團隊",
+      "description": "認識 WebConf Taiwan 2026 一同探索的幕後夥伴與主辦團隊。",
       "noindex": true,
-      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+      "noindex_reason": "目前為 Figma 示意名單，正式成員資料確認後再開放收錄"
     },
     "/history": {
       "title": "歷屆回顧（建置中）",

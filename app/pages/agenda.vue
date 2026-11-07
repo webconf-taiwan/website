@@ -92,16 +92,15 @@ const matches = session => !selected.value.length || session.skills?.some(skill 
 // 桌機一列三格並排，捲到整列。上方要扣掉 header 與手機版黏住的切換列
 // （面板開著時連面板一起扣，不然捲到的格子會被面板蓋住）。
 const isDesktop = () => window.matchMedia('(min-width: 1024px)').matches
-// immediate：換天時用。內容整個換掉了，從舊位置慢慢捲過去沒意義，
-// 而且進場動畫要等定位後才知道哪些格子在畫面內。
+// 回傳 scrollToTarget 的 { shift, duration }（換天時拿來安排進場動畫），找不到目標回 null。
 function scrollToFirstMatch ({ immediate = false } = {}) {
-  if (!selected.value.length) return
+  if (!selected.value.length) return null
   const active = days.find(d => d.id === day.value)
   const first = active?.slots.flatMap(slot => slot.cells || []).find(cell => cell.type === 'session' && matches(cell.session))
   const cellEl = first && scheduleRef.value?.querySelector(`[data-session-id="${first.session.id}"]`)
-  if (!cellEl) return
+  if (!cellEl) return null
   const section = cellEl.closest('section')
-  scrollToTarget(isDesktop() || cellEl === section.querySelector('[data-cell]') ? section : cellEl, { immediate })
+  return scrollToTarget(isDesktop() || cellEl === section.querySelector('[data-cell]') ? section : cellEl, { immediate })
 }
 // 沒篩選時換天：回到這天的開頭。
 // 桌機停在大標「Sessions, across two days.」整個露出在導覽列下方（不能被 header 切一半）；
@@ -109,10 +108,11 @@ function scrollToFirstMatch ({ immediate = false } = {}) {
 function scrollToDayStart ({ immediate = false } = {}) {
   if (isDesktop()) return scrollToTarget(introRef.value, { immediate })
   const first = [...(scheduleRef.value?.querySelectorAll('section') || [])].find(el => el.offsetParent)
-  if (first) scrollToTarget(first, { immediate })
+  return first ? scrollToTarget(first, { immediate }) : null
 }
+// 回傳 { shift: 實際要捲的距離（已夾在可捲範圍內）, duration: 秒 }
 function scrollToTarget (target, { immediate = false, extra } = {}) {
-  if (!target) return
+  if (!target) return null
   let offset = document.querySelector('header')?.getBoundingClientRect().height || 0
   if (!isDesktop() && controlsRef.value) {
     // 黏住之後的位置：sticky top + 切換列高度（面板浮在列下方，-mt-1）
@@ -131,6 +131,8 @@ function scrollToTarget (target, { immediate = false, extra } = {}) {
   const top = window.scrollY + target.getBoundingClientRect().top - offset
   if (lenis) lenis.scrollTo(top, { duration, immediate: reduced, force: true })
   else window.scrollTo({ top, behavior: reduced ? 'instant' : 'smooth' })
+  const maxTop = document.documentElement.scrollHeight - window.innerHeight
+  return { shift: Math.min(Math.max(top, 0), maxTop) - window.scrollY, duration: reduced ? 0 : duration }
 }
 watch(selected, () => scrollToFirstMatch())
 
@@ -163,12 +165,14 @@ const { drawNow } = useDrawIn(scheduleRef)
 // 換天：另一天原本是 display:none，補播一次進場並讓 ScrollTrigger 重新量測
 watch(day, async () => {
   await nextTick()
-  // 先定位再播畫面內的進場：有篩選跳到這天第一個符合的場次，沒篩選回到這天開頭
-  if (selected.value.length) scrollToFirstMatch({ immediate: true })
-  else scrollToDayStart({ immediate: true })
+  // 平滑捲過去：有篩選捲到這天第一個符合的場次，沒篩選回到這天開頭
+  const scroll = (selected.value.length ? scrollToFirstMatch() : null) || scrollToDayStart() || { shift: 0, duration: 0 }
+  // 進場只播「捲完時」畫面內的那些（shift 換算成終點的視窗），其餘直接定在最終狀態，
+  // 捲動途中經過的格子才不會是空的；動畫在捲到七成時開始，跟落點接起來。
   // 只播畫面內的：手機版是單欄長表，捲到中段時若照 DOM 順序錯開，畫面上的格子要等好幾秒
-  fadeInNow(scheduleRef.value, { step: 0.06, onlyInView: true })
-  drawNow(scheduleRef.value, { onlyInView: true })
+  const inView = { onlyInView: true, shift: scroll.shift, delay: scroll.duration * 0.7 }
+  fadeInNow(scheduleRef.value, { step: 0.06, ...inView })
+  drawNow(scheduleRef.value, inView)
   useNuxtApp().$ScrollTrigger?.refresh()
 })
 </script>
@@ -216,7 +220,10 @@ watch(day, async () => {
            底色鋪滿整個視窗寬（-mx-5 px-5），議程捲過去時才不會從兩側露出來。
            z-5：要蓋過議程內容（最高 z-1），但得低於 header 的手機選單（z-25），
            同層級時它在 DOM 後面會反過來壓在選單上。 -->
-      <div ref="controlsRef" class="sticky top-[52px] z-5 -mx-5 bg-bg-mid/70 px-5 py-2 backdrop-blur-[8px] lg:hidden">
+      <div ref="controlsRef" class="sticky top-[52px] z-5 -mx-5 px-5 py-2 lg:hidden">
+        <!-- 底色與模糊放在獨立的一層，不直接加在 sticky 列上：父層有 backdrop-filter 時，
+             裡面篩選面板的 backdrop-blur 只能糊到父層自己，糊不到後面的議程。 -->
+        <div class="pointer-events-none absolute inset-0 -z-10 bg-bg-mid/70 backdrop-blur-[8px]" aria-hidden="true" />
         <div data-fade="in" class="flex gap-2">
           <AgendaDayTabs v-model="day" :days="days" class="flex-1" />
           <button

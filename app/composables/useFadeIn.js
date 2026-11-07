@@ -40,13 +40,15 @@ const DEFAULTS = {
 }
 
 // 把元素分成「看得到且在視窗內」與其他（display:none 或在視窗外）
-export function splitByViewport (els) {
+// shift：接下來頁面要往下捲多少 px（往上是負的），用捲動「結束時」的視窗來判斷
+export function splitByViewport (els, shift = 0) {
   const vh = window.innerHeight
   const inView = []
   const rest = []
   els.forEach((el) => {
     const r = el.getBoundingClientRect()
-    const visible = el.offsetParent !== null && r.bottom > 0 && r.top < vh
+    const top = r.top - shift
+    const visible = el.offsetParent !== null && top + r.height > 0 && top < vh
     ;(visible ? inView : rest).push(el)
   })
   return [inView, rest]
@@ -137,7 +139,7 @@ export function useFadeIn (rootRef, autoOpts = {}) {
     // 區塊很長時（例如手機版議程），stagger 依 DOM 順序排，捲到中段時畫面上那幾個
     // 要等前面幾十個播完才輪到，看起來像內容消失了好幾秒。
     if (o.onlyInView) {
-      const [inView, rest] = splitByViewport(els)
+      const [inView, rest] = splitByViewport(els, o.shift)
       if (rest.length) $gsap.set(rest, { opacity: 1, y: 0, overwrite: true })
       els = inView
       if (!els.length) return
@@ -150,6 +152,7 @@ export function useFadeIn (rootRef, autoOpts = {}) {
         duration: o.duration,
         ease: 'power2.out',
         stagger: o.step,
+        delay: o.delay || 0,
         overwrite: true,
       })
   }

@@ -33,6 +33,7 @@ export function useDrawIn (rootRef, autoOpts = {}) {
       duration: o.duration,
       ease: 'power3.out',
       stagger: o.step,
+      delay: o.delay || 0,
       overwrite: true,
     })
   }
@@ -79,7 +80,7 @@ export function useDrawIn (rootRef, autoOpts = {}) {
     const o = { ...DEFAULTS, ...opts }
     // onlyInView：同 useFadeIn —— 畫面外的線直接畫滿，只錯開畫面內的
     if (o.onlyInView) {
-      const [inView, rest] = splitByViewport(els)
+      const [inView, rest] = splitByViewport(els, o.shift)
       if (rest.length) $gsap.set(rest, { scaleX: 1, scaleY: 1, overwrite: true })
       els = inView
       if (!els.length) return
