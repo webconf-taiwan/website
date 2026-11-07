@@ -53,7 +53,7 @@ useSchemaOrg([
     <template #hero-actions>
       <AtomButton
         data-fade="in"
-        class="venue-map-link mt-6 h-10 lg:mt-8"
+        class="venue-map-link mt-6 h-10 shrink-0 lg:mt-8"
         :href="venue.map_link.href"
         :target="venue.map_link.target"
         :rel="linkRel(venue.map_link.target)"
