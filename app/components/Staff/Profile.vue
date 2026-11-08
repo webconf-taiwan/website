@@ -6,17 +6,18 @@ defineProps({
 
 <template>
   <article class="staff-profile">
-    <div class="staff-portrait">
+    <div data-fade="in" class="staff-portrait">
       <img :src="data.photo" :alt="data.name" width="401" height="572" loading="lazy" decoding="async">
       <p class="staff-spec text-meta text-pre-800/[62%]">{{ data.spec }}</p>
     </div>
 
     <div class="staff-details">
-      <div class="flex flex-col gap-2">
+      <div data-fade="in" class="flex flex-col gap-2">
         <h3 class="font-zh-serif text-fs-zh-h5 font-medium">{{ data.name }}</h3>
         <p class="text-body-sm text-pre-800/[62%]">{{ data.role }}</p>
       </div>
-      <ul class="staff-socials" :aria-label="`${data.name}的社群帳號`">
+      <!-- globe 借自 bootstrap、圖形畫滿整個畫布，其他是設計稿的線框 icon（圖形約佔 24 裡的 17）：內縮 3px 讓大小一致，同講者抽屜 -->
+      <ul v-if="data.socials?.length" data-fade="in" class="staff-socials" :aria-label="`${data.name}的社群帳號`">
         <li v-for="social in data.socials" :key="social.icon">
           <a
             v-if="social.href"
@@ -26,11 +27,11 @@ defineProps({
             rel="noopener noreferrer"
             class="staff-social-link"
           >
-            <AtomIcon :name="social.icon" />
+            <AtomIcon :name="social.icon" :class="{ 'p-[3px]': social.icon === 'globe' }" />
           </a>
           <!-- 設計稿的示意帳號沒有網址；保留圖示，不建立假的連結。 -->
           <span v-else class="staff-social-placeholder" :aria-label="`${social.label} 網址待提供`" role="img">
-            <AtomIcon :name="social.icon" />
+            <AtomIcon :name="social.icon" :class="{ 'p-[3px]': social.icon === 'globe' }" />
           </span>
         </li>
       </ul>

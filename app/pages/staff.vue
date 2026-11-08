@@ -3,6 +3,12 @@ import staff from '~/constants/data/staff.json'
 
 definePageMeta({ layout: false })
 usePageSeo('/staff')
+
+// 進場同講者頁：標題區錯開 0.1 秒，名單錯開 0.04 秒（每張卡片裡照片、名字、社群各算一個）
+const introRef = ref(null)
+const listRef = ref(null)
+useFadeIn(introRef, { step: 0.1 })
+useFadeIn(listRef, { step: 0.04 })
 </script>
 
 <template>
@@ -19,14 +25,14 @@ usePageSeo('/staff')
         :hero-density="0.6"
       >
         <section class="staff-content" aria-labelledby="staff-heading">
-          <div class="staff-heading flex flex-col gap-2 lg:gap-4">
-            <h2 id="staff-heading" class="text-en-h1 italic">
+          <div ref="introRef" class="staff-heading flex flex-col gap-2 lg:gap-4">
+            <h2 id="staff-heading" data-fade="in" class="text-en-h1 italic">
               <span v-for="line in staff.heading_lines" :key="line" class="staff-heading-line">{{ line }}{{ ' ' }}</span>
             </h2>
-            <p class="text-zh-h4">{{ staff.subtitle }}</p>
+            <p data-fade="in" class="text-zh-h4">{{ staff.subtitle }}</p>
           </div>
 
-          <ul class="staff-grid" aria-label="主辦團隊成員">
+          <ul ref="listRef" class="staff-grid" aria-label="主辦團隊成員">
             <li v-for="member in staff.items" :key="member.id">
               <StaffProfile :data="member" />
             </li>
@@ -99,18 +105,8 @@ usePageSeo('/staff')
     border-top: 1px solid rgb(239 230 210 / 35%);
     pointer-events: none;
   }
-  .staff-content { margin: 0; padding-top: 32px; background: #0a0a0c; }
-  /* 側欄粒子靠近名單時，讓文字區維持清楚，左緣以漸層銜接。 */
-  .staff-content::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 100%;
-    width: 40px;
-    background: linear-gradient(to right, transparent, #0a0a0c);
-    pointer-events: none;
-  }
+  /* 同講者頁：名單區不鋪底色，後面的粒子場透出來 */
+  .staff-content { margin: 0; padding-top: 32px; }
   .staff-heading { margin-bottom: 48px; }
   .staff-heading-line { display: block; }
   .staff-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px 24px; }
