@@ -664,6 +664,47 @@
       "skills": ["團隊管理"],
       "photo": "/speakers/photos/sally-hsieh.webp",
       "show_on_home": false
+    },
+    {
+      "id": "chen-cheng-wei",
+      "name": "陳正瑋（艦長）",
+      "org": "Athemaster 炬識科技",
+      "role": "Technical Consultant",
+      "bio": "表面上是只會在臉書釋放夫妻閃光文的愛妻家，私底下其實是默默關注新知的技術愛好者。平時熱衷關注 DevOps 相關新知與技術，期盼未來人人都可以像畢凱艦長一樣用嘴巴叫所有主機做事！工作之餘參與技術社群，現任 DevOps Taiwan Community 志工；曾擔任 GitLab Hero、《Effective DevOps》繁體中文版譯者，在第 11 屆 iT 邦幫忙鐵人賽中以《和艦長一起 30 天玩轉 GitLab》系列文獲得 DevOps 組冠軍，並出版同名書籍。\n\n個人部落格 https://chengweichen.com\n\n重新認識 DevOps https://effectivedevops.tw",
+      "links": {
+        "website": "https://chengweichen.com/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "DevOps"],
+      "photo": "/speakers/photos/chen-cheng-wei.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "casper-chen",
+      "name": "陳欽章",
+      "org": "dentall台灣牙e通",
+      "role": "創辦人暨執行長",
+      "bio": "土木系畢業的牙醫師創業家，dentall台灣牙e通創辦人暨執行長，跨領域背景後成為創業的養分，以「科技改善全人類口腔健康」為使命。dentall目前是全台最大的牙科資訊整合平台，涵蓋教育訓練、醫材採購，以及台灣唯一的全雲端牙科診所管理系統，也是第一個通過2023新版ISO資安認證的醫療系統。近年投入AI應用，生成式AI治療計畫書支援六國語言，已有全球30國超過千位牙醫師使用；牙科X光AI輔助診斷則與國內外大學及保險公司合作，推動次世代AI牙科保單。",
+      "links": {
+        "instagram": "https://instagram.com/cccasper77/"
+      },
+      "tag": "Speaker",
+      "skills": ["產品思維", "產業應用"],
+      "show_on_home": false
+    },
+    {
+      "id": "fngi",
+      "name": "Fngi 徐方繹",
+      "org": "AIDEFEND Labs (PBC)",
+      "role": "AI Security Researcher",
+      "bio": "徐方繹（Fngi），AIDEFEND Labs (PBC) AI 資安研究員、GDG Taipei Organizer，DevFest Taipei 2024 與 2026 總召。\n\n前十幾年在寫程式和做資安之間來回：全端出身，後來進了受監理的金融體系，當過資安長，簽過那種出事要負責的文件。這兩年轉做 AI 資安，日常是紅隊測試大型語言模型、拆 AI Agent 的權限邊界、幫企業設計護欄，也在五倍學院教企業內訓。\n\n他相信 AI 的資安問題不是「模型不夠聽話」，而是我們把太多決定權交給了一個分不清資料和指令的東西。所以他的題目通常長這樣：先在台上把它打壞，再告訴你關卡該放在哪裡。\n\n講過 RSAC 2026、COSCUP x UbuCon Asia 2026、INFOSEC Taiwan 2026。",
+      "links": {
+        "instagram": "https://instagram.com/aid3fend/"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "Frontend", "Backend", "Security"],
+      "photo": "/speakers/photos/fngi.webp",
+      "show_on_home": false
     }
   ]
 }

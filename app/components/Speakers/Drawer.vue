@@ -185,7 +185,7 @@ async function swapTo (id) {
 watch(peers, (ids) => {
   for (const id of ids) {
     const p = byId.value.get(id)
-    if (p) new Image().src = p.photo || p.portrait
+    if (p?.photo || p?.portrait) new Image().src = p.photo || p.portrait
   }
 })
 
@@ -272,7 +272,7 @@ onBeforeUnmount(() => {
             <div class="mt-5 flex flex-col lg:flex-row lg:gap-10">
               <div class="flex shrink-0 justify-between lg:flex-col lg:items-center lg:justify-start">
                 <div data-reveal data-swap class="size-[200px] overflow-hidden bg-pre-800/5">
-                  <img :src="speaker.photo || speaker.portrait" :alt="speaker.name" width="1000" height="1000" class="block size-full object-cover">
+                  <img v-if="speaker.photo || speaker.portrait" :src="speaker.photo || speaker.portrait" :alt="speaker.name" width="1000" height="1000" class="block size-full object-cover">
                 </div>
 
                 <!-- 對談：切換同一場的講者。桌機在照片下面 ← 1/2 →；窄視窗直排在照片右邊 -->
