@@ -88,6 +88,17 @@ usePageSeo('/staff')
 }
 
 @media (min-width: 1024px) {
+  .staff-page :deep([data-plate-body]) { position: relative; }
+  .staff-page :deep([data-plate-body])::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    top: 60px;
+    left: 60px;
+    right: 60px;
+    border-top: 1px solid rgb(239 230 210 / 35%);
+    pointer-events: none;
+  }
   .staff-content { margin: 0; padding-top: 32px; background: #0a0a0c; }
   /* 側欄粒子靠近名單時，讓文字區維持清楚，左緣以漸層銜接。 */
   .staff-content::before {
