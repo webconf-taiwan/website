@@ -52,7 +52,6 @@
 | 時段 | 場館 | 排程表寫法 |
 | --- | --- | --- |
 | D1 14:25 - 15:10 | M | Line |
-| D2 09:00 - 09:45 | A2 | Bastiane |
 | D2 10:00 - 10:45 | M | （空白） |
 | D2 16:15 - 17:00 | M | Ruddy |
 
@@ -61,7 +60,7 @@
 陳正瑋（艦長）`chen-cheng-wei`、陳欽章 `casper-chen`、Fngi 徐方繹 `fngi`，依 Notion 資料建立並排入時段
 （D1 14:25 F、D2 11:50 A2、D2 13:30 M＋F 同步）。廖力寬（Damon）排入 D2 13:30 A2。
 
-- 陳欽章還沒有照片（Notion 照片欄是空的），卡片與抽屜先只顯示淡底色。陳正瑋、徐方繹的照片已於 2026-11-07 補上。
+- 陳正瑋、徐方繹的照片已於 2026-11-07 補上，陳欽章的照片已於 2026-11-09 補上。
 - 截圖上被截斷、沒辦法確定的連結，先不放：
   - 陳正瑋 FB：`facebook.com/are…aptain`
   - 陳欽章 FB／X：`facebook.com/cas…77chen`、`x.com/cas…77chen`
@@ -69,7 +68,14 @@
 - 徐方繹介紹最後多一個「T」，判斷是誤植，已拿掉。
 - 名字寫法：排程表寫「Casper Chen」，Notion 標題是「陳欽章」，目前用 Notion 的。
 
-## 7. 其他
+## 7. 2026-11-09 新增講者 Bastiane Huang
+
+`bastiane-huang`，依 Notion 資料建立，排入 D2 09:00 A2（`agenda-46`）。
+
+- Threads 連結在截圖上被截斷（`threads.com/@ba…_huang`），先不放，目前沒有任何社群連結。
+- Notion「講者抬頭」寫「Building What's Next in AI, Products & Human Collaboration・AI Product Leader & Author」，照其他人的慣例拆成 org／role，前半段其實不是單位名稱，要不要改寫待確認。
+
+## 8. 其他
 
 - Gordon Chang 的抬頭：資料是「Appier・產品副總」，2026-11-05 的排程表寫「Appier, Product Director」，目前沒改。
 

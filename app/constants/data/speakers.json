@@ -690,6 +690,7 @@
       },
       "tag": "Speaker",
       "skills": ["產品思維", "產業應用"],
+      "photo": "/speakers/photos/casper-chen.webp",
       "show_on_home": false
     },
     {
@@ -704,6 +705,18 @@
       "tag": "Speaker",
       "skills": ["AI", "Frontend", "Backend", "Security"],
       "photo": "/speakers/photos/fngi.webp",
+      "show_on_home": false
+    },
+    {
+      "id": "bastiane-huang",
+      "name": "Bastiane Huang",
+      "org": "Building What's Next in AI, Products & Human Collaboration",
+      "role": "AI Product Leader & Author",
+      "bio": "Bastiane Huang是矽谷 AI 產品長、作家，擁有超過 15 年科技與產品相關經驗。曾任職 Amazon、Instabase、Landing AI等公司，橫跨大型科技企業與矽谷新創，長期投入 AI 產品策略、產品開發及跨職能團隊合作。\n\n畢業於哈佛商學院 MBA、國立臺灣大學資訊管理學系。曾為 VentureBeat 等科技媒體撰稿，著有《深度生活》。近期特別關注 AI 如何重新定義產品開發、團隊協作與人類的判斷力，以及如何運用新技術創造真正的價值。",
+      "links": {},
+      "tag": "Speaker",
+      "skills": ["AI", "軟體設計", "設計實務", "產品思維", "產業應用", "團隊管理"],
+      "photo": "/speakers/photos/bastiane-huang.webp",
       "show_on_home": false
     }
   ]
