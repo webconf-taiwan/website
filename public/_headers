@@ -1,0 +1,29 @@
+# Cloudflare Workers Static Assets 的回應 header（只作用在 public/ 底下的靜態檔，SSR 頁面不受影響）。
+# Nitro build 時會在這個檔案後面自動附加它自己的 fallback 規則，不會覆蓋這裡。
+#
+# ⚠️ 這些檔名沒有 hash，快取 7 天代表「同名換圖」最多要 7 天訪客才會看到新版。
+#    要立刻生效就改檔名（例如 speaker-01.webp → speaker-01-v2.webp）並更新引用的 JSON。
+# /_nuxt/* 與 /_fonts/* 檔名帶 hash，Nitro 已給 immutable，不用寫在這裡。
+
+/speakers/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/home-deco/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/figma/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/source_images/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/sponsors/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/videos/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/audio/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/people/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/particle-kit/*
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/og.jpg
+  Cache-Control: public, max-age=604800, stale-while-revalidate=86400
+/mediapipe/*
+  Cache-Control: public, max-age=2592000

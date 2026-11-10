@@ -1,11 +1,14 @@
 <script setup>
 // 「標本頁」的頁面外殼：共用首頁風格的主視覺與原有左欄粒子場 + 兩欄 body。
-// 議程頁與贊助頁共用；頁面只負責塞內容。
+// 議程頁、贊助頁與講者頁共用；頁面只負責塞內容。
 //
 // Slots
 //   hero-actions —— 主視覺副標下方（例如贊助頁的「成為夥伴 →」CTA）
 //   between      —— 主視覺與兩欄 body 之間的區塊（贊助頁的照片牆）
+//   rail         —— 左欄卷號下方（桌機才顯示；講者頁的標籤篩選）
 //   default      —— 右側內容
+//   after        —— 兩欄 body 之後的整寬區塊（場域頁的平面圖）。包一層 [data-plate-outro]，
+//                   桌機粒子會從側欄菌落散回自由場鋪在這一區（見 AgendaParticleField 的 outroMix）
 //
 const props = defineProps({
   // { code, number, label } —— 給左欄 CommonPlate 與 hero 的 code
@@ -20,6 +23,8 @@ const props = defineProps({
   railStart: { type: String, default: 'hero' },
   ariaLabel: { type: String, default: '' },
   galleryConfig: { type: Object, default: null },
+  // 沒有 WebGPU 時 between 區要不要放贊助頁那張花形靜態圖；頁面自己有備援圖就關掉。
+  galleryFallback: { type: Boolean, default: true },
 })
 
 const { isDesktop, viewportReady } = useViewportMode()
@@ -104,14 +109,16 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
 
     <div v-if="$slots.between" class="relative">
       <ClientOnly>
-        <CommonPlateField v-if="viewportReady && isDesktop && desktopFallback && galleryConfig" variant="gallery" media-only />
+        <CommonPlateField v-if="viewportReady && isDesktop && desktopFallback && galleryConfig && galleryFallback" variant="gallery" media-only />
       </ClientOnly>
-      <slot name="between" />
+      <slot name="between" :desktop-mode="desktopMode" />
     </div>
 
     <section class="plate-page-body-section relative z-10 pb-[120px] lg:pb-0">
       <div data-plate-body class="mx-auto flex max-w-[1440px] flex-col lg:flex-row lg:justify-center">
-        <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[484px] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+        <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[clamp(400px,33.61vw,484px)] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+          <!-- 左欄寬：1440 時是設計稿的 484，窄一點的桌機跟著縮（33.61vw），
+               最窄 400 = 左內距 60 + 篩選面板 300 + 跟右欄留 40，不然中間會空一大塊。 -->
           <!-- 沒有 WebGPU（或減少動態、引擎失敗）時的側欄：跟首頁 PL.IV 同一張菌落圖、
                同樣的寬度與位置（見 Home/VenueFaq.vue 的 HomeSideDeco）。貼齊左緣，圖檔左邊本來就切掉半顆。
                進場與視差同首頁（useDecoReveal）；側欄是 sticky，視差的捲動範圍改看整段 body。 -->
@@ -129,14 +136,20 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
             </div>
           </ClientOnly>
           <div class="relative z-10 flex h-14 flex-col justify-start [text-shadow:0_0_12px_#0a0a0c] lg:h-full lg:min-h-0 lg:justify-between">
-            <CommonPlate
-              data-fade="in"
-              :data="plate"
-              :divider="false"
-              class="plate-page-plate !flex-row !items-baseline !gap-x-4 !py-0 lg:!flex-col lg:!gap-x-0"
-            />
+            <div class="flex min-h-0 flex-col">
+              <CommonPlate
+                data-fade="in"
+                :data="plate"
+                :divider="false"
+                class="plate-page-plate !flex-row !items-baseline !gap-x-4 !py-0 lg:!flex-col lg:!gap-x-0"
+              />
+              <!-- 卷號下方的側欄內容（桌機才有，例如講者頁的標籤篩選），跟著側欄一起 sticky -->
+              <div v-if="$slots.rail" class="hidden lg:mt-[60px] lg:block">
+                <slot name="rail" />
+              </div>
+            </div>
 
-            <div data-plate-rail-note class="hidden shrink-0 flex-col gap-1 lg:flex">
+            <div v-if="noteLines.length" data-plate-rail-note class="hidden shrink-0 flex-col gap-1 lg:flex">
               <p data-fade="in" class="font-mono text-meta leading-[14px] text-pre-800/80">{{ noteLines[0] }}</p>
               <p data-fade="in" class="text-en-caption italic text-pre-800">{{ noteLines[1] }}</p>
             </div>
@@ -148,6 +161,10 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
         </div>
       </div>
     </section>
+
+    <div v-if="$slots.after" data-plate-outro class="relative z-10">
+      <slot name="after" :desktop-mode="desktopMode" />
+    </div>
   </div>
 </template>
 

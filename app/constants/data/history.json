@@ -1,0 +1,117 @@
+{
+  "plate": {
+    "code": "PL. VII",
+    "number": "II.",
+    "label": "HISTORY"
+  },
+  "corner_left": {
+    "label": "CODEX EMERGENCE",
+    "note": "vol. V · plate VII"
+  },
+  "corner_right": {
+    "label": "N 25.04° · E 121.56°",
+    "note": "simulation · live"
+  },
+  "heading_lines": [
+    "A journey",
+    "through the years."
+  ],
+  "subtitle": "歷年精彩篇章",
+  "items": [
+    {
+      "year": 2025,
+      "volume": "Vol. IV",
+      "href": "https://2025.webconf.tw/",
+      "image": "/figma/history/2025.webp",
+      "description": "以「連結」為主題，聚焦在人與人、人與 AI及網路之間的互動。回顧網頁技術的關鍵演進，並探討 AI 與機器學習如何最佳化體驗，行動最佳化與響應式設計的重要性，以及最新產業趨勢。"
+    },
+    {
+      "year": 2024,
+      "volume": "Vol. III",
+      "href": "https://2024.webconf.tw/",
+      "image": "/figma/history/2024.webp",
+      "description": "本屆科技年會將探討 UI/UX 設計的最新趨勢，包括使用者介面設計、使用者體驗最佳化、人機互動設計等議題，以深入探討如何打造出引人入勝的使用者體驗，提升產品的價值和競爭力。"
+    },
+    {
+      "year": 2023,
+      "volume": "Vol. II",
+      "href": "https://2023.webconf.tw/",
+      "image": "/figma/history/2023.webp",
+      "description": "重啟十年前的WebConf 研討會中，帶領與會者穿越時間，探索網路的過去、現在和未來。過去十年間，網路發生了巨大的變化，我們將重新審視網路的起源以及它在這些年裡的演進。"
+    },
+    {
+      "year": 2013,
+      "volume": "Vol. I",
+      "href": "https://2013.webconf.tw/",
+      "image": "/figma/history/2013.webp",
+      "description": "聚焦於網站開發的全方位議題，從前端設計、介面體驗，到後端架構、資料安全與法律規範，全面探索網站建置與經營的多重面向。透過業界講師的實務分享，深入剖析技術與設計的整合應用，帶領與會者掌握 Web 開發的最新趨勢與實踐方法，打造兼具創意與效能的網頁體驗。"
+    }
+  ],
+  "recap": {
+    "year": 2025,
+    "poster": "/figma/history/recap.webp",
+    "href": "https://www.youtube.com/watch?v=22TvS7bjeo0",
+    "embed_url": "https://www.youtube-nocookie.com/embed/22TvS7bjeo0?autoplay=1&rel=0"
+  },
+  "gallery": {
+    "heading_lines": [
+      "The moments",
+      "that connect us."
+    ],
+    "subtitle": "歷年活動花絮",
+    "active_id": "community",
+    "active_scale": 1,
+    "mobile_order": [
+      "audience",
+      "community",
+      "venue"
+    ],
+    "cta": {
+      "label": "前往回顧",
+      "href": "https://gallery.webconf.tw/",
+      "target": "_blank"
+    },
+    "photos": [
+      {
+        "id": "audience",
+        "src": "/figma/history/audience.webp",
+        "alt": "WebConf 會眾參與現場提問",
+        "x": 27.850035416666666,
+        "y": 74.30555555555556,
+        "width": 350,
+        "height": 240,
+        "rotation": 3
+      },
+      {
+        "id": "badge",
+        "src": "/figma/history/badge.webp",
+        "alt": "WebConf 參與者展示活動識別證",
+        "x": 83.68055555555556,
+        "y": 75.9714326388889,
+        "width": 350,
+        "height": 240,
+        "rotation": -2
+      },
+      {
+        "id": "venue",
+        "src": "/figma/history/venue.webp",
+        "alt": "WebConf 議程現場",
+        "x": 73.40276041666666,
+        "y": 47.291666666666664,
+        "width": 400,
+        "height": 273,
+        "rotation": 3
+      },
+      {
+        "id": "community",
+        "src": "/figma/history/community.webp",
+        "alt": "WebConf 活動大合照",
+        "x": 49.375,
+        "y": 61.52777777777778,
+        "width": 500,
+        "height": 340,
+        "rotation": 0
+      }
+    ]
+  }
+}

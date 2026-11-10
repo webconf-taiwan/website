@@ -116,7 +116,7 @@ await engine.readParticles();      // GPU buffer 讀回 [{x,y,vx,vy,s}] — SVG 
 engine.pause(bool); engine.destroy();
 ```
 
-檔案載入順序（無 build step，直接 `<script>`）：
+檔案載入順序（無 build step，直接 `<script>`；正式 build 只會在 `.output/public/particle-kit/` 那份上用 esbuild 壓縮，原始碼不動，見 `nuxt.config.ts` 的 `nitro:init` hook）：
 
 ```
 particle-life-seeds.js → particle-life-rules.js → particle-life.js

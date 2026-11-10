@@ -48,15 +48,7 @@ const moreLink = computed(() => props.data?.more_link || {})
 const LEFT = computed(() => SPEAKERS.value.slice(0, 5))
 const RIGHT = computed(() => SPEAKERS.value.slice(5))
 
-// grid 列位置要寫成完整 class 字面量 —— Tailwind 是掃原始碼字串的，
-// `lg:row-start-${i}` 這種拼接它看不到，產不出 CSS。
-const ROW = ['lg:row-start-1', 'lg:row-start-2', 'lg:row-start-3', 'lg:row-start-4', 'lg:row-start-5']
-
-// 名字中英混排：中文用 Noto Serif TC Bold（不斜），英文用 Inria Serif Bold Italic。
-const CJK_RUN = /([㐀-鿿豈-﫿]+)/
-function nameRuns (name) {
-  return name.split(CJK_RUN).filter(Boolean).map(t => ({ t, zh: CJK_RUN.test(t) }))
-}
+// 名字中英混排的切法見 utils/nameRuns.js
 
 // --- 換人的編排 ------------------------------------------------------------
 // 設計要的順序（點下另一位時）：
@@ -503,14 +495,18 @@ onBeforeUnmount(() => {
     <div
       class="relative z-2 mx-auto mt-10 hidden max-w-[1320px] grid-cols-1 gap-y-8 lg:mt-0 lg:grid lg:min-h-screen lg:grid-cols-[1fr_264px_1fr] lg:content-center lg:gap-x-6 lg:gap-y-8 xl:grid-cols-[1fr_300px_1fr] xl:gap-x-10 min-[1440px]:mt-0 min-[1440px]:min-h-[max(100vh,800px)] min-[1440px]:gap-x-0"
     >
+      <!-- 左右兩欄各自一條直排、跨滿五列，不共用列高：共用的話某位多一行抬頭（吳哲宇的 extra），
+           同一列另一欄那位底下就會多空一段。justify-between 讓兩欄頭尾對齊、欄內間距一致，
+           最底那位的文字下緣仍是格線底部，「更多講者」照樣對得到。 -->
+      <div class="flex flex-col justify-between gap-y-8 lg:col-start-1 lg:row-span-5 lg:row-start-1">
       <button
         v-for="(s, i) in LEFT"
         :key="s.name"
         data-fade="in"
         type="button"
         :aria-current="current === i ? 'true' : undefined"
-        class="group flex lg:col-start-1 lg:pl-[max(0px,calc((100%_-_300px)/2))] min-[1440px]:pl-[23.5%]"
-        :class="[ROW[i], i % 2 === 0 ? 'lg:ml-5 xl:ml-10' : '']"
+        class="group flex lg:pl-[max(0px,calc((100%_-_300px)/2))] min-[1440px]:pl-[23.5%]"
+        :class="i % 2 === 0 ? 'lg:ml-5 xl:ml-10' : ''"
         @click="select(i)"
       >
         <span
@@ -537,6 +533,8 @@ onBeforeUnmount(() => {
           </span>
         </span>
       </button>
+
+      </div>
 
       <!-- 中央觀景框：只有框線，人像是背後那張 canvas。
            換人時三樣東西各自動：框線縮放（frameScale）、整組淡出入（frameFade）、
@@ -615,14 +613,15 @@ onBeforeUnmount(() => {
         </AtomButton>
       </div>
 
+      <div class="flex flex-col justify-between gap-y-8 lg:col-start-3 lg:row-span-5 lg:row-start-1">
       <button
         v-for="(s, i) in RIGHT"
         :key="s.name"
         data-fade="in"
         type="button"
         :aria-current="current === i + LEFT.length ? 'true' : undefined"
-        class="group flex lg:col-start-3 lg:pl-[max(0px,calc((100%_-_300px)/2))] min-[1440px]:pl-[25.7%]"
-        :class="[ROW[i], i % 2 === 0 ? 'lg:ml-5 xl:ml-10' : '']"
+        class="group flex lg:pl-[max(0px,calc((100%_-_300px)/2))] min-[1440px]:pl-[25.7%]"
+        :class="i % 2 === 0 ? 'lg:ml-5 xl:ml-10' : ''"
         @click="select(i + LEFT.length)"
       >
         <span
@@ -649,6 +648,7 @@ onBeforeUnmount(() => {
           </span>
         </span>
       </button>
+      </div>
     </div>
 
     <!-- 更多講者（窄視窗）。桌機那顆是名單格線裡的一格，跟著名單走。 -->

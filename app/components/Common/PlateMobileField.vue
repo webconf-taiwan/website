@@ -32,7 +32,12 @@ import { homeFieldLookFromLocation } from '~/utils/homeFieldLooks'
 //      緊的半週期 seek 贏、粒子被帶回原點。構圖跑不掉，但畫面全程在動。
 // 這三件的長註解在 Home/ParticleField.vue，改參數前先讀那邊。
 
-const props = defineProps({ plateStyle: { type: Boolean, default: false } })
+const props = defineProps({
+  plateStyle: { type: Boolean, default: false },
+  // 哪些區塊在畫面上時才跑（其餘時間 pause）。預設同首頁：hero 與票券～CoC。
+  // 場域頁平面圖那區自己掛一張，只認自己（見 Venue/FloorMap.vue）。
+  regions: { type: Array, default: null },
+})
 const { loadParticleKit } = useParticleKit()
 // 首次進站 loading 要等這個粒子場 init 完（script、WebGPU 引擎、點雲取樣）才收，見 useSiteIntro
 const { trackIntro, introDone } = useSiteIntro()
@@ -75,7 +80,7 @@ let ambientOverride = 0
 // ⚠️ 順序有意義：索引 0 是 hero、1 是 outro，下面 zoomNow / opacityNow 依索引取參數。
 // 用 IntersectionObserver 而不是 ScrollTrigger —— 這裡只要「有沒有在畫面上」這個
 // 布林值，不需要 scrub 進度，IO 是瀏覽器原生、不吃主執行緒。
-const REGIONS = ['[data-same-hero]', '[data-same-outro]']
+const REGIONS = props.regions || ['[data-same-hero]', '[data-same-outro]']
 
 // 兩個區間的取景與透明度。沿用桌機版 hero / outro 兩格的比例關係（見 Field.vue 的
 // OUTRO_ZOOM_RATIO），這樣換到 zoom 比較大的效果時兩端仍是同一個關係。

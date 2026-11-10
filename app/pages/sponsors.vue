@@ -23,7 +23,7 @@ usePageSeo('/sponsors')
     <template #hero-actions>
       <AtomButton
         data-fade="in"
-        class="mt-8 hidden h-10 lg:flex"
+        class="sponsor-hero-cta mt-6 h-10 shrink-0 lg:mt-8"
         :href="sponsors.sections[0].cta.href"
         :target="sponsors.sections[0].cta.target"
         :rel="linkRel(sponsors.sections[0].cta.target)"
@@ -83,29 +83,21 @@ usePageSeo('/sponsors')
 <style scoped>
 /* Sponsor-specific sizing keeps the reused agenda hero unchanged. */
 .sponsors-page :deep([data-plate-rail-note]) { display: none; }
-.sponsors-page :deep([data-plate-hero-mobile] h1),
-.sponsors-page :deep([data-plate-hero-desktop] [data-plate-title]),
 .sponsors-page :deep(.photo-heading h2),
 .sponsor-section h2 { font-weight: 400; letter-spacing: 0.02em; }
 .sponsors-page :deep(.text-en-caption) { font-weight: 400; }
 
 @media (max-width: 1023px) {
-  .sponsors-page :deep(.sponsor-cta) { padding-left: 20px; padding-right: 12px; }
+  /* 有 CTA 的手機 Hero 對齊 Figma；slot 的 8px gap 加上 mt-6 共留 32px。 */
+  .sponsors-page :deep([data-plate-hero-mobile] > .flex:not([data-plate-mobile-corner])) { top: 186.5px; }
+  .sponsors-page :deep(.sponsor-hero-cta) { font-weight: 500; }
+  .sponsors-page :deep(.sponsor-cta),
+  .sponsors-page :deep(.sponsor-hero-cta) { padding-left: 20px; padding-right: 12px; }
 
   .sponsor-section + .sponsor-section {
     border-top: 1px solid rgb(239 230 210 / 35%);
     padding-top: 24px;
   }
-
-  .sponsors-page :deep([data-plate-hero-mobile] > .absolute.left-1\/2) {
-    width: calc(100% - 32px);
-  }
-
-  .sponsors-page :deep([data-plate-hero-mobile] h1) {
-    font-size: clamp(56px, 17.78vw, 64px);
-  }
-
-  .sponsors-page :deep([data-plate-hero-mobile] h1 + p) { font-size: 18px; letter-spacing: 0.02em; }
 }
 
 @media (min-width: 1024px) {
@@ -128,7 +120,7 @@ usePageSeo('/sponsors')
     right: 0;
   }
   .sponsors-page :deep([data-plate-body] > aside) { padding-top: 92px; }
-  .sponsors-page :deep([data-plate-hero-desktop] [data-plate-title] + p) { letter-spacing: 0.02em; }
+  .sponsors-page :deep([data-plate-hero-desktop] [data-plate-title] > span + span) { letter-spacing: 0.02em; }
   .sponsors-page :deep([data-plate-hero-desktop] a),
   .sponsor-cta { padding-left: 20px; }
 

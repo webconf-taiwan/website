@@ -39,22 +39,23 @@ const label = computed(() => props.ariaLabel || props.title)
       <CommonPlateField v-if="viewportReady && !isDesktop" :density="density" plate-style />
     </ClientOnly>
     <!-- The design-only backing is omitted, as on the shared temporary Hero. -->
-    <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[252px] -translate-x-1/2 flex-col items-center gap-y-4">
-      <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-meta leading-[14px] text-pre-800/80">
-        <span class="w-14 shrink-0">{{ plate.code }}</span>
-        <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
-        <span class="w-[94px] shrink-0">WEBCONF.TW</span>
-        <span class="w-2 shrink-0 text-accent-1" aria-hidden="true">·</span>
-        <span class="w-9 shrink-0">2026</span>
+    <div class="absolute left-1/2 top-[222.5px] flex h-[137px] w-[calc(100%_-_32px)] -translate-x-1/2 flex-col items-center gap-y-4">
+      <!-- 設計稿 common/meta_12px（12px／120%／字距 20%），每段都是 Hug —— 不要寫死寬度，
+           0.2em 字距下固定寬會擠在一起或溢出 -->
+      <p data-fade="in" class="flex items-center gap-x-3 whitespace-nowrap text-meta text-pre-800/80">
+        <span>{{ plate.code }}</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>WEBCONF.TW</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>2026</span>
       </p>
 
       <div class="flex h-[107px] w-full flex-col items-center gap-y-2">
-        <h1 data-fade="in" class="w-full text-center font-en-serif text-fs-en-hero-m font-normal italic leading-[77px] text-pre-800">
-          {{ title }}
+        <!-- 中英文同一個 h1（「VENUE 場域介紹」），各自一個 span 排版。中文 span 開頭補一個空白讓爬蟲讀成兩個詞
+             （要用 {{ ' ' }} 插值：直接寫空白或 &#32; 都會被 Vue 的空白壓縮吃掉；block 排版下看不到） -->
+        <h1 class="flex w-full flex-col items-center gap-y-2">
+          <span data-fade="in" data-plate-title-en class="block w-full text-center font-en-serif text-fs-en-hero-m font-normal italic leading-[77px] text-pre-800">{{ title }}</span><span v-if="subtitle" data-fade="in" class="block font-zh-serif text-fs-zh-h5-m font-medium leading-[22px] text-pre-800">{{ ' ' + subtitle }}</span>
         </h1>
-        <p data-fade="in" class="font-zh-serif text-fs-zh-h5-m font-medium leading-[22px] text-pre-800">
-          {{ subtitle }}
-        </p>
         <slot />
       </div>
     </div>
@@ -77,22 +78,21 @@ const label = computed(() => props.ariaLabel || props.title)
       <CommonPlateField v-if="viewportReady && isDesktop && desktopMode === 'fallback'" media-only />
     </ClientOnly>
     <div class="relative z-10 mx-auto flex w-full max-w-[1440px] flex-col items-center justify-center pt-8 text-center">
-      <p data-fade="in" class="flex h-[14px] w-[250px] items-center gap-x-3 whitespace-nowrap font-mono text-[12px] leading-[14px] tracking-normal text-pre-800/80">
-        <span class="w-14 shrink-0">{{ plate.code }}</span>
-        <span aria-hidden="true" class="w-2 shrink-0 text-accent-1">&middot;</span>
-        <span class="w-[94px] shrink-0">WEBCONF.TW</span>
-        <span aria-hidden="true" class="w-2 shrink-0 text-accent-1">&middot;</span>
-        <span class="w-9 shrink-0">2026</span>
+      <!-- 設計稿 common/meta_12px（12px／120%／字距 20%），每段都是 Hug —— 不要寫死寬度，
+           0.2em 字距下固定寬會擠在一起或溢出 -->
+      <p data-fade="in" class="flex items-center gap-x-3 whitespace-nowrap text-meta text-pre-800/80">
+        <span>{{ plate.code }}</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>WEBCONF.TW</span>
+        <span aria-hidden="true" class="text-accent-1">&middot;</span>
+        <span>2026</span>
       </p>
 
       <!-- ⚠️ 桌機這份不用 <h1>：手機與桌機兩個 section 都會 SSR 出來（只靠 CSS 隱藏），
            兩個都用 h1 的話爬蟲看到的是同一頁兩個 h1。role/aria-level 讓讀屏在桌機
            （手機那份 display:none，讀不到）仍然拿得到頁面的一級標題。 -->
-      <p data-plate-title role="heading" aria-level="1" data-fade="in" class="mt-4 font-en-serif text-[72px] font-bold italic leading-[86px] tracking-normal text-pre-800">
-        {{ title }}
-      </p>
-      <p data-fade="in" class="mt-2 font-zh-serif text-[22px] font-medium leading-[26px] tracking-[0.02em] text-pre-800">
-        {{ subtitle }}
+      <p data-plate-title role="heading" aria-level="1" class="mt-4 flex flex-col items-center gap-y-2">
+        <span data-fade="in" class="block font-en-serif text-[72px] font-normal italic leading-[86px] tracking-[0.02em] text-pre-800">{{ title }}</span><span v-if="subtitle" data-fade="in" class="block font-zh-serif text-[22px] font-medium leading-[26px] tracking-[0.02em] text-pre-800">{{ ' ' + subtitle }}</span>
       </p>
       <slot />
     </div>
@@ -129,5 +129,10 @@ const label = computed(() => props.ariaLabel || props.title)
 .plate-hero :is(h1, p) { text-shadow: 0 1px 3px #0a0a0c; }
 @media (min-width: 1024px) {
   .plate-hero { --plate-hero-field-height: 720px; }
+}
+/* 手機標題：SPEAKERS / SPONSORS 這種 8 個字母的在 64px 會比 360px 視窗還寬，
+   框寬跟著視窗走、字級在窄手機上往下縮（390px 以上維持設計稿的 64px）。 */
+@media (max-width: 1023px) {
+  .plate-hero [data-plate-title-en] { font-size: clamp(56px, 17.78vw, 64px); }
 }
 </style>

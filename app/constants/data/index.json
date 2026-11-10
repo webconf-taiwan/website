@@ -2,6 +2,7 @@
   "hero": {
     "plate_label": "PL・ILIVING SPECIMEN・2026",
     "title": "WebConf",
+    "title_sr": "Taiwan 2026",
     "subtitle": "瓶蓋工廠台北製造所 · Dec. 11-12, 2026",
     "keywords": "AGENT・CONNECTIONS・CODE",
     "cta": { "label": "前往購票", "href": "https://5xcamp.us/webconf2026-ticket", "target": "_blank" },
@@ -35,6 +36,7 @@
 
   "speaker": {
     "plate": { "code": "PL. I", "number": "III.", "label": "SPEAKERS" },
+    "home_order": ["gipi", "will", "che-yu-wu", "max-chen", "yin-siang-jhih", "summer", "tonyq", "david-chen", "gordon-chang", "james-chou"],
     "more_link": { "label": "更多講者", "href": "/speakers", "target": "_self" }
   },
 

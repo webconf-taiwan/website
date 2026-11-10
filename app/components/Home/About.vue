@@ -33,6 +33,7 @@ useFadeIn(sectionRef)
       src="/home-deco/home-no-webgpu-deco-2"
       :width="1600"
       :height="1600"
+      :small-width="900"
       :reveal="0.656"
       :shift="0.165"
     />

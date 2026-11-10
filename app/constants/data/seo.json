@@ -60,14 +60,12 @@
     },
 
     "/speakers": {
-      "title": "講者陣容（建置中）",
-      "noindex": true,
-      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+      "title": "講者陣容",
+      "description": "WebConf Taiwan 2026 講者陣容：來自 AI、前後端開發、產品與產業應用的實踐者，12 月 11–12 日於瓶蓋工廠台北製造所分享。"
     },
     "/venue": {
-      "title": "場域介紹（建置中）",
-      "noindex": true,
-      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+      "title": "場域介紹",
+      "description": "WebConf Taiwan 2026 在瓶蓋工廠台北製造所（台北市南港區南港路二段 13 號）舉辦：高鐵、台鐵、捷運、公車與開車的交通方式，以及報到處、議程廳與交流攤位的場館平面圖。"
     },
     "/people": {
       "title": "講者陣容",
@@ -76,9 +74,10 @@
       "noindex_reason": "點雲效果示範頁，講者文案仍是佔位"
     },
     "/staff": {
-      "title": "主辦團隊（建置中）",
+      "title": "主辦團隊",
+      "description": "認識 WebConf Taiwan 2026 一同探索的幕後夥伴與主辦團隊。",
       "noindex": true,
-      "noindex_reason": "建置中，內容上線時拿掉 noindex"
+      "noindex_reason": "目前為 Figma 示意名單，正式成員資料確認後再開放收錄"
     },
     "/history": {
       "title": "歷屆回顧（建置中）",

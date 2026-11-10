@@ -51,6 +51,10 @@
     @apply font-zh-serif font-medium text-fs-zh-h5-m lg:text-fs-zh-h5;
   }
 
+  .text-zh-h6 {
+    @apply font-zh-serif font-medium text-fs-zh-h6-m lg:text-fs-zh-h6;
+  }
+
   .text-zh-body-lg {
     @apply font-zh-sans font-normal text-fs-zh-body-lg-m lg:text-fs-zh-body-lg;
   }
@@ -63,6 +67,12 @@
      en/btn，按鈕文字不論中英一律套這個。 */
   .text-zh-btn {
     @apply font-zh-sans font-normal text-fs-zh-btn-m lg:text-fs-zh-btn;
+  }
+
+  /* 長段落：Figma 的 body_16px（不在 zh/ 底下），Noto Sans TC，180% 行高 / 2% 字距 ——
+     比 zh/body_md 鬆、字距窄，用在講者介紹與議程摘要這種整段文字。 */
+  .text-body {
+    @apply font-zh-sans font-normal text-fs-body-m lg:text-fs-body;
   }
 
   /* ----- en/* ----- */
