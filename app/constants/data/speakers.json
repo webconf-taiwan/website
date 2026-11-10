@@ -197,7 +197,7 @@
       "photo": "/speakers/photos/summer.webp",
       "portrait": "/speakers/speaker-06.webp",
       "portrait_static": "/speakers/speaker-particle-06.webp",
-      "show_on_home": false
+      "show_on_home": true
     },
     {
       "id": "hana",
@@ -305,7 +305,7 @@
       "photo": "/speakers/photos/james-chou.webp",
       "portrait": "/speakers/speaker-10.webp",
       "portrait_static": "/speakers/speaker-particle-10.webp",
-      "show_on_home": false
+      "show_on_home": true
     },
     {
       "id": "will",
@@ -325,7 +325,7 @@
       "photo": "/speakers/photos/will.webp",
       "portrait": "/speakers/speaker-02.webp",
       "portrait_static": "/speakers/speaker-particle-02.webp",
-      "show_on_home": false
+      "show_on_home": true
     },
     {
       "id": "bo-yi-wu",
@@ -372,7 +372,7 @@
       "photo": "/speakers/photos/gordon-chang.webp",
       "portrait": "/speakers/speaker-09.webp",
       "portrait_static": "/speakers/speaker-particle-09.webp",
-      "show_on_home": false
+      "show_on_home": true
     },
     {
       "id": "gugu",

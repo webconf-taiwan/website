@@ -51,6 +51,10 @@ const AGENDA_FALLBACK = {
 // 首頁只挑 show_on_home 的出來。要把某一位／某一家從首頁收起來就改那個值，
 // 不用把整筆資料剪下來另存一份（剪一剪就會有兩份名單對不起來）。
 const onHome = (items = []) => items.filter(item => item.show_on_home)
+const sortByIds = (items, ids = []) => {
+  const rank = id => { const i = ids.indexOf(id); return i === -1 ? Infinity : i }
+  return [...items].sort((a, b) => rank(a.id) - rank(b.id))
+}
 
 /**
  * header / footer 資料。每頁都會用到。
@@ -79,7 +83,9 @@ export const useHomeData = async () => {
   return {
     ...HOME_FALLBACK,
     ...index.default,
-    speaker: { ...index.default.speaker, items: onHome(speakers.default.items) },
+    // 首頁講者的順序由 index.json 的 speaker.home_order（id 清單）決定，不影響講者頁的順序；
+    // 不在清單裡的排在後面，維持 speakers.json 的原順序
+    speaker: { ...index.default.speaker, items: sortByIds(onHome(speakers.default.items), index.default.speaker?.home_order) },
     sponsor: { items: onHome(sponsors.default.items) },
     faq: { ...index.default.faq, items: faq.default.items }
   }

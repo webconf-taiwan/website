@@ -36,6 +36,7 @@
 
   "speaker": {
     "plate": { "code": "PL. I", "number": "III.", "label": "SPEAKERS" },
+    "home_order": ["gipi", "will", "che-yu-wu", "max-chen", "yin-siang-jhih", "summer", "tonyq", "david-chen", "gordon-chang", "james-chou"],
     "more_link": { "label": "更多講者", "href": "/speakers", "target": "_self" }
   },
 
