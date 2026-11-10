@@ -20,10 +20,15 @@ const orgLines = computed(() => [item.value, item.value.extra]
 </script>
 
 <template>
-  <article class="flex gap-4 py-6 lg:flex-col lg:gap-[14px] lg:py-0">
+  <article class="group flex gap-4 py-6 lg:flex-col lg:gap-[14px] lg:py-0">
     <div data-fade="in" class="relative size-20 shrink-0 overflow-hidden bg-pre-800/5 lg:aspect-square lg:size-auto lg:w-full">
-      <!-- 變淡放在裡面這層：外層的 opacity 由 data-fade 進場動畫控制 -->
-      <div class="absolute inset-0 transition-opacity duration-500" :class="{ 'opacity-30': dimmed }">
+      <!-- 變淡放在裡面這層：外層的 opacity 由 data-fade 進場動畫控制。
+           hover 整張卡也淡到同樣的 30%（跟篩選沒選中一樣）；只在有 hover 的裝置生效，
+           觸控裝置點一下不會卡在淡掉的狀態 -->
+      <div
+        class="absolute inset-0 transition-opacity duration-500 [@media(hover:hover)]:group-hover:opacity-30"
+        :class="{ 'opacity-30': dimmed }"
+      >
         <!-- 照片還沒到的講者：不放 img（src 空字串會變破圖），只留外層的淡底色 -->
         <img
           v-if="item.photo || item.portrait"
