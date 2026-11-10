@@ -1,7 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import path from 'node:path'
 import { readFileSync } from 'node:fs'
-import { readdir, readFile, writeFile } from 'node:fs/promises'
 import { createSvgIconsPlugin } from 'vite-plugin-svg-icons'
 // 全站 SEO 資料（站名、描述、各頁標題、哪些頁不收錄）的唯一來源，頁面端用 usePageSeo 讀同一份。
 // ⚠️ 用 readFileSync 而不是 import：nuxt dev 改 config 時是在「同一個 Node process」裡重載，
@@ -49,29 +48,6 @@ export default defineNuxtConfig({
     // 邊緣自己會壓縮；開了只是讓 build 用 brotli 硬壓 40MB 的 mediapipe wasm/模型（實測多 30s～2min），
     // 還多上傳 57 個檔、29MB。
     compressPublicAssets: false,
-  },
-
-  hooks: {
-    // public/particle-kit/ 是零 build step 的 IIFE 原始碼（見 docs/point-cloud-effect.md），
-    // 正式 build 時只在「輸出目錄」那份上就地壓縮，原始碼與 dev 都不動。
-    // 全域名稱是掛在 window 上的屬性，minify 不會改名；不做 tree-shaking（各檔互相讀全域）。
-    // ⚠️ 一定要用 nitro.hooks.hook() 「追加」，不能寫在 nitro.hooks.compiled：
-    // cloudflare-module preset 自己也有 compiled hook（寫 wrangler.json、_headers fallback），
-    // 寫在設定裡會把它整個蓋掉，build 照樣成功但部署設定全沒了（實際踩過）。
-    'nitro:init' (nitro) {
-      if (nitro.options.dev) return
-      nitro.hooks.hook('compiled', async () => {
-        const { transform } = await import('esbuild')
-        const dir = path.join(nitro.options.output.publicDir, 'particle-kit')
-        let files = []
-        try { files = (await readdir(dir)).filter(f => f.endsWith('.js')) } catch { return }
-        for (const f of files) {
-          const file = path.join(dir, f)
-          const { code } = await transform(await readFile(file, 'utf8'), { minify: true, target: 'es2020', legalComments: 'none' })
-          await writeFile(file, code)
-        }
-      })
-    }
   },
 
   modules: [
