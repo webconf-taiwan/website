@@ -7,7 +7,7 @@ defineProps({
 <template>
   <SponsorsGroup v-if="items.length" id="passion-supporters" title="Passion Sponsor" subtitle="熱情贊助" :plate="{ code: 'PL. V', number: 'V.', label: 'PASSION SPONSOR' }">
     <ul class="passion-sponsors" aria-label="熱情贊助名單">
-      <li v-for="item in items" :key="item.id" class="passion-sponsor">
+      <li v-for="item in items" :key="item.id" data-fade="in" class="passion-sponsor">
         <component :is="item.link?.href ? 'a' : 'span'" :href="item.link?.href" :target="item.link?.target" :rel="linkRel(item.link?.target)" class="passion-sponsor-content">
           <img v-if="item.logo" :src="item.logo" :alt="item.name" :width="item.logo_width || 150" height="120" loading="lazy" decoding="async">
           <span v-else class="text-zh-h3">{{ item.name }}</span>

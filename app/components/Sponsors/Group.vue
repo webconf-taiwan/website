@@ -8,22 +8,25 @@ defineProps({
   items: { type: Array, default: () => [] },
   columns: { type: Number, default: 2 },
 })
+
+const groupRef = ref(null)
+useFadeIn(groupRef)
 </script>
 
 <template>
-  <section :id="id" class="sponsor-group" :aria-labelledby="`${id}-title`">
-    <CommonPlate :data="plate" :divider="false" class="sponsor-group-plate" />
+  <section :id="id" ref="groupRef" class="sponsor-group" :aria-labelledby="`${id}-title`">
+    <CommonPlate :data="plate" :divider="false" data-fade="in" class="sponsor-group-plate" />
     <div class="sponsor-group-content">
       <div class="sponsor-group-heading">
-        <h2 :id="`${id}-title`" class="sponsor-group-title text-en-h1 italic">
+        <h2 :id="`${id}-title`" data-fade="in" class="sponsor-group-title text-en-h1 italic">
           <template v-if="mobileTitle"><span class="lg:hidden">{{ mobileTitle }}</span><span class="hidden lg:inline">{{ title }}</span></template>
           <template v-else>{{ title }}</template>
         </h2>
-        <p class="text-zh-h4">{{ subtitle }}</p>
+        <p data-fade="in" class="text-zh-h4">{{ subtitle }}</p>
       </div>
       <slot>
         <div class="sponsor-group-cards" :class="{ 'sponsor-group-cards--three': columns === 3 }">
-          <SponsorsCard v-for="item in items" :key="item.id" :data="item" />
+          <SponsorsCard v-for="item in items" :key="item.id" :data="item" data-fade="in" />
         </div>
       </slot>
     </div>
