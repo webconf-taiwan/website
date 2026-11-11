@@ -116,7 +116,7 @@ await engine.readParticles();      // GPU buffer 讀回 [{x,y,vx,vy,s}] — SVG 
 engine.pause(bool); engine.destroy();
 ```
 
-檔案載入順序（無 build step，直接 `<script>`；正式 build 只會在 `.output/public/particle-kit/` 那份上用 esbuild 壓縮，原始碼不動，見 `nuxt.config.ts` 的 `nitro:init` hook）：
+檔案載入順序（無 build step，直接 `<script>`；不要在 build 後原地壓縮 `.output/public/particle-kit/`：Zeabur 的 Node server 打包時就記下檔案大小，事後改寫會讓 content-length 與實際內容不符，瀏覽器卡約 6.5 秒、iOS Safari 直接載入失敗，粒子整個不出現）：
 
 ```
 particle-life-seeds.js → particle-life-rules.js → particle-life.js

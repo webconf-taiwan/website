@@ -24,7 +24,7 @@ const speakers = computed(() => session.value.speakers || [])
     <div class="agenda-session-body flex min-w-0 flex-1 flex-col justify-between gap-6 py-6 lg:px-4" :class="{ 'opacity-30': dimmed }">
       <div class="flex flex-col gap-2">
         <h4 class="text-zh-h6 text-pre-800">
-          <span v-if="badge" class="mr-2 inline-block bg-pre-800 px-2 align-[0.15em] text-en-caption text-bg-mid">{{ badge }}</span>{{ session.title }}
+          <span v-if="badge" class="mr-2 inline-block bg-pre-800 px-2 align-[0.15em] font-mono font-normal text-fs-en-caption text-bg-mid">{{ badge }}</span>{{ session.title }}
         </h4>
         <ul v-if="skills.length" class="flex flex-wrap gap-x-2 gap-y-1 text-body-sm text-pre-800/[62%]">
           <li
