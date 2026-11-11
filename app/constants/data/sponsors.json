@@ -8,7 +8,20 @@
         "href": "https://www.tsmc.com/chinese",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "tsmc",
+      "display_name": "台積電",
+      "description": "台積公司是世界領先的專業積體電路製造服務公司，我們相信背後關鍵秘訣是：Fab runs on code。台積 IT 肩負半導體前瞻製程的重要支援任務，我們透過不斷的技術創新，確保全球據點資通訊基礎建設穩固運行，推動智慧製造持續演進，優化數位商務流程，並開發多元協作平台以服務不同職能的需求。我們的服務對象包含晶圓廠的生產營運人員、企業員工，以及外部合作夥伴。台積 IT 匯聚全球頂尖的資訊科技人才，共同打造以 AI 驅動的雲端原生服務。",
+      "socials": [
+        {
+          "icon": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "icon": "youtube",
+          "label": "YouTube"
+        }
+      ]
     },
     {
       "name": "五倍學院",
@@ -18,7 +31,29 @@
         "href": "https://5xcampus.com/",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "5xcampus",
+      "display_name": "五倍學院",
+      "description": "五倍學院十餘年來深耕程式教育，陪伴無數學員從零起步，成為引領時代的軟體工程師與 AI 開發人才。\n\n我們以實戰為核心，打造最貼近產業需求的課程，內容涵蓋前後端網頁技術、AI 工具應用與自動化實作，幫助學員在瞬息萬變的科技浪潮中不斷成長，用技術實現自我價值。\n\n同時，我們也為企業提供專業的技術顧問與教育訓練服務，協助優化開發流程、強化團隊戰力，讓技術成為驅動組織創新與成長的關鍵力量，提升效率、創造更高價值。",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站",
+          "href": "https://5xcampus.com/"
+        },
+        {
+          "icon": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "icon": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "icon": "instagram",
+          "label": "Instagram"
+        }
+      ]
     },
     {
       "name": "六角學院",
@@ -28,7 +63,25 @@
         "href": "https://www.hexschool.com/",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "hexschool",
+      "display_name": "六角學院",
+      "description": "六角學院是一所專注培養軟體工程師與數位人才的職能學校，目前已累積超過 30,000 名學員。我們的核心使命，是讓更多人透過程式學習，為自己的職涯創造更多選擇與可能性。\n\n課程橫跨前端、後端到全端開發，強調實戰專題、系統化學習規劃與職涯陪跑機制，不只教會寫程式，更著重溝通力、解決問題能力與自學能力等「工程師思維」，協助學員在 AI 時代持續成長與轉職發展。",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站",
+          "href": "https://www.hexschool.com/"
+        },
+        {
+          "icon": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "icon": "instagram",
+          "label": "Instagram"
+        }
+      ]
     },
     {
       "name": "悠識學院 Userxper",
@@ -38,7 +91,21 @@
         "href": "https://www.userxper.com/",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "userxper",
+      "display_name": "悠識學院",
+      "description": "悠識學院致力於推動實戰型的 UX（使用者體驗）學習活動，課程主題聚焦使用者訪談、問卷調查、數據分析等專業方法，幫助學員從真實案例中培養洞察與分析能力。我們長期關注設計與科技的交會，定期舉辦以 AI/UX、DesignOps 設計營運與數位職涯發展為主題的講座與實務研討，協助設計師與產品團隊掌握產業趨勢、拓展跨領域視野。\n\n此外，悠識學院也經營多元社群平台——包含 Circle 社群、IG、Threads，以及 Podcast《UX 有差嗎？》，邀請內部研究員、設計師及同業專家們，分享從事使用者體驗工作的第一線觀察。",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站",
+          "href": "https://www.userxper.com/"
+        },
+        {
+          "icon": "facebook",
+          "label": "Facebook"
+        }
+      ]
     },
     {
       "name": "鈦坦科技 TITANSOFT",
@@ -49,7 +116,29 @@
         "href": "https://titansoft.com/tw",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "titansoft",
+      "display_name": "鈦坦科技",
+      "description": "新加坡商鈦坦科技是一間軟體開發公司，致力於線上軟體平台客製開發與維護，以及代理 Atlassian 旗下產品，以自身實際使用經驗提供一站式導入服務。",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站",
+          "href": "https://titansoft.com/tw"
+        },
+        {
+          "icon": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "icon": "youtube",
+          "label": "YouTube"
+        },
+        {
+          "icon": "instagram",
+          "label": "Instagram"
+        }
+      ]
     },
     {
       "name": "英屬維京群島商瑞嘉耐思科技有限公司台灣分公司",
@@ -59,7 +148,25 @@
         "href": "https://www.nextfortune.tw/",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "nextfortune",
+      "display_name": "瑞嘉耐思科技",
+      "description": "瑞嘉耐思科技（NextFortune）為英國知名線上軟體設計集團 ONEworks 旗下的台灣研發中心，專注於軟體開發、系統維運及客製化解決方案，透過一站式平台服務，協助客戶實現技術創新與全球布局。  我們秉持「開放創新、共創未來」的理念，重視人才發展與多元包容，致力打造開放、尊重、傾聽的企業文化，讓每位夥伴都能發揮專業、持續成長並找到歸屬感。期待與夥伴攜手，將技術轉化為價值，讓創想成就未來",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站",
+          "href": "https://www.nextfortune.tw/"
+        },
+        {
+          "icon": "facebook",
+          "label": "Facebook"
+        },
+        {
+          "icon": "instagram",
+          "label": "Instagram"
+        }
+      ]
     },
     {
       "name": "HackMD",
@@ -69,7 +176,18 @@
         "href": "https://hackmd.io/",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "hackmd",
+      "display_name": "HackMD",
+      "description": "HackMD 是企業與團隊的共享文件層，規格、會議紀錄、決策與知識集中一處。\n\n不論你用哪一家的 AI 工具，都能從 HackMD 讀取同一份脈絡。人與 agent 無縫協作，團隊知識永續累積。",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站",
+          "href": "https://hackmd.io/"
+        }
+      ],
+      "logo_width": 165
     },
     {
       "name": "知識衛星 SAT. KNOWLEDGE",
@@ -79,7 +197,39 @@
         "href": "https://sat.cool/",
         "target": "_blank"
       },
-      "show_on_home": true
+      "show_on_home": true,
+      "id": "sat-knowledge",
+      "display_name": "知識衛星",
+      "description": "知識衛星 2019 年創立至今，是台灣打造最多堂銷售破千萬的線上精品課程平台。我們與各領域頂尖人士攜手，經精準的使用者分析調查，推出最符合市場需求、有別於碎片化趨勢的精實課程。線上影音課程，讓學員可以根據自身步調安排學習進度，而精實的課程規劃，則讓學員免於持續尋找下個階段課程的疲憊，一次就學習到位。同時，讓學員透過持續有感地學習，造就生活的改變，更接近理想的自己。",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站",
+          "href": "https://sat.cool/"
+        },
+        {
+          "icon": "instagram",
+          "label": "Instagram"
+        }
+      ]
+    },
+    {
+      "id": "monolab",
+      "name": "Monolab",
+      "display_name": "Monolab",
+      "logo_mask": "/sponsors/monolab-mask.png",
+      "show_on_home": false,
+      "description": "Monolab，是藝術品牌，更是情緒的實驗場。 專注於互動展演與場域設計，以數位藝術結合演算法、互動科技與空間敘事，構築「共感」與「沉浸」的體驗，讓人在城市喧囂中找到寧靜的藝術避難所。 品牌精神源自日本「物哀」美學，靜觀美的流逝。藝術不只是美的呈現，更是探索生命與自我的橋樑；即使萬物流逝，生命仍在發生，願每次體驗都讓人從無常中找到勇氣。業務橫跨藝術、科技、時尚與場域，為品牌與空間創造獨特價值。",
+      "socials": [
+        {
+          "icon": "globe",
+          "label": "官方網站"
+        },
+        {
+          "icon": "youtube",
+          "label": "YouTube"
+        }
+      ]
     }
   ],
   "plate": {
@@ -160,7 +310,7 @@
   "sections": [
     {
       "id": "corporate-sponsors",
-      "title": "SPONSORS",
+      "title": "Sponsors",
       "subtitle": "贊助廠商",
       "description": "WebConf 匯聚來自不同領域的開發者、設計師、產品工作者與產業夥伴。今年，我們將以「Code、Connect、Agent」為主題，從程式技術、社群連結到 AI Agent，探索 Web 技術持續演進下的新機會與可能。誠摯邀請您成為 WebConf 的贊助夥伴，與社群交流、分享實踐，也讓更多參與者認識您的品牌、團隊與正在投入的事。",
       "features": [
@@ -192,7 +342,7 @@
     },
     {
       "id": "passion-sponsor",
-      "title": "PASSION SPONSOR",
+      "title": "Passion Sponsor",
       "subtitle": "個人贊助",
       "description": "如果你喜歡 WebConf，也希望台灣持續有一個讓技術社群相聚、分享與交流的地方，邀請你以「熱情贊助票」成為支持 WebConf 的一份力量。除了取得活動參與席位，原票價以外的金額將投入 WebConf 的籌辦，支持這場年度聚會持續發生。",
       "features": [
@@ -211,5 +361,57 @@
         "target": "_blank"
       }
     }
-  ]
+  ],
+  "groups": [
+    {
+      "id": "sponsor-companies",
+      "title": "Sponsors",
+      "mobile_title": "Sponsor",
+      "subtitle": "贊助廠商",
+      "plate": {
+        "code": "PL. V",
+        "number": "II.",
+        "label": "SPONSORS"
+      },
+      "columns": 2,
+      "item_ids": [
+        "titansoft",
+        "tsmc",
+        "nextfortune",
+        "sat-knowledge"
+      ]
+    },
+    {
+      "id": "sponsor-organizers",
+      "title": "Organizers",
+      "subtitle": "主辦單位",
+      "plate": {
+        "code": "PL. V",
+        "number": "III.",
+        "label": "ORGANIZERS"
+      },
+      "columns": 3,
+      "item_ids": [
+        "5xcampus",
+        "hexschool",
+        "userxper"
+      ]
+    },
+    {
+      "id": "sponsor-partners",
+      "title": "Partners",
+      "subtitle": "品牌夥伴",
+      "plate": {
+        "code": "PL. V",
+        "number": "IV.",
+        "label": "PARTNERS"
+      },
+      "columns": 2,
+      "item_ids": [
+        "monolab",
+        "hackmd"
+      ]
+    }
+  ],
+  "passion_supporters": []
 }
