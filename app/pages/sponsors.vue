@@ -42,9 +42,9 @@ usePageSeo('/sponsors')
       />
     </template>
 
-    <template #between>
+    <template #between="{ desktopMode }">
       <SponsorsPhotoWall :data="sponsors.gallery" />
-      <div class="sponsors-directory">
+      <div data-plate-free class="sponsors-directory" :class="{ 'sponsors-directory--gpu': desktopMode === 'gpu' }">
         <div class="sponsors-directory-inner">
           <SponsorsGroup
             v-for="group in groups"
@@ -105,7 +105,7 @@ usePageSeo('/sponsors')
 
 <style scoped>
 .sponsors-directory { position: relative; z-index: 10; isolation: isolate; background: #0a0a0c; }
-/* Figma 的名單區使用同一張粒子底圖；此區獨立於 Hero／照片牆的既有 WebGPU 動態。 */
+/* 手機、減少動態與 GPU 載入／失敗時保留設計稿底圖；桌機就緒後由同一粒子場接續。 */
 .sponsors-directory::before {
   content: '';
   position: absolute;
@@ -135,6 +135,8 @@ usePageSeo('/sponsors')
 }
 
 @media (min-width: 1024px) {
+  .sponsors-directory--gpu { background: transparent; }
+  .sponsors-directory--gpu::before { background: rgb(0 0 0 / 35%); }
   .sponsors-directory-inner { gap: 60px; padding: 60px 60px 120px; }
   .sponsors-page :deep([data-plate-body]) { position: relative; }
   .sponsors-page :deep([data-plate-body])::before,

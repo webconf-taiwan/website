@@ -166,6 +166,8 @@ let flower = null
 let flowerTypes = null
 let flowerBounds = null
 let galleryMix = 0
+// 照片牆與正文之間的整寬名單：花形散回自由場，正文入鏡後照常收進側欄。
+let freeMix = 0
 // 尾段（[data-plate-outro]，場域頁的平面圖）：粒子從側欄菌落散回滿版自由場，同首頁票券區。
 let outroMix = 0
 let flowerMode = false
@@ -230,8 +232,8 @@ let regionSettling = false
 // --- DOM：元素只查一次，矩形一幀只量一次 ------------------------------------
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
-const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null, outro: undefined }
-const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, outro: null, canvas: null }
+const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null, free: undefined, outro: undefined }
+const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, free: null, outro: null, canvas: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
@@ -244,6 +246,7 @@ function lookupDom () {
   }
   // 尾段只有場域頁有；找過一次沒有就記成 null，不要每幀重查。
   if (dom.outro === undefined && dom.page) dom.outro = dom.page.querySelector('[data-plate-outro]')
+  if (dom.free === undefined && dom.page) dom.free = dom.page.querySelector('[data-plate-free]')
 }
 
 function measure () {
@@ -256,6 +259,7 @@ function measure () {
   if (dom.gallery) rects.gallery = dom.gallery.getBoundingClientRect()
   if (dom.board) rects.board = dom.board.getBoundingClientRect()
   if (dom.outro) rects.outro = dom.outro.getBoundingClientRect()
+  if (dom.free) rects.free = dom.free.getBoundingClientRect()
 }
 
 // --- CSS 變數：動畫數值直接寫在 wrapper 上，Vue 不參與動畫迴圈 ----------------
@@ -287,7 +291,14 @@ function writeCssVars () {
       moveBounds({
         left, top: board.top - railOffset,
         width: board.left - canvasLeft + board.width - left, height: board.height,
-      }, galleryMix)
+      }, Math.min(1, galleryMix + freeMix))
+    }
+    if (rects.free) {
+      const top = Math.max(0, rects.free.top)
+      moveBounds({
+        left: 0, top: top - railOffset, width: W,
+        height: Math.max(0, Math.min(window.innerHeight, rects.free.bottom) - top),
+      }, freeMix)
     }
     if (rects.aside) {
       // 首頁的菌落沒有遮罩：側欄定住後上緣開到視窗頂，左右各放寬，只擋住右側內文。
@@ -313,13 +324,18 @@ function writeCssVars () {
     const top = Math.max(0, bounds.top)
     const bottom = Math.min(canvasHeight, bounds.top + bounds.height)
     fieldBounds = { ...bounds, top, height: Math.max(0, bottom - top) }
-    const visible = props.heroVisible || galleryMix > 0 || railMix > 0 || outroMix > 0
+    const visible = props.heroVisible || galleryMix > 0 || freeMix > 0 || railMix > 0 || outroMix > 0
+    const area = `${fieldBounds.left}px ${fieldBounds.top}px / ${fieldBounds.width}px ${fieldBounds.height}px no-repeat`
+    // 名單區接照片牆／側欄時，上下邊界也淡出，避免全寬粒子被切成水平直線。
+    const edgeFade = Math.round(64 * freeMix * (1 - railMix))
+    const softenEdges = edgeFade > 0
     const region = visible
-      ? `linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent) ${fieldBounds.left}px ${fieldBounds.top}px / ${fieldBounds.width}px ${fieldBounds.height}px no-repeat`
+      ? `linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent) ${area}${softenEdges ? `, linear-gradient(to bottom, transparent, #000 ${edgeFade}px, #000 calc(100% - ${edgeFade}px), transparent) ${area}` : ''}`
       : 'linear-gradient(transparent, transparent)'
     // 標題不再挖空粒子；粒子直接從標題文字後方通過。
     if (region !== maskKey) {
       el.style.mask = region
+      el.style.maskComposite = softenEdges ? 'intersect' : 'add'
       maskKey = region
     }
   }
@@ -395,6 +411,14 @@ function outroProgress () {
   const start = window.innerHeight - 100
   const end = window.innerHeight * 0.35
   const p = Math.max(0, Math.min(1, (start - rects.outro.top) / Math.max(1, start - end)))
+  return p * p * (3 - 2 * p)
+}
+
+function freeProgress () {
+  if (!props.fixed || !rects.free) return 0
+  const start = window.innerHeight - 100
+  const end = window.innerHeight * 0.35
+  const p = Math.max(0, Math.min(1, (start - rects.free.top) / Math.max(1, start - end)))
   return p * p * (3 - 2 * p)
 }
 
@@ -757,7 +781,7 @@ function step (dt) {
   }
   // Hero 以 720px 取景；捲動與相機縮放同步，讓同一粒子的螢幕位移連續。
   // 尾段的自由場不再對齊 hero 的 720px 取景，直接置中在視窗。
-  const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix) * (1 - outroMix)
+  const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix) * (1 - freeMix) * (1 - outroMix)
   const cameraY = (centerShift - heroOffset) / cameraZoom + dy
   if (dx !== lastCameraX || cameraY !== lastCameraY) {
     engine.setCameraOffset?.(dx, cameraY)
@@ -886,14 +910,16 @@ function frame (now = performance.now()) {
   // 先讀後寫：所有 DOM 量測集中在這裡，樣式在幀尾一次寫入。
   measure()
   outroMix = outroProgress()
+  freeMix = freeProgress()
   const progress = scrollProgress() * (1 - outroMix)
   railMix += (progress - railMix) * (reducedMotion.value ? 1 : 1 - Math.exp(-10 * dt))
   if (Math.abs(progress - railMix) < 0.0001) railMix = progress
   const galleryProgress = galleryConfig ? Math.max(0, Math.min(1, -(rects.hero?.top || 0) / (HERO.height - 120))) : 0
-  galleryMix = galleryProgress * galleryProgress * (3 - 2 * galleryProgress) * (1 - outroMix)
+  const galleryBlend = galleryProgress * galleryProgress * (3 - 2 * galleryProgress) * (1 - outroMix)
+  galleryMix = galleryBlend * (1 - freeMix)
   const galleryOffset = flowerBounds ? (rects.gallery?.top || 0) + flowerBounds.cy - flowerBounds.simulationCy : 0
   // 尾段的自由場固定在視窗上（同首頁票券區），不再跟著 hero 的位置捲走。
-  heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryMix) + galleryOffset * galleryMix) * (1 - railMix) * (1 - outroMix)
+  heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryBlend) + galleryOffset * galleryBlend) * (1 - freeMix) * (1 - railMix) * (1 - outroMix)
   step(dt)
   writeCssVars()
   if (running || railMix !== progress || regionSettling) schedule()
@@ -982,7 +1008,7 @@ async function init () {
     window.__agendaField = engine
     window.__agendaRailMotion = RAIL
     window.__agendaMotion = () => ({
-      railMix, galleryMix, outroMix, flowerMode, flowerBounds, pull, grip, lockNorm, ambientOn, force: appliedForce, simSpeed: simSpeedNow, targetsGeneration, buildingTargets,
+      railMix, galleryMix, freeMix, outroMix, flowerMode, flowerBounds, pull, grip, lockNorm, ambientOn, force: appliedForce, simSpeed: simSpeedNow, targetsGeneration, buildingTargets,
       look: look.id, ready: ready.value, running, failed: failed.value, reducedMotion: reducedMotion.value, motionTime, rafPending,
       mask: maskKey, fieldBounds,
     })
