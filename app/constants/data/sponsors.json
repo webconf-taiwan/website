@@ -413,5 +413,44 @@
       ]
     }
   ],
-  "passion_supporters": []
+  "passion_supporters": [
+    {
+      "id": "passion-hackmd-1",
+      "name": "HackMD",
+      "logo": "/sponsors/hackMD.svg",
+      "logo_width": 165
+    },
+    {
+      "id": "passion-kao",
+      "name": "高小龍"
+    },
+    {
+      "id": "passion-liao",
+      "name": "廖小杰"
+    },
+    {
+      "id": "passion-hackmd-2",
+      "name": "HackMD",
+      "logo": "/sponsors/hackMD.svg",
+      "logo_width": 165
+    },
+    {
+      "id": "passion-5xcampus",
+      "name": "五倍學院",
+      "logo": "/sponsors/五倍學院.svg",
+      "logo_width": 200
+    },
+    {
+      "id": "passion-hexschool",
+      "name": "六角學院",
+      "logo": "/sponsors/六角學院.svg",
+      "logo_width": 200
+    },
+    {
+      "id": "passion-userxper",
+      "name": "悠識學院",
+      "logo": "/sponsors/悠識學院.svg",
+      "logo_width": 200
+    }
+  ]
 }
