@@ -24,7 +24,7 @@
       "slots": [
         { "start": "09:00", "end": "09:10", "sessions": { "m": "agenda-13", "f": "agenda-13", "a2": "agenda-13" } },
         { "start": "09:10", "end": "09:55", "sessions": { "m": "agenda-03", "f": "simulcast", "a2": "agenda-09" } },
-        { "start": "10:05", "end": "10:50", "sessions": { "m": "agenda-08", "f": "agenda-36", "a2": "agenda-23" } },
+        { "start": "10:05", "end": "10:50", "sessions": { "m": "agenda-04", "f": "agenda-36", "a2": "agenda-23" } },
         { "start": "11:00", "end": "11:45", "sessions": { "m": "agenda-14", "f": "agenda-15", "a2": "agenda-01" } },
         { "start": "11:55", "end": "12:40", "sessions": { "m": "agenda-12", "f": "agenda-06", "a2": "agenda-17" } },
         { "type": "break", "label": "午休時間" },
@@ -39,7 +39,7 @@
       "label": "DAY 2",
       "date": "2026-12-12",
       "slots": [
-        { "start": "09:00", "end": "09:45", "sessions": { "m": "agenda-04", "f": "agenda-38", "a2": "agenda-46" } },
+        { "start": "09:00", "end": "09:45", "sessions": { "m": "agenda-08", "f": "agenda-38", "a2": "agenda-46" } },
         { "start": "10:00", "end": "10:45", "sessions": { "m": null, "f": "agenda-25", "a2": "agenda-26" } },
         { "start": "10:55", "end": "11:40", "sessions": { "m": "agenda-02", "f": "agenda-27", "a2": "agenda-28" } },
         { "start": "11:50", "end": "12:35", "sessions": { "m": "agenda-29", "f": "agenda-30", "a2": "agenda-44" } },
