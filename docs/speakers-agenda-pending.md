@@ -75,7 +75,13 @@
 - Threads 連結在截圖上被截斷（`threads.com/@ba…_huang`），先不放，目前沒有任何社群連結。
 - Notion「講者抬頭」寫「Building What's Next in AI, Products & Human Collaboration・AI Product Leader & Author」，照其他人的慣例拆成 org／role，前半段其實不是單位名稱，要不要改寫待確認。
 
-## 8. 其他
+## 8. 2026-11-15 新增講者 Mike Hsu
+
+`mike-hsu`，依 Notion 資料建立，議程 `agenda-47`（講題「當 AI 開始觀測系統，誰來觀測 AI？」），**還沒排時段**。
+
+- FB 連結在截圖上被截斷（`facebook.com/mik…su.775`），先不放。
+
+## 9. 其他
 
 - Gordon Chang 的抬頭：資料是「Appier・產品副總」，2026-11-05 的排程表寫「Appier, Product Director」，目前沒改。
 
