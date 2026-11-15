@@ -1,5 +1,11 @@
 <script setup>
-defineProps({ data: { type: Object, required: true } })
+// 桌機有 WebGPU 時，卡片後方那團粒子是 hero 收攏過來的（CommonPlatePage → AgendaParticleField 的 galleryMix，
+// gather 模式同場域頁）。掛點沿用照片牆的：[data-plate-gallery] 這一區、.photo-board 定位框、.photo-heading 標題。
+// desktopMode 是 CommonPlatePage 的 'pending' | 'gpu' | 'fallback'；桌機只有 fallback 才放靜態橫帶。
+const props = defineProps({
+  data: { type: Object, required: true },
+  desktopMode: { type: String, default: 'pending' },
+})
 const rootRef = ref(null)
 const trackRef = ref(null)
 const progress = ref(0)
@@ -119,12 +125,13 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section ref="rootRef" class="history-chapters relative" aria-labelledby="history-chapters-heading"
-    @focusin="focused = true" @focusout="focusOut">
+  <section ref="rootRef" data-plate-gallery class="history-chapters relative" :class="{ 'history-chapters--static': props.desktopMode === 'fallback' }"
+    aria-labelledby="history-chapters-heading" @focusin="focused = true" @focusout="focusOut">
     <HistoryRibbon class="chapter-ribbon" />
+    <div class="photo-board relative">
     <div class="chapter-header relative">
-      <CommonPlate :data="data.plate" class="history-plate" />
-      <div class="chapter-heading relative text-center">
+      <CommonPlate data-fade="in" :data="data.plate" class="history-plate" />
+      <div class="chapter-heading photo-heading relative text-center">
         <h2 id="history-chapters-heading" data-fade="in" class="text-en-h1 italic">
           <span class="block">{{ data.heading_lines[0] }}</span>
           <span class="block">{{ data.heading_lines[1] }}</span>
@@ -141,7 +148,7 @@ onBeforeUnmount(() => {
       @pointerdown="startDrag" @pointermove="drag" @pointerup="endDrag" @pointercancel="endDrag"
       @lostpointercapture="endDrag" @click.capture="onClick" @dragstart.prevent
     >
-      <article v-for="item in data.items" :key="item.year" class="history-card" :aria-labelledby="`history-${item.year}`">
+      <article v-for="item in data.items" :key="item.year" data-fade="in" class="history-card" :aria-labelledby="`history-${item.year}`">
         <p class="history-label flex items-center gap-2">
           <span class="text-en-caption italic">{{ item.volume }}</span>
           <span class="text-meta text-accent-1" aria-hidden="true">·</span>
@@ -158,11 +165,12 @@ onBeforeUnmount(() => {
         </div>
       </article>
     </div>
-    <div class="history-controls relative mx-auto hidden lg:flex">
+    <div data-fade="in" class="history-controls relative mx-auto hidden lg:flex">
       <div class="history-scrollbar relative" :style="{ '--thumb-size': `${thumbSize}%`, '--thumb-left': `${progress / 100 * (100 - thumbSize)}%` }">
         <span class="scrollbar-line" aria-hidden="true"><span /></span>
         <input type="range" min="0" max="100" step="0.1" :value="progress" aria-label="歷屆回顧橫向捲動位置" @input="seek">
       </div>
+    </div>
     </div>
   </section>
 </template>
@@ -224,5 +232,11 @@ onBeforeUnmount(() => {
   .history-scrollbar input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: ew-resize; }
   .history-scrollbar:focus-within { outline: 2px solid theme('colors.accent.1'); outline-offset: 4px; }
   .chapter-ribbon { top: 360px; bottom: auto; left: 50%; transform: translateX(-50%); }
+  /* 桌機只有確定走備援（沒有 WebGPU／減少動態／初始化失敗）才放靜態橫帶；初始化期間先不放，免得閃一下再被粒子取代。
+     有粒子時文字底下墊深色，讓字讀得清楚。 */
+  .history-chapters:not(.history-chapters--static) .chapter-ribbon { visibility: hidden; }
+  .history-chapters:not(.history-chapters--static) .history-copy { background: rgb(10 10 12 / 88%); }
+  .history-chapters:not(.history-chapters--static) .chapter-heading,
+  .history-chapters:not(.history-chapters--static) .history-label { text-shadow: 0 1px 3px #0a0a0c; }
 }
 </style>

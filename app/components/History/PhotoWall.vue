@@ -189,7 +189,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <section ref="wallRef" data-plate-gallery :aria-labelledby="headingId" class="photo-wall relative z-10 overflow-hidden">
+  <section ref="wallRef" :aria-labelledby="headingId" class="photo-wall relative z-10 overflow-hidden">
     <!-- 分開觸發標題與照片，避免手機捲到輪播前就播完整區動畫；board 保持固定，供粒子與拖曳量測。 -->
     <div ref="boardRef" class="photo-board relative mx-auto max-w-[1440px]">
       <!-- 手機沿用 Figma 的靜態裝飾圖；桌機由共用粒子場接續照片牆動線。 -->
