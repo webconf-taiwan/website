@@ -89,7 +89,7 @@
     {
       "id": "staff-06",
       "spec": "STAFF.06",
-      "name": "eddie",
+      "name": "Keddie",
       "role": "文案煉金術師",
       "photo": "/staff/photos/eddie.webp",
       "socials": []
@@ -224,14 +224,14 @@
     {
       "id": "staff-15",
       "spec": "STAFF.15",
-      "name": "Gui 劉桂廷",
+      "name": "Gui 桂",
       "role": "軟體工程師",
       "photo": "/staff/photos/guitimliu.webp",
       "socials": [
         {
           "label": "Instagram",
           "icon": "instagram",
-          "href": "https://instagram.com/guitimliu"
+          "href": "https://www.instagram.com/gui.bdd.life/"
         },
         {
           "label": "個人網站",
