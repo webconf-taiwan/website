@@ -15,11 +15,13 @@
       "socials": [
         {
           "icon": "facebook",
-          "label": "Facebook"
+          "label": "Facebook",
+          "href": "https://www.facebook.com/TSMCRecruiterExpress"
         },
         {
           "icon": "youtube",
-          "label": "YouTube"
+          "label": "YouTube",
+          "href": "https://youtube.com/channel/UCYhFHwDOFVUDg7p2e2s5AaQ?si=GD-QEQ9DqjgOxhnh"
         }
       ]
     },
@@ -43,15 +45,18 @@
         },
         {
           "icon": "facebook",
-          "label": "Facebook"
+          "label": "Facebook",
+          "href": "https://www.facebook.com/5xruby"
         },
         {
           "icon": "youtube",
-          "label": "YouTube"
+          "label": "YouTube",
+          "href": "https://www.youtube.com/c/5xruby-edu"
         },
         {
           "icon": "instagram",
-          "label": "Instagram"
+          "label": "Instagram",
+          "href": "https://www.instagram.com/5xcampus/"
         }
       ]
     },
@@ -75,11 +80,18 @@
         },
         {
           "icon": "facebook",
-          "label": "Facebook"
+          "label": "Facebook",
+          "href": "https://www.facebook.com/hexschool"
+        },
+        {
+          "icon": "youtube",
+          "label": "YouTube",
+          "href": "https://www.youtube.com/@hexschool"
         },
         {
           "icon": "instagram",
-          "label": "Instagram"
+          "label": "Instagram",
+          "href": "https://www.instagram.com/hexschool/"
         }
       ]
     },
@@ -88,7 +100,7 @@
       "logo": "/sponsors/悠識學院.svg",
       "logo_color": "/sponsors/悠識學院-color.svg",
       "link": {
-        "href": "https://www.userxper.com/",
+        "href": "https://blog.userxper.com/writer/userxper-edu/",
         "target": "_blank"
       },
       "show_on_home": true,
@@ -99,11 +111,22 @@
         {
           "icon": "globe",
           "label": "官方網站",
-          "href": "https://www.userxper.com/"
+          "href": "https://blog.userxper.com/writer/userxper-edu/"
         },
         {
           "icon": "facebook",
-          "label": "Facebook"
+          "label": "Facebook",
+          "href": "https://www.facebook.com/userxper.tw"
+        },
+        {
+          "icon": "youtube",
+          "label": "YouTube",
+          "href": "https://www.youtube.com/@UserXper"
+        },
+        {
+          "icon": "instagram",
+          "label": "Instagram",
+          "href": "https://www.instagram.com/userxper/"
         }
       ]
     },
@@ -128,15 +151,18 @@
         },
         {
           "icon": "facebook",
-          "label": "Facebook"
+          "label": "Facebook",
+          "href": "https://www.facebook.com/TitansoftTW"
         },
         {
           "icon": "youtube",
-          "label": "YouTube"
+          "label": "YouTube",
+          "href": "https://www.youtube.com/channel/UC_530TqXXizuzA5Ut8wFp4w"
         },
         {
           "icon": "instagram",
-          "label": "Instagram"
+          "label": "Instagram",
+          "href": "https://www.instagram.com/tica_titansoft"
         }
       ]
     },
@@ -160,11 +186,13 @@
         },
         {
           "icon": "facebook",
-          "label": "Facebook"
+          "label": "Facebook",
+          "href": "https://www.facebook.com/nextfortuneTW/"
         },
         {
           "icon": "instagram",
-          "label": "Instagram"
+          "label": "Instagram",
+          "href": "https://www.instagram.com/nextfortune.tw/"
         }
       ]
     },
@@ -194,7 +222,7 @@
       "logo": "/sponsors/知識衛星.svg",
       "logo_color": "/sponsors/知識衛星-color.svg",
       "link": {
-        "href": "https://sat.cool/",
+        "href": "https://sat.cool/home",
         "target": "_blank"
       },
       "show_on_home": true,
@@ -205,11 +233,12 @@
         {
           "icon": "globe",
           "label": "官方網站",
-          "href": "https://sat.cool/"
+          "href": "https://sat.cool/home"
         },
         {
           "icon": "instagram",
-          "label": "Instagram"
+          "label": "Instagram",
+          "href": "https://www.instagram.com/sat_stephen2026/"
         }
       ]
     },
@@ -223,13 +252,19 @@
       "socials": [
         {
           "icon": "globe",
-          "label": "官方網站"
+          "label": "官方網站",
+          "href": "https://monolab.world/zh/"
         },
         {
           "icon": "youtube",
-          "label": "YouTube"
+          "label": "YouTube",
+          "href": "https://www.youtube.com/@MonolabOfficial"
         }
-      ]
+      ],
+      "link": {
+        "target": "_blank",
+        "href": "https://monolab.world/zh/"
+      }
     }
   ],
   "plate": {
