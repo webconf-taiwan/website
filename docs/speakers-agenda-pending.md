@@ -62,8 +62,6 @@
 
 - 陳正瑋、徐方繹的照片已於 2026-11-07 補上，陳欽章的照片已於 2026-11-09 補上。
 - 截圖上被截斷、沒辦法確定的連結，先不放：
-  - 陳正瑋 FB：`facebook.com/are…aptain`
-  - 陳欽章 FB／X：`facebook.com/cas…77chen`、`x.com/cas…77chen`
   - 徐方繹 LinkedIn：`linkedin.com/in/…ishiu/`；FB 欄填的是 `facebook.com/?lo…=zh_TW`（臉書首頁，不是個人頁）
 - 徐方繹介紹最後多一個「T」，判斷是誤植，已拿掉。
 - 名字寫法：排程表寫「Casper Chen」，Notion 標題是「陳欽章」，目前用 Notion 的。
@@ -78,8 +76,6 @@
 ## 8. 2026-11-15 新增講者 Mike Hsu
 
 `mike-hsu`，依 Notion 資料建立，議程 `agenda-47`（講題「當 AI 開始觀測系統，誰來觀測 AI？」），**還沒排時段**。
-
-- FB 連結在截圖上被截斷（`facebook.com/mik…su.775`），先不放。
 
 ## 9. 其他
 
