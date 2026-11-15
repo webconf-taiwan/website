@@ -4,8 +4,9 @@ import staff from '~/constants/data/staff.json'
 definePageMeta({ layout: false })
 usePageSeo('/staff')
 
-// 暫時顯示「即將開放」。正式成員資料確認後改成 false 就會恢復完整頁面。
-const COMING_SOON = true
+// 暫時顯示「即將開放」；網址帶 ?preview 可先檢視完整名單。正式公開時把這行改成 false。
+const route = useRoute()
+const COMING_SOON = computed(() => !('preview' in route.query))
 
 const handleTicket = () => navigateTo('https://5xcamp.us/webconf2026-ticket', { external: true, open: { target: '_blank' } })
 const handleHome = () => navigateTo('/')

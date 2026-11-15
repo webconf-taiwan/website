@@ -25,6 +25,11 @@ const props = defineProps({
   galleryConfig: { type: Object, default: null },
   // 沒有 WebGPU 時 between 區要不要放贊助頁那張花形靜態圖；頁面自己有備援圖就關掉。
   galleryFallback: { type: Boolean, default: true },
+  // 選用：側欄菌落／尾段自由場換成別的構圖（歷屆頁的影片橫帶、照片牆花形），見 AgendaParticleField。
+  railShape: { type: Object, default: null },
+  // false：中段不放左欄卷號，預設 slot 整寬（歷屆頁的回顧影片照設計稿置中；粒子是橫帶不是側欄菌落）。
+  rail: { type: Boolean, default: true },
+  outroShape: { type: Object, default: null },
 })
 
 const { isDesktop, viewportReady } = useViewportMode()
@@ -90,6 +95,7 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
       <CommonAgendaParticleField
         v-if="viewportReady && isDesktop && desktopLook && webgpu === true && !desktopFallback"
         fixed :rail-start="railStart" :gallery-config="galleryConfig" :density="heroDensity"
+        :rail-shape="railShape" :outro-shape="outroShape"
         :field-look="desktopLook"
         @ready="fieldReady" @unavailable="desktopFailed = true"
       />
@@ -116,7 +122,7 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
 
     <section class="plate-page-body-section relative z-10 pb-[120px] lg:pb-0">
       <div data-plate-body class="mx-auto flex max-w-[1440px] flex-col lg:flex-row lg:justify-center">
-        <aside ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[clamp(400px,33.61vw,484px)] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
+        <aside v-if="rail" ref="railRef" class="relative mx-auto w-[calc(100%_-_40px)] pt-8 lg:sticky lg:top-[60px] lg:mx-0 lg:h-[calc(100dvh_-_60px)] lg:w-[clamp(400px,33.61vw,484px)] lg:max-w-none lg:shrink-0 lg:overflow-hidden lg:px-0 lg:pb-7 lg:pl-[60px] lg:pt-8">
           <!-- 左欄寬：1440 時是設計稿的 484，窄一點的桌機跟著縮（33.61vw），
                最窄 400 = 左內距 60 + 篩選面板 300 + 跟右欄留 40，不然中間會空一大塊。 -->
           <!-- 沒有 WebGPU（或減少動態、引擎失敗）時的側欄：跟首頁 PL.IV 同一張菌落圖、
@@ -156,8 +162,8 @@ useDecoReveal({ root: decoRef, inner: decoInnerRef, parallaxEl: decoParallaxRef 
           </div>
         </aside>
 
-        <div class="plate-page-content flex-1 px-0 pb-0 lg:px-0 lg:py-[60px] lg:pr-[60px]">
-          <slot />
+        <div class="plate-page-content flex-1" :class="rail ? 'px-0 pb-0 lg:px-0 lg:py-[60px] lg:pr-[60px]' : 'min-w-0'">
+          <slot :desktop-mode="desktopMode" />
         </div>
       </div>
     </section>

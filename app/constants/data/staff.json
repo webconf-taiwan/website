@@ -1,5 +1,4 @@
 {
-  "is_placeholder": true,
   "plate": {
     "code": "PL. VI",
     "number": "II.",
@@ -21,7 +20,7 @@
   "items": [
     {
       "id": "staff-01",
-      "spec": "SPEC.01",
+      "spec": "STAFF.01",
       "name": "高見龍",
       "role": "掃地兼敲鐘",
       "photo": "/figma/staff/portrait-placeholder.png",
@@ -30,16 +29,6 @@
           "label": "Facebook",
           "icon": "facebook",
           "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
         },
         {
           "label": "Instagram",
@@ -55,33 +44,169 @@
     },
     {
       "id": "staff-02",
-      "spec": "SPEC.01",
+      "spec": "STAFF.02",
       "name": "廖洧杰",
-      "role": "六角學院校長",
+      "role": "專業推坑王",
       "photo": "/staff/photos/gonsakon.webp",
       "socials": [
         {
           "label": "Facebook",
           "icon": "facebook",
           "href": "https://www.facebook.com/sfismy"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@gonsakon"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/gonsakon/"
         }
       ]
     },
     {
       "id": "staff-03",
-      "spec": "SPEC.01",
+      "spec": "STAFF.03",
+      "name": "理查哥",
+      "role": "UX 土地公",
+      "photo": "/staff/photos/uxrichard.webp",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": "https://www.facebook.com/uxrichard"
+        }
+      ]
+    },
+    {
+      "id": "staff-04",
+      "spec": "STAFF.04",
+      "name": "Sabrina",
+      "role": "萬年工頭",
+      "photo": "/staff/photos/sabrina.webp",
+      "socials": []
+    },
+    {
+      "id": "staff-05",
+      "spec": "STAFF.05",
+      "name": "Melissa",
+      "role": "錢錢擔當",
+      "photo": "/staff/photos/melissa.webp",
+      "socials": []
+    },
+    {
+      "id": "staff-06",
+      "spec": "STAFF.06",
+      "name": "eddie",
+      "role": "文案煉金術師",
+      "photo": "/staff/photos/eddie.webp",
+      "socials": []
+    },
+    {
+      "id": "staff-07",
+      "spec": "STAFF.07",
+      "name": "薛羽婷",
+      "role": "產品軌講者獵人",
+      "photo": "/staff/photos/yuting-syue.webp",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": "https://www.facebook.com/yutingsyuesha/"
+        }
+      ]
+    },
+    {
+      "id": "staff-08",
+      "spec": "STAFF.08",
+      "name": "Eileen Huang",
+      "role": "TWPM 管理員",
+      "photo": "/staff/photos/eileen-huang.webp",
+      "socials": [
+        {
+          "label": "TWPM Facebook 社團",
+          "icon": "facebook",
+          "href": "https://www.facebook.com/groups/856286435717270/"
+        }
+      ]
+    },
+    {
+      "id": "staff-09",
+      "spec": "STAFF.09",
+      "name": "陳彥宇",
+      "role": "設計老司機",
+      "photo": "/staff/photos/yanyu-chen.webp",
+      "socials": [
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": "https://www.instagram.com/karasnov3"
+        }
+      ]
+    },
+    {
+      "id": "staff-10",
+      "spec": "STAFF.10",
+      "name": "EG",
+      "role": "UI/UX 設計師",
+      "photo": "/staff/photos/eg.webp",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": "https://www.facebook.com/eg.pan"
+        },
+        {
+          "label": "個人網站",
+          "icon": "globe",
+          "href": "https://pantomimeg.com/"
+        }
+      ]
+    },
+    {
+      "id": "staff-11",
+      "spec": "STAFF.11",
+      "name": "豪萱",
+      "role": "UI/UX 設計師",
+      "photo": "/staff/photos/hao-xuan.webp",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": "https://www.facebook.com/zyi870213"
+        }
+      ]
+    },
+    {
+      "id": "staff-12",
+      "spec": "STAFF.12",
+      "name": "Nina",
+      "role": "UI/UX 設計師",
+      "photo": "/staff/photos/nina.webp",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": "https://www.facebook.com/yinshu.huang/"
+        }
+      ]
+    },
+    {
+      "id": "staff-13",
+      "spec": "STAFF.13",
+      "name": "楊正弘",
+      "role": "視覺設計師",
+      "photo": "/staff/photos/scott-yang.webp",
+      "socials": [
+        {
+          "label": "Facebook",
+          "icon": "facebook",
+          "href": "https://www.facebook.com/scottyang0011"
+        },
+        {
+          "label": "Instagram",
+          "icon": "instagram",
+          "href": "https://www.instagram.com/scott23050000/"
+        }
+      ]
+    },
+    {
+      "id": "staff-14",
+      "spec": "STAFF.14",
       "name": "Jordan Tseng",
-      "role": "版塊設計・軟體工程師",
+      "role": "軟體工程師",
       "photo": "/staff/photos/jordan-tseng.webp",
       "socials": [
         {
@@ -97,10 +222,10 @@
       ]
     },
     {
-      "id": "staff-04",
-      "spec": "SPEC.01",
+      "id": "staff-15",
+      "spec": "STAFF.15",
       "name": "Gui 劉桂廷",
-      "role": "版塊設計・軟體工程師",
+      "role": "軟體工程師",
       "photo": "/staff/photos/guitimliu.webp",
       "socials": [
         {
@@ -112,312 +237,6 @@
           "label": "個人網站",
           "icon": "globe",
           "href": "https://guiblogs.com/"
-        }
-      ]
-    },
-    {
-      "id": "staff-05",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-06",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-07",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-08",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-09",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-10",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-11",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-12",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
-        }
-      ]
-    },
-    {
-      "id": "staff-13",
-      "spec": "SPEC.01",
-      "name": "高見龍",
-      "role": "掃地兼敲鐘",
-      "photo": "/figma/staff/portrait-placeholder.png",
-      "socials": [
-        {
-          "label": "Facebook",
-          "icon": "facebook",
-          "href": "https://www.facebook.com/eddiekao"
-        },
-        {
-          "label": "Threads",
-          "icon": "threads",
-          "href": "https://www.threads.com/@kaochenlong"
-        },
-        {
-          "label": "LinkedIn",
-          "icon": "linkedin",
-          "href": "https://www.linkedin.com/in/kaochenlong/"
-        },
-        {
-          "label": "Instagram",
-          "icon": "instagram",
-          "href": "https://www.instagram.com/kaochenlong/"
-        },
-        {
-          "label": "X",
-          "icon": "twitter-x",
-          "href": "https://x.com/eddiekao"
         }
       ]
     }

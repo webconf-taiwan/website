@@ -718,6 +718,21 @@
       "skills": ["AI", "軟體設計", "設計實務", "產品思維", "產業應用", "團隊管理"],
       "photo": "/speakers/photos/bastiane-huang.webp",
       "show_on_home": false
+    },
+    {
+      "id": "mike-hsu",
+      "name": "Mike Hsu",
+      "org": "Opennet",
+      "role": "DevOps",
+      "bio": "DevOps / SRE 工程師，長期投入 Kubernetes、雲原生架構與可觀測性領域，致力於讓複雜系統變得更穩定、透明且容易理解。從 Grafana 生態系的可觀測平台建置，到近年 AI Agent 與 LLM 基礎設施的研究與實踐，持續探索如何透過技術整合，改善工程師理解、管理與操作系統的方式。\n\n除了日常工程實踐，也熱衷於開源技術與社群交流，同時擔任官方 Grafana & Friends Taipei 社群主辦人，喜歡分享實戰經驗、交流不同觀點，並持續從中尋找新的技術可能性。",
+      "links": {
+        "threads": "https://threads.com/@hsu0618",
+        "instagram": "https://instagram.com/hsu0618"
+      },
+      "tag": "Speaker",
+      "skills": ["AI", "DevOps", "Backend"],
+      "photo": "/speakers/photos/mike-hsu.webp",
+      "show_on_home": false
     }
   ]
 }

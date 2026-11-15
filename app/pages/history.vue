@@ -1,6 +1,8 @@
 <script setup>
+import galleryConfig from '~/constants/data/history-particle.json'
+import { historyRibbonShape, historyFlowerShape } from '~/components/History/particleShapes'
+
 const { default: history } = await import('~/constants/data/history.json')
-const { isDesktop, viewportReady } = useViewportMode()
 const gallery = { ...history.gallery, photos: history.gallery.photos.map(photo => ({ ...photo, src: assetUrl(photo.src) })) }
 const title = '歷屆回顧'
 const description = '回顧 WebConf Taiwan 2025、2024、2023 與 2013 的精彩篇章，觀看活動回顧影片與歷年活動花絮。'
@@ -10,21 +12,43 @@ useSchemaOrg([defineWebPage({ name: fullTitle, description })])
 </script>
 
 <template>
-  <HistoryParticleStage v-slot="{ desktopMode }" class="history-page">
-    <CommonPlateHero
-      :plate="history.plate" title="HISTORY" subtitle="歷屆回顧"
-      :corner-left="history.corner_left" :corner-right="history.corner_right" aria-label="歷屆回顧"
-      :desktop-mode="desktopMode"
-    />
-    <HistoryChapters :data="history" />
-    <HistoryRecap :data="history.recap" />
-    <div class="history-gallery relative z-10">
-      <ClientOnly>
-        <CommonPlateField v-if="viewportReady && isDesktop && desktopMode === 'fallback'" variant="gallery" media-only />
-      </ClientOnly>
-      <LazyHistoryPhotoWall :hydrate-on-visible="{ rootMargin: '400px' }" :data="gallery" heading-id="history-gallery-heading" />
-    </div>
-  </HistoryParticleStage>
+  <!-- 粒子一路演化（桌機有 WebGPU）：
+         hero 自由場 → 歷屆卡片那區收攏到卡片後方（同場域頁，history-particle.json）
+         → 回顧影片那區拉成兩條橫帶（取代側欄菌落）→ 照片牆收成花形（取代散回自由場）。
+       後兩區的形狀見 History/particleShapes.js；力場同自由場、握力與閃動同側欄菌落，所以形狀在、粒子也一直在流動。
+       主視覺與固定粒子場都在 CommonPlatePage（:rail="false"：影片區照設計稿置中，不放左欄卷號）。 -->
+  <CommonPlatePage
+    class="history-page"
+    :plate="history.plate"
+    title="HISTORY"
+    subtitle="歷屆回顧"
+    aria-label="歷屆回顧"
+    :corner-left="history.corner_left"
+    :corner-right="history.corner_right"
+    rail-start="body"
+    :rail="false"
+    :gallery-config="galleryConfig"
+    :gallery-fallback="false"
+    :rail-shape="historyRibbonShape"
+    :outro-shape="historyFlowerShape"
+  >
+    <template #between="{ desktopMode }">
+      <HistoryChapters :data="history" :desktop-mode="desktopMode" />
+    </template>
+
+    <template #default="{ desktopMode }">
+      <HistoryRecap :data="history.recap" :desktop-mode="desktopMode" />
+    </template>
+
+    <template #after="{ desktopMode }">
+      <div class="history-gallery relative">
+        <ClientOnly>
+          <CommonPlateField v-if="desktopMode === 'fallback'" variant="gallery" media-only />
+        </ClientOnly>
+        <LazyHistoryPhotoWall :hydrate-on-visible="{ rootMargin: '400px' }" :data="gallery" heading-id="history-gallery-heading" />
+      </div>
+    </template>
+  </CommonPlatePage>
 </template>
 
 <style scoped>

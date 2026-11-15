@@ -1,0 +1,9 @@
+{
+  "schema": "webconf-sandbox-params",
+  "v": 1,
+  "name": "history-gather",
+  "sim": { "cameraZoom": 1.4 },
+  "behavior": {},
+  "gather": { "amount": 0.3, "pull": 2.5, "grip": 10 },
+  "layout": { "x": 0.5, "radius": 0.25, "top": 200 }
+}

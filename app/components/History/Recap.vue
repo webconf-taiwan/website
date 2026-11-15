@@ -1,5 +1,10 @@
 <script setup>
-defineProps({ data: { type: Object, required: true } })
+// desktopMode 是 CommonPlatePage 的 'pending' | 'gpu' | 'fallback'：桌機有粒子時，影片後方的橫帶由粒子場畫，
+// 只有確定走備援才放這張靜態橫帶（初始化期間先不放，免得閃一下再被粒子取代）。
+const props = defineProps({
+  data: { type: Object, required: true },
+  desktopMode: { type: String, default: 'pending' },
+})
 const rootRef = ref(null)
 const playing = ref(false)
 useFadeIn(rootRef)
@@ -7,7 +12,7 @@ useFadeIn(rootRef)
 
 <template>
   <section ref="rootRef" class="history-recap relative mx-auto max-w-[1440px]" aria-labelledby="history-recap-heading">
-    <HistoryRibbon variant="video" class="video-ribbon hidden lg:block" />
+    <HistoryRibbon v-if="props.desktopMode === 'fallback'" variant="video" class="video-ribbon hidden lg:block" />
     <div class="recap-content relative mx-auto">
       <h2 id="history-recap-heading" data-fade="in" class="recap-label flex flex-wrap items-center gap-x-2 gap-y-1 text-meta">
         <span>WebConf Taiwan</span><span class="text-accent-1" aria-hidden="true">·</span>

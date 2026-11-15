@@ -1,13 +1,20 @@
 <script setup>
-defineProps({
+const props = defineProps({
   data: { type: Object, required: true },
 })
+
+const isWebp = computed(() => /\.webp$/i.test(props.data.photo))
+const fallbackSrc = computed(() => props.data.photo.replace(/\.webp$/i, '.jpg'))
 </script>
 
 <template>
   <article class="staff-profile">
     <div data-fade="in" class="staff-portrait">
-      <img :src="data.photo" :alt="data.name" width="401" height="572" loading="lazy" decoding="async">
+      <!-- WebP 優先、不支援的瀏覽器退回同名 .jpg（約定：每個 .webp 旁邊都要有同名 .jpg，同講者照片） -->
+      <picture>
+        <source v-if="isWebp" :srcset="data.photo" type="image/webp">
+        <img :src="fallbackSrc" :alt="data.name" width="401" height="572" loading="lazy" decoding="async">
+      </picture>
       <p class="staff-spec text-meta text-pre-800/[62%]">{{ data.spec }}</p>
     </div>
 
