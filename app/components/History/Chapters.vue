@@ -11,13 +11,12 @@ const progress = ref(0)
 const thumbSize = ref(60)
 const { isDesktop } = useViewportMode()
 const inView = ref(false)
-const hovered = ref(false)
 const focused = ref(false)
 const interacting = ref(false)
 const dragging = ref(false)
 const reduced = ref(true)
 const pageVisible = ref(true)
-const canAdvance = computed(() => isDesktop.value && inView.value && thumbSize.value < 100 && !hovered.value && !focused.value && !interacting.value && !dragging.value && !reduced.value && pageVisible.value)
+const canAdvance = computed(() => isDesktop.value && inView.value && thumbSize.value < 100 && !focused.value && !interacting.value && !dragging.value && !reduced.value && pageVisible.value)
 useFadeIn(rootRef)
 let observer
 let visibilityObserver
@@ -43,11 +42,16 @@ watch(canAdvance, scheduleAdvance)
 function holdAutoplay() {
   interacting.value = true
   clearTimeout(interactionTimer)
-  interactionTimer = setTimeout(() => { interacting.value = false }, 8000)
+  interactionTimer = setTimeout(() => { interacting.value = false }, 500)
+}
+function onWheel(event) {
+  // 一般往下閱讀不暫停橫向輪播；只有橫向滾動才視為操作卡片。
+  if (Math.abs(event.deltaX) > Math.abs(event.deltaY) || event.shiftKey) holdAutoplay()
 }
 function motionChanged() { reduced.value = motionMedia.matches }
 function visibilityChanged() { pageVisible.value = !document.hidden }
-function focusOut(event) { focused.value = rootRef.value.contains(event.relatedTarget) }
+function focusIn(event) { focused.value = event.target.matches(':focus-visible') }
+function focusOut(event) { focused.value = !!event.relatedTarget?.matches?.(':focus-visible') && rootRef.value.contains(event.relatedTarget) }
 
 function imageSources(src) {
   return `${assetUrl(src.replace(/\.webp$/, '-800.webp'))} 800w, ${assetUrl(src)} 1200w`
@@ -72,10 +76,12 @@ function onKey(event) {
   const targets = { ArrowRight: track.scrollLeft + step, ArrowLeft: track.scrollLeft - step, Home: 0, End: track.scrollWidth }
   if (!(event.key in targets)) return
   event.preventDefault()
+  focused.value = true
   holdAutoplay()
   track.scrollTo({ left: targets[event.key], behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' })
 }
 function startDrag(event) {
+  focused.value = false
   holdAutoplay()
   if (event.button !== 0 || event.pointerType !== 'mouse' || trackRef.value.scrollWidth <= trackRef.value.clientWidth) return
   moved = false
@@ -125,7 +131,7 @@ onBeforeUnmount(() => {
 
 <template>
   <section ref="rootRef" data-plate-gallery class="history-chapters relative" :class="{ 'history-chapters--static': props.desktopMode === 'fallback' }"
-    aria-labelledby="history-chapters-heading" @focusin="focused = true" @focusout="focusOut">
+    aria-labelledby="history-chapters-heading" @focusin="focusIn" @focusout="focusOut">
     <HistoryRibbon class="chapter-ribbon" />
     <div class="photo-board relative">
     <div class="chapter-header relative">
@@ -141,9 +147,8 @@ onBeforeUnmount(() => {
     <div
       ref="trackRef" class="history-track relative" tabindex="0" role="region"
       aria-label="歷屆 WebConf；桌機可左右拖曳或使用方向鍵瀏覽" data-lenis-prevent-horizontal
-      @pointerenter="hovered = $event.pointerType !== 'touch'" @pointerleave="hovered = false"
       @scroll.passive="updateProgress" @keydown="onKey"
-      @wheel.passive="holdAutoplay"
+      @wheel.passive="onWheel"
       @pointerdown="startDrag" @pointermove="drag" @pointerup="endDrag" @pointercancel="endDrag"
       @lostpointercapture="endDrag" @click.capture="onClick" @dragstart.prevent
     >
