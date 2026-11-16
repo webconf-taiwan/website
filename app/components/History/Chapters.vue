@@ -1,6 +1,5 @@
 <script setup>
-// 桌機有 WebGPU 時，卡片後方那團粒子是 hero 收攏過來的（CommonPlatePage → AgendaParticleField 的 galleryMix，
-// gather 模式同場域頁）。掛點沿用照片牆的：[data-plate-gallery] 這一區、.photo-board 定位框、.photo-heading 標題。
+// 桌機有 WebGPU 時，hero 退場後接上與回顧影片相同的雙橫帶，持續沿用共用粒子場。
 // desktopMode 是 CommonPlatePage 的 'pending' | 'gpu' | 'fallback'；桌機只有 fallback 才放靜態橫帶。
 const props = defineProps({
   data: { type: Object, required: true },

@@ -250,14 +250,15 @@ let regionSettling = false
 // --- DOM：元素只查一次，矩形一幀只量一次 ------------------------------------
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
-const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null, free: undefined, outro: undefined, outroBoard: null }
-const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, free: null, outro: null, outroBoard: null, canvas: null }
+const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null, free: undefined, outro: undefined, outroBoard: null, railEnterAnchor: null }
+const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, free: null, outro: null, outroBoard: null, canvas: null, railEnterAnchor: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
   if (!dom.page) dom.page = canvasRef.value?.closest('[data-plate-page]') || null
   if (!dom.body) dom.body = document.querySelector('[data-plate-body]')
   if (!dom.aside && dom.body) dom.aside = dom.body.querySelector(':scope > aside')
+  if (props.railShape?.enterAnchor && !dom.railEnterAnchor) dom.railEnterAnchor = dom.page?.querySelector(props.railShape.enterAnchor)
   if (galleryConfig && !dom.gallery) {
     dom.gallery = dom.page?.querySelector('[data-plate-gallery]')
     dom.board = dom.gallery?.querySelector('.photo-board') || null
@@ -281,6 +282,7 @@ function measure () {
   if (dom.outro) rects.outro = dom.outro.getBoundingClientRect()
   if (dom.free) rects.free = dom.free.getBoundingClientRect()
   if (dom.outroBoard) rects.outroBoard = dom.outroBoard.getBoundingClientRect()
+  if (dom.railEnterAnchor) rects.railEnterAnchor = dom.railEnterAnchor.getBoundingClientRect()
 }
 
 // --- CSS 變數：動畫數值直接寫在 wrapper 上，Vue 不參與動畫迴圈 ----------------
@@ -412,9 +414,13 @@ function scrollProgress () {
   const hero = rects.hero
   if (!hero?.height) return 0
   const boundary = props.railStart === 'body' ? (rects.body?.top ?? hero.bottom) : hero.bottom
-  // 照片區右侧的場在正文入鏡時就往左移，接到側欄後維持 sticky。
-  const start = galleryConfig ? Math.min(window.innerHeight - 120, hero.height + 200) : hero.height - 120
-  const end = galleryConfig ? 160 : 60
+  // 歷屆橫帶跟著內容進場：開始捲動就收攏，區塊頂端到視窗 35% 時完成。
+  // 舊門檻只看 Hero 高度，較高的視窗已看到卡片時仍停在自由場。
+  // 其他頁的照片區／側欄保留原切換範圍。
+  const start = props.railShape ? hero.height
+    : galleryConfig ? Math.min(window.innerHeight - 120, hero.height + 200) : hero.height - 120
+  const end = props.railShape ? Math.min(start - 1, Math.max(60, window.innerHeight * 0.35))
+    : galleryConfig ? 160 : 60
   const p = Math.max(0, Math.min(1, (start - boundary) / Math.max(1, start - end)))
   return p * p * (3 - 2 * p)
 }
@@ -764,6 +770,11 @@ function step (dt) {
 
   // Follow the sticky rail as its containing section releases above the footer.
   railOffset = Math.min(0, (rects.aside?.top ?? 60) - 60) * railMix
+  // 提早收攏時先跟著卡片背景進場，到視窗中央後才固定，避免橫帶跑到標題後方。
+  if (rects.railEnterAnchor) {
+    const center = rects.railEnterAnchor.top + rects.railEnterAnchor.height / 2
+    railOffset = Math.max(0, center - canvasHeight / 2) * railMix
+  }
   // 側欄換成構圖（railShape）或尾段有構圖（outroShape）時：握力與閃動照菌落（形狀撐得住、目標點一直在晃），
   // 但力場、點徑、透明度維持自由場那套 —— 要的是持續流動，不是細胞紋理。
   const shapedOutro = outroFlower ? outroMix : 0
@@ -1166,7 +1177,7 @@ defineExpose({ backend })
 </script>
 
 <template>
-  <div ref="wrapRef" aria-hidden="true" class="agenda-field pointer-events-none" :class="[wrapClass, { 'agenda-field--gallery': fixed && galleryConfig }]">
+  <div ref="wrapRef" aria-hidden="true" class="agenda-field pointer-events-none" :class="[wrapClass, { 'agenda-field--gallery': fixed && (galleryConfig || outroShape) }]">
     <div
       v-if="failed || reducedMotion"
       class="agenda-hero-artwork absolute inset-x-0 top-0 h-[550px] overflow-hidden transition-opacity duration-700"
