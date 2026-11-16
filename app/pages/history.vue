@@ -3,11 +3,7 @@ import { historyRibbonShape, historyFlowerShape } from '~/components/History/par
 
 const { default: history } = await import('~/constants/data/history.json')
 const gallery = { ...history.gallery, photos: history.gallery.photos.map(photo => ({ ...photo, src: assetUrl(photo.src) })) }
-const title = '歷屆回顧'
-const description = '回顧 WebConf Taiwan 2025、2024、2023 與 2013 的精彩篇章，觀看活動回顧影片與歷年活動花絮。'
-const fullTitle = `${title} | ${useSeoData().site.name}`
-useSeoMeta({ title, description, ogTitle: fullTitle, ogDescription: description, twitterTitle: fullTitle, twitterDescription: description })
-useSchemaOrg([defineWebPage({ name: fullTitle, description })])
+usePageSeo('/history')
 </script>
 
 <template>

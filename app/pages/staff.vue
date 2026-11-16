@@ -4,13 +4,6 @@ import staff from '~/constants/data/staff.json'
 definePageMeta({ layout: false })
 usePageSeo('/staff')
 
-// 暫時顯示「即將開放」；網址帶 ?preview 可先檢視完整名單。正式公開時把這行改成 false。
-const route = useRoute()
-const COMING_SOON = computed(() => !('preview' in route.query))
-
-const handleTicket = () => navigateTo('https://5xcamp.us/webconf2026-ticket', { external: true, open: { target: '_blank' } })
-const handleHome = () => navigateTo('/')
-
 // 進場同講者頁：標題區錯開 0.1 秒，名單錯開 0.04 秒（每張卡片裡照片、名字、社群各算一個）
 const introRef = ref(null)
 const listRef = ref(null)
@@ -19,15 +12,7 @@ useFadeIn(listRef, { step: 0.04 })
 </script>
 
 <template>
-  <CommonTemporaryPage
-    v-if="COMING_SOON"
-    variant="coming-soon"
-    title="Coming Soon..."
-    subtitle="精彩內容即將上線，敬請期待！"
-    @mobile-action="handleTicket"
-    @desktop-action="handleHome"
-  />
-  <div v-else class="staff-layout">
+  <div class="staff-layout">
     <NuxtLayout name="default">
       <CommonPlatePage
         class="staff-page"
