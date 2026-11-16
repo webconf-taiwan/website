@@ -6,18 +6,30 @@ const props = defineProps({
 const expanded = ref(false)
 const cardRef = ref(null)
 const nuxtApp = useNuxtApp()
+const { isDesktop } = useViewportMode()
 const descriptionId = `sponsor-description-${useId()}`
 const paragraphs = computed(() => props.data.description?.split('\n\n').filter(Boolean) || [])
+let descriptionTransitionPending = false
 
 async function toggleDescription() {
-  const collapsing = expanded.value
+  descriptionTransitionPending = true
   expanded.value = !expanded.value
   await nextTick()
+  if (isDesktop.value || matchMedia('(prefers-reduced-motion: reduce)').matches) syncDescriptionLayout()
+}
+
+function descriptionTransitionEnded(event) {
+  // 只接續使用者的展開／收合；跨桌機斷點產生的 transition 不應捲動頁面。
+  if (descriptionTransitionPending && event.propertyName === 'grid-template-rows') syncDescriptionLayout()
+}
+
+function syncDescriptionLayout() {
+  descriptionTransitionPending = false
   nuxtApp.$lenis?.resize()
   nuxtApp.$ScrollTrigger?.refresh()
 
   // 長介紹收合後，卡片可能已在視窗上方；讓讀者仍能看到剛操作的卡片。
-  if (collapsing && cardRef.value) {
+  if (!expanded.value && cardRef.value) {
     const offset = (document.querySelector('header')?.getBoundingClientRect().height || 0) + 16
     const top = cardRef.value.getBoundingClientRect().top
     if (top < offset) {
@@ -54,23 +66,29 @@ async function toggleDescription() {
       <ul v-if="data.socials?.length" class="sponsor-card-socials" :aria-label="`${data.name}的相關連結`">
         <li v-for="social in data.socials" :key="social.icon">
           <a v-if="social.href" :href="social.href" :aria-label="`${data.name}的 ${social.label}（另開視窗）`" target="_blank" rel="noopener noreferrer" class="sponsor-card-social">
-            <img v-if="social.icon === 'youtube'" src="/sponsors/youtube.svg" width="24" height="24" alt="">
+            <span v-if="social.icon === 'youtube'" class="sponsor-card-youtube" aria-hidden="true" />
             <AtomIcon v-else :name="social.icon" :class="{ 'p-[3px]': social.icon === 'globe' }" />
           </a>
           <span v-else class="sponsor-card-social" role="img" :aria-label="`${social.label} 網址待提供`">
-            <img v-if="social.icon === 'youtube'" src="/sponsors/youtube.svg" width="24" height="24" alt="">
+            <span v-if="social.icon === 'youtube'" class="sponsor-card-youtube" aria-hidden="true" />
             <AtomIcon v-else :name="social.icon" :class="{ 'p-[3px]': social.icon === 'globe' }" />
           </span>
         </li>
       </ul>
 
-      <div v-if="paragraphs.length" :id="descriptionId" class="sponsor-card-description text-zh-body-md text-pre-800/[62%]" :class="{ 'is-expanded': expanded }">
-        <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+      <div v-if="paragraphs.length" class="sponsor-card-disclosure">
+        <div :id="descriptionId" class="sponsor-card-description text-zh-body-md text-pre-800/[62%]" :class="{ 'is-expanded': expanded }" @transitionend.self="descriptionTransitionEnded">
+          <div class="sponsor-card-description-inner">
+            <div class="sponsor-card-description-copy">
+              <p v-for="(paragraph, index) in paragraphs" :key="index">{{ paragraph }}</p>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="sponsor-card-toggle text-zh-btn text-pre-800/[62%]" :aria-expanded="expanded" :aria-controls="descriptionId" @click="toggleDescription">
+          {{ expanded ? '收合詳細介紹' : '展開詳細介紹' }}
+          <AtomIcon :name="expanded ? 'minus' : 'plus'" class="size-5" />
+        </button>
       </div>
-      <button v-if="paragraphs.length" type="button" class="sponsor-card-toggle text-zh-btn text-pre-800/[62%]" :aria-expanded="expanded" :aria-controls="descriptionId" @click="toggleDescription">
-        {{ expanded ? '收合詳細介紹' : '展開詳細介紹' }}
-        <AtomIcon :name="expanded ? 'minus' : 'plus'" class="size-5" />
-      </button>
     </div>
   </article>
 </template>
@@ -87,14 +105,19 @@ async function toggleDescription() {
 .sponsor-card-heading h3 { min-width: 0; overflow-wrap: anywhere; }
 .sponsor-card-badge { flex-shrink: 0; margin-block: 4px; padding: 2px 4px; color: #0a0a0c; background: #efe6d2; white-space: nowrap; }
 .sponsor-card-socials { display: flex; flex-wrap: wrap; gap: 4px; border-top: 1px dashed rgb(239 230 210 / 35%); padding-top: 12px; }
-.sponsor-card-social { position: relative; display: grid; width: 28px; height: 28px; place-items: center; }
-.sponsor-card-description { display: none; overflow-wrap: anywhere; }
-.sponsor-card-description.is-expanded { display: block; }
+.sponsor-card-social { position: relative; display: grid; width: 28px; height: 28px; place-items: center; transition: color 150ms; }
+.sponsor-card-youtube { display: block; width: 24px; height: 24px; background: currentColor; mask: url('/sponsors/youtube.svg') center / contain no-repeat; }
+/* 同首頁手機票券：0fr / 1fr 依內容高度展開，內層收住溢出及段落留白。 */
+.sponsor-card-description { display: grid; grid-template-rows: 0fr; opacity: 0; visibility: hidden; overflow-wrap: anywhere; transition: grid-template-rows 300ms ease-out, opacity 300ms ease-out, visibility 300ms; }
+.sponsor-card-description.is-expanded { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+.sponsor-card-description-inner { min-height: 0; overflow: hidden; }
+.sponsor-card-description-copy { padding-bottom: 16px; }
 .sponsor-card-description p + p { margin-top: 1.6em; }
-.sponsor-card-toggle { position: relative; display: flex; align-items: center; justify-content: center; align-self: stretch; gap: 4px; min-height: 20px; font-weight: 500; touch-action: manipulation; }
+.sponsor-card-toggle { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; gap: 4px; min-height: 20px; font-weight: 500; touch-action: manipulation; }
 .sponsor-card-toggle::after, a.sponsor-card-social::after { content: ''; position: absolute; inset: -8px 0; }
 .sponsor-card-toggle::after { bottom: -16px; }
 .sponsor-card a:focus-visible, .sponsor-card-toggle:focus-visible { outline: 1px solid currentColor; outline-offset: 4px; }
+a.sponsor-card-social:focus-visible { color: #7cc8f2; }
 
 @media (hover: hover) {
   .sponsor-card a:hover, .sponsor-card-toggle:hover { color: #7cc8f2; }
@@ -104,7 +127,12 @@ async function toggleDescription() {
   .sponsor-card-logo { width: 88%; height: 220px; }
   .sponsor-card-logo img { height: 220px; }
   .sponsor-card-logo-mask { width: 332.32px; height: 172.33px; }
-  .sponsor-card-description { display: block; }
+  .sponsor-card-description { grid-template-rows: 1fr; opacity: 1; visibility: visible; }
+  .sponsor-card-description-copy { padding-bottom: 0; }
   .sponsor-card-toggle { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sponsor-card-description, .sponsor-card-social { transition: none; }
 }
 </style>
