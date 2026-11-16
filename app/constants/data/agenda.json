@@ -40,7 +40,7 @@
       "date": "2026-12-12",
       "slots": [
         { "start": "09:00", "end": "09:45", "sessions": { "m": "agenda-08", "f": "agenda-38", "a2": "agenda-46" } },
-        { "start": "10:00", "end": "10:45", "sessions": { "m": null, "f": "agenda-25", "a2": "agenda-26" } },
+        { "start": "10:00", "end": "10:45", "sessions": { "m": "agenda-47", "f": "agenda-25", "a2": "agenda-26" } },
         { "start": "10:55", "end": "11:40", "sessions": { "m": "agenda-02", "f": "agenda-27", "a2": "agenda-28" } },
         { "start": "11:50", "end": "12:35", "sessions": { "m": "agenda-29", "f": "agenda-30", "a2": "agenda-44" } },
         { "type": "break", "label": "午休時間" },
