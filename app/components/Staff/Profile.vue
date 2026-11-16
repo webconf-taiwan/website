@@ -42,6 +42,7 @@ const fallbackSrc = computed(() => props.data.photo.replace(/\.webp$/i, '.jpg'))
           </span>
         </li>
       </ul>
+      <div v-else data-fade="in" class="staff-socials" aria-hidden="true" />
     </div>
   </article>
 </template>
@@ -58,13 +59,11 @@ const fallbackSrc = computed(() => props.data.photo.replace(/\.webp$/i, '.jpg'))
 }
 .staff-portrait img {
   position: absolute;
-  top: -3.88%;
-  left: 50%;
-  width: 101.78%;
-  max-width: none;
-  height: 127.18%;
-  transform: translateX(-50%);
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
+  object-position: center;
 }
 .staff-spec { display: none; }
 .staff-details { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 8px; }
@@ -78,12 +77,6 @@ const fallbackSrc = computed(() => props.data.photo.replace(/\.webp$/i, '.jpg'))
 @media (min-width: 1024px) {
   .staff-profile { min-height: 354px; flex-direction: column; gap: 14px; padding: 0; }
   .staff-portrait { flex: none; width: 100%; }
-  .staff-portrait img {
-    top: calc(-3.88% - 0.22px);
-    left: calc(50% + 0.49px);
-    width: calc(101.78% + 0.41px);
-    height: calc(127.18% + 0.51px);
-  }
   .staff-spec { display: block; position: absolute; top: 3px; left: 7px; }
   .staff-details { flex: none; width: 100%; gap: 12px; }
   .staff-details h3 { line-height: 26px; }
@@ -96,12 +89,6 @@ const fallbackSrc = computed(() => props.data.photo.replace(/\.webp$/i, '.jpg'))
   .staff-details p { line-height: 20px; }
   .staff-socials { padding-top: 7px; }
   .staff-portrait { border-width: 0.485px; }
-  .staff-portrait img {
-    top: calc(-3.88% - 0.52px);
-    left: calc(50% + 1.18px);
-    width: calc(101.78% + 0.98px);
-    height: calc(127.18% + 1.23px);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
