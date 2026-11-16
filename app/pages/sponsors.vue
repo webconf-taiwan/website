@@ -7,7 +7,9 @@ const groups = (sponsors.groups || []).map(group => ({
   items: group.item_ids.map(id => byId.get(id)).filter(Boolean),
 })).filter(group => group.items.length)
 const passionSupporters = sponsors.passion_supporters || []
-const joinPlate = { ...sponsors.plate, number: passionSupporters.length ? 'VI.' : 'V.', label: 'JOIN US' }
+// 暫時隱藏「熱情贊助」名單，資料與元件保留供日後恢復。
+const showPassionSupporters = false
+const joinPlate = { ...sponsors.plate, number: showPassionSupporters && passionSupporters.length ? 'VI.' : 'V.', label: 'JOIN US' }
 const contentRef = ref(null)
 useFadeIn(contentRef)
 
@@ -57,7 +59,7 @@ usePageSeo('/sponsors')
             :items="group.items"
             :columns="group.columns"
           />
-          <SponsorsPassionSponsors :items="passionSupporters" />
+          <SponsorsPassionSponsors v-if="showPassionSupporters" :items="passionSupporters" />
         </div>
       </div>
     </template>
