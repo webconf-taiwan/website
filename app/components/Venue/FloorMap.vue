@@ -6,7 +6,7 @@
 // 窄視窗：每棟一張卡片直排，點卡片開燈箱看大圖，燈箱底下一排縮圖可以切換（設計稿「放大圖片」）。
 //
 // 背景：桌機有 WebGPU 時是側欄菌落散回來的自由場（CommonPlatePage 的 after 區，
-// AgendaParticleField 的 outroMix）；沒有 WebGPU 放首頁那支自由場影片，窄視窗放影片的定格圖。
+// AgendaParticleField 的 outroMix）；沒有 WebGPU 與窄視窗都用首頁自由場影片，保持一個視窗高。
 const props = defineProps({
   data: { type: Object, required: true },
   desktopMode: { type: String, default: 'pending' },
@@ -33,12 +33,11 @@ const inView = ref(false)
 // 底圖進場：這一區頂端進到畫面 85% 就淡入，播一次
 const bgShown = ref(false)
 let bgObserver = null
-// 窄視窗的粒子場等這一區快進畫面（前 600px）才建引擎，不跟 hero 那張搶進站時的 GPU
+// 窄視窗的背景影片等這一區快進畫面（前 600px）才掛載。
 const nearView = ref(false)
 let nearObserver = null
-// PlateField 回報的實際模式（webgpu / video / poster…）；它退到 poster 時改放設計稿底圖
-const mobileBackend = ref('')
-const showStaticBg = computed(() => viewportReady.value && (reducedMotion.value || (!isDesktop.value && mobileBackend.value === 'poster')))
+// 桌機減少動態時保留原底圖；手機由影片元件顯示同一比例的靜態首幀。
+const showStaticBg = computed(() => viewportReady.value && isDesktop.value && reducedMotion.value)
 const reducedMotion = ref(false)
 // 使用者點過 tab 就交給他自己切，不再自動換；暫停鈕也是同一個開關
 const autoplayStopped = ref(false)
@@ -220,16 +219,13 @@ onBeforeUnmount(() => {
     <!-- 背景，跟首頁票券區同一套分法：
            桌機有 WebGPU    整頁那張粒子場散回來（AgendaParticleField 的 outroMix），這裡不放東西
            桌機沒有 WebGPU  首頁那支自由場影片
-           窄視窗           自己一張粒子場（PlateMobileField，只在這一區看得到時才跑）；
-                            沒有 WebGPU 時它自己換成同一支影片
-           減少動態         設計稿的靜態底圖（Figma 的圖片填色，2x 匯出） -->
+           窄視窗           同一支影片，以一個可視畫面高 sticky 在區塊內
+           減少動態         桌機保留原底圖，手機保留影片首幀 -->
     <ClientOnly>
       <HomeVideoField v-if="viewportReady && isDesktop && desktopMode === 'fallback' && !reducedMotion" />
-      <CommonPlateField
-        v-if="viewportReady && !isDesktop && nearView && !reducedMotion"
-        :regions="['[data-venue-floor]']"
+      <HomeVideoField
+        v-if="viewportReady && !isDesktop && nearView"
         class="venue-floor-field"
-        @backend="mobileBackend = $event"
       />
       <picture v-if="showStaticBg" aria-hidden="true" class="venue-floor-bg pointer-events-none absolute inset-0" :class="{ 'is-shown': bgShown }">
         <source :srcset="assetUrl('/figma/venue/floor-bg.webp')" type="image/webp">
@@ -444,15 +440,8 @@ onBeforeUnmount(() => {
 @media (prefers-reduced-motion: reduce) {
   .venue-map-track { transition: none; }
 }
-/* 窄視窗的粒子場：PlateField 的 canvas 是一個畫面高、跟著區塊頂端；這一區比一個畫面高很多，
-   改成黏在畫面上（同 HomeVideoField 的 sticky 作法），粒子一路鋪在平面圖後面 */
-.venue-floor-field { overflow: clip; }
-.venue-floor-field :deep(canvas) {
-  position: sticky !important;
-  top: 0;
-  height: 100vh !important;
-  min-height: 0 !important;
-}
+/* HomeVideoField 自帶 sticky / object-cover；手機高度只跟可視畫面走，不跟平面圖清單一起長高。 */
+.venue-floor-field :deep(video) { height: 100vh; height: 100dvh; }
 
 /* 底圖進場：區塊進到畫面才淡入、微微放大回原尺寸（bgShown，見 script） */
 .venue-floor-bg { opacity: 0; transform: scale(1.04); transition: opacity 1.2s ease-out, transform 1.6s cubic-bezier(0.22, 1, 0.36, 1); }

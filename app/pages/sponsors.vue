@@ -1,5 +1,6 @@
 <script setup>
 import galleryConfig from '~/constants/data/sponsors-particle.json'
+const { isDesktop, viewportReady } = useViewportMode()
 const sponsors = await useSponsorsData()
 const byId = new Map(sponsors.items.map(item => [item.id, item]))
 const groups = (sponsors.groups || []).map(group => ({
@@ -47,6 +48,9 @@ usePageSeo('/sponsors')
     <template #between="{ desktopMode }">
       <SponsorsPhotoWall :data="sponsors.gallery" />
       <div data-plate-free class="sponsors-directory" :class="{ 'sponsors-directory--gpu': desktopMode === 'gpu' }">
+        <ClientOnly>
+          <HomeVideoField v-if="viewportReady && !isDesktop" class="sponsors-directory-field" />
+        </ClientOnly>
         <div class="sponsors-directory-inner">
           <SponsorsGroup
             v-for="group in groups"
@@ -107,7 +111,7 @@ usePageSeo('/sponsors')
 
 <style scoped>
 .sponsors-directory { position: relative; z-index: 10; isolation: isolate; background: #0a0a0c; }
-/* 手機、減少動態與 GPU 載入／失敗時保留設計稿底圖；桌機就緒後由同一粒子場接續。 */
+/* 桌機在減少動態與 GPU 載入／失敗時保留設計稿底圖；就緒後由同一粒子場接續。 */
 .sponsors-directory::before {
   content: '';
   position: absolute;
@@ -124,6 +128,10 @@ usePageSeo('/sponsors')
 .sponsors-page :deep(.text-en-caption) { font-weight: 400; }
 
 @media (max-width: 1023px) {
+  .sponsors-directory::before { content: none; }
+  .sponsors-directory-field { opacity: 0.65; }
+  .sponsors-directory-field :deep(video) { height: 100vh; height: 100dvh; }
+  .sponsors-directory-inner { position: relative; z-index: 1; }
   /* 有 CTA 的手機 Hero 對齊 Figma；slot 的 8px gap 加上 mt-6 共留 32px。 */
   .sponsors-page :deep([data-plate-hero-mobile] > .flex:not([data-plate-mobile-corner])) { top: 186.5px; }
   .sponsors-page :deep(.sponsor-hero-cta) { font-weight: 500; }
