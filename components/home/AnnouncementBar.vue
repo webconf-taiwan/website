@@ -1,17 +1,12 @@
-<script setup lang="ts">
-// 只在 webconf.tw / www.webconf.tw 顯示；2025.webconf.tw（歷史站）與其他網域不顯示
-// 頁面為預渲染，建置時取不到網址，因此在瀏覽器端判斷
-const SHOW_HOSTS = ['webconf.tw', 'www.webconf.tw']
-const visible = ref(false)
-
-onMounted(() => {
-  visible.value = SHOW_HOSTS.includes(window.location.hostname)
-})
-</script>
-
+<!--
+  2025 歷史站（2025.webconf.tw）專用的公告橫幅，整條連到最新一屆的主站。
+  這個分支只部署到 2025.webconf.tw，所以不做網域判斷、直接輸出在預渲染的 HTML 裡：
+  搜尋引擎讀得到這個連結，才知道 webconf.tw 是最新一屆。
+  ⚠️ 不要改回瀏覽器端判斷網域再顯示：那樣 HTML 裡不會有這段，爬蟲看不到。
+-->
 <template>
-  <div
-    v-if="visible"
+  <a
+    href="https://webconf.tw/"
     class="fixed inset-x-0 bottom-0 z-[100] flex w-[100dvw] bg-[rgba(0,0,0,0.85)]"
   >
     <div
@@ -27,5 +22,5 @@ onMounted(() => {
         WebConf 2026 即將到來，敬請期待！
       </div>
     </div>
-  </div>
+  </a>
 </template>
