@@ -104,6 +104,16 @@ export default defineNuxtConfig({
     enabled: false
   },
 
+  // sitemap 每筆網址補 <lastmod>，讓搜尋引擎知道哪些頁最近更新過。
+  // 值是「build 當下」的時間：nuxt.config 只在 build 時執行一次，所以同一版部署內固定不變。
+  // ⚠️ 不要改用 autoLastmod：sitemap 是 runtime 產生的，autoLastmod 會填「每次請求的時間」，
+  // 等於每次爬都說全站剛改過，Google 判定不可信後會整個忽略 lastmod。
+  sitemap: {
+    defaults: {
+      lastmod: new Date().toISOString()
+    }
+  },
+
   schemaOrg: {
     identity: {
       type: 'Organization',
