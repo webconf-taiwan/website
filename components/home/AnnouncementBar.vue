@@ -15,7 +15,7 @@
       <div
         class="ml-[-18px] w-full text-center text-webconf-gray md:ml-0 md:w-auto md:text-start"
       >
-        【新頁面即將釋出】
+        【新頁面已釋出】
       </div>
 
       <div class="text-center text-white">
