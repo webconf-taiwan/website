@@ -165,7 +165,7 @@ const handGather = (x, y, radius, amount) => fieldRef.value?.gatherAt?.(x, y, ra
          而且手舉在手機鏡頭前也擺不出這些手勢，所以整組只在 isDesktop 掛載。 -->
     <ClientOnly>
       <HomeInteractiveGate v-if="isDesktop && webgpu" />
-      <HomeHandField
+      <LazyHomeHandField
         v-if="isDesktop && webgpu && interactiveOn"
         :on-push="handPush"
         :on-gather="handGather"

@@ -28,7 +28,10 @@ function handleHome () {
 </script>
 
 <template>
-  <CommonTemporaryPage
+  <!-- ⚠️ 一定要用 Lazy：Nuxt 4 的 nuxt-root 是「靜態」import 錯誤頁，
+       直接寫 CommonTemporaryPage 會把整串粒子場（PlateField → PlateMobileField、
+       DesktopHeroField、useParticleMorph…約 60KB）打進 entry，每一頁都得先下載。 -->
+  <LazyCommonTemporaryPage
     variant="404"
     :title="title"
     :subtitle="subtitle"

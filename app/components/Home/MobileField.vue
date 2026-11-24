@@ -725,5 +725,5 @@ defineExpose({ backend })
   <!-- ?tool=1 的工具面板。⚠️ 窄視窗由這一支掛，因為 HomeField 在這個寬度沒有
        掛載。面板本身不認得任何 Field 元件 —— 它讀的是 useParticleTool 的登記清單，
        所以人像那支（HomeSpeakerPortrait）自己登記完就會多長出一個分頁。 -->
-  <HomeFieldLookPanel v-if="toolMode" />
+  <LazyHomeFieldLookPanel v-if="toolMode" />
 </template>
