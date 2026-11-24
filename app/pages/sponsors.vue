@@ -115,6 +115,8 @@ usePageSeo('/sponsors')
   z-index: -1;
   pointer-events: none;
   background: linear-gradient(rgb(0 0 0 / 35%), rgb(0 0 0 / 35%)), url('/figma/sponsors/directory-background.png') 94.13% top / auto 100% no-repeat;
+  /* 第二行 image-set 優先載 WebP（481KB，PNG 是 3.8MB）；不認得 image-set type() 的舊瀏覽器會丟掉整行，退回上一行的 PNG。 */
+  background: linear-gradient(rgb(0 0 0 / 35%), rgb(0 0 0 / 35%)), image-set(url('/figma/sponsors/directory-background.webp') type('image/webp'), url('/figma/sponsors/directory-background.png') type('image/png')) 94.13% top / auto 100% no-repeat;
 }
 .sponsors-directory-inner { display: flex; flex-direction: column; gap: 40px; max-width: 1440px; margin: 0 auto; padding: 32px 20px 64px; }
 /* Sponsor-specific sizing keeps the reused agenda hero unchanged. */

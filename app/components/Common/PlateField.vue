@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
     <!-- 進場與視差同首頁沒有 WebGPU 時的裝飾圖（useDecoReveal）；花在右側，所以從右邊滑進來。 -->
     <div v-if="variant === 'gallery' && mode === 'static'" ref="flowerRef" class="plate-field-flower absolute">
       <div ref="flowerParallaxRef">
-        <img ref="flowerInnerRef" :src="assetUrl('/figma/sponsors/mobile-orbit.png')" alt="" class="block h-auto w-full max-w-none">
+        <img ref="flowerInnerRef" :src="assetUrl('/figma/sponsors/mobile-orbit.webp')" alt="" class="block h-auto w-full max-w-none">
       </div>
     </div>
     <CommonPlateParticleCanvas v-if="variant === 'rail' && mode === 'static'" variant="rail" poster @ready="ready" />

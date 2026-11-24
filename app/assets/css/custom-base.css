@@ -1,4 +1,15 @@
 @layer base {
+  /* 字族的 CSS 變數，給元件 <style> 用：font-family: var(--font-en-serif)。
+     ⚠️ 元件 <style> 裡不要直接寫字型名稱或 theme('fontFamily.…')：@nuxt/fonts 會對「每個」出現字型名稱的
+     CSS 檔各注入一整份 @font-face（Noto Serif/Sans TC 光宣告就 200 多 KB），議程頁就是這樣多了 231KB 的 CSS。
+     變數只在這裡（全站 entry CSS）定義一次，元件引用變數不會觸發注入。 */
+  :root {
+    --font-en-serif: theme('fontFamily.en-serif');
+    --font-zh-serif: theme('fontFamily.zh-serif');
+    --font-zh-sans: theme('fontFamily.zh-sans');
+    --font-mono: theme('fontFamily.mono');
+  }
+
   html {
     scrollbar-gutter: stable;
   }

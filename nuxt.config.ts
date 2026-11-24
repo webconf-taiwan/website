@@ -182,6 +182,14 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/tailwind.css'],
 
+  // ⚠️ 一定要關掉 cssPath：模組預設找 <rootDir>/assets/css/tailwind.css，Nuxt 4 的檔案在 app/ 底下找不到，
+  // 就會「另外」再注入一份 node_modules/tailwindcss/tailwind.css。@nuxt/fonts 會對每個 CSS 檔各注入一次
+  // @font-face，結果 entry CSS 裡 Noto Serif/Sans TC 那 500 多條宣告整份重複（entry.css 1.2MB，一半是重複）。
+  // 我們的 tailwind.css 已經由上面的 css 陣列載入，模組這邊不需要再注入。
+  tailwindcss: {
+    cssPath: false
+  },
+
   vite: {
     optimizeDeps: {
       include: [
