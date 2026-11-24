@@ -1,6 +1,15 @@
 <script setup>
 import galleryConfig from '~/constants/data/sponsors-particle.json'
 const sponsors = await useSponsorsData()
+const byId = new Map(sponsors.items.map(item => [item.id, item]))
+const groups = (sponsors.groups || []).map(group => ({
+  ...group,
+  items: group.item_ids.map(id => byId.get(id)).filter(Boolean),
+})).filter(group => group.items.length)
+const passionSupporters = sponsors.passion_supporters || []
+// 暫時隱藏「熱情贊助」名單，資料與元件保留供日後恢復。
+const showPassionSupporters = false
+const joinPlate = { ...sponsors.plate, number: showPassionSupporters && passionSupporters.length ? 'VI.' : 'V.', label: 'JOIN US' }
 const contentRef = ref(null)
 useFadeIn(contentRef)
 
@@ -10,7 +19,7 @@ usePageSeo('/sponsors')
 <template>
   <CommonPlatePage
     class="sponsors-page"
-    :plate="sponsors.plate"
+    :plate="joinPlate"
     title="SPONSORS"
     subtitle="贊助廠商"
     aria-label="Sponsors"
@@ -35,8 +44,24 @@ usePageSeo('/sponsors')
       />
     </template>
 
-    <template #between>
+    <template #between="{ desktopMode }">
       <SponsorsPhotoWall :data="sponsors.gallery" />
+      <div data-plate-free class="sponsors-directory" :class="{ 'sponsors-directory--gpu': desktopMode === 'gpu' }">
+        <div class="sponsors-directory-inner">
+          <SponsorsGroup
+            v-for="group in groups"
+            :id="group.id"
+            :key="group.id"
+            :title="group.title"
+            :mobile-title="group.mobile_title"
+            :subtitle="group.subtitle"
+            :plate="group.plate"
+            :items="group.items"
+            :columns="group.columns"
+          />
+          <SponsorsPassionSponsors v-if="showPassionSupporters" :items="passionSupporters" />
+        </div>
+      </div>
     </template>
 
     <div ref="contentRef" class="sponsors-content mx-5 flex flex-col gap-10 pt-8 lg:mx-0 lg:gap-8 lg:pt-0">
@@ -81,6 +106,17 @@ usePageSeo('/sponsors')
 </template>
 
 <style scoped>
+.sponsors-directory { position: relative; z-index: 10; isolation: isolate; background: #0a0a0c; }
+/* 手機、減少動態與 GPU 載入／失敗時保留設計稿底圖；桌機就緒後由同一粒子場接續。 */
+.sponsors-directory::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(rgb(0 0 0 / 35%), rgb(0 0 0 / 35%)), url('/figma/sponsors/directory-background.png') 94.13% top / auto 100% no-repeat;
+}
+.sponsors-directory-inner { display: flex; flex-direction: column; gap: 40px; max-width: 1440px; margin: 0 auto; padding: 32px 20px 64px; }
 /* Sponsor-specific sizing keeps the reused agenda hero unchanged. */
 .sponsors-page :deep([data-plate-rail-note]) { display: none; }
 .sponsors-page :deep(.photo-heading h2),
@@ -101,6 +137,9 @@ usePageSeo('/sponsors')
 }
 
 @media (min-width: 1024px) {
+  .sponsors-directory--gpu { background: transparent; }
+  .sponsors-directory--gpu::before { background: rgb(0 0 0 / 35%); }
+  .sponsors-directory-inner { gap: 60px; padding: 60px 60px 120px; }
   .sponsors-page :deep([data-plate-body]) { position: relative; }
   .sponsors-page :deep([data-plate-body])::before,
   .sponsors-page :deep([data-plate-body])::after {

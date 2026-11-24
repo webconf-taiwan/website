@@ -41,6 +41,7 @@ function prepareFlower () {
 
 // 橫帶固定在視窗正中（同側欄菌落定在視窗裡），寬度鋪滿整張畫布。
 export const historyRibbonShape = {
+  enterAnchor: '.chapter-ribbon',
   prepare: prepareRibbon,
   targets ({ image, points }, { N, species, W, H }) {
     const top = H / 2 - RIBBON_HEIGHT / 2

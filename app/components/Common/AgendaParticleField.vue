@@ -176,6 +176,8 @@ let flower = null
 let flowerTypes = null
 let flowerBounds = null
 let galleryMix = 0
+// 照片牆與正文之間的整寬名單：花形散回自由場，正文入鏡後照常收進側欄。
+let freeMix = 0
 // 尾段（[data-plate-outro]，場域頁的平面圖）：粒子從側欄菌落散回滿版自由場，同首頁票券區。
 let outroMix = 0
 let flowerMode = false
@@ -248,20 +250,22 @@ let regionSettling = false
 // --- DOM：元素只查一次，矩形一幀只量一次 ------------------------------------
 // 以前每幀在四個地方各 querySelector + getBoundingClientRect 一次，而前一幀剛改過
 // canvas 的 transform / clip-path / mask 變數，每次量測都會強制 layout。
-const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null, outro: undefined, outroBoard: null }
-const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, outro: null, outroBoard: null, canvas: null }
+const dom = { hero: null, page: null, body: null, aside: null, gallery: null, board: null, free: undefined, outro: undefined, outroBoard: null, railEnterAnchor: null }
+const rects = { hero: null, page: null, aside: null, body: null, gallery: null, board: null, free: null, outro: null, outroBoard: null, canvas: null, railEnterAnchor: null }
 
 function lookupDom () {
   if (!dom.hero) dom.hero = document.querySelector('[data-plate-hero-desktop]')
   if (!dom.page) dom.page = canvasRef.value?.closest('[data-plate-page]') || null
   if (!dom.body) dom.body = document.querySelector('[data-plate-body]')
   if (!dom.aside && dom.body) dom.aside = dom.body.querySelector(':scope > aside')
+  if (props.railShape?.enterAnchor && !dom.railEnterAnchor) dom.railEnterAnchor = dom.page?.querySelector(props.railShape.enterAnchor)
   if (galleryConfig && !dom.gallery) {
     dom.gallery = dom.page?.querySelector('[data-plate-gallery]')
     dom.board = dom.gallery?.querySelector('.photo-board') || null
   }
   // 尾段只有場域頁有；找過一次沒有就記成 null，不要每幀重查。
   if (dom.outro === undefined && dom.page) dom.outro = dom.page.querySelector('[data-plate-outro]')
+  if (dom.free === undefined && dom.page) dom.free = dom.page.querySelector('[data-plate-free]')
   // 照片牆是 lazy hydrate 的，SSR 已經有節點；還沒找到就下一幀再找。
   if (props.outroShape && dom.outro && !dom.outroBoard) dom.outroBoard = dom.outro.querySelector(props.outroShape.board) || null
 }
@@ -276,7 +280,9 @@ function measure () {
   if (dom.gallery) rects.gallery = dom.gallery.getBoundingClientRect()
   if (dom.board) rects.board = dom.board.getBoundingClientRect()
   if (dom.outro) rects.outro = dom.outro.getBoundingClientRect()
+  if (dom.free) rects.free = dom.free.getBoundingClientRect()
   if (dom.outroBoard) rects.outroBoard = dom.outroBoard.getBoundingClientRect()
+  if (dom.railEnterAnchor) rects.railEnterAnchor = dom.railEnterAnchor.getBoundingClientRect()
 }
 
 // --- CSS 變數：動畫數值直接寫在 wrapper 上，Vue 不參與動畫迴圈 ----------------
@@ -308,7 +314,14 @@ function writeCssVars () {
       moveBounds({
         left, top: board.top - railOffset,
         width: board.left - canvasLeft + board.width - left, height: board.height,
-      }, galleryMix)
+      }, Math.min(1, galleryMix + freeMix))
+    }
+    if (rects.free) {
+      const top = Math.max(0, rects.free.top)
+      moveBounds({
+        left: 0, top: top - railOffset, width: W,
+        height: Math.max(0, Math.min(window.innerHeight, rects.free.bottom) - top),
+      }, freeMix)
     }
     if (props.railShape) {
       // 橫帶橫越整個視窗：顯示範圍開到整張畫布（wrapper 會跟著 railOffset 平移，這裡扣回來）。
@@ -337,13 +350,18 @@ function writeCssVars () {
     const top = Math.max(0, bounds.top)
     const bottom = Math.min(canvasHeight, bounds.top + bounds.height)
     fieldBounds = { ...bounds, top, height: Math.max(0, bottom - top) }
-    const visible = props.heroVisible || galleryMix > 0 || railMix > 0 || outroMix > 0
+    const visible = props.heroVisible || galleryMix > 0 || freeMix > 0 || railMix > 0 || outroMix > 0
+    const area = `${fieldBounds.left}px ${fieldBounds.top}px / ${fieldBounds.width}px ${fieldBounds.height}px no-repeat`
+    // 名單區接照片牆／側欄時，上下邊界也淡出，避免全寬粒子被切成水平直線。
+    const edgeFade = Math.round(64 * freeMix * (1 - railMix))
+    const softenEdges = edgeFade > 0
     const region = visible
-      ? `linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent) ${fieldBounds.left}px ${fieldBounds.top}px / ${fieldBounds.width}px ${fieldBounds.height}px no-repeat`
+      ? `linear-gradient(to right, transparent, #000 24px, #000 calc(100% - 24px), transparent) ${area}${softenEdges ? `, linear-gradient(to bottom, transparent, #000 ${edgeFade}px, #000 calc(100% - ${edgeFade}px), transparent) ${area}` : ''}`
       : 'linear-gradient(transparent, transparent)'
     // 標題不再挖空粒子；粒子直接從標題文字後方通過。
     if (region !== maskKey) {
       el.style.mask = region
+      el.style.maskComposite = softenEdges ? 'intersect' : 'add'
       maskKey = region
     }
   }
@@ -396,9 +414,13 @@ function scrollProgress () {
   const hero = rects.hero
   if (!hero?.height) return 0
   const boundary = props.railStart === 'body' ? (rects.body?.top ?? hero.bottom) : hero.bottom
-  // 照片區右侧的場在正文入鏡時就往左移，接到側欄後維持 sticky。
-  const start = galleryConfig ? Math.min(window.innerHeight - 120, hero.height + 200) : hero.height - 120
-  const end = galleryConfig ? 160 : 60
+  // 歷屆橫帶跟著內容進場：開始捲動就收攏，區塊頂端到視窗 35% 時完成。
+  // 舊門檻只看 Hero 高度，較高的視窗已看到卡片時仍停在自由場。
+  // 其他頁的照片區／側欄保留原切換範圍。
+  const start = props.railShape ? hero.height
+    : galleryConfig ? Math.min(window.innerHeight - 120, hero.height + 200) : hero.height - 120
+  const end = props.railShape ? Math.min(start - 1, Math.max(60, window.innerHeight * 0.35))
+    : galleryConfig ? 160 : 60
   const p = Math.max(0, Math.min(1, (start - boundary) / Math.max(1, start - end)))
   return p * p * (3 - 2 * p)
 }
@@ -419,6 +441,14 @@ function outroProgress () {
   const start = window.innerHeight - 100
   const end = window.innerHeight * 0.35
   const p = Math.max(0, Math.min(1, (start - rects.outro.top) / Math.max(1, start - end)))
+  return p * p * (3 - 2 * p)
+}
+
+function freeProgress () {
+  if (!props.fixed || !rects.free) return 0
+  const start = window.innerHeight - 100
+  const end = window.innerHeight * 0.35
+  const p = Math.max(0, Math.min(1, (start - rects.free.top) / Math.max(1, start - end)))
   return p * p * (3 - 2 * p)
 }
 
@@ -740,6 +770,11 @@ function step (dt) {
 
   // Follow the sticky rail as its containing section releases above the footer.
   railOffset = Math.min(0, (rects.aside?.top ?? 60) - 60) * railMix
+  // 提早收攏時先跟著卡片背景進場，到視窗中央後才固定，避免橫帶跑到標題後方。
+  if (rects.railEnterAnchor) {
+    const center = rects.railEnterAnchor.top + rects.railEnterAnchor.height / 2
+    railOffset = Math.max(0, center - canvasHeight / 2) * railMix
+  }
   // 側欄換成構圖（railShape）或尾段有構圖（outroShape）時：握力與閃動照菌落（形狀撐得住、目標點一直在晃），
   // 但力場、點徑、透明度維持自由場那套 —— 要的是持續流動，不是細胞紋理。
   const shapedOutro = outroFlower ? outroMix : 0
@@ -836,7 +871,7 @@ function step (dt) {
   }
   // Hero 以 720px 取景；捲動與相機縮放同步，讓同一粒子的螢幕位移連續。
   // 尾段的自由場不再對齊 hero 的 720px 取景，直接置中在視窗。
-  const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix) * (1 - outroMix)
+  const centerShift = (engine.size.H / 2 - 360) * (1 - galleryMix) * (1 - railMix) * (1 - freeMix) * (1 - outroMix)
   const cameraY = (centerShift - heroOffset) / cameraZoom + dy
   if (dx !== lastCameraX || cameraY !== lastCameraY) {
     engine.setCameraOffset?.(dx, cameraY)
@@ -965,14 +1000,16 @@ function frame (now = performance.now()) {
   // 先讀後寫：所有 DOM 量測集中在這裡，樣式在幀尾一次寫入。
   measure()
   outroMix = outroProgress()
+  freeMix = freeProgress()
   const progress = scrollProgress() * (1 - outroMix)
   railMix += (progress - railMix) * (reducedMotion.value ? 1 : 1 - Math.exp(-10 * dt))
   if (Math.abs(progress - railMix) < 0.0001) railMix = progress
   const galleryProgress = galleryConfig ? Math.max(0, Math.min(1, -(rects.hero?.top || 0) / (HERO.height - 120))) : 0
-  galleryMix = galleryProgress * galleryProgress * (3 - 2 * galleryProgress) * (1 - outroMix)
+  const galleryBlend = galleryProgress * galleryProgress * (3 - 2 * galleryProgress) * (1 - outroMix)
+  galleryMix = galleryBlend * (1 - freeMix)
   const galleryOffset = flowerBounds ? (rects.gallery?.top || 0) + flowerBounds.cy - flowerBounds.simulationCy : 0
   // 尾段的自由場固定在視窗上（同首頁票券區），不再跟著 hero 的位置捲走。
-  heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryMix) + galleryOffset * galleryMix) * (1 - railMix) * (1 - outroMix)
+  heroOffset = ((props.fixed ? rects.hero?.top || 0 : 0) * (1 - galleryBlend) + galleryOffset * galleryBlend) * (1 - freeMix) * (1 - railMix) * (1 - outroMix)
   // 尾段花形跟著照片牆捲動（同上面花形的 galleryOffset）。
   if (outroFlower && rects.outroBoard && engine) heroOffset += (rects.outroBoard.top + props.outroShape.center - engine.size.H / 2) * outroMix
   step(dt)
@@ -1070,7 +1107,7 @@ async function init () {
     window.__agendaField = engine
     window.__agendaRailMotion = RAIL
     window.__agendaMotion = () => ({
-      railMix, galleryMix, outroMix, flowerMode, flowerBounds, pull, grip, lockNorm, ambientOn, force: appliedForce, simSpeed: simSpeedNow, targetsGeneration, buildingTargets,
+      railMix, galleryMix, freeMix, outroMix, flowerMode, flowerBounds, pull, grip, lockNorm, ambientOn, force: appliedForce, simSpeed: simSpeedNow, targetsGeneration, buildingTargets,
       look: look.id, ready: ready.value, running, failed: failed.value, reducedMotion: reducedMotion.value, motionTime, rafPending,
       mask: maskKey, fieldBounds,
     })
@@ -1140,7 +1177,7 @@ defineExpose({ backend })
 </script>
 
 <template>
-  <div ref="wrapRef" aria-hidden="true" class="agenda-field pointer-events-none" :class="[wrapClass, { 'agenda-field--gallery': fixed && galleryConfig }]">
+  <div ref="wrapRef" aria-hidden="true" class="agenda-field pointer-events-none" :class="[wrapClass, { 'agenda-field--gallery': fixed && (galleryConfig || outroShape) }]">
     <div
       v-if="failed || reducedMotion"
       class="agenda-hero-artwork absolute inset-x-0 top-0 h-[550px] overflow-hidden transition-opacity duration-700"
