@@ -407,27 +407,27 @@ watch(day, async () => {
   .agenda-layout [data-footer-wordmark] img { width: 140.351px; height: 40px; }
   .agenda-layout [data-footer-wordmark] > p {
     padding-bottom: 8px;
-    font-family: theme('fontFamily.mono');
+    font-family: var(--font-mono);
     font-size: 12px;
     line-height: 14px;
     letter-spacing: 0;
   }
   .agenda-layout [data-footer-copy] { min-height: 156px; line-height: 24px; letter-spacing: 0; }
   .agenda-layout footer nav h2 {
-    font-family: theme('fontFamily.en-serif');
+    font-family: var(--font-en-serif);
     font-size: 18px;
     font-weight: 700;
     line-height: 22px;
     letter-spacing: 0;
   }
   .agenda-layout footer nav a {
-    font-family: theme('fontFamily.zh-sans');
+    font-family: var(--font-zh-sans);
     font-size: 15px;
     line-height: 24px;
     letter-spacing: 0;
   }
   .agenda-layout [data-footer-group='Connect'] a {
-    font-family: theme('fontFamily.en-serif');
+    font-family: var(--font-en-serif);
     font-weight: 700;
   }
 }

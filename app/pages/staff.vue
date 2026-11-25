@@ -40,7 +40,7 @@ useFadeIn(listRef, { step: 0.04 })
         </section>
 
         <div class="staff-mobile-deco" aria-hidden="true">
-          <img src="/figma/staff/colonies.png" alt="" width="510" height="773" loading="lazy" decoding="async">
+          <img src="/figma/staff/colonies.webp" alt="" width="510" height="773" loading="lazy" decoding="async">
         </div>
       </CommonPlatePage>
     </NuxtLayout>
@@ -84,7 +84,7 @@ useFadeIn(listRef, { step: 0.04 })
   .staff-layout :deep([data-footer-copy]) { min-height: 156px; }
   .staff-layout :deep([data-footer-group] h2) { font-weight: 700; }
   .staff-layout :deep([data-footer-group="Connect"]) { grid-column: 1 / -1; }
-  .staff-layout :deep([data-footer-group="Connect"] a) { font-family: "Inria Serif", "Noto Serif TC", serif; }
+  .staff-layout :deep([data-footer-group="Connect"] a) { font-family: var(--font-en-serif); }
 }
 
 /* 中間尺寸維持橫向名片，留出足夠的姓名與社群圖示寬度。 */
@@ -134,7 +134,7 @@ useFadeIn(listRef, { step: 0.04 })
   .staff-layout :deep([data-footer-group] h2) { margin-bottom: 24px; font-weight: 700; line-height: 26px; }
   .staff-layout :deep([data-footer-group="Programme"] h2) { font-weight: 400; }
   .staff-layout :deep([data-footer-group] a) { line-height: 26px; }
-  .staff-layout :deep([data-footer-group="Connect"] a) { font-family: "Inria Serif", "Noto Serif TC", serif; }
+  .staff-layout :deep([data-footer-group="Connect"] a) { font-family: var(--font-en-serif); }
 }
 
 @media (min-width: 1280px) {

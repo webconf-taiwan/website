@@ -843,7 +843,7 @@ defineExpose({ backend })
   />
 
   <!-- ?tool=1 的切換面板。與一鏡到底版（Home/Field.vue）共用同一個元件。 -->
-  <HomeFieldLookPanel
+  <LazyHomeFieldLookPanel
     v-if="toolMode"
     :look="activeLook"
     :looks="looks"

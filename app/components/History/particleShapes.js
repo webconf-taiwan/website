@@ -1,6 +1,6 @@
 // 歷屆回顧頁後兩區的粒子構圖，交給 CommonPlatePage → AgendaParticleField：
 //   railShape  —— 回顧影片那區：側欄菌落換成橫越畫面的兩條橫帶（Figma ribbon.webp ＋ video-mask.svg 的輪廓）
-//   outroShape —— 照片牆那區：尾段不散回自由場，收成贊助頁照片牆那朵花（mobile-orbit.png）
+//   outroShape —— 照片牆那區：尾段不散回自由場，收成贊助頁照片牆那朵花（mobile-orbit.webp）
 // 這裡只負責「目標點在哪」；粒子配對、持續流動（自由場力場＋菌落的握力與閃動）都在共用粒子場。
 import { assetUrl } from '~/utils/url'
 
@@ -34,7 +34,7 @@ function prepareRibbon () {
 }
 
 function prepareFlower () {
-  if (!flowerTask) flowerTask = window.PLImage.prepare(assetUrl('/figma/sponsors/mobile-orbit.png'), { ...IMAGE, name: 'history:gallery' })
+  if (!flowerTask) flowerTask = window.PLImage.prepare(assetUrl('/figma/sponsors/mobile-orbit.webp'), { ...IMAGE, name: 'history:gallery' })
     .catch((error) => { flowerTask = null; throw error })
   return flowerTask
 }

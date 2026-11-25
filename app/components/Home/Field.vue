@@ -2067,7 +2067,7 @@ defineExpose({ backend, pushAt, gatherAt })
   />
 
   <!-- ?tool=1 的工具面板。與原版 ParticleField 共用同一個元件。 -->
-  <HomeFieldLookPanel
+  <LazyHomeFieldLookPanel
     v-if="toolMode"
     :look="activeLook"
     :looks="looks"

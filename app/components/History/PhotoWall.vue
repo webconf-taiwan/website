@@ -194,7 +194,7 @@ onBeforeUnmount(() => {
     <div ref="boardRef" class="photo-board relative mx-auto max-w-[1440px]">
       <!-- 手機沿用 Figma 的靜態裝飾圖；桌機由共用粒子場接續照片牆動線。 -->
       <div aria-hidden="true" class="mobile-gallery-art lg:hidden">
-        <img :src="assetUrl('/figma/sponsors/mobile-orbit.png')" alt="" loading="lazy" decoding="async">
+        <img :src="assetUrl('/figma/sponsors/mobile-orbit.webp')" alt="" loading="lazy" decoding="async">
       </div>
       <div class="photo-heading relative z-10 mx-5 flex flex-col gap-4 lg:absolute lg:inset-x-[60px] lg:top-[60px] lg:mx-0">
         <h2 :id="headingId" data-fade="in" class="text-en-h1 italic">
